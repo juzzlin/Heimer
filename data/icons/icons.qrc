@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>dementia.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Dementia
+GenericName=Mind map application
+Comment=Mind map application
+Exec=dementia
+Icon=dementia
+Type=Application
+Categories=Education;
+StartupNotify=true
+

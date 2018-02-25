@@ -20,6 +20,8 @@
 #include "editorview.hpp"
 #include "mainwindow.hpp"
 
+#include "mclogger.hh"
+
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 #include <QSizePolicy>
@@ -54,6 +56,8 @@ NodeBasePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
     addItem(*graphicsEgde); // QGraphicsScene needs the raw pointer
 
     m_editorData->addExistingGraphToScene();
+
+    MCLogger().info() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
 
     return targetNode;
 }

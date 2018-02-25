@@ -13,20 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Dementia. If not, see <http://www.gnu.org/licenses/>.
 
-#include "edge.hpp"
 #include "graphicsfactory.hpp"
-#include "node.hpp"
 
 #include <QGraphicsDropShadowEffect>
 
-Edge::Edge(Node & sourceNode, Node & targetNode)
-    : m_sourceNode(sourceNode)
-    , m_targetNode(targetNode)
+QGraphicsEffect * GraphicsFactory::createDropShadowEffect()
 {
-    setGraphicsEffect(GraphicsFactory::createDropShadowEffect());
-}
-
-void Edge::updateLine()
-{
-    setLine(m_sourceNode.pos().x(), m_sourceNode.pos().y(), m_targetNode.pos().x(), m_targetNode.pos().y());
+    QGraphicsDropShadowEffect * shadow = new QGraphicsDropShadowEffect();
+    shadow->setOffset(QPointF(3, 3));
+    shadow->setBlurRadius(5);
+    return shadow;
 }

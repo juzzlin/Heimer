@@ -16,6 +16,7 @@
 #include "node.hpp"
 
 #include "edge.hpp"
+#include "graphicsfactory.hpp"
 #include "nodehandle.hpp"
 
 #include <QGraphicsDropShadowEffect>
@@ -33,10 +34,7 @@ Node::Node()
 
     createHandles();
 
-    QGraphicsDropShadowEffect * shadow = new QGraphicsDropShadowEffect();
-    shadow->setOffset(QPointF(3, 3));
-    shadow->setBlurRadius(5);
-    setGraphicsEffect(shadow);
+    setGraphicsEffect(GraphicsFactory::createDropShadowEffect());
 }
 
 Node::Node(const Node & other)

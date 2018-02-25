@@ -15,14 +15,18 @@
 
 #include <QApplication>
 #include <QGraphicsItem>
+#include <QGraphicsSimpleTextItem>
 #include <QMouseEvent>
 #include <QStatusBar>
 #include <QString>
 #include <QTransform>
+
 #include <iostream>
+
 #include "editorview.hpp"
 
 #include "draganddropstore.hpp"
+#include "graphicsfactory.hpp"
 #include "mediator.hpp"
 #include "mindmapdata.hpp"
 #include "node.hpp"
@@ -226,6 +230,18 @@ void EditorView::showDummyDragNode()
     m_dummyDragNode->setOpacity(0.5f);
 }
 
+void EditorView::showHelloText(bool show)
+{
+    if (!m_helloText)
+    {
+        m_helloText = new QGraphicsSimpleTextItem(tr("Choose File->New or File->Open to begin"));
+        m_helloText->setGraphicsEffect(GraphicsFactory::createDropShadowEffect());
+        scene()->addItem(m_helloText);
+    }
+
+    m_helloText->setVisible(show);
+}
+
 void EditorView::updateSceneRect()
 {
     const QRectF newSceneRect(-1000, -1000, 2000, 2000);
@@ -269,5 +285,4 @@ void EditorView::wheelEvent(QWheelEvent * event)
 
 EditorView::~EditorView()
 {
-    delete m_dummyDragNode;
 }

@@ -14,6 +14,7 @@ set(SRC
     draganddropstore.cpp
     edge.cpp
     graph.cpp
+    graphicsfactory.cpp
     editordata.cpp
     editorview.cpp
     main.cpp

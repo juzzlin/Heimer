@@ -23,6 +23,7 @@ class QAction;
 class QMouseEvent;
 class QPaintEvent;
 class QWheelEvent;
+class QGraphicsSimpleTextItem;
 class Object;
 class ObjectModelLoaderoader;
 class Node;
@@ -41,6 +42,8 @@ public:
     ~EditorView();
 
     void updateSceneRect();
+
+    void showHelloText(bool show);
 
 protected:
 
@@ -99,6 +102,8 @@ private:
     QAction * m_excludeFromMinimap = nullptr;
 
     QAction * m_forceStationaryAction = nullptr;
+
+    QGraphicsSimpleTextItem * m_helloText = nullptr;
 
     QPointF m_mappedPos;
 

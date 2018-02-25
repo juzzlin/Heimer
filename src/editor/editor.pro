@@ -23,6 +23,7 @@ HEADERS +=  \
     config.hpp \
     draganddropstore.hpp \
     graph.hpp \
+    graphicsfactory.hpp \
     edge.hpp \
     editordata.hpp \
     editorview.hpp \
@@ -42,6 +43,7 @@ SOURCES += \
     config.cpp \
     draganddropstore.cpp \
     graph.cpp \
+    graphicsfactory.cpp \
     edge.cpp \
     editordata.cpp \
     editorview.cpp \

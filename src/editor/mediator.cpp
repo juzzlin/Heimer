@@ -104,6 +104,7 @@ void Mediator::initScene()
     m_editorView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     m_editorView->setMouseTracking(true);
     m_editorView->setBackgroundBrush(QBrush(QColor(128, 200, 255, 255)));
+    m_editorView->showHelloText(true);
 
     m_mainWindow.setCentralWidget(m_editorView);
     m_mainWindow.setContentsMargins(0, 0, 0, 0);

@@ -17,8 +17,6 @@
 #include "graphicsfactory.hpp"
 #include "node.hpp"
 
-#include <QGraphicsDropShadowEffect>
-
 Edge::Edge(Node & sourceNode, Node & targetNode)
     : m_sourceNode(&sourceNode)
     , m_targetNode(&targetNode)

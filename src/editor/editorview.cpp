@@ -26,6 +26,7 @@
 #include "editorview.hpp"
 
 #include "draganddropstore.hpp"
+#include "edge.hpp"
 #include "graphicsfactory.hpp"
 #include "mediator.hpp"
 #include "mindmapdata.hpp"
@@ -81,12 +82,12 @@ void EditorView::handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHand
 
 void EditorView::handleLeftButtonClickOnNode(Node & node)
 {
-    // User is initiating a drag'n'drop
+    // User is initiating a node move drag
 
     m_mediator.saveUndoPoint();
 
     node.setZValue(node.zValue() + 1);
-    m_mediator.dadStore().setDragAndDropNode(&node);
+    m_mediator.dadStore().setSourceNode(&node, DragAndDropStore::Action::MoveNode);
 
     // Change cursor to the closed hand cursor.
     QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
@@ -94,11 +95,15 @@ void EditorView::handleLeftButtonClickOnNode(Node & node)
 
 void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
 {
-    // User is initiating a drag'n'drop
+    // User is initiating a new node drag
 
     m_mediator.saveUndoPoint();
 
-    m_mediator.dadStore().setDragAndDropNodeHandle(&nodeHandle);
+    auto parentNode = dynamic_cast<Node *>(nodeHandle.parentItem());
+    assert(parentNode);
+
+    m_mediator.dadStore().setSourceNode(parentNode, DragAndDropStore::Action::CreateNode);
+    m_mediator.dadStore().setSourcePos(nodeHandle.pos());
 
     // Change cursor to the closed hand cursor.
     QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
@@ -109,46 +114,6 @@ void EditorView::handleRightButtonClickOnNode(Node & node)
     m_mediator.setSelectedNode(&node);
 
     openNodeContextMenu();
-}
-
-void EditorView::handleNodeDragRelease(QMouseEvent * event)
-{
-    if (auto node = m_mediator.dadStore().dragAndDropNode())
-    {
-        node->setLocation(mapToScene(event->pos()));
-        node->setZValue(node->zValue() - 1);
-
-        update();
-
-        m_mediator.dadStore().clear();
-
-        QApplication::restoreOverrideCursor();
-    }
-}
-
-void EditorView::handleNodeHandleDragRelease(QMouseEvent *)
-{
-    if (auto handle = m_mediator.dadStore().dragAndDropNodeHandle())
-    {
-        auto parentItem = dynamic_cast<Node *>(handle->parentItem());
-        assert(parentItem);
-
-        m_mediator.createAndAddNode(parentItem->index(), m_mappedPos - handle->pos());
-
-        hideDummyDragNode();
-
-        m_mediator.dadStore().clear();
-
-        QApplication::restoreOverrideCursor();
-    }
-}
-
-void EditorView::hideDummyDragNode()
-{
-    if (m_dummyDragNode)
-    {
-        m_dummyDragNode->setVisible(false);
-    }
 }
 
 void EditorView::keyPressEvent(QKeyEvent * event)
@@ -166,15 +131,23 @@ void EditorView::keyPressEvent(QKeyEvent * event)
 void EditorView::mouseMoveEvent(QMouseEvent * event)
 {
     m_mappedPos = mapToScene(event->pos());
-    if (auto node = m_mediator.dadStore().dragAndDropNode())
-    {
-        node->setLocation(m_mappedPos);
-    }
-    else if (auto handle = m_mediator.dadStore().dragAndDropNodeHandle())
-    {
-        showDummyDragNode();
 
-        m_dummyDragNode->setPos(m_mappedPos - handle->pos());
+    switch (m_mediator.dadStore().action())
+    {
+    case DragAndDropStore::Action::MoveNode:
+        if (auto node = m_mediator.dadStore().sourceNode())
+        {
+            node->setLocation(m_mappedPos);
+        }
+        break;
+    case DragAndDropStore::Action::CreateNode:
+        showDummyDragNode(true);
+        showDummyDragEdge(true);
+        m_dummyDragNode->setPos(m_mappedPos - m_mediator.dadStore().sourcePos());
+        m_dummyDragEdge->updateLine();
+        break;
+    default:
+        break;
     }
 
     QGraphicsView::mouseMoveEvent(event);
@@ -187,7 +160,7 @@ void EditorView::mousePressEvent(QMouseEvent * event)
 
     // Fetch all items at the location
     QList<QGraphicsItem *> items = scene()->items(
-                m_clickedScenePos, Qt::IntersectsItemShape, Qt::DescendingOrder);
+        m_clickedScenePos, Qt::IntersectsItemShape, Qt::DescendingOrder);
 
     if (items.size())
     {
@@ -205,9 +178,33 @@ void EditorView::mousePressEvent(QMouseEvent * event)
 
 void EditorView::mouseReleaseEvent(QMouseEvent * event)
 {
-    handleNodeDragRelease(event);
+    switch (m_mediator.dadStore().action())
+    {
+    case DragAndDropStore::Action::MoveNode:
+        if (auto node = m_mediator.dadStore().sourceNode())
+        {
+            node->setLocation(mapToScene(event->pos()));
+            node->setZValue(node->zValue() - 1);
+            update();
+            m_mediator.dadStore().clear();
+        }
+        break;
+    case DragAndDropStore::Action::CreateNode:
+        if (auto sourceNode = m_mediator.dadStore().sourceNode())
+        {
+            m_mediator.createAndAddNode(sourceNode->index(), m_mappedPos - m_mediator.dadStore().sourcePos());
 
-    handleNodeHandleDragRelease(event);
+            showDummyDragNode(false);
+            showDummyDragEdge(false);
+
+            m_mediator.dadStore().clear();
+        }
+        break;
+    default:
+        break;
+    }
+
+    QApplication::restoreOverrideCursor();
 
     QGraphicsView::mouseReleaseEvent(event);
 }
@@ -218,7 +215,27 @@ void EditorView::openNodeContextMenu()
     m_targetNodeContextMenu.exec(globalPos);
 }
 
-void EditorView::showDummyDragNode()
+void EditorView::showDummyDragEdge(bool show)
+{
+    if (auto sourceNode = m_mediator.dadStore().sourceNode())
+    {
+        if (!m_dummyDragEdge)
+        {
+            m_dummyDragEdge = new Edge(*sourceNode, *m_dummyDragNode);
+            m_dummyDragEdge->setOpacity(0.5f);
+            scene()->addItem(m_dummyDragEdge);
+        }
+        else
+        {
+            m_dummyDragEdge->setSourceNode(*sourceNode);
+            m_dummyDragEdge->setTargetNode(*m_dummyDragNode);
+        }
+    }
+
+    m_dummyDragEdge->setVisible(show);
+}
+
+void EditorView::showDummyDragNode(bool show)
 {
     if (!m_dummyDragNode)
     {
@@ -226,8 +243,8 @@ void EditorView::showDummyDragNode()
         scene()->addItem(m_dummyDragNode);
     }
 
-    m_dummyDragNode->setVisible(true);
     m_dummyDragNode->setOpacity(0.5f);
+    m_dummyDragNode->setVisible(show);
 }
 
 void EditorView::showHelloText(bool show)

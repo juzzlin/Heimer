@@ -19,33 +19,37 @@
 #include <QPointF>
 
 class Node;
-class NodeHandle;
 
 class DragAndDropStore
 {
 public:
 
+    enum class Action
+    {
+        None,
+        MoveNode,
+        CreateNode
+    };
+
     DragAndDropStore();
 
     void clear();
 
-    void setDragAndDropNode(Node * tnode);
+    Node * sourceNode() const;
+    void setSourceNode(Node * node, Action action);
 
-    Node * dragAndDropNode() const;
-    QPointF dragAndDropSourcePos() const;
+    Action action() const;
 
-    void setDragAndDropSourcePos(QPointF pos);
-
-    NodeHandle *dragAndDropNodeHandle() const;
-    void setDragAndDropNodeHandle(NodeHandle * dragAndDropNodeHandle);
+    QPointF sourcePos() const;
+    void setSourcePos(QPointF pos);
 
 private:
 
-    Node * m_dragAndDropNode = nullptr;
+    Node * m_sourceNode = nullptr;
 
-    NodeHandle * m_dragAndDropNodeHandle = nullptr;
+    QPointF m_sourcePos;
 
-    QPointF m_dragAndDropSourcePos;
+    Action m_action = Action::None;
 };
 
 #endif // DRAGANDDROPSTORE_HPP

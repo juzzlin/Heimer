@@ -20,13 +20,23 @@
 #include <QGraphicsDropShadowEffect>
 
 Edge::Edge(Node & sourceNode, Node & targetNode)
-    : m_sourceNode(sourceNode)
-    , m_targetNode(targetNode)
+    : m_sourceNode(&sourceNode)
+    , m_targetNode(&targetNode)
 {
     setGraphicsEffect(GraphicsFactory::createDropShadowEffect());
 }
 
+void Edge::setSourceNode(Node & sourceNode)
+{
+    m_sourceNode = &sourceNode;
+}
+
+void Edge::setTargetNode(Node & targetNode)
+{
+    m_targetNode = &targetNode;
+}
+
 void Edge::updateLine()
 {
-    setLine(m_sourceNode.pos().x(), m_sourceNode.pos().y(), m_targetNode.pos().x(), m_targetNode.pos().y());
+    setLine(m_sourceNode->pos().x(), m_sourceNode->pos().y(), m_targetNode->pos().x(), m_targetNode->pos().y());
 }

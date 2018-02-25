@@ -21,38 +21,35 @@ DragAndDropStore::DragAndDropStore()
 {
 }
 
+DragAndDropStore::Action DragAndDropStore::action() const
+{
+    return m_action;
+}
+
 void DragAndDropStore::clear()
 {
-    m_dragAndDropNode = nullptr;
-    m_dragAndDropNodeHandle = nullptr;
+    m_sourceNode = nullptr;
+    m_sourcePos = QPointF();
+    m_action = Action::None;
 }
 
-void DragAndDropStore::setDragAndDropNode(Node * tnode)
+void DragAndDropStore::setSourceNode(Node * node, DragAndDropStore::Action action)
 {
-    m_dragAndDropNode = tnode;
+    m_sourceNode = node;
+    m_action = action;
 }
 
-Node * DragAndDropStore::dragAndDropNode() const
+Node * DragAndDropStore::sourceNode() const
 {
-    return m_dragAndDropNode;
+    return m_sourceNode;
 }
 
-void DragAndDropStore::setDragAndDropSourcePos(QPointF pos)
+void DragAndDropStore::setSourcePos(QPointF pos)
 {
-    m_dragAndDropSourcePos = pos;
+    m_sourcePos = pos;
 }
 
-NodeHandle *DragAndDropStore::dragAndDropNodeHandle() const
+QPointF DragAndDropStore::sourcePos() const
 {
-    return m_dragAndDropNodeHandle;
-}
-
-void DragAndDropStore::setDragAndDropNodeHandle(NodeHandle * dragAndDropNodeHandle)
-{
-    m_dragAndDropNodeHandle = dragAndDropNodeHandle;
-}
-
-QPointF DragAndDropStore::dragAndDropSourcePos() const
-{
-    return m_dragAndDropSourcePos;
+    return m_sourcePos;
 }

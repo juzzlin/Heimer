@@ -28,13 +28,17 @@ public:
 
     Edge(Node & sourceNode, Node & targetNode);
 
+    void setSourceNode(Node & sourceNode);
+
+    void setTargetNode(Node & targetNode);
+
     void updateLine();
 
 private:
 
-    Node & m_sourceNode;
+    Node * m_sourceNode;
 
-    Node & m_targetNode;
+    Node * m_targetNode;
 };
 
 using EdgePtr = std::shared_ptr<Edge>;

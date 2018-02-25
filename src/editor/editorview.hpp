@@ -19,17 +19,18 @@
 #include <QGraphicsView>
 #include <QMenu>
 
+class Edge;
+class Node;
+class NodeHandle;
+class Mediator;
+class MindMapTile;
+class Object;
+class ObjectModelLoaderoader;
 class QAction;
 class QMouseEvent;
 class QPaintEvent;
 class QWheelEvent;
 class QGraphicsSimpleTextItem;
-class Object;
-class ObjectModelLoaderoader;
-class Node;
-class NodeHandle;
-class Mediator;
-class MindMapTile;
 
 class EditorView : public QGraphicsView
 {
@@ -71,15 +72,11 @@ private:
 
     void handleRightButtonClickOnNode(Node & node);
 
-    void handleNodeDragRelease(QMouseEvent * event);
-
-    void handleNodeHandleDragRelease(QMouseEvent * event);
-
-    void hideDummyDragNode();
-
     void openNodeContextMenu();
 
-    void showDummyDragNode();
+    void showDummyDragEdge(bool show);
+
+    void showDummyDragNode(bool show);
 
     void updateScale(int value);
 
@@ -112,6 +109,8 @@ private:
     Mediator & m_mediator;
 
     Node * m_dummyDragNode = nullptr;
+
+    Edge * m_dummyDragEdge = nullptr;
 };
 
 #endif // EDITORVIEW_HPP

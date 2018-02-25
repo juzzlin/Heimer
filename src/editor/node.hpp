@@ -17,7 +17,9 @@
 #define NODE_HPP
 
 #include <QGraphicsItem>
+
 #include <vector>
+#include <map>
 
 #include "nodebase.hpp"
 #include "edge.hpp"
@@ -52,7 +54,11 @@ public:
 
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
 
+    static std::pair<QPointF, QPointF> getNearestEdgePoints(Node & node1, Node & node2);
+
 private:
+
+    void createEdgePoints();
 
     void createHandles();
 
@@ -61,6 +67,8 @@ private:
     std::vector<NodeHandle *> m_handles;
 
     std::vector<EdgePtr> m_edges;
+
+    std::vector<QPointF> m_edgePoints;
 
     const int m_handleRadius = 32;
 };

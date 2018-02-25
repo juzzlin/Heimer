@@ -24,6 +24,8 @@
 #include <QPen>
 #include <QVector2D>
 
+#include <cmath>
+
 Node::Node()
 {
     setAcceptHoverEvents(true);
@@ -31,6 +33,8 @@ Node::Node()
     setSize(QSize(200, 150));
 
     setZValue(10);
+
+    createEdgePoints();
 
     createHandles();
 
@@ -50,6 +54,10 @@ Node::Node(const Node & other)
     setSize(other.size());
 
     setZValue(10);
+
+    createEdgePoints();
+
+    createHandles();
 }
 
 void Node::addEdge(EdgePtr edge)
@@ -72,6 +80,24 @@ EdgePtr Node::createAndAddEdge(NodePtr targetNode)
     return edge;
 }
 
+void Node::createEdgePoints()
+{
+    const float w2 = size().width() * 0.5f;
+    const float h2 = size().height() * 0.5f;
+    const float bias = 0.1f;
+
+    m_edgePoints = {
+        {-w2, h2},
+        {0, h2 + bias},
+        {w2, h2},
+        {w2 + bias, 0},
+        {w2, -h2},
+        {0, -h2 - bias},
+        {-w2, -h2},
+        {-w2 - bias, 0}
+    };
+}
+
 void Node::createHandles()
 {
     const std::vector<QPointF> positions = {
@@ -85,6 +111,30 @@ void Node::createHandles()
         handle->setPos(position);
         m_handles.push_back(handle);
     }
+}
+
+std::pair<QPointF, QPointF> Node::getNearestEdgePoints(Node & node1, Node & node2)
+{
+    float bestDistance = std::numeric_limits<float>::max();
+    std::pair<QPointF, QPointF> bestPair = {QPointF(), QPointF()};
+
+    // This is O(n^2) but fine as there are not many points
+    for (auto point1 : node1.m_edgePoints)
+    {
+        point1 = node1.pos() + point1;
+        for (auto point2 : node2.m_edgePoints)
+        {
+            point2 = node2.pos() + point2;
+            const float distance = std::pow(point1.x() - point2.x(), 2) + std::pow(point1.y() - point2.y(), 2);
+            if (distance < bestDistance)
+            {
+                bestDistance = distance;
+                bestPair = {point1, point2};
+            }
+        }
+    }
+
+    return bestPair;
 }
 
 void Node::hoverEnterEvent(QGraphicsSceneHoverEvent * event)

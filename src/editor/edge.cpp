@@ -36,5 +36,6 @@ void Edge::setTargetNode(Node & targetNode)
 
 void Edge::updateLine()
 {
-    setLine(m_sourceNode->pos().x(), m_sourceNode->pos().y(), m_targetNode->pos().x(), m_targetNode->pos().y());
+    const auto nearestPoints = Node::getNearestEdgePoints(*m_sourceNode, *m_targetNode);
+    setLine(nearestPoints.first.x(), nearestPoints.first.y(), nearestPoints.second.x(), nearestPoints.second.y());
 }

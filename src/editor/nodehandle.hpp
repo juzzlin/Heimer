@@ -25,6 +25,7 @@ class NodeHandle : public QObject, public QGraphicsItem
 {
     Q_OBJECT
     Q_PROPERTY(QSize size READ size WRITE setSize)
+    Q_INTERFACES(QGraphicsItem)
 
 public:
 

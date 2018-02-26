@@ -56,6 +56,20 @@ void EditorView::createNodeContextMenuActions()
     m_targetNodeContextMenu.addAction(setSize);
 }
 
+void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
+{
+    if (!m_mediator.hasNodes())
+    {
+        return;
+    }
+
+    if (event.button() == Qt::LeftButton)
+    {
+        m_mediator.dadStore().setSourceNode(nullptr, DragAndDropStore::Action::Scroll);
+        setDragMode(ScrollHandDrag);
+    }
+}
+
 void EditorView::handleMousePressEventOnNode(QMouseEvent & event, Node & node)
 {
     if (event.button() == Qt::RightButton)
@@ -66,8 +80,6 @@ void EditorView::handleMousePressEventOnNode(QMouseEvent & event, Node & node)
     {
         handleLeftButtonClickOnNode(node);
     }
-
-    QWidget::mousePressEvent(&event);
 }
 
 void EditorView::handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHandle & nodeHandle)
@@ -76,8 +88,6 @@ void EditorView::handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHand
     {
         handleLeftButtonClickOnNodeHandle(nodeHandle);
     }
-
-    QWidget::mousePressEvent(&event);
 }
 
 void EditorView::handleLeftButtonClickOnNode(Node & node)
@@ -146,6 +156,8 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
         m_dummyDragNode->setPos(m_mappedPos - m_mediator.dadStore().sourcePos());
         m_dummyDragEdge->updateLine();
         break;
+    case DragAndDropStore::Action::Scroll:
+        break;
     default:
         break;
     }
@@ -174,6 +186,12 @@ void EditorView::mousePressEvent(QMouseEvent * event)
             handleMousePressEventOnNodeHandle(*event, *node);
         }
     }
+    else
+    {
+        handleMousePressEventOnBackground(*event);
+    }
+
+    QGraphicsView::mousePressEvent(event);
 }
 
 void EditorView::mouseReleaseEvent(QMouseEvent * event)
@@ -199,6 +217,9 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
 
             m_mediator.dadStore().clear();
         }
+        break;
+    case DragAndDropStore::Action::Scroll:
+        setDragMode(NoDrag);
         break;
     default:
         break;
@@ -254,19 +275,10 @@ void EditorView::showHelloText(bool show)
         m_helloText = new QGraphicsSimpleTextItem(tr("Choose File->New or File->Open to begin"));
         m_helloText->setGraphicsEffect(GraphicsFactory::createDropShadowEffect());
         scene()->addItem(m_helloText);
+        m_helloText->setPos(QPointF(-m_helloText->boundingRect().width() / 2, 0));
     }
 
     m_helloText->setVisible(show);
-}
-
-void EditorView::updateSceneRect()
-{
-    const QRectF newSceneRect(-1000, -1000, 2000, 2000);
-
-    setSceneRect(newSceneRect);
-
-    assert(scene());
-    scene()->setSceneRect(newSceneRect);
 }
 
 void EditorView::updateScale(int value)
@@ -280,24 +292,17 @@ void EditorView::updateScale(int value)
 
 void EditorView::wheelEvent(QWheelEvent * event)
 {
-    if (event->modifiers() & Qt::ControlModifier)
+    const int sensitivity = 10;
+    if (event->delta() > 0)
     {
-        const int sensitivity = 10;
-        if (event->delta() > 0)
-        {
-            m_scaleValue += sensitivity;
-        }
-        else if (m_scaleValue > sensitivity)
-        {
-            m_scaleValue -= sensitivity;
-        }
+        m_scaleValue += sensitivity;
+    }
+    else if (m_scaleValue > sensitivity)
+    {
+        m_scaleValue -= sensitivity;
+    }
 
-        updateScale(m_scaleValue);
-    }
-    else
-    {
-        QGraphicsView::wheelEvent(event);
-    }
+    updateScale(m_scaleValue);
 }
 
 EditorView::~EditorView()

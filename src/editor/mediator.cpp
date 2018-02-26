@@ -17,6 +17,7 @@
 
 #include "draganddropstore.hpp"
 #include "editordata.hpp"
+#include "editorscene.hpp"
 #include "editorview.hpp"
 #include "mainwindow.hpp"
 
@@ -30,7 +31,7 @@
 
 Mediator::Mediator(MainWindow & mainWindow)
     : m_editorData(new EditorData(*this))
-    , m_editorScene(new QGraphicsScene)
+    , m_editorScene(new EditorScene)
     , m_editorView(new EditorView(*this))
     , m_mainWindow(mainWindow)
 {
@@ -40,6 +41,11 @@ Mediator::Mediator(MainWindow & mainWindow)
 void Mediator::addItem(QGraphicsItem & item)
 {
     m_editorScene->addItem(&item);
+}
+
+void Mediator::center()
+{
+    m_editorView->centerOn(m_editorView->sceneRect().center());
 }
 
 NodeBasePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
@@ -72,15 +78,14 @@ void Mediator::enableUndo(bool enable)
     m_mainWindow.enableUndo(enable);
 }
 
-int Mediator::fitScale()
-{
-    m_editorView->centerOn(m_editorView->sceneRect().center());
-    return m_editorView->viewport()->height() * 100 / m_editorView->sceneRect().height();
-}
-
 NodeBasePtr Mediator::getNodeByIndex(int index)
 {
     return m_editorData->getNodeByIndex(index);
+}
+
+bool Mediator::hasNodes() const
+{
+    return m_editorData->mindMapData() && m_editorData->mindMapData()->graph().numNodes();
 }
 
 void Mediator::initializeNewMindMap()
@@ -90,15 +95,14 @@ void Mediator::initializeNewMindMap()
     m_editorData->setMindMapData(MindMapDataPtr(new MindMapData));
 
     delete m_editorScene;
-    m_editorScene = new QGraphicsScene;
+    m_editorScene = new EditorScene;
 
     m_editorView->setScene(m_editorScene);
-    m_editorView->updateSceneRect();
 
     m_editorData->createAndAddNodeToGraph(QPointF(0, 0));
     m_editorData->addExistingGraphToScene();
 
-    fitScale();
+    center();
 }
 
 void Mediator::initScene()
@@ -112,6 +116,8 @@ void Mediator::initScene()
 
     m_mainWindow.setCentralWidget(m_editorView);
     m_mainWindow.setContentsMargins(0, 0, 0, 0);
+
+    center();
 }
 
 bool Mediator::isRedoable() const
@@ -131,14 +137,13 @@ bool Mediator::openMindMap(QString fileName)
     if (m_editorData->loadMindMapData(fileName))
     {
         delete m_editorScene;
-        m_editorScene = new QGraphicsScene;
+        m_editorScene = new EditorScene;
 
         m_editorView->setScene(m_editorScene);
-        m_editorView->updateSceneRect();
 
         m_editorData->addExistingGraphToScene();
 
-        fitScale();
+        center();
 
         return true;
     }
@@ -169,10 +174,9 @@ void Mediator::setSelectedNode(Node * node)
 void Mediator::setupMindMapAfterUndoOrRedo()
 {
     delete m_editorScene;
-    m_editorScene = new QGraphicsScene;
+    m_editorScene = new EditorScene;
 
     m_editorView->setScene(m_editorScene);
-    m_editorView->updateSceneRect();
 
     m_editorData->addExistingGraphToScene();
 }

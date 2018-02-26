@@ -26,6 +26,7 @@ HEADERS +=  \
     graphicsfactory.hpp \
     edge.hpp \
     editordata.hpp \
+    editorscene.hpp \
     editorview.hpp \
     mainwindow.hpp \
     mediator.hpp \
@@ -46,6 +47,7 @@ SOURCES += \
     graphicsfactory.cpp \
     edge.cpp \
     editordata.cpp \
+    editorscene.cpp \
     editorview.cpp \
     main.cpp \
     mainwindow.cpp \

@@ -23,10 +23,10 @@
 
 class DragAndDropStore;
 class EditorData;
+class EditorScene;
 class EditorView;
 class MainWindow;
 class QGraphicsItem;
-class QGraphicsScene;
 
 /*! Acts as a communication channel between MainWindow and editor components:
  *
@@ -43,15 +43,17 @@ public:
 
     void addItem(QGraphicsItem & item);
 
+    void center();
+
     NodeBasePtr createAndAddNode(int sourceNodeIndex, QPointF pos);
 
     DragAndDropStore & dadStore();
 
     void enableUndo(bool enable);
 
-    int fitScale();
-
     NodeBasePtr getNodeByIndex(int index);
+
+    bool hasNodes() const;
 
     void initializeNewMindMap();
 
@@ -81,7 +83,7 @@ private:
 
     EditorData * m_editorData;
 
-    QGraphicsScene * m_editorScene;
+    EditorScene * m_editorScene;
 
     EditorView * m_editorView;
 

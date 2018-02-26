@@ -42,8 +42,6 @@ public:
 
     ~EditorView();
 
-    void updateSceneRect();
-
     void showHelloText(bool show);
 
 protected:
@@ -61,6 +59,8 @@ protected:
 private:
 
     void createNodeContextMenuActions();
+
+    void handleMousePressEventOnBackground(QMouseEvent & event);
 
     void handleMousePressEventOnNode(QMouseEvent & event, Node & node);
 

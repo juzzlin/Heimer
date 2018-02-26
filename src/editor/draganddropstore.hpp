@@ -28,7 +28,8 @@ public:
     {
         None,
         MoveNode,
-        CreateNode
+        CreateNode,
+        Scroll
     };
 
     DragAndDropStore();

@@ -16,6 +16,7 @@ set(SRC
     graph.cpp
     graphicsfactory.cpp
     editordata.cpp
+    editorscene.cpp
     editorview.cpp
     main.cpp
     mainwindow.cpp

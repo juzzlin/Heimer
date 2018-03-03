@@ -25,6 +25,7 @@
 #include "edge.hpp"
 
 class NodeHandle;
+class QGraphicsTextItem;
 
 //! Freely placeable target node.
 class Node : public QGraphicsItem, public NodeBase
@@ -62,6 +63,8 @@ private:
 
     void createHandles();
 
+    void initTextField();
+
     void setHandlesVisible(bool visible);
 
     std::vector<NodeHandle *> m_handles;
@@ -71,6 +74,8 @@ private:
     std::vector<QPointF> m_edgePoints;
 
     const int m_handleRadius = 32;
+
+    QGraphicsTextItem * m_textItem;
 };
 
 using NodePtr = std::shared_ptr<Node>;

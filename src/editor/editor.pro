@@ -28,6 +28,7 @@ HEADERS +=  \
     editordata.hpp \
     editorscene.hpp \
     editorview.hpp \
+    layers.hpp \
     mainwindow.hpp \
     mediator.hpp \
     mindmapdata.hpp \

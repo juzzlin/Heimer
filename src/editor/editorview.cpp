@@ -126,18 +126,6 @@ void EditorView::handleRightButtonClickOnNode(Node & node)
     openNodeContextMenu();
 }
 
-void EditorView::keyPressEvent(QKeyEvent * event)
-{
-    if (!event->isAutoRepeat())
-    {
-        switch (event->key())
-        {
-        default:
-            break;
-        }
-    }
-}
-
 void EditorView::mouseMoveEvent(QMouseEvent * event)
 {
     m_mappedPos = mapToScene(event->pos());

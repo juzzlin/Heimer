@@ -28,6 +28,7 @@ set(SRC
     nodehandle.cpp
     undostack.cpp
     contrib/mclogger.cc
+    layers.hpp
 )
 
 set(RCS ${CMAKE_SOURCE_DIR}/data/images/images.qrc ${CMAKE_SOURCE_DIR}/data/icons/icons.qrc)

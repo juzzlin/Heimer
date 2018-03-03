@@ -17,9 +17,11 @@
 
 #include "edge.hpp"
 #include "graphicsfactory.hpp"
+#include "layers.hpp"
 #include "nodehandle.hpp"
 
 #include <QGraphicsDropShadowEffect>
+#include <QGraphicsTextItem>
 #include <QPainter>
 #include <QPen>
 #include <QVector2D>
@@ -27,37 +29,31 @@
 #include <cmath>
 
 Node::Node()
+    : m_textItem(new QGraphicsTextItem(this))
 {
     setAcceptHoverEvents(true);
 
     setSize(QSize(200, 150));
 
-    setZValue(10);
+    setZValue(static_cast<int>(Layers::Node));
 
     createEdgePoints();
 
     createHandles();
+
+    initTextField();
 
     setGraphicsEffect(GraphicsFactory::createDropShadowEffect());
 }
 
 Node::Node(const Node & other)
-    : QGraphicsItem()
-    , NodeBase()
+    : Node()
 {
-    setAcceptHoverEvents(true);
-
     setIndex(other.index());
 
     setLocation(other.location());
 
     setSize(other.size());
-
-    setZValue(10);
-
-    createEdgePoints();
-
-    createHandles();
 }
 
 void Node::addEdge(EdgePtr edge)
@@ -149,6 +145,15 @@ void Node::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
     setHandlesVisible(false);
 
     QGraphicsItem::hoverLeaveEvent(event);
+}
+
+void Node::initTextField()
+{
+    const float margin = 10;
+    m_textItem->setTextInteractionFlags(Qt::TextEditorInteraction);
+    m_textItem->setTextWidth(size().width() - margin * 2);
+    m_textItem->setPos(-m_textItem->textWidth() * 0.5f, -size().height() * 0.5f + margin);
+    m_textItem->setPlainText(QObject::tr("ENTER TEXT HERE"));
 }
 
 void Node::paint(QPainter * painter,

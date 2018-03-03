@@ -13,33 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Dementia. If not, see <http://www.gnu.org/licenses/>.
 
-#include "edge.hpp"
+#ifndef LAYERS_HPP
+#define LAYERS_HPP
 
-#include "graphicsfactory.hpp"
-#include "layers.hpp"
-#include "node.hpp"
-
-Edge::Edge(Node & sourceNode, Node & targetNode)
-    : m_sourceNode(&sourceNode)
-    , m_targetNode(&targetNode)
+enum class Layers
 {
-    setGraphicsEffect(GraphicsFactory::createDropShadowEffect());
+    Edge = 1,
+    Node = 10
+};
 
-    setZValue(static_cast<int>(Layers::Edge));
-}
-
-void Edge::setSourceNode(Node & sourceNode)
-{
-    m_sourceNode = &sourceNode;
-}
-
-void Edge::setTargetNode(Node & targetNode)
-{
-    m_targetNode = &targetNode;
-}
-
-void Edge::updateLine()
-{
-    const auto nearestPoints = Node::getNearestEdgePoints(*m_sourceNode, *m_targetNode);
-    setLine(nearestPoints.first.x(), nearestPoints.first.y(), nearestPoints.second.x(), nearestPoints.second.y());
-}
+#endif // LAYERS_HPP

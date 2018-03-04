@@ -30,7 +30,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
      inkscape:cx="91.877846"
-     inkscape:cy="162.54621"
+     inkscape:cy="147.72478"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -57,26 +57,32 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-796.36219)">
-    <circle
-       style="opacity:1;fill:#999999;fill-opacity:1;stroke:#999999;stroke-width:0.30106509;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path4852"
-       cx="128"
-       cy="924.36218"
-       r="119.84946" />
-    <rect
-       style="opacity:1;fill:#e6e6e6;fill-opacity:1;stroke:#e6e6e6;stroke-width:0.31811672;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect4854"
-       width="159.68188"
-       height="39.681885"
-       x="48.159058"
-       y="904.52124" />
-    <rect
-       style="opacity:1;fill:#e6e6e6;fill-opacity:1;stroke:#e6e6e6;stroke-width:0.31811675;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect4854-1"
-       width="159.68188"
-       height="39.681885"
-       x="844.52124"
-       y="-147.84094"
-       transform="matrix(0,1,-1,0,0,0)" />
+    <g
+       id="g4919">
+      <circle
+         r="119.84946"
+         cy="924.36218"
+         cx="128"
+         id="path4852"
+         style="opacity:1;fill:#e6e6e6;fill-opacity:1;stroke:#e6e6e6;stroke-width:0.30106509;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <g
+         id="g4915">
+        <rect
+           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#e6e6e6;stroke-width:0.31811672;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect4854"
+           width="159.68188"
+           height="39.681885"
+           x="48.159058"
+           y="904.52124" />
+        <rect
+           style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.31811675;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect4854-1"
+           width="159.68188"
+           height="39.681885"
+           x="844.52124"
+           y="-147.84094"
+           transform="matrix(0,1,-1,0,0,0)" />
+      </g>
+    </g>
   </g>
 </svg>

@@ -36,6 +36,7 @@ HEADERS +=  \
     node.hpp \
     nodebase.hpp \
     nodehandle.hpp \
+    nodetextedit.hpp \
     undostack.hpp \
     contrib/mclogger.hh \
 
@@ -58,6 +59,7 @@ SOURCES += \
     node.cpp \
     nodebase.cpp \
     nodehandle.cpp \
+    nodetextedit.cpp \
     undostack.cpp \
     contrib/mclogger.cc \
 

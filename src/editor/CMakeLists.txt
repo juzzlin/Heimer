@@ -26,6 +26,7 @@ set(SRC
     node.cpp
     nodebase.cpp
     nodehandle.cpp
+    nodetextedit.cpp
     undostack.cpp
     contrib/mclogger.cc
     layers.hpp

@@ -19,21 +19,22 @@
 #include "graphicsfactory.hpp"
 #include "layers.hpp"
 #include "nodehandle.hpp"
+#include "nodetextedit.hpp"
 
 #include <QGraphicsDropShadowEffect>
-#include <QGraphicsTextItem>
 #include <QPainter>
 #include <QPen>
 #include <QVector2D>
 
+#include <algorithm>
 #include <cmath>
 
 Node::Node()
-    : m_textItem(new QGraphicsTextItem(this))
+    : m_textEdit(new NodeTextEdit(this))
 {
     setAcceptHoverEvents(true);
 
-    setSize(QSize(200, 150));
+    setSize(QSize(m_minWidth, m_minHeight));
 
     setZValue(static_cast<int>(Layers::Node));
 
@@ -59,6 +60,25 @@ Node::Node(const Node & other)
 void Node::addEdge(EdgePtr edge)
 {
     m_edges.push_back(edge);
+}
+
+void Node::adjustSize()
+{
+    prepareGeometryChange();
+
+    setSize(QSize(
+        std::max(m_minWidth, static_cast<float>(m_textEdit->boundingRect().width() + m_margin * 2)),
+        std::max(m_minHeight, static_cast<float>(m_textEdit->boundingRect().height() + m_margin * 2))));
+
+    initTextField();
+
+    createHandles();
+
+    createEdgePoints();
+
+    updateEdgeLines();
+
+    update();
 }
 
 QRectF Node::boundingRect() const
@@ -96,6 +116,14 @@ void Node::createEdgePoints()
 
 void Node::createHandles()
 {
+    // Delete old handles
+    for (auto handle : m_handles)
+    {
+        handle->setParentItem(nullptr);
+        delete handle;
+    }
+    m_handles.clear();
+
     const std::vector<QPointF> positions = {
         {0, size().height() * 0.5f}
     };
@@ -149,11 +177,10 @@ void Node::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
 
 void Node::initTextField()
 {
-    const float margin = 10;
-    m_textItem->setTextInteractionFlags(Qt::TextEditorInteraction);
-    m_textItem->setTextWidth(size().width() - margin * 2);
-    m_textItem->setPos(-m_textItem->textWidth() * 0.5f, -size().height() * 0.5f + margin);
-    m_textItem->setPlainText(QObject::tr("ENTER TEXT HERE"));
+    m_textEdit->setTextWidth(size().width() - m_margin * 2);
+    m_textEdit->setPos(-m_textEdit->textWidth() * 0.5f, -size().height() * 0.5f + m_margin);
+    m_textEdit->setMaxHeight(size().height() - m_margin * 4);
+    m_textEdit->setMaxWidth(size().width() - m_margin * 2);
 }
 
 void Node::paint(QPainter * painter,
@@ -186,6 +213,11 @@ void Node::setLocation(QPointF newLocation)
     NodeBase::setLocation(newLocation);
     setPos(newLocation);
 
+    updateEdgeLines();
+}
+
+void Node::updateEdgeLines()
+{
     for (auto edge : m_edges)
     {
         edge->updateLine();

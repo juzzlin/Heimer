@@ -25,6 +25,7 @@
 #include "edge.hpp"
 
 class NodeHandle;
+class NodeTextEdit;
 class QGraphicsTextItem;
 
 //! Freely placeable target node.
@@ -39,6 +40,8 @@ public:
     Node(const Node & other);
 
     virtual void addEdge(EdgePtr edge);
+
+    void adjustSize();
 
     virtual QRectF boundingRect () const override;
 
@@ -67,6 +70,8 @@ private:
 
     void setHandlesVisible(bool visible);
 
+    void updateEdgeLines();
+
     std::vector<NodeHandle *> m_handles;
 
     std::vector<EdgePtr> m_edges;
@@ -75,7 +80,13 @@ private:
 
     const int m_handleRadius = 32;
 
-    QGraphicsTextItem * m_textItem;
+    const int m_margin = 10;
+
+    const float m_minHeight = 150;
+
+    const float m_minWidth = 200;
+
+    NodeTextEdit * m_textEdit;
 };
 
 using NodePtr = std::shared_ptr<Node>;

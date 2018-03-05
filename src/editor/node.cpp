@@ -137,7 +137,7 @@ void Node::createHandles()
     }
 }
 
-std::pair<QPointF, QPointF> Node::getNearestEdgePoints(Node & node1, Node & node2)
+std::pair<QPointF, QPointF> Node::getNearestEdgePoints(const Node & node1, const Node & node2)
 {
     float bestDistance = std::numeric_limits<float>::max();
     std::pair<QPointF, QPointF> bestPair = {QPointF(), QPointF()};

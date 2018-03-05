@@ -58,7 +58,7 @@ public:
 
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
 
-    static std::pair<QPointF, QPointF> getNearestEdgePoints(Node & node1, Node & node2);
+    static std::pair<QPointF, QPointF> getNearestEdgePoints(const Node & node1, const Node & node2);
 
 private:
 

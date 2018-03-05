@@ -26,7 +26,6 @@ NodeTextEdit::NodeTextEdit(Node * parentItem)
     : QGraphicsTextItem(parentItem)
 {
     setTextInteractionFlags(Qt::TextEditorInteraction);
-    setPlainText(QObject::tr("ENTER TEXT HERE"));
 }
 
 void NodeTextEdit::keyPressEvent(QKeyEvent * event)

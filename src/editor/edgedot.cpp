@@ -13,15 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Dementia. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LAYERS_HPP
-#define LAYERS_HPP
+#include "edgedot.hpp"
 
-enum class Layers
+EdgeDot::EdgeDot(QGraphicsItem * parentItem)
+    : QGraphicsEllipseItem(parentItem)
 {
-    Edge = 1,
-    EdgeDot = 20,
-    NodeHandle = 30,
-    Node = 10
-};
-
-#endif // LAYERS_HPP
+}

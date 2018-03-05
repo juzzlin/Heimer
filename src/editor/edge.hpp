@@ -17,9 +17,14 @@
 #define EDGE_HPP
 
 #include <QGraphicsLineItem>
+#include <QPropertyAnimation>
+
+#include <map>
 #include <memory>
 
 class Node;
+class EdgeDot;
+class QGraphicsEllipseItem;
 
 //! A graphic representation of a graph edge between nodes.
 class Edge : public QGraphicsLineItem
@@ -36,9 +41,23 @@ public:
 
 private:
 
+    void initDots();
+
+    void updateDots(const std::pair<QPointF, QPointF> & nearestPoints);
+
     Node * m_sourceNode;
 
     Node * m_targetNode;
+
+    EdgeDot * m_sourceDot;
+
+    EdgeDot * m_targetDot;
+
+    QPropertyAnimation m_sourceDotSizeAnimation;
+
+    QPropertyAnimation m_targetDotSizeAnimation;
+
+    int m_dotRadius = 10;
 };
 
 using EdgePtr = std::shared_ptr<Edge>;

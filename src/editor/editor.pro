@@ -25,6 +25,7 @@ HEADERS +=  \
     graph.hpp \
     graphicsfactory.hpp \
     edge.hpp \
+    edgedot.hpp \
     editordata.hpp \
     editorscene.hpp \
     editorview.hpp \
@@ -48,6 +49,7 @@ SOURCES += \
     graph.cpp \
     graphicsfactory.cpp \
     edge.cpp \
+    edgedot.cpp \
     editordata.cpp \
     editorscene.cpp \
     editorview.cpp \

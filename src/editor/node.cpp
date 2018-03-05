@@ -143,13 +143,13 @@ std::pair<QPointF, QPointF> Node::getNearestEdgePoints(const Node & node1, const
     std::pair<QPointF, QPointF> bestPair = {QPointF(), QPointF()};
 
     // This is O(n^2) but fine as there are not many points
-    for (auto point1 : node1.m_edgePoints)
+    for (const auto & point1 : node1.m_edgePoints)
     {
-        point1 = node1.pos() + point1;
-        for (auto point2 : node2.m_edgePoints)
+        for (const auto & point2 : node2.m_edgePoints)
         {
-            point2 = node2.pos() + point2;
-            const float distance = std::pow(point1.x() - point2.x(), 2) + std::pow(point1.y() - point2.y(), 2);
+            const float distance = std::pow(node1.pos().x() + point1.x() - node2.pos().x() - point2.x(), 2) +
+                std::pow(node1.pos().y() + point1.y() - node2.pos().y() - point2.y(), 2);
+
             if (distance < bestDistance)
             {
                 bestDistance = distance;

@@ -24,7 +24,7 @@ class Node;
 class NodeHandle : public QObject, public QGraphicsItem
 {
     Q_OBJECT
-    Q_PROPERTY(QSize size READ size WRITE setSize)
+    Q_PROPERTY(qreal scale READ scale WRITE setScale)
     Q_INTERFACES(QGraphicsItem)
 
 public:
@@ -37,9 +37,6 @@ public:
 
     virtual void paint(QPainter * painter,
         const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
-
-    QSize size() const;
-    void setSize(const QSize & size);
 
     void setVisible(bool visible);
 

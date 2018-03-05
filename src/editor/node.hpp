@@ -60,6 +60,8 @@ public:
 
     static std::pair<QPointF, QPointF> getNearestEdgePoints(const Node & node1, const Node & node2);
 
+    void setHandlesVisible(bool visible);
+
 private:
 
     void createEdgePoints();
@@ -67,8 +69,6 @@ private:
     void createHandles();
 
     void initTextField();
-
-    void setHandlesVisible(bool visible);
 
     void updateEdgeLines();
 

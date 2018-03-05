@@ -13,15 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Dementia. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LAYERS_HPP
-#define LAYERS_HPP
+#ifndef EDGEDOT_HPP
+#define EDGEDOT_HPP
 
-enum class Layers
+#include <QObject>
+#include <QGraphicsEllipseItem>
+
+class EdgeDot : public QObject, public QGraphicsEllipseItem
 {
-    Edge = 1,
-    EdgeDot = 20,
-    NodeHandle = 30,
-    Node = 10
+    Q_OBJECT
+    Q_PROPERTY(qreal scale READ scale WRITE setScale)
+
+public:
+
+    explicit EdgeDot(QGraphicsItem * parentItem = nullptr);
 };
 
-#endif // LAYERS_HPP
+#endif // EDGEDOT_HPP

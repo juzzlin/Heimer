@@ -13,6 +13,7 @@ set(SRC
     config.cpp
     draganddropstore.cpp
     edge.cpp
+    edgedot.cpp
     graph.cpp
     graphicsfactory.cpp
     editordata.cpp

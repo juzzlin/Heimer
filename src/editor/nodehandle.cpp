@@ -15,22 +15,27 @@
 
 #include "nodehandle.hpp"
 
+#include "layers.hpp"
+
 #include <QPainter>
 #include <QPen>
 
 NodeHandle::NodeHandle(int radius)
     : m_radius(radius)
-    , m_sizeAnimation(this, "size")
+    , m_sizeAnimation(this, "scale")
+    , m_size(QSize(m_radius * 2, m_radius * 2))
 {
     m_sizeAnimation.setDuration(125);
 
     QGraphicsItem::setVisible(false);
+
+    setZValue(static_cast<int>(Layers::NodeHandle));
 }
 
 QRectF NodeHandle::boundingRect() const
 {
     const int margin = 1;
-    return QRectF(-size().width() / 2 - margin, - size().height() / 2 - margin, size().width() + margin * 2, size().height() + margin * 2);
+    return QRectF(-m_size.width() / 2 - margin, - m_size.height() / 2 - margin, m_size.width() + margin * 2, m_size.height() + margin * 2);
 }
 
 void NodeHandle::paint(QPainter * painter,
@@ -40,37 +45,22 @@ void NodeHandle::paint(QPainter * painter,
     Q_UNUSED(option);
 
     painter->save();
-    painter->drawPixmap(-size().width() / 2, -size().height() / 2, QPixmap(":/add.png").scaled(size().width(), size().height()));
+    painter->drawPixmap(-m_size.width() / 2, -m_size.height() / 2, QPixmap(":/add.png").scaled(m_size.width(), m_size.height()));
     painter->restore();
-}
-
-QSize NodeHandle::size() const
-{
-    return m_size;
-}
-
-void NodeHandle::setSize(const QSize & size)
-{
-    prepareGeometryChange();
-
-    m_size = size;
 }
 
 void NodeHandle::setVisible(bool visible)
 {
-    static const QSize away(0, 0);
-    static const QSize full(m_radius * 2, m_radius * 2);
-
     if (visible)
     {
         QGraphicsItem::setVisible(true);
-        m_sizeAnimation.setStartValue(away);
-        m_sizeAnimation.setEndValue(full);
+        m_sizeAnimation.setStartValue(0.0f);
+        m_sizeAnimation.setEndValue(1.0f);
     }
-    else
+    else if (!visible)
     {
-        m_sizeAnimation.setStartValue(full);
-        m_sizeAnimation.setEndValue(away);
+        m_sizeAnimation.setStartValue(scale());
+        m_sizeAnimation.setEndValue(0.0f);
     }
 
     m_sizeAnimation.start();

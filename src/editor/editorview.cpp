@@ -143,6 +143,7 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
         showDummyDragEdge(true);
         m_dummyDragNode->setPos(m_mappedPos - m_mediator.dadStore().sourcePos());
         m_dummyDragEdge->updateLine();
+        m_mediator.dadStore().sourceNode()->setHandlesVisible(false);
         break;
     case DragAndDropStore::Action::Scroll:
         break;

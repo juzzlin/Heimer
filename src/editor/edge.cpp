@@ -77,11 +77,9 @@ void Edge::updateDots(const std::pair<QPointF, QPointF> & nearestPoints)
 
         // Re-parent to source node due to Z-ordering issues
         m_sourceDot->setParentItem(m_sourceNode);
-
         m_sourceDot->setRect(rect);
 
-        m_sourceDotSizeAnimation.setStartValue(1.0f);
-        m_sourceDotSizeAnimation.setEndValue(0.0f);
+        m_sourceDotSizeAnimation.stop();
         m_sourceDotSizeAnimation.start();
     }
 
@@ -91,11 +89,9 @@ void Edge::updateDots(const std::pair<QPointF, QPointF> & nearestPoints)
 
         // Re-parent to target node due to Z-ordering issues
         m_targetDot->setParentItem(m_targetNode);
-
         m_targetDot->setRect(rect);
 
-        m_targetDotSizeAnimation.setStartValue(1.0f);
-        m_targetDotSizeAnimation.setEndValue(0.0f);
+        m_targetDotSizeAnimation.stop();
         m_targetDotSizeAnimation.start();
     }
 }

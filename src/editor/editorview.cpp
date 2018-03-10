@@ -47,7 +47,7 @@ EditorView::EditorView(Mediator & mediator)
 
 void EditorView::createNodeContextMenuActions()
 {
-    const QString dummy1(QString(QWidget::tr("Set size..")));
+    const QString dummy1(QWidget::tr("Set size.."));
     auto setSize = new QAction(dummy1, &m_targetNodeContextMenu);
     QObject::connect(setSize, &QAction::triggered, [this] () {
     });

@@ -52,9 +52,14 @@ void Edge::initDots()
     m_sourceDotSizeAnimation.setStartValue(1.0f);
     m_sourceDotSizeAnimation.setEndValue(0.0f);
 
+    const QRectF rect(-m_dotRadius, -m_dotRadius, m_dotRadius * 2, m_dotRadius * 2);
+    m_sourceDot->setRect(rect);
+
     m_targetDotSizeAnimation.setDuration(duration);
     m_targetDotSizeAnimation.setStartValue(1.0f);
     m_targetDotSizeAnimation.setEndValue(0.0f);
+
+    m_targetDot->setRect(rect);
 }
 
 void Edge::setSourceNode(Node & sourceNode)
@@ -69,15 +74,12 @@ void Edge::setTargetNode(Node & targetNode)
 
 void Edge::updateDots(const std::pair<QPointF, QPointF> & nearestPoints)
 {
-    const QRectF rect(-m_dotRadius, -m_dotRadius, m_dotRadius * 2, m_dotRadius * 2);
-
     if (m_sourceDot->pos() != nearestPoints.first)
     {
         m_sourceDot->setPos(nearestPoints.first);
 
         // Re-parent to source node due to Z-ordering issues
         m_sourceDot->setParentItem(m_sourceNode);
-        m_sourceDot->setRect(rect);
 
         m_sourceDotSizeAnimation.stop();
         m_sourceDotSizeAnimation.start();
@@ -89,7 +91,6 @@ void Edge::updateDots(const std::pair<QPointF, QPointF> & nearestPoints)
 
         // Re-parent to target node due to Z-ordering issues
         m_targetDot->setParentItem(m_targetNode);
-        m_targetDot->setRect(rect);
 
         m_targetDotSizeAnimation.stop();
         m_targetDotSizeAnimation.start();

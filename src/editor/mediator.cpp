@@ -125,6 +125,11 @@ bool Mediator::isRedoable() const
     return m_editorData->isRedoable();
 }
 
+bool Mediator::isSaved() const
+{
+    return m_editorData->isSaved();
+}
+
 bool Mediator::isUndoable() const
 {
     return m_editorData->isUndoable();
@@ -159,6 +164,16 @@ void Mediator::redo()
 void Mediator::removeItem(QGraphicsItem & item)
 {
     m_editorScene->removeItem(&item);
+}
+
+bool Mediator::saveMindMapAs(QString fileName)
+{
+    return m_editorData->saveMindMapAs(fileName);
+}
+
+bool Mediator::saveMindMap()
+{
+    return m_editorData->saveMindMap();
 }
 
 void Mediator::saveUndoPoint()

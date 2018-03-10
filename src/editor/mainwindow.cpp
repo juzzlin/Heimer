@@ -19,6 +19,7 @@
 #include "aboutdlg.hpp"
 #include "mediator.hpp"
 #include "mindmapdata.hpp"
+#include "mclogger.hh"
 
 #include <QAction>
 #include <QApplication>
@@ -93,7 +94,7 @@ void MainWindow::init()
 void MainWindow::setTitle(QString openFileName)
 {
     setWindowTitle(
-        QString(Config::Editor::EDITOR_NAME) + " " + Config::Editor::EDITOR_VERSION + " - " +
+        QString(Config::APPLICATION_NAME) + " " + Config::APPLICATION_VERSION + " - " +
         openFileName);
 }
 
@@ -143,7 +144,7 @@ void MainWindow::populateMenuBar()
     m_saveAsAction = new QAction(tr("&Save as..."), this);
     m_saveAsAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
     fileMenu->addAction(m_saveAsAction);
-    connect(m_saveAsAction, SIGNAL(triggered()), this, SLOT(saveAsMindMap()));
+    connect(m_saveAsAction, SIGNAL(triggered()), this, SLOT(saveMindMapAs()));
     m_saveAsAction->setEnabled(false);
 
     // Add "quit"-action
@@ -261,8 +262,6 @@ bool MainWindow::doOpenMindMap(QString fileName)
 
         setActionStatesOnNewMindMap();
 
-        m_saved = true;
-
         return true;
     }
 
@@ -280,12 +279,58 @@ void MainWindow::setupMindMapAfterUndoOrRedo()
 
 void MainWindow::saveMindMap()
 {
-    // TODO
+    if (m_mediator->isSaved())
+    {
+        if (!m_mediator->saveMindMap())
+        {
+            const auto msg = QString(tr("Failed to save file."));
+            MCLogger().error() << msg.toStdString();
+            showMessageBox(msg);
+        }
+    }
+    else
+    {
+        saveMindMapAs();
+    }
 }
 
-void MainWindow::saveAsMindMap()
+void MainWindow::saveMindMapAs()
 {
-    // TODO
+    const QString fileExtension(".dem");
+    QString fileName = QFileDialog::getSaveFileName(this,
+        tr("Save File As"),
+        QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
+        tr("Dementia Files") + "(*" + fileExtension + ")");
+
+    if (fileName.isEmpty())
+    {
+        return;
+    }
+
+    if (!fileName.endsWith(fileExtension))
+    {
+        fileName += fileExtension;
+    }
+
+    if (m_mediator->saveMindMapAs(fileName))
+    {
+        const auto msg = QString(tr("File '")) + fileName + tr("' saved.");
+        MCLogger().info() << msg.toStdString();
+        setTitle(fileName);
+    }
+    else
+    {
+        const auto msg = QString(tr("Failed to save file as '") + fileName + "'.");
+        MCLogger().error() << msg.toStdString();
+        showMessageBox(msg);
+    }
+}
+
+void MainWindow::showMessageBox(QString message)
+{
+    QMessageBox msgBox;
+    msgBox.setText(message);
+    msgBox.exec();
 }
 
 void MainWindow::initializeNewMindMap()
@@ -299,8 +344,6 @@ void MainWindow::initializeNewMindMap()
     setActionStatesOnNewMindMap();
 
     setTitle(tr("New file"));
-
-    m_saved = false;
 }
 
 void MainWindow::setActionStatesOnNewMindMap()

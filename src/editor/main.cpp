@@ -18,6 +18,7 @@
 
 #include "application.hpp"
 #include "config.hpp"
+#include "hashseed.hpp"
 #include "userexception.hpp"
 #include "mclogger.hh"
 
@@ -27,30 +28,22 @@
 
 #include <QDir>
 
-#if QT_VERSION < 0x50600
-extern Q_CORE_EXPORT QBasicAtomicInt qt_qhash_seed;
-#endif
-
 static void initLogger()
 {
     QString logPath = QDir::tempPath() + QDir::separator() + "dementia.log";
     MCLogger::init(logPath.toStdString().c_str());
     MCLogger::enableEchoMode(true);
     MCLogger::enableDateTimePrefix(true);
-    MCLogger().info() << Config::Editor::QSETTINGS_SOFTWARE_NAME.toStdString() << " version " << VERSION;
+    MCLogger().info() << Config::QSETTINGS_SOFTWARE_NAME << " version " << VERSION;
     MCLogger().info() << "Compiled against Qt version " << QT_VERSION_STR;
 }
 
 int main(int argc, char ** argv)
 {
-#if QT_VERSION >= 0x50600
-    qSetGlobalQHashSeed(0);
-#else
-    qt_qhash_seed.store(0);
-#endif
+    HashSeed::init();
 
-    QApplication::setOrganizationName(Config::Common::QSETTINGS_COMPANY_NAME);
-    QApplication::setApplicationName(Config::Editor::QSETTINGS_SOFTWARE_NAME);
+    QApplication::setOrganizationName(Config::QSETTINGS_COMPANY_NAME);
+    QApplication::setApplicationName(Config::QSETTINGS_SOFTWARE_NAME);
 #ifdef Q_OS_WIN32
     QSettings::setDefaultFormat(QSettings::IniFormat);
 #endif

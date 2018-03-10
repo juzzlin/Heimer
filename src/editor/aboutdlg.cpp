@@ -25,7 +25,7 @@
 AboutDlg::AboutDlg(QWidget * parent)
 : QDialog(parent)
 {
-    setWindowTitle(tr("About ") + Config::Editor::EDITOR_NAME);
+    setWindowTitle(tr("About ") + Config::APPLICATION_NAME);
     initWidgets();
 }
 
@@ -39,11 +39,11 @@ void AboutDlg::initWidgets()
 
     QLabel * infoLabel = new QLabel(this);
     infoLabel->setText(
-        QString("<h2>") + Config::Editor::EDITOR_NAME + " v" + Config::Editor::EDITOR_VERSION + "</h2>"
-        + "<p>" + Config::Editor::EDITOR_NAME + " is licenced under GNU GPLv3.</p>"
-        + "<p>" + Config::Common::COPYRIGHT + "</p>"
-        + "<a href='" + Config::Common::WEB_SITE_URL + "'>"
-        + Config::Common::WEB_SITE_URL + "</a>");
+        QString("<h2>") + Config::APPLICATION_NAME + " v" + Config::APPLICATION_VERSION + "</h2>"
+        + "<p>" + Config::APPLICATION_NAME + " is licenced under GNU GPLv3.</p>"
+        + "<p>" + Config::COPYRIGHT + "</p>"
+        + "<a href='" + Config::WEB_SITE_URL + "'>"
+        + Config::WEB_SITE_URL + "</a>");
 
     vLayout->addWidget(infoLabel);
 

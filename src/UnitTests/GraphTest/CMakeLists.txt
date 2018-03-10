@@ -1,5 +1,6 @@
 set(EDITOR_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../editor)
 include_directories(${EDITOR_DIR})
+add_definitions(-DDEMENTIA_UNIT_TEST)
 
 set(NAME GraphTest)
 set(SRC ${NAME}.cpp ${EDITOR_DIR}/graph.cpp ${EDITOR_DIR}/nodebase.cpp)

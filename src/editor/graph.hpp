@@ -49,7 +49,7 @@ public:
 
     NodeBasePtr get(int id);
 
-    void getAll(NodeVector & nodeVector) const;
+    NodeVector getAll() const;
 
     NodeMap::iterator begin();
 

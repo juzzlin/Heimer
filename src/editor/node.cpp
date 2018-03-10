@@ -216,6 +216,16 @@ void Node::setLocation(QPointF newLocation)
     updateEdgeLines();
 }
 
+void Node::setText(const QString & text)
+{
+    m_textEdit->setPlainText(text);
+}
+
+QString Node::text() const
+{
+    return m_textEdit->toPlainText();
+}
+
 void Node::updateEdgeLines()
 {
     for (auto edge : m_edges)

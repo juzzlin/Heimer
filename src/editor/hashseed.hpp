@@ -13,21 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Dementia. If not, see <http://www.gnu.org/licenses/>.
 
-#include "config.hpp"
+#ifndef HASHSEED_HPP
+#define HASHSEED_HPP
 
-namespace Config {
+#include <QtCore>
 
-const QString Common::dataPath                = DATA_PATH;
+#if QT_VERSION < 0x50600
+extern Q_CORE_EXPORT QBasicAtomicInt qt_qhash_seed;
+#endif
 
-const QString Common::COPYRIGHT               = "Copyright (c) 2018 Jussi Lind";
-const QString Common::QSETTINGS_COMPANY_NAME  = "dementia";
-const QString Common::WEB_SITE_URL            = "http://juzzlin.github.io/Dementia";
+namespace HashSeed {
 
-const QString Editor::SELECT_ICON_PATH        = ":/cursor.png";
-const QString Editor::ERASE_ICON_PATH         = ":/cross.png";
-const QString Editor::CLEAR_ICON_PATH         = ":/clear.png";
-const QString Editor::EDITOR_NAME             = "Dementia";
-const QString Editor::EDITOR_VERSION          = VERSION;
-const QString Editor::QSETTINGS_SOFTWARE_NAME = "Dementia";
+void init();
 
-} // Config
+}
+
+#endif // HASHSEED_HPP

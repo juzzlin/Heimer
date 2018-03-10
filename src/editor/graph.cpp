@@ -59,13 +59,15 @@ NodeBasePtr Graph::get(int id)
     return NodeBasePtr();
 }
 
-void Graph::getAll(NodeVector & nodeVector) const
+Graph::NodeVector Graph::getAll() const
 {
-    nodeVector.clear();
+    NodeVector nodes;
     for (auto const & iter : m_nodes)
     {
-        nodeVector.push_back(iter.second);
+        nodes.push_back(iter.second);
     }
+
+    return nodes;
 }
 
 Graph::NodeMap::iterator Graph::begin()

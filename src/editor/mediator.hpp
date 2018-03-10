@@ -63,11 +63,17 @@ public:
 
     bool isRedoable() const;
 
+    bool isSaved() const;
+
     bool openMindMap(QString fileName);
 
     void redo();
 
     void removeItem(QGraphicsItem & item);
+
+    bool saveMindMapAs(QString fileName);
+
+    bool saveMindMap();
 
     void saveUndoPoint();
 

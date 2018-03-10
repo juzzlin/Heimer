@@ -27,7 +27,7 @@
 static void printHelp()
 {
     std::cout << std::endl << "Dementia version " << VERSION << std::endl;
-    std::cout << Config::Common::COPYRIGHT.toStdString() << std::endl << std::endl;
+    std::cout << Config::COPYRIGHT << std::endl << std::endl;
     std::cout << "Usage: dementia [options] [mindMapFile]" << std::endl << std::endl;
     std::cout << "Options:" << std::endl;
     std::cout << "--help        Show this help." << std::endl;

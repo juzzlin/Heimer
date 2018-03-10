@@ -10,12 +10,13 @@ endforeach()
 set(SRC
     aboutdlg.cpp
     application.cpp
-    config.cpp
+    config.hpp
     draganddropstore.cpp
     edge.cpp
     edgedot.cpp
     graph.cpp
     graphicsfactory.cpp
+    hashseed.cpp
     editordata.cpp
     editorscene.cpp
     editorview.cpp
@@ -28,9 +29,12 @@ set(SRC
     nodebase.cpp
     nodehandle.cpp
     nodetextedit.cpp
+    serializer.cpp
     undostack.cpp
+    userexception.hpp
     contrib/mclogger.cc
     layers.hpp
+    writer.cpp
 )
 
 set(RCS ${CMAKE_SOURCE_DIR}/data/images/images.qrc ${CMAKE_SOURCE_DIR}/data/icons/icons.qrc)

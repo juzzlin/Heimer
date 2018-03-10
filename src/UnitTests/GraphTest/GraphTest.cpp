@@ -38,19 +38,45 @@ void GraphTest::testAddNode()
 void GraphTest::testAddTwoNodes()
 {
     Graph dut;
-    NodeBasePtr node0(new NodeBase);
-    NodeBasePtr node1(new NodeBase);
 
+    NodeBasePtr node0(new NodeBase);
     dut.addNode(node0);
 
     QVERIFY(dut.numNodes() == 1);
 
+    NodeBasePtr node1(new NodeBase);
     dut.addNode(node1);
 
     QVERIFY(dut.numNodes() == 2);
 
     QVERIFY(node0->index() == 0);
     QVERIFY(node1->index() == 1);
+}
+
+void GraphTest::testGetAll()
+{
+    Graph dut;
+
+    NodeBasePtr node0(new NodeBase);
+    dut.addNode(node0);
+
+    NodeBasePtr node1(new NodeBase);
+    dut.addNode(node1);
+
+    auto && nodes = dut.getAll();
+    QVERIFY(nodes.size() == 2);
+
+    auto iter = std::find_if(nodes.begin(), nodes.end(), [](NodeBasePtr node){
+        return node->index() == 0;
+    });
+
+    QVERIFY(iter != nodes.end());
+
+    iter = std::find_if(nodes.begin(), nodes.end(), [](NodeBasePtr node){
+        return node->index() == 1;
+    });
+
+    QVERIFY(iter != nodes.end());
 }
 
 void GraphTest::testGetNodeByIndex()

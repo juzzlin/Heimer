@@ -13,25 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Dementia. If not, see <http://www.gnu.org/licenses/>.
 
-//! Config variables for editor and for the game.
-namespace Config {
+#include "hashseed.hpp"
 
-static constexpr auto APPLICATION_NAME = "Dementia";
-
-static constexpr auto APPLICATION_VERSION = VERSION;
-
-//! The base data path given by -DDATA_PATH.
-static constexpr auto dataPath = DATA_PATH;
-
-static constexpr auto COPYRIGHT = "Copyright (c) 2018 Jussi Lind";
-
-//! "Company" name used in QSettings.
-static constexpr auto QSETTINGS_COMPANY_NAME = "Dementia";
-
-static constexpr auto WEB_SITE_URL = "http://juzzlin.github.io/Dementia";
-
-static constexpr auto QSETTINGS_SOFTWARE_NAME = APPLICATION_NAME;
-
-} // Config
-
-
+void HashSeed::init()
+{
+#if QT_VERSION >= 0x50600
+    qSetGlobalQHashSeed(0);
+#else
+    qt_qhash_seed.store(0);
+#endif
+}

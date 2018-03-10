@@ -16,6 +16,8 @@
 #include "editordata.hpp"
 #include "mediator.hpp"
 #include "node.hpp"
+#include "serializer.hpp"
+#include "writer.hpp"
 
 #include <cassert>
 #include <memory>
@@ -45,6 +47,11 @@ bool EditorData::loadMindMapData(QString fileName)
     //m_mindMapData = m_mindMapIO.open(fileName);
     //return static_cast<bool>(m_mindMapData);
     return false;
+}
+
+bool EditorData::isSaved() const
+{
+    return m_isSaved;
 }
 
 bool EditorData::isUndoable() const
@@ -89,17 +96,17 @@ void EditorData::redo()
     }
 }
 
-bool EditorData::saveMindMapData()
+bool EditorData::saveMindMap()
 {
     assert(m_mindMapData);
-    return false;
+
+    return saveMindMapAs(m_fileName);
 }
 
 void EditorData::saveUndoPoint()
 {
     assert(m_mindMapData);
     m_undoStack.pushUndoPoint(m_mindMapData);
-
     m_mediator.enableUndo(m_undoStack.isUndoable());
 }
 
@@ -109,9 +116,18 @@ void EditorData::saveRedoPoint()
     m_undoStack.pushRedoPoint(m_mindMapData);
 }
 
-bool EditorData::saveMindMapDataAs(QString fileName)
+bool EditorData::saveMindMapAs(QString fileName)
 {
-    // TODO
+    assert(m_mindMapData);
+
+    Serializer serializer(*m_mindMapData);
+
+    if (Writer::writeToFile(serializer.toXml(), fileName))
+    {
+        m_fileName = fileName;
+        m_isSaved = true;
+        return true;
+    }
 
     return false;
 }
@@ -125,9 +141,7 @@ void EditorData::setMindMapData(MindMapDataPtr mindMapData)
 
 void EditorData::addExistingGraphToScene()
 {
-    std::vector<NodeBasePtr> temp;
-    m_mindMapData->graph().getAll(temp);
-    for (auto node : temp)
+    for (auto && node : m_mindMapData->graph().getAll())
     {
         addNodeToScene(node);
     }

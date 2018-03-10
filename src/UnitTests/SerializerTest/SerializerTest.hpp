@@ -13,25 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Dementia. If not, see <http://www.gnu.org/licenses/>.
 
-//! Config variables for editor and for the game.
-namespace Config {
+#include <QTest>
 
-static constexpr auto APPLICATION_NAME = "Dementia";
+class SerializerTest : public QObject
+{
+    Q_OBJECT
 
-static constexpr auto APPLICATION_VERSION = VERSION;
+public:
 
-//! The base data path given by -DDATA_PATH.
-static constexpr auto dataPath = DATA_PATH;
+    SerializerTest();
 
-static constexpr auto COPYRIGHT = "Copyright (c) 2018 Jussi Lind";
+private slots:
 
-//! "Company" name used in QSettings.
-static constexpr auto QSETTINGS_COMPANY_NAME = "Dementia";
+    void testEmptyDesign();
 
-static constexpr auto WEB_SITE_URL = "http://juzzlin.github.io/Dementia";
-
-static constexpr auto QSETTINGS_SOFTWARE_NAME = APPLICATION_NAME;
-
-} // Config
-
-
+    void testSingleNode();
+};

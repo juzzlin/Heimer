@@ -26,6 +26,7 @@ MindMapData::MindMapData(QString name)
 MindMapData::MindMapData(const MindMapData & other)
     : MindMapDataBase(other)
     , m_fileName(other.m_fileName)
+    , m_version(other.m_version)
 {
     copyGraph(other);
 }
@@ -62,6 +63,16 @@ Graph & MindMapData::graph()
 const Graph & MindMapData::graph() const
 {
     return m_graph;
+}
+
+QString MindMapData::version() const
+{
+    return m_version;
+}
+
+void MindMapData::setVersion(const QString & version)
+{
+    m_version = version;
 }
 
 MindMapData::~MindMapData()

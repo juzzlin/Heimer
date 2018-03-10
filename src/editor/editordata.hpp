@@ -52,6 +52,8 @@ public:
 
     bool isRedoable() const;
 
+    bool isSaved() const;
+
     bool loadMindMapData(QString fileName);
 
     MindMapDataPtr mindMapData();
@@ -60,9 +62,9 @@ public:
 
     void removeGraphFromScene();
 
-    bool saveMindMapData();
+    bool saveMindMap();
 
-    bool saveMindMapDataAs(QString fileName);
+    bool saveMindMapAs(QString fileName);
 
     void saveUndoPoint();
 
@@ -106,6 +108,10 @@ private:
     unsigned int m_activeColumn = 0;
 
     unsigned int m_activeRow = 0;
+
+    bool m_isSaved = false;
+
+    QString m_fileName;
 };
 
 #endif // EDITORDATA_HPP

@@ -49,6 +49,16 @@ void NodeBase::setIndex(int index)
     m_index = index;
 }
 
+QString NodeBase::text() const
+{
+    return m_text;
+}
+
+void NodeBase::setText(const QString & text)
+{
+    m_text = text;
+}
+
 NodeBase::~NodeBase()
 {
 }

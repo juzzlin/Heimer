@@ -29,6 +29,8 @@ private slots:
 
     void testAddTwoNodes();
 
+    void testGetAll();
+
     void testGetNodeByIndex();
 
     void testGetNodeByIndex_NotFound();

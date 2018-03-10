@@ -62,6 +62,10 @@ public:
 
     void setHandlesVisible(bool visible);
 
+    QString text() const override;
+
+    void setText(const QString & text) override;
+
 private:
 
     void createEdgePoints();

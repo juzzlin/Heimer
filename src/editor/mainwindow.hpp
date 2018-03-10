@@ -64,13 +64,15 @@ private slots:
 
     void saveMindMap();
 
-    void saveAsMindMap();
+    void saveMindMapAs();
 
     void setupMindMapAfterUndoOrRedo();
 
     void showAboutDlg();
 
     void showAboutQtDlg();
+
+    void showMessageBox(QString message);
 
     void openArgMindMap();
 
@@ -95,8 +97,6 @@ private:
     QAction * m_redoAction = nullptr;
 
     QString m_argMindMapFile;
-
-    bool m_saved = false;
 
     const char * m_settingsGroup = "MainWindow";
 

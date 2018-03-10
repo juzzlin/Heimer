@@ -50,11 +50,17 @@ public:
 
     virtual void setIndex(int index);
 
+    virtual QString text() const;
+
+    virtual void setText(const QString & text);
+
 private:
 
     QPointF m_location;
 
     QSize m_size;
+
+    QString m_text;
 
     int m_index = -1;
 };

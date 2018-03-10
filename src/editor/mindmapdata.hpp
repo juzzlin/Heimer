@@ -41,11 +41,17 @@ public:
 
     const Graph & graph() const;
 
+    QString version() const;
+
+    void setVersion(const QString &version);
+
 private:
 
     void copyGraph(const MindMapData & other);
 
     QString m_fileName;
+
+    QString m_version;
 
     Graph m_graph;
 };

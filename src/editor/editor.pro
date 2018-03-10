@@ -29,6 +29,7 @@ HEADERS +=  \
     editordata.hpp \
     editorscene.hpp \
     editorview.hpp \
+    hashseed.hpp \
     layers.hpp \
     mainwindow.hpp \
     mediator.hpp \
@@ -38,13 +39,14 @@ HEADERS +=  \
     nodebase.hpp \
     nodehandle.hpp \
     nodetextedit.hpp \
+    serializer.hpp \
     undostack.hpp \
+    writer.hpp \
     contrib/mclogger.hh \
 
 SOURCES += \
     aboutdlg.cpp \
     application.cpp \
-    config.cpp \
     draganddropstore.cpp \
     graph.cpp \
     graphicsfactory.cpp \
@@ -53,6 +55,7 @@ SOURCES += \
     editordata.cpp \
     editorscene.cpp \
     editorview.cpp \
+    hashseed.cpp \
     main.cpp \
     mainwindow.cpp \
     mediator.cpp \
@@ -62,7 +65,9 @@ SOURCES += \
     nodebase.cpp \
     nodehandle.cpp \
     nodetextedit.cpp \
+    serializer.cpp \
     undostack.cpp \
+    writer.cpp \
     contrib/mclogger.cc \
 
 

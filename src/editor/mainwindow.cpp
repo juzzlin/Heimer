@@ -215,6 +215,16 @@ void MainWindow::openMindMap()
     }
 }
 
+void MainWindow::resizeEvent(QResizeEvent * event)
+{
+    if (!m_mediator->hasNodes())
+    {
+        m_mediator->center();
+    }
+
+    QMainWindow::resizeEvent(event);
+}
+
 void MainWindow::showAboutDlg()
 {
     m_aboutDlg->exec();

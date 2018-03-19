@@ -57,12 +57,14 @@ void NodeHandle::setVisible(bool visible)
         m_sizeAnimation.setStartValue(0.0f);
         m_sizeAnimation.setEndValue(1.0f);
     }
-    else if (!visible)
+    else
     {
         m_sizeAnimation.setStartValue(scale());
         m_sizeAnimation.setEndValue(0.0f);
     }
 
+    // Reset the animation
+    m_sizeAnimation.stop();
     m_sizeAnimation.start();
 }
 

@@ -65,9 +65,98 @@ MainWindow::MainWindow(QString mindMapFile)
     }
 }
 
-void MainWindow::openArgMindMap()
+void MainWindow::addRedoAction(QMenu & menu, std::function<void ()> handler)
 {
-    doOpenMindMap(m_argMindMapFile);
+    m_redoAction = new QAction(tr("Redo"), this);
+    m_redoAction->setShortcut(QKeySequence("Ctrl+Shift+Z"));
+    menu.addAction(m_redoAction);
+    connect(m_redoAction, &QAction::triggered, handler);
+    m_redoAction->setEnabled(false);
+}
+
+void MainWindow::addUndoAction(QMenu & menu, std::function<void ()> handler)
+{
+    m_undoAction = new QAction(tr("Undo"), this);
+    m_undoAction->setShortcut(QKeySequence("Ctrl+Z"));
+    menu.addAction(m_undoAction);
+    connect(m_undoAction, &QAction::triggered, handler);
+    m_undoAction->setEnabled(false);
+}
+
+void MainWindow::createEditMenu()
+{
+    const auto editMenu = menuBar()->addMenu(tr("&Edit"));
+
+    const auto undoHandler = [this] () {
+        m_mediator->undo();
+        setupMindMapAfterUndoOrRedo();
+    };
+
+    addUndoAction(*editMenu, undoHandler);
+
+    const auto redoHandler = [this] () {
+        m_mediator->redo();
+        setupMindMapAfterUndoOrRedo();
+    };
+
+    addRedoAction(*editMenu, redoHandler);
+}
+
+void MainWindow::createFileMenu()
+{
+    const auto fileMenu = menuBar()->addMenu(tr("&File"));
+
+    // Add "new"-action
+    const auto newAct = new QAction(tr("&New..."), this);
+    newAct->setShortcut(QKeySequence("Ctrl+N"));
+    fileMenu->addAction(newAct);
+    connect(newAct, SIGNAL(triggered()), this, SLOT(initializeNewMindMap()));
+
+    // Add "open"-action
+    const auto openAct = new QAction(tr("&Open..."), this);
+    openAct->setShortcut(QKeySequence("Ctrl+O"));
+    fileMenu->addAction(openAct);
+    connect(openAct, SIGNAL(triggered()), this, SLOT(openMindMap()));
+
+    // Add "save"-action
+    m_saveAction = new QAction(tr("&Save"), this);
+    m_saveAction->setShortcut(QKeySequence("Ctrl+S"));
+    fileMenu->addAction(m_saveAction);
+    connect(m_saveAction, SIGNAL(triggered()), this, SLOT(saveMindMap()));
+    m_saveAction->setEnabled(false);
+
+    // Add "save as"-action
+    m_saveAsAction = new QAction(tr("&Save as..."), this);
+    m_saveAsAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
+    fileMenu->addAction(m_saveAsAction);
+    connect(m_saveAsAction, SIGNAL(triggered()), this, SLOT(saveMindMapAs()));
+    m_saveAsAction->setEnabled(false);
+
+    // Add "quit"-action
+    const auto quitAct = new QAction(tr("&Quit"), this);
+    quitAct->setShortcut(QKeySequence("Ctrl+W"));
+    fileMenu->addAction(quitAct);
+    connect(quitAct, SIGNAL(triggered()), this, SLOT(close()));
+}
+
+void MainWindow::createHelpMenu()
+{
+    const auto helpMenu = menuBar()->addMenu(tr("&Help"));
+
+    // Add "about"-action
+    const auto aboutAct = new QAction(tr("&About"), this);
+    helpMenu->addAction(aboutAct);
+    connect(aboutAct, SIGNAL(triggered()), this, SLOT(showAboutDlg()));
+
+    // Add "about Qt"-action
+    const auto aboutQtAct = new QAction(tr("About &Qt"), this);
+    helpMenu->addAction(aboutQtAct);
+    connect(aboutQtAct, SIGNAL(triggered()), this, SLOT(showAboutQtDlg()));
+}
+
+QString MainWindow::getFileDialogFileText() const
+{
+    return tr("Dementia Files") + " (*" + FILE_EXTENSION + ")";
 }
 
 void MainWindow::init()
@@ -118,84 +207,16 @@ void MainWindow::closeEvent(QCloseEvent * event)
 
 void MainWindow::populateMenuBar()
 {
-    // Create "file"-menu
-    QMenu * fileMenu = menuBar()->addMenu(tr("&File"));
+    createFileMenu();
 
-    // Add "new"-action
-    QAction * newAct = new QAction(tr("&New..."), this);
-    newAct->setShortcut(QKeySequence("Ctrl+N"));
-    fileMenu->addAction(newAct);
-    connect(newAct, SIGNAL(triggered()), this, SLOT(initializeNewMindMap()));
+    createEditMenu();
 
-    // Add "open"-action
-    QAction * openAct = new QAction(tr("&Open..."), this);
-    openAct->setShortcut(QKeySequence("Ctrl+O"));
-    fileMenu->addAction(openAct);
-    connect(openAct, SIGNAL(triggered()), this, SLOT(openMindMap()));
+    createHelpMenu();
+}
 
-    // Add "save"-action
-    m_saveAction = new QAction(tr("&Save"), this);
-    m_saveAction->setShortcut(QKeySequence("Ctrl+S"));
-    fileMenu->addAction(m_saveAction);
-    connect(m_saveAction, SIGNAL(triggered()), this, SLOT(saveMindMap()));
-    m_saveAction->setEnabled(false);
-
-    // Add "save as"-action
-    m_saveAsAction = new QAction(tr("&Save as..."), this);
-    m_saveAsAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
-    fileMenu->addAction(m_saveAsAction);
-    connect(m_saveAsAction, SIGNAL(triggered()), this, SLOT(saveMindMapAs()));
-    m_saveAsAction->setEnabled(false);
-
-    // Add "quit"-action
-    QAction * quitAct = new QAction(tr("&Quit"), this);
-    quitAct->setShortcut(QKeySequence("Ctrl+W"));
-    fileMenu->addAction(quitAct);
-    connect(quitAct, SIGNAL(triggered()), this, SLOT(close()));
-
-    // Create "edit"-menu
-    QMenu * editMenu = menuBar()->addMenu(tr("&Edit"));
-
-    // Add "undo"-action
-    m_undoAction = new QAction(tr("Undo"), this);
-    m_undoAction->setShortcut(QKeySequence("Ctrl+Z"));
-    editMenu->addAction(m_undoAction);
-    connect(m_undoAction, &QAction::triggered, [this](){
-        m_mediator->undo();
-
-        setupMindMapAfterUndoOrRedo();
-
-        m_undoAction->setEnabled(m_mediator->isUndoable());
-        m_redoAction->setEnabled(m_mediator->isRedoable());
-    });
-    m_undoAction->setEnabled(false);
-
-    // Add "redo"-action
-    m_redoAction = new QAction(tr("Redo"), this);
-    m_redoAction->setShortcut(QKeySequence("Ctrl+Shift+Z"));
-    editMenu->addAction(m_redoAction);
-    connect(m_redoAction, &QAction::triggered, [this](){
-        m_mediator->redo();
-
-        setupMindMapAfterUndoOrRedo();
-
-        m_undoAction->setEnabled(m_mediator->isUndoable());
-        m_redoAction->setEnabled(m_mediator->isRedoable());
-    });
-    m_redoAction->setEnabled(false);
-
-    // Create "help"-menu
-    QMenu * helpMenu = menuBar()->addMenu(tr("&Help"));
-
-    // Add "about"-action
-    QAction * aboutAct = new QAction(tr("&About"), this);
-    helpMenu->addAction(aboutAct);
-    connect(aboutAct, SIGNAL(triggered()), this, SLOT(showAboutDlg()));
-
-    // Add "about Qt"-action
-    QAction * aboutQtAct = new QAction(tr("About &Qt"), this);
-    helpMenu->addAction(aboutQtAct);
-    connect(aboutQtAct, SIGNAL(triggered()), this, SLOT(showAboutQtDlg()));
+void MainWindow::openArgMindMap()
+{
+    doOpenMindMap(m_argMindMapFile);
 }
 
 void MainWindow::openMindMap()
@@ -271,6 +292,8 @@ bool MainWindow::doOpenMindMap(QString fileName)
 void MainWindow::setupMindMapAfterUndoOrRedo()
 {
     m_saveAction->setEnabled(true);
+    m_undoAction->setEnabled(m_mediator->isUndoable());
+    m_redoAction->setEnabled(m_mediator->isRedoable());
 
     setActionStatesOnNewMindMap();
 

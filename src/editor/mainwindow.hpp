@@ -21,6 +21,8 @@
 #include <QGraphicsScene>
 #include <QString>
 
+#include <functional>
+
 class AboutDlg;
 class EditorData;
 class EditorView;
@@ -79,6 +81,20 @@ private slots:
     void openMindMap();
 
 private:
+
+    void addRedoAction(QMenu & menu, std::function<void ()> handler);
+
+    void addUndoAction(QMenu & menu, std::function<void ()> handler);
+
+    void createEditMenu();
+
+    void createFileMenu();
+
+    void createHelpMenu();
+
+    void disableUndoAndRedo();
+
+    QString getFileDialogFileText() const;
 
     void init();
 

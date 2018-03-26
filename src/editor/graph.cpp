@@ -41,7 +41,12 @@ void Graph::addNode(NodeBasePtr node)
 
 void Graph::addEdge(NodeBasePtr node0, NodeBasePtr node1)
 {
+    addEdge(node0->index(), node1->index());
+}
 
+void Graph::addEdge(int node0, int node1)
+{
+    m_edges[node0].insert(node1);
 }
 
 int Graph::numNodes() const
@@ -49,17 +54,30 @@ int Graph::numNodes() const
     return m_nodes.size();
 }
 
-NodeBasePtr Graph::get(int id)
+Graph::EdgeVector Graph::getEdges() const
 {
-    if (m_nodes.count(id))
+    EdgeVector edges;
+    for (auto && node0 : m_edges)
     {
-        return m_nodes[id];
+        for (auto && node1 : node0.second)
+        {
+            edges.push_back({node0.first, node1});
+        }
     }
-
-    return NodeBasePtr();
+    return edges;
 }
 
-Graph::NodeVector Graph::getAll() const
+Graph::EdgeSet Graph::getEdgesFromNode(NodeBasePtr node)
+{
+    return m_edges[node->index()];
+}
+
+NodeBasePtr Graph::getNode(int index)
+{
+    return m_nodes.count(index) ? m_nodes[index] : NodeBasePtr();
+}
+
+Graph::NodeVector Graph::getNodes() const
 {
     NodeVector nodes;
     for (auto const & iter : m_nodes)
@@ -68,26 +86,6 @@ Graph::NodeVector Graph::getAll() const
     }
 
     return nodes;
-}
-
-Graph::NodeMap::iterator Graph::begin()
-{
-    return m_nodes.begin();
-}
-
-Graph::NodeMap::iterator Graph::end()
-{
-    return m_nodes.end();
-}
-
-Graph::NodeMap::const_iterator Graph::cbegin() const
-{
-    return m_nodes.cbegin();
-}
-
-Graph::NodeMap::const_iterator Graph::cend() const
-{
-    return m_nodes.cend();
 }
 
 Graph::~Graph()

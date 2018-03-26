@@ -41,6 +41,8 @@
 
 MainWindow * MainWindow::m_instance = nullptr;
 
+static const QString FILE_EXTENSION(".dem");
+
 MainWindow::MainWindow(QString mindMapFile)
 : m_aboutDlg(new AboutDlg(this))
 , m_argMindMapFile(mindMapFile)
@@ -175,7 +177,7 @@ void MainWindow::init()
     move(geometry.width() / 2 - width() / 2,
         geometry.height() / 2 - height() / 2);
 
-    m_mediator->initScene();
+    m_mediator->initializeScene(true);
 
     populateMenuBar();
 }
@@ -221,20 +223,34 @@ void MainWindow::openArgMindMap()
 
 void MainWindow::openMindMap()
 {
-    // Load recent path
-    QSettings settings;
+    MCLogger().info() << "Open file..";
 
-    settings.beginGroup(m_settingsGroup);
-    QString path = settings.value("recentPath",
-    QStandardPaths::writableLocation(QStandardPaths::HomeLocation)).toString();
-    settings.endGroup();
-
-    const QString fileName = QFileDialog::getOpenFileName(
-        this, tr("Open a mindMap"), path, tr("MindMap Files (*.dm3)"));
+    const auto path = loadRecentPath();
+    const auto fileName = QFileDialog::getOpenFileName(this, tr("Open File"), path, getFileDialogFileText());
     if (!fileName.isEmpty())
     {
         doOpenMindMap(fileName);
     }
+}
+
+void MainWindow::disableUndoAndRedo()
+{
+    m_undoAction->setEnabled(false);
+    m_redoAction->setEnabled(false);
+}
+
+void MainWindow::enableUndo(bool enable)
+{
+    m_undoAction->setEnabled(enable);
+}
+
+QString MainWindow::loadRecentPath() const
+{
+    QSettings settings;
+    settings.beginGroup(m_settingsGroup);
+    const auto path = settings.value("recentPath", QStandardPaths::writableLocation(QStandardPaths::HomeLocation)).toString();
+    settings.endGroup();
+    return path;
 }
 
 void MainWindow::resizeEvent(QResizeEvent * event)
@@ -257,36 +273,30 @@ void MainWindow::showAboutQtDlg()
     QMessageBox::aboutQt(this, tr("About Qt"));
 }
 
-bool MainWindow::doOpenMindMap(QString fileName)
+void MainWindow::doOpenMindMap(QString fileName)
 {
-    if (!QFile::exists(fileName))
-    {
-        return false;
-    }
-
-    // Undo stack will be cleared.
-    m_undoAction->setEnabled(false);
-    m_redoAction->setEnabled(false);
+    MCLogger().info() << "Opening '" << fileName.toStdString() << "'..";
 
     if (m_mediator->openMindMap(fileName))
     {
+        disableUndoAndRedo();
+
         setTitle(fileName);
 
-        // Save recent path
-        QSettings settings;
+        saveRecentPath(fileName);
 
-        settings.beginGroup(m_settingsGroup);
-        settings.setValue("recentPath", fileName);
-        settings.endGroup();
+        setSaveActionStatesOnNewMindMap();
 
-        m_saveAction->setEnabled(true);
-
-        setActionStatesOnNewMindMap();
-
-        return true;
+        successLog();
     }
+}
 
-    return false;
+void MainWindow::saveRecentPath(QString fileName)
+{
+    QSettings settings;
+    settings.beginGroup(m_settingsGroup);
+    settings.setValue("recentPath", fileName);
+    settings.endGroup();
 }
 
 void MainWindow::setupMindMapAfterUndoOrRedo()
@@ -295,13 +305,15 @@ void MainWindow::setupMindMapAfterUndoOrRedo()
     m_undoAction->setEnabled(m_mediator->isUndoable());
     m_redoAction->setEnabled(m_mediator->isRedoable());
 
-    setActionStatesOnNewMindMap();
+    setSaveActionStatesOnNewMindMap();
 
     m_mediator->setupMindMapAfterUndoOrRedo();
 }
 
 void MainWindow::saveMindMap()
 {
+    MCLogger().info() << "Save..";
+
     if (m_mediator->isSaved())
     {
         if (!m_mediator->saveMindMap())
@@ -309,7 +321,9 @@ void MainWindow::saveMindMap()
             const auto msg = QString(tr("Failed to save file."));
             MCLogger().error() << msg.toStdString();
             showMessageBox(msg);
+            return;
         }
+        successLog();
     }
     else
     {
@@ -319,20 +333,21 @@ void MainWindow::saveMindMap()
 
 void MainWindow::saveMindMapAs()
 {
-    const QString fileExtension(".dem");
+    MCLogger().info() << "Save as..";
+
     QString fileName = QFileDialog::getSaveFileName(this,
         tr("Save File As"),
         QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
-        tr("Dementia Files") + "(*" + fileExtension + ")");
+        getFileDialogFileText());
 
     if (fileName.isEmpty())
     {
         return;
     }
 
-    if (!fileName.endsWith(fileExtension))
+    if (!fileName.endsWith(FILE_EXTENSION))
     {
-        fileName += fileExtension;
+        fileName += FILE_EXTENSION;
     }
 
     if (m_mediator->saveMindMapAs(fileName))
@@ -340,6 +355,7 @@ void MainWindow::saveMindMapAs()
         const auto msg = QString(tr("File '")) + fileName + tr("' saved.");
         MCLogger().info() << msg.toStdString();
         setTitle(fileName);
+        successLog();
     }
     else
     {
@@ -347,6 +363,14 @@ void MainWindow::saveMindMapAs()
         MCLogger().error() << msg.toStdString();
         showMessageBox(msg);
     }
+}
+
+void MainWindow::showErrorDialog(QString message)
+{
+    QMessageBox::critical(this,
+         Config::APPLICATION_NAME,
+         message,
+         "");
 }
 
 void MainWindow::showMessageBox(QString message)
@@ -358,26 +382,26 @@ void MainWindow::showMessageBox(QString message)
 
 void MainWindow::initializeNewMindMap()
 {
+    MCLogger().info() << "New file..";
+
     m_mediator->initializeNewMindMap();
 
-    // Undo stack has been cleared.
-    m_undoAction->setEnabled(false);
-    m_redoAction->setEnabled(false);
+    disableUndoAndRedo();
 
-    setActionStatesOnNewMindMap();
+    setSaveActionStatesOnNewMindMap();
 
     setTitle(tr("New file"));
 }
 
-void MainWindow::setActionStatesOnNewMindMap()
+void MainWindow::setSaveActionStatesOnNewMindMap()
 {
-    m_saveAction->setEnabled(true);
+    m_saveAction->setEnabled(false);
     m_saveAsAction->setEnabled(true);
 }
 
-void MainWindow::enableUndo(bool enable)
+void MainWindow::successLog()
 {
-    m_undoAction->setEnabled(enable);
+    MCLogger().info() << "Huge success!";
 }
 
 MainWindow::~MainWindow()

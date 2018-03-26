@@ -28,34 +28,54 @@ void SerializerTest::testEmptyDesign()
     MindMapData outData;
 
     // Serialize
-    Serializer dut(outData);
-    const auto document = dut.toXml();
+    const auto document = Serializer::toXml(outData);
 
     // Deserialize
-    const auto inData = dut.fromXml(document);
+    const auto inData = Serializer::fromXml(document);
     QCOMPARE(QString(inData->version()), QString(VERSION));
+}
+
+void SerializerTest::testSingleEdge()
+{
+    MindMapData outData;
+
+    auto outNode0 = std::make_shared<NodeBase>();
+    outData.graph().addNode(outNode0);
+
+    auto outNode1 = std::make_shared<NodeBase>();
+    outData.graph().addNode(outNode1);
+
+    outData.graph().addEdge(outNode0, outNode1);
+
+    // Serialize
+    const auto document = Serializer::toXml(outData);
+
+    // Deserialize
+    const auto inData = Serializer::fromXml(document);
+
+    auto edges = inData->graph().getEdgesFromNode(outNode0);
+    QCOMPARE(edges.size(), 1);
+    QCOMPARE(edges.count(outNode1->index()), 1);
 }
 
 void SerializerTest::testSingleNode()
 {
     MindMapData outData;
 
-    // Serialize
-    Serializer dut(outData);
     auto outNode = std::make_shared<NodeBase>();
-    outData.graph().addNode(outNode);
-
     outNode->setLocation(QPointF(333.333, 666.666));
     outNode->setText("Lorem ipsum");
+    outData.graph().addNode(outNode);
 
-    const auto document = dut.toXml();
+    // Serialize
+    const auto document = Serializer::toXml(outData);
 
     // Deserialize
-    const auto inData = dut.fromXml(document);
+    const auto inData = Serializer::fromXml(document);
     QVERIFY(inData->graph().numNodes() == 1);
 
-    auto node = inData->graph().get(0);
-    QVERIFY(node.get());
+    auto node = inData->graph().getNode(0);
+    QVERIFY(node != nullptr);
     QCOMPARE(node->index(), outNode->index());
     QCOMPARE(node->location(), outNode->location());
     QCOMPARE(node->text(), outNode->text());

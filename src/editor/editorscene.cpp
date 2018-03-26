@@ -14,6 +14,8 @@
 // along with Dementia. If not, see <http://www.gnu.org/licenses/>.
 
 #include "editorscene.hpp"
+#include "edge.hpp"
+#include "node.hpp"
 
 #include <QGraphicsLineItem>
 
@@ -40,4 +42,29 @@ EditorScene::EditorScene()
     auto bottomLine = new QGraphicsLineItem(-r, r, r, r);
     bottomLine->setPen(pen);
     addItem(bottomLine);
+}
+
+bool EditorScene::hasEdge(Node & node0, Node & node1)
+{
+    for (auto && item : items())
+    {
+        if (auto edge = dynamic_cast<Edge *>(item))
+        {
+            if (edge->sourceNode().index() == node0.index() &&
+                edge->targetNode().index() == node1.index())
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+EditorScene::~EditorScene()
+{
+    // We don't want the scene to destroy the items as they are managed elsewhere
+    for (auto item : items())
+    {
+        removeItem(item);
+    }
 }

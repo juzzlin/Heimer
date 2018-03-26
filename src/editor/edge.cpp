@@ -97,6 +97,16 @@ void Edge::updateDots(const std::pair<QPointF, QPointF> & nearestPoints)
     }
 }
 
+Node & Edge::targetNode() const
+{
+    return *m_targetNode;
+}
+
+Node & Edge::sourceNode() const
+{
+    return *m_sourceNode;
+}
+
 void Edge::updateLine()
 {
     const auto nearestPoints = Node::getNearestEdgePoints(*m_sourceNode, *m_targetNode);

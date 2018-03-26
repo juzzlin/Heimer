@@ -126,6 +126,13 @@ void EditorView::handleRightButtonClickOnNode(Node & node)
     openNodeContextMenu();
 }
 
+void EditorView::initialize()
+{
+    // Ensure new dummy nodes and related graphics items are created (again) when needed.
+    m_dummyDragEdge = nullptr;
+    m_dummyDragNode = nullptr;
+}
+
 void EditorView::mouseMoveEvent(QMouseEvent * event)
 {
     m_mappedPos = mapToScene(event->pos());

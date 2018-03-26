@@ -17,6 +17,7 @@ set(SRC ${NAME}.cpp
     ${EDITOR_DIR}/nodehandle.cpp
     ${EDITOR_DIR}/nodetextedit.cpp
     ${EDITOR_DIR}/serializer.cpp
+    ${EDITOR_DIR}/contrib/mclogger.cc
     )
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/unittests)

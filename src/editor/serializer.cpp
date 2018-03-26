@@ -15,7 +15,10 @@
 
 #include "serializer.hpp"
 #include "config.hpp"
+#include "graph.hpp"
 #include "node.hpp"
+
+#include <map>
 
 #include <QDomElement>
 
@@ -25,19 +28,34 @@ using std::make_shared;
 
 static void writeNodes(MindMapData & mindMapData, QDomElement & root, QDomDocument & doc)
 {
-    for (auto && nodeIter : mindMapData.graph())
+    for (auto node : mindMapData.graph().getNodes())
     {
         QDomElement nodeElement = doc.createElement(Serializer::DataKeywords::Graph::NODE);
-        nodeElement.setAttribute(Serializer::DataKeywords::Graph::Node::INDEX, nodeIter.second->index());
-        nodeElement.setAttribute(Serializer::DataKeywords::Graph::Node::X, static_cast<int>(nodeIter.second->location().x() * SCALE));
-        nodeElement.setAttribute(Serializer::DataKeywords::Graph::Node::Y, static_cast<int>(nodeIter.second->location().y() * SCALE));
+        nodeElement.setAttribute(Serializer::DataKeywords::Graph::Node::INDEX, node->index());
+        nodeElement.setAttribute(Serializer::DataKeywords::Graph::Node::X, static_cast<int>(node->location().x() * SCALE));
+        nodeElement.setAttribute(Serializer::DataKeywords::Graph::Node::Y, static_cast<int>(node->location().y() * SCALE));
         root.appendChild(nodeElement);
 
         // Create a child node for the text content
         QDomElement textElement = doc.createElement(Serializer::DataKeywords::Graph::Node::TEXT);
         nodeElement.appendChild(textElement);
-        QDomText textNode = doc.createTextNode(nodeIter.second->text());
+        QDomText textNode = doc.createTextNode(node->text());
         textElement.appendChild(textNode);
+    }
+}
+
+static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocument & doc)
+{
+    for (auto node : mindMapData.graph().getNodes())
+    {
+        auto edges = mindMapData.graph().getEdgesFromNode(node);
+        for (auto index1 : edges)
+        {
+            QDomElement nodeElement = doc.createElement(Serializer::DataKeywords::Graph::EDGE);
+            nodeElement.setAttribute(Serializer::DataKeywords::Graph::Edge::INDEX0, node->index());
+            nodeElement.setAttribute(Serializer::DataKeywords::Graph::Edge::INDEX1, index1);
+            root.appendChild(nodeElement);
+        }
     }
 }
 
@@ -88,10 +106,12 @@ static NodePtr readNode(const QDomElement & element)
     return node;
 }
 
-Serializer::Serializer(MindMapData & mindMapData)
-    : m_mindMapData(mindMapData)
+static std::pair<int, int> readEdge(const QDomElement & element)
 {
-    HashSeed::init(); // Already set in main(), but this is for unit tests
+    return {
+        element.attribute(Serializer::DataKeywords::Graph::Edge::INDEX0, "-1").toInt(),
+        element.attribute(Serializer::DataKeywords::Graph::Edge::INDEX1, "-1").toInt()
+    };
 }
 
 MindMapDataPtr Serializer::fromXml(QDomDocument document)
@@ -114,6 +134,12 @@ MindMapDataPtr Serializer::fromXml(QDomDocument document)
                 auto node = readNode(element);
                 data->graph().addNode(node);
             }
+            // Read an edge element
+            else if (element.nodeName() == DataKeywords::Graph::EDGE)
+            {
+                auto edge = readEdge(element);
+                data->graph().addEdge(edge.first, edge.second);
+            }
         }
 
         domNode = domNode.nextSibling();
@@ -122,7 +148,7 @@ MindMapDataPtr Serializer::fromXml(QDomDocument document)
     return data;
 }
 
-QDomDocument Serializer::toXml()
+QDomDocument Serializer::toXml(MindMapData & mindMapData)
 {
     QDomDocument doc;
     QDomElement root = doc.createElement(Serializer::DataKeywords::Header::DESIGN);
@@ -130,7 +156,8 @@ QDomDocument Serializer::toXml()
     root.setAttribute(Serializer::DataKeywords::Header::APPLICATION_VERSION, Config::APPLICATION_VERSION);
     doc.appendChild(root);
 
-    writeNodes(m_mindMapData, root, doc);
+    writeNodes(mindMapData, root, doc);
+    writeEdges(mindMapData, root, doc);
 
     return doc;
 }

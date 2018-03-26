@@ -16,14 +16,11 @@
 #ifndef SERIALIZER_HPP
 #define SERIALIZER_HPP
 
-#include "hashseed.hpp"
 #include "mindmapdata.hpp"
 
 #include <QDomDocument>
 
-class Serializer
-{
-public:
+namespace Serializer {
 
     struct DataKeywords
     {
@@ -45,18 +42,20 @@ public:
                 static constexpr auto X = "x";
                 static constexpr auto Y = "y";
             };
+
+            static constexpr auto EDGE = "edge";
+
+            struct Edge
+            {
+                static constexpr auto INDEX0 = "index0";
+                static constexpr auto INDEX1 = "index1";
+            };
         };
     };
 
-    Serializer(MindMapData & mindMapData);
-
     MindMapDataPtr fromXml(QDomDocument document);
 
-    QDomDocument toXml();
-
-private:
-
-    MindMapData & m_mindMapData;
-};
+    QDomDocument toXml(MindMapData & mindMapData);
+}
 
 #endif // SERIALIZER_HPP

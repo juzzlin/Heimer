@@ -13,22 +13,29 @@
 // You should have received a copy of the GNU General Public License
 // along with Dementia. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef EDITORSCENE_HPP
-#define EDITORSCENE_HPP
+#include "reader.hpp"
 
-#include <QGraphicsScene>
+#include <QFile>
+#include <QObject>
 
-class Node;
-
-class EditorScene : public QGraphicsScene
+QDomDocument Reader::readFromFile(QString filePath) throw (FileException)
 {
-public:
+    QDomDocument doc;
 
-    EditorScene();
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        throw FileException(QObject::tr("Cannot open file: '") + filePath + "'");
+    }
 
-    bool hasEdge(Node & node0, Node & node1);
+    if (!doc.setContent(&file))
+    {
+        file.close();
 
-    virtual ~EditorScene();
-};
+        throw FileException(QObject::tr("Corrupted file: '") + filePath + "'");
+    }
 
-#endif // EDITORSCENE_HPP
+    file.close();
+
+    return doc;
+}

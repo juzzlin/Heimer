@@ -15,6 +15,7 @@ set(SRC
     draganddropstore.cpp
     edge.cpp
     edgedot.cpp
+    fileexception.hpp
     graph.cpp
     graphicsfactory.cpp
     hashseed.cpp
@@ -30,6 +31,7 @@ set(SRC
     nodebase.cpp
     nodehandle.cpp
     nodetextedit.cpp
+    reader.cpp
     serializer.cpp
     undostack.cpp
     userexception.hpp

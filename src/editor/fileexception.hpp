@@ -13,22 +13,30 @@
 // You should have received a copy of the GNU General Public License
 // along with Dementia. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef EDITORSCENE_HPP
-#define EDITORSCENE_HPP
+#ifndef FILEEXCEPTION_HPP
+#define FILEEXCEPTION_HPP
 
-#include <QGraphicsScene>
+#include <stdexcept>
+#include <QString>
 
-class Node;
-
-class EditorScene : public QGraphicsScene
+class FileException : public std::runtime_error
 {
 public:
 
-    EditorScene();
+    explicit FileException(QString msg)
+        : runtime_error(msg.toStdString())
+        , m_message(msg)
+    {
+    }
 
-    bool hasEdge(Node & node0, Node & node1);
+    QString message() const
+    {
+        return m_message;
+    }
 
-    virtual ~EditorScene();
+private:
+
+    QString m_message;
 };
 
-#endif // EDITORSCENE_HPP
+#endif // FILEEXCEPTION_HPP

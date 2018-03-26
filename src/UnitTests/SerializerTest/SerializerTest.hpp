@@ -27,5 +27,7 @@ private slots:
 
     void testEmptyDesign();
 
+    void testSingleEdge();
+
     void testSingleNode();
 };

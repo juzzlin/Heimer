@@ -23,6 +23,7 @@
 #include <QPointF>
 
 #include "draganddropstore.hpp"
+#include "fileexception.hpp"
 #include "undostack.hpp"
 #include "mindmapdata.hpp"
 
@@ -38,11 +39,9 @@ public:
 
     EditorData(Mediator & mediator);
 
-    void addExistingGraphToScene();
+    void addEdge(NodeBasePtr node0, NodeBasePtr node1);
 
-    void clearGraph();
-
-    NodeBasePtr createAndAddNodeToGraph(QPointF pos);
+    NodeBasePtr addNodeAt(QPointF pos);
 
     DragAndDropStore & dadStore();
 
@@ -54,13 +53,11 @@ public:
 
     bool isSaved() const;
 
-    bool loadMindMapData(QString fileName);
+    void loadMindMapData(QString fileName) throw(FileException);
 
     MindMapDataPtr mindMapData();
 
     void redo();
-
-    void removeGraphFromScene();
 
     bool saveMindMap();
 
@@ -82,8 +79,6 @@ private:
 
     EditorData(const EditorData & e) = delete;
     EditorData & operator= (const EditorData & e) = delete;
-
-    void addNodeToScene(NodeBasePtr node);
 
     void clearScene();
 

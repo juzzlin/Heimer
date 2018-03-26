@@ -21,6 +21,8 @@
 #include "nodehandle.hpp"
 #include "nodetextedit.hpp"
 
+#include "mclogger.hh"
+
 #include <QGraphicsDropShadowEffect>
 #include <QPainter>
 #include <QPen>
@@ -57,9 +59,9 @@ Node::Node(const Node & other)
     setSize(other.size());
 }
 
-void Node::addEdge(EdgePtr edge)
+void Node::addGraphicsEdge(EdgePtr edge)
 {
-    m_edges.push_back(edge);
+    m_graphicsEdges.push_back(edge);
 }
 
 void Node::adjustSize()
@@ -88,11 +90,11 @@ QRectF Node::boundingRect() const
     return QRectF(-size().width() / 2 - margin, -size().height() / 2 - margin, size().width() + margin * 2, size().height() + margin * 2);
 }
 
-EdgePtr Node::createAndAddEdge(NodePtr targetNode)
+EdgePtr Node::createAndAddGraphicsEdge(NodePtr targetNode)
 {
     auto edge = std::make_shared<Edge>(*this, *targetNode);
     edge->updateLine();
-    m_edges.push_back(edge);
+    m_graphicsEdges.push_back(edge);
     return edge;
 }
 
@@ -228,8 +230,13 @@ QString Node::text() const
 
 void Node::updateEdgeLines()
 {
-    for (auto edge : m_edges)
+    for (auto edge : m_graphicsEdges)
     {
         edge->updateLine();
     }
+}
+
+Node::~Node()
+{
+    MCLogger().info() << "Node " << index() << " deleted.";
 }

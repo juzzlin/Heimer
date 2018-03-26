@@ -39,6 +39,10 @@ public:
 
     void updateLine();
 
+    Node & sourceNode() const;
+
+    Node & targetNode() const;
+
 private:
 
     void initDots();

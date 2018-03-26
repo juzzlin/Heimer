@@ -29,6 +29,7 @@ HEADERS +=  \
     editordata.hpp \
     editorscene.hpp \
     editorview.hpp \
+    fileexception.hpp \
     hashseed.hpp \
     layers.hpp \
     mainwindow.hpp \
@@ -39,6 +40,7 @@ HEADERS +=  \
     nodebase.hpp \
     nodehandle.hpp \
     nodetextedit.hpp \
+    reader.hpp \
     serializer.hpp \
     undostack.hpp \
     writer.hpp \
@@ -65,6 +67,7 @@ SOURCES += \
     nodebase.cpp \
     nodehandle.cpp \
     nodetextedit.cpp \
+    reader.cpp \
     serializer.cpp \
     undostack.cpp \
     writer.cpp \

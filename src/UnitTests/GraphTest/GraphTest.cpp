@@ -24,17 +24,36 @@ GraphTest::GraphTest()
 {
 }
 
+void GraphTest::testAddEdge()
+{
+    Graph dut;
+
+    auto node0 = make_shared<NodeBase>();
+    dut.addNode(node0);
+
+    auto node1 = make_shared<NodeBase>();
+    dut.addNode(node1);
+
+    dut.addEdge(node0, node1);
+    dut.addEdge(node0, node1); // Check that doubles are ignored
+
+    auto edges = dut.getEdgesFromNode(node0);
+
+    QCOMPARE(edges.size(), 1);
+    QCOMPARE(edges.count(node1->index()), 1);
+}
+
 void GraphTest::testAddNode()
 {
     Graph dut;
     auto node = make_shared<NodeBase>();
 
-    QVERIFY(node->index() == -1);
+    QCOMPARE(node->index(), -1);
 
     dut.addNode(node);
 
-    QVERIFY(dut.numNodes() == 1);
-    QVERIFY(node->index() == 0);
+    QCOMPARE(dut.numNodes(), 1);
+    QCOMPARE(node->index(), 0);
 }
 
 void GraphTest::testAddTwoNodes()
@@ -44,18 +63,17 @@ void GraphTest::testAddTwoNodes()
     auto node0 = make_shared<NodeBase>();
     dut.addNode(node0);
 
-    QVERIFY(dut.numNodes() == 1);
+    QCOMPARE(dut.numNodes(), 1);
 
     auto node1 = make_shared<NodeBase>();
     dut.addNode(node1);
 
-    QVERIFY(dut.numNodes() == 2);
-
-    QVERIFY(node0->index() == 0);
-    QVERIFY(node1->index() == 1);
+    QCOMPARE(dut.numNodes(), 2);
+    QCOMPARE(node0->index(), 0);
+    QCOMPARE(node1->index(), 1);
 }
 
-void GraphTest::testGetAll()
+void GraphTest::testGetEdges()
 {
     Graph dut;
 
@@ -65,8 +83,37 @@ void GraphTest::testGetAll()
     auto node1 = make_shared<NodeBase>();
     dut.addNode(node1);
 
-    auto && nodes = dut.getAll();
-    QVERIFY(nodes.size() == 2);
+    dut.addEdge(node0, node1);
+    dut.addEdge(node1, node0);
+
+    auto edges = dut.getEdges();
+    QCOMPARE(edges.size(), 2);
+
+    auto iter = std::find_if(edges.begin(), edges.end(), [=](const Graph::Edge & edge){
+        return edge.first == node0->index() && edge.second == node1->index();
+    });
+
+    QVERIFY(iter != edges.end());
+
+    iter = std::find_if(edges.begin(), edges.end(), [=](const Graph::Edge & edge){
+        return edge.first == node1->index() && edge.second == node0->index();
+    });
+
+    QVERIFY(iter != edges.end());
+}
+
+void GraphTest::testGetNodes()
+{
+    Graph dut;
+
+    auto node0 = make_shared<NodeBase>();
+    dut.addNode(node0);
+
+    auto node1 = make_shared<NodeBase>();
+    dut.addNode(node1);
+
+    auto nodes = dut.getNodes();
+    QCOMPARE(nodes.size(), 2);
 
     auto iter = std::find_if(nodes.begin(), nodes.end(), [](NodeBasePtr node){
         return node->index() == 0;
@@ -88,8 +135,7 @@ void GraphTest::testGetNodeByIndex()
 
     dut.addNode(node);
 
-    auto nodeByIndex = dut.get(0);
-    QVERIFY(node == nodeByIndex);
+    QCOMPARE(node, dut.getNode(0));
 }
 
 void GraphTest::testGetNodeByIndex_NotFound()
@@ -99,8 +145,7 @@ void GraphTest::testGetNodeByIndex_NotFound()
 
     dut.addNode(node);
 
-    auto nodeByIndex = dut.get(1);
-    QVERIFY(nodeByIndex == nullptr);
+    QCOMPARE(dut.getNode(1), nullptr);
 }
 
 QTEST_GUILESS_MAIN(GraphTest)

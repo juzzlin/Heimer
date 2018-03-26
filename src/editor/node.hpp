@@ -39,14 +39,16 @@ public:
     //! Copy constructor.
     Node(const Node & other);
 
-    virtual void addEdge(EdgePtr edge);
+    virtual ~Node();
+
+    virtual void addGraphicsEdge(EdgePtr edge);
 
     void adjustSize();
 
     virtual QRectF boundingRect () const override;
 
     using NodePtr = std::shared_ptr<Node>;
-    virtual EdgePtr createAndAddEdge(NodePtr targetNode);
+    virtual EdgePtr createAndAddGraphicsEdge(NodePtr targetNode);
 
     virtual void paint(QPainter * painter,
         const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
@@ -78,7 +80,7 @@ private:
 
     std::vector<NodeHandle *> m_handles;
 
-    std::vector<EdgePtr> m_edges;
+    std::vector<EdgePtr> m_graphicsEdges;
 
     std::vector<QPointF> m_edgePoints;
 

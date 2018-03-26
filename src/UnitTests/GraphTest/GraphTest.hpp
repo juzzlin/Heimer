@@ -25,11 +25,15 @@ public:
 
 private slots:
 
+    void testAddEdge();
+
     void testAddNode();
 
     void testAddTwoNodes();
 
-    void testGetAll();
+    void testGetEdges();
+
+    void testGetNodes();
 
     void testGetNodeByIndex();
 

@@ -42,6 +42,8 @@ public:
 
     ~EditorView();
 
+    void initialize();
+
     void showHelloText(bool show);
 
 protected:

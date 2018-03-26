@@ -17,6 +17,7 @@
 #include "mediator.hpp"
 #include "node.hpp"
 #include "serializer.hpp"
+#include "reader.hpp"
 #include "writer.hpp"
 
 #include <cassert>
@@ -39,15 +40,11 @@ DragAndDropStore & EditorData::dadStore()
     return m_dadStore;
 }
 
-bool EditorData::loadMindMapData(QString fileName)
+void EditorData::loadMindMapData(QString fileName) throw(FileException)
 {
+    setMindMapData(Serializer::fromXml(Reader::readFromFile(fileName)));
+
     m_undoStack.clear();
-
-    clearScene();
-
-    //m_mindMapData = m_mindMapIO.open(fileName);
-    //return static_cast<bool>(m_mindMapData);
-    return false;
 }
 
 bool EditorData::isSaved() const
@@ -121,9 +118,7 @@ bool EditorData::saveMindMapAs(QString fileName)
 {
     assert(m_mindMapData);
 
-    Serializer serializer(*m_mindMapData);
-
-    if (Writer::writeToFile(serializer.toXml(), fileName))
+    if (Writer::writeToFile(Serializer::toXml(*m_mindMapData), fileName))
     {
         m_fileName = fileName;
         m_isSaved = true;
@@ -135,20 +130,15 @@ bool EditorData::saveMindMapAs(QString fileName)
 
 void EditorData::setMindMapData(MindMapDataPtr mindMapData)
 {
-    clearScene();
-
     m_mindMapData = mindMapData;
 }
 
-void EditorData::addExistingGraphToScene()
+void EditorData::addEdge(NodeBasePtr node0, NodeBasePtr node1)
 {
-    for (auto && node : m_mindMapData->graph().getAll())
-    {
-        addNodeToScene(node);
-    }
+    m_mindMapData->graph().addEdge(node0, node1);
 }
 
-NodeBasePtr EditorData::createAndAddNodeToGraph(QPointF pos)
+NodeBasePtr EditorData::addNodeAt(QPointF pos)
 {
     auto node = make_shared<Node>();
     node->setLocation(pos);
@@ -158,29 +148,7 @@ NodeBasePtr EditorData::createAndAddNodeToGraph(QPointF pos)
 
 NodeBasePtr EditorData::getNodeByIndex(int index)
 {
-    return m_mindMapData->graph().get(index);
-}
-
-void EditorData::addNodeToScene(NodeBasePtr node)
-{
-    auto ptr = std::dynamic_pointer_cast<Node>(node);
-    if (!ptr->scene())
-    {
-        m_mediator.addItem(*ptr); // The scene wants a raw pointer
-    }
-}
-
-void EditorData::removeGraphFromScene()
-{
-    for (auto && nodeIter : m_mindMapData->graph())
-    {
-        auto node = dynamic_pointer_cast<Node>(nodeIter.second);
-        assert(node);
-
-        m_mediator.removeItem(*node); // The scene wants a raw pointer
-    }
-
-    m_mediator.updateView();
+    return m_mindMapData->graph().getNode(index);
 }
 
 MindMapDataPtr EditorData::mindMapData()
@@ -202,20 +170,9 @@ void EditorData::removeNodesFromScene()
 {
     if (m_mindMapData)
     {
-        for (auto nodeIter : m_mindMapData->graph())
+        for (auto && node : m_mindMapData->graph().getNodes())
         {
-            auto node = dynamic_pointer_cast<Node>(nodeIter.second);
-            assert(node);
-
-            m_mediator.removeItem(*node); // The scene wants a raw pointer
+            m_mediator.removeItem(*dynamic_pointer_cast<Node>(node)); // The scene wants a raw pointer
         }
     }
-}
-
-void EditorData::clearGraph()
-{
-    assert(m_mindMapData);
-
-    removeGraphFromScene();
-    m_mindMapData->graph().clear();
 }

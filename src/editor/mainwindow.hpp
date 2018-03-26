@@ -52,6 +52,10 @@ public slots:
 
     void enableUndo(bool enable);
 
+    void showErrorDialog(QString message);
+
+    void showMessageBox(QString message);
+
 protected:
 
     void closeEvent(QCloseEvent * event) override;
@@ -60,7 +64,7 @@ protected:
 
 private slots:
 
-    bool doOpenMindMap(QString fileName);
+    void doOpenMindMap(QString fileName);
 
     void initializeNewMindMap();
 
@@ -73,8 +77,6 @@ private slots:
     void showAboutDlg();
 
     void showAboutQtDlg();
-
-    void showMessageBox(QString message);
 
     void openArgMindMap();
 
@@ -98,9 +100,15 @@ private:
 
     void init();
 
+    QString loadRecentPath() const;
+
     void populateMenuBar();
 
-    void setActionStatesOnNewMindMap();
+    void saveRecentPath(QString fileName);
+
+    void setSaveActionStatesOnNewMindMap();
+
+    void successLog();
 
     AboutDlg * m_aboutDlg;
 

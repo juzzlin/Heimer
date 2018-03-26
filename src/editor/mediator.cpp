@@ -29,6 +29,8 @@
 
 #include <cassert>
 
+using std::dynamic_pointer_cast;
+
 Mediator::Mediator(MainWindow & mainWindow)
     : m_editorData(new EditorData(*this))
     , m_editorScene(new EditorScene)
@@ -36,6 +38,31 @@ Mediator::Mediator(MainWindow & mainWindow)
     , m_mainWindow(mainWindow)
 {
     m_editorView->setParent(&mainWindow);
+}
+
+void Mediator::addExistingGraphToScene()
+{
+    for (auto && node : m_editorData->mindMapData()->graph().getNodes())
+    {
+        if (dynamic_pointer_cast<QGraphicsItem>(node)->scene() != m_editorScene)
+        {
+            addItem(*dynamic_pointer_cast<Node>(node));
+        }
+    }
+
+    for (auto && edge : m_editorData->mindMapData()->graph().getEdges())
+    {
+        auto node0 = dynamic_pointer_cast<Node>(getNodeByIndex(edge.first));
+        auto node1 = dynamic_pointer_cast<Node>(getNodeByIndex(edge.second));
+
+        if (!m_editorScene->hasEdge(*node0, *node1))
+        {
+            const auto graphicsEgde = node0->createAndAddGraphicsEdge(node1);
+            node1->addGraphicsEdge(graphicsEgde);
+            addItem(*graphicsEgde); // QGraphicsScene needs the raw pointer
+            MCLogger().info() << "Created a new edge from " << node0->index() << " to " << node1->index();
+        }
+    }
 }
 
 void Mediator::addItem(QGraphicsItem & item)
@@ -50,22 +77,20 @@ void Mediator::center()
 
 NodeBasePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 {
-    auto targetNode = std::dynamic_pointer_cast<Node>(m_editorData->createAndAddNodeToGraph(pos));
-    assert(targetNode);
+    auto node1 = dynamic_pointer_cast<Node>(m_editorData->addNodeAt(pos));
+    assert(node1);
 
-    auto sourceNode = std::dynamic_pointer_cast<Node>(getNodeByIndex(sourceNodeIndex));
-    assert(sourceNode);
+    auto node0 = dynamic_pointer_cast<Node>(getNodeByIndex(sourceNodeIndex));
+    assert(node0);
 
-    auto graphicsEgde = sourceNode->createAndAddEdge(targetNode);
-    targetNode->addEdge(graphicsEgde);
+    // Currently floating nodes cannot be added. Always add edge from the parent node.
+    m_editorData->addEdge(node0, node1);
 
-    addItem(*graphicsEgde); // QGraphicsScene needs the raw pointer
-
-    m_editorData->addExistingGraphToScene();
+    addExistingGraphToScene();
 
     MCLogger().info() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
 
-    return targetNode;
+    return node1;
 }
 
 DragAndDropStore & Mediator::dadStore()
@@ -97,22 +122,24 @@ void Mediator::initializeNewMindMap()
     delete m_editorScene;
     m_editorScene = new EditorScene;
 
+    m_editorView->initialize();
     m_editorView->setScene(m_editorScene);
 
-    m_editorData->createAndAddNodeToGraph(QPointF(0, 0));
-    m_editorData->addExistingGraphToScene();
+    m_editorData->addNodeAt(QPointF(0, 0));
+
+    addExistingGraphToScene();
 
     center();
 }
 
-void Mediator::initScene()
+void Mediator::initializeScene(bool showHelloText)
 {
     // Set scene to the view
     m_editorView->setScene(m_editorScene);
     m_editorView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     m_editorView->setMouseTracking(true);
     m_editorView->setBackgroundBrush(QBrush(QColor(128, 200, 255, 255)));
-    m_editorView->showHelloText(true);
+    m_editorView->showHelloText(showHelloText);
 
     m_mainWindow.setCentralWidget(m_editorView);
     m_mainWindow.setContentsMargins(0, 0, 0, 0);
@@ -139,21 +166,26 @@ bool Mediator::openMindMap(QString fileName)
 {
     assert(m_editorData);
 
-    if (m_editorData->loadMindMapData(fileName))
+    try
     {
         delete m_editorScene;
         m_editorScene = new EditorScene;
 
-        m_editorView->setScene(m_editorScene);
+        initializeScene(false);
 
-        m_editorData->addExistingGraphToScene();
+        m_editorData->loadMindMapData(fileName);
+
+        addExistingGraphToScene();
 
         center();
-
-        return true;
+    }
+    catch (const FileException & e)
+    {
+        m_mainWindow.showErrorDialog(e.message());
+        return false;
     }
 
-    return false;
+    return true;
 }
 
 void Mediator::redo()
@@ -193,7 +225,7 @@ void Mediator::setupMindMapAfterUndoOrRedo()
 
     m_editorView->setScene(m_editorScene);
 
-    m_editorData->addExistingGraphToScene();
+    addExistingGraphToScene();
 }
 
 void Mediator::undo()

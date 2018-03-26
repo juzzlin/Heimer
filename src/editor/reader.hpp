@@ -13,22 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Dementia. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef EDITORSCENE_HPP
-#define EDITORSCENE_HPP
+#ifndef READER_HPP
+#define READER_HPP
 
-#include <QGraphicsScene>
+#include <QDomDocument>
 
-class Node;
+#include "fileexception.hpp"
 
-class EditorScene : public QGraphicsScene
-{
-public:
+namespace Reader {
 
-    EditorScene();
+    QDomDocument readFromFile(QString filePath) throw (FileException);
 
-    bool hasEdge(Node & node0, Node & node1);
+}
 
-    virtual ~EditorScene();
-};
-
-#endif // EDITORSCENE_HPP
+#endif // READER_HPP

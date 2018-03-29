@@ -90,7 +90,7 @@ QRectF Node::boundingRect() const
 
 EdgePtr Node::createAndAddEdge(NodePtr targetNode)
 {
-    auto edge = EdgePtr(new Edge(*this, *targetNode));
+    auto edge = std::make_shared<Edge>(*this, *targetNode);
     edge->updateLine();
     m_edges.push_back(edge);
     return edge;

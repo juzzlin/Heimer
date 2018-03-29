@@ -22,7 +22,7 @@ UndoStack::UndoStack(unsigned int maxHistorySize)
 
 void UndoStack::pushUndoPoint(MindMapDataPtr mindMapData)
 {
-    auto copyData = new MindMapData(*mindMapData.get());
+    auto copyData = new MindMapData(*mindMapData);
     m_undoStack.push_back(MindMapDataPtr(copyData));
 
     if (m_undoStack.size() > m_maxHistorySize)
@@ -33,7 +33,7 @@ void UndoStack::pushUndoPoint(MindMapDataPtr mindMapData)
 
 void UndoStack::pushRedoPoint(MindMapDataPtr mindMapData)
 {
-    auto copyData = new MindMapData(*mindMapData.get());
+    auto copyData = new MindMapData(*mindMapData);
     m_redoStack.push_back(MindMapDataPtr(copyData));
 
     if (m_redoStack.size() > m_maxHistorySize)

@@ -92,7 +92,7 @@ void Mediator::initializeNewMindMap()
 {
     assert(m_editorData);
 
-    m_editorData->setMindMapData(MindMapDataPtr(new MindMapData));
+    m_editorData->setMindMapData(std::make_shared<MindMapData>());
 
     delete m_editorScene;
     m_editorScene = new EditorScene;

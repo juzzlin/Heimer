@@ -21,6 +21,8 @@
 
 static const double SCALE = 1000; // https://bugreports.qt.io/browse/QTBUG-67129
 
+using std::make_shared;
+
 static void writeNodes(MindMapData & mindMapData, QDomElement & root, QDomDocument & doc)
 {
     for (auto && nodeIter : mindMapData.graph())
@@ -60,10 +62,10 @@ static NodePtr readNode(const QDomElement & element)
 #endif
 {
 #ifdef DEMENTIA_UNIT_TEST
-    NodeBasePtr node(new NodeBase);
+    auto node = make_shared<NodeBase>();
 #else
     // Init a new node. QGraphicsScene will take the ownership eventually.
-    NodePtr node(new Node);
+    auto node = make_shared<Node>();
 #endif
     node->setIndex(element.attribute(Serializer::DataKeywords::Graph::Node::INDEX, "-1").toInt());
     node->setLocation(QPointF(
@@ -97,7 +99,7 @@ MindMapDataPtr Serializer::fromXml(QDomDocument document)
     const QDomElement root = document.documentElement();
     const auto version = root.attribute(DataKeywords::Header::APPLICATION_VERSION, "UNDEFINED");
 
-    MindMapDataPtr data(new MindMapData);
+    auto data = make_shared<MindMapData>();
     data->setVersion(version);
 
     QDomNode domNode = root.firstChild();

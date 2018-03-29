@@ -17,6 +17,7 @@
 
 #include "../editor/serializer.hpp"
 #include "../editor/mindmapdata.hpp"
+#include "../editor/nodebase.hpp"
 
 SerializerTest::SerializerTest()
 {
@@ -41,7 +42,7 @@ void SerializerTest::testSingleNode()
 
     // Serialize
     Serializer dut(outData);
-    NodeBasePtr outNode = NodeBasePtr(new NodeBase);
+    auto outNode = std::make_shared<NodeBase>();
     outData.graph().addNode(outNode);
 
     outNode->setLocation(QPointF(333.333, 666.666));

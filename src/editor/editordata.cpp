@@ -23,6 +23,7 @@
 #include <memory>
 
 using std::dynamic_pointer_cast;
+using std::make_shared;
 
 EditorData::EditorData(Mediator & mediator)
     : m_mediator(mediator)
@@ -149,7 +150,7 @@ void EditorData::addExistingGraphToScene()
 
 NodeBasePtr EditorData::createAndAddNodeToGraph(QPointF pos)
 {
-    NodeBasePtr node(new Node);
+    auto node = make_shared<Node>();
     node->setLocation(pos);
     m_mindMapData->graph().addNode(node);
     return node;

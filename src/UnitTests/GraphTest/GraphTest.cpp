@@ -18,6 +18,8 @@
 #include "../editor/graph.hpp"
 #include "../editor/nodebase.hpp"
 
+using std::make_shared;
+
 GraphTest::GraphTest()
 {
 }
@@ -25,7 +27,7 @@ GraphTest::GraphTest()
 void GraphTest::testAddNode()
 {
     Graph dut;
-    NodeBasePtr node(new NodeBase);
+    auto node = make_shared<NodeBase>();
 
     QVERIFY(node->index() == -1);
 
@@ -39,12 +41,12 @@ void GraphTest::testAddTwoNodes()
 {
     Graph dut;
 
-    NodeBasePtr node0(new NodeBase);
+    auto node0 = make_shared<NodeBase>();
     dut.addNode(node0);
 
     QVERIFY(dut.numNodes() == 1);
 
-    NodeBasePtr node1(new NodeBase);
+    auto node1 = make_shared<NodeBase>();
     dut.addNode(node1);
 
     QVERIFY(dut.numNodes() == 2);
@@ -57,10 +59,10 @@ void GraphTest::testGetAll()
 {
     Graph dut;
 
-    NodeBasePtr node0(new NodeBase);
+    auto node0 = make_shared<NodeBase>();
     dut.addNode(node0);
 
-    NodeBasePtr node1(new NodeBase);
+    auto node1 = make_shared<NodeBase>();
     dut.addNode(node1);
 
     auto && nodes = dut.getAll();
@@ -82,7 +84,7 @@ void GraphTest::testGetAll()
 void GraphTest::testGetNodeByIndex()
 {
     Graph dut;
-    NodeBasePtr node(new NodeBase);
+    auto node = make_shared<NodeBase>();
 
     dut.addNode(node);
 
@@ -93,7 +95,7 @@ void GraphTest::testGetNodeByIndex()
 void GraphTest::testGetNodeByIndex_NotFound()
 {
     Graph dut;
-    NodeBasePtr node(new NodeBase);
+    auto node = make_shared<NodeBase>();
 
     dut.addNode(node);
 

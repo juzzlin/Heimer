@@ -6,6 +6,7 @@ foreach(TS_FILE ${TS})
     list(APPEND TS_FILES ${CMAKE_SOURCE_DIR}/src/editor/translations/${TS_FILE}.ts)
     list(APPEND QM_FILES ${CMAKE_BINARY_DIR}/src/editor/${TS_FILE}.qm)
 endforeach()
+
 # Set sources
 set(SRC
     aboutdlg.cpp

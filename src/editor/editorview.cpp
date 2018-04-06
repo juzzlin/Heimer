@@ -52,7 +52,10 @@ void EditorView::createNodeContextMenuActions()
     const auto setColorAction = new QAction(dummy1, &m_targetNodeContextMenu);
     QObject::connect(setColorAction, &QAction::triggered, [this] () {
         assert(m_mediator.selectedNode());
-        m_mediator.selectedNode()->setColor(QColorDialog::getColor(Qt::white, this));
+        const auto color = QColorDialog::getColor(Qt::white, this);
+        if (color.isValid()) {
+            m_mediator.selectedNode()->setColor(color);
+        }
     });
 
     // Populate the menu

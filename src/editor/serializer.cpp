@@ -17,6 +17,7 @@
 #include "config.hpp"
 #include "graph.hpp"
 #include "node.hpp"
+#include "mclogger.hh"
 
 #include <map>
 
@@ -41,6 +42,13 @@ static void writeNodes(MindMapData & mindMapData, QDomElement & root, QDomDocume
         nodeElement.appendChild(textElement);
         QDomText textNode = doc.createTextNode(node->text());
         textElement.appendChild(textNode);
+
+        // Create a child node for color
+        QDomElement colorElement = doc.createElement(Serializer::DataKeywords::Graph::Node::COLOR);
+        colorElement.setAttribute(Serializer::DataKeywords::Graph::Node::Color::R, node->color().red());
+        colorElement.setAttribute(Serializer::DataKeywords::Graph::Node::Color::G, node->color().green());
+        colorElement.setAttribute(Serializer::DataKeywords::Graph::Node::Color::B, node->color().blue());
+        nodeElement.appendChild(colorElement);
     }
 }
 
@@ -59,7 +67,15 @@ static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocume
     }
 }
 
-static QString readFirstTextNodeContent(QDomElement element)
+static QColor readColorElement(const QDomElement & element)
+{
+    return QColor(
+        element.attribute(Serializer::DataKeywords::Graph::Node::Color::R, "255").toInt(),
+        element.attribute(Serializer::DataKeywords::Graph::Node::Color::G, "255").toInt(),
+        element.attribute(Serializer::DataKeywords::Graph::Node::Color::B, "255").toInt());
+}
+
+static QString readFirstTextNodeContent(const QDomElement & element)
 {
     for (int i = 0; i < element.childNodes().count(); i++)
     {
@@ -70,6 +86,11 @@ static QString readFirstTextNodeContent(QDomElement element)
         }
     }
     return "";
+}
+
+static void elementWarning(const QDomElement & element)
+{
+    MCLogger().warning() << "Unknown element '" << element.nodeName().toStdString() << "'";
 }
 
 // The purpose of this #ifdef is to build GUILESS unit tests so that QTEST_GUILESS_MAIN can be used
@@ -99,6 +120,14 @@ static NodePtr readNode(const QDomElement & element)
             if (element.nodeName() == Serializer::DataKeywords::Graph::Node::TEXT)
             {
                 node->setText(readFirstTextNodeContent(element));
+            }
+            else if (element.nodeName() == Serializer::DataKeywords::Graph::Node::COLOR)
+            {
+                node->setColor(readColorElement(element));
+            }
+            else
+            {
+                elementWarning(element);
             }
         }
     }
@@ -139,6 +168,10 @@ MindMapDataPtr Serializer::fromXml(QDomDocument document)
             {
                 auto edge = readEdge(element);
                 data->graph().addEdge(edge.first, edge.second);
+            }
+            else
+            {
+                elementWarning(element);
             }
         }
 

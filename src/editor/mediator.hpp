@@ -77,6 +77,8 @@ public:
 
     void saveUndoPoint();
 
+    Node * selectedNode() const;
+
     void setSelectedNode(Node * node);
 
     void setupMindMapAfterUndoOrRedo();

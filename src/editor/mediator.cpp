@@ -213,6 +213,11 @@ void Mediator::saveUndoPoint()
     m_editorData->saveUndoPoint();
 }
 
+Node * Mediator::selectedNode() const
+{
+    return m_editorData->selectedNode();
+}
+
 void Mediator::setSelectedNode(Node * node)
 {
     m_editorData->setSelectedNode(node);

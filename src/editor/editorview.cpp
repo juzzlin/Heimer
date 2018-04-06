@@ -14,6 +14,7 @@
 // along with Dementia. If not, see <http://www.gnu.org/licenses/>.
 
 #include <QApplication>
+#include <QColorDialog>
 #include <QGraphicsItem>
 #include <QGraphicsSimpleTextItem>
 #include <QMouseEvent>
@@ -47,13 +48,15 @@ EditorView::EditorView(Mediator & mediator)
 
 void EditorView::createNodeContextMenuActions()
 {
-    const QString dummy1(QWidget::tr("Set size.."));
-    auto setSize = new QAction(dummy1, &m_targetNodeContextMenu);
-    QObject::connect(setSize, &QAction::triggered, [this] () {
+    const QString dummy1(QWidget::tr("Set color.."));
+    const auto setColorAction = new QAction(dummy1, &m_targetNodeContextMenu);
+    QObject::connect(setColorAction, &QAction::triggered, [this] () {
+        assert(m_mediator.selectedNode());
+        m_mediator.selectedNode()->setColor(QColorDialog::getColor(Qt::white, this));
     });
 
     // Populate the menu
-    m_targetNodeContextMenu.addAction(setSize);
+    m_targetNodeContextMenu.addAction(setColorAction);
 }
 
 void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
@@ -228,8 +231,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
 
 void EditorView::openNodeContextMenu()
 {
-    const QPoint globalPos = mapToGlobal(m_clickedPos);
-    m_targetNodeContextMenu.exec(globalPos);
+    m_targetNodeContextMenu.exec(mapToGlobal(m_clickedPos));
 }
 
 void EditorView::showDummyDragEdge(bool show)

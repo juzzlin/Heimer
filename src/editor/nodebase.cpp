@@ -59,6 +59,16 @@ void NodeBase::setText(const QString & text)
     m_text = text;
 }
 
+QColor NodeBase::color() const
+{
+    return m_color;
+}
+
+void NodeBase::setColor(const QColor & color)
+{
+    m_color = color;
+}
+
 NodeBase::~NodeBase()
 {
 }

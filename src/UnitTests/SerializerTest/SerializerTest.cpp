@@ -63,6 +63,7 @@ void SerializerTest::testSingleNode()
     MindMapData outData;
 
     auto outNode = std::make_shared<NodeBase>();
+    outNode->setColor(QColor(1, 2, 3));
     outNode->setLocation(QPointF(333.333, 666.666));
     outNode->setText("Lorem ipsum");
     outData.graph().addNode(outNode);
@@ -77,6 +78,7 @@ void SerializerTest::testSingleNode()
     auto node = inData->graph().getNode(0);
     QVERIFY(node != nullptr);
     QCOMPARE(node->index(), outNode->index());
+    QCOMPARE(node->color(), outNode->color());
     QCOMPARE(node->location(), outNode->location());
     QCOMPARE(node->text(), outNode->text());
 }

@@ -16,6 +16,7 @@
 #ifndef NODEBASE_HPP
 #define NODEBASE_HPP
 
+#include <QColor>
 #include <QSizeF>
 #include <QString>
 #include <QPointF>
@@ -38,6 +39,10 @@ public:
 
     virtual ~NodeBase();
 
+    virtual QColor color() const;
+
+    virtual void setColor(const QColor & color);
+
     virtual QPointF location() const;
 
     virtual void setLocation(QPointF newLocation);
@@ -55,6 +60,8 @@ public:
     virtual void setText(const QString & text);
 
 private:
+
+    QColor m_color = Qt::white;
 
     QPointF m_location;
 

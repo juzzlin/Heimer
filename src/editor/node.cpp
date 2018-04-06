@@ -197,7 +197,7 @@ void Node::paint(QPainter * painter,
     painter->fillRect(
         -size().width() / 2, -size().height() / 2,
         size().width(), size().height(),
-        QBrush(QColor(255, 255, 255, 255)));
+        QBrush(color()));
 
     painter->restore();
 }

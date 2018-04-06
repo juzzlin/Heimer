@@ -37,10 +37,18 @@ namespace Serializer {
 
             struct Node
             {
+                static constexpr auto COLOR = "color";
                 static constexpr auto INDEX = "index";
                 static constexpr auto TEXT = "text";
                 static constexpr auto X = "x";
                 static constexpr auto Y = "y";
+
+                struct Color
+                {
+                    static constexpr auto R = "r";
+                    static constexpr auto G = "g";
+                    static constexpr auto B = "b";
+                };
             };
 
             static constexpr auto EDGE = "edge";

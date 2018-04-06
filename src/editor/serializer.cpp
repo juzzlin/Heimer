@@ -31,20 +31,20 @@ static void writeNodes(MindMapData & mindMapData, QDomElement & root, QDomDocume
 {
     for (auto node : mindMapData.graph().getNodes())
     {
-        QDomElement nodeElement = doc.createElement(Serializer::DataKeywords::Graph::NODE);
+        auto nodeElement = doc.createElement(Serializer::DataKeywords::Graph::NODE);
         nodeElement.setAttribute(Serializer::DataKeywords::Graph::Node::INDEX, node->index());
         nodeElement.setAttribute(Serializer::DataKeywords::Graph::Node::X, static_cast<int>(node->location().x() * SCALE));
         nodeElement.setAttribute(Serializer::DataKeywords::Graph::Node::Y, static_cast<int>(node->location().y() * SCALE));
         root.appendChild(nodeElement);
 
         // Create a child node for the text content
-        QDomElement textElement = doc.createElement(Serializer::DataKeywords::Graph::Node::TEXT);
+        auto textElement = doc.createElement(Serializer::DataKeywords::Graph::Node::TEXT);
         nodeElement.appendChild(textElement);
-        QDomText textNode = doc.createTextNode(node->text());
+        auto textNode = doc.createTextNode(node->text());
         textElement.appendChild(textNode);
 
         // Create a child node for color
-        QDomElement colorElement = doc.createElement(Serializer::DataKeywords::Graph::Node::COLOR);
+        auto colorElement = doc.createElement(Serializer::DataKeywords::Graph::Node::COLOR);
         colorElement.setAttribute(Serializer::DataKeywords::Graph::Node::Color::R, node->color().red());
         colorElement.setAttribute(Serializer::DataKeywords::Graph::Node::Color::G, node->color().green());
         colorElement.setAttribute(Serializer::DataKeywords::Graph::Node::Color::B, node->color().blue());
@@ -59,7 +59,7 @@ static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocume
         auto edges = mindMapData.graph().getEdgesFromNode(node);
         for (auto index1 : edges)
         {
-            QDomElement nodeElement = doc.createElement(Serializer::DataKeywords::Graph::EDGE);
+            auto nodeElement = doc.createElement(Serializer::DataKeywords::Graph::EDGE);
             nodeElement.setAttribute(Serializer::DataKeywords::Graph::Edge::INDEX0, node->index());
             nodeElement.setAttribute(Serializer::DataKeywords::Graph::Edge::INDEX1, index1);
             root.appendChild(nodeElement);
@@ -69,10 +69,11 @@ static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocume
 
 static QColor readColorElement(const QDomElement & element)
 {
-    return QColor(
+    return {
         element.attribute(Serializer::DataKeywords::Graph::Node::Color::R, "255").toInt(),
         element.attribute(Serializer::DataKeywords::Graph::Node::Color::G, "255").toInt(),
-        element.attribute(Serializer::DataKeywords::Graph::Node::Color::B, "255").toInt());
+        element.attribute(Serializer::DataKeywords::Graph::Node::Color::B, "255").toInt()
+    };
 }
 
 static QString readFirstTextNodeContent(const QDomElement & element)
@@ -145,16 +146,16 @@ static std::pair<int, int> readEdge(const QDomElement & element)
 
 MindMapDataPtr Serializer::fromXml(QDomDocument document)
 {
-    const QDomElement root = document.documentElement();
+    const auto root = document.documentElement();
     const auto version = root.attribute(DataKeywords::Header::APPLICATION_VERSION, "UNDEFINED");
 
     auto data = make_shared<MindMapData>();
     data->setVersion(version);
 
-    QDomNode domNode = root.firstChild();
+    auto domNode = root.firstChild();
     while (!domNode.isNull())
     {
-        QDomElement element = domNode.toElement();
+        auto element = domNode.toElement();
         if (!element.isNull())
         {
             // Read a node element
@@ -184,8 +185,7 @@ MindMapDataPtr Serializer::fromXml(QDomDocument document)
 QDomDocument Serializer::toXml(MindMapData & mindMapData)
 {
     QDomDocument doc;
-    QDomElement root = doc.createElement(Serializer::DataKeywords::Header::DESIGN);
-
+    auto root = doc.createElement(Serializer::DataKeywords::Header::DESIGN);
     root.setAttribute(Serializer::DataKeywords::Header::APPLICATION_VERSION, Config::APPLICATION_VERSION);
     doc.appendChild(root);
 

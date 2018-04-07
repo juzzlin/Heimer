@@ -54,8 +54,8 @@ void SerializerTest::testSingleEdge()
     const auto inData = Serializer::fromXml(document);
 
     auto edges = inData->graph().getEdgesFromNode(outNode0);
-    QCOMPARE(edges.size(), 1);
-    QCOMPARE(edges.count(outNode1->index()), 1);
+    QCOMPARE(edges.size(), static_cast<size_t>(1));
+    QCOMPARE(edges.count(outNode1->index()), static_cast<size_t>(1));
 }
 
 void SerializerTest::testSingleNode()

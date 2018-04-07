@@ -39,8 +39,8 @@ void GraphTest::testAddEdge()
 
     auto edges = dut.getEdgesFromNode(node0);
 
-    QCOMPARE(edges.size(), 1);
-    QCOMPARE(edges.count(node1->index()), 1);
+    QCOMPARE(edges.size(), static_cast<size_t>(1));
+    QCOMPARE(edges.count(node1->index()), static_cast<size_t>(1));
 }
 
 void GraphTest::testAddNode()
@@ -87,7 +87,7 @@ void GraphTest::testGetEdges()
     dut.addEdge(node1, node0);
 
     auto edges = dut.getEdges();
-    QCOMPARE(edges.size(), 2);
+    QCOMPARE(edges.size(), static_cast<size_t>(2));
 
     auto iter = std::find_if(edges.begin(), edges.end(), [=](const Graph::Edge & edge){
         return edge.first == node0->index() && edge.second == node1->index();
@@ -113,7 +113,7 @@ void GraphTest::testGetNodes()
     dut.addNode(node1);
 
     auto nodes = dut.getNodes();
-    QCOMPARE(nodes.size(), 2);
+    QCOMPARE(nodes.size(), static_cast<size_t>(2));
 
     auto iter = std::find_if(nodes.begin(), nodes.end(), [](NodeBasePtr node){
         return node->index() == 0;
@@ -145,7 +145,7 @@ void GraphTest::testGetNodeByIndex_NotFound()
 
     dut.addNode(node);
 
-    QCOMPARE(dut.getNode(1), nullptr);
+    QVERIFY(dut.getNode(1) == nullptr);
 }
 
 QTEST_GUILESS_MAIN(GraphTest)

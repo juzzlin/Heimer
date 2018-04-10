@@ -33,5 +33,3 @@ static constexpr auto WEB_SITE_URL = "http://juzzlin.github.io/Dementia";
 static constexpr auto QSETTINGS_SOFTWARE_NAME = APPLICATION_NAME;
 
 } // Config
-
-

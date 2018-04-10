@@ -177,7 +177,7 @@ void MainWindow::init()
     move(geometry.width() / 2 - width() / 2,
         geometry.height() / 2 - height() / 2);
 
-    m_mediator->initializeScene(true);
+    m_mediator->initializeView(true);
 
     populateMenuBar();
 }
@@ -223,7 +223,7 @@ void MainWindow::openArgMindMap()
 
 void MainWindow::openMindMap()
 {
-    MCLogger().info() << "Open file..";
+    MCLogger().info() << "Open file";
 
     const auto path = loadRecentPath();
     const auto fileName = QFileDialog::getOpenFileName(this, tr("Open File"), path, getFileDialogFileText());
@@ -275,7 +275,7 @@ void MainWindow::showAboutQtDlg()
 
 void MainWindow::doOpenMindMap(QString fileName)
 {
-    MCLogger().info() << "Opening '" << fileName.toStdString() << "'..";
+    MCLogger().info() << "Opening '" << fileName.toStdString();
 
     if (m_mediator->openMindMap(fileName))
     {
@@ -382,7 +382,7 @@ void MainWindow::showMessageBox(QString message)
 
 void MainWindow::initializeNewMindMap()
 {
-    MCLogger().info() << "New file..";
+    MCLogger().info() << "New file";
 
     m_mediator->initializeNewMindMap();
 

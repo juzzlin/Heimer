@@ -16,8 +16,9 @@
 #ifndef MEDIATOR_HPP
 #define MEDIATOR_HPP
 
-#include <QString>
+#include <QObject>
 #include <QPointF>
+#include <QString>
 
 #include "node.hpp"
 
@@ -33,8 +34,10 @@ class QGraphicsItem;
  *  - MainWindow <-> Mediator <-> QGraphicsScene / EditorView / EditorData
  *  - EditorView <-> Mediator <-> EditorData
  */
-class Mediator
+class Mediator : public QObject
 {
+    Q_OBJECT
+
 public:
 
     explicit Mediator(MainWindow & mainWindow);
@@ -57,7 +60,7 @@ public:
 
     void initializeNewMindMap();
 
-    void initializeScene(bool showHelloText);
+    void initializeView(bool showHelloText);
 
     bool isUndoable() const;
 

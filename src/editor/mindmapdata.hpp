@@ -33,6 +33,10 @@ public:
 
     virtual ~MindMapData();
 
+    QColor backgroundColor() const;
+
+    void setBackgroundColor(const QColor & backgroundColor);
+
     QString fileName() const;
 
     void setFileName(QString fileName);
@@ -52,6 +56,8 @@ private:
     QString m_fileName;
 
     QString m_version;
+
+    QColor m_backgroundColor = QColor(128, 200, 255, 255);
 
     Graph m_graph;
 };

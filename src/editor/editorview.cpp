@@ -40,16 +40,32 @@
 EditorView::EditorView(Mediator & mediator)
     : m_mediator(mediator)
 {
+    createBackgroundContextMenuActions();
     createNodeContextMenuActions();
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
+void EditorView::createBackgroundContextMenuActions()
+{
+    const QString dummy1(QWidget::tr("Set background color"));
+    const auto setColorAction = new QAction(dummy1, &m_backgroundContextMenu);
+    QObject::connect(setColorAction, &QAction::triggered, [this] () {
+        const auto color = QColorDialog::getColor(Qt::white, this);
+        if (color.isValid()) {
+            emit backgroundColorChanged(color);
+        }
+    });
+
+    // Populate the menu
+    m_backgroundContextMenu.addAction(setColorAction);
+}
+
 void EditorView::createNodeContextMenuActions()
 {
-    const QString dummy1(QWidget::tr("Set color.."));
-    const auto setColorAction = new QAction(dummy1, &m_targetNodeContextMenu);
+    const QString dummy1(QWidget::tr("Set node color"));
+    const auto setColorAction = new QAction(dummy1, &m_nodeContextMenu);
     QObject::connect(setColorAction, &QAction::triggered, [this] () {
         assert(m_mediator.selectedNode());
         const auto color = QColorDialog::getColor(Qt::white, this);
@@ -59,7 +75,7 @@ void EditorView::createNodeContextMenuActions()
     });
 
     // Populate the menu
-    m_targetNodeContextMenu.addAction(setColorAction);
+    m_nodeContextMenu.addAction(setColorAction);
 }
 
 void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
@@ -73,6 +89,10 @@ void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
     {
         m_mediator.dadStore().setSourceNode(nullptr, DragAndDropStore::Action::Scroll);
         setDragMode(ScrollHandDrag);
+    }
+    else if (event.button() == Qt::RightButton)
+    {
+        openBackgroundContextMenu();
     }
 }
 
@@ -232,9 +252,14 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
     QGraphicsView::mouseReleaseEvent(event);
 }
 
+void EditorView::openBackgroundContextMenu()
+{
+    m_backgroundContextMenu.exec(mapToGlobal(m_clickedPos));
+}
+
 void EditorView::openNodeContextMenu()
 {
-    m_targetNodeContextMenu.exec(mapToGlobal(m_clickedPos));
+    m_nodeContextMenu.exec(mapToGlobal(m_clickedPos));
 }
 
 void EditorView::showDummyDragEdge(bool show)

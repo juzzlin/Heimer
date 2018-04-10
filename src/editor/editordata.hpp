@@ -19,8 +19,8 @@
 #include <memory>
 #include <vector>
 
-#include <QString>
 #include <QPointF>
+#include <QString>
 
 #include "draganddropstore.hpp"
 #include "fileexception.hpp"
@@ -42,6 +42,8 @@ public:
     void addEdge(NodeBasePtr node0, NodeBasePtr node1);
 
     NodeBasePtr addNodeAt(QPointF pos);
+
+    QColor backgroundColor() const;
 
     DragAndDropStore & dadStore();
 

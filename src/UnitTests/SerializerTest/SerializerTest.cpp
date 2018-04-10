@@ -35,6 +35,19 @@ void SerializerTest::testEmptyDesign()
     QCOMPARE(QString(inData->version()), QString(VERSION));
 }
 
+void SerializerTest::testBackgroundColor()
+{
+    MindMapData outData;
+    outData.setBackgroundColor(QColor(1, 2, 3));
+
+    // Serialize
+    const auto document = Serializer::toXml(outData);
+
+    // Deserialize
+    const auto inData = Serializer::fromXml(document);
+    QCOMPARE(inData->backgroundColor(), outData.backgroundColor());
+}
+
 void SerializerTest::testSingleEdge()
 {
     MindMapData outData;

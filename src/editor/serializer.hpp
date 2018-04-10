@@ -24,39 +24,44 @@ namespace Serializer {
 
     struct DataKeywords
     {
-        struct Header
+        struct Design
         {
             static constexpr auto DESIGN = "design";
 
             static constexpr auto APPLICATION_VERSION = "version";
-        };
 
-        struct Graph
-        {
-            static constexpr auto NODE = "node";
+            static constexpr auto COLOR = "color";
 
-            struct Node
+            static constexpr auto GRAPH = "graph";
+
+            // Used for Design and Node
+            struct Color
             {
-                static constexpr auto COLOR = "color";
-                static constexpr auto INDEX = "index";
-                static constexpr auto TEXT = "text";
-                static constexpr auto X = "x";
-                static constexpr auto Y = "y";
-
-                struct Color
-                {
-                    static constexpr auto R = "r";
-                    static constexpr auto G = "g";
-                    static constexpr auto B = "b";
-                };
+                static constexpr auto R = "r";
+                static constexpr auto G = "g";
+                static constexpr auto B = "b";
             };
 
-            static constexpr auto EDGE = "edge";
-
-            struct Edge
+            struct Graph
             {
-                static constexpr auto INDEX0 = "index0";
-                static constexpr auto INDEX1 = "index1";
+                static constexpr auto NODE = "node";
+
+                struct Node
+                {
+                    static constexpr auto COLOR = "color";
+                    static constexpr auto INDEX = "index";
+                    static constexpr auto TEXT = "text";
+                    static constexpr auto X = "x";
+                    static constexpr auto Y = "y";
+                };
+
+                static constexpr auto EDGE = "edge";
+
+                struct Edge
+                {
+                    static constexpr auto INDEX0 = "index0";
+                    static constexpr auto INDEX1 = "index1";
+                };
             };
         };
     };

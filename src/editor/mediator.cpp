@@ -38,6 +38,11 @@ Mediator::Mediator(MainWindow & mainWindow)
     , m_mainWindow(mainWindow)
 {
     m_editorView->setParent(&mainWindow);
+
+    connect(m_editorView, &EditorView::backgroundColorChanged, [=] (QColor color) {
+        m_editorData->mindMapData()->setBackgroundColor(color);
+        m_editorView->setBackgroundBrush(QBrush(color));
+    });
 }
 
 void Mediator::addExistingGraphToScene()
@@ -115,6 +120,8 @@ bool Mediator::hasNodes() const
 
 void Mediator::initializeNewMindMap()
 {
+    MCLogger().info() << "Initializing a new mind map";
+
     assert(m_editorData);
 
     m_editorData->setMindMapData(std::make_shared<MindMapData>());
@@ -132,13 +139,17 @@ void Mediator::initializeNewMindMap()
     center();
 }
 
-void Mediator::initializeScene(bool showHelloText)
+void Mediator::initializeView(bool showHelloText)
 {
+    MCLogger().info() << "Initializing view";
+
     // Set scene to the view
     m_editorView->setScene(m_editorScene);
     m_editorView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     m_editorView->setMouseTracking(true);
-    m_editorView->setBackgroundBrush(QBrush(QColor(128, 200, 255, 255)));
+
+    m_editorView->setBackgroundBrush(QBrush(m_editorData->backgroundColor()));
+
     m_editorView->showHelloText(showHelloText);
 
     m_mainWindow.setCentralWidget(m_editorView);
@@ -171,7 +182,7 @@ bool Mediator::openMindMap(QString fileName)
         delete m_editorScene;
         m_editorScene = new EditorScene;
 
-        initializeScene(false);
+        initializeView(false);
 
         m_editorData->loadMindMapData(fileName);
 

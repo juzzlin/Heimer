@@ -14,6 +14,8 @@
 // along with Dementia. If not, see <http://www.gnu.org/licenses/>.
 
 #include "editordata.hpp"
+
+#include "config.hpp"
 #include "mediator.hpp"
 #include "node.hpp"
 #include "serializer.hpp"
@@ -29,6 +31,11 @@ using std::make_shared;
 EditorData::EditorData(Mediator & mediator)
     : m_mediator(mediator)
 {}
+
+QColor EditorData::backgroundColor() const
+{
+    return m_mindMapData ? m_mindMapData->backgroundColor() : QColor(128, 200, 255, 255);
+}
 
 void EditorData::clearScene()
 {

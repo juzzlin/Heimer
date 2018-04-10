@@ -19,6 +19,7 @@
 #include "node.hpp"
 #include "mclogger.hh"
 
+#include <functional>
 #include <map>
 
 #include <QDomElement>
@@ -31,23 +32,23 @@ static void writeNodes(MindMapData & mindMapData, QDomElement & root, QDomDocume
 {
     for (auto node : mindMapData.graph().getNodes())
     {
-        auto nodeElement = doc.createElement(Serializer::DataKeywords::Graph::NODE);
-        nodeElement.setAttribute(Serializer::DataKeywords::Graph::Node::INDEX, node->index());
-        nodeElement.setAttribute(Serializer::DataKeywords::Graph::Node::X, static_cast<int>(node->location().x() * SCALE));
-        nodeElement.setAttribute(Serializer::DataKeywords::Graph::Node::Y, static_cast<int>(node->location().y() * SCALE));
+        auto nodeElement = doc.createElement(Serializer::DataKeywords::Design::Graph::NODE);
+        nodeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Node::INDEX, node->index());
+        nodeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Node::X, static_cast<int>(node->location().x() * SCALE));
+        nodeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Node::Y, static_cast<int>(node->location().y() * SCALE));
         root.appendChild(nodeElement);
 
         // Create a child node for the text content
-        auto textElement = doc.createElement(Serializer::DataKeywords::Graph::Node::TEXT);
+        auto textElement = doc.createElement(Serializer::DataKeywords::Design::Graph::Node::TEXT);
         nodeElement.appendChild(textElement);
         auto textNode = doc.createTextNode(node->text());
         textElement.appendChild(textNode);
 
         // Create a child node for color
-        auto colorElement = doc.createElement(Serializer::DataKeywords::Graph::Node::COLOR);
-        colorElement.setAttribute(Serializer::DataKeywords::Graph::Node::Color::R, node->color().red());
-        colorElement.setAttribute(Serializer::DataKeywords::Graph::Node::Color::G, node->color().green());
-        colorElement.setAttribute(Serializer::DataKeywords::Graph::Node::Color::B, node->color().blue());
+        auto colorElement = doc.createElement(Serializer::DataKeywords::Design::Graph::Node::COLOR);
+        colorElement.setAttribute(Serializer::DataKeywords::Design::Color::R, node->color().red());
+        colorElement.setAttribute(Serializer::DataKeywords::Design::Color::G, node->color().green());
+        colorElement.setAttribute(Serializer::DataKeywords::Design::Color::B, node->color().blue());
         nodeElement.appendChild(colorElement);
     }
 }
@@ -59,9 +60,9 @@ static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocume
         auto edges = mindMapData.graph().getEdgesFromNode(node);
         for (auto index1 : edges)
         {
-            auto nodeElement = doc.createElement(Serializer::DataKeywords::Graph::EDGE);
-            nodeElement.setAttribute(Serializer::DataKeywords::Graph::Edge::INDEX0, node->index());
-            nodeElement.setAttribute(Serializer::DataKeywords::Graph::Edge::INDEX1, index1);
+            auto nodeElement = doc.createElement(Serializer::DataKeywords::Design::Graph::EDGE);
+            nodeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX0, node->index());
+            nodeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX1, index1);
             root.appendChild(nodeElement);
         }
     }
@@ -70,9 +71,9 @@ static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocume
 static QColor readColorElement(const QDomElement & element)
 {
     return {
-        element.attribute(Serializer::DataKeywords::Graph::Node::Color::R, "255").toInt(),
-        element.attribute(Serializer::DataKeywords::Graph::Node::Color::G, "255").toInt(),
-        element.attribute(Serializer::DataKeywords::Graph::Node::Color::B, "255").toInt()
+        element.attribute(Serializer::DataKeywords::Design::Color::R, "255").toInt(),
+        element.attribute(Serializer::DataKeywords::Design::Color::G, "255").toInt(),
+        element.attribute(Serializer::DataKeywords::Design::Color::B, "255").toInt()
     };
 }
 
@@ -94,6 +95,29 @@ static void elementWarning(const QDomElement & element)
     MCLogger().warning() << "Unknown element '" << element.nodeName().toStdString() << "'";
 }
 
+// Generic helper that loops through element's children
+static void readChildren(const QDomElement & root, std::map<QString, std::function<void (const QDomElement &)> > handlerMap)
+{
+    auto domNode = root.firstChild();
+    while (!domNode.isNull())
+    {
+        auto element = domNode.toElement();
+        if (!element.isNull())
+        {
+            if (handlerMap.count(element.nodeName()))
+            {
+                handlerMap[element.nodeName()](element);
+            }
+            else
+            {
+                elementWarning(element);
+            }
+        }
+
+        domNode = domNode.nextSibling();
+    }
+}
+
 // The purpose of this #ifdef is to build GUILESS unit tests so that QTEST_GUILESS_MAIN can be used
 #ifdef DEMENTIA_UNIT_TEST
 static NodeBasePtr readNode(const QDomElement & element)
@@ -107,31 +131,23 @@ static NodePtr readNode(const QDomElement & element)
     // Init a new node. QGraphicsScene will take the ownership eventually.
     auto node = make_shared<Node>();
 #endif
-    node->setIndex(element.attribute(Serializer::DataKeywords::Graph::Node::INDEX, "-1").toInt());
+    node->setIndex(element.attribute(Serializer::DataKeywords::Design::Graph::Node::INDEX, "-1").toInt());
     node->setLocation(QPointF(
-        element.attribute(Serializer::DataKeywords::Graph::Node::X, "0").toInt() / SCALE,
-        element.attribute(Serializer::DataKeywords::Graph::Node::Y, "0").toInt() / SCALE));
+        element.attribute(Serializer::DataKeywords::Design::Graph::Node::X, "0").toInt() / SCALE,
+        element.attribute(Serializer::DataKeywords::Design::Graph::Node::Y, "0").toInt() / SCALE));
 
-    for (int i = 0; i < element.childNodes().count(); i++)
-    {
-        const auto child = element.childNodes().at(i);
-        if (child.isElement())
+    readChildren(element, {
         {
-            const auto element = child.toElement();
-            if (element.nodeName() == Serializer::DataKeywords::Graph::Node::TEXT)
-            {
-                node->setText(readFirstTextNodeContent(element));
+            QString(Serializer::DataKeywords::Design::Graph::Node::TEXT), [=] (const QDomElement & e) {
+                node->setText(readFirstTextNodeContent(e));
             }
-            else if (element.nodeName() == Serializer::DataKeywords::Graph::Node::COLOR)
-            {
-                node->setColor(readColorElement(element));
+        },
+        {
+            QString(Serializer::DataKeywords::Design::Graph::Node::COLOR), [=] (const QDomElement & e) {
+                node->setColor(readColorElement(e));
             }
-            else
-            {
-                elementWarning(element);
-            }
-        }
-    }
+        },
+    });
 
     return node;
 }
@@ -139,45 +155,48 @@ static NodePtr readNode(const QDomElement & element)
 static std::pair<int, int> readEdge(const QDomElement & element)
 {
     return {
-        element.attribute(Serializer::DataKeywords::Graph::Edge::INDEX0, "-1").toInt(),
-        element.attribute(Serializer::DataKeywords::Graph::Edge::INDEX1, "-1").toInt()
+        element.attribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX0, "-1").toInt(),
+        element.attribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX1, "-1").toInt()
     };
+}
+
+static void readGraph(const QDomElement & graph, MindMapDataPtr data)
+{
+    readChildren(graph, {
+        {
+            QString(Serializer::DataKeywords::Design::Graph::NODE), [=] (const QDomElement & e) {
+                data->graph().addNode(readNode(e));
+            }
+        },
+        {
+            QString(Serializer::DataKeywords::Design::Graph::EDGE), [=] (const QDomElement & e) {
+                auto && edge = readEdge(e);
+                data->graph().addEdge(edge.first, edge.second);
+            }
+        },
+    });
 }
 
 MindMapDataPtr Serializer::fromXml(QDomDocument document)
 {
-    const auto root = document.documentElement();
-    const auto version = root.attribute(DataKeywords::Header::APPLICATION_VERSION, "UNDEFINED");
+    const auto design = document.documentElement();
+    const auto version = design.attribute(DataKeywords::Design::APPLICATION_VERSION, "UNDEFINED");
 
     auto data = make_shared<MindMapData>();
     data->setVersion(version);
 
-    auto domNode = root.firstChild();
-    while (!domNode.isNull())
-    {
-        auto element = domNode.toElement();
-        if (!element.isNull())
+    readChildren(design, {
         {
-            // Read a node element
-            if (element.nodeName() == DataKeywords::Graph::NODE)
-            {
-                auto node = readNode(element);
-                data->graph().addNode(node);
+            QString(Serializer::DataKeywords::Design::GRAPH), [=] (const QDomElement & e) {
+                readGraph(e, data);
             }
-            // Read an edge element
-            else if (element.nodeName() == DataKeywords::Graph::EDGE)
-            {
-                auto edge = readEdge(element);
-                data->graph().addEdge(edge.first, edge.second);
-            }
-            else
-            {
-                elementWarning(element);
+        },
+        {
+            QString(Serializer::DataKeywords::Design::COLOR), [=] (const QDomElement & e) {
+                data->setBackgroundColor(readColorElement(e));
             }
         }
-
-        domNode = domNode.nextSibling();
-    }
+    });
 
     return data;
 }
@@ -185,12 +204,22 @@ MindMapDataPtr Serializer::fromXml(QDomDocument document)
 QDomDocument Serializer::toXml(MindMapData & mindMapData)
 {
     QDomDocument doc;
-    auto root = doc.createElement(Serializer::DataKeywords::Header::DESIGN);
-    root.setAttribute(Serializer::DataKeywords::Header::APPLICATION_VERSION, Config::APPLICATION_VERSION);
-    doc.appendChild(root);
 
-    writeNodes(mindMapData, root, doc);
-    writeEdges(mindMapData, root, doc);
+    auto design = doc.createElement(Serializer::DataKeywords::Design::DESIGN);
+    design.setAttribute(Serializer::DataKeywords::Design::APPLICATION_VERSION, Config::APPLICATION_VERSION);
+    doc.appendChild(design);
+
+    auto colorElement = doc.createElement(Serializer::DataKeywords::Design::COLOR);
+    colorElement.setAttribute(Serializer::DataKeywords::Design::Color::R, mindMapData.backgroundColor().red());
+    colorElement.setAttribute(Serializer::DataKeywords::Design::Color::G, mindMapData.backgroundColor().green());
+    colorElement.setAttribute(Serializer::DataKeywords::Design::Color::B, mindMapData.backgroundColor().blue());
+    design.appendChild(colorElement);
+
+    auto graph = doc.createElement(Serializer::DataKeywords::Design::GRAPH);
+    design.appendChild(graph);
+
+    writeNodes(mindMapData, graph, doc);
+    writeEdges(mindMapData, graph, doc);
 
     return doc;
 }

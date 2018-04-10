@@ -45,6 +45,16 @@ void MindMapData::copyGraph(const MindMapData & other)
     //}
 }
 
+QColor MindMapData::backgroundColor() const
+{
+    return m_backgroundColor;
+}
+
+void MindMapData::setBackgroundColor(const QColor & backgroundColor)
+{
+    m_backgroundColor = backgroundColor;
+}
+
 QString MindMapData::fileName() const
 {
     return m_fileName;

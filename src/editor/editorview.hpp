@@ -56,7 +56,13 @@ protected:
 
     void wheelEvent(QWheelEvent * event) override;
 
+signals:
+
+    void backgroundColorChanged(QColor color);
+
 private:
+
+    void createBackgroundContextMenuActions();
 
     void createNodeContextMenuActions();
 
@@ -72,6 +78,8 @@ private:
 
     void handleRightButtonClickOnNode(Node & node);
 
+    void openBackgroundContextMenu();
+
     void openNodeContextMenu();
 
     void showDummyDragEdge(bool show);
@@ -80,7 +88,9 @@ private:
 
     void updateScale(int value);
 
-    QMenu m_targetNodeContextMenu;
+    QMenu m_backgroundContextMenu;
+
+    QMenu m_nodeContextMenu;
 
     QPoint m_clickedPos;
 

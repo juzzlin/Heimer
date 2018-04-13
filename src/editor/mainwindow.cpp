@@ -177,7 +177,7 @@ void MainWindow::init()
     move(geometry.width() / 2 - width() / 2,
         geometry.height() / 2 - height() / 2);
 
-    m_mediator->initializeView(true);
+    m_mediator->showHelloText();
 
     populateMenuBar();
 }

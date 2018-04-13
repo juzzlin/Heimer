@@ -42,9 +42,9 @@ public:
 
     ~EditorView();
 
-    void initialize();
-
     void showHelloText(bool show);
+
+    void resetDummyDragItems();
 
 protected:
 

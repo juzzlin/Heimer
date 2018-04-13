@@ -60,8 +60,6 @@ public:
 
     void initializeNewMindMap();
 
-    void initializeView(bool showHelloText);
-
     bool isUndoable() const;
 
     bool isRedoable() const;
@@ -86,6 +84,8 @@ public:
 
     void setupMindMapAfterUndoOrRedo();
 
+    void showHelloText();
+
     void undo();
 
     void updateView();
@@ -93,6 +93,8 @@ public:
 private:
 
     void addExistingGraphToScene();
+
+    void initializeView();
 
     EditorData * m_editorData;
 

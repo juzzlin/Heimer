@@ -43,6 +43,8 @@ Mediator::Mediator(MainWindow & mainWindow)
         m_editorData->mindMapData()->setBackgroundColor(color);
         m_editorView->setBackgroundBrush(QBrush(color));
     });
+
+    initializeView();
 }
 
 void Mediator::addExistingGraphToScene()
@@ -129,8 +131,9 @@ void Mediator::initializeNewMindMap()
     delete m_editorScene;
     m_editorScene = new EditorScene;
 
-    m_editorView->initialize();
-    m_editorView->setScene(m_editorScene);
+    m_editorView->resetDummyDragItems();
+
+    initializeView();
 
     m_editorData->addNodeAt(QPointF(0, 0));
 
@@ -139,18 +142,16 @@ void Mediator::initializeNewMindMap()
     center();
 }
 
-void Mediator::initializeView(bool showHelloText)
+void Mediator::initializeView()
 {
     MCLogger().info() << "Initializing view";
 
     // Set scene to the view
     m_editorView->setScene(m_editorScene);
-    m_editorView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    m_editorView->setMouseTracking(true);
+
+    assert(m_editorData);
 
     m_editorView->setBackgroundBrush(QBrush(m_editorData->backgroundColor()));
-
-    m_editorView->showHelloText(showHelloText);
 
     m_mainWindow.setCentralWidget(m_editorView);
     m_mainWindow.setContentsMargins(0, 0, 0, 0);
@@ -182,9 +183,9 @@ bool Mediator::openMindMap(QString fileName)
         delete m_editorScene;
         m_editorScene = new EditorScene;
 
-        initializeView(false);
-
         m_editorData->loadMindMapData(fileName);
+
+        initializeView();
 
         addExistingGraphToScene();
 
@@ -242,6 +243,11 @@ void Mediator::setupMindMapAfterUndoOrRedo()
     m_editorView->setScene(m_editorScene);
 
     addExistingGraphToScene();
+}
+
+void Mediator::showHelloText()
+{
+    m_editorView->showHelloText(true);
 }
 
 void Mediator::undo()

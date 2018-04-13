@@ -45,6 +45,9 @@ EditorView::EditorView(Mediator & mediator)
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    setMouseTracking(true);
 }
 
 void EditorView::createBackgroundContextMenuActions()
@@ -152,13 +155,6 @@ void EditorView::handleRightButtonClickOnNode(Node & node)
     openNodeContextMenu();
 }
 
-void EditorView::initialize()
-{
-    // Ensure new dummy nodes and related graphics items are created (again) when needed.
-    m_dummyDragEdge = nullptr;
-    m_dummyDragNode = nullptr;
-}
-
 void EditorView::mouseMoveEvent(QMouseEvent * event)
 {
     m_mappedPos = mapToScene(event->pos());
@@ -260,6 +256,13 @@ void EditorView::openBackgroundContextMenu()
 void EditorView::openNodeContextMenu()
 {
     m_nodeContextMenu.exec(mapToGlobal(m_clickedPos));
+}
+
+void EditorView::resetDummyDragItems()
+{
+    // Ensure new dummy nodes and related graphics items are created (again) when needed.
+    m_dummyDragEdge = nullptr;
+    m_dummyDragNode = nullptr;
 }
 
 void EditorView::showDummyDragEdge(bool show)

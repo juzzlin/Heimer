@@ -205,6 +205,9 @@ QDomDocument Serializer::toXml(MindMapData & mindMapData)
 {
     QDomDocument doc;
 
+    auto processingInstruction = doc.createProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
+    doc.appendChild(processingInstruction);
+
     auto design = doc.createElement(Serializer::DataKeywords::Design::DESIGN);
     design.setAttribute(Serializer::DataKeywords::Design::APPLICATION_VERSION, Config::APPLICATION_VERSION);
     doc.appendChild(design);

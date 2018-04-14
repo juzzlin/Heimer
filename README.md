@@ -1,8 +1,6 @@
 ## Dementia
 
-Dementia is an application for creating mind maps.
-
-It's currently under development and CANNOT BE USED FOR ANYTHING!
+Dementia is an application for creating mind maps targeted for Linux and Windows.
 
 ## License
 

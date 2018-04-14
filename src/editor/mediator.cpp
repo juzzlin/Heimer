@@ -139,7 +139,7 @@ void Mediator::initializeNewMindMap()
 
     addExistingGraphToScene();
 
-    center();
+    m_editorView->zoomToFit(m_editorScene->getNodeBoundingRect());
 }
 
 void Mediator::initializeView()
@@ -189,7 +189,7 @@ bool Mediator::openMindMap(QString fileName)
 
         addExistingGraphToScene();
 
-        center();
+        m_editorView->zoomToFit(m_editorScene->getNodeBoundingRect());
     }
     catch (const FileException & e)
     {

@@ -326,11 +326,20 @@ void EditorView::wheelEvent(QWheelEvent * event)
     {
         m_scaleValue += sensitivity;
     }
-    else if (m_scaleValue > sensitivity)
+    else if (event->delta() < 0)
     {
         m_scaleValue -= sensitivity;
     }
 
+    m_scaleValue = std::min(m_scaleValue, 200);
+    m_scaleValue = std::max(m_scaleValue, 10);
+
+    updateScale(m_scaleValue);
+}
+
+void EditorView::zoomToFit(QRectF nodeBoundingRect)
+{
+    m_scaleValue = rect().height() * 100 / nodeBoundingRect.height();
     updateScale(m_scaleValue);
 }
 

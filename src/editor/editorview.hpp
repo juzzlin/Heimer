@@ -46,6 +46,8 @@ public:
 
     void resetDummyDragItems();
 
+    void zoomToFit(QRectF nodeBoundingRect);
+
 protected:
 
     void mouseMoveEvent(QMouseEvent * event) override;

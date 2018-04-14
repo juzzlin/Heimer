@@ -44,6 +44,32 @@ EditorScene::EditorScene()
     addItem(bottomLine);
 }
 
+QRectF EditorScene::getNodeBoundingRect() const
+{
+    QRectF rect;
+    for (auto && item : items())
+    {
+        if (auto node = dynamic_cast<Node *>(item))
+        {
+            rect = rect.united(node->boundingRect().adjusted(node->pos().x(), node->pos().y(), node->pos().x(), node->pos().y()));
+        }
+    }
+
+    const int minSize = 600;
+
+    if (rect.width() < minSize)
+    {
+        rect = rect.adjusted(-minSize / 2, 0, minSize / 2, 0);
+    }
+
+    if (rect.height() < minSize)
+    {
+        rect = rect.adjusted(0, -minSize / 2, 0, minSize / 2);
+    }
+
+    return rect;
+}
+
 bool EditorScene::hasEdge(Node & node0, Node & node1)
 {
     for (auto && item : items())

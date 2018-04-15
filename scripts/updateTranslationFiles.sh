@@ -7,8 +7,8 @@ if ! which ${LUPDATE}; then
 fi
 
 for LANG in cs de fi fr it; do
-    ${LUPDATE} src/game/*.cpp src/game/menu/*.cpp -ts src/game/translations/dementia-game_${LANG}.ts
-    ${LUPDATE} src/editor/*.cpp -ts src/editor/translations/dementia-editor_${LANG}.ts
+    ${LUPDATE} src/game/*.cpp src/game/menu/*.cpp -ts src/game/translations/heimer-game_${LANG}.ts
+    ${LUPDATE} src/editor/*.cpp -ts src/editor/translations/heimer-editor_${LANG}.ts
 done
 
 echo "Done."

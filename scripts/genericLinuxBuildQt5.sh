@@ -24,7 +24,7 @@ NUM_CPUS=$(cat /proc/cpuinfo | grep processor | wc -l)
 
 # Package naming
 
-NAME=dementia
+NAME=heimer
 VERSION=${DUSTRAC_RELEASE_VERSION?"DUSTRAC_RELEASE_VERSION_NOT_SET"}
 ARCH=linux-x86_64
 QT=qt5
@@ -46,8 +46,8 @@ mkdir $PACKAGE_PATH
 mkdir -p data/translations
 cp -v ./src/game/translations/*.qm data/translations   &&
 cp -v ./src/editor/translations/*.qm data/translations &&
-cp -v ./src/game/dementia-game $PACKAGE_PATH            &&
-cp -v ./src/editor/dementia-editor $PACKAGE_PATH        &&
+cp -v ./src/game/heimer-game $PACKAGE_PATH            &&
+cp -v ./src/editor/heimer-editor $PACKAGE_PATH        &&
 cp -rv data $PACKAGE_PATH                              || exit 1
 
 TEXT_FILES="AUTHORS CHANGELOG COPYING README.md"
@@ -57,21 +57,21 @@ cp -v $TEXT_FILES $PACKAGE_PATH || exit 1
 
 DEPS="ogg vorbis openal"
 for lib in $DEPS; do
-cp -v $(ldd $PACKAGE_PATH/dementia-game | grep $lib | awk '{print $3}') $PACKAGE_PATH
+cp -v $(ldd $PACKAGE_PATH/heimer-game | grep $lib | awk '{print $3}') $PACKAGE_PATH
 done
 
 # Create start script for the game
 
-cp $PACKAGE_PATH/dementia-game $PACKAGE_PATH/g.bin
-SCRIPT=$PACKAGE_PATH/dementia-game
+cp $PACKAGE_PATH/heimer-game $PACKAGE_PATH/g.bin
+SCRIPT=$PACKAGE_PATH/heimer-game
 echo "#!/bin/sh" > $SCRIPT
 echo "LD_LIBRARY_PATH=. ./g.bin" >> $SCRIPT
 chmod 755 $SCRIPT
 
 # Create start script for the editor
 
-cp $PACKAGE_PATH/dementia-editor $PACKAGE_PATH/e.bin
-SCRIPT=$PACKAGE_PATH/dementia-editor
+cp $PACKAGE_PATH/heimer-editor $PACKAGE_PATH/e.bin
+SCRIPT=$PACKAGE_PATH/heimer-editor
 echo "#!/bin/sh" > $SCRIPT
 echo "LD_LIBRARY_PATH=. ./e.bin" >> $SCRIPT
 chmod 755 $SCRIPT

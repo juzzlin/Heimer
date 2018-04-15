@@ -2,7 +2,7 @@
 function(resolve_install_paths)
 
     # Set default install paths for release builds.
-    set(DEFAULT_DATA_PATH_BASE share/applications/dementia)
+    set(DEFAULT_DATA_PATH_BASE share/applications/heimer)
     if(NOT DATA_PATH)
         set(DATA_PATH ${CMAKE_INSTALL_PREFIX}/${DEFAULT_DATA_PATH_BASE}/data)
     endif()
@@ -54,10 +54,10 @@ function(setup_install_targets BIN_PATH DATA_PATH DOC_PATH)
 
     if(ReleaseBuild)
         # Install .desktop files
-        install(FILES ${CMAKE_BINARY_DIR}/dementia.desktop DESTINATION share/applications)
+        install(FILES ${CMAKE_BINARY_DIR}/heimer.desktop DESTINATION share/applications)
 
         # Install app store meta data
-        install(FILES src/dementia.appdata.xml DESTINATION share/metainfo)
+        install(FILES src/heimer.appdata.xml DESTINATION share/metainfo)
 
         # Install icons
         install(FILES data/icons/icon.png DESTINATION share/pixmaps)
@@ -71,7 +71,7 @@ function(setup_install_targets BIN_PATH DATA_PATH DOC_PATH)
 
     set(QT_VER_STR "qt5")
 
-    set(CPACK_PACKAGE_FILE_NAME "dementia-${VERSION}-linux-${CMAKE_HOST_SYSTEM_PROCESSOR}-${QT_VER_STR}")
+    set(CPACK_PACKAGE_FILE_NAME "heimer-${VERSION}-linux-${CMAKE_HOST_SYSTEM_PROCESSOR}-${QT_VER_STR}")
     set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/COPYING)
     set(CPACK_RESOURCE_FILE_README ${CMAKE_SOURCE_DIR}/README.md)
 

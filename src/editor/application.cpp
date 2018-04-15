@@ -1,17 +1,17 @@
-// This file is part of Dementia.
+// This file is part of Heimer.
 // Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
 //
-// Dementia is free software: you can redistribute it and/or modify
+// Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// Dementia is distributed in the hope that it will be useful,
+// Heimer is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Dementia. If not, see <http://www.gnu.org/licenses/>.
+// along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "application.hpp"
 #include "mainwindow.hpp"
@@ -26,9 +26,9 @@
 
 static void printHelp()
 {
-    std::cout << std::endl << "Dementia version " << VERSION << std::endl;
+    std::cout << std::endl << "Heimer version " << VERSION << std::endl;
     std::cout << Config::COPYRIGHT << std::endl << std::endl;
-    std::cout << "Usage: dementia [options] [mindMapFile]" << std::endl << std::endl;
+    std::cout << "Usage: heimer [options] [mindMapFile]" << std::endl << std::endl;
     std::cout << "Options:" << std::endl;
     std::cout << "--help        Show this help." << std::endl;
     std::cout << "--lang [lang] Force language: fi." << std::endl;
@@ -42,7 +42,7 @@ static void initTranslations(QTranslator & appTranslator, QGuiApplication & app,
         lang = QLocale::system().name();
     }
 
-    if (appTranslator.load(QString(DATA_PATH) + "/translations/dementia_" + lang))
+    if (appTranslator.load(QString(DATA_PATH) + "/translations/heimer_" + lang))
     {
         app.installTranslator(&appTranslator);
         std::cout << "Loaded translations for " << lang.toStdString() << std::endl;

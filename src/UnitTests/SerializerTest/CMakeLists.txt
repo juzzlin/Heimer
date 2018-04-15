@@ -1,6 +1,6 @@
 set(EDITOR_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../editor)
 include_directories(${EDITOR_DIR} ${EDITOR_DIR}/contrib)
-add_definitions(-DDEMENTIA_UNIT_TEST)
+add_definitions(-DHEIMER_UNIT_TEST)
 
 set(NAME SerializerTest)
 set(SRC ${NAME}.cpp

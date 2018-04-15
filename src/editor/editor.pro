@@ -1,7 +1,7 @@
 # Qt project file to cross-compile the editor for Windows with MXE
 
 TEMPLATE = app
-TARGET   = dementia-editor
+TARGET   = heimer-editor
 
 DEFINES += DATA_PATH=\\\"./data\\\" VERSION=\\\"0.0.0\\\"
 QMAKE_CXXFLAGS += -std=gnu++11
@@ -75,9 +75,9 @@ SOURCES += \
 
 
 RESOURCES += ../../data/icons/icons.qrc ../../data/images/images.qrc
-RC_FILE = ../../data/icons/WindowsDementia.rc
+RC_FILE = ../../data/icons/WindowsHeimer.rc
 //TRANSLATIONS += \
-//    translations/dementia_fi.ts
+//    translations/heimer_fi.ts
 
 target.path = $$OUT_PWD/../..
 INSTALLS += target

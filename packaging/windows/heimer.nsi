@@ -1,15 +1,15 @@
 ; Script for NSIS packaging.
 
-!define PRODUCTNAME            "Dementia"
-!define APPNAME                "Dementia"
+!define PRODUCTNAME            "Heimer"
+!define APPNAME                "Heimer"
 !define COMPANYNAME            "Jussi Lind"
 !define DESCRIPTION            "An application for mind map creation and management."
 !define VERSIONMAJOR           0
 !define VERSIONMINOR           0
 !define VERSIONBUILD           0
-!define HELPURL                "http://juzzlin.github.io/Dementia/"
-!define UPDATEURL              "https://github.com/juzzlin/Dementia/releases"
-!define ABOUTURL               "http://juzzlin.github.io/Dementia/"
+!define HELPURL                "http://juzzlin.github.io/Heimer/"
+!define UPDATEURL              "https://github.com/juzzlin/Heimer/releases"
+!define ABOUTURL               "http://juzzlin.github.io/Heimer/"
 
 !define MUI_FILE               ""
 !define MUI_BRANDINGTEXT       ${PRODUCTNAME}
@@ -38,7 +38,7 @@ InstallDir "$PROGRAMFILES\${PRODUCTNAME}"
  
 Name "${PRODUCTNAME}"
 Icon "data\icons\icon.ico"
-OutFile "dementia-${VERSIONMAJOR}.${VERSIONMINOR}.${VERSIONBUILD}-windows-x86-qt5_setup.exe"
+OutFile "heimer-${VERSIONMAJOR}.${VERSIONMINOR}.${VERSIONBUILD}-windows-x86-qt5_setup.exe"
 
 !insertmacro MUI_LANGUAGE "English"
  
@@ -66,7 +66,7 @@ FunctionEnd
 Section "install"
 	SetOutPath $INSTDIR
 
-	File dementia.exe
+	File heimer.exe
 	File CHANGELOG
 	File COPYING
 	File AUTHORS
@@ -76,10 +76,10 @@ Section "install"
  
 	CreateDirectory "$SMPROGRAMS\${PRODUCTNAME}"
 	CreateShortCut "$SMPROGRAMS\${PRODUCTNAME}\${APPNAME}.lnk" \
-	    "$INSTDIR\dementia.exe" "" "$INSTDIR\data\icons\icon.ico"
+	    "$INSTDIR\heimer.exe" "" "$INSTDIR\data\icons\icon.ico"
 	CreateShortCut "$SMPROGRAMS\${PRODUCTNAME}\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" ""
  
-	CreateShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\dementia.exe" "" "$INSTDIR\data\icons\icon.ico"
+	CreateShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\heimer.exe" "" "$INSTDIR\data\icons\icon.ico"
  
 	# Registry information for add/remove programs
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} \
@@ -133,7 +133,7 @@ Section "uninstall"
 	 
 	Delete "$DESKTOP\${APPNAME}.lnk"
 	 
-	Delete   $INSTDIR\dementia.exe
+	Delete   $INSTDIR\heimer.exe
 	Delete   $INSTDIR\CHANGELOG
 	Delete   $INSTDIR\COPYING
 	Delete   $INSTDIR\AUTHORS

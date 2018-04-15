@@ -1,5 +1,5 @@
 # Translation files in src/editor/translations (without .ts)
-#set(TS dementia_fi)
+#set(TS heimer_fi)
 set(TS_FILES)
 set(QM_FILES)
 foreach(TS_FILE ${TS})
@@ -57,7 +57,7 @@ if(MINGW)
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/windowsrc.o
         COMMAND
             ${CMAKE_RC_COMPILER}
-            -I${CMAKE_SOURCE_DIR} -i${CMAKE_SOURCE_DIR}/data/icons/WindowsDementia.rc
+            -I${CMAKE_SOURCE_DIR} -i${CMAKE_SOURCE_DIR}/data/icons/WindowsHeimer.rc
             -o ${CMAKE_CURRENT_BINARY_DIR}/windowsrc.o)
     set(SRC ${SRC} ${CMAKE_CURRENT_BINARY_DIR}/windowsrc.o)
 endif()
@@ -66,13 +66,13 @@ endif()
 if(ReleaseBuild AND UNIX)
     set(DesktopFileSourcePath)
     if(USC)
-        set(DesktopFileSourcePath ${CMAKE_SOURCE_DIR}/src/dementia.desktop.opt.in)
+        set(DesktopFileSourcePath ${CMAKE_SOURCE_DIR}/src/heimer.desktop.opt.in)
     else()
-        set(DesktopFileSourcePath ${CMAKE_SOURCE_DIR}/src/dementia.desktop.in)
+        set(DesktopFileSourcePath ${CMAKE_SOURCE_DIR}/src/heimer.desktop.in)
     endif()
     add_custom_target(desktop-file ALL
         COMMAND cmake -E copy ${DesktopFileSourcePath}
-            ${CMAKE_BINARY_DIR}/dementia.desktop
+            ${CMAKE_BINARY_DIR}/heimer.desktop
     DEPENDS ${BINARY_NAME})
 endif()
 

@@ -1,7 +1,7 @@
 Build & install instructions
 ============================
 
-These are build & install instructions for Dementia.
+These are build & install instructions for Heimer.
 
 Build systems
 =============
@@ -31,7 +31,7 @@ Build dependencies
 
 Currently the build depends on Qt only.
 
-Dementia also exploits some features of the C++11 standard,
+Heimer also exploits some features of the C++11 standard,
 so a somewhat compliant compiler is required (GCC >= 4.7).
 
 Building in the command line on Linux (tested on Ubuntu 16.04)
@@ -59,15 +59,15 @@ $ make
 
 This will build the application.
 
-Run Dementia:
+Run Heimer:
 
-$ ./dementia
+$ ./heimer
 
 Run unit tests:
 
 $ ctest
 
-Release build (in this example Dementia installs under /usr):
+Release build (in this example Heimer installs under /usr):
 --------------------------------------------------------
 
 $ mkdir build
@@ -85,18 +85,18 @@ Install the binaries and data files:
 
 $ sudo make install
 
-This installs also the desktop files so Dementia should appear in your application menu.
+This installs also the desktop files so Heimer should appear in your application menu.
 
 Cross-compiling for Windows with MXE on Linux (tested on Ubuntu 16.04)
 ======================================================================
 
 1) Install MXE (http://mxe.cc)
 2) Install Qt5 with MXE
-3) Run <Your MXE installation dir>/usr/i686-pc-mingw32/qt5/bin/qmake dementia.pro
+3) Run <Your MXE installation dir>/usr/i686-pc-mingw32/qt5/bin/qmake heimer.pro
 4) make
 
 There's also a script to build the application with a Windows installer:
-1) export DEMENTIA_RELEASE_VERSION=x.y.z (use the latest version)
+1) export HEIMER_RELEASE_VERSION=x.y.z (use the latest version)
 2) source ./scripts/mxeEnv.sh (assumes that MXE is installed in /opt/mxe)
 3) ./scripts/mxeWindowsBuild.sh
 
@@ -105,7 +105,7 @@ The script checks that needed binaries are found.
 CPack
 =====
 
-Dementia has a support for CPack. It's not complete, but can be used to generate
+Heimer has a support for CPack. It's not complete, but can be used to generate
 some generic binary packages.
 
 After a successful build run CPack:

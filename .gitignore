@@ -16,8 +16,8 @@ manifest*
 *__*
 Makefile
 bin/
-dementia.pro.user
-dementia.pro.user.2.1pre1
+heimer.pro.user
+heimer.pro.user.2.1pre1
 engine.txt
 header.txt
 src/editor/Makefile
@@ -27,8 +27,8 @@ src/game/Makefile.Debug
 src/game/Makefile.Release
 src/game/MiniCore/Core/genincludeheaders.sh
 *.cbp
-dementia-editor
-dementia-game
+heimer-editor
+heimer-game
 test/
 unittests/
 CTestTestfile.cmake
@@ -49,10 +49,10 @@ src/game/renderer.cpp.autosave
 CPackConfig.cmake
 CPackSourceConfig.cmake
 data/translations/
-dementia-1.4.6.zip
+heimer-1.4.6.zip
 release/
-src/game/dementia-game_fi.qm
-src/game/dementia-game_it.qm
+src/game/heimer-game_fi.qm
+src/game/heimer-game_it.qm
 src/game/trackobjectfactory.cpp.orig
 *_plugin_import*
 *.Debug

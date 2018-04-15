@@ -1,4 +1,4 @@
-project(Dementia)
+project(Heimer)
 
 cmake_minimum_required(VERSION 2.8.12)
 cmake_policy(VERSION 2.8.12)
@@ -53,7 +53,7 @@ elseif(MSVC)
     add_definitions(-DNOMINMAX)
 endif()
 
-set(BINARY_NAME "dementia")
+set(BINARY_NAME "heimer")
 
 add_definitions(-DVERSION="${VERSION}")
 

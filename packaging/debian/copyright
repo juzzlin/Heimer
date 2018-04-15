@@ -1,6 +1,6 @@
 Format: http://dep.debian.net/deps/dep5
-Upstream-Name: dementia
-Source: https://sourceforge.net/projects/dementia/
+Upstream-Name: heimer
+Source: https://sourceforge.net/projects/heimer/
 
 Files: *
 Copyright: 2018 Jussi Lind <jussi.lind@iki.fi>

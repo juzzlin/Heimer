@@ -1,17 +1,17 @@
-// This file is part of Dementia.
+// This file is part of Heimer.
 // Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
 //
-// Dementia is free software: you can redistribute it and/or modify
+// Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either Config::Editor 3 of the License, or
 // (at your option) any later Config::Editor.
-// Dementia is distributed in the hope that it will be useful,
+// Heimer is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Dementia. If not, see <http://www.gnu.org/licenses/>.
+// along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "mainwindow.hpp"
 
@@ -41,7 +41,7 @@
 
 MainWindow * MainWindow::m_instance = nullptr;
 
-static const QString FILE_EXTENSION(".dem");
+static const QString FILE_EXTENSION(Config::FILE_EXTENSION);
 
 MainWindow::MainWindow(QString mindMapFile)
 : m_aboutDlg(new AboutDlg(this))
@@ -57,7 +57,7 @@ MainWindow::MainWindow(QString mindMapFile)
         qFatal("MainWindow already instantiated!");
     }
 
-    setWindowIcon(QIcon(":/dementia-editor.png"));
+    setWindowIcon(QIcon(":/heimer-editor.png"));
 
     init();
 
@@ -158,7 +158,7 @@ void MainWindow::createHelpMenu()
 
 QString MainWindow::getFileDialogFileText() const
 {
-    return tr("Dementia Files") + " (*" + FILE_EXTENSION + ")";
+    return tr("Heimer Files") + " (*" + FILE_EXTENSION + ")";
 }
 
 void MainWindow::init()

@@ -1,9 +1,9 @@
 [Desktop Entry]
-Name=Dementia
+Name=Heimer
 GenericName=Mind map application
 Comment=Mind map application
-Exec=dementia
-Icon=dementia
+Exec=heimer
+Icon=heimer
 Type=Application
 Categories=Education;
 StartupNotify=true

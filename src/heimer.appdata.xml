@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-  <id>dementia.desktop</id>
+  <id>heimer.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0 and CC BY-SA-3.0</project_license>
-  <name>Dementia</name>
+  <name>Heimer</name>
   <summary>An application for mind map creation and management.</summary>
   <description>
     <p>
-      Dementia is an application for mind map creation and management written in Qt (C++).
+      Heimer is an application for mind map creation and management written in Qt (C++).
     </p>
   </description>
   <screenshots>
   </screenshots>
-  <url type="homepage">https://juzzlin.github.io/Dementia/</url>
+  <url type="homepage">https://juzzlin.github.io/Heimer/</url>
   <update_contact>jussi.lind@iki.fi</update_contact>
 </component>

@@ -60,8 +60,8 @@ function(setup_install_targets BIN_PATH DATA_PATH DOC_PATH)
         install(FILES src/dementia.appdata.xml DESTINATION share/metainfo)
 
         # Install icons
-        install(FILES data/icons/dementia.png DESTINATION share/pixmaps)
-        install(FILES data/icons/dementia.png DESTINATION share/icons/hicolor/64x64/apps)
+        install(FILES data/icons/icon.png DESTINATION share/pixmaps)
+        install(FILES data/icons/icon.png DESTINATION share/icons/hicolor/64x64/apps)
     endif()
 
     # CPack config to create e.g. self-extracting packages

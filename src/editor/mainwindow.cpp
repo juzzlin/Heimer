@@ -30,6 +30,7 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QScreen>
 #include <QSettings>
 #include <QStandardPaths>
 #include <QTimer>
@@ -167,15 +168,20 @@ void MainWindow::init()
 
     QSettings settings;
 
+    // Detect screen dimensions
+    QScreen *screen = QGuiApplication::primaryScreen();
+    QRect screenGeometry = screen->geometry();
+    const int height = screenGeometry.height();
+    const int width = screenGeometry.width();
+
     // Read dialog size data
     settings.beginGroup(m_settingsGroup);
-    resize(settings.value("size", QSize(640, 480)).toSize());
+    const float defaultScale = 0.8;
+    resize(settings.value("size", QSize(width, height) * defaultScale).toSize());
     settings.endGroup();
 
     // Try to center the window.
-    QRect geometry(QApplication::desktop()->availableGeometry());
-    move(geometry.width() / 2 - width() / 2,
-        geometry.height() / 2 - height() / 2);
+    move(width / 2 - this->width() / 2, height / 2 - this->height() / 2);
 
     m_mediator->showHelloText();
 

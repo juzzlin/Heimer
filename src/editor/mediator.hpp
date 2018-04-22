@@ -86,8 +86,6 @@ public:
 
     void undo();
 
-    void updateView();
-
 private slots:
 
     void zoomIn();

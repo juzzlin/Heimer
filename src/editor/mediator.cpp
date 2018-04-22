@@ -254,11 +254,6 @@ void Mediator::undo()
     m_editorData->undo();
 }
 
-void Mediator::updateView()
-{
-    m_editorView->update();
-}
-
 static const int zoomSensitivity = 20;
 
 void Mediator::zoomIn()

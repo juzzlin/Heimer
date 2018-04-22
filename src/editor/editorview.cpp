@@ -322,15 +322,12 @@ void EditorView::updateScale(int value)
 void EditorView::wheelEvent(QWheelEvent * event)
 {
     const int sensitivity = 10;
-    if (event->delta() > 0)
-    {
-        m_scaleValue += sensitivity;
-    }
-    else if (event->delta() < 0)
-    {
-        m_scaleValue -= sensitivity;
-    }
+    zoom(event->delta() > 0 ? sensitivity : -sensitivity);
+}
 
+void EditorView::zoom(int amount)
+{
+    m_scaleValue += amount;
     m_scaleValue = std::min(m_scaleValue, 200);
     m_scaleValue = std::max(m_scaleValue, 10);
 

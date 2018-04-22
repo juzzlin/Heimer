@@ -46,6 +46,8 @@ public:
 
     void resetDummyDragItems();
 
+    void zoom(int amount);
+
     void zoomToFit(QRectF nodeBoundingRect);
 
 protected:

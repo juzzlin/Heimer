@@ -88,7 +88,11 @@ public:
 
     void updateView();
 
-public slots:
+private slots:
+
+    void zoomIn();
+
+    void zoomOut();
 
     void zoomToFit();
 

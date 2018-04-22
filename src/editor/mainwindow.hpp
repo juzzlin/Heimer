@@ -60,6 +60,14 @@ protected:
 
     void closeEvent(QCloseEvent * event) override;
 
+signals:
+
+    void zoomInTriggered();
+
+    void zoomOutTriggered();
+
+    void zoomToFitTriggered();
+
 private slots:
 
     void doOpenMindMap(QString fileName);

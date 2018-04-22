@@ -161,10 +161,24 @@ void MainWindow::createViewMenu()
 {
     const auto viewMenu = menuBar()->addMenu(tr("&View"));
 
+    // Add "zoom in"-action
+    const auto zoomIn = new QAction(tr("Zoom In"), this);
+    viewMenu->addAction(zoomIn);
+    zoomIn->setShortcut(QKeySequence("Ctrl++"));
+    connect(zoomIn, &QAction::triggered, this, &MainWindow::zoomInTriggered);
+
+    // Add "zoom out"-action
+    const auto zoomOut = new QAction(tr("Zoom Out"), this);
+    viewMenu->addAction(zoomOut);
+    connect(zoomOut, &QAction::triggered, this, &MainWindow::zoomOutTriggered);
+    zoomOut->setShortcut(QKeySequence("Ctrl+-"));
+
+    viewMenu->addSeparator();
+
     // Add "zoom to fit"-action
-    const auto zoomToFit = new QAction(tr("&Zoom to fit"), this);
+    const auto zoomToFit = new QAction(tr("&Zoom To Fit"), this);
     viewMenu->addAction(zoomToFit);
-    connect(zoomToFit, &QAction::triggered, m_mediator, &Mediator::zoomToFit);
+    connect(zoomToFit, &QAction::triggered, this, &MainWindow::zoomToFitTriggered);
 }
 
 QString MainWindow::getFileDialogFileText() const

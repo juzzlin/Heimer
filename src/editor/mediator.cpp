@@ -44,6 +44,12 @@ Mediator::Mediator(MainWindow & mainWindow)
         m_editorView->setBackgroundBrush(QBrush(color));
     });
 
+    connect(&m_mainWindow, &MainWindow::zoomToFitTriggered, this, &Mediator::zoomToFit);
+
+    connect(&m_mainWindow, &MainWindow::zoomInTriggered, this, &Mediator::zoomIn);
+
+    connect(&m_mainWindow, &MainWindow::zoomOutTriggered, this, &Mediator::zoomOut);
+
     initializeView();
 }
 
@@ -251,6 +257,18 @@ void Mediator::undo()
 void Mediator::updateView()
 {
     m_editorView->update();
+}
+
+static const int zoomSensitivity = 20;
+
+void Mediator::zoomIn()
+{
+    m_editorView->zoom(zoomSensitivity);
+}
+
+void Mediator::zoomOut()
+{
+    m_editorView->zoom(-zoomSensitivity);
 }
 
 void Mediator::zoomToFit()

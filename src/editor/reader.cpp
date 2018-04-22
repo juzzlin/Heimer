@@ -18,7 +18,7 @@
 #include <QFile>
 #include <QObject>
 
-QDomDocument Reader::readFromFile(QString filePath) throw (FileException)
+QDomDocument Reader::readFromFile(QString filePath)
 {
     QDomDocument doc;
 

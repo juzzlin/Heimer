@@ -55,7 +55,7 @@ public:
 
     bool isSaved() const;
 
-    void loadMindMapData(QString fileName) throw(FileException);
+    void loadMindMapData(QString fileName);
 
     MindMapDataPtr mindMapData();
 

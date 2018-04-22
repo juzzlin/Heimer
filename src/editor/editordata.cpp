@@ -47,7 +47,7 @@ DragAndDropStore & EditorData::dadStore()
     return m_dadStore;
 }
 
-void EditorData::loadMindMapData(QString fileName) throw(FileException)
+void EditorData::loadMindMapData(QString fileName)
 {
     setMindMapData(Serializer::fromXml(Reader::readFromFile(fileName)));
 

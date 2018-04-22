@@ -3,36 +3,12 @@ Build & install instructions
 
 These are build & install instructions for Heimer.
 
-Build systems
-=============
-
-The "official" build system for Linux is CMake.
-
-There are also qmake project files for easier cross-compilation for Windows and Android. Qt5 is required.
-
-I used to make Windows releases also with CMake, but in the future I'll cross-compile for Windows on Ubuntu host by using MXE and qmake. MXE is a cool cross-compilation environment
-and all libraries are linked statically by default (no DLLs needed).
-
-Toolchains
-==========
-
-GCC/MinGW and Clang are the only "officially" supported toolchains on Linux.
-
-Windows builds are done on Ubuntu with MXE (web: mxe.cc). The build script
-also generates automatically an NSIS Windows installer and a ZIP-archive.
-See scripts/mxeWindowsBuild.sh.
-
-Building the project with Microsoft Visual C++ 2013 also works, but no automatic
-packaging/deployment currently exist. The runtime files (data/, Qt, OpenAL..) must be
-manually copied in place. See more detailed instructions below.
-
 Build dependencies
 ==================
 
-Currently the build depends on Qt only.
+Currently the build depends on Qt5 only (qt5-default, qttools5-dev-tools packages on Ubuntu).
 
-Heimer also exploits some features of the C++11 standard,
-so a somewhat compliant compiler is required (GCC >= 4.7).
+The "official" build system for Linux is CMake although qmake project files are also provided.
 
 Building in the command line on Linux (tested on Ubuntu 16.04)
 ==============================================================
@@ -40,20 +16,13 @@ Building in the command line on Linux (tested on Ubuntu 16.04)
 Development build (the app can be run without installing anything):
 -------------------------------------------------------------------
 
-1) Install Qt5 development files (qt5-default on Ubuntu).
-2) Install CMake (cmake on Debian/Ubuntu).
-3) Go to the source directory and run:
-
 $ mkdir build
 $ cd build
-$ cmake ..
+$ cmake -DCMAKE_BUILD_TYPE=Debug ..
 
-This runs CMake that generates the makefiles.
+This runs CMake that generates the makefiles for a debug build.
 
-You can also use Qt Creator to open the top-level CMakeLists.txt and build inside Qt Creator.
-There's also a convenience configure script which is just a wrapper for cmake.
-
-Anyway, if everything went ok with cmake, run:
+If everything went ok, run:
 
 $ make
 
@@ -68,13 +37,12 @@ Run unit tests:
 $ ctest
 
 Release build (in this example Heimer installs under /usr):
---------------------------------------------------------
+----------------------------------------------------------
 
 $ mkdir build
 $ cd build
 $ cmake .. -DReleaseBuild=1 -DCMAKE_INSTALL_PREFIX=/usr
 
-This runs CMake that generates the makefiles.
 If everything went ok, run:
 
 $ make
@@ -83,39 +51,23 @@ This will build the application.
 
 Install the binaries and data files:
 
-$ sudo make install
+# make install
 
 This installs also the desktop files so Heimer should appear in your application menu.
 
-Cross-compiling for Windows with MXE on Linux (tested on Ubuntu 16.04)
-======================================================================
+Building in Qt Creator
+======================
 
-1) Install MXE (http://mxe.cc)
-2) Install Qt5 with MXE
-3) Run <Your MXE installation dir>/usr/i686-pc-mingw32/qt5/bin/qmake heimer.pro
-4) make
+1) Just open the top-level CMakeLists.txt (or heimer.pro)
+2) Configure kits and build
 
-There's also a script to build the application with a Windows installer:
-1) export HEIMER_RELEASE_VERSION=x.y.z (use the latest version)
-2) source ./scripts/mxeEnv.sh (assumes that MXE is installed in /opt/mxe)
-3) ./scripts/mxeWindowsBuild.sh
+Jenkins CI
+==========
 
-The script checks that needed binaries are found.
+See `Jenkinsfile` to setup the Jenkins Pipeline.
 
-CPack
-=====
-
-Heimer has a support for CPack. It's not complete, but can be used to generate
-some generic binary packages.
-
-After a successful build run CPack:
-
-$ cpack
-
-This will generate .tar.gz and .sh binary packages on Linux.
-
-For packagers
-=============
+For Linux packagers
+===================
 
 The release build should be used when packaging (give
 -DReleaseBuild=1 to cmake).
@@ -125,7 +77,4 @@ can be changed by giving, for example, -DCMAKE_INSTALL_PREFIX=/usr
 to cmake (or to the configure script).
 
 There's an example Debian packaging in packaging/debian/.
-
-
--- Jussi Lind <jussi.lind@iki.fi>
 

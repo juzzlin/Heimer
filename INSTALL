@@ -74,7 +74,7 @@ The release build should be used when packaging (give
 
 CMAKE_INSTALL_PREFIX usually defaults to /usr/local and
 can be changed by giving, for example, -DCMAKE_INSTALL_PREFIX=/usr
-to cmake (or to the configure script).
+to cmake.
 
 There's an example Debian packaging in packaging/debian/.
 

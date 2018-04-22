@@ -341,6 +341,8 @@ void EditorView::zoomToFit(QRectF nodeBoundingRect)
 {
     m_scaleValue = rect().height() * 100 / nodeBoundingRect.height();
     updateScale(m_scaleValue);
+
+    centerOn(nodeBoundingRect.center());
 }
 
 EditorView::~EditorView()

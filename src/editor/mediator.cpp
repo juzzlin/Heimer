@@ -77,11 +77,6 @@ void Mediator::addItem(QGraphicsItem & item)
     m_editorScene->addItem(&item);
 }
 
-void Mediator::center()
-{
-    m_editorView->centerOn(m_editorView->sceneRect().center());
-}
-
 NodeBasePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 {
     auto node1 = dynamic_pointer_cast<Node>(m_editorData->addNodeAt(pos));
@@ -155,8 +150,6 @@ void Mediator::initializeView()
 
     m_mainWindow.setCentralWidget(m_editorView);
     m_mainWindow.setContentsMargins(0, 0, 0, 0);
-
-    center();
 }
 
 bool Mediator::isRedoable() const

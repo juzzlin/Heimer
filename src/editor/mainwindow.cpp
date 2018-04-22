@@ -157,6 +157,16 @@ void MainWindow::createHelpMenu()
     connect(aboutQtAct, SIGNAL(triggered()), this, SLOT(showAboutQtDlg()));
 }
 
+void MainWindow::createViewMenu()
+{
+    const auto viewMenu = menuBar()->addMenu(tr("&View"));
+
+    // Add "zoom to fit"-action
+    const auto zoomToFit = new QAction(tr("&Zoom to fit"), this);
+    viewMenu->addAction(zoomToFit);
+    connect(zoomToFit, &QAction::triggered, m_mediator, &Mediator::zoomToFit);
+}
+
 QString MainWindow::getFileDialogFileText() const
 {
     return tr("Heimer Files") + " (*" + FILE_EXTENSION + ")";
@@ -218,6 +228,8 @@ void MainWindow::populateMenuBar()
     createFileMenu();
 
     createEditMenu();
+
+    createViewMenu();
 
     createHelpMenu();
 }

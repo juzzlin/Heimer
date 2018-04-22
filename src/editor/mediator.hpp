@@ -88,6 +88,10 @@ public:
 
     void updateView();
 
+public slots:
+
+    void zoomToFit();
+
 private:
 
     void addExistingGraphToScene();

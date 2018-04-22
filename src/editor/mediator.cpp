@@ -134,7 +134,7 @@ void Mediator::initializeNewMindMap()
 
     addExistingGraphToScene();
 
-    m_editorView->zoomToFit(m_editorScene->getNodeBoundingRect());
+    zoomToFit();
 }
 
 void Mediator::initializeView()
@@ -182,7 +182,7 @@ bool Mediator::openMindMap(QString fileName)
 
         addExistingGraphToScene();
 
-        m_editorView->zoomToFit(m_editorScene->getNodeBoundingRect());
+        zoomToFit();
     }
     catch (const FileException & e)
     {
@@ -251,6 +251,11 @@ void Mediator::undo()
 void Mediator::updateView()
 {
     m_editorView->update();
+}
+
+void Mediator::zoomToFit()
+{
+    m_editorView->zoomToFit(m_editorScene->getNodeBoundingRect());
 }
 
 Mediator::~Mediator()

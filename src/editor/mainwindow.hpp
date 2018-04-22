@@ -92,6 +92,8 @@ private:
 
     void createHelpMenu();
 
+    void createViewMenu();
+
     void disableUndoAndRedo();
 
     QString getFileDialogFileText() const;

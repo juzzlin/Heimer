@@ -29,7 +29,12 @@ class NodeHandle : public QObject, public QGraphicsItem
 
 public:
 
-    explicit NodeHandle(int radius);
+    enum class Role {
+        Add,
+        Color
+    };
+
+    NodeHandle(Node & parentNode, Role role, int radius);
 
     virtual ~NodeHandle();
 
@@ -40,7 +45,15 @@ public:
 
     void setVisible(bool visible);
 
+    Role role() const;
+
+    Node & parentNode() const;
+
 private:
+
+    Node & m_parentNode;
+
+    Role m_role;
 
     int m_radius;
 

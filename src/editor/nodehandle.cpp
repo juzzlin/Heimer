@@ -20,8 +20,10 @@
 #include <QPainter>
 #include <QPen>
 
-NodeHandle::NodeHandle(int radius)
-    : m_radius(radius)
+NodeHandle::NodeHandle(Node & parentNode, NodeHandle::Role role, int radius)
+    : m_parentNode(parentNode)
+    , m_role(role)
+    , m_radius(radius)
     , m_sizeAnimation(this, "scale")
     , m_size(QSize(m_radius * 2, m_radius * 2))
 {
@@ -44,9 +46,24 @@ void NodeHandle::paint(QPainter * painter,
     Q_UNUSED(widget);
     Q_UNUSED(option);
 
+    static std::map<Role, QPixmap> pixmapMap = {
+        {Role::Add, QPixmap(":/add.png")},
+        {Role::Color, QPixmap(":/colors.png")}
+    };
+
     painter->save();
-    painter->drawPixmap(-m_size.width() / 2, -m_size.height() / 2, QPixmap(":/add.png").scaled(m_size.width(), m_size.height()));
+    painter->drawPixmap(-m_size.width() / 2, -m_size.height() / 2, pixmapMap[role()].scaled(m_size.width(), m_size.height()));
     painter->restore();
+}
+
+Node & NodeHandle::parentNode() const
+{
+    return m_parentNode;
+}
+
+NodeHandle::Role NodeHandle::role() const
+{
+    return m_role;
 }
 
 void NodeHandle::setVisible(bool visible)

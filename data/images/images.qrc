@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>about.png</file>
         <file>add.png</file>
+        <file>colors.png</file>
     </qresource>
 </RCC>

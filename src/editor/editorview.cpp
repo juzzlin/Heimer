@@ -53,14 +53,13 @@ EditorView::EditorView(Mediator & mediator)
 void EditorView::createBackgroundContextMenuActions()
 {
     const QString dummy1(QWidget::tr("Set background color"));
-    const auto setColorAction = new QAction(dummy1, &m_backgroundContextMenu);
+    auto setColorAction = new QAction(dummy1, &m_backgroundContextMenu);
     QObject::connect(setColorAction, &QAction::triggered, [this] () {
         const auto color = QColorDialog::getColor(Qt::white, this);
         if (color.isValid()) {
             emit backgroundColorChanged(color);
         }
     });
-
     // Populate the menu
     m_backgroundContextMenu.addAction(setColorAction);
 }
@@ -68,8 +67,8 @@ void EditorView::createBackgroundContextMenuActions()
 void EditorView::createNodeContextMenuActions()
 {
     const QString dummy1(QWidget::tr("Set node color"));
-    const auto setColorAction = new QAction(dummy1, &m_nodeContextMenu);
-    QObject::connect(setColorAction, &QAction::triggered, [this] () {
+    m_setNodeColorAction = new QAction(dummy1, &m_nodeContextMenu);
+    QObject::connect(m_setNodeColorAction, &QAction::triggered, [this] () {
         assert(m_mediator.selectedNode());
         const auto color = QColorDialog::getColor(Qt::white, this);
         if (color.isValid()) {
@@ -78,7 +77,7 @@ void EditorView::createNodeContextMenuActions()
     });
 
     // Populate the menu
-    m_nodeContextMenu.addAction(setColorAction);
+    m_nodeContextMenu.addAction(m_setNodeColorAction);
 }
 
 void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
@@ -134,18 +133,18 @@ void EditorView::handleLeftButtonClickOnNode(Node & node)
 
 void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
 {
-    // User is initiating a new node drag
-
-    m_mediator.saveUndoPoint();
-
-    auto parentNode = dynamic_cast<Node *>(nodeHandle.parentItem());
-    assert(parentNode);
-
-    m_mediator.dadStore().setSourceNode(parentNode, DragAndDropStore::Action::CreateNode);
-    m_mediator.dadStore().setSourcePos(nodeHandle.pos());
-
-    // Change cursor to the closed hand cursor.
-    QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
+    switch (nodeHandle.role())
+    {
+    case NodeHandle::Role::Add:
+        initiateNewNodeDrag(nodeHandle);
+        break;
+    case NodeHandle::Role::Color:
+        m_mediator.setSelectedNode(&nodeHandle.parentNode());
+        m_setNodeColorAction->trigger();
+        break;
+    default:
+        break;
+    }
 }
 
 void EditorView::handleRightButtonClickOnNode(Node & node)
@@ -153,6 +152,18 @@ void EditorView::handleRightButtonClickOnNode(Node & node)
     m_mediator.setSelectedNode(&node);
 
     openNodeContextMenu();
+}
+
+void EditorView::initiateNewNodeDrag(NodeHandle & nodeHandle)
+{
+    // User is initiating a new node drag
+    m_mediator.saveUndoPoint();
+    auto parentNode = dynamic_cast<Node *>(nodeHandle.parentItem());
+    assert(parentNode);
+    m_mediator.dadStore().setSourceNode(parentNode, DragAndDropStore::Action::CreateNode);
+    m_mediator.dadStore().setSourcePos(nodeHandle.pos());
+    // Change cursor to the closed hand cursor.
+    QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
 }
 
 void EditorView::mouseMoveEvent(QMouseEvent * event)

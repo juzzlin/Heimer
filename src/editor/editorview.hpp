@@ -82,6 +82,8 @@ private:
 
     void handleRightButtonClickOnNode(Node & node);
 
+    void initiateNewNodeDrag(NodeHandle & nodeHandle);
+
     void openBackgroundContextMenu();
 
     void openNodeContextMenu();
@@ -105,6 +107,8 @@ private:
     QAction * m_setComputerHintBrakeHard = nullptr;
 
     QAction * m_setComputerHintBrake = nullptr;
+
+    QAction * m_setNodeColorAction = nullptr;
 
     QAction * m_deleteRow = nullptr;
 

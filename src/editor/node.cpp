@@ -126,17 +126,15 @@ void Node::createHandles()
     }
     m_handles.clear();
 
-    const std::vector<QPointF> positions = {
-        {0, size().height() * 0.5f}
-    };
+    auto addHandle = new NodeHandle(*this, NodeHandle::Role::Add, m_handleRadius);
+    addHandle->setParentItem(this);
+    addHandle->setPos({0, size().height() * 0.5f});
+    m_handles.push_back(addHandle);
 
-    for (auto position : positions)
-    {
-        auto handle = new NodeHandle(m_handleRadius);
-        handle->setParentItem(this);
-        handle->setPos(position);
-        m_handles.push_back(handle);
-    }
+    auto colorHandle = new NodeHandle(*this, NodeHandle::Role::Color, m_handleRadius);
+    colorHandle->setParentItem(this);
+    colorHandle->setPos({size().width() * 0.5f, 0});
+    m_handles.push_back(colorHandle);
 }
 
 std::pair<QPointF, QPointF> Node::getNearestEdgePoints(const Node & node1, const Node & node2)

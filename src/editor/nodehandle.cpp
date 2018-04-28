@@ -52,7 +52,7 @@ void NodeHandle::paint(QPainter * painter,
     };
 
     painter->save();
-    painter->drawPixmap(-m_size.width() / 2, -m_size.height() / 2, pixmapMap[role()].scaled(m_size.width(), m_size.height()));
+    painter->drawPixmap(-m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height(), pixmapMap[role()]);
     painter->restore();
 }
 

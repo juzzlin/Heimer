@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<design version="0.0.0">
+ <color g="200" r="128" b="255"/>
+ <graph>
+  <node x="4918" y="56557" index="0">
+   <text>Me</text>
+   <color g="226" r="138" b="52"/>
+  </node>
+  <node x="-249180" y="-232786" index="1">
+   <text>Father</text>
+   <color g="175" r="252" b="62"/>
+  </node>
+  <node x="263934" y="-228278" index="2">
+   <text>Mother</text>
+   <color g="212" r="237" b="0"/>
+  </node>
+  <node x="340277" y="56944" index="3">
+   <text>Brother</text>
+   <color g="74" r="32" b="135"/>
+  </node>
+  <node x="512500" y="-520832" index="4">
+   <text>Grandfather</text>
+   <color g="212" r="237" b="0"/>
+  </node>
+  <node x="181944" y="-516666" index="5">
+   <text>Grandmother</text>
+   <color g="212" r="237" b="0"/>
+  </node>
+  <node x="-504166" y="-520832" index="6">
+   <text>Grandmother</text>
+   <color g="175" r="252" b="62"/>
+  </node>
+  <node x="-163888" y="-525000" index="7">
+   <text>Grandfather</text>
+   <color g="175" r="252" b="62"/>
+  </node>
+  <node x="-338235" y="65686" index="8">
+   <text>Her</text>
+   <color g="207" r="234" b="207"/>
+  </node>
+  <node x="626470" y="-138725" index="9">
+   <text>Friend</text>
+   <color g="138" r="136" b="133"/>
+  </node>
+  <node x="-229032" y="295967" index="10">
+   <text>Friend</text>
+   <color g="138" r="136" b="133"/>
+  </node>
+  <node x="33870" y="300000" index="11">
+   <text>Friend</text>
+   <color g="138" r="136" b="133"/>
+  </node>
+  <node x="369354" y="300806" index="12">
+   <text>Mrs. Friend</text>
+   <color g="215" r="211" b="207"/>
+  </node>
+  <edge index0="0" index1="1"/>
+  <edge index0="0" index1="2"/>
+  <edge index0="0" index1="3"/>
+  <edge index0="0" index1="8"/>
+  <edge index0="0" index1="10"/>
+  <edge index0="0" index1="11"/>
+  <edge index0="1" index1="6"/>
+  <edge index0="1" index1="7"/>
+  <edge index0="2" index1="4"/>
+  <edge index0="2" index1="5"/>
+  <edge index0="3" index1="9"/>
+  <edge index0="11" index1="12"/>
+ </graph>
+</design>

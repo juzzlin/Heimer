@@ -42,6 +42,7 @@ HEADERS +=  \
     nodetextedit.hpp \
     reader.hpp \
     serializer.hpp \
+    textedit.hpp \
     undostack.hpp \
     writer.hpp \
     contrib/mclogger.hh \
@@ -69,6 +70,7 @@ SOURCES += \
     nodetextedit.cpp \
     reader.cpp \
     serializer.cpp \
+    textedit.cpp \
     undostack.cpp \
     writer.cpp \
     contrib/mclogger.cc \

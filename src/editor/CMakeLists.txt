@@ -33,6 +33,7 @@ set(SRC
     nodetextedit.cpp
     reader.cpp
     serializer.cpp
+    textedit.cpp
     undostack.cpp
     userexception.hpp
     contrib/mclogger.cc

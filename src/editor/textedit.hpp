@@ -13,23 +13,34 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef NODETEXTEDIT_HPP
-#define NODETEXTEDIT_HPP
+#ifndef TEXTEDIT_HPP
+#define TEXTEDIT_HPP
 
-#include "textedit.hpp"
+#include <QGraphicsTextItem>
 
-class Node;
-class QKeyEvent;
-
-class NodeTextEdit : public TextEdit
+class TextEdit : public QGraphicsTextItem
 {
 public:
 
-    NodeTextEdit(Node * parent);
+    explicit TextEdit(QGraphicsItem * parentItem);
 
-protected:
+    virtual float maxHeight() const;
 
-    virtual void keyPressEvent(QKeyEvent * event) override;
+    virtual void setMaxHeight(float maxHeight);
+
+    virtual float maxWidth() const;
+
+    virtual void setMaxWidth(float maxWidth);
+
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) override;
+
+    virtual ~TextEdit();
+
+private:
+
+    float m_maxHeight = 0;
+
+    float m_maxWidth = 0;
 };
 
-#endif // NODETEXTEDIT_HPP
+#endif // TEXTEDIT_HPP

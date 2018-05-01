@@ -83,6 +83,11 @@ void Mediator::addItem(QGraphicsItem & item)
     m_editorScene->addItem(&item);
 }
 
+bool Mediator::canBeSaved() const
+{
+    return !m_editorData->fileName().isEmpty();
+}
+
 NodeBasePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 {
     auto node1 = dynamic_pointer_cast<Node>(m_editorData->addNodeAt(pos));

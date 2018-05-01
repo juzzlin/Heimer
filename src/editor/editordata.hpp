@@ -47,6 +47,8 @@ public:
 
     DragAndDropStore & dadStore();
 
+    QString fileName() const;
+
     NodeBasePtr getNodeByIndex(int index);
 
     bool isUndoable() const;

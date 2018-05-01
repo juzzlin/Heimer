@@ -47,9 +47,16 @@ DragAndDropStore & EditorData::dadStore()
     return m_dadStore;
 }
 
+QString EditorData::fileName() const
+{
+    return m_fileName;
+}
+
 void EditorData::loadMindMapData(QString fileName)
 {
     setMindMapData(Serializer::fromXml(Reader::readFromFile(fileName)));
+
+    m_fileName = fileName;
 
     m_undoStack.clear();
 }

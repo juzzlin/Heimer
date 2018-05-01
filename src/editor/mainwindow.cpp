@@ -307,7 +307,7 @@ void MainWindow::doOpenMindMap(QString fileName)
 
         saveRecentPath(fileName);
 
-        setSaveActionStatesOnNewMindMap();
+        setSaveActionStatesOnOpenedMindMap();
 
         successLog();
     }
@@ -336,7 +336,7 @@ void MainWindow::saveMindMap()
 {
     MCLogger().info() << "Save..";
 
-    if (m_mediator->isSaved())
+    if (m_mediator->canBeSaved())
     {
         if (!m_mediator->saveMindMap())
         {
@@ -376,6 +376,7 @@ void MainWindow::saveMindMapAs()
     {
         const auto msg = QString(tr("File '")) + fileName + tr("' saved.");
         MCLogger().info() << msg.toStdString();
+        m_saveAction->setEnabled(true);
         setTitle(fileName);
         successLog();
     }
@@ -418,6 +419,12 @@ void MainWindow::initializeNewMindMap()
 void MainWindow::setSaveActionStatesOnNewMindMap()
 {
     m_saveAction->setEnabled(false);
+    m_saveAsAction->setEnabled(true);
+}
+
+void MainWindow::setSaveActionStatesOnOpenedMindMap()
+{
+    m_saveAction->setEnabled(true);
     m_saveAsAction->setEnabled(true);
 }
 

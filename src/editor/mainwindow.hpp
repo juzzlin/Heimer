@@ -116,6 +116,8 @@ private:
 
     void setSaveActionStatesOnNewMindMap();
 
+    void setSaveActionStatesOnOpenedMindMap();
+
     void successLog();
 
     AboutDlg * m_aboutDlg;

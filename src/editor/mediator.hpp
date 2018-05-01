@@ -46,6 +46,8 @@ public:
 
     void addItem(QGraphicsItem & item);
 
+    bool canBeSaved() const;
+
     NodeBasePtr createAndAddNode(int sourceNodeIndex, QPointF pos);
 
     DragAndDropStore & dadStore();

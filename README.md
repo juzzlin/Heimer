@@ -2,7 +2,7 @@
 
 Heimer is an application for creating mind maps targeted for Linux and Windows.
 
-![Heimer screenshot](/screenshots/Heimer-2018-05-01-22-57-04.png?raw=true)
+![Heimer screenshot](/screenshots/Family.png?raw=true)
 
 ## License
 

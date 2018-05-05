@@ -14,6 +14,7 @@ set(SRC
     config.hpp
     draganddropstore.cpp
     edge.cpp
+    edgebase.cpp
     edgedot.cpp
     fileexception.hpp
     graph.cpp

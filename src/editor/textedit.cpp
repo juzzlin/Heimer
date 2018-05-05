@@ -27,6 +27,19 @@ TextEdit::TextEdit(QGraphicsItem * parentItem)
     setTextInteractionFlags(Qt::TextEditorInteraction);
 }
 
+void TextEdit::keyPressEvent(QKeyEvent * event)
+{
+    const auto prevText = toPlainText();
+
+    QGraphicsTextItem::keyPressEvent(event);
+
+    const auto newText = toPlainText();
+    if (prevText != newText)
+    {
+        emit textChanged(newText);
+    }
+}
+
 float TextEdit::maxHeight() const
 {
     return m_maxHeight;
@@ -49,8 +62,15 @@ void TextEdit::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
     // Remove the HasFocus style state, to prevent the dotted line from being drawn.
     style->state &= ~QStyle::State_HasFocus;
 
-    painter->fillRect(option->rect, QColor(192, 192, 192, 64));
+    painter->fillRect(option->rect, m_backgroundColor);
     QGraphicsTextItem::paint(painter, style, widget);
+}
+
+void TextEdit::setBackgroundColor(const QColor & backgroundColor)
+{
+    m_backgroundColor = backgroundColor;
+
+    update();
 }
 
 void TextEdit::setMaxWidth(float maxWidth)

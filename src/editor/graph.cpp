@@ -39,14 +39,35 @@ void Graph::addNode(NodeBasePtr node)
     }
 }
 
-void Graph::addEdge(NodeBasePtr node0, NodeBasePtr node1)
+void Graph::addEdge(EdgeBasePtr newEdge)
 {
-    addEdge(node0->index(), node1->index());
+    // Add if such edge doesn't already exist
+    auto && edges = m_edges[newEdge->sourceNodeBase().index()];
+    const auto iter = std::find_if(
+        edges.begin(), edges.end(), [=](const EdgeBasePtr & edge){
+            return edge->sourceNodeBase().index() == newEdge->sourceNodeBase().index() &&
+                   edge->targetNodeBase().index() == newEdge->targetNodeBase().index();
+        });
+
+    if (iter == edges.end())
+    {
+        m_edges[newEdge->sourceNodeBase().index()].insert(newEdge);
+    }
 }
 
 void Graph::addEdge(int node0, int node1)
 {
-    m_edges[node0].insert(node1);
+    // Add if such edge doesn't already exist
+    auto && edges = m_edges[node0];
+    const auto iter = std::find_if(
+        edges.begin(), edges.end(), [=](const EdgeBasePtr & edge){
+            return edge->sourceNodeBase().index() == node0 && edge->targetNodeBase().index() == node1;
+        });
+
+    if (iter == edges.end())
+    {
+        m_edges[node0].insert(std::make_shared<EdgeBase>(*getNode(node0), *getNode(node1)));
+    }
 }
 
 int Graph::numNodes() const
@@ -59,9 +80,9 @@ Graph::EdgeVector Graph::getEdges() const
     EdgeVector edges;
     for (auto && node0 : m_edges)
     {
-        for (auto && node1 : node0.second)
+        for (auto && edge : node0.second)
         {
-            edges.push_back({node0.first, node1});
+            edges.push_back(edge);
         }
     }
     return edges;

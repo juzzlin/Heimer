@@ -3,7 +3,7 @@ include_directories(${EDITOR_DIR})
 add_definitions(-DHEIMER_UNIT_TEST)
 
 set(NAME GraphTest)
-set(SRC ${NAME}.cpp ${EDITOR_DIR}/graph.cpp ${EDITOR_DIR}/nodebase.cpp)
+set(SRC ${NAME}.cpp ${EDITOR_DIR}/edgebase.cpp ${EDITOR_DIR}/graph.cpp ${EDITOR_DIR}/nodebase.cpp)
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/unittests)
 add_executable(${NAME} ${SRC} ${MOC_SRC})

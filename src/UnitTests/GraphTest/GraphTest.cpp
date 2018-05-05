@@ -34,13 +34,43 @@ void GraphTest::testAddEdge()
     auto node1 = make_shared<NodeBase>();
     dut.addNode(node1);
 
-    dut.addEdge(node0, node1);
-    dut.addEdge(node0, node1); // Check that doubles are ignored
+    auto edge = make_shared<EdgeBase>(*node0, *node1);
+    dut.addEdge(edge);
+    dut.addEdge(edge); // Check that doubles are ignored
 
     auto edges = dut.getEdgesFromNode(node0);
 
     QCOMPARE(edges.size(), static_cast<size_t>(1));
-    QCOMPARE(edges.count(node1->index()), static_cast<size_t>(1));
+
+    auto iter = std::find_if(edges.begin(), edges.end(), [=](const EdgeBasePtr & edge){
+        return edge->sourceNodeBase().index() == node0->index() && edge->targetNodeBase().index() == node1->index();
+    });
+
+    QVERIFY(iter != edges.end());
+}
+
+void GraphTest::testAddEdgeByIndices()
+{
+    Graph dut;
+
+    auto node0 = make_shared<NodeBase>();
+    dut.addNode(node0);
+
+    auto node1 = make_shared<NodeBase>();
+    dut.addNode(node1);
+
+    dut.addEdge(node0->index(), node1->index());
+    dut.addEdge(node0->index(), node1->index()); // Check that doubles are ignored
+
+    auto edges = dut.getEdgesFromNode(node0);
+
+    QCOMPARE(edges.size(), static_cast<size_t>(1));
+
+    auto iter = std::find_if(edges.begin(), edges.end(), [=](const EdgeBasePtr & edge){
+        return edge->sourceNodeBase().index() == node0->index() && edge->targetNodeBase().index() == node1->index();
+    });
+
+    QVERIFY(iter != edges.end());
 }
 
 void GraphTest::testAddNode()
@@ -83,20 +113,20 @@ void GraphTest::testGetEdges()
     auto node1 = make_shared<NodeBase>();
     dut.addNode(node1);
 
-    dut.addEdge(node0, node1);
-    dut.addEdge(node1, node0);
+    dut.addEdge(std::make_shared<EdgeBase>(*node0, *node1));
+    dut.addEdge(std::make_shared<EdgeBase>(*node1, *node0));
 
     auto edges = dut.getEdges();
     QCOMPARE(edges.size(), static_cast<size_t>(2));
 
-    auto iter = std::find_if(edges.begin(), edges.end(), [=](const Graph::Edge & edge){
-        return edge.first == node0->index() && edge.second == node1->index();
+    auto iter = std::find_if(edges.begin(), edges.end(), [=](const EdgeBasePtr & edge){
+        return edge->sourceNodeBase().index() == node0->index() && edge->targetNodeBase().index() == node1->index();
     });
 
     QVERIFY(iter != edges.end());
 
-    iter = std::find_if(edges.begin(), edges.end(), [=](const Graph::Edge & edge){
-        return edge.first == node1->index() && edge.second == node0->index();
+    iter = std::find_if(edges.begin(), edges.end(), [=](const EdgeBasePtr & edge){
+        return edge->sourceNodeBase().index() == node1->index() && edge->targetNodeBase().index() == node0->index();
     });
 
     QVERIFY(iter != edges.end());

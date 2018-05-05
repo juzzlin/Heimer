@@ -65,8 +65,8 @@ void Mediator::addExistingGraphToScene()
 
     for (auto && edge : m_editorData->mindMapData()->graph().getEdges())
     {
-        auto node0 = dynamic_pointer_cast<Node>(getNodeByIndex(edge.first));
-        auto node1 = dynamic_pointer_cast<Node>(getNodeByIndex(edge.second));
+        auto node0 = dynamic_pointer_cast<Node>(getNodeByIndex(edge->sourceNodeBase().index()));
+        auto node1 = dynamic_pointer_cast<Node>(getNodeByIndex(edge->targetNodeBase().index()));
 
         if (!m_editorScene->hasEdge(*node0, *node1))
         {

@@ -57,8 +57,7 @@ void SerializerTest::testSingleEdge()
 
     auto outNode1 = std::make_shared<NodeBase>();
     outData.graph().addNode(outNode1);
-
-    outData.graph().addEdge(outNode0, outNode1);
+    outData.graph().addEdge(std::make_shared<EdgeBase>(*outNode0, *outNode1));
 
     // Serialize
     const auto document = Serializer::toXml(outData);
@@ -68,7 +67,6 @@ void SerializerTest::testSingleEdge()
 
     auto edges = inData->graph().getEdgesFromNode(outNode0);
     QCOMPARE(edges.size(), static_cast<size_t>(1));
-    QCOMPARE(edges.count(outNode1->index()), static_cast<size_t>(1));
 }
 
 void SerializerTest::testSingleNode()

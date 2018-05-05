@@ -27,7 +27,7 @@ NodeTextEdit::NodeTextEdit(Node * parentItem)
 
 void NodeTextEdit::keyPressEvent(QKeyEvent * event)
 {
-    QGraphicsTextItem::keyPressEvent(event);
+    TextEdit::keyPressEvent(event);
 
     const float tolerance = 0.001f;
     if (boundingRect().height() > maxHeight() + tolerance || boundingRect().width() > maxWidth() + tolerance ||

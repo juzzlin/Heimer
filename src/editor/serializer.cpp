@@ -58,12 +58,12 @@ static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocume
     for (auto node : mindMapData.graph().getNodes())
     {
         auto edges = mindMapData.graph().getEdgesFromNode(node);
-        for (auto index1 : edges)
+        for (auto && edge : edges)
         {
-            auto nodeElement = doc.createElement(Serializer::DataKeywords::Design::Graph::EDGE);
-            nodeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX0, node->index());
-            nodeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX1, index1);
-            root.appendChild(nodeElement);
+            auto edgeElement = doc.createElement(Serializer::DataKeywords::Design::Graph::EDGE);
+            edgeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX0, edge->sourceNodeBase().index());
+            edgeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX1, edge->targetNodeBase().index());
+            root.appendChild(edgeElement);
         }
     }
 }

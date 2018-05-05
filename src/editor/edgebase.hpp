@@ -13,16 +13,44 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LAYERS_HPP
-#define LAYERS_HPP
+#ifndef EDGEBASE_HPP
+#define EDGEBASE_HPP
 
-enum class Layers
+#include <memory>
+
+#include <QString>
+
+class NodeBase;
+
+class EdgeBase
 {
-    Edge = 1,
-    EdgeDot = 20,
-    EdgeLabel = 25,
-    NodeHandle = 30,
-    Node = 10
+public:
+
+    EdgeBase(NodeBase & sourceNode, NodeBase & targetNode);
+
+    virtual void setSourceNode(NodeBase & sourceNode);
+
+    virtual void setTargetNode(NodeBase & targetNode);
+
+    virtual NodeBase & sourceNodeBase() const;
+
+    virtual NodeBase & targetNodeBase() const;
+
+    QString text() const;
+
+    void setText(const QString & text);
+
+    virtual ~EdgeBase() {}
+
+private:
+
+    NodeBase * m_sourceNode;
+
+    NodeBase * m_targetNode;
+
+    QString m_text;
 };
 
-#endif // LAYERS_HPP
+using EdgeBasePtr = std::shared_ptr<EdgeBase>;
+
+#endif // EDGEBASE_HPP

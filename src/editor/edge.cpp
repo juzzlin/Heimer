@@ -18,16 +18,19 @@
 #include "graphicsfactory.hpp"
 #include "layers.hpp"
 #include "node.hpp"
+#include "textedit.hpp"
 
 #include <QBrush>
 #include <QGraphicsEllipseItem>
 #include <QPen>
 
+#include <cassert>
+
 Edge::Edge(Node & sourceNode, Node & targetNode)
-    : m_sourceNode(&sourceNode)
-    , m_targetNode(&targetNode)
+    : EdgeBase(sourceNode, targetNode)
     , m_sourceDot(new EdgeDot(this))
     , m_targetDot(new EdgeDot(this))
+    , m_label(new TextEdit(this))
     , m_sourceDotSizeAnimation(m_sourceDot, "scale")
     , m_targetDotSizeAnimation(m_targetDot, "scale")
 {
@@ -36,6 +39,14 @@ Edge::Edge(Node & sourceNode, Node & targetNode)
     setZValue(static_cast<int>(Layers::Edge));
 
     initDots();
+
+    m_label->setZValue(static_cast<int>(Layers::EdgeLabel));
+    m_label->setBackgroundColor(QColor(0xff, 0xee, 0xaa));
+
+    connect(m_label, &TextEdit::textChanged, [=] (const QString & text) {
+        updateLabel();
+        setText(text);
+    });
 }
 
 void Edge::initDots()
@@ -62,14 +73,18 @@ void Edge::initDots()
     m_targetDot->setRect(rect);
 }
 
-void Edge::setSourceNode(Node & sourceNode)
+Node & Edge::sourceNode() const
 {
-    m_sourceNode = &sourceNode;
+    auto node = dynamic_cast<Node *>(&sourceNodeBase());
+    assert(node);
+    return *node;
 }
 
-void Edge::setTargetNode(Node & targetNode)
+Node & Edge::targetNode() const
 {
-    m_targetNode = &targetNode;
+    auto node = dynamic_cast<Node *>(&targetNodeBase());
+    assert(node);
+    return *node;
 }
 
 void Edge::updateDots(const std::pair<QPointF, QPointF> & nearestPoints)
@@ -79,7 +94,7 @@ void Edge::updateDots(const std::pair<QPointF, QPointF> & nearestPoints)
         m_sourceDot->setPos(nearestPoints.first);
 
         // Re-parent to source node due to Z-ordering issues
-        m_sourceDot->setParentItem(m_sourceNode);
+        m_sourceDot->setParentItem(&sourceNode());
 
         m_sourceDotSizeAnimation.stop();
         m_sourceDotSizeAnimation.start();
@@ -90,26 +105,22 @@ void Edge::updateDots(const std::pair<QPointF, QPointF> & nearestPoints)
         m_targetDot->setPos(nearestPoints.second);
 
         // Re-parent to target node due to Z-ordering issues
-        m_targetDot->setParentItem(m_targetNode);
+        m_targetDot->setParentItem(&targetNode());
 
         m_targetDotSizeAnimation.stop();
         m_targetDotSizeAnimation.start();
     }
 }
 
-Node & Edge::targetNode() const
+void Edge::updateLabel()
 {
-    return *m_targetNode;
-}
-
-Node & Edge::sourceNode() const
-{
-    return *m_sourceNode;
+    m_label->setPos(line().center() - 0.5f * QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()));
 }
 
 void Edge::updateLine()
 {
-    const auto nearestPoints = Node::getNearestEdgePoints(*m_sourceNode, *m_targetNode);
-    setLine(QLineF(nearestPoints.first + m_sourceNode->pos(), nearestPoints.second + m_targetNode->pos()));
+    const auto nearestPoints = Node::getNearestEdgePoints(sourceNode(), targetNode());
+    setLine(QLineF(nearestPoints.first + sourceNode().pos(), nearestPoints.second + targetNode().pos()));
     updateDots(nearestPoints);
+    updateLabel();
 }

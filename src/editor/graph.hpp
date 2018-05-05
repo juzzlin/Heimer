@@ -17,6 +17,7 @@
 #define GRAPH_HPP
 
 #include "nodebase.hpp"
+#include "edgebase.hpp"
 
 #include <map>
 #include <set>
@@ -39,17 +40,15 @@ public:
 
     using NodeMap = std::map<int, NodeBasePtr>;
 
-    using Edge = std::pair<int, int>;
+    using EdgeVector = std::vector<EdgeBasePtr>;
 
-    using EdgeSet = std::set<int>;
-
-    using EdgeVector = std::vector<Edge>;
+    using EdgeSet = std::set<EdgeBasePtr>;
 
     void clear();
 
     void addNode(NodeBasePtr node);
 
-    void addEdge(NodeBasePtr node0, NodeBasePtr node1);
+    void addEdge(EdgeBasePtr edge);
 
     void addEdge(int node0, int node1);
 

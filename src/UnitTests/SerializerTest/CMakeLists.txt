@@ -6,6 +6,7 @@ set(NAME SerializerTest)
 set(SRC ${NAME}.cpp
     ${EDITOR_DIR}/draganddropstore.cpp
     ${EDITOR_DIR}/edge.cpp
+    ${EDITOR_DIR}/edgebase.cpp
     ${EDITOR_DIR}/edgedot.cpp
     ${EDITOR_DIR}/graph.cpp
     ${EDITOR_DIR}/graphicsfactory.cpp

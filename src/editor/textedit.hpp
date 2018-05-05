@@ -20,6 +20,8 @@
 
 class TextEdit : public QGraphicsTextItem
 {
+    Q_OBJECT
+
 public:
 
     explicit TextEdit(QGraphicsItem * parentItem);
@@ -30,17 +32,29 @@ public:
 
     virtual float maxWidth() const;
 
+    virtual void setBackgroundColor(const QColor & backgroundColor);
+
     virtual void setMaxWidth(float maxWidth);
 
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) override;
 
     virtual ~TextEdit();
 
+signals:
+
+    void textChanged(QString text);
+
+protected:
+
+    virtual void keyPressEvent(QKeyEvent * event) override;
+
 private:
 
     float m_maxHeight = 0;
 
     float m_maxWidth = 0;
+
+    QColor m_backgroundColor = QColor(192, 192, 192, 64);
 };
 
 #endif // TEXTEDIT_HPP

@@ -22,26 +22,29 @@
 #include <map>
 #include <memory>
 
+#include "edgebase.hpp"
+
 class Node;
 class EdgeDot;
 class QGraphicsEllipseItem;
+class TextEdit;
 
 //! A graphic representation of a graph edge between nodes.
-class Edge : public QGraphicsLineItem
+class Edge : public QObject, public QGraphicsLineItem, public EdgeBase
 {
+    Q_OBJECT
+
 public:
 
     Edge(Node & sourceNode, Node & targetNode);
 
-    void setSourceNode(Node & sourceNode);
-
-    void setTargetNode(Node & targetNode);
-
-    void updateLine();
-
     Node & sourceNode() const;
 
     Node & targetNode() const;
+
+public slots:
+
+    void updateLine();
 
 private:
 
@@ -49,13 +52,13 @@ private:
 
     void updateDots(const std::pair<QPointF, QPointF> & nearestPoints);
 
-    Node * m_sourceNode;
-
-    Node * m_targetNode;
+    void updateLabel();
 
     EdgeDot * m_sourceDot;
 
     EdgeDot * m_targetDot;
+
+    TextEdit * m_label;
 
     QPropertyAnimation m_sourceDotSizeAnimation;
 

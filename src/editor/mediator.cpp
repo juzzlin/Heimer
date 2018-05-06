@@ -137,8 +137,6 @@ void Mediator::initializeNewMindMap()
     delete m_editorScene;
     m_editorScene = new EditorScene;
 
-    m_editorView->resetDummyDragItems();
-
     initializeView();
 
     m_editorData->addNodeAt(QPointF(0, 0));
@@ -154,6 +152,8 @@ void Mediator::initializeView()
 
     // Set scene to the view
     m_editorView->setScene(m_editorScene);
+
+    m_editorView->resetDummyDragItems();
 
     assert(m_editorData);
 

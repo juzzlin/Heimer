@@ -1,6 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
-# This file is part of Dust Racing (DustRAC).
+# This file is part of Heimer.
 # Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
 # 
 # DustRAC is free software: you can redistribute it and/or modify
@@ -14,56 +14,51 @@
 # 
 # You should have received a copy of the GNU General Public License
 # along with DustRAC. If not, see <http://www.gnu.org/licenses/>.
-# 
+
 # Usage:
 #
-# This script replaces the license plate of the given file(s) with
-# the given new license plate. license lines MUST begin with "//".
+# This script replaces the license header of the given file(s) with
+# the given new license header. License lines MUST begin with "//".
 #
-# e.g. python license.py gpl_header.txt `find . -name "*.hh"`
+# e.g. ./license.py gpl_header.txt `find . -name "*.hh"`
 
 import sys
 
 def main(argv):
 
     if len(argv) < 3:
-        print("Usage: python license.py [licenseHeaderFile] [sourceFiles]")
+        print("Usage: ./license.py [licenseHeaderFile] [sourceFiles]")
         return 1
 
     # Read the new license
-    fName = argv[1]
-    print("Opening " + fName + " for read..")
-    f = open(fName, 'r')
-    licenseLines = f.readlines()
-    f.close()
+    licenseFileName = argv[1]
+    print("Opening {0} for read..".format(licenseFileName))
+    with open(licenseFileName, 'r') as licenseFile:
+        licenseLines = licenseFile.readlines()
 
-    for j in xrange(2, len(argv)):
-        fName = argv[j]
+    for j in range(2, len(argv)):
+        inputFileName = argv[j]
 
         # Read the original file
-        print("Opening " + fName + " for read..")
-        f = open(fName, 'r')
-        origLines = f.readlines()
-        f.close()
+        print("Opening {0} for read..".format(inputFileName))
+        with open(inputFileName, 'r') as inputFile:
+            origLines = inputFile.readlines()
 
-        # Skip the current license plate
+        # Skip the current license header
         headerSkip = True
-        newLines   = []
-        for i in origLines:
-            if (i.find('//') == 0 or i.find('\n') == 0) and headerSkip:
-                pass
-            else:
+        newLines = []
+        for line in origLines:
+            if line.find('//') == -1 or line.find('\n') == 0 or not headerSkip:
                 headerSkip = False
-                newLines.append(i)
+                newLines.append(line)
 
         # Add the new license
         newLines = licenseLines + newLines 
 
         # Modify the source file
-        print("Opening " + fName + " for write..")
-        f = open(fName, 'w')    
-        f.writelines(newLines)
-        f.close()
+        print("Opening {0} for write..".format(inputFileName))
+        with open(inputFileName, 'w') as inputFile:
+            inputFile.writelines(newLines)
 
     print("Done.")
     return 0

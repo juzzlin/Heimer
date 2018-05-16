@@ -147,9 +147,9 @@ void EditorData::setMindMapData(MindMapDataPtr mindMapData)
     m_mindMapData = mindMapData;
 }
 
-void EditorData::addEdge(NodeBasePtr node0, NodeBasePtr node1)
+void EditorData::addEdge(EdgePtr edge)
 {
-    m_mindMapData->graph().addEdge(node0->index(), node1->index());
+    m_mindMapData->graph().addEdge(edge);
 }
 
 NodeBasePtr EditorData::addNodeAt(QPointF pos)

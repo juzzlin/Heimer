@@ -55,6 +55,7 @@ void Graph::addEdge(EdgeBasePtr newEdge)
     }
 }
 
+#ifdef HEIMER_UNIT_TEST
 void Graph::addEdge(int node0, int node1)
 {
     // Add if such edge doesn't already exist
@@ -69,6 +70,7 @@ void Graph::addEdge(int node0, int node1)
         m_edges[node0].insert(std::make_shared<EdgeBase>(*getNode(node0), *getNode(node1)));
     }
 }
+#endif
 
 int Graph::numNodes() const
 {

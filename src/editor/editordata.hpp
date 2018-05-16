@@ -23,6 +23,7 @@
 #include <QString>
 
 #include "draganddropstore.hpp"
+#include "edge.hpp"
 #include "fileexception.hpp"
 #include "undostack.hpp"
 #include "mindmapdata.hpp"
@@ -39,7 +40,7 @@ public:
 
     EditorData(Mediator & mediator);
 
-    void addEdge(NodeBasePtr node0, NodeBasePtr node1);
+    void addEdge(EdgePtr edge);
 
     NodeBasePtr addNodeAt(QPointF pos);
 

@@ -50,8 +50,10 @@ public:
 
     void addEdge(EdgeBasePtr edge);
 
+    //! Warning: this should not be used outside unit tests as it creates a pure EdgeBase
+#ifdef HEIMER_UNIT_TEST
     void addEdge(int node0, int node1);
-
+#endif
     int numNodes() const;
 
     EdgeSet getEdgesFromNode(NodeBasePtr node);

@@ -45,7 +45,7 @@ Edge::Edge(Node & sourceNode, Node & targetNode)
 
     connect(m_label, &TextEdit::textChanged, [=] (const QString & text) {
         updateLabel();
-        setText(text);
+        EdgeBase::setText(text);
     });
 }
 
@@ -71,6 +71,12 @@ void Edge::initDots()
     m_targetDotSizeAnimation.setEndValue(0.0f);
 
     m_targetDot->setRect(rect);
+}
+
+void Edge::setText(const QString & text)
+{
+    EdgeBase::setText(text);
+    m_label->setPlainText(text);
 }
 
 Node & Edge::sourceNode() const

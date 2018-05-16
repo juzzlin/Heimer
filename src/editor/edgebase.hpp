@@ -38,7 +38,7 @@ public:
 
     QString text() const;
 
-    void setText(const QString & text);
+    virtual void setText(const QString & text);
 
     virtual ~EdgeBase() {}
 

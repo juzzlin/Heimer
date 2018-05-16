@@ -46,6 +46,8 @@ public slots:
 
     void updateLine();
 
+    virtual void setText(const QString & text) override;
+
 private:
 
     void initDots();

@@ -19,6 +19,7 @@
 #include "node.hpp"
 #include "mclogger.hh"
 
+#include <cassert>
 #include <functional>
 #include <map>
 
@@ -64,6 +65,12 @@ static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocume
             edgeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX0, edge->sourceNodeBase().index());
             edgeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX1, edge->targetNodeBase().index());
             root.appendChild(edgeElement);
+
+            // Create a child node for the text content
+            auto textElement = doc.createElement(Serializer::DataKeywords::Design::Graph::Node::TEXT);
+            edgeElement.appendChild(textElement);
+            auto textNode = doc.createTextNode(edge->text());
+            textElement.appendChild(textNode);
         }
     }
 }
@@ -152,12 +159,40 @@ static NodePtr readNode(const QDomElement & element)
     return node;
 }
 
-static std::pair<int, int> readEdge(const QDomElement & element)
+// The purpose of this #ifdef is to build GUILESS unit tests so that QTEST_GUILESS_MAIN can be used
+#ifdef HEIMER_UNIT_TEST
+static EdgeBasePtr readEdge(const QDomElement & element, MindMapDataPtr data)
+#else
+static EdgePtr readEdge(const QDomElement & element, MindMapDataPtr data)
+#endif
 {
-    return {
-        element.attribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX0, "-1").toInt(),
-        element.attribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX1, "-1").toInt()
-    };
+    const int index0 = element.attribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX0, "-1").toInt();
+    const int index1 = element.attribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX1, "-1").toInt();
+
+#ifdef HEIMER_UNIT_TEST
+    auto node0 = data->graph().getNode(index0);
+    assert(node0);
+    auto node1 = data->graph().getNode(index1);
+    assert(node1);
+    auto edge = make_shared<EdgeBase>(*node0, *node1);
+#else
+    // Init a new edge. QGraphicsScene will take the ownership eventually.
+    auto node0 = std::dynamic_pointer_cast<Node>(data->graph().getNode(index0));
+    assert(node0);
+    auto node1 = std::dynamic_pointer_cast<Node>(data->graph().getNode(index1));
+    assert(node1);
+    auto edge = make_shared<Edge>(*node0, *node1);
+#endif
+
+    readChildren(element, {
+        {
+            QString(Serializer::DataKeywords::Design::Graph::Node::TEXT), [=] (const QDomElement & e) {
+                edge->setText(readFirstTextNodeContent(e));
+            }
+        }
+    });
+
+    return edge;
 }
 
 static void readGraph(const QDomElement & graph, MindMapDataPtr data)
@@ -170,8 +205,7 @@ static void readGraph(const QDomElement & graph, MindMapDataPtr data)
         },
         {
             QString(Serializer::DataKeywords::Design::Graph::EDGE), [=] (const QDomElement & e) {
-                auto && edge = readEdge(e);
-                data->graph().addEdge(edge.first, edge.second);
+                data->graph().addEdge(readEdge(e, data));
             }
         },
     });

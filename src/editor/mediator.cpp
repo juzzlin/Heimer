@@ -60,6 +60,7 @@ void Mediator::addExistingGraphToScene()
         if (dynamic_pointer_cast<QGraphicsItem>(node)->scene() != m_editorScene)
         {
             addItem(*dynamic_pointer_cast<Node>(node));
+            MCLogger().info() << "Added an existing node " << node->index();
         }
     }
 
@@ -70,10 +71,13 @@ void Mediator::addExistingGraphToScene()
 
         if (!m_editorScene->hasEdge(*node0, *node1))
         {
-            const auto graphicsEgde = node0->createAndAddGraphicsEdge(node1);
-            node1->addGraphicsEdge(graphicsEgde);
-            addItem(*graphicsEgde); // QGraphicsScene needs the raw pointer
-            MCLogger().info() << "Created a new edge from " << node0->index() << " to " << node1->index();
+            auto graphicsEdge = dynamic_pointer_cast<Edge>(edge);
+            assert(graphicsEdge);
+            addItem(*graphicsEdge);
+            node0->addGraphicsEdge(graphicsEdge);
+            node1->addGraphicsEdge(graphicsEdge);
+            graphicsEdge->updateLine();
+            MCLogger().info() << "Added an existing edge from " << node0->index() << " to " << node1->index();
         }
     }
 }
@@ -92,16 +96,16 @@ NodeBasePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 {
     auto node1 = dynamic_pointer_cast<Node>(m_editorData->addNodeAt(pos));
     assert(node1);
+    MCLogger().info() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
 
     auto node0 = dynamic_pointer_cast<Node>(getNodeByIndex(sourceNodeIndex));
     assert(node0);
 
     // Currently floating nodes cannot be added. Always add edge from the parent node.
-    m_editorData->addEdge(node0, node1);
+    m_editorData->addEdge(std::make_shared<Edge>(*node0, *node1));
+    MCLogger().info() << "Created a new edge from " << node0->index() << " to " << node1->index();
 
     addExistingGraphToScene();
-
-    MCLogger().info() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
 
     return node1;
 }

@@ -27,6 +27,7 @@ HEADERS +=  \
     edge.hpp \
     edgebase.hpp \
     edgedot.hpp \
+    edgetextedit.hpp \
     editordata.hpp \
     editorscene.hpp \
     editorview.hpp \
@@ -57,6 +58,7 @@ SOURCES += \
     edge.cpp \
     edgebase.cpp \
     edgedot.cpp \
+    edgetextedit.cpp \
     editordata.cpp \
     editorscene.cpp \
     editorview.cpp \

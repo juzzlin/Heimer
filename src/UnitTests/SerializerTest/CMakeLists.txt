@@ -8,6 +8,7 @@ set(SRC ${NAME}.cpp
     ${EDITOR_DIR}/edge.cpp
     ${EDITOR_DIR}/edgebase.cpp
     ${EDITOR_DIR}/edgedot.cpp
+    ${EDITOR_DIR}/edgetextedit.cpp
     ${EDITOR_DIR}/graph.cpp
     ${EDITOR_DIR}/graphicsfactory.cpp
     ${EDITOR_DIR}/hashseed.cpp

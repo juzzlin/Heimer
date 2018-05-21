@@ -16,6 +16,7 @@ set(SRC
     edge.cpp
     edgebase.cpp
     edgedot.cpp
+    edgetextedit.cpp
     fileexception.hpp
     graph.cpp
     graphicsfactory.cpp

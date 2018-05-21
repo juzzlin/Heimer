@@ -18,11 +18,12 @@
 #include "graphicsfactory.hpp"
 #include "layers.hpp"
 #include "node.hpp"
-#include "textedit.hpp"
+#include "edgetextedit.hpp"
 
 #include <QBrush>
 #include <QGraphicsEllipseItem>
 #include <QPen>
+#include <QTimer>
 
 #include <cassert>
 
@@ -30,10 +31,12 @@ Edge::Edge(Node & sourceNode, Node & targetNode)
     : EdgeBase(sourceNode, targetNode)
     , m_sourceDot(new EdgeDot(this))
     , m_targetDot(new EdgeDot(this))
-    , m_label(new TextEdit(this))
+    , m_label(new EdgeTextEdit(this))
     , m_sourceDotSizeAnimation(m_sourceDot, "scale")
     , m_targetDotSizeAnimation(m_targetDot, "scale")
 {
+    setAcceptHoverEvents(true);
+
     setGraphicsEffect(GraphicsFactory::createDropShadowEffect());
 
     setZValue(static_cast<int>(Layers::Edge));
@@ -47,6 +50,29 @@ Edge::Edge(Node & sourceNode, Node & targetNode)
         updateLabel();
         EdgeBase::setText(text);
     });
+
+    m_labelVisibilityTimer.setSingleShot(true);
+    m_labelVisibilityTimer.setInterval(2000);
+
+    connect(&m_labelVisibilityTimer, &QTimer::timeout, [=] () {
+        setLabelVisible(false);
+    });
+}
+
+void Edge::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
+{
+    m_labelVisibilityTimer.stop();
+
+    setLabelVisible(true);
+
+    QGraphicsItem::hoverEnterEvent(event);
+}
+
+void Edge::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
+{
+    m_labelVisibilityTimer.start();
+
+    QGraphicsItem::hoverLeaveEvent(event);
 }
 
 void Edge::initDots()
@@ -59,6 +85,7 @@ void Edge::initDots()
     m_targetDot->setBrush(QBrush(color));
 
     const int duration = 2000;
+
     m_sourceDotSizeAnimation.setDuration(duration);
     m_sourceDotSizeAnimation.setStartValue(1.0f);
     m_sourceDotSizeAnimation.setEndValue(0.0f);
@@ -73,10 +100,17 @@ void Edge::initDots()
     m_targetDot->setRect(rect);
 }
 
+void Edge::setLabelVisible(bool visible)
+{
+    m_label->setVisible(visible);
+}
+
 void Edge::setText(const QString & text)
 {
     EdgeBase::setText(text);
     m_label->setPlainText(text);
+
+    setLabelVisible(!text.isEmpty());
 }
 
 Node & Edge::sourceNode() const

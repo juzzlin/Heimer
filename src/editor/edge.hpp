@@ -18,16 +18,17 @@
 
 #include <QGraphicsLineItem>
 #include <QPropertyAnimation>
+#include <QTimer>
 
 #include <map>
 #include <memory>
 
 #include "edgebase.hpp"
 
-class Node;
 class EdgeDot;
+class EdgeTextEdit;
+class Node;
 class QGraphicsEllipseItem;
-class TextEdit;
 
 //! A graphic representation of a graph edge between nodes.
 class Edge : public QObject, public QGraphicsLineItem, public EdgeBase
@@ -42,6 +43,10 @@ public:
 
     Node & targetNode() const;
 
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
+
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
+
 public slots:
 
     void updateLine();
@@ -52,6 +57,8 @@ private:
 
     void initDots();
 
+    void setLabelVisible(bool visible);
+
     void updateDots(const std::pair<QPointF, QPointF> & nearestPoints);
 
     void updateLabel();
@@ -60,11 +67,13 @@ private:
 
     EdgeDot * m_targetDot;
 
-    TextEdit * m_label;
+    EdgeTextEdit * m_label;
 
     QPropertyAnimation m_sourceDotSizeAnimation;
 
     QPropertyAnimation m_targetDotSizeAnimation;
+
+    QTimer m_labelVisibilityTimer;
 
     int m_dotRadius = 10;
 };

@@ -19,12 +19,6 @@ pipeline {
                 sh "cd build-qmake && qmake .. && make -j2"
             }
         }
-        stage('Build Linux Packaging Release') {
-            steps {
-                sh "mkdir -p build-linux-packaging-release"
-                sh "cd build-linux-packaging-release && cmake -DCMAKE_BUILD_TYPE=Release -DReleaseBuild=ON .. && make -j2"
-            }
-        }
         stage('Run tests') {
             steps {
                 sh "cd build-cmake && ctest"

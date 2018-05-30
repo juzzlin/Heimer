@@ -41,7 +41,7 @@ Release build (in this example Heimer installs under /usr):
 
 $ mkdir build
 $ cd build
-$ cmake .. -DReleaseBuild=1 -DCMAKE_INSTALL_PREFIX=/usr
+$ cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
 
 If everything went ok, run:
 
@@ -68,13 +68,6 @@ See `Jenkinsfile` to setup the Jenkins Pipeline.
 
 For Linux packagers
 ===================
-
-The release build should be used when packaging (give
--DReleaseBuild=1 to cmake).
-
-CMAKE_INSTALL_PREFIX usually defaults to /usr/local and
-can be changed by giving, for example, -DCMAKE_INSTALL_PREFIX=/usr
-to cmake.
 
 There's an example Debian packaging in packaging/debian/.
 

@@ -15,9 +15,9 @@
 !define MUI_BRANDINGTEXT       ${PRODUCTNAME}
 ;!define MUI_HEADERIMAGE
 ;!define MUI_HEADERIMAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Header\orange.bmp"
-!define MUI_ICON               "data\icons\icon.ico"
-!define MUI_UNICON             "data\icons\icon.ico"
-!define MUI_SPECIALBITMAP      "data\icons\icon.ico"
+!define MUI_ICON               "data\icons\heimer.ico"
+!define MUI_UNICON             "data\icons\heimer.ico"
+!define MUI_SPECIALBITMAP      "data\icons\heimer.ico"
 
 !define MUI_WELCOMEPAGE  
 !define MUI_LICENSEPAGE
@@ -37,7 +37,7 @@ RequestExecutionLevel admin
 InstallDir "$PROGRAMFILES\${PRODUCTNAME}"
  
 Name "${PRODUCTNAME}"
-Icon "data\icons\icon.ico"
+Icon "data\icons\heimer.ico"
 OutFile "heimer-${VERSIONMAJOR}.${VERSIONMINOR}.${VERSIONBUILD}-windows-x86-qt5_setup.exe"
 
 !insertmacro MUI_LANGUAGE "English"
@@ -76,10 +76,10 @@ Section "install"
  
 	CreateDirectory "$SMPROGRAMS\${PRODUCTNAME}"
 	CreateShortCut "$SMPROGRAMS\${PRODUCTNAME}\${APPNAME}.lnk" \
-	    "$INSTDIR\heimer.exe" "" "$INSTDIR\data\icons\icon.ico"
+	    "$INSTDIR\heimer.exe" "" "$INSTDIR\data\icons\heimer.ico"
 	CreateShortCut "$SMPROGRAMS\${PRODUCTNAME}\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" ""
  
-	CreateShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\heimer.exe" "" "$INSTDIR\data\icons\icon.ico"
+	CreateShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\heimer.exe" "" "$INSTDIR\data\icons\heimer.ico"
  
 	# Registry information for add/remove programs
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} \

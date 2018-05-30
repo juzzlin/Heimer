@@ -20,9 +20,6 @@ static constexpr auto APPLICATION_NAME = "Heimer";
 
 static constexpr auto APPLICATION_VERSION = VERSION;
 
-//! The base data path given by -DDATA_PATH.
-static constexpr auto dataPath = DATA_PATH;
-
 static constexpr auto COPYRIGHT = "Copyright (c) 2018 Jussi Lind";
 
 static constexpr auto FILE_EXTENSION = ".alz";
@@ -33,5 +30,7 @@ static constexpr auto QSETTINGS_COMPANY_NAME = "Heimer";
 static constexpr auto WEB_SITE_URL = "http://juzzlin.github.io/Heimer";
 
 static constexpr auto QSETTINGS_SOFTWARE_NAME = APPLICATION_NAME;
+
+static constexpr auto TRANSLATIONS_RESOURCE_BASE = ":/translations/heimer_";
 
 } // Config

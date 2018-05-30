@@ -42,7 +42,7 @@ static void initTranslations(QTranslator & appTranslator, QGuiApplication & app,
         lang = QLocale::system().name();
     }
 
-    if (appTranslator.load(QString(DATA_PATH) + "/translations/heimer_" + lang))
+    if (appTranslator.load(Config::TRANSLATIONS_RESOURCE_BASE + lang))
     {
         app.installTranslator(&appTranslator);
         std::cout << "Loaded translations for " << lang.toStdString() << std::endl;

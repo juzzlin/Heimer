@@ -25,13 +25,7 @@ set(VERSION_MINOR "0")
 set(VERSION_PATCH "0")
 set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
-option(ReleaseBuild "This should be used when creating DEB and RPM packages." OFF)
-
-option(DATA_PATH "Optional DATA_PATH for Linux release build." "")
-
 option(BIN_PATH "Optional BIN_PATH for Linux release build." "")
-
-option(DOC_PATH "Optional DOC_PATH for Linux release build." "")
 
 # Default to release C++ flags if CMAKE_BUILD_TYPE not set
 if(NOT CMAKE_BUILD_TYPE)
@@ -73,3 +67,4 @@ add_subdirectory(src/editor)
 # Enable CMake's unit test framework
 enable_testing()
 add_subdirectory(src/UnitTests)
+

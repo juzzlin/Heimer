@@ -65,7 +65,7 @@ if(MINGW)
 endif()
 
 # Copy desktop file
-if(ReleaseBuild AND UNIX)
+if(UNIX)
     set(DesktopFileSourcePath)
     if(USC)
         set(DesktopFileSourcePath ${CMAKE_SOURCE_DIR}/src/heimer.desktop.opt.in)

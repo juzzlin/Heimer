@@ -40,7 +40,7 @@ void AboutDlg::initWidgets()
     QLabel * infoLabel = new QLabel(this);
     infoLabel->setText(
         QString("<h2>") + Config::APPLICATION_NAME + " v" + Config::APPLICATION_VERSION + "</h2>"
-        + "<p>" + Config::APPLICATION_NAME + " is licenced under GNU GPLv3.</p>"
+        + "<p>" + Config::APPLICATION_NAME + tr(" is licenced under ") + "GNU GPLv3." + "</p>"
         + "<p>" + Config::COPYRIGHT + "</p>"
         + "<a href='" + Config::WEB_SITE_URL + "'>"
         + Config::WEB_SITE_URL + "</a>");

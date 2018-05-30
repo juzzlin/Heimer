@@ -31,6 +31,6 @@ static constexpr auto WEB_SITE_URL = "http://juzzlin.github.io/Heimer";
 
 static constexpr auto QSETTINGS_SOFTWARE_NAME = APPLICATION_NAME;
 
-static constexpr auto TRANSLATIONS_RESOURCE_BASE = ":/translations/heimer_";
+static constexpr auto TRANSLATIONS_RESOURCE_BASE = ":/heimer_";
 
 } // Config

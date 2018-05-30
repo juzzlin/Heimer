@@ -68,6 +68,7 @@ void Application::parseArgs(int argc, char ** argv)
         else if (args[i] == "--lang" && (i + i) < args.size())
         {
             lang = args[i + 1];
+            i++;
         }
         else
         {

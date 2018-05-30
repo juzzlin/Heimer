@@ -78,10 +78,8 @@ SOURCES += \
     contrib/mclogger.cc \
 
 
-RESOURCES += ../../data/icons/icons.qrc ../../data/images/images.qrc
+RESOURCES += ../../data/icons/icons.qrc ../../data/images/images.qrc ../../data/translations/translations.qrc
 RC_FILE = ../../data/icons/WindowsHeimer.rc
-//TRANSLATIONS += \
-//    translations/heimer_fi.ts
 
 target.path = $$OUT_PWD/../..
 INSTALLS += target

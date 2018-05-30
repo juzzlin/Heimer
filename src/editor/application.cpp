@@ -19,6 +19,8 @@
 #include "config.hpp"
 #include "userexception.hpp"
 
+#include "contrib/mclogger.hh"
+
 #include <QLocale>
 #include <QSettings>
 
@@ -45,11 +47,11 @@ static void initTranslations(QTranslator & appTranslator, QGuiApplication & app,
     if (appTranslator.load(Config::TRANSLATIONS_RESOURCE_BASE + lang))
     {
         app.installTranslator(&appTranslator);
-        std::cout << "Loaded translations for " << lang.toStdString() << std::endl;
+        MCLogger().info() << "Loaded translations for " << lang.toStdString();
     }
     else
     {
-        std::cerr << "Failed to load translations for " << lang.toStdString() << std::endl;
+        MCLogger().warning() << "Failed to load translations for " << lang.toStdString();
     }
 }
 

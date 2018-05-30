@@ -31,7 +31,7 @@ MindMapData::MindMapData(const MindMapData & other)
     copyGraph(other);
 }
 
-void MindMapData::copyGraph(const MindMapData & other)
+void MindMapData::copyGraph(const MindMapData &)
 {
     m_graph.clear();
 

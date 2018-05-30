@@ -19,12 +19,12 @@ NodeBase::NodeBase()
 {
 }
 
-QSize NodeBase::size() const
+QSizeF NodeBase::size() const
 {
     return m_size;
 }
 
-void NodeBase::setSize(QSize size)
+void NodeBase::setSize(QSizeF size)
 {
     m_size = size;
 }

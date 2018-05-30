@@ -53,6 +53,8 @@ namespace Serializer {
                     static constexpr auto TEXT = "text";
                     static constexpr auto X = "x";
                     static constexpr auto Y = "y";
+                    static constexpr auto W = "w";
+                    static constexpr auto H = "h";
                 };
 
                 static constexpr auto EDGE = "edge";

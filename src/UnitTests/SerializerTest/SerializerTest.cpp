@@ -81,6 +81,7 @@ void SerializerTest::testSingleNode()
     auto outNode = std::make_shared<NodeBase>();
     outNode->setColor(QColor(1, 2, 3));
     outNode->setLocation(QPointF(333.333, 666.666));
+    outNode->setSize(QSize(123, 321));
     outNode->setText("Lorem ipsum");
     outData.graph().addNode(outNode);
 
@@ -96,6 +97,7 @@ void SerializerTest::testSingleNode()
     QCOMPARE(node->index(), outNode->index());
     QCOMPARE(node->color(), outNode->color());
     QCOMPARE(node->location(), outNode->location());
+    QCOMPARE(node->size(), outNode->size());
     QCOMPARE(node->text(), outNode->text());
 }
 

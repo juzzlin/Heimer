@@ -37,6 +37,8 @@ static void writeNodes(MindMapData & mindMapData, QDomElement & root, QDomDocume
         nodeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Node::INDEX, node->index());
         nodeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Node::X, static_cast<int>(node->location().x() * SCALE));
         nodeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Node::Y, static_cast<int>(node->location().y() * SCALE));
+        nodeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Node::W, static_cast<int>(node->size().width() * SCALE));
+        nodeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Node::H, static_cast<int>(node->size().height() * SCALE));
         root.appendChild(nodeElement);
 
         // Create a child node for the text content
@@ -142,6 +144,14 @@ static NodePtr readNode(const QDomElement & element)
     node->setLocation(QPointF(
         element.attribute(Serializer::DataKeywords::Design::Graph::Node::X, "0").toInt() / SCALE,
         element.attribute(Serializer::DataKeywords::Design::Graph::Node::Y, "0").toInt() / SCALE));
+
+    if (element.hasAttribute(Serializer::DataKeywords::Design::Graph::Node::W) &&
+        element.hasAttribute(Serializer::DataKeywords::Design::Graph::Node::H))
+    {
+       node->setSize(QSizeF(
+           element.attribute(Serializer::DataKeywords::Design::Graph::Node::W).toInt() / SCALE,
+           element.attribute(Serializer::DataKeywords::Design::Graph::Node::H).toInt() / SCALE));
+    }
 
     readChildren(element, {
         {

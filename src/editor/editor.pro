@@ -41,7 +41,6 @@ HEADERS +=  \
     node.hpp \
     nodebase.hpp \
     nodehandle.hpp \
-    nodetextedit.hpp \
     reader.hpp \
     serializer.hpp \
     textedit.hpp \
@@ -71,7 +70,6 @@ SOURCES += \
     node.cpp \
     nodebase.cpp \
     nodehandle.cpp \
-    nodetextedit.cpp \
     reader.cpp \
     serializer.cpp \
     textedit.cpp \

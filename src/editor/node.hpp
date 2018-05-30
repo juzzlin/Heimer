@@ -16,6 +16,7 @@
 #ifndef NODE_HPP
 #define NODE_HPP
 
+#include <QObject>
 #include <QGraphicsItem>
 
 #include <vector>
@@ -25,12 +26,14 @@
 #include "edge.hpp"
 
 class NodeHandle;
-class NodeTextEdit;
 class QGraphicsTextItem;
+class TextEdit;
 
 //! Freely placeable target node.
-class Node : public QGraphicsItem, public NodeBase
+class Node : public QObject, public QGraphicsItem, public NodeBase
 {
+    Q_OBJECT
+
 public:
 
     //! Constructor.
@@ -76,6 +79,8 @@ private:
 
     void initTextField();
 
+    bool isTextUnderflowOrOverflow() const;
+
     void updateEdgeLines();
 
     std::vector<NodeHandle *> m_handles;
@@ -92,7 +97,7 @@ private:
 
     const float m_minWidth = 200;
 
-    NodeTextEdit * m_textEdit;
+    TextEdit * m_textEdit;
 };
 
 using NodePtr = std::shared_ptr<Node>;

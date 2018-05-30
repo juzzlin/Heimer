@@ -32,7 +32,6 @@ set(SRC
     node.cpp
     nodebase.cpp
     nodehandle.cpp
-    nodetextedit.cpp
     reader.cpp
     serializer.cpp
     textedit.cpp

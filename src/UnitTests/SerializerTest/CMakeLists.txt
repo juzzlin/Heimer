@@ -17,7 +17,6 @@ set(SRC ${NAME}.cpp
     ${EDITOR_DIR}/node.cpp
     ${EDITOR_DIR}/nodebase.cpp
     ${EDITOR_DIR}/nodehandle.cpp
-    ${EDITOR_DIR}/nodetextedit.cpp
     ${EDITOR_DIR}/serializer.cpp
     ${EDITOR_DIR}/textedit.cpp
     ${EDITOR_DIR}/contrib/mclogger.cc

@@ -19,7 +19,7 @@
 #include "graphicsfactory.hpp"
 #include "layers.hpp"
 #include "nodehandle.hpp"
-#include "nodetextedit.hpp"
+#include "textedit.hpp"
 
 #include "mclogger.hh"
 
@@ -32,7 +32,7 @@
 #include <cmath>
 
 Node::Node()
-    : m_textEdit(new NodeTextEdit(this))
+    : m_textEdit(new TextEdit(this))
 {
     setAcceptHoverEvents(true);
 
@@ -47,6 +47,15 @@ Node::Node()
     initTextField();
 
     setGraphicsEffect(GraphicsFactory::createDropShadowEffect());
+
+    connect(m_textEdit, &TextEdit::textChanged, [=] (const QString & text) {
+        setText(text);
+
+        if (isTextUnderflowOrOverflow())
+        {
+            adjustSize();
+        }
+    });
 }
 
 Node::Node(const Node & other)
@@ -183,6 +192,15 @@ void Node::initTextField()
     m_textEdit->setMaxWidth(size().width() - m_margin * 2);
 }
 
+bool Node::isTextUnderflowOrOverflow() const
+{
+  const float tolerance = 0.001f;
+  return m_textEdit->boundingRect().height() > m_textEdit->maxHeight() + tolerance ||
+      m_textEdit->boundingRect().width() > m_textEdit->maxWidth() + tolerance ||
+      m_textEdit->boundingRect().height() < m_textEdit->maxHeight() - tolerance ||
+      m_textEdit->boundingRect().width() < m_textEdit->maxWidth() - tolerance;
+}
+
 void Node::paint(QPainter * painter,
     const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
@@ -218,7 +236,16 @@ void Node::setLocation(QPointF newLocation)
 
 void Node::setText(const QString & text)
 {
-    m_textEdit->setPlainText(text);
+    if (text != this->text())
+    {
+        NodeBase::setText(text);
+        m_textEdit->setPlainText(text);
+
+        if (isTextUnderflowOrOverflow())
+        {
+            adjustSize();
+        }
+    }
 }
 
 QString Node::text() const

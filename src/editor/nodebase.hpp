@@ -47,9 +47,9 @@ public:
 
     virtual void setLocation(QPointF newLocation);
 
-    virtual QSize size() const;
+    virtual QSizeF size() const;
 
-    virtual void setSize(QSize size);
+    virtual void setSize(QSizeF size);
 
     virtual int index() const;
 
@@ -65,7 +65,7 @@ private:
 
     QPointF m_location;
 
-    QSize m_size;
+    QSizeF m_size;
 
     QString m_text;
 

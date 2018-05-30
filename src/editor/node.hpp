@@ -93,7 +93,7 @@ private:
 
     const int m_margin = 10;
 
-    const float m_minHeight = 150;
+    const float m_minHeight = 75;
 
     const float m_minWidth = 200;
 

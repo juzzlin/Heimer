@@ -6,9 +6,9 @@ if ! which ${LUPDATE}; then
     exit 1
 fi
 
-for LANG in cs de fi fr it; do
-    ${LUPDATE} src/game/*.cpp src/game/menu/*.cpp -ts src/game/translations/heimer-game_${LANG}.ts
-    ${LUPDATE} src/editor/*.cpp -ts src/editor/translations/heimer-editor_${LANG}.ts
+for LANG in fi; do
+    FILE=src/editor/translations/heimer-editor_${LANG}.ts
+    ${LUPDATE} src/editor/*.cpp -ts ${FILE}
 done
 
 echo "Done."

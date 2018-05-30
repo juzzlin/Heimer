@@ -1,70 +1,94 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <design version="0.0.0">
- <color g="200" r="128" b="255"/>
+ <color r="128" b="255" g="200"/>
  <graph>
-  <node x="4918" y="56557" index="0">
+  <node index="0" h="75000" x="4918" y="56557" w="200000">
    <text>Me</text>
-   <color g="226" r="138" b="52"/>
+   <color r="138" b="52" g="226"/>
   </node>
-  <node x="-249180" y="-232786" index="1">
+  <node index="1" h="75000" x="-249180" y="-232786" w="200000">
    <text>Father</text>
-   <color g="175" r="252" b="62"/>
+   <color r="252" b="62" g="175"/>
   </node>
-  <node x="263934" y="-228278" index="2">
+  <node index="2" h="75000" x="263934" y="-228278" w="200000">
    <text>Mother</text>
-   <color g="212" r="237" b="0"/>
+   <color r="237" b="0" g="212"/>
   </node>
-  <node x="340277" y="56944" index="3">
+  <node index="3" h="75000" x="340277" y="56944" w="200000">
    <text>Brother</text>
-   <color g="74" r="32" b="135"/>
+   <color r="32" b="135" g="74"/>
   </node>
-  <node x="512500" y="-520832" index="4">
+  <node index="4" h="75000" x="512500" y="-520832" w="200000">
    <text>Grandfather</text>
-   <color g="212" r="237" b="0"/>
+   <color r="237" b="0" g="212"/>
   </node>
-  <node x="181944" y="-516666" index="5">
+  <node index="5" h="75000" x="181944" y="-516666" w="200000">
    <text>Grandmother</text>
-   <color g="212" r="237" b="0"/>
+   <color r="237" b="0" g="212"/>
   </node>
-  <node x="-504166" y="-520832" index="6">
+  <node index="6" h="75000" x="-504166" y="-520832" w="200000">
    <text>Grandmother</text>
-   <color g="175" r="252" b="62"/>
+   <color r="252" b="62" g="175"/>
   </node>
-  <node x="-163888" y="-525000" index="7">
+  <node index="7" h="75000" x="-163888" y="-525000" w="200000">
    <text>Grandfather</text>
-   <color g="175" r="252" b="62"/>
+   <color r="252" b="62" g="175"/>
   </node>
-  <node x="-338235" y="65686" index="8">
+  <node index="8" h="75000" x="-396428" y="57142" w="200000">
    <text>Her</text>
-   <color g="207" r="234" b="207"/>
+   <color r="234" b="207" g="207"/>
   </node>
-  <node x="626470" y="-138725" index="9">
+  <node index="9" h="75000" x="626470" y="-138725" w="200000">
    <text>Friend</text>
-   <color g="138" r="136" b="133"/>
+   <color r="136" b="133" g="138"/>
   </node>
-  <node x="-229032" y="295967" index="10">
+  <node index="10" h="75000" x="-229032" y="295967" w="200000">
    <text>Friend</text>
-   <color g="138" r="136" b="133"/>
+   <color r="136" b="133" g="138"/>
   </node>
-  <node x="33870" y="300000" index="11">
+  <node index="11" h="75000" x="33870" y="300000" w="200000">
    <text>Friend</text>
-   <color g="138" r="136" b="133"/>
+   <color r="136" b="133" g="138"/>
   </node>
-  <node x="369354" y="300806" index="12">
+  <node index="12" h="75000" x="369354" y="300806" w="200000">
    <text>Mrs. Friend</text>
-   <color g="215" r="211" b="207"/>
+   <color r="211" b="207" g="215"/>
   </node>
-  <edge index0="0" index1="1"/>
-  <edge index0="0" index1="2"/>
-  <edge index0="0" index1="3"/>
-  <edge index0="0" index1="8"/>
-  <edge index0="0" index1="10"/>
-  <edge index0="0" index1="11"/>
-  <edge index0="1" index1="6"/>
-  <edge index0="1" index1="7"/>
-  <edge index0="2" index1="4"/>
-  <edge index0="2" index1="5"/>
-  <edge index0="3" index1="9"/>
-  <edge index0="11" index1="12"/>
+  <edge index1="10" index0="0">
+   <text></text>
+  </edge>
+  <edge index1="1" index0="0">
+   <text></text>
+  </edge>
+  <edge index1="8" index0="0">
+   <text>LOVES</text>
+  </edge>
+  <edge index1="2" index0="0">
+   <text></text>
+  </edge>
+  <edge index1="3" index0="0">
+   <text></text>
+  </edge>
+  <edge index1="11" index0="0">
+   <text></text>
+  </edge>
+  <edge index1="6" index0="1">
+   <text></text>
+  </edge>
+  <edge index1="7" index0="1">
+   <text></text>
+  </edge>
+  <edge index1="5" index0="2">
+   <text></text>
+  </edge>
+  <edge index1="4" index0="2">
+   <text></text>
+  </edge>
+  <edge index1="9" index0="3">
+   <text></text>
+  </edge>
+  <edge index1="12" index0="11">
+   <text></text>
+  </edge>
  </graph>
 </design>

@@ -68,9 +68,18 @@ Node::Node(const Node & other)
     setSize(other.size());
 }
 
-void Node::addGraphicsEdge(EdgePtr edge)
+void Node::addGraphicsEdge(Edge & edge)
 {
-    m_graphicsEdges.push_back(edge);
+    m_graphicsEdges.push_back(&edge);
+}
+
+void Node::removeGraphicsEdge(Edge & edge)
+{
+    auto iter = std::find(m_graphicsEdges.begin(), m_graphicsEdges.end(), &edge);
+    if (iter != m_graphicsEdges.end())
+    {
+        m_graphicsEdges.erase(iter);
+    }
 }
 
 void Node::adjustSize()
@@ -103,7 +112,7 @@ EdgePtr Node::createAndAddGraphicsEdge(NodePtr targetNode)
 {
     auto edge = std::make_shared<Edge>(*this, *targetNode);
     edge->updateLine();
-    m_graphicsEdges.push_back(edge);
+    m_graphicsEdges.push_back(edge.get());
     return edge;
 }
 
@@ -263,5 +272,5 @@ void Node::updateEdgeLines()
 
 Node::~Node()
 {
-    MCLogger().info() << "Node " << index() << " deleted.";
+    MCLogger().info() << "Node deleted: " << index();
 }

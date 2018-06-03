@@ -52,6 +52,8 @@ public:
 
     DragAndDropStore & dadStore();
 
+    void deleteNode(Node & node);
+
     void enableUndo(bool enable);
 
     NodeBasePtr getNodeByIndex(int index);
@@ -59,6 +61,8 @@ public:
     bool hasNodes() const;
 
     void initializeNewMindMap();
+
+    bool isLeafNode(Node & node);
 
     bool isUndoable() const;
 

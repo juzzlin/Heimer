@@ -31,27 +31,50 @@ void Graph::clear()
 
 void Graph::addNode(NodeBasePtr node)
 {
-    if (node && m_nodes.count(node->index()) == 0)
+    node->setIndex(m_count++);
+    m_nodes.push_back(node);
+}
+
+void Graph::deleteNode(int index)
+{
+    const auto iter = std::find_if(m_nodes.begin(), m_nodes.end(), [=] (const NodeBasePtr & node) {
+        return node->index() == index;
+    });
+
+    if (iter != m_nodes.end())
     {
-        node->setIndex(m_count);
-        m_nodes.insert({node->index(), node});
-        m_count++;
+        EdgeVector::iterator edgeIter;
+        bool edgeErased = false;
+        do
+        {
+            edgeIter = std::find_if(
+                m_edges.begin(), m_edges.end(), [=](const EdgeBasePtr & edge){
+                    return edge->sourceNodeBase().index() == index ||
+                           edge->targetNodeBase().index() == index;
+                });
+            edgeErased = edgeIter != m_edges.end();
+            if (edgeErased)
+            {
+                m_edges.erase(edgeIter);
+            }
+        } while (edgeErased);
+
+        m_nodes.erase(iter);
     }
 }
 
 void Graph::addEdge(EdgeBasePtr newEdge)
 {
     // Add if such edge doesn't already exist
-    auto && edges = m_edges[newEdge->sourceNodeBase().index()];
     const auto iter = std::find_if(
-        edges.begin(), edges.end(), [=](const EdgeBasePtr & edge){
+        m_edges.begin(), m_edges.end(), [=](const EdgeBasePtr & edge){
             return edge->sourceNodeBase().index() == newEdge->sourceNodeBase().index() &&
                    edge->targetNodeBase().index() == newEdge->targetNodeBase().index();
         });
 
-    if (iter == edges.end())
+    if (iter == m_edges.end())
     {
-        m_edges[newEdge->sourceNodeBase().index()].insert(newEdge);
+        m_edges.push_back(newEdge);
     }
 }
 
@@ -59,15 +82,14 @@ void Graph::addEdge(EdgeBasePtr newEdge)
 void Graph::addEdge(int node0, int node1)
 {
     // Add if such edge doesn't already exist
-    auto && edges = m_edges[node0];
     const auto iter = std::find_if(
-        edges.begin(), edges.end(), [=](const EdgeBasePtr & edge){
+        m_edges.begin(), m_edges.end(), [=](const EdgeBasePtr & edge){
             return edge->sourceNodeBase().index() == node0 && edge->targetNodeBase().index() == node1;
         });
 
-    if (iter == edges.end())
+    if (iter == m_edges.end())
     {
-        m_edges[node0].insert(std::make_shared<EdgeBase>(*getNode(node0), *getNode(node1)));
+        m_edges.push_back(std::make_shared<EdgeBase>(*getNode(node0), *getNode(node1)));
     }
 }
 #endif
@@ -77,12 +99,17 @@ int Graph::numNodes() const
     return m_nodes.size();
 }
 
-Graph::EdgeVector Graph::getEdges() const
+const Graph::EdgeVector & Graph::getEdges() const
 {
-    EdgeVector edges;
-    for (auto && node0 : m_edges)
+    return m_edges;
+}
+
+Graph::EdgeVector Graph::getEdgesFromNode(NodeBasePtr node)
+{
+    Graph::EdgeVector edges;
+    for (auto && edge : m_edges)
     {
-        for (auto && edge : node0.second)
+        if (edge->sourceNodeBase().index() == node->index())
         {
             edges.push_back(edge);
         }
@@ -90,25 +117,30 @@ Graph::EdgeVector Graph::getEdges() const
     return edges;
 }
 
-Graph::EdgeSet Graph::getEdgesFromNode(NodeBasePtr node)
+Graph::EdgeVector Graph::getEdgesToNode(NodeBasePtr node)
 {
-    return m_edges[node->index()];
+    Graph::EdgeVector edges;
+    for (auto && edge : m_edges)
+    {
+        if (edge->targetNodeBase().index() == node->index())
+        {
+            edges.push_back(edge);
+        }
+    }
+    return edges;
 }
 
 NodeBasePtr Graph::getNode(int index)
 {
-    return m_nodes.count(index) ? m_nodes[index] : NodeBasePtr();
+    auto iter = std::find_if(m_nodes.begin(), m_nodes.end(), [=] (const NodeBasePtr & node) {
+        return node->index() == index;
+    });
+    return iter != m_nodes.end() ? *iter : NodeBasePtr();
 }
 
-Graph::NodeVector Graph::getNodes() const
+const Graph::NodeVector & Graph::getNodes() const
 {
-    NodeVector nodes;
-    for (auto const & iter : m_nodes)
-    {
-        nodes.push_back(iter.second);
-    }
-
-    return nodes;
+    return m_nodes;
 }
 
 Graph::~Graph()

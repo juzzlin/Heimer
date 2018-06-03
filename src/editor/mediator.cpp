@@ -74,8 +74,8 @@ void Mediator::addExistingGraphToScene()
             auto graphicsEdge = dynamic_pointer_cast<Edge>(edge);
             assert(graphicsEdge);
             addItem(*graphicsEdge);
-            node0->addGraphicsEdge(graphicsEdge);
-            node1->addGraphicsEdge(graphicsEdge);
+            node0->addGraphicsEdge(*graphicsEdge);
+            node1->addGraphicsEdge(*graphicsEdge);
             graphicsEdge->updateLine();
             MCLogger().info() << "Added an existing edge from " << node0->index() << " to " << node1->index();
         }
@@ -113,6 +113,12 @@ NodeBasePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 DragAndDropStore & Mediator::dadStore()
 {
     return m_editorData->dadStore();
+}
+
+void Mediator::deleteNode(Node & node)
+{
+    auto && graph = m_editorData->mindMapData()->graph();
+    graph.deleteNode(node.index());
 }
 
 void Mediator::enableUndo(bool enable)
@@ -165,6 +171,12 @@ void Mediator::initializeView()
 
     m_mainWindow.setCentralWidget(m_editorView);
     m_mainWindow.setContentsMargins(0, 0, 0, 0);
+}
+
+bool Mediator::isLeafNode(Node & node)
+{
+    auto && graph = m_editorData->mindMapData()->graph();
+    return graph.getEdgesFromNode(graph.getNode(node.index())).size() + graph.getEdgesToNode(graph.getNode(node.index())).size() == 1;
 }
 
 bool Mediator::isRedoable() const

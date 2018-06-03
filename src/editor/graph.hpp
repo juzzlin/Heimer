@@ -38,15 +38,13 @@ public:
 
     using NodeVector = std::vector<NodeBasePtr>;
 
-    using NodeMap = std::map<int, NodeBasePtr>;
-
     using EdgeVector = std::vector<EdgeBasePtr>;
-
-    using EdgeSet = std::set<EdgeBasePtr>;
 
     void clear();
 
     void addNode(NodeBasePtr node);
+
+    void deleteNode(int index);
 
     void addEdge(EdgeBasePtr edge);
 
@@ -56,19 +54,21 @@ public:
 #endif
     int numNodes() const;
 
-    EdgeSet getEdgesFromNode(NodeBasePtr node);
+    EdgeVector getEdgesFromNode(NodeBasePtr node);
 
-    EdgeVector getEdges() const;
+    EdgeVector getEdgesToNode(NodeBasePtr node);
+
+    const EdgeVector & getEdges() const;
 
     NodeBasePtr getNode(int index);
 
-    NodeVector getNodes() const;
+    const NodeVector & getNodes() const;
 
 private:
 
-    std::map<int, NodeBasePtr> m_nodes;
+    NodeVector m_nodes;
 
-    std::map<int, EdgeSet> m_edges;
+    EdgeVector m_edges;
 
     int m_count = 0;
 };

@@ -44,7 +44,9 @@ public:
 
     virtual ~Node();
 
-    virtual void addGraphicsEdge(EdgePtr edge);
+    virtual void addGraphicsEdge(Edge & edge);
+
+    virtual void removeGraphicsEdge(Edge & edge);
 
     void adjustSize();
 
@@ -85,7 +87,7 @@ private:
 
     std::vector<NodeHandle *> m_handles;
 
-    std::vector<EdgePtr> m_graphicsEdges;
+    std::vector<Edge *> m_graphicsEdges;
 
     std::vector<QPointF> m_edgePoints;
 

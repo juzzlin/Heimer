@@ -20,6 +20,8 @@
 #include "node.hpp"
 #include "edgetextedit.hpp"
 
+#include "contrib/mclogger.hh"
+
 #include <QBrush>
 #include <QGraphicsEllipseItem>
 #include <QPen>
@@ -163,4 +165,12 @@ void Edge::updateLine()
     setLine(QLineF(nearestPoints.first + sourceNode().pos(), nearestPoints.second + targetNode().pos()));
     updateDots(nearestPoints);
     updateLabel();
+}
+
+Edge::~Edge()
+{
+    sourceNode().removeGraphicsEdge(*this);
+    targetNode().removeGraphicsEdge(*this);
+
+    MCLogger().info() << "Edge deleted: " << sourceNode().index() << " -> " << targetNode().index();
 }

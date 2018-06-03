@@ -39,6 +39,8 @@ public:
 
     Edge(Node & sourceNode, Node & targetNode);
 
+    virtual ~Edge();
+
     Node & sourceNode() const;
 
     Node & targetNode() const;

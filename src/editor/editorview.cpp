@@ -67,18 +67,27 @@ void EditorView::createBackgroundContextMenuActions()
 
 void EditorView::createNodeContextMenuActions()
 {
-    const QString dummy1(QWidget::tr("Set node color"));
-    m_setNodeColorAction = new QAction(dummy1, &m_nodeContextMenu);
+    m_setNodeColorAction = new QAction(tr("Set node color"), &m_nodeContextMenu);
     QObject::connect(m_setNodeColorAction, &QAction::triggered, [this] () {
         assert(m_mediator.selectedNode());
         const auto color = QColorDialog::getColor(Qt::white, this);
         if (color.isValid()) {
+            m_mediator.saveUndoPoint();
             m_mediator.selectedNode()->setColor(color);
         }
     });
 
+    m_deleteNodeAction = new QAction(tr("Delete node"), &m_nodeContextMenu);
+    QObject::connect(m_deleteNodeAction, &QAction::triggered, [this] () {
+        assert(m_mediator.selectedNode());
+        m_mediator.saveUndoPoint();
+        m_mediator.deleteNode(*m_mediator.selectedNode());
+    });
+
     // Populate the menu
     m_nodeContextMenu.addAction(m_setNodeColorAction);
+    m_nodeContextMenu.addSeparator();
+    m_nodeContextMenu.addAction(m_deleteNodeAction);
 }
 
 void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
@@ -267,6 +276,8 @@ void EditorView::openBackgroundContextMenu()
 
 void EditorView::openNodeContextMenu()
 {
+    m_deleteNodeAction->setEnabled(m_mediator.isLeafNode(*m_mediator.selectedNode()));
+
     m_nodeContextMenu.exec(mapToGlobal(m_clickedPos));
 }
 

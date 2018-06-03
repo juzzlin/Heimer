@@ -38,15 +38,17 @@ void GraphTest::testAddEdge()
     dut.addEdge(edge);
     dut.addEdge(edge); // Check that doubles are ignored
 
-    auto edges = dut.getEdgesFromNode(node0);
+    auto edgesFrom0 = dut.getEdgesFromNode(node0);
+    QCOMPARE(edgesFrom0.size(), static_cast<size_t>(1));
+    QCOMPARE(edgesFrom0.at(0)->sourceNodeBase().index(), node0->index());
 
-    QCOMPARE(edges.size(), static_cast<size_t>(1));
+    QCOMPARE(dut.getEdgesToNode(node0).size(), static_cast<size_t>(0));
 
-    auto iter = std::find_if(edges.begin(), edges.end(), [=](const EdgeBasePtr & edge){
-        return edge->sourceNodeBase().index() == node0->index() && edge->targetNodeBase().index() == node1->index();
-    });
+    auto edgesTo1 = dut.getEdgesToNode(node1);
+    QCOMPARE(edgesTo1.size(), static_cast<size_t>(1));
+    QCOMPARE(edgesTo1.at(0)->sourceNodeBase().index(), node0->index());
 
-    QVERIFY(iter != edges.end());
+    QCOMPARE(dut.getEdgesToNode(node0).size(), static_cast<size_t>(0));
 }
 
 void GraphTest::testAddEdgeByIndices()
@@ -62,15 +64,17 @@ void GraphTest::testAddEdgeByIndices()
     dut.addEdge(node0->index(), node1->index());
     dut.addEdge(node0->index(), node1->index()); // Check that doubles are ignored
 
-    auto edges = dut.getEdgesFromNode(node0);
+    auto edgesFrom0 = dut.getEdgesFromNode(node0);
+    QCOMPARE(edgesFrom0.size(), static_cast<size_t>(1));
+    QCOMPARE(edgesFrom0.at(0)->sourceNodeBase().index(), node0->index());
 
-    QCOMPARE(edges.size(), static_cast<size_t>(1));
+    QCOMPARE(dut.getEdgesToNode(node0).size(), static_cast<size_t>(0));
 
-    auto iter = std::find_if(edges.begin(), edges.end(), [=](const EdgeBasePtr & edge){
-        return edge->sourceNodeBase().index() == node0->index() && edge->targetNodeBase().index() == node1->index();
-    });
+    auto edgesTo1 = dut.getEdgesToNode(node1);
+    QCOMPARE(edgesTo1.size(), static_cast<size_t>(1));
+    QCOMPARE(edgesTo1.at(0)->sourceNodeBase().index(), node0->index());
 
-    QVERIFY(iter != edges.end());
+    QCOMPARE(dut.getEdgesToNode(node0).size(), static_cast<size_t>(0));
 }
 
 void GraphTest::testAddNode()
@@ -101,6 +105,45 @@ void GraphTest::testAddTwoNodes()
     QCOMPARE(dut.numNodes(), 2);
     QCOMPARE(node0->index(), 0);
     QCOMPARE(node1->index(), 1);
+}
+
+void GraphTest::testDeleteNode()
+{
+    Graph dut;
+    auto node = make_shared<NodeBase>();
+
+    dut.addNode(node);
+
+    QCOMPARE(dut.numNodes(), 1);
+
+    dut.deleteNode(node->index());
+
+    QCOMPARE(dut.numNodes(), 0);
+}
+
+void GraphTest::testDeleteNodeInvolvingEdge()
+{
+    Graph dut;
+
+    auto node0 = make_shared<NodeBase>();
+    dut.addNode(node0);
+
+    auto node1 = make_shared<NodeBase>();
+    dut.addNode(node1);
+
+    QCOMPARE(dut.numNodes(), 2);
+
+    dut.addEdge(make_shared<EdgeBase>(*node0, *node1));
+
+    QCOMPARE(dut.getEdgesFromNode(node0).size(), static_cast<size_t>(1));
+
+    QCOMPARE(dut.getEdgesToNode(node1).size(), static_cast<size_t>(1));
+
+    dut.deleteNode(node0->index());
+
+    QCOMPARE(dut.numNodes(), 1);
+
+    QCOMPARE(dut.getEdgesToNode(node1).size(), static_cast<size_t>(0));
 }
 
 void GraphTest::testGetEdges()

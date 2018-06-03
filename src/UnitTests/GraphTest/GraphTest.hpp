@@ -33,6 +33,10 @@ private slots:
 
     void testAddTwoNodes();
 
+    void testDeleteNode();
+
+    void testDeleteNodeInvolvingEdge();
+
     void testGetEdges();
 
     void testGetNodes();

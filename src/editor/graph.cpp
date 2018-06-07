@@ -31,7 +31,18 @@ void Graph::clear()
 
 void Graph::addNode(NodeBasePtr node)
 {
-    node->setIndex(m_count++);
+    if (node->index() == -1)
+    {
+        node->setIndex(m_count++);
+    }
+    else
+    {
+        if (node->index() >= m_count)
+        {
+            m_count = node->index() + 1;
+        }
+    }
+
     m_nodes.push_back(node);
 }
 

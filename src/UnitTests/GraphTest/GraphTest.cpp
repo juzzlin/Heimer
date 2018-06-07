@@ -87,7 +87,22 @@ void GraphTest::testAddNode()
     dut.addNode(node);
 
     QCOMPARE(dut.numNodes(), 1);
-    QCOMPARE(node->index(), 0);
+    QCOMPARE(node->index(), 0); // Node index should be automatic
+
+    node = make_shared<NodeBase>();
+    node->setIndex(666);
+
+    dut.addNode(node);
+
+    QCOMPARE(dut.numNodes(), 2);
+    QCOMPARE(node->index(), 666); // Node index should be forced to 666
+
+    node = make_shared<NodeBase>();
+
+    dut.addNode(node);
+
+    QCOMPARE(dut.numNodes(), 3);
+    QCOMPARE(node->index(), 667); // Node index should be automatically 667
 }
 
 void GraphTest::testAddTwoNodes()

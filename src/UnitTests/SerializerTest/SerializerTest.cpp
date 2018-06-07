@@ -48,6 +48,35 @@ void SerializerTest::testBackgroundColor()
     QCOMPARE(inData->backgroundColor(), outData.backgroundColor());
 }
 
+void SerializerTest::testNodeDeletion()
+{
+    MindMapData outData;
+
+    auto outNode0 = std::make_shared<NodeBase>();
+    outData.graph().addNode(outNode0);
+
+    auto outNode1 = std::make_shared<NodeBase>();
+    outData.graph().addNode(outNode1);
+
+    auto outNode2 = std::make_shared<NodeBase>();
+    outData.graph().addNode(outNode2);
+
+    outData.graph().addEdge(std::make_shared<EdgeBase>(*outNode0, *outNode1));
+
+    outData.graph().addEdge(std::make_shared<EdgeBase>(*outNode0, *outNode2));
+
+    outData.graph().deleteNode(outNode1->index()); // Delete node in between
+
+    // Serialize
+    const auto document = Serializer::toXml(outData);
+
+    // Deserialize
+    const auto inData = Serializer::fromXml(document);
+
+    auto edges = inData->graph().getEdgesFromNode(outNode0);
+    QCOMPARE(edges.size(), static_cast<size_t>(1));
+}
+
 void SerializerTest::testSingleEdge()
 {
     MindMapData outData;

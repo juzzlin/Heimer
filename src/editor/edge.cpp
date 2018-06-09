@@ -169,6 +169,8 @@ void Edge::updateLine()
 
 Edge::~Edge()
 {
+    delete m_label;
+
     m_sourceDotSizeAnimation.stop();
     m_targetDotSizeAnimation.stop();
 

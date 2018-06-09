@@ -169,6 +169,12 @@ void Edge::updateLine()
 
 Edge::~Edge()
 {
+    m_sourceDotSizeAnimation.stop();
+    m_targetDotSizeAnimation.stop();
+
+    delete m_sourceDot;
+    delete m_targetDot;
+
     sourceNode().removeGraphicsEdge(*this);
     targetNode().removeGraphicsEdge(*this);
 

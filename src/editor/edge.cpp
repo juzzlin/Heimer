@@ -53,6 +53,8 @@ Edge::Edge(Node & sourceNode, Node & targetNode)
         EdgeBase::setText(text);
     });
 
+    connect(m_label, &TextEdit::undoPointRequested, this, &Edge::undoPointRequested);
+
     m_labelVisibilityTimer.setSingleShot(true);
     m_labelVisibilityTimer.setInterval(2000);
 

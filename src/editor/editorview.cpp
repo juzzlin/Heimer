@@ -284,7 +284,9 @@ void EditorView::openNodeContextMenu()
 void EditorView::resetDummyDragItems()
 {
     // Ensure new dummy nodes and related graphics items are created (again) when needed.
+    delete m_dummyDragEdge;
     m_dummyDragEdge = nullptr;
+    delete m_dummyDragNode;
     m_dummyDragNode = nullptr;
 }
 

@@ -49,6 +49,7 @@ Node::Node()
     setGraphicsEffect(GraphicsFactory::createDropShadowEffect());
 
     connect(m_textEdit, &TextEdit::textChanged, [=] (const QString & text) {
+
         setText(text);
 
         if (isTextUnderflowOrOverflow())
@@ -56,16 +57,22 @@ Node::Node()
             adjustSize();
         }
     });
+
+    connect(m_textEdit, &TextEdit::undoPointRequested, this, &Node::undoPointRequested);
 }
 
 Node::Node(const Node & other)
     : Node()
 {
+    setColor(other.color());
+
     setIndex(other.index());
 
     setLocation(other.location());
 
     setSize(other.size());
+
+    setText(other.text());
 }
 
 void Node::addGraphicsEdge(Edge & edge)

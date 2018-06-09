@@ -15,7 +15,7 @@
 
 #include "undostack.hpp"
 
-UndoStack::UndoStack(unsigned int maxHistorySize)
+UndoStack::UndoStack(int maxHistorySize)
     : m_maxHistorySize(maxHistorySize)
 {
 }
@@ -25,7 +25,7 @@ void UndoStack::pushUndoPoint(MindMapDataPtr mindMapData)
     auto copyData = new MindMapData(*mindMapData);
     m_undoStack.push_back(MindMapDataPtr(copyData));
 
-    if (m_undoStack.size() > m_maxHistorySize)
+    if (static_cast<int>(m_undoStack.size()) > m_maxHistorySize && m_maxHistorySize != -1)
     {
         m_undoStack.pop_front();
     }
@@ -36,7 +36,7 @@ void UndoStack::pushRedoPoint(MindMapDataPtr mindMapData)
     auto copyData = new MindMapData(*mindMapData);
     m_redoStack.push_back(MindMapDataPtr(copyData));
 
-    if (m_redoStack.size() > m_maxHistorySize)
+    if (static_cast<int>(m_redoStack.size()) > m_maxHistorySize && m_maxHistorySize != -1)
     {
         m_redoStack.pop_front();
     }

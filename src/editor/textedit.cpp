@@ -16,6 +16,7 @@
 #include "textedit.hpp"
 
 #include <QKeyEvent>
+#include <QMouseEvent>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QTextDocument>
@@ -31,13 +32,24 @@ void TextEdit::keyPressEvent(QKeyEvent * event)
 {
     const auto prevText = toPlainText();
 
-    QGraphicsTextItem::keyPressEvent(event);
-
-    const auto newText = toPlainText();
-    if (prevText != newText)
+    // Don't mix the global undo and text edit's internal undo
+    if (!event->matches(QKeySequence::Undo))
     {
-        emit textChanged(newText);
+        QGraphicsTextItem::keyPressEvent(event);
+
+        const auto newText = toPlainText();
+        if (prevText != newText)
+        {
+            emit textChanged(newText);
+        }
     }
+}
+
+void TextEdit::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+    emit undoPointRequested();
+
+    QGraphicsTextItem::mousePressEvent(event);
 }
 
 float TextEdit::maxHeight() const
@@ -64,6 +76,11 @@ void TextEdit::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
 
     painter->fillRect(option->rect, m_backgroundColor);
     QGraphicsTextItem::paint(painter, style, widget);
+}
+
+void TextEdit::focusInEvent(QFocusEvent * event)
+{
+    QGraphicsTextItem::focusInEvent(event);
 }
 
 void TextEdit::setBackgroundColor(const QColor & backgroundColor)

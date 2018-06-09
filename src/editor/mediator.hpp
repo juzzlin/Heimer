@@ -48,6 +48,10 @@ public:
 
     bool canBeSaved() const;
 
+    void connectEdgeToUndoMechanism(EdgePtr edge);
+
+    void connectNodeToUndoMechanism(NodePtr node);
+
     NodeBasePtr createAndAddNode(int sourceNodeIndex, QPointF pos);
 
     DragAndDropStore & dadStore();
@@ -80,8 +84,6 @@ public:
 
     bool saveMindMap();
 
-    void saveUndoPoint();
-
     Node * selectedNode() const;
 
     void setSelectedNode(Node * node);
@@ -91,6 +93,10 @@ public:
     void showHelloText();
 
     void undo();
+
+public slots:
+
+    void saveUndoPoint();
 
 private slots:
 
@@ -103,6 +109,8 @@ private slots:
 private:
 
     void addExistingGraphToScene();
+
+    void connectGraphToUndoMechanism();
 
     void initializeView();
 

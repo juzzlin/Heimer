@@ -60,7 +60,7 @@ void Mediator::addExistingGraphToScene()
         if (dynamic_pointer_cast<QGraphicsItem>(node)->scene() != m_editorScene)
         {
             addItem(*dynamic_pointer_cast<Node>(node));
-            MCLogger().info() << "Added an existing node " << node->index();
+            MCLogger().info() << "Added an existing node " << node->index() << " to scene";
         }
     }
 
@@ -77,7 +77,7 @@ void Mediator::addExistingGraphToScene()
             node0->addGraphicsEdge(*graphicsEdge);
             node1->addGraphicsEdge(*graphicsEdge);
             graphicsEdge->updateLine();
-            MCLogger().info() << "Added an existing edge from " << node0->index() << " to " << node1->index();
+            MCLogger().info() << "Added an existing edge " << node0->index() << " -> " << node1->index() << " to scene";
         }
     }
 }
@@ -92,18 +92,42 @@ bool Mediator::canBeSaved() const
     return !m_editorData->fileName().isEmpty();
 }
 
+void Mediator::connectEdgeToUndoMechanism(EdgePtr edge)
+{
+    connect(edge.get(), &Edge::undoPointRequested, this, &Mediator::saveUndoPoint);
+}
+
+void Mediator::connectNodeToUndoMechanism(NodePtr node)
+{
+    connect(node.get(), &Node::undoPointRequested, this, &Mediator::saveUndoPoint);
+}
+
+void Mediator::connectGraphToUndoMechanism()
+{
+    for (auto && node : m_editorData->mindMapData()->graph().getNodes())
+    {
+        connectNodeToUndoMechanism(std::dynamic_pointer_cast<Node>(node));
+    }
+
+    for (auto && edge : m_editorData->mindMapData()->graph().getEdges())
+    {
+        connectEdgeToUndoMechanism(std::dynamic_pointer_cast<Edge>(edge));
+    }
+}
+
 NodeBasePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 {
-    auto node1 = dynamic_pointer_cast<Node>(m_editorData->addNodeAt(pos));
+    auto node1 = m_editorData->addNodeAt(pos);
     assert(node1);
+    connectNodeToUndoMechanism(node1);
     MCLogger().info() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
 
     auto node0 = dynamic_pointer_cast<Node>(getNodeByIndex(sourceNodeIndex));
     assert(node0);
 
     // Currently floating nodes cannot be added. Always add edge from the parent node.
-    m_editorData->addEdge(std::make_shared<Edge>(*node0, *node1));
-    MCLogger().info() << "Created a new edge from " << node0->index() << " to " << node1->index();
+    connectEdgeToUndoMechanism(m_editorData->addEdge(std::make_shared<Edge>(*node0, *node1)));
+    MCLogger().info() << "Created a new edge " << node0->index() << " -> " << node1->index();
 
     addExistingGraphToScene();
 
@@ -117,6 +141,8 @@ DragAndDropStore & Mediator::dadStore()
 
 void Mediator::deleteNode(Node & node)
 {
+    m_editorView->resetDummyDragItems();
+
     auto && graph = m_editorData->mindMapData()->graph();
     graph.deleteNode(node.index());
 }
@@ -149,7 +175,7 @@ void Mediator::initializeNewMindMap()
 
     initializeView();
 
-    m_editorData->addNodeAt(QPointF(0, 0));
+    connectNodeToUndoMechanism(m_editorData->addNodeAt(QPointF(0, 0)));
 
     addExistingGraphToScene();
 
@@ -209,6 +235,8 @@ bool Mediator::openMindMap(QString fileName)
 
         addExistingGraphToScene();
 
+        connectGraphToUndoMechanism();
+
         zoomToFit();
     }
     catch (const FileException & e)
@@ -222,6 +250,9 @@ bool Mediator::openMindMap(QString fileName)
 
 void Mediator::redo()
 {
+    MCLogger().info() << "Undo..";
+
+    m_editorView->resetDummyDragItems();
     m_editorData->redo();
 }
 
@@ -242,6 +273,8 @@ bool Mediator::saveMindMap()
 
 void Mediator::saveUndoPoint()
 {
+    MCLogger().info() << "Saving undo point..";
+
     m_editorData->saveUndoPoint();
 }
 
@@ -263,6 +296,10 @@ void Mediator::setupMindMapAfterUndoOrRedo()
     m_editorView->setScene(m_editorScene);
 
     addExistingGraphToScene();
+
+    connectGraphToUndoMechanism();
+
+    zoomToFit();
 }
 
 void Mediator::showHelloText()
@@ -272,6 +309,9 @@ void Mediator::showHelloText()
 
 void Mediator::undo()
 {
+    MCLogger().info() << "Undo..";
+
+    m_editorView->resetDummyDragItems();
     m_editorData->undo();
 }
 

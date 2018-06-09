@@ -27,6 +27,7 @@
 #include "fileexception.hpp"
 #include "undostack.hpp"
 #include "mindmapdata.hpp"
+#include "node.hpp"
 
 class Mediator;
 class Node;
@@ -40,9 +41,9 @@ public:
 
     EditorData(Mediator & mediator);
 
-    void addEdge(EdgePtr edge);
+    EdgePtr addEdge(EdgePtr edge);
 
-    NodeBasePtr addNodeAt(QPointF pos);
+    NodePtr addNodeAt(QPointF pos);
 
     QColor backgroundColor() const;
 

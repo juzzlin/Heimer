@@ -24,7 +24,7 @@ class UndoStack
 {
 public:
 
-    UndoStack(unsigned int maxHistorySize = 100);
+    UndoStack(int maxHistorySize = -1);
 
     void pushUndoPoint(MindMapDataPtr mindMapData);
 
@@ -48,7 +48,7 @@ private:
 
     MindMapDataVector m_redoStack;
 
-    unsigned int m_maxHistorySize;
+    int m_maxHistorySize;
 };
 
 #endif // UNDOSTACK_HPP

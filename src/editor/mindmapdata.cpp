@@ -31,18 +31,26 @@ MindMapData::MindMapData(const MindMapData & other)
     copyGraph(other);
 }
 
-void MindMapData::copyGraph(const MindMapData &)
+void MindMapData::copyGraph(const MindMapData & other)
 {
     m_graph.clear();
 
-    // TODO
-    //for (auto iter = other.m_graph.cbegin(); iter != other.m_graph.cend(); iter++)
-    //{
-    //    auto node = std::dynamic_pointer_cast<Node>(*iter);
-    //    auto newNode = new Node(*(node.get()));
-    //
-    //    m_graph.add(NodeBasePtr(newNode));
-    //}
+    // Use copy constructor for nodes
+    for (auto && nodeBase : other.m_graph.getNodes())
+    {
+        m_graph.addNode(std::make_shared<Node>(*std::dynamic_pointer_cast<Node>(nodeBase)));
+    }
+
+    // Create new edges
+    for (auto && edgeBase : other.m_graph.getEdges())
+    {
+        auto sourceNode = std::dynamic_pointer_cast<Node>(m_graph.getNode(edgeBase->sourceNodeBase().index()));
+        auto targetNode = std::dynamic_pointer_cast<Node>(m_graph.getNode(edgeBase->targetNodeBase().index()));
+
+        auto edge = std::make_shared<Edge>(*sourceNode, *targetNode);
+        edge->setText(edgeBase->text());
+        m_graph.addEdge(edge);
+    }
 }
 
 QColor MindMapData::backgroundColor() const

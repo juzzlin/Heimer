@@ -38,15 +38,21 @@ public:
 
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) override;
 
+    virtual void focusInEvent(QFocusEvent * event) override;
+
     virtual ~TextEdit();
 
 signals:
 
     void textChanged(QString text);
 
+    void undoPointRequested();
+
 protected:
 
     virtual void keyPressEvent(QKeyEvent * event) override;
+
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
 
 private:
 

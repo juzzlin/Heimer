@@ -55,6 +55,10 @@ public slots:
 
     virtual void setText(const QString & text) override;
 
+signals:
+
+    void undoPointRequested();
+
 private:
 
     void initDots();

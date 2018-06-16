@@ -190,15 +190,14 @@ void MainWindow::init()
 {
     setTitle(tr("New file"));
 
-    QSettings settings;
-
     // Detect screen dimensions
-    QScreen *screen = QGuiApplication::primaryScreen();
-    QRect screenGeometry = screen->geometry();
+    const auto screen = QGuiApplication::primaryScreen();
+    const auto screenGeometry = screen->geometry();
     const int height = screenGeometry.height();
     const int width = screenGeometry.width();
 
     // Read dialog size data
+    QSettings settings;
     settings.beginGroup(m_settingsGroup);
     const float defaultScale = 0.8;
     resize(settings.value("size", QSize(width, height) * defaultScale).toSize());
@@ -226,13 +225,7 @@ MainWindow * MainWindow::instance()
 
 void MainWindow::closeEvent(QCloseEvent * event)
 {
-    // Open settings file
-    QSettings settings;
-
-    // Save window size
-    settings.beginGroup(m_settingsGroup);
-    settings.setValue("size", size());
-    settings.endGroup();
+    saveWindowSize();
 
     event->accept();
 }
@@ -318,6 +311,14 @@ void MainWindow::saveRecentPath(QString fileName)
     QSettings settings;
     settings.beginGroup(m_settingsGroup);
     settings.setValue("recentPath", fileName);
+    settings.endGroup();
+}
+
+void MainWindow::saveWindowSize()
+{
+    QSettings settings;
+    settings.beginGroup(m_settingsGroup);
+    settings.setValue("size", size());
     settings.endGroup();
 }
 

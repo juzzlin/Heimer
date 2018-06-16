@@ -114,6 +114,8 @@ private:
 
     void saveRecentPath(QString fileName);
 
+    void saveWindowSize();
+
     void setSaveActionStatesOnNewMindMap();
 
     void setSaveActionStatesOnOpenedMindMap();

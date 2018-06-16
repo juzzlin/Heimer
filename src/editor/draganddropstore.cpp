@@ -44,9 +44,9 @@ Node * DragAndDropStore::sourceNode() const
     return m_sourceNode;
 }
 
-void DragAndDropStore::setSourcePos(QPointF pos)
+void DragAndDropStore::setSourcePos(const QPointF & sourcePos)
 {
-    m_sourcePos = pos;
+    m_sourcePos = sourcePos;
 }
 
 QPointF DragAndDropStore::sourcePos() const

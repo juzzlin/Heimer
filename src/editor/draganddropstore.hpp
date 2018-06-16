@@ -42,7 +42,7 @@ public:
     Action action() const;
 
     QPointF sourcePos() const;
-    void setSourcePos(QPointF pos);
+    void setSourcePos(const QPointF & sourcePos);
 
 private:
 

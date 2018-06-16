@@ -136,6 +136,7 @@ void EditorView::handleLeftButtonClickOnNode(Node & node)
 
     node.setZValue(node.zValue() + 1);
     m_mediator.dadStore().setSourceNode(&node, DragAndDropStore::Action::MoveNode);
+    m_mediator.dadStore().setSourcePos(m_mappedPos - node.pos());
 
     // Change cursor to the closed hand cursor.
     QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
@@ -185,7 +186,7 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
     case DragAndDropStore::Action::MoveNode:
         if (auto node = m_mediator.dadStore().sourceNode())
         {
-            node->setLocation(m_mappedPos);
+            node->setLocation(m_mappedPos - m_mediator.dadStore().sourcePos());
         }
         break;
     case DragAndDropStore::Action::CreateNode:
@@ -238,13 +239,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
     switch (m_mediator.dadStore().action())
     {
     case DragAndDropStore::Action::MoveNode:
-        if (auto node = m_mediator.dadStore().sourceNode())
-        {
-            node->setLocation(mapToScene(event->pos()));
-            node->setZValue(node->zValue() - 1);
-            update();
-            m_mediator.dadStore().clear();
-        }
+        m_mediator.dadStore().clear();
         break;
     case DragAndDropStore::Action::CreateNode:
         if (auto sourceNode = m_mediator.dadStore().sourceNode())

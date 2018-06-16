@@ -1,8 +1,8 @@
-set(EDITOR_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../editor)
-include_directories(${EDITOR_DIR} ${EDITOR_DIR}/contrib)
+set(EDITOR_DIR ${CMAKE_SOURCE_DIR}/src)
+include_directories(${EDITOR_DIR} ${EDITOR_DIR}/contrib ${CMAKE_CURRENT_SOURCE_DIR})
 add_definitions(-DHEIMER_UNIT_TEST)
 
-set(NAME SerializerTest)
+set(NAME serializertest)
 set(SRC ${NAME}.cpp
     ${EDITOR_DIR}/draganddropstore.cpp
     ${EDITOR_DIR}/edge.cpp

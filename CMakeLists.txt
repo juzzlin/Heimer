@@ -62,9 +62,9 @@ find_package(Qt5Test ${QT_MIN_VER} REQUIRED)
 # Install paths depend on the build type and target platform
 resolve_install_paths()
 
-add_subdirectory(src/editor)
+add_subdirectory(src)
 
 # Enable CMake's unit test framework
 enable_testing()
-add_subdirectory(src/UnitTests)
+add_subdirectory(src/unittests)
 

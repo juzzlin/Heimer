@@ -32,13 +32,13 @@ Adding/updating translations
 
 Qt's translation source files for the editor are at:
 
-src/editor/translations/
+src/translations/
 
 You can just copy these files as a new locale and edit, but the recommended way is
 to generate/update the file from source code to make sure that the source strings
 are up-to-date:
 
-$ lupdate src/editor/*.cpp -ts  src/editor/translations/heimer_fr.ts
+$ lupdate src/*.cpp -ts  src/translations/heimer_fr.ts
 
 ..as an example for French.
 
@@ -48,7 +48,7 @@ For Qt5, the Ubuntu package for these tools is qttools5-dev-tools.
 
 After updating the strings, create the .qm file:
 
-$ lrelease src/editor/translations/heimer_fr.ts -qm data/translations/heimer_fr.qm
+$ lrelease src/translations/heimer_fr.ts -qm data/translations/heimer_fr.qm
 
 In the case of a new locale, the new .qm file needs to be added under `data/translations` and
 `data/translations/translations.qrc` needs to be modified so that the new .qm file is included.

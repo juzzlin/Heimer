@@ -1,8 +1,8 @@
-set(EDITOR_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../editor)
-include_directories(${EDITOR_DIR})
+set(EDITOR_DIR ${CMAKE_SOURCE_DIR}/src)
+include_directories(${EDITOR_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 add_definitions(-DHEIMER_UNIT_TEST)
 
-set(NAME GraphTest)
+set(NAME graphtest)
 set(SRC ${NAME}.cpp ${EDITOR_DIR}/edgebase.cpp ${EDITOR_DIR}/graph.cpp ${EDITOR_DIR}/nodebase.cpp)
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/unittests)

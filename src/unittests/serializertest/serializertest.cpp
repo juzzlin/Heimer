@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "SerializerTest.hpp"
+#include "serializertest.hpp"
 
-#include "../editor/serializer.hpp"
-#include "../editor/mindmapdata.hpp"
-#include "../editor/nodebase.hpp"
+#include "serializer.hpp"
+#include "mindmapdata.hpp"
+#include "nodebase.hpp"
 
 SerializerTest::SerializerTest()
 {

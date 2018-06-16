@@ -7,8 +7,8 @@ if ! which ${LUPDATE}; then
 fi
 
 for LANG in fi; do
-    FILE=src/editor/translations/heimer_${LANG}.ts
-    ${LUPDATE} src/editor/*.cpp -ts ${FILE}
+    FILE=src/translations/heimer_${LANG}.ts
+    ${LUPDATE} src/*.cpp -ts ${FILE}
 done
 
 echo "Done."

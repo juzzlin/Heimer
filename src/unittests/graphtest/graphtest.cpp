@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "GraphTest.hpp"
+#include "graphtest.hpp"
 
-#include "../editor/graph.hpp"
-#include "../editor/nodebase.hpp"
+#include "graph.hpp"
+#include "nodebase.hpp"
 
 using std::make_shared;
 

@@ -40,8 +40,13 @@ Mediator::Mediator(MainWindow & mainWindow)
     m_editorView->setParent(&mainWindow);
 
     connect(m_editorView, &EditorView::backgroundColorChanged, [=] (QColor color) {
+        saveUndoPoint();
         m_editorData->mindMapData()->setBackgroundColor(color);
         m_editorView->setBackgroundBrush(QBrush(color));
+    });
+
+    connect(m_editorData, &EditorData::isModifiedChanged, [=] (bool isModified) {
+        m_mainWindow.enableSave(isModified && canBeSaved());
     });
 
     connect(&m_mainWindow, &MainWindow::zoomToFitTriggered, this, &Mediator::zoomToFit);
@@ -152,6 +157,11 @@ void Mediator::enableUndo(bool enable)
     m_mainWindow.enableUndo(enable);
 }
 
+QString Mediator::fileName() const
+{
+    return m_editorData->fileName();
+}
+
 NodeBasePtr Mediator::getNodeByIndex(int index)
 {
     return m_editorData->getNodeByIndex(index);
@@ -210,9 +220,9 @@ bool Mediator::isRedoable() const
     return m_editorData->isRedoable();
 }
 
-bool Mediator::isSaved() const
+bool Mediator::isModified() const
 {
-    return m_editorData->isSaved();
+    return m_editorData->isModified();
 }
 
 bool Mediator::isUndoable() const

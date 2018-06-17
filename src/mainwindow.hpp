@@ -21,6 +21,8 @@
 #include <QGraphicsScene>
 #include <QString>
 
+#include "statemachine.hpp"
+
 class AboutDlg;
 class EditorData;
 class EditorView;
@@ -44,11 +46,15 @@ public:
 
     void console(QString text);
 
-    void setTitle(QString openFileName);
+    void setTitle();
 
 public slots:
 
     void enableUndo(bool enable);
+
+    void enableSave(bool enable);
+
+    void enableSaveAs(bool enable);
 
     void showErrorDialog(QString message);
 
@@ -110,6 +116,8 @@ private:
 
     void populateMenuBar();
 
+    void runState(StateMachine::State state);
+
     void saveRecentPath(QString fileName);
 
     void saveWindowSize();
@@ -135,6 +143,8 @@ private:
     const char * m_settingsGroup = "MainWindow";
 
     Mediator * m_mediator;
+
+    StateMachine * m_stateMachine;
 
     static MainWindow * m_instance;
 };

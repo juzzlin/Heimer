@@ -61,9 +61,9 @@ void EditorData::loadMindMapData(QString fileName)
     m_undoStack.clear();
 }
 
-bool EditorData::isSaved() const
+bool EditorData::isModified() const
 {
-    return m_isSaved;
+    return m_isModified;
 }
 
 bool EditorData::isUndoable() const
@@ -84,6 +84,8 @@ void EditorData::undo()
         clearScene();
 
         m_mindMapData = m_undoStack.undo();
+
+        setIsModified(true);
     }
 }
 
@@ -105,12 +107,15 @@ void EditorData::redo()
         clearScene();
 
         m_mindMapData = m_undoStack.redo();
+
+        setIsModified(true);
     }
 }
 
 bool EditorData::saveMindMap()
 {
     assert(m_mindMapData);
+    assert(!m_fileName.isEmpty());
 
     return saveMindMapAs(m_fileName);
 }
@@ -120,12 +125,16 @@ void EditorData::saveUndoPoint()
     assert(m_mindMapData);
     m_undoStack.pushUndoPoint(m_mindMapData);
     m_mediator.enableUndo(m_undoStack.isUndoable());
+
+    setIsModified(true);
 }
 
 void EditorData::saveRedoPoint()
 {
     assert(m_mindMapData);
     m_undoStack.pushRedoPoint(m_mindMapData);
+
+    setIsModified(true);
 }
 
 bool EditorData::saveMindMapAs(QString fileName)
@@ -135,7 +144,7 @@ bool EditorData::saveMindMapAs(QString fileName)
     if (Writer::writeToFile(Serializer::toXml(*m_mindMapData), fileName))
     {
         m_fileName = fileName;
-        m_isSaved = true;
+        setIsModified(false);
         return true;
     }
 
@@ -189,5 +198,14 @@ void EditorData::removeNodesFromScene()
         {
             m_mediator.removeItem(*dynamic_pointer_cast<Node>(node)); // The scene wants a raw pointer
         }
+    }
+}
+
+void EditorData::setIsModified(bool isModified)
+{
+    if (isModified != m_isModified)
+    {
+        m_isModified = isModified;
+        emit isModifiedChanged(isModified);
     }
 }

@@ -19,6 +19,7 @@
 #include <memory>
 #include <vector>
 
+#include <QObject>
 #include <QPointF>
 #include <QString>
 
@@ -35,8 +36,10 @@ class NodeBase;
 class MindMapTile;
 class QGraphicsLineItem;
 
-class EditorData
+class EditorData : public QObject
 {
+    Q_OBJECT
+
 public:
 
     EditorData(Mediator & mediator);
@@ -57,7 +60,7 @@ public:
 
     bool isRedoable() const;
 
-    bool isSaved() const;
+    bool isModified() const;
 
     void loadMindMapData(QString fileName);
 
@@ -81,6 +84,10 @@ public:
 
     void undo();
 
+signals:
+
+    void isModifiedChanged(bool isModified);
+
 private:
 
     EditorData(const EditorData & e) = delete;
@@ -89,6 +96,8 @@ private:
     void clearScene();
 
     void removeNodesFromScene();
+
+    void setIsModified(bool isModified);
 
     DragAndDropStore m_dadStore;
 
@@ -110,7 +119,7 @@ private:
 
     unsigned int m_activeRow = 0;
 
-    bool m_isSaved = false;
+    bool m_isModified = false;
 
     QString m_fileName;
 };

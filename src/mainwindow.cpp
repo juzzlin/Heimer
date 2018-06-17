@@ -20,6 +20,7 @@
 #include "mediator.hpp"
 #include "mindmapdata.hpp"
 #include "mclogger.hh"
+#include "statemachine.hpp"
 
 #include <QAction>
 #include <QApplication>
@@ -48,6 +49,7 @@ MainWindow::MainWindow(QString mindMapFile)
 : m_aboutDlg(new AboutDlg(this))
 , m_argMindMapFile(mindMapFile)
 , m_mediator(new Mediator(*this))
+, m_stateMachine(new StateMachine)
 {
     if (!m_instance)
     {
@@ -115,33 +117,43 @@ void MainWindow::createFileMenu()
     const auto newAct = new QAction(tr("&New..."), this);
     newAct->setShortcut(QKeySequence("Ctrl+N"));
     fileMenu->addAction(newAct);
-    connect(newAct, SIGNAL(triggered()), this, SLOT(initializeNewMindMap()));
+    connect(newAct, &QAction::triggered, [=] () {
+        runState(m_stateMachine->calculateState(StateMachine::Action::NewSelected, *m_mediator));
+    });
 
     // Add "open"-action
     const auto openAct = new QAction(tr("&Open..."), this);
     openAct->setShortcut(QKeySequence("Ctrl+O"));
     fileMenu->addAction(openAct);
-    connect(openAct, SIGNAL(triggered()), this, SLOT(openMindMap()));
+    connect(openAct, &QAction::triggered, [=] () {
+        runState(m_stateMachine->calculateState(StateMachine::Action::OpenSelected, *m_mediator));
+    });
 
     // Add "save"-action
     m_saveAction = new QAction(tr("&Save"), this);
     m_saveAction->setShortcut(QKeySequence("Ctrl+S"));
-    fileMenu->addAction(m_saveAction);
-    connect(m_saveAction, SIGNAL(triggered()), this, SLOT(saveMindMap()));
     m_saveAction->setEnabled(false);
+    fileMenu->addAction(m_saveAction);
+    connect(m_saveAction, &QAction::triggered, [=] () {
+        runState(m_stateMachine->calculateState(StateMachine::Action::SaveSelected, *m_mediator));
+    });
 
     // Add "save as"-action
     m_saveAsAction = new QAction(tr("&Save as..."), this);
     m_saveAsAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
-    fileMenu->addAction(m_saveAsAction);
-    connect(m_saveAsAction, SIGNAL(triggered()), this, SLOT(saveMindMapAs()));
     m_saveAsAction->setEnabled(false);
+    fileMenu->addAction(m_saveAsAction);
+    connect(m_saveAsAction, &QAction::triggered, [=] () {
+        runState(m_stateMachine->calculateState(StateMachine::Action::SaveAsSelected, *m_mediator));
+    });
 
     // Add "quit"-action
     const auto quitAct = new QAction(tr("&Quit"), this);
     quitAct->setShortcut(QKeySequence("Ctrl+W"));
     fileMenu->addAction(quitAct);
-    connect(quitAct, SIGNAL(triggered()), this, SLOT(close()));
+    connect(quitAct, &QAction::triggered, [=] () {
+        runState(m_stateMachine->calculateState(StateMachine::Action::QuitSelected, *m_mediator));
+    });
 }
 
 void MainWindow::createHelpMenu()
@@ -190,8 +202,6 @@ QString MainWindow::getFileDialogFileText() const
 
 void MainWindow::init()
 {
-    setTitle(tr("New file"));
-
     // Detect screen dimensions
     const auto screen = QGuiApplication::primaryScreen();
     const auto screenGeometry = screen->geometry();
@@ -211,13 +221,35 @@ void MainWindow::init()
     m_mediator->showHelloText();
 
     populateMenuBar();
+
+    runState(m_stateMachine->calculateState(StateMachine::Action::MainWindowInitialized, *m_mediator));
 }
 
-void MainWindow::setTitle(QString openFileName)
+void MainWindow::setTitle()
 {
-    setWindowTitle(
-        QString(Config::APPLICATION_NAME) + " " + Config::APPLICATION_VERSION + " - " +
-        openFileName);
+    const auto appInfo = QString(Config::APPLICATION_NAME) + " " + Config::APPLICATION_VERSION;
+    if (m_mediator->fileName().isEmpty())
+    {
+        if (m_mediator->hasNodes())
+        {
+            setWindowTitle(appInfo + " - " + tr("New File"));
+        }
+        else
+        {
+            setWindowTitle(appInfo);
+        }
+    }
+    else
+    {
+        if (m_mediator->isModified())
+        {
+            setWindowTitle(appInfo + " - " + m_mediator->fileName() + " - " + tr("Not Saved"));
+        }
+        else
+        {
+            setWindowTitle(appInfo + " - " + m_mediator->fileName());
+        }
+    }
 }
 
 MainWindow * MainWindow::instance()
@@ -225,11 +257,9 @@ MainWindow * MainWindow::instance()
     return MainWindow::m_instance;
 }
 
-void MainWindow::closeEvent(QCloseEvent * event)
+void MainWindow::closeEvent(QCloseEvent *)
 {
-    saveWindowSize();
-
-    event->accept();
+    runState(m_stateMachine->calculateState(StateMachine::Action::QuitSelected, *m_mediator));
 }
 
 void MainWindow::populateMenuBar()
@@ -271,6 +301,18 @@ void MainWindow::enableUndo(bool enable)
     m_undoAction->setEnabled(enable);
 }
 
+void MainWindow::enableSave(bool enable)
+{
+    setTitle();
+
+    m_saveAction->setEnabled(enable);
+}
+
+void MainWindow::enableSaveAs(bool enable)
+{
+    m_saveAsAction->setEnabled(enable);
+}
+
 QString MainWindow::loadRecentPath() const
 {
     QSettings settings;
@@ -298,13 +340,11 @@ void MainWindow::doOpenMindMap(QString fileName)
     {
         disableUndoAndRedo();
 
-        setTitle(fileName);
-
         saveRecentPath(fileName);
 
         setSaveActionStatesOnOpenedMindMap();
 
-        successLog();
+        runState(m_stateMachine->calculateState(StateMachine::Action::MindMapOpened, *m_mediator));
     }
 }
 
@@ -326,11 +366,8 @@ void MainWindow::saveWindowSize()
 
 void MainWindow::setupMindMapAfterUndoOrRedo()
 {
-    m_saveAction->setEnabled(true);
     m_undoAction->setEnabled(m_mediator->isUndoable());
     m_redoAction->setEnabled(m_mediator->isRedoable());
-
-    setSaveActionStatesOnNewMindMap();
 
     m_mediator->setupMindMapAfterUndoOrRedo();
 }
@@ -339,21 +376,16 @@ void MainWindow::saveMindMap()
 {
     MCLogger().info() << "Save..";
 
-    if (m_mediator->canBeSaved())
+    if (!m_mediator->saveMindMap())
     {
-        if (!m_mediator->saveMindMap())
-        {
-            const auto msg = QString(tr("Failed to save file."));
-            MCLogger().error() << msg.toStdString();
-            showMessageBox(msg);
-            return;
-        }
-        successLog();
+        const auto msg = QString(tr("Failed to save file."));
+        MCLogger().error() << msg.toStdString();
+        showMessageBox(msg);
+        runState(m_stateMachine->calculateState(StateMachine::Action::MindMapSaveFailed, *m_mediator));
+        return;
     }
-    else
-    {
-        saveMindMapAs();
-    }
+    m_saveAction->setEnabled(false);
+    runState(m_stateMachine->calculateState(StateMachine::Action::MindMapSaved, *m_mediator));
 }
 
 void MainWindow::saveMindMapAs()
@@ -379,15 +411,14 @@ void MainWindow::saveMindMapAs()
     {
         const auto msg = QString(tr("File '")) + fileName + tr("' saved.");
         MCLogger().info() << msg.toStdString();
-        m_saveAction->setEnabled(true);
-        setTitle(fileName);
-        successLog();
+        runState(m_stateMachine->calculateState(StateMachine::Action::MindMapSavedAs, *m_mediator));
     }
     else
     {
         const auto msg = QString(tr("Failed to save file as '") + fileName + "'.");
         MCLogger().error() << msg.toStdString();
         showMessageBox(msg);
+        runState(m_stateMachine->calculateState(StateMachine::Action::MindMapSaveAsFailed, *m_mediator));
     }
 }
 
@@ -409,14 +440,11 @@ void MainWindow::showMessageBox(QString message)
 void MainWindow::initializeNewMindMap()
 {
     MCLogger().info() << "New file";
-
     m_mediator->initializeNewMindMap();
-
     disableUndoAndRedo();
-
     setSaveActionStatesOnNewMindMap();
 
-    setTitle(tr("New file"));
+    runState(m_stateMachine->calculateState(StateMachine::Action::NewMindMapInitialized, *m_mediator));
 }
 
 void MainWindow::setSaveActionStatesOnNewMindMap()
@@ -427,16 +455,39 @@ void MainWindow::setSaveActionStatesOnNewMindMap()
 
 void MainWindow::setSaveActionStatesOnOpenedMindMap()
 {
-    m_saveAction->setEnabled(true);
+    m_saveAction->setEnabled(false);
     m_saveAsAction->setEnabled(true);
 }
 
-void MainWindow::successLog()
+void MainWindow::runState(StateMachine::State state)
 {
-    MCLogger().info() << "Huge success!";
+    switch (state)
+    {
+    case StateMachine::State::CloseWindow:
+        saveWindowSize();
+        close();
+        break;
+    default:
+    case StateMachine::State::Edit:
+        setTitle();
+        break;
+    case StateMachine::State::InitializeNewMindMap:
+        initializeNewMindMap();
+        break;
+    case StateMachine::State::SaveMindMap:
+        saveMindMap();
+        break;
+    case StateMachine::State::ShowSaveAsDialog:
+        saveMindMapAs();
+        break;
+    case StateMachine::State::ShowOpenDialog:
+        openMindMap();
+        break;
+    }
 }
 
 MainWindow::~MainWindow()
 {
     delete m_mediator;
+    delete m_stateMachine;
 }

@@ -18,7 +18,6 @@ bin/
 heimer.pro.user
 heimer.pro.user.2.1pre1
 src/Makefile
-src
 *.cbp
 test/
 unittests/

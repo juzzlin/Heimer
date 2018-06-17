@@ -45,6 +45,7 @@ HEADERS +=  \
     $$SRC/nodehandle.hpp \
     $$SRC/reader.hpp \
     $$SRC/serializer.hpp \
+    $$SRC/statemachine.hpp \
     $$SRC/textedit.hpp \
     $$SRC/undostack.hpp \
     $$SRC/writer.hpp \
@@ -74,6 +75,7 @@ SOURCES += \
     $$SRC/nodehandle.cpp \
     $$SRC/reader.cpp \
     $$SRC/serializer.cpp \
+    $$SRC/statemachine.cpp \
     $$SRC/textedit.cpp \
     $$SRC/undostack.cpp \
     $$SRC/writer.cpp \

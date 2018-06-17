@@ -25,6 +25,7 @@ set(SRC
     nodehandle.cpp
     reader.cpp
     serializer.cpp
+    statemachine.cpp
     textedit.cpp
     undostack.cpp
     userexception.hpp

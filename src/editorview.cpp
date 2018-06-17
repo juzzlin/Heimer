@@ -22,8 +22,6 @@
 #include <QString>
 #include <QTransform>
 
-#include <iostream>
-
 #include "editorview.hpp"
 
 #include "draganddropstore.hpp"

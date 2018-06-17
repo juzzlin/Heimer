@@ -60,6 +60,8 @@ public:
 
     void enableUndo(bool enable);
 
+    QString fileName() const;
+
     NodeBasePtr getNodeByIndex(int index);
 
     bool hasNodes() const;
@@ -72,7 +74,7 @@ public:
 
     bool isRedoable() const;
 
-    bool isSaved() const;
+    bool isModified() const;
 
     bool openMindMap(QString fileName);
 

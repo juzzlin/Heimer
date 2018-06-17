@@ -21,8 +21,6 @@
 #include <QGraphicsScene>
 #include <QString>
 
-#include <functional>
-
 class AboutDlg;
 class EditorData;
 class EditorView;
@@ -90,9 +88,9 @@ private slots:
 
 private:
 
-    void addRedoAction(QMenu & menu, std::function<void ()> handler);
+    void addRedoAction(QMenu & menu);
 
-    void addUndoAction(QMenu & menu, std::function<void ()> handler);
+    void addUndoAction(QMenu & menu);
 
     void createEditMenu();
 

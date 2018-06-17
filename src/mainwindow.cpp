@@ -68,41 +68,43 @@ MainWindow::MainWindow(QString mindMapFile)
     }
 }
 
-void MainWindow::addRedoAction(QMenu & menu, std::function<void ()> handler)
+void MainWindow::addRedoAction(QMenu & menu)
 {
     m_redoAction = new QAction(tr("Redo"), this);
     m_redoAction->setShortcut(QKeySequence("Ctrl+Shift+Z"));
-    menu.addAction(m_redoAction);
-    connect(m_redoAction, &QAction::triggered, handler);
+
+    connect(m_redoAction, &QAction::triggered,  [this] () {
+        m_mediator->redo();
+        setupMindMapAfterUndoOrRedo();
+    });
+
     m_redoAction->setEnabled(false);
+
+    menu.addAction(m_redoAction);
 }
 
-void MainWindow::addUndoAction(QMenu & menu, std::function<void ()> handler)
+void MainWindow::addUndoAction(QMenu & menu)
 {
     m_undoAction = new QAction(tr("Undo"), this);
     m_undoAction->setShortcut(QKeySequence("Ctrl+Z"));
-    menu.addAction(m_undoAction);
-    connect(m_undoAction, &QAction::triggered, handler);
+
+    connect(m_undoAction, &QAction::triggered, [this] () {
+        m_mediator->undo();
+        setupMindMapAfterUndoOrRedo();
+    });
+
     m_undoAction->setEnabled(false);
+
+    menu.addAction(m_undoAction);
 }
 
 void MainWindow::createEditMenu()
 {
     const auto editMenu = menuBar()->addMenu(tr("&Edit"));
 
-    const auto undoHandler = [this] () {
-        m_mediator->undo();
-        setupMindMapAfterUndoOrRedo();
-    };
+    addUndoAction(*editMenu);
 
-    addUndoAction(*editMenu, undoHandler);
-
-    const auto redoHandler = [this] () {
-        m_mediator->redo();
-        setupMindMapAfterUndoOrRedo();
-    };
-
-    addRedoAction(*editMenu, redoHandler);
+    addRedoAction(*editMenu);
 }
 
 void MainWindow::createFileMenu()

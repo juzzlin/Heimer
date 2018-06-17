@@ -16,6 +16,8 @@
 #include "graph.hpp"
 #include "nodebase.hpp"
 
+#include "contrib/mclogger.hh"
+
 #include <algorithm>
 #include <cassert>
 #include <cmath>
@@ -156,4 +158,5 @@ const Graph::NodeVector & Graph::getNodes() const
 
 Graph::~Graph()
 {
+    MCLogger().info() << "Graph deleted";
 }

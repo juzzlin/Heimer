@@ -17,6 +17,8 @@
 #include "edge.hpp"
 #include "node.hpp"
 
+#include "contrib/mclogger.hh"
+
 #include <QGraphicsLineItem>
 
 EditorScene::EditorScene()
@@ -93,4 +95,6 @@ EditorScene::~EditorScene()
     {
         removeItem(item);
     }
+
+    MCLogger().info() << "EditorScene deleted";
 }

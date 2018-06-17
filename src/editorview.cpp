@@ -282,6 +282,8 @@ void EditorView::resetDummyDragItems()
     m_dummyDragEdge = nullptr;
     delete m_dummyDragNode;
     m_dummyDragNode = nullptr;
+
+    MCLogger().info() << "Dummy drag item reset";
 }
 
 void EditorView::showDummyDragEdge(bool show)

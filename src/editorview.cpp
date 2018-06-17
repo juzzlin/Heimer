@@ -246,8 +246,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
         {
             m_mediator.createAndAddNode(sourceNode->index(), m_mappedPos - m_mediator.dadStore().sourcePos());
 
-            showDummyDragNode(false);
-            showDummyDragEdge(false);
+            resetDummyDragItems();
 
             m_mediator.dadStore().clear();
         }

@@ -357,7 +357,32 @@ void EditorView::zoom(int amount)
 
 void EditorView::zoomToFit(QRectF nodeBoundingRect)
 {
-    m_scaleValue = rect().height() * 100 / nodeBoundingRect.height();
+    const float viewAspect = float(rect().height()) / rect().width();
+    const float nodeAspect = float(nodeBoundingRect.height()) / nodeBoundingRect.width();
+
+    if (viewAspect < 1.0)
+    {
+        if (nodeAspect < viewAspect)
+        {
+            m_scaleValue = rect().width() * 100 / nodeBoundingRect.width();
+        }
+        else
+        {
+            m_scaleValue = rect().height() * 100 / nodeBoundingRect.height();
+        }
+    }
+    else
+    {
+        if (nodeAspect > viewAspect)
+        {
+            m_scaleValue = rect().height() * 100 / nodeBoundingRect.height();
+        }
+        else
+        {
+            m_scaleValue = rect().width() * 100 / nodeBoundingRect.width();
+        }
+    }
+
     updateScale(m_scaleValue);
 
     centerOn(nodeBoundingRect.center());

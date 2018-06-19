@@ -57,7 +57,7 @@ QRectF EditorScene::getNodeBoundingRect() const
         }
     }
 
-    const int minSize = 600;
+    const int minSize = 400;
 
     if (rect.width() < minSize)
     {

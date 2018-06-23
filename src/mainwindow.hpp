@@ -126,8 +126,6 @@ private:
 
     void setSaveActionStatesOnOpenedMindMap();
 
-    void successLog();
-
     AboutDlg * m_aboutDlg;
 
     QAction * m_saveAction = nullptr;

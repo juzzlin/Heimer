@@ -92,8 +92,6 @@ public:
 
     void setupMindMapAfterUndoOrRedo();
 
-    void showHelloText();
-
     void undo();
 
 public slots:

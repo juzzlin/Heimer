@@ -189,7 +189,7 @@ void Mediator::initializeNewMindMap()
 
     addExistingGraphToScene();
 
-    zoomToFit();
+    QTimer::singleShot(0, this, &Mediator::zoomToFit);
 }
 
 void Mediator::initializeView()
@@ -310,11 +310,6 @@ void Mediator::setupMindMapAfterUndoOrRedo()
     connectGraphToUndoMechanism();
 
     zoomToFit();
-}
-
-void Mediator::showHelloText()
-{
-    m_editorView->showHelloText(true);
 }
 
 void Mediator::undo()

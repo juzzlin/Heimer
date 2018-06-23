@@ -218,8 +218,6 @@ void MainWindow::init()
     // Try to center the window.
     move(width / 2 - this->width() / 2, height / 2 - this->height() / 2);
 
-    m_mediator->showHelloText();
-
     populateMenuBar();
 
     runState(m_stateMachine->calculateState(StateMachine::Action::MainWindowInitialized, *m_mediator));
@@ -439,7 +437,7 @@ void MainWindow::showMessageBox(QString message)
 
 void MainWindow::initializeNewMindMap()
 {
-    MCLogger().info() << "New file";
+    MCLogger().info() << "New mind map";
     m_mediator->initializeNewMindMap();
     disableUndoAndRedo();
     setSaveActionStatesOnNewMindMap();

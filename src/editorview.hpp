@@ -42,8 +42,6 @@ public:
 
     ~EditorView();
 
-    void showHelloText(bool show);
-
     void resetDummyDragItems();
 
     void zoom(int amount);

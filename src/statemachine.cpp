@@ -30,6 +30,8 @@ StateMachine::State StateMachine::calculateState(StateMachine::Action action, Me
         m_state = State::InitializeNewMindMap;
         break;
     case Action::MainWindowInitialized:
+        m_state = State::InitializeNewMindMap;
+        break;
     case Action::NewMindMapInitialized:
     case Action::MindMapOpened:
     case Action::MindMapSaved:

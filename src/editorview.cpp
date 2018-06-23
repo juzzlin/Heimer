@@ -318,19 +318,6 @@ void EditorView::showDummyDragNode(bool show)
     m_dummyDragNode->setVisible(show);
 }
 
-void EditorView::showHelloText(bool show)
-{
-    if (!m_helloText)
-    {
-        m_helloText = new QGraphicsSimpleTextItem(tr("Choose File->New or File->Open to begin"));
-        m_helloText->setGraphicsEffect(GraphicsFactory::createDropShadowEffect());
-        scene()->addItem(m_helloText);
-        m_helloText->setPos(QPointF(-m_helloText->boundingRect().width() / 2, 0));
-    }
-
-    m_helloText->setVisible(show);
-}
-
 void EditorView::updateScale(int value)
 {
     qreal scale = static_cast<qreal>(value) / 100;

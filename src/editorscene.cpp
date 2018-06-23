@@ -19,6 +19,7 @@
 
 #include "contrib/mclogger.hh"
 
+#include <cmath>
 #include <QGraphicsLineItem>
 
 EditorScene::EditorScene()
@@ -46,30 +47,27 @@ EditorScene::EditorScene()
     addItem(bottomLine);
 }
 
-QRectF EditorScene::getNodeBoundingRect() const
+QRectF EditorScene::getNodeBoundingRectWithHeuristics() const
 {
+    float nodeArea = 0;
     QRectF rect;
+    int nodes = 0;
     for (auto && item : items())
     {
         if (auto node = dynamic_cast<Node *>(item))
         {
             rect = rect.united(node->boundingRect().adjusted(node->pos().x(), node->pos().y(), node->pos().x(), node->pos().y()));
+            nodeArea += node->boundingRect().width() * node->boundingRect().height();
+            nodes++;
         }
     }
 
-    const int minSize = 400;
-
-    if (rect.width() < minSize)
-    {
-        rect = rect.adjusted(-minSize / 2, 0, minSize / 2, 0);
-    }
-
-    if (rect.height() < minSize)
-    {
-        rect = rect.adjusted(0, -minSize / 2, 0, minSize / 2);
-    }
-
-    return rect;
+    // This "don't ask" heuristics tries to calculate a "nice" zoom-to-fit based on the design
+    // density and node count. For example, if we have just a single node we don't want it to
+    // be super big and cover the whole screen.
+    const float coverage = std::pow(nodeArea / rect.width() / rect.height(), std::pow(nodes, 1.5f));
+    const float adjust = 1.5f * std::max(coverage * rect.width(), coverage * rect.height());
+    return rect.adjusted(-adjust / 2, -adjust / 2, adjust / 2, adjust / 2);
 }
 
 bool EditorScene::hasEdge(Node & node0, Node & node1)

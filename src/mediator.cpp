@@ -334,7 +334,7 @@ void Mediator::zoomOut()
 
 void Mediator::zoomToFit()
 {
-    m_editorView->zoomToFit(m_editorScene->getNodeBoundingRect());
+    m_editorView->zoomToFit(m_editorScene->getNodeBoundingRectWithHeuristics());
 }
 
 Mediator::~Mediator()

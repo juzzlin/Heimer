@@ -26,7 +26,7 @@ public:
 
     EditorScene();
 
-    QRectF getNodeBoundingRect() const;
+    QRectF getNodeBoundingRectWithHeuristics() const;
 
     bool hasEdge(Node & node0, Node & node1);
 

@@ -154,6 +154,9 @@ bool EditorData::saveMindMapAs(QString fileName)
 void EditorData::setMindMapData(MindMapDataPtr mindMapData)
 {
     m_mindMapData = mindMapData;
+
+    m_fileName = "";
+    setIsModified(false);
 }
 
 EdgePtr EditorData::addEdge(EdgePtr edge)

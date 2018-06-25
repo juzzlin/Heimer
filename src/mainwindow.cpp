@@ -226,27 +226,14 @@ void MainWindow::init()
 void MainWindow::setTitle()
 {
     const auto appInfo = QString(Config::APPLICATION_NAME) + " " + Config::APPLICATION_VERSION;
-    if (m_mediator->fileName().isEmpty())
+    const auto displayFileName = m_mediator->fileName().isEmpty() ? tr("New File") : m_mediator->fileName();
+    if (m_mediator->isModified())
     {
-        if (m_mediator->hasNodes())
-        {
-            setWindowTitle(appInfo + " - " + tr("New File"));
-        }
-        else
-        {
-            setWindowTitle(appInfo);
-        }
+        setWindowTitle(appInfo + " - " + displayFileName + " - " + tr("Not Saved"));
     }
     else
     {
-        if (m_mediator->isModified())
-        {
-            setWindowTitle(appInfo + " - " + m_mediator->fileName() + " - " + tr("Not Saved"));
-        }
-        else
-        {
-            setWindowTitle(appInfo + " - " + m_mediator->fileName());
-        }
+        setWindowTitle(appInfo + " - " + displayFileName);
     }
 }
 

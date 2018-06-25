@@ -34,3 +34,5 @@ release/
 CMakeLists.txt.user
 *build*
 
+.qmake.stash
+docker/

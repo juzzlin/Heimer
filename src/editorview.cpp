@@ -47,6 +47,8 @@ EditorView::EditorView(Mediator & mediator)
 
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     setMouseTracking(true);
+
+    setRenderHint(QPainter::Antialiasing);
 }
 
 void EditorView::createBackgroundContextMenuActions()

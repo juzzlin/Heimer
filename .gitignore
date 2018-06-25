@@ -20,7 +20,6 @@ heimer.pro.user.2.1pre1
 src/Makefile
 *.cbp
 test/
-unittests/
 CTestTestfile.cmake
 cmake_install.cmake
 src/CTestTestfile.cmake

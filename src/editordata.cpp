@@ -161,12 +161,16 @@ void EditorData::setMindMapData(MindMapDataPtr mindMapData)
 
 EdgePtr EditorData::addEdge(EdgePtr edge)
 {
+    assert(m_mindMapData);
+
     m_mindMapData->graph().addEdge(edge);
     return edge;
 }
 
 NodePtr EditorData::addNodeAt(QPointF pos)
 {
+    assert(m_mindMapData);
+
     auto node = make_shared<Node>();
     node->setLocation(pos);
     m_mindMapData->graph().addNode(node);
@@ -175,6 +179,8 @@ NodePtr EditorData::addNodeAt(QPointF pos)
 
 NodeBasePtr EditorData::getNodeByIndex(int index)
 {
+    assert(m_mindMapData);
+
     return m_mindMapData->graph().getNode(index);
 }
 

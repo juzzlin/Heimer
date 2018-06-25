@@ -202,10 +202,12 @@ void Node::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
 
 void Node::initTextField()
 {
+#ifndef HEIMER_UNIT_TEST
     m_textEdit->setTextWidth(size().width() - m_margin * 2);
     m_textEdit->setPos(-m_textEdit->textWidth() * 0.5f, -size().height() * 0.5f + m_margin);
     m_textEdit->setMaxHeight(size().height() - m_margin * 4);
     m_textEdit->setMaxWidth(size().width() - m_margin * 2);
+#endif
 }
 
 bool Node::isTextUnderflowOrOverflow() const

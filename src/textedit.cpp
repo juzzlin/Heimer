@@ -25,7 +25,9 @@
 TextEdit::TextEdit(QGraphicsItem * parentItem)
     : QGraphicsTextItem(parentItem)
 {
+#ifndef HEIMER_UNIT_TEST
     setTextInteractionFlags(Qt::TextEditorInteraction);
+#endif
 }
 
 void TextEdit::keyPressEvent(QKeyEvent * event)

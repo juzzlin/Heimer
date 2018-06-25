@@ -1,3 +1,3 @@
+add_subdirectory(editordatatest)
 add_subdirectory(graphtest)
 add_subdirectory(serializertest)
-

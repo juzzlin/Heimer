@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<design version="0.0.0">
+ <color r="136" b="133" g="138"/>
+ <graph>
+  <node index="0" h="75000" x="11737" y="-67605" w="200000">
+   <text>Heimer</text>
+   <color r="138" b="52" g="226"/>
+  </node>
+  <node index="1" h="75000" x="-285915" y="106631" w="200000">
+   <text>C++11 and Qt5</text>
+   <color r="255" b="255" g="255"/>
+  </node>
+  <node index="2" h="75000" x="-291079" y="-67077" w="200000">
+   <text>A simple mind map editor</text>
+   <color r="255" b="255" g="255"/>
+  </node>
+  <node index="3" h="75000" x="14553" y="109448" w="200000">
+   <text>A cross-platform app</text>
+   <color r="255" b="255" g="255"/>
+  </node>
+  <node index="4" h="75000" x="-207511" y="243720" w="200000">
+   <text>Linux desktop</text>
+   <color r="114" b="207" g="159"/>
+  </node>
+  <node index="5" h="75000" x="14883" y="244936" w="200000">
+   <text>Windows desktop</text>
+   <color r="114" b="207" g="159"/>
+  </node>
+  <node index="6" h="75000" x="274705" y="-68676" w="200000">
+   <text>Features</text>
+   <color r="252" b="79" g="233"/>
+  </node>
+  <node index="7" h="75000" x="274705" y="52500" w="200000">
+   <text>Zoom in/out/fit</text>
+   <color r="255" b="255" g="255"/>
+  </node>
+  <node index="8" h="75000" x="516470" y="31323" w="200000">
+   <text>Full undo/redo</text>
+   <color r="252" b="62" g="175"/>
+  </node>
+  <node index="9" h="75000" x="275294" y="-186911" w="200000">
+   <text>Edge labels</text>
+   <color r="255" b="255" g="255"/>
+  </node>
+  <node index="10" h="75000" x="516470" y="-162205" w="200000">
+   <text>XML-based .ALZ-file format</text>
+   <color r="255" b="255" g="255"/>
+  </node>
+  <node index="11" h="75000" x="-290588" y="-227500" w="200000">
+   <text>Simplicity, speed, ease of use</text>
+   <color r="238" b="236" g="238"/>
+  </node>
+  <node index="13" h="79000" x="255617" y="245084" w="200000">
+   <text>Can be ported to all platforms that supports Qt</text>
+   <color r="255" b="255" g="255"/>
+  </node>
+  <edge index1="1" index0="0">
+   <text>written in</text>
+  </edge>
+  <edge index1="2" index0="0">
+   <text>is</text>
+  </edge>
+  <edge index1="3" index0="0">
+   <text>is</text>
+  </edge>
+  <edge index1="6" index0="0">
+   <text></text>
+  </edge>
+  <edge index1="11" index0="2">
+   <text>emphasis on</text>
+  </edge>
+  <edge index1="4" index0="3">
+   <text></text>
+  </edge>
+  <edge index1="5" index0="3">
+   <text></text>
+  </edge>
+  <edge index1="13" index0="3">
+   <text></text>
+  </edge>
+  <edge index1="7" index0="6">
+   <text></text>
+  </edge>
+  <edge index1="8" index0="6">
+   <text></text>
+  </edge>
+  <edge index1="9" index0="6">
+   <text></text>
+  </edge>
+  <edge index1="10" index0="6">
+   <text></text>
+  </edge>
+ </graph>
+</design>

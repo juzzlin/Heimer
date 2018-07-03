@@ -1,5 +1,5 @@
-# **** Resolve install and data paths ****
-function(resolve_install_paths)
+# **** Instal targets for Windows ****
+function(setup_install_targets)
 
     message(STATUS "Windows build.")
 
@@ -13,13 +13,6 @@ function(resolve_install_paths)
         COMMAND cmake -E copy ${CMAKE_SOURCE_DIR}/COPYING ${CMAKE_BINARY_DIR}/COPYING
         COMMAND cmake -E copy ${CMAKE_SOURCE_DIR}/README.md ${CMAKE_BINARY_DIR}/README.md
         DEPENDS ${BINARY_NAME})
-
-    setup_install_targets(${BIN_PATH} ${DOC_PATH})
-
-endfunction()
-
-# **** Instal targets for Windows ****
-function(setup_install_targets BIN_PATH DOC_PATH)
 
     # Install binaries and game data
     install(PROGRAMS ${CMAKE_BINARY_DIR}/${BINARY_NAME}.exe DESTINATION ${BIN_PATH})

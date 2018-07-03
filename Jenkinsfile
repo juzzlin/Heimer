@@ -36,6 +36,11 @@ pipeline {
                 sh "cd build-cmake && ctest"
             }
         }
+        stage('Build Debian package)') {
+            steps {
+                sh "cd build-cmake && cpack -G DEB -D CMAKE_BUILD_TYPE=Release"
+            }
+        }
     }
 }
 

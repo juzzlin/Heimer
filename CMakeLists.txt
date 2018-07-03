@@ -60,7 +60,7 @@ find_package(Qt5LinguistTools ${QT_MIN_VER} REQUIRED)
 find_package(Qt5Test ${QT_MIN_VER} REQUIRED)
 
 # Install paths depend on the build type and target platform
-resolve_install_paths()
+setup_install_targets()
 
 add_subdirectory(src)
 

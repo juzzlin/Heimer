@@ -33,6 +33,8 @@ private slots:
 
     void testAddTwoNodes();
 
+    void testAreNodesDirectlyConnected();
+
     void testDeleteNode();
 
     void testDeleteNodeInvolvingEdge();
@@ -40,6 +42,8 @@ private slots:
     void testGetEdges();
 
     void testGetNodes();
+
+    void testGetNodesConnectedToNode();
 
     void testGetNodeByIndex();
 

@@ -144,11 +144,33 @@ DragAndDropStore & Mediator::dadStore()
     return m_editorData->dadStore();
 }
 
+// These cases are supported if node A is going to be deleted:
+//
+// 1) (C)-->(B)-->(A) => (C)-->(B)
+//
+// 2) (C)-->(A)-->(B) => (C)-->(B) (a new edge will be created that connects C to B)
 void Mediator::deleteNode(Node & node)
 {
     m_editorView->resetDummyDragItems();
 
     auto && graph = m_editorData->mindMapData()->graph();
+
+    if (isInBetween(node))
+    {
+        auto && nodes = graph.getNodesConnectedToNode(graph.getNode(node.index()));
+        assert(nodes.size() == 2);
+        const auto node0 = nodes.at(0);
+        const auto node1 = nodes.at(1);
+        if (!graph.areDirectlyConnected(node0, node1))
+        {
+            connectEdgeToUndoMechanism(m_editorData->addEdge(
+                std::make_shared<Edge>(*dynamic_pointer_cast<Node>(node0), *dynamic_pointer_cast<Node>(node1))));
+            MCLogger().info() << "Created a new edge " << node0->index() << " -> " << node1->index();
+
+            addExistingGraphToScene();
+        }
+    }
+
     graph.deleteNode(node.index());
 }
 
@@ -213,6 +235,12 @@ bool Mediator::isLeafNode(Node & node)
 {
     auto && graph = m_editorData->mindMapData()->graph();
     return graph.getEdgesFromNode(graph.getNode(node.index())).size() + graph.getEdgesToNode(graph.getNode(node.index())).size() == 1;
+}
+
+bool Mediator::isInBetween(Node & node)
+{
+    auto && graph = m_editorData->mindMapData()->graph();
+    return graph.getEdgesFromNode(graph.getNode(node.index())).size() + graph.getEdgesToNode(graph.getNode(node.index())).size() == 2;
 }
 
 bool Mediator::isRedoable() const

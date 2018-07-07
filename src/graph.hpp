@@ -48,6 +48,8 @@ public:
 
     void addEdge(EdgeBasePtr edge);
 
+    bool areDirectlyConnected(NodeBasePtr node0, NodeBasePtr node1);
+
     //! Warning: this should not be used outside unit tests as it creates a pure EdgeBase
 #ifdef HEIMER_UNIT_TEST
     void addEdge(int node0, int node1);
@@ -63,6 +65,8 @@ public:
     NodeBasePtr getNode(int index);
 
     const NodeVector & getNodes() const;
+
+    NodeVector getNodesConnectedToNode(NodeBasePtr node);
 
 private:
 

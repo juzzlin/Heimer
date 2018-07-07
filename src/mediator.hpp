@@ -68,6 +68,8 @@ public:
 
     void initializeNewMindMap();
 
+    bool isInBetween(Node & node);
+
     bool isLeafNode(Node & node);
 
     bool isUndoable() const;

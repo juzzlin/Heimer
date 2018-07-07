@@ -79,13 +79,11 @@ void Graph::deleteNode(int index)
 void Graph::addEdge(EdgeBasePtr newEdge)
 {
     // Add if such edge doesn't already exist
-    const auto iter = std::find_if(
+    if (std::count_if(
         m_edges.begin(), m_edges.end(), [=](const EdgeBasePtr & edge){
             return edge->sourceNodeBase().index() == newEdge->sourceNodeBase().index() &&
                    edge->targetNodeBase().index() == newEdge->targetNodeBase().index();
-        });
-
-    if (iter == m_edges.end())
+        }) == 0)
     {
         m_edges.push_back(newEdge);
     }
@@ -95,17 +93,24 @@ void Graph::addEdge(EdgeBasePtr newEdge)
 void Graph::addEdge(int node0, int node1)
 {
     // Add if such edge doesn't already exist
-    const auto iter = std::find_if(
+    if (std::count_if(
         m_edges.begin(), m_edges.end(), [=](const EdgeBasePtr & edge){
             return edge->sourceNodeBase().index() == node0 && edge->targetNodeBase().index() == node1;
-        });
-
-    if (iter == m_edges.end())
+        }) == 0)
     {
         m_edges.push_back(std::make_shared<EdgeBase>(*getNode(node0), *getNode(node1)));
     }
 }
 #endif
+
+bool Graph::areDirectlyConnected(NodeBasePtr node0, NodeBasePtr node1)
+{
+    const auto nodes = getNodesConnectedToNode(node0);
+    return std::count_if(
+        nodes.begin(), nodes.end(), [=] (const NodeBasePtr & node) {
+            return node->index() == node1->index();
+        }) > 0;
+}
 
 int Graph::numNodes() const
 {
@@ -154,6 +159,26 @@ NodeBasePtr Graph::getNode(int index)
 const Graph::NodeVector & Graph::getNodes() const
 {
     return m_nodes;
+}
+
+Graph::NodeVector Graph::getNodesConnectedToNode(NodeBasePtr node)
+{
+    NodeVector result;
+
+    auto && from = getEdgesFromNode(node);
+    auto && to = getEdgesToNode(node);
+
+    for (auto && edge : from)
+    {
+        result.push_back(getNode(edge->targetNodeBase().index()));
+    }
+
+    for (auto && edge : to)
+    {
+        result.push_back(getNode(edge->sourceNodeBase().index()));
+    }
+
+    return result;
 }
 
 Graph::~Graph()

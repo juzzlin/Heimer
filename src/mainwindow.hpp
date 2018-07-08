@@ -60,6 +60,8 @@ public slots:
 
     void showMessageBox(QString message);
 
+    int showNotSavedDialog();
+
 protected:
 
     void closeEvent(QCloseEvent * event) override;

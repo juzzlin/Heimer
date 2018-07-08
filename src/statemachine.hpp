@@ -30,7 +30,8 @@ public:
         InitializeNewMindMap,
         ShowOpenDialog,
         SaveMindMap,
-        ShowSaveAsDialog
+        ShowSaveAsDialog,
+        ShowNotSavedDialog
     };
 
     enum class Action
@@ -43,12 +44,23 @@ public:
         MindMapSaveAsFailed,
         NewMindMapInitialized,
         NewSelected,
+        NotSavedDialogAccepted,
+        NotSavedDialogCanceled,
+        NotSavedDialogDiscarded,
         OpenSelected,
         QuitSelected,
         SaveSelected,
         SaveAsSelected,
         UndoSelected,
         RedoSelected
+    };
+
+    enum class QuitType
+    {
+        None,
+        New,
+        Open,
+        Close
     };
 
     StateMachine();
@@ -58,6 +70,8 @@ public:
 private:
 
     State m_state = State::Init;
+
+    QuitType m_quitType = QuitType::None;
 };
 
 #endif // STATEMACHINE_HPP

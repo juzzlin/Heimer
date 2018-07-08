@@ -422,6 +422,16 @@ void MainWindow::showMessageBox(QString message)
     msgBox.exec();
 }
 
+int MainWindow::showNotSavedDialog()
+{
+    QMessageBox msgBox;
+    msgBox.setText(tr("The mind map has been modified."));
+    msgBox.setInformativeText(tr("Do you want to save your changes?"));
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Save);
+    return msgBox.exec();
+}
+
 void MainWindow::initializeNewMindMap()
 {
     MCLogger().info() << "New mind map";
@@ -461,6 +471,20 @@ void MainWindow::runState(StateMachine::State state)
         break;
     case StateMachine::State::SaveMindMap:
         saveMindMap();
+        break;
+    case StateMachine::State::ShowNotSavedDialog:
+        switch (showNotSavedDialog())
+        {
+        case QMessageBox::Save:
+            runState(m_stateMachine->calculateState(StateMachine::Action::NotSavedDialogAccepted, *m_mediator));
+            break;
+        case QMessageBox::Discard:
+            runState(m_stateMachine->calculateState(StateMachine::Action::NotSavedDialogDiscarded, *m_mediator));
+            break;
+        case QMessageBox::Cancel:
+            runState(m_stateMachine->calculateState(StateMachine::Action::NotSavedDialogCanceled, *m_mediator));
+            break;
+        }
         break;
     case StateMachine::State::ShowSaveAsDialog:
         saveMindMapAs();

@@ -27,25 +27,74 @@ StateMachine::State StateMachine::calculateState(StateMachine::Action action, Me
     switch (action)
     {
     case Action::NewSelected:
-        m_state = State::InitializeNewMindMap;
+        m_quitType = QuitType::New;
+        if (mediator.isModified())
+        {
+            m_state = State::ShowNotSavedDialog;
+        }
+        else
+        {
+            m_state = State::InitializeNewMindMap;
+        }
         break;
+
     case Action::MainWindowInitialized:
         m_state = State::InitializeNewMindMap;
         break;
+
+    case Action::NotSavedDialogDiscarded:
+        switch (m_quitType)
+        {
+        case QuitType::Close:
+            m_state = State::CloseWindow;
+            break;
+        case QuitType::New:
+            m_state = State::InitializeNewMindMap;
+            break;
+        case QuitType::Open:
+            m_state = State::ShowOpenDialog;
+            break;
+        default:
+            m_state = State::Edit;
+            break;
+        }
+        break;
+
     case Action::NewMindMapInitialized:
+    case Action::NotSavedDialogCanceled:
     case Action::MindMapOpened:
     case Action::MindMapSaved:
     case Action::MindMapSavedAs:
     case Action::MindMapSaveFailed:
     case Action::MindMapSaveAsFailed:
+        m_quitType = QuitType::None;
         m_state = State::Edit;
         break;
+
     case Action::OpenSelected:
-        m_state = State::ShowOpenDialog;
+        m_quitType = QuitType::Open;
+        if (mediator.isModified())
+        {
+            m_state = State::ShowNotSavedDialog;
+        }
+        else
+        {
+            m_state = State::ShowOpenDialog;
+        }
         break;
+
     case Action::QuitSelected:
-        m_state = State::CloseWindow;
+        m_quitType = QuitType::Close;
+        if (mediator.isModified())
+        {
+            m_state = State::ShowNotSavedDialog;
+        }
+        else
+        {
+            m_state = State::CloseWindow;
+        }
         break;
+
     case Action::SaveSelected:
         if (mediator.canBeSaved())
         {
@@ -56,9 +105,11 @@ StateMachine::State StateMachine::calculateState(StateMachine::Action action, Me
             m_state = State::ShowSaveAsDialog;
         }
         break;
+
     case Action::SaveAsSelected:
         m_state = State::ShowSaveAsDialog;
         break;
+
     default:
         MCLogger().warning() << "Action " << static_cast<int>(action) << " not handled!";
     };

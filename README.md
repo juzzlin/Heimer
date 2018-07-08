@@ -1,4 +1,4 @@
-## Heimer
+<p align="center"><img src="src/images/logo/logotypehorizontal.png" alt="Heimer" height="100px"></p>
 
 Heimer is a desktop application for creating mind maps. It's written in Qt and targeted for Linux and Windows.
 

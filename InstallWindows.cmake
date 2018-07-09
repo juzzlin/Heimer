@@ -18,5 +18,14 @@ function(setup_install_targets)
     install(PROGRAMS ${CMAKE_BINARY_DIR}/${BINARY_NAME}.exe DESTINATION ${BIN_PATH})
     install(FILES AUTHORS CHANGELOG COPYING README.md DESTINATION ${DOC_PATH})
 
+    set(CPACK_PACKAGE_FILE_NAME "heimer-${VERSION}-windows-${CMAKE_HOST_SYSTEM_PROCESSOR}")
+    set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/COPYING)
+    set(CPACK_RESOURCE_FILE_README ${CMAKE_SOURCE_DIR}/README.md)
+
+    set(CPACK_NSIS_MUI_ICON ${CMAKE_SOURCE_DIR}/data/icons/heimer.ico)
+    set(CPACK_NSIS_MUI_UNIICON ${CMAKE_SOURCE_DIR}/data/icons/heimer.ico)
+
+    include(CPack)
+
 endfunction()
 

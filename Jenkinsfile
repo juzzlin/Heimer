@@ -13,6 +13,12 @@ pipeline {
                 sh "cd build-mxe && cmake -D CMAKE_BUILD_TYPE=Release .. && make -j3"
                 sh "export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8 && export PATH=/opt/mxe/usr/bin:$PATH && cd build-mxe && cpack -G NSIS64"
             }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'build-mxe/*.exe', fingerprint: true
+                }
+            }
+
         }
         stage('Debug build for Linux') {
             steps {

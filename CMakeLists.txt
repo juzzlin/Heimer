@@ -25,6 +25,19 @@ set(VERSION_MINOR "0")
 set(VERSION_PATCH "0")
 set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
+# Some common CPack variables
+set(CPACK_PACKAGE_VERSION_MAJOR ${VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${VERSION_PATCH})
+
+set(CPACK_PACKAGE_NAME Heimer)
+set(CPACK_PACKAGE_VENDOR Juzzlin)
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Heimer is a simple cross-platform mind map tool written in Qt.")
+set(CPACK_PACKAGE_ICON ${CMAKE_SOURCE_DIR}/data/images/about.png)
+
+set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/COPYING)
+set(CPACK_RESOURCE_FILE_README ${CMAKE_SOURCE_DIR}/README.md)
+
 option(BIN_PATH "Optional BIN_PATH for Linux release build." "")
 
 # Default to release C++ flags if CMAKE_BUILD_TYPE not set

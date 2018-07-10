@@ -28,13 +28,11 @@ pipeline {
                 }
             }
             steps {
-                sh "mkdir -p build-mxe"
-                sh "cd build-mxe && cmake -D CMAKE_BUILD_TYPE=Release .. && cmake --build . --target all -- -j3"
-                sh "export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8 && export PATH=/opt/mxe/usr/bin:$PATH && cd build-mxe && cpack -G NSIS64"
+                sh "./scripts/buildWindowsInstaller.sh"
             }
             post {
                 always {
-                    archiveArtifacts artifacts: 'build-mxe/*.exe', fingerprint: true
+                    archiveArtifacts artifacts: 'build-windows-docker/*.exe', fingerprint: true
                 }
             }
 

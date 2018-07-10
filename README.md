@@ -17,5 +17,13 @@ CC BY-SA 3.0: http://creativecommons.org/licenses/by-sa/3.0/
 Please refer to the INSTALL document for build/install instructions if you're
 going to build Heimer from sources.
 
--- Jussi Lind <jussi.lind@iki.fi>
+Building for Linux in a nutshell:
+
+`$ mkdir build && cd build`
+
+`$ cmake ..`
+
+`$ make`
+
+`$ sudo make install`
 

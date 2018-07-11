@@ -146,6 +146,8 @@ private:
 
     StateMachine * m_stateMachine;
 
+    bool m_closeNow = false;
+
     static MainWindow * m_instance;
 };
 

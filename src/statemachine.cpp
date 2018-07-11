@@ -46,7 +46,7 @@ StateMachine::State StateMachine::calculateState(StateMachine::Action action, Me
         switch (m_quitType)
         {
         case QuitType::Close:
-            m_state = State::CloseWindow;
+            m_state = State::CloseWindowNow;
             break;
         case QuitType::New:
             m_state = State::InitializeNewMindMap;

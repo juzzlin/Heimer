@@ -25,6 +25,7 @@ public:
     enum class State
     {
         CloseWindow,
+        CloseWindowNow,
         Edit,
         Init,
         InitializeNewMindMap,

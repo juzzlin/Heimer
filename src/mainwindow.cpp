@@ -242,9 +242,16 @@ MainWindow * MainWindow::instance()
     return MainWindow::m_instance;
 }
 
-void MainWindow::closeEvent(QCloseEvent *)
+void MainWindow::closeEvent(QCloseEvent * event)
 {
-    runState(m_stateMachine->calculateState(StateMachine::Action::QuitSelected, *m_mediator));
+    if (m_closeNow)
+    {
+        QMainWindow::closeEvent(event);
+    }
+    else
+    {
+        runState(m_stateMachine->calculateState(StateMachine::Action::QuitSelected, *m_mediator));
+    }
 }
 
 void MainWindow::populateMenuBar()
@@ -459,6 +466,11 @@ void MainWindow::runState(StateMachine::State state)
     switch (state)
     {
     case StateMachine::State::CloseWindow:
+        saveWindowSize();
+        close();
+        break;
+    case StateMachine::State::CloseWindowNow:
+        m_closeNow = true;
         saveWindowSize();
         close();
         break;

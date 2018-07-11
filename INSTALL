@@ -58,7 +58,7 @@ This installs also the desktop files so Heimer should appear in your application
 Building in Qt Creator
 ======================
 
-1) Just open the top-level CMakeLists.txt
+1) Just open the top-level CMakeLists.txt (or heimer.pro)
 2) Configure kits and build
 
 Jenkins CI

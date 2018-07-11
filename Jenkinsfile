@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('Debug build for Linux') {
+        stage('CMake Debug build for Linux') {
             steps {
                 sh "mkdir -p build-debug"
                 sh "cd build-debug && cmake -DCMAKE_BUILD_TYPE=Debug .."
@@ -11,6 +11,12 @@ pipeline {
         stage('Run tests') {
             steps {
                 sh "cd build-debug && ctest"
+            }
+        }
+        stage('QMake build for Linux') {
+            steps {
+                sh "mkdir -p build-qmake"
+                sh "cd build-qmake && qmake .. && make -j3"
             }
         }
         stage('Debian package for Linux') {

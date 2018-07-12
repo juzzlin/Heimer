@@ -14,7 +14,10 @@ function(setup_install_targets)
         COMMAND cmake -E copy ${CMAKE_SOURCE_DIR}/README.md ${CMAKE_BINARY_DIR}/README.md
         DEPENDS ${BINARY_NAME})
 
-    # Install binaries and game data
+    # !! Note that currently this creates an installer that doesn't work.
+    # !! A statically linked Qt5 is assumed and that has problems with CMake.
+    # !! Use scripts/buildWindowsInstaller.sh instead.
+
     install(PROGRAMS ${CMAKE_BINARY_DIR}/${BINARY_NAME}.exe DESTINATION ${BIN_PATH})
     install(FILES AUTHORS CHANGELOG COPYING README.md DESTINATION ${DOC_PATH})
 

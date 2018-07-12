@@ -1,8 +1,6 @@
 README
 ======
 
-debian  : Example packaging for Ubuntu/Debian.
-windows : Packaging script for NSIS.
+windows/ contains NSIS packaging script for Windows.
 
--- Jussi Lind <jussi.lind@iki.fi>
-
+Linux packages are generated with CPack.

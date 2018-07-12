@@ -272,7 +272,7 @@ void MainWindow::openArgMindMap()
 
 void MainWindow::openMindMap()
 {
-    MCLogger().info() << "Open file";
+    MCLogger().debug() << "Open file";
 
     const auto path = loadRecentPath();
     const auto fileName = QFileDialog::getOpenFileName(this, tr("Open File"), path, getFileDialogFileText());
@@ -326,7 +326,7 @@ void MainWindow::showAboutQtDlg()
 
 void MainWindow::doOpenMindMap(QString fileName)
 {
-    MCLogger().info() << "Opening '" << fileName.toStdString();
+    MCLogger().debug() << "Opening '" << fileName.toStdString();
 
     if (m_mediator->openMindMap(fileName))
     {
@@ -366,7 +366,7 @@ void MainWindow::setupMindMapAfterUndoOrRedo()
 
 void MainWindow::saveMindMap()
 {
-    MCLogger().info() << "Save..";
+    MCLogger().debug() << "Save..";
 
     if (!m_mediator->saveMindMap())
     {
@@ -382,7 +382,7 @@ void MainWindow::saveMindMap()
 
 void MainWindow::saveMindMapAs()
 {
-    MCLogger().info() << "Save as..";
+    MCLogger().debug() << "Save as..";
 
     QString fileName = QFileDialog::getSaveFileName(this,
         tr("Save File As"),
@@ -402,7 +402,7 @@ void MainWindow::saveMindMapAs()
     if (m_mediator->saveMindMapAs(fileName))
     {
         const auto msg = QString(tr("File '")) + fileName + tr("' saved.");
-        MCLogger().info() << msg.toStdString();
+        MCLogger().debug() << msg.toStdString();
         runState(m_stateMachine->calculateState(StateMachine::Action::MindMapSavedAs, *m_mediator));
     }
     else
@@ -441,7 +441,7 @@ int MainWindow::showNotSavedDialog()
 
 void MainWindow::initializeNewMindMap()
 {
-    MCLogger().info() << "New mind map";
+    MCLogger().debug() << "New mind map";
     m_mediator->initializeNewMindMap();
     disableUndoAndRedo();
     setSaveActionStatesOnNewMindMap();

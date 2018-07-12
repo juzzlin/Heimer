@@ -182,5 +182,5 @@ Edge::~Edge()
     sourceNode().removeGraphicsEdge(*this);
     targetNode().removeGraphicsEdge(*this);
 
-    MCLogger().info() << "Edge deleted: " << sourceNode().index() << " -> " << targetNode().index();
+    MCLogger().debug() << "Edge deleted: " << sourceNode().index() << " -> " << targetNode().index();
 }

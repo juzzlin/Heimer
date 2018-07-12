@@ -283,7 +283,7 @@ void EditorView::resetDummyDragItems()
     delete m_dummyDragNode;
     m_dummyDragNode = nullptr;
 
-    MCLogger().info() << "Dummy drag item reset";
+    MCLogger().debug() << "Dummy drag item reset";
 }
 
 void EditorView::showDummyDragEdge(bool show)
@@ -292,7 +292,7 @@ void EditorView::showDummyDragEdge(bool show)
     {
         if (!m_dummyDragEdge)
         {
-            MCLogger().info() << "Creating a new dummy drag edge";
+            MCLogger().debug() << "Creating a new dummy drag edge";
             m_dummyDragEdge = new Edge(*sourceNode, *m_dummyDragNode);
             m_dummyDragEdge->setOpacity(0.5f);
             scene()->addItem(m_dummyDragEdge);
@@ -311,7 +311,7 @@ void EditorView::showDummyDragNode(bool show)
 {
     if (!m_dummyDragNode)
     {
-        MCLogger().info() << "Creating a new dummy drag node";
+        MCLogger().debug() << "Creating a new dummy drag node";
         m_dummyDragNode = new Node;
         scene()->addItem(m_dummyDragNode);
     }

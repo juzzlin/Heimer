@@ -94,5 +94,5 @@ EditorScene::~EditorScene()
         removeItem(item);
     }
 
-    MCLogger().info() << "EditorScene deleted";
+    MCLogger().debug() << "EditorScene deleted";
 }

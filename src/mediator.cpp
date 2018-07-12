@@ -65,7 +65,7 @@ void Mediator::addExistingGraphToScene()
         if (dynamic_pointer_cast<QGraphicsItem>(node)->scene() != m_editorScene)
         {
             addItem(*dynamic_pointer_cast<Node>(node));
-            MCLogger().info() << "Added an existing node " << node->index() << " to scene";
+            MCLogger().debug() << "Added an existing node " << node->index() << " to scene";
         }
     }
 
@@ -82,7 +82,7 @@ void Mediator::addExistingGraphToScene()
             node0->addGraphicsEdge(*graphicsEdge);
             node1->addGraphicsEdge(*graphicsEdge);
             graphicsEdge->updateLine();
-            MCLogger().info() << "Added an existing edge " << node0->index() << " -> " << node1->index() << " to scene";
+            MCLogger().debug() << "Added an existing edge " << node0->index() << " -> " << node1->index() << " to scene";
         }
     }
 }
@@ -125,14 +125,14 @@ NodeBasePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
     auto node1 = m_editorData->addNodeAt(pos);
     assert(node1);
     connectNodeToUndoMechanism(node1);
-    MCLogger().info() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
+    MCLogger().debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
 
     auto node0 = dynamic_pointer_cast<Node>(getNodeByIndex(sourceNodeIndex));
     assert(node0);
 
     // Currently floating nodes cannot be added. Always add edge from the parent node.
     connectEdgeToUndoMechanism(m_editorData->addEdge(std::make_shared<Edge>(*node0, *node1)));
-    MCLogger().info() << "Created a new edge " << node0->index() << " -> " << node1->index();
+    MCLogger().debug() << "Created a new edge " << node0->index() << " -> " << node1->index();
 
     addExistingGraphToScene();
 
@@ -165,7 +165,7 @@ void Mediator::deleteNode(Node & node)
         {
             connectEdgeToUndoMechanism(m_editorData->addEdge(
                 std::make_shared<Edge>(*dynamic_pointer_cast<Node>(node0), *dynamic_pointer_cast<Node>(node1))));
-            MCLogger().info() << "Created a new edge " << node0->index() << " -> " << node1->index();
+            MCLogger().debug() << "Created a new edge " << node0->index() << " -> " << node1->index();
 
             addExistingGraphToScene();
         }
@@ -196,7 +196,7 @@ bool Mediator::hasNodes() const
 
 void Mediator::initializeNewMindMap()
 {
-    MCLogger().info() << "Initializing a new mind map";
+    MCLogger().debug() << "Initializing a new mind map";
 
     assert(m_editorData);
 
@@ -216,7 +216,7 @@ void Mediator::initializeNewMindMap()
 
 void Mediator::initializeView()
 {
-    MCLogger().info() << "Initializing view";
+    MCLogger().debug() << "Initializing view";
 
     // Set scene to the view
     m_editorView->setScene(m_editorScene);
@@ -288,7 +288,7 @@ bool Mediator::openMindMap(QString fileName)
 
 void Mediator::redo()
 {
-    MCLogger().info() << "Undo..";
+    MCLogger().debug() << "Undo..";
 
     m_editorView->resetDummyDragItems();
     m_editorData->redo();
@@ -311,7 +311,7 @@ bool Mediator::saveMindMap()
 
 void Mediator::saveUndoPoint()
 {
-    MCLogger().info() << "Saving undo point..";
+    MCLogger().debug() << "Saving undo point..";
 
     m_editorData->saveUndoPoint();
 }
@@ -342,7 +342,7 @@ void Mediator::setupMindMapAfterUndoOrRedo()
 
 void Mediator::undo()
 {
-    MCLogger().info() << "Undo..";
+    MCLogger().debug() << "Undo..";
 
     m_editorView->resetDummyDragItems();
     m_editorData->undo();

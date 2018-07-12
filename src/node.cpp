@@ -281,5 +281,5 @@ void Node::updateEdgeLines()
 
 Node::~Node()
 {
-    MCLogger().info() << "Node deleted: " << index();
+    MCLogger().debug() << "Node deleted: " << index();
 }

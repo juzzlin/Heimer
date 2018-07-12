@@ -183,5 +183,5 @@ Graph::NodeVector Graph::getNodesConnectedToNode(NodeBasePtr node)
 
 Graph::~Graph()
 {
-    MCLogger().info() << "Graph deleted";
+    MCLogger().debug() << "Graph deleted";
 }

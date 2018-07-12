@@ -1,8 +1,11 @@
 ; Script for NSIS packaging.
 
+!include MUI2.nsh
+!include LogicLib.nsh
+
 !define PRODUCTNAME            "Heimer"
 !define APPNAME                "Heimer"
-!define COMPANYNAME            "Jussi Lind"
+!define COMPANYNAME            "Juzzlin"
 !define DESCRIPTION            "An application for mind map creation and management."
 !define VERSIONMAJOR           0
 !define VERSIONMINOR           0
@@ -11,7 +14,7 @@
 !define UPDATEURL              "https://github.com/juzzlin/Heimer/releases"
 !define ABOUTURL               "http://juzzlin.github.io/Heimer/"
 
-!define MUI_FILE               ""
+;!define MUI_FILE               ""
 !define MUI_BRANDINGTEXT       ${PRODUCTNAME}
 ;!define MUI_HEADERIMAGE
 ;!define MUI_HEADERIMAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Header\orange.bmp"
@@ -28,9 +31,6 @@
 !define MUI_FINISHPAGE  
 
 CRCCheck On
-
-!include MUI2.nsh
-!include LogicLib.nsh
   
 RequestExecutionLevel admin
  
@@ -38,15 +38,15 @@ InstallDir "$PROGRAMFILES\${PRODUCTNAME}"
  
 Name "${PRODUCTNAME}"
 Icon "data\icons\heimer.ico"
-OutFile "heimer-${VERSIONMAJOR}.${VERSIONMINOR}.${VERSIONBUILD}-windows-x86_setup.exe"
-
-!insertmacro MUI_LANGUAGE "English"
+OutFile "heimer-${VERSIONMAJOR}.${VERSIONMINOR}.${VERSIONBUILD}-install.exe"
  
 LicenseData "COPYING" 
 
 Page license
 Page directory
 Page instfiles
+
+!insertmacro MUI_LANGUAGE "English"
 
 !macro VerifyUserIsAdmin
 UserInfo::GetAccountType
@@ -148,3 +148,4 @@ Section "uninstall"
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${PRODUCTNAME}"
 	
 SectionEnd
+

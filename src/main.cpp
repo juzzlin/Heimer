@@ -35,6 +35,7 @@ static void initLogger()
     MCLogger::enableEchoMode(true);
     MCLogger::enableDateTimePrefix(true);
     MCLogger().info() << Config::QSETTINGS_SOFTWARE_NAME << " version " << VERSION;
+    MCLogger().info() << Config::COPYRIGHT;
     MCLogger().info() << "Compiled against Qt version " << QT_VERSION_STR;
 }
 

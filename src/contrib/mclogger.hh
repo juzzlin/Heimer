@@ -59,6 +59,9 @@ public:
     //! \param enable Prefix with date and time if true. Default is true.
     static void enableDateTimePrefix(bool enable);
 
+    //! Get stream to the debug log message. Is disabled with -DNDEBUG.
+    std::ostringstream & debug();
+
     //! Get stream to the info log message.
     std::ostringstream & info();
 
@@ -85,6 +88,8 @@ private:
     static FILE * m_file;
 
     std::ostringstream m_oss;
+
+    std::ostringstream m_null;
 };
 
 #endif // MCLOGGER_HH

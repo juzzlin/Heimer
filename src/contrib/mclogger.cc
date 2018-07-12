@@ -86,6 +86,17 @@ void MCLogger::prefixDateTime()
     }
 }
 
+std::ostringstream & MCLogger::debug()
+{
+#ifndef NDEBUG
+    MCLogger::prefixDateTime();
+    m_oss << "D: ";
+    return m_oss;
+#else
+    return m_null;
+#endif
+}
+
 std::ostringstream & MCLogger::info()
 {
     MCLogger::prefixDateTime();
@@ -116,6 +127,11 @@ std::ostringstream & MCLogger::fatal()
 
 MCLogger::~MCLogger()
 {
+    if (!m_oss.str().size())
+    {
+       return;
+    }
+
     if (MCLogger::m_file)
     {
         fprintf(MCLogger::m_file, "%s", m_oss.str().c_str());

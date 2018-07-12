@@ -38,7 +38,7 @@ InstallDir "$PROGRAMFILES\${PRODUCTNAME}"
  
 Name "${PRODUCTNAME}"
 Icon "data\icons\heimer.ico"
-OutFile "heimer-${VERSIONMAJOR}.${VERSIONMINOR}.${VERSIONBUILD}-windows-x86-qt5_setup.exe"
+OutFile "heimer-${VERSIONMAJOR}.${VERSIONMINOR}.${VERSIONBUILD}-windows-x86_setup.exe"
 
 !insertmacro MUI_LANGUAGE "English"
  
@@ -67,6 +67,7 @@ Section "install"
 	SetOutPath $INSTDIR
 
 	File heimer.exe
+	File data/icons/heimer.ico
 	File CHANGELOG
 	File COPYING
 	File AUTHORS
@@ -76,10 +77,10 @@ Section "install"
  
 	CreateDirectory "$SMPROGRAMS\${PRODUCTNAME}"
 	CreateShortCut "$SMPROGRAMS\${PRODUCTNAME}\${APPNAME}.lnk" \
-	    "$INSTDIR\heimer.exe" "" "$INSTDIR\data\icons\heimer.ico"
+	    "$INSTDIR\heimer.exe" "" "$INSTDIR\heimer.ico"
 	CreateShortCut "$SMPROGRAMS\${PRODUCTNAME}\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" ""
  
-	CreateShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\heimer.exe" "" "$INSTDIR\data\icons\heimer.ico"
+	CreateShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\heimer.exe" "" "$INSTDIR\heimer.ico"
  
 	# Registry information for add/remove programs
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} \
@@ -134,6 +135,7 @@ Section "uninstall"
 	Delete "$DESKTOP\${APPNAME}.lnk"
 	 
 	Delete   $INSTDIR\heimer.exe
+	Delete   $INSTDIR\heimer.ico
 	Delete   $INSTDIR\CHANGELOG
 	Delete   $INSTDIR\COPYING
 	Delete   $INSTDIR\AUTHORS

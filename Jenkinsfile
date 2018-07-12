@@ -38,7 +38,7 @@ pipeline {
             }
             post {
                 always {
-                    archiveArtifacts artifacts: 'build-windows-docker/*.exe', fingerprint: true
+                    archiveArtifacts artifacts: 'build-windows-docker/release/*.exe', fingerprint: true
                 }
             }
 

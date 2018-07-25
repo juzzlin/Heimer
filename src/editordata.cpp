@@ -34,7 +34,8 @@ EditorData::EditorData(Mediator & mediator)
 
 QColor EditorData::backgroundColor() const
 {
-    return m_mindMapData ? m_mindMapData->backgroundColor() : QColor(128, 200, 255, 255);
+    // Background color of "empty" editor is not the same as default color of new design
+    return m_mindMapData ? m_mindMapData->backgroundColor() : Config::getDefaultBackgroundColor();
 }
 
 void EditorData::clearScene()

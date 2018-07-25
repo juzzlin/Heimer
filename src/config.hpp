@@ -13,6 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
+#ifndef CONFIG_HPP
+#define CONFIG_HPP
+
+#include <QColor>
+
 //! Config variables for editor and for the game.
 namespace Config {
 
@@ -30,7 +35,13 @@ static constexpr auto QSETTINGS_COMPANY_NAME = "Heimer";
 static constexpr auto WEB_SITE_URL = "http://juzzlin.github.io/Heimer";
 
 static constexpr auto QSETTINGS_SOFTWARE_NAME = APPLICATION_NAME;
-
 static constexpr auto TRANSLATIONS_RESOURCE_BASE = ":/heimer_";
 
+inline static QColor getDefaultBackgroundColor()
+{
+    return "#80c8ff";
+}
+
 } // Config
+
+#endif

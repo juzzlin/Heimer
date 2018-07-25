@@ -18,6 +18,7 @@
 
 #include <QString>
 
+#include "config.hpp"
 #include "mindmapdatabase.hpp"
 #include "graph.hpp"
 
@@ -57,7 +58,7 @@ private:
 
     QString m_version;
 
-    QColor m_backgroundColor = QColor(128, 200, 255, 255);
+    QColor m_backgroundColor = Config::getDefaultBackgroundColor();
 
     Graph m_graph;
 };

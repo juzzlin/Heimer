@@ -28,12 +28,15 @@
 #include <QTimer>
 
 #include <cassert>
+#include <cmath>
 
 Edge::Edge(Node & sourceNode, Node & targetNode)
     : EdgeBase(sourceNode, targetNode)
     , m_sourceDot(new EdgeDot(this))
     , m_targetDot(new EdgeDot(this))
     , m_label(new EdgeTextEdit(this))
+    , m_arrowheadL(new QGraphicsLineItem(this))
+    , m_arrowheadR(new QGraphicsLineItem(this))
     , m_sourceDotSizeAnimation(m_sourceDot, "scale")
     , m_targetDotSizeAnimation(m_targetDot, "scale")
 {
@@ -131,6 +134,22 @@ Node & Edge::targetNode() const
     return *node;
 }
 
+void Edge::updateArrowhead()
+{
+    QLineF line;
+    const float length = 10;
+    const float opening = 150;
+    float angle = (-this->line().angle() + opening) / 180 * M_PI;
+    line.setP1(this->line().p2());
+    line.setP2(this->line().p2() + QPointF(std::cos(angle), std::sin(angle)) * length);
+    m_arrowheadL->setLine(line);
+
+    angle = (-this->line().angle() - opening) / 180 * M_PI;
+    line.setP1(this->line().p2());
+    line.setP2(this->line().p2() + QPointF(std::cos(angle), std::sin(angle)) * length);
+    m_arrowheadR->setLine(line);
+}
+
 void Edge::updateDots(const std::pair<QPointF, QPointF> & nearestPoints)
 {
     if (m_sourceDot->pos() != nearestPoints.first)
@@ -167,6 +186,7 @@ void Edge::updateLine()
     setLine(QLineF(nearestPoints.first + sourceNode().pos(), nearestPoints.second + targetNode().pos()));
     updateDots(nearestPoints);
     updateLabel();
+    updateArrowhead();
 }
 
 Edge::~Edge()

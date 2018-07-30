@@ -65,6 +65,8 @@ private:
 
     void setLabelVisible(bool visible);
 
+    void updateArrowhead();
+
     void updateDots(const std::pair<QPointF, QPointF> & nearestPoints);
 
     void updateLabel();
@@ -74,6 +76,10 @@ private:
     EdgeDot * m_targetDot;
 
     EdgeTextEdit * m_label;
+
+    QGraphicsLineItem * m_arrowheadL;
+
+    QGraphicsLineItem * m_arrowheadR;
 
     QPropertyAnimation m_sourceDotSizeAnimation;
 

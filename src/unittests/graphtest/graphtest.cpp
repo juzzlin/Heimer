@@ -249,13 +249,10 @@ void GraphTest::testGetNodesConnectedToNode()
 
     QVERIFY(nodes.size() == 2);
 
-    QVERIFY(std::count_if(nodes.begin(), nodes.end(), [=] (NodeBasePtr node) {
-        return node->index() == node1->index();
-    }) == 1);
-
-    QVERIFY(std::count_if(nodes.begin(), nodes.end(), [=] (NodeBasePtr node) {
-        return node->index() == node2->index();
-    }) == 1);
+    // The order matters. Should be "to" nodes first and "from" nodes then.
+    // This affects the direction of edges e.g. on node deletion.
+    QVERIFY(nodes.at(0)->index() == node2->index());
+    QVERIFY(nodes.at(1)->index() == node1->index());
 }
 
 void GraphTest::testGetNodeByIndex()

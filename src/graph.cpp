@@ -168,14 +168,14 @@ Graph::NodeVector Graph::getNodesConnectedToNode(NodeBasePtr node)
     auto && from = getEdgesFromNode(node);
     auto && to = getEdgesToNode(node);
 
-    for (auto && edge : from)
-    {
-        result.push_back(getNode(edge->targetNodeBase().index()));
-    }
-
     for (auto && edge : to)
     {
         result.push_back(getNode(edge->sourceNodeBase().index()));
+    }
+
+    for (auto && edge : from)
+    {
+        result.push_back(getNode(edge->targetNodeBase().index()));
     }
 
     return result;

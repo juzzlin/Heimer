@@ -1,1 +1,16 @@
+1.0.0 - "Bare Bones"
+====================
+
+Basic features for mind map editing.
+
+New features:
+
+* Easy-to-use UI
+* Zoom with mouse wheel
+* Nice animations
+* Save/load in XML-based .ALZ-files
+* Full undo/redo
+* Zoom in/out/fit
+* Quickly add node text and edge labels
+* Node color and background color settings
 

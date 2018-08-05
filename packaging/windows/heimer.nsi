@@ -7,7 +7,7 @@
 !define APPNAME                "Heimer"
 !define COMPANYNAME            "Juzzlin"
 !define DESCRIPTION            "An application for mind map creation and management."
-!define VERSIONMAJOR           0
+!define VERSIONMAJOR           1
 !define VERSIONMINOR           0
 !define VERSIONBUILD           0
 !define HELPURL                "http://juzzlin.github.io/Heimer/"
@@ -148,4 +148,5 @@ Section "uninstall"
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${PRODUCTNAME}"
 	
 SectionEnd
+
 

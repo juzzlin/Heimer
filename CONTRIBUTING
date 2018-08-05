@@ -38,11 +38,13 @@ You can just copy these files as a new locale and edit, but the recommended way 
 to generate/update the file from source code to make sure that the source strings
 are up-to-date:
 
-$ lupdate src/*.cpp -ts  src/translations/heimer_fr.ts
+$ lupdate src/*.cpp -ts src/translations/heimer_fr.ts
 
 ..as an example for French.
 
 The .ts-files can then be opened in Qt's translation GUI, linguist.
+
+$ linguist src/translations/heimer_fr.ts
 
 For Qt5, the Ubuntu package for these tools is qttools5-dev-tools.
 
@@ -57,7 +59,7 @@ Remember to TEST the translations. Heimer needs to be rebuilt after a .qm file i
 
 The editor and the game can be forced to given lang:
 
-$ ./heimer --lang fr
+$ << In your build dir >> ./heimer --lang fr
 
 Coding style examples
 ---------------------

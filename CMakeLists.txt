@@ -20,7 +20,7 @@ if(POLICY CMP0071)
 endif()
 
 # Global game version
-set(VERSION_MAJOR "0")
+set(VERSION_MAJOR "1")
 set(VERSION_MINOR "0")
 set(VERSION_PATCH "0")
 set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
@@ -65,7 +65,7 @@ add_definitions(-DVERSION="${VERSION}")
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(QT_MIN_VER 5.2.1)
+set(QT_MIN_VER 5.5.1) # The version in Ubuntu 16.04
 find_package(Qt5Core ${QT_MIN_VER} REQUIRED)
 find_package(Qt5Xml ${QT_MIN_VER} REQUIRED)
 find_package(Qt5Widgets ${QT_MIN_VER} REQUIRED)

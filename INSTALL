@@ -6,11 +6,11 @@ These are build & install instructions for Heimer.
 Build dependencies
 ==================
 
-Currently the build depends on Qt5 only (qt5-default, qttools5-dev-tools packages on Ubuntu).
+Currently the build depends on Qt5 only (qt5-default, qttools5-dev-tools, qttools-dev packages on Ubuntu).
 
 The "official" build system for Linux is CMake although qmake project files are also provided.
 
-Building in the command line on Linux (tested on Ubuntu 16.04)
+Building in the command line on Linux (tested on Ubuntu 18.04)
 ==============================================================
 
 Development build (the app can be run without installing anything):

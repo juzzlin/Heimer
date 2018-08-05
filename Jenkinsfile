@@ -4,7 +4,7 @@ pipeline {
         stage('CMake Debug build and unit tests') {
             agent {
                 docker {
-                    image 'juzzlin/qt5:16.04'
+                    image 'juzzlin/qt5:18.04'
                     args '--privileged -t -v $WORKSPACE:/heimer'
                 }
             }
@@ -17,7 +17,7 @@ pipeline {
         stage('QMake build') {
             agent {
                 docker {
-                    image 'juzzlin/qt5:16.04'
+                    image 'juzzlin/qt5:18.04'
                     args '--privileged -t -v $WORKSPACE:/heimer'
                 }
             }
@@ -26,7 +26,7 @@ pipeline {
                 sh "cd build-qmake && qmake .. && make -j3"
             }
         }
-        stage('Debian package') {
+        stage('Debian package / Ubuntu 16.04') {
             agent {
                 docker {
                     image 'juzzlin/qt5:16.04'
@@ -35,7 +35,25 @@ pipeline {
             }
             steps {
                 sh "mkdir -p build"
-                sh "cd build && cmake -D CMAKE_BUILD_TYPE=Release .. && cmake --build . --target all -- -j3"
+                sh "cd build && cmake -D DISTRO_VERSION=Ubuntu-16.04 -D CMAKE_BUILD_TYPE=Release .. && cmake --build . --target all -- -j3"
+                sh "cd build && cpack -G DEB"
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'build/*.deb', fingerprint: true
+                }
+            }
+        }
+        stage('Debian package / Ubuntu 18.04') {
+            agent {
+                docker {
+                    image 'juzzlin/qt5:18.04'
+                    args '--privileged -t -v $WORKSPACE:/heimer'
+                }
+            }
+            steps {
+                sh "mkdir -p build"
+                sh "cd build && cmake -D DISTRO_VERSION=Ubuntu-18.04  -D CMAKE_BUILD_TYPE=Release .. && cmake --build . --target all -- -j3"
                 sh "cd build && cpack -G DEB"
             }
             post {

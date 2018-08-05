@@ -177,7 +177,7 @@ void Edge::updateDots(const std::pair<QPointF, QPointF> & nearestPoints)
 
 void Edge::updateLabel()
 {
-    m_label->setPos(line().center() - 0.5f * QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()));
+    m_label->setPos((line().p1() + line().p2()) * 0.5f - QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()) * 0.5f);
 }
 
 void Edge::updateLine()

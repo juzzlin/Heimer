@@ -1,32 +1,50 @@
 pipeline {
     agent any
     stages {
-        stage('CMake Debug build for Linux') {
+        stage('CMake Debug build and unit tests') {
+            agent {
+                docker {
+                    image 'juzzlin/qt5:16.04'
+                    args '--privileged -t -v $WORKSPACE:/heimer'
+                }
+            }
             steps {
                 sh "mkdir -p build-debug"
                 sh "cd build-debug && cmake -DCMAKE_BUILD_TYPE=Debug .."
-                sh "cd build-debug && cmake --build . --target all -- -j3"
+                sh "cd build-debug && cmake --build . --target all -- -j3 && ctest"
             }
         }
-        stage('Run tests') {
-            steps {
-                sh "cd build-debug && ctest"
+        stage('QMake build') {
+            agent {
+                docker {
+                    image 'juzzlin/qt5:16.04'
+                    args '--privileged -t -v $WORKSPACE:/heimer'
+                }
             }
-        }
-        stage('QMake build for Linux') {
             steps {
                 sh "mkdir -p build-qmake"
                 sh "cd build-qmake && qmake .. && make -j3"
             }
         }
-        stage('Debian package for Linux') {
+        stage('Debian package') {
+            agent {
+                docker {
+                    image 'juzzlin/qt5:16.04'
+                    args '--privileged -t -v $WORKSPACE:/heimer'
+                }
+            }
             steps {
                 sh "mkdir -p build"
                 sh "cd build && cmake -D CMAKE_BUILD_TYPE=Release .. && cmake --build . --target all -- -j3"
                 sh "cd build && cpack -G DEB"
             }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'build/*.deb', fingerprint: true
+                }
+            }
         }
-        stage('NSIS installer for Windows') {
+        stage('NSIS installer') {
             agent {
                 docker {
                     image 'juzzlin/mxe-qt5:latest'
@@ -42,11 +60,6 @@ pipeline {
                 }
             }
 
-        }
-    }
-    post {
-        always {
-            archiveArtifacts artifacts: 'build/*.deb', fingerprint: true
         }
     }
 }

@@ -333,6 +333,8 @@ void Mediator::setupMindMapAfterUndoOrRedo()
 
     m_editorView->setScene(m_editorScene);
 
+    m_editorView->setBackgroundBrush(QBrush(m_editorData->backgroundColor()));
+
     addExistingGraphToScene();
 
     connectGraphToUndoMechanism();

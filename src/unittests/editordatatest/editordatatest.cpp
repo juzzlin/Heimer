@@ -72,4 +72,25 @@ void EditorDataTest::testRedoSimple()
     QCOMPARE(editorData.mindMapData()->graph().numNodes(), 2);
 }
 
+void EditorDataTest::testUndoBackgroundColor()
+{
+    Mediator mediator;
+    EditorData editorData(mediator);
+
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+    editorData.mindMapData()->setBackgroundColor(QColor(0, 0, 0));
+
+    editorData.saveUndoPoint();
+    editorData.mindMapData()->setBackgroundColor(QColor(1, 1, 1));
+
+    editorData.saveUndoPoint();
+    editorData.mindMapData()->setBackgroundColor(QColor(2, 2, 2));
+
+    editorData.undo();
+    QCOMPARE(editorData.mindMapData()->backgroundColor(), QColor(1, 1, 1));
+
+    editorData.undo();
+    QCOMPARE(editorData.mindMapData()->backgroundColor(), QColor(0, 0, 0));
+}
+
 QTEST_GUILESS_MAIN(EditorDataTest)

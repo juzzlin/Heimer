@@ -27,6 +27,7 @@ MindMapData::MindMapData(const MindMapData & other)
     : MindMapDataBase(other)
     , m_fileName(other.m_fileName)
     , m_version(other.m_version)
+    , m_backgroundColor(other.m_backgroundColor)
 {
     copyGraph(other);
 }

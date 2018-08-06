@@ -28,4 +28,6 @@ private slots:
     void testUndoSimple();
 
     void testRedoSimple();
+
+    void testUndoBackgroundColor();
 };

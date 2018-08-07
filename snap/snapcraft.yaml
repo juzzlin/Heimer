@@ -1,0 +1,30 @@
+name: heimer
+version: '1.0.0'
+summary: Heimer is a simple cross-platform mind map tool.
+description: |
+  Heimer is a simple cross-platform mind map creation tool.
+  Emphasis on easy diagram creation, simplicity, and speed.
+grade: stable
+confinement: strict
+
+apps:
+  heimer:
+    command: desktop-launch heimer
+    desktop: usr/share/applications/heimer.desktop
+    plugs: [home, x11, wayland]
+
+parts:
+  gnu-heimer:
+    source: ../
+    plugin: cmake
+    configflags:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_INSTALL_PREFIX=/usr
+    build-packages:
+      - qtbase5-dev
+      - qttools5-dev
+      - qttools5-dev-tools
+    stage-packages:
+      - libqt5xml5
+    after: [desktop-qt5]
+

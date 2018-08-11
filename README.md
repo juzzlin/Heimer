@@ -14,6 +14,16 @@ See COPYING for the complete license text.
 All image files, except where otherwise noted, are licensed under
 CC BY-SA 3.0: http://creativecommons.org/licenses/by-sa/3.0/
 
+## Installation
+
+See https://github.com/juzzlin/Heimer/releases for available packages.
+
+On Linux distributions that support universal Snap packages you can install Heimer like this:
+
+`$ snap install heimer`
+
+For more information, see https://snapcraft.io/heimer, https://docs.snapcraft.io/core/install
+
 ## Building the project
 
 Please refer to the INSTALL document for build/install instructions if you're

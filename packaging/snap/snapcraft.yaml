@@ -15,7 +15,7 @@ apps:
 
 parts:
   gnu-heimer:
-    source: ../
+    source: ../../
     plugin: cmake
     configflags:
       - -DCMAKE_BUILD_TYPE=Release

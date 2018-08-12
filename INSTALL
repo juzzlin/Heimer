@@ -13,8 +13,8 @@ The "official" build system for Linux is CMake although qmake project files are 
 Building in the command line on Linux (tested on Ubuntu 18.04)
 ==============================================================
 
-Development build (the app can be run without installing anything):
--------------------------------------------------------------------
+Development build
+-----------------
 
 $ mkdir build
 $ cd build
@@ -36,8 +36,8 @@ Run unit tests:
 
 $ ctest
 
-Release build (in this example Heimer installs under /usr):
-----------------------------------------------------------
+Release build
+-------------
 
 $ mkdir build
 $ cd build
@@ -64,10 +64,7 @@ Building in Qt Creator
 Jenkins CI
 ==========
 
-See `Jenkinsfile` to setup the Jenkins Pipeline.
+Heimer has been using Jenkins CI to build different packages automatically.
 
-For Linux packagers
-===================
-
-There's an example Debian packaging in packaging/debian/.
+See `Jenkinsfile` for more information.
 

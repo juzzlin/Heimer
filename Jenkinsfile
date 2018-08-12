@@ -62,6 +62,16 @@ pipeline {
                 }
             }
         }
+        stage('Snap package / Ubuntu 16.04') {
+            steps {
+                sh "./scripts/buildSnap.sh"
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'packaging/snap/build/*.snap', fingerprint: true
+                }
+            }
+        }
         stage('NSIS installer') {
             agent {
                 docker {

@@ -5,6 +5,10 @@
 CMD="export LANG=en_US.UTF-8 && \
      export LC_ALL=en_US.UTF-8 && \
      cd /heimer/packaging/snap && \
+     rm -rf build && \
+     mkdir build && \
+     cd build && \
+     cp ../snapcraft.yaml . && \
      snapcraft"
 
 if [ -f /.dockerenv ]; then

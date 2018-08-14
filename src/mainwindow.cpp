@@ -60,7 +60,7 @@ MainWindow::MainWindow(QString mindMapFile)
         qFatal("MainWindow already instantiated!");
     }
 
-    setWindowIcon(QIcon(":/heimer-editor.png"));
+    setWindowIcon(QIcon(":/heimer.png"));
 
     init();
 

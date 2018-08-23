@@ -72,6 +72,16 @@ pipeline {
                 }
             }
         }
+        stage('AppImage package / Ubuntu 16.04') {
+            steps {
+                sh "./scripts/buildAppImage.sh"
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'build-appimage/*.AppImage', fingerprint: true
+                }
+            }
+        }
         stage('NSIS installer') {
             agent {
                 docker {

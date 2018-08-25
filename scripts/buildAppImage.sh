@@ -8,6 +8,7 @@ CMD="export LANG=en_US.UTF-8 && \
      export LC_ALL=en_US.UTF-8 && \
      rm -rf /heimer-build-appimage && mkdir -p /heimer/build-appimage && \
      cd /heimer/build-appimage && \
+     source /opt/qt*/bin/qt*-env.sh && \
      cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr && \
      make -j$(nproc) && \
      make DESTDIR=appdir -j$(nproc) install && find appdir/ && \
@@ -23,6 +24,6 @@ if [ -f /.dockerenv ]; then
     bash -c "${CMD}"
 else
     echo "Script outside Docker"
-    docker run --privileged -t -v $(pwd):/heimer juzzlin/qt5:16.04 bash -c "${CMD}"
+    docker run --privileged -t -v $(pwd):/heimer juzzlin/qt5:14.04 bash -c "${CMD}"
 fi
 

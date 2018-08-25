@@ -72,7 +72,7 @@ pipeline {
                 }
             }
         }
-        stage('AppImage package / Ubuntu 16.04') {
+        stage('AppImage package / Ubuntu 14.04') {
             steps {
                 sh "./scripts/buildAppImage.sh"
             }

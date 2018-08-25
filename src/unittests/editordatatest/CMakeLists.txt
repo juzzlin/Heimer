@@ -32,5 +32,3 @@ add_executable(${NAME} ${SRC} ${MOC_SRC})
 add_test(${NAME} ${CMAKE_SOURCE_DIR}/unittests/${NAME})
 
 qt5_use_modules(${NAME} Test Xml Widgets)
-
-set_property(TARGET ${NAME} PROPERTY CXX_STANDARD 11)

@@ -17,6 +17,7 @@
 
 #include "config.hpp"
 #include "aboutdlg.hpp"
+#include "exporttopngdialog.hpp"
 #include "mediator.hpp"
 #include "mindmapdata.hpp"
 #include "mclogger.hh"
@@ -47,6 +48,7 @@ static const QString FILE_EXTENSION(Config::FILE_EXTENSION);
 
 MainWindow::MainWindow(QString mindMapFile)
 : m_aboutDlg(new AboutDlg(this))
+, m_exportToPNGDialog(new ExportToPNGDialog(this))
 , m_argMindMapFile(mindMapFile)
 , m_mediator(new Mediator(*this))
 , m_stateMachine(new StateMachine)
@@ -68,6 +70,10 @@ MainWindow::MainWindow(QString mindMapFile)
     {
         QTimer::singleShot(0, this, SLOT(openArgMindMap()));
     }
+
+    connect(m_exportToPNGDialog, &ExportToPNGDialog::pngExportRequested, m_mediator, &Mediator::exportToPNG);
+
+    connect(m_mediator, &Mediator::exportFinished, m_exportToPNGDialog, &ExportToPNGDialog::finishExport);
 }
 
 void MainWindow::addRedoAction(QMenu & menu)
@@ -147,6 +153,14 @@ void MainWindow::createFileMenu()
         runState(m_stateMachine->calculateState(StateMachine::Action::SaveAsSelected, *m_mediator));
     });
 
+    // Add "export to PNG image"-action
+    const auto exportToPNGAction = new QAction(tr("&Export to PNG image..."), this);
+    exportToPNGAction->setShortcut(QKeySequence("Ctrl+Shift+E"));
+    fileMenu->addAction(exportToPNGAction);
+    connect(exportToPNGAction, &QAction::triggered, [=] () {
+        runState(m_stateMachine->calculateState(StateMachine::Action::ExportToPNGSelected, *m_mediator));
+    });
+
     // Add "quit"-action
     const auto quitAct = new QAction(tr("&Quit"), this);
     quitAct->setShortcut(QKeySequence("Ctrl+W"));
@@ -193,6 +207,15 @@ void MainWindow::createViewMenu()
     const auto zoomToFit = new QAction(tr("&Zoom To Fit"), this);
     viewMenu->addAction(zoomToFit);
     connect(zoomToFit, &QAction::triggered, this, &MainWindow::zoomToFitTriggered);
+}
+
+void MainWindow::showExportToPNGDialog()
+{
+    m_exportToPNGDialog->setImageSize(m_mediator->zoomForExport());
+    m_exportToPNGDialog->exec();
+
+    // Doesn't matter if canceled or not
+    runState(m_stateMachine->calculateState(StateMachine::Action::ExportedToPNG, *m_mediator));
 }
 
 QString MainWindow::getFileDialogFileText() const
@@ -483,6 +506,9 @@ void MainWindow::runState(StateMachine::State state)
         break;
     case StateMachine::State::SaveMindMap:
         saveMindMap();
+        break;
+    case StateMachine::State::ShowExportToPNGDialog:
+        showExportToPNGDialog();
         break;
     case StateMachine::State::ShowNotSavedDialog:
         switch (showNotSavedDialog())

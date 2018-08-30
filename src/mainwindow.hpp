@@ -26,6 +26,7 @@
 class AboutDlg;
 class EditorData;
 class EditorView;
+class ExportToPNGDialog;
 class QAction;
 class QCheckBox;
 class QSlider;
@@ -90,6 +91,8 @@ private slots:
 
     void showAboutQtDlg();
 
+    void showExportToPNGDialog();
+
     void openArgMindMap();
 
     void openMindMap();
@@ -129,6 +132,8 @@ private:
     void setSaveActionStatesOnOpenedMindMap();
 
     AboutDlg * m_aboutDlg;
+
+    ExportToPNGDialog * m_exportToPNGDialog;
 
     QAction * m_saveAction = nullptr;
 

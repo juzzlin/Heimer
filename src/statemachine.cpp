@@ -26,6 +26,10 @@ StateMachine::State StateMachine::calculateState(StateMachine::Action action, Me
 {
     switch (action)
     {
+    case Action::ExportToPNGSelected:
+        m_state = State::ShowExportToPNGDialog;
+        break;
+
     case Action::NewSelected:
         m_quitType = QuitType::New;
         if (mediator.isModified())
@@ -60,6 +64,7 @@ StateMachine::State StateMachine::calculateState(StateMachine::Action action, Me
         }
         break;
 
+    case Action::ExportedToPNG:
     case Action::NewMindMapInitialized:
     case Action::NotSavedDialogCanceled:
     case Action::MindMapOpened:

@@ -92,6 +92,8 @@ public:
 
     bool saveMindMap();
 
+    QSize sceneRectSize() const;
+
     Node * selectedNode() const;
 
     void setSelectedNode(Node * node);
@@ -102,7 +104,11 @@ public:
 
 public slots:
 
+    void exportToPNG(QString filename, QSize size, bool transparentBackground);
+
     void saveUndoPoint();
+
+    QSize zoomForExport();
 
 private slots:
 
@@ -111,6 +117,10 @@ private slots:
     void zoomOut();
 
     void zoomToFit();
+
+signals:
+
+    void exportFinished();
 
 private:
 

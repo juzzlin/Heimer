@@ -8,6 +8,7 @@ set(SRC
     edgebase.cpp
     edgedot.cpp
     edgetextedit.cpp
+    exporttopngdialog.cpp
     fileexception.hpp
     graph.cpp
     graphicsfactory.cpp

@@ -29,14 +29,17 @@ public:
         Edit,
         Init,
         InitializeNewMindMap,
-        ShowOpenDialog,
         SaveMindMap,
-        ShowSaveAsDialog,
-        ShowNotSavedDialog
+        ShowExportToPNGDialog,
+        ShowNotSavedDialog,
+        ShowOpenDialog,
+        ShowSaveAsDialog
     };
 
     enum class Action
     {
+        ExportedToPNG,
+        ExportToPNGSelected,
         MainWindowInitialized,
         MindMapOpened,
         MindMapSaved,

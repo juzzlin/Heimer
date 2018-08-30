@@ -55,9 +55,7 @@ Mediator::Mediator(MainWindow & mainWindow)
     });
 
     connect(&m_mainWindow, &MainWindow::zoomToFitTriggered, this, &Mediator::zoomToFit);
-
     connect(&m_mainWindow, &MainWindow::zoomInTriggered, this, &Mediator::zoomIn);
-
     connect(&m_mainWindow, &MainWindow::zoomOutTriggered, this, &Mediator::zoomOut);
 
     initializeView();
@@ -194,6 +192,25 @@ void Mediator::deleteNode(Node & node)
 void Mediator::enableUndo(bool enable)
 {
     m_mainWindow.enableUndo(enable);
+}
+
+void Mediator::exportToPNG(QString filename, QSize size, bool transparentBackground)
+{
+    zoomForExport();
+
+    MCLogger().info() << "Exporting a PNG image of size (" << size.width() << "x" << size.height() << ")";
+
+    QImage image(size, QImage::Format_ARGB32);
+    image.fill(transparentBackground ? Qt::transparent : m_editorData->backgroundColor());
+
+    QPainter painter(&image);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setRenderHint(QPainter::TextAntialiasing);
+    m_editorScene->render(&painter);
+
+    image.save(filename);
+
+    emit exportFinished();
 }
 
 QString Mediator::fileName() const
@@ -333,6 +350,11 @@ void Mediator::saveUndoPoint()
     m_editorData->saveUndoPoint();
 }
 
+QSize Mediator::sceneRectSize() const
+{
+    return m_editorScene->sceneRect().size().toSize();
+}
+
 Node * Mediator::selectedNode() const
 {
     return m_editorData->selectedNode();
@@ -377,6 +399,13 @@ void Mediator::zoomIn()
 void Mediator::zoomOut()
 {
     m_editorView->zoom(-zoomSensitivity);
+}
+
+QSize Mediator::zoomForExport()
+{
+    m_editorScene->clearSelection();
+    m_editorScene->setSceneRect(m_editorScene->getNodeBoundingRectWithHeuristics());
+    return m_editorScene->sceneRect().size().toSize();
 }
 
 void Mediator::zoomToFit()

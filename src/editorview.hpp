@@ -62,6 +62,8 @@ signals:
 
     void backgroundColorChanged(QColor color);
 
+    void newNodeRequested(QPointF position);
+
 private:
 
     void createBackgroundContextMenuActions();

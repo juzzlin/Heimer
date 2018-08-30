@@ -21,12 +21,12 @@
         <translation type="vanished">Valitse Tiedosto-&gt;Uusi tai Tiedosto-&gt;Avaa aloittaaksesi</translation>
     </message>
     <message>
-        <location filename="../editorview.cpp" line="70"/>
+        <location filename="../editorview.cpp" line="77"/>
         <source>Set node color</source>
         <translation>Aseta solmun väri</translation>
     </message>
     <message>
-        <location filename="../editorview.cpp" line="80"/>
+        <location filename="../editorview.cpp" line="87"/>
         <source>Delete node</source>
         <translation>Poista solmu</translation>
     </message>
@@ -131,7 +131,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="435"/>
         <source>The mind map has been modified.</source>
-        <translation type="unfinished">Käsitekarttaa on muokattu.</translation>
+        <translation>Käsitekarttaa on muokattu.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="436"/>
@@ -197,6 +197,11 @@
         <location filename="../editorview.cpp" line="56"/>
         <source>Set background color</source>
         <translation>Aseta taustaväri</translation>
+    </message>
+    <message>
+        <location filename="../editorview.cpp" line="64"/>
+        <source>Create floating node</source>
+        <translation>Luo kelluva solmu</translation>
     </message>
     <message>
         <source>Set node color</source>

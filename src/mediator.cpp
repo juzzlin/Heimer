@@ -45,6 +45,11 @@ Mediator::Mediator(MainWindow & mainWindow)
         m_editorView->setBackgroundBrush(QBrush(color));
     });
 
+    connect(m_editorView, &EditorView::newNodeRequested, [=] (QPointF position) {
+        saveUndoPoint();
+        createAndAddNode(position);
+    });
+
     connect(m_editorData, &EditorData::isModifiedChanged, [=] (bool isModified) {
         m_mainWindow.enableSave(isModified && canBeSaved());
     });
@@ -130,9 +135,21 @@ NodeBasePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
     auto node0 = dynamic_pointer_cast<Node>(getNodeByIndex(sourceNodeIndex));
     assert(node0);
 
-    // Currently floating nodes cannot be added. Always add edge from the parent node.
+    // Add edge from the parent node.
     connectEdgeToUndoMechanism(m_editorData->addEdge(std::make_shared<Edge>(*node0, *node1)));
     MCLogger().debug() << "Created a new edge " << node0->index() << " -> " << node1->index();
+
+    addExistingGraphToScene();
+
+    return node1;
+}
+
+NodeBasePtr Mediator::createAndAddNode(QPointF pos)
+{
+    auto node1 = m_editorData->addNodeAt(pos);
+    assert(node1);
+    connectNodeToUndoMechanism(node1);
+    MCLogger().debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
 
     addExistingGraphToScene();
 

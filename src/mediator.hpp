@@ -52,7 +52,11 @@ public:
 
     void connectNodeToUndoMechanism(NodePtr node);
 
+    // Create a new node and add edge to the source (parent) node
     NodeBasePtr createAndAddNode(int sourceNodeIndex, QPointF pos);
+
+    // Create a new floating node
+    NodeBasePtr createAndAddNode(QPointF pos);
 
     DragAndDropStore & dadStore();
 

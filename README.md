@@ -6,6 +6,19 @@ Here is a simple mind map of Heimer itself:
 
 ![Heimer screenshot](/screenshots/1.0.0/Heimer.png?raw=true)
 
+## Features
+
+* Easy-to-use UI
+* Very fast
+* Zoom in/out/fit
+* Zoom with mouse wheel
+* Save/load in XML-based .ALZ-files
+* Export to PNG images
+* Quickly add node text and edge labels
+* Nice animations
+* Full undo/redo
+* Forever 100% free
+
 ## License
 
 Heimer's source code is licensed under GNU GPLv3. 

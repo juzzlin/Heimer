@@ -62,16 +62,6 @@ pipeline {
                 }
             }
         }
-        stage('AppImage package / Ubuntu 14.04') {
-            steps {
-                sh "./scripts/buildAppImage.sh"
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'build-appimage/Heimer*.AppImage', fingerprint: true
-                }
-            }
-        }
         stage('NSIS installer') {
             agent {
                 docker {

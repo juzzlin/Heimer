@@ -68,7 +68,7 @@ pipeline {
             }
             post {
                 always {
-                    archiveArtifacts artifacts: 'build-appimage/*.AppImage', fingerprint: true
+                    archiveArtifacts artifacts: 'build-appimage/Heimer*.AppImage', fingerprint: true
                 }
             }
         }

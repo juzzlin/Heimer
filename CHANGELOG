@@ -1,5 +1,33 @@
+1.1.0 - "PNG Man"
+=================
+
+New features:
+
+* Fix GitHub Issue #3: Export to PNG
+* Fix GitHub Issue #6: Way to create floating nodes
+
+Bug fixes:
+
+* Fix windows icon resource name
+* Fix GitHub Issue #12: Undoing the background color doesn't update the background immediately
+
+Other:
+
+* CMake: add fallback for C++11 standard setting if CMake version < 3.1
+
 1.0.0 - "Bare Bones"
 ====================
 
-* Initial release
+Basic features for mind map editing.
+
+New features:
+
+* Easy-to-use UI
+* Zoom with mouse wheel
+* Nice animations
+* Save/load in XML-based .ALZ-files
+* Full undo/redo
+* Zoom in/out/fit
+* Quickly add node text and edge labels
+* Node color and background color settings
 

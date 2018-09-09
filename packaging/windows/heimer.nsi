@@ -8,7 +8,7 @@
 !define COMPANYNAME            "Juzzlin"
 !define DESCRIPTION            "An application for mind map creation and management."
 !define VERSIONMAJOR           1
-!define VERSIONMINOR           0
+!define VERSIONMINOR           1
 !define VERSIONBUILD           0
 !define HELPURL                "http://juzzlin.github.io/Heimer/"
 !define UPDATEURL              "https://github.com/juzzlin/Heimer/releases"
@@ -148,5 +148,6 @@ Section "uninstall"
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${PRODUCTNAME}"
 	
 SectionEnd
+
 
 

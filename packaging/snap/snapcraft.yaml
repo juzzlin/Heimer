@@ -1,11 +1,12 @@
 name: heimer
-version: '1.0.0'
+version: '1.1.0'
 summary: Heimer is a simple cross-platform mind map tool.
 description: |
   Heimer is a simple cross-platform mind map creation tool.
   Emphasis on easy diagram creation, simplicity, and speed.
 grade: stable
 confinement: strict
+icon: ../../../data/icons/heimer.png
 
 apps:
   heimer:

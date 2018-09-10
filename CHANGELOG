@@ -1,3 +1,11 @@
+1.1.1 - "Bugfix Night"
+======================
+
+Bug fixes:
+
+* Fix GitHub Issue #19: Save on close doesn't work
+* Fix launcher icon of the Snap package
+
 1.1.0 - "PNG Man"
 =================
 

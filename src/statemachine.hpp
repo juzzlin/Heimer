@@ -24,16 +24,16 @@ public:
 
     enum class State
     {
-        CloseWindow,
-        CloseWindowNow,
         Edit,
+        Exit,
         Init,
         InitializeNewMindMap,
         SaveMindMap,
         ShowExportToPNGDialog,
         ShowNotSavedDialog,
         ShowOpenDialog,
-        ShowSaveAsDialog
+        ShowSaveAsDialog,
+        TryCloseWindow
     };
 
     enum class Action

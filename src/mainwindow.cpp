@@ -267,14 +267,8 @@ MainWindow * MainWindow::instance()
 
 void MainWindow::closeEvent(QCloseEvent * event)
 {
-    if (m_closeNow)
-    {
-        QMainWindow::closeEvent(event);
-    }
-    else
-    {
-        runState(m_stateMachine->calculateState(StateMachine::Action::QuitSelected, *m_mediator));
-    }
+    event->ignore();
+    runState(m_stateMachine->calculateState(StateMachine::Action::QuitSelected, *m_mediator));
 }
 
 void MainWindow::populateMenuBar()
@@ -488,14 +482,13 @@ void MainWindow::runState(StateMachine::State state)
 {
     switch (state)
     {
-    case StateMachine::State::CloseWindow:
+    case StateMachine::State::TryCloseWindow:
         saveWindowSize();
         close();
         break;
-    case StateMachine::State::CloseWindowNow:
-        m_closeNow = true;
+    case StateMachine::State::Exit:
         saveWindowSize();
-        close();
+        QApplication::exit(EXIT_SUCCESS);
         break;
     default:
     case StateMachine::State::Edit:

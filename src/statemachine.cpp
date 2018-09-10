@@ -47,10 +47,12 @@ StateMachine::State StateMachine::calculateState(StateMachine::Action action, Me
         break;
 
     case Action::NotSavedDialogDiscarded:
+    case Action::MindMapSaved:
+    case Action::MindMapSavedAs:
         switch (m_quitType)
         {
         case QuitType::Close:
-            m_state = State::CloseWindowNow;
+            m_state = State::Exit;
             break;
         case QuitType::New:
             m_state = State::InitializeNewMindMap;
@@ -68,8 +70,6 @@ StateMachine::State StateMachine::calculateState(StateMachine::Action action, Me
     case Action::NewMindMapInitialized:
     case Action::NotSavedDialogCanceled:
     case Action::MindMapOpened:
-    case Action::MindMapSaved:
-    case Action::MindMapSavedAs:
     case Action::MindMapSaveFailed:
     case Action::MindMapSaveAsFailed:
         m_quitType = QuitType::None;
@@ -96,10 +96,11 @@ StateMachine::State StateMachine::calculateState(StateMachine::Action action, Me
         }
         else
         {
-            m_state = State::CloseWindow;
+            m_state = State::Exit;
         }
         break;
 
+    case Action::NotSavedDialogAccepted:
     case Action::SaveSelected:
         if (mediator.canBeSaved())
         {

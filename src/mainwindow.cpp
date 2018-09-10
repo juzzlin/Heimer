@@ -135,6 +135,8 @@ void MainWindow::createFileMenu()
         runState(m_stateMachine->calculateState(StateMachine::Action::OpenSelected, *m_mediator));
     });
 
+    fileMenu->addSeparator();
+
     // Add "save"-action
     m_saveAction = new QAction(tr("&Save"), this);
     m_saveAction->setShortcut(QKeySequence("Ctrl+S"));
@@ -153,6 +155,8 @@ void MainWindow::createFileMenu()
         runState(m_stateMachine->calculateState(StateMachine::Action::SaveAsSelected, *m_mediator));
     });
 
+    fileMenu->addSeparator();
+
     // Add "export to PNG image"-action
     const auto exportToPNGAction = new QAction(tr("&Export to PNG image..."), this);
     exportToPNGAction->setShortcut(QKeySequence("Ctrl+Shift+E"));
@@ -160,6 +164,8 @@ void MainWindow::createFileMenu()
     connect(exportToPNGAction, &QAction::triggered, [=] () {
         runState(m_stateMachine->calculateState(StateMachine::Action::ExportToPNGSelected, *m_mediator));
     });
+
+    fileMenu->addSeparator();
 
     // Add "quit"-action
     const auto quitAct = new QAction(tr("&Quit"), this);

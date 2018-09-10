@@ -28,4 +28,10 @@ parts:
     stage-packages:
       - libqt5xml5
     after: [desktop-qt5]
+    override-prime: |
+      set -eu
 
+      snapcraftctl prime
+
+      # Fix-up application icon lookup
+      sed --in-place 's|^Icon=.*|Icon=\${SNAP}/meta/gui/icon.png|' usr/share/applications/heimer.desktop

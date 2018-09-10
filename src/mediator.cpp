@@ -32,8 +32,7 @@
 using std::dynamic_pointer_cast;
 
 Mediator::Mediator(MainWindow & mainWindow)
-    : m_editorData(new EditorData(*this))
-    , m_editorScene(new EditorScene)
+    : m_editorScene(new EditorScene)
     , m_editorView(new EditorView(*this))
     , m_mainWindow(mainWindow)
 {
@@ -50,15 +49,9 @@ Mediator::Mediator(MainWindow & mainWindow)
         createAndAddNode(position);
     });
 
-    connect(m_editorData, &EditorData::isModifiedChanged, [=] (bool isModified) {
-        m_mainWindow.enableSave(isModified && canBeSaved());
-    });
-
     connect(&m_mainWindow, &MainWindow::zoomToFitTriggered, this, &Mediator::zoomToFit);
     connect(&m_mainWindow, &MainWindow::zoomInTriggered, this, &Mediator::zoomIn);
     connect(&m_mainWindow, &MainWindow::zoomOutTriggered, this, &Mediator::zoomOut);
-
-    initializeView();
 }
 
 void Mediator::addExistingGraphToScene()
@@ -360,6 +353,11 @@ Node * Mediator::selectedNode() const
     return m_editorData->selectedNode();
 }
 
+void Mediator::setEditorData(std::shared_ptr<EditorData> editorData)
+{
+    m_editorData = editorData;
+}
+
 void Mediator::setSelectedNode(Node * node)
 {
     m_editorData->setSelectedNode(node);
@@ -413,7 +411,4 @@ void Mediator::zoomToFit()
     m_editorView->zoomToFit(m_editorScene->getNodeBoundingRectWithHeuristics());
 }
 
-Mediator::~Mediator()
-{
-    delete m_editorData;
-}
+Mediator::~Mediator() = default;

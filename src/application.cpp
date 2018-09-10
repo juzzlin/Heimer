@@ -15,6 +15,7 @@
 
 #include "application.hpp"
 #include "config.hpp"
+#include "editordata.hpp"
 #include "mainwindow.hpp"
 #include "mediator.hpp"
 #include "statemachine.hpp"
@@ -90,15 +91,24 @@ Application::Application(int & argc, char ** argv)
     parseArgs(argc, argv);
 
     m_mainWindow.reset(new MainWindow(m_mindMapFile));
-    m_mediator.reset(new Mediator(*m_mainWindow));
+    m_mediator = std::make_shared<Mediator>(*m_mainWindow);
 
     m_mainWindow->setMediator(m_mediator);
     m_stateMachine->setMediator(m_mediator);
 
+    m_editorData.reset(new EditorData(*m_mediator));
+    m_mediator->setEditorData(m_editorData);
+
     QObject::connect(m_mainWindow.get(), &MainWindow::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
     QObject::connect(m_stateMachine.get(), &StateMachine::stateChanged, m_mainWindow.get(), &MainWindow::runState);
 
+    QObject::connect(m_editorData.get(), &EditorData::isModifiedChanged, [=] (bool isModified) {
+        m_mainWindow->enableSave(isModified && m_mediator->canBeSaved());
+    });
+
     m_mainWindow->initialize();
+    m_mediator->initializeView();
+
     m_mainWindow->show();
 }
 

@@ -21,6 +21,7 @@
 
 #include <memory>
 
+class EditorData;
 class MainWindow;
 class Mediator;
 class StateMachine;
@@ -50,6 +51,8 @@ private:
     std::unique_ptr<StateMachine> m_stateMachine;
 
     std::unique_ptr<MainWindow> m_mainWindow;
+
+    std::shared_ptr<EditorData> m_editorData;
 };
 
 #endif // APPLICATION_HPP

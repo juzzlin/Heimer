@@ -72,6 +72,8 @@ public:
 
     void initializeNewMindMap();
 
+    void initializeView();
+
     bool isInBetween(Node & node);
 
     bool isLeafNode(Node & node);
@@ -95,6 +97,8 @@ public:
     QSize sceneRectSize() const;
 
     Node * selectedNode() const;
+
+    void setEditorData(std::shared_ptr<EditorData> editorData);
 
     void setSelectedNode(Node * node);
 
@@ -128,9 +132,7 @@ private:
 
     void connectGraphToUndoMechanism();
 
-    void initializeView();
-
-    EditorData * m_editorData;
+    std::shared_ptr<EditorData> m_editorData;
 
     EditorScene * m_editorScene;
 

@@ -19,7 +19,11 @@
 #include <QApplication>
 #include <QTranslator>
 
+#include <memory>
+
 class MainWindow;
+class Mediator;
+class StateMachine;
 
 class Application
 {
@@ -41,7 +45,11 @@ private:
 
     QString m_mindMapFile;
 
-    MainWindow * m_mainWindow;
+    std::shared_ptr<Mediator> m_mediator;
+
+    std::unique_ptr<StateMachine> m_stateMachine;
+
+    std::unique_ptr<MainWindow> m_mainWindow;
 };
 
 #endif // APPLICATION_HPP

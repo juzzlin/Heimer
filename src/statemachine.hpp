@@ -16,10 +16,16 @@
 #ifndef STATEMACHINE_HPP
 #define STATEMACHINE_HPP
 
+#include <QObject>
+
+#include <memory>
+
 class Mediator;
 
-class StateMachine
+class StateMachine : public QObject
 {
+    Q_OBJECT
+
 public:
 
     enum class State
@@ -69,13 +75,21 @@ public:
 
     StateMachine();
 
-    State calculateState(StateMachine::Action action, Mediator & mediator);
+    void calculateState(StateMachine::Action action);
+
+    void setMediator(std::shared_ptr<Mediator> mediator);
+
+signals:
+
+    void stateChanged(StateMachine::State state);
 
 private:
 
     State m_state = State::Init;
 
     QuitType m_quitType = QuitType::None;
+
+    std::shared_ptr<Mediator> m_mediator;
 };
 
 #endif // STATEMACHINE_HPP

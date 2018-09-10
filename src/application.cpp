@@ -14,14 +14,16 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "application.hpp"
-#include "mainwindow.hpp"
-
 #include "config.hpp"
+#include "mainwindow.hpp"
+#include "mediator.hpp"
+#include "statemachine.hpp"
 #include "userexception.hpp"
 
 #include "contrib/mclogger.hh"
 
 #include <QLocale>
+#include <QObject>
 #include <QSettings>
 
 #include <iostream>
@@ -83,10 +85,20 @@ void Application::parseArgs(int argc, char ** argv)
 
 Application::Application(int & argc, char ** argv)
     : m_app(argc, argv)
+    , m_stateMachine(new StateMachine)
 {
     parseArgs(argc, argv);
 
-    m_mainWindow = new MainWindow(m_mindMapFile);
+    m_mainWindow.reset(new MainWindow(m_mindMapFile));
+    m_mediator.reset(new Mediator(*m_mainWindow));
+
+    m_mainWindow->setMediator(m_mediator);
+    m_stateMachine->setMediator(m_mediator);
+
+    QObject::connect(m_mainWindow.get(), &MainWindow::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
+    QObject::connect(m_stateMachine.get(), &StateMachine::stateChanged, m_mainWindow.get(), &MainWindow::runState);
+
+    m_mainWindow->initialize();
     m_mainWindow->show();
 }
 
@@ -95,7 +107,4 @@ int Application::run()
     return m_app.exec();
 }
 
-Application::~Application()
-{
-    delete m_mainWindow;
-}
+Application::~Application() = default;

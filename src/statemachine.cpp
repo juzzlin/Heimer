@@ -22,7 +22,7 @@ StateMachine::StateMachine()
 {
 }
 
-StateMachine::State StateMachine::calculateState(StateMachine::Action action, Mediator & mediator)
+void StateMachine::calculateState(StateMachine::Action action)
 {
     switch (action)
     {
@@ -32,7 +32,7 @@ StateMachine::State StateMachine::calculateState(StateMachine::Action action, Me
 
     case Action::NewSelected:
         m_quitType = QuitType::New;
-        if (mediator.isModified())
+        if (m_mediator->isModified())
         {
             m_state = State::ShowNotSavedDialog;
         }
@@ -78,7 +78,7 @@ StateMachine::State StateMachine::calculateState(StateMachine::Action action, Me
 
     case Action::OpenSelected:
         m_quitType = QuitType::Open;
-        if (mediator.isModified())
+        if (m_mediator->isModified())
         {
             m_state = State::ShowNotSavedDialog;
         }
@@ -90,7 +90,7 @@ StateMachine::State StateMachine::calculateState(StateMachine::Action action, Me
 
     case Action::QuitSelected:
         m_quitType = QuitType::Close;
-        if (mediator.isModified())
+        if (m_mediator->isModified())
         {
             m_state = State::ShowNotSavedDialog;
         }
@@ -102,7 +102,7 @@ StateMachine::State StateMachine::calculateState(StateMachine::Action action, Me
 
     case Action::NotSavedDialogAccepted:
     case Action::SaveSelected:
-        if (mediator.canBeSaved())
+        if (m_mediator->canBeSaved())
         {
             m_state = State::SaveMindMap;
         }
@@ -120,5 +120,10 @@ StateMachine::State StateMachine::calculateState(StateMachine::Action action, Me
         MCLogger().warning() << "Action " << static_cast<int>(action) << " not handled!";
     };
 
-    return m_state;
+    emit stateChanged(m_state);
+}
+
+void StateMachine::setMediator(std::shared_ptr<Mediator> mediator)
+{
+    m_mediator = mediator;
 }

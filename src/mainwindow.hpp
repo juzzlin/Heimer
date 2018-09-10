@@ -23,6 +23,8 @@
 
 #include "statemachine.hpp"
 
+#include <memory>
+
 class AboutDlg;
 class EditorData;
 class EditorView;
@@ -47,6 +49,10 @@ public:
 
     void console(QString text);
 
+    void initialize();
+
+    void setMediator(std::shared_ptr<Mediator> mediator);
+
     void setTitle();
 
 public slots:
@@ -63,6 +69,8 @@ public slots:
 
     int showNotSavedDialog();
 
+    void runState(StateMachine::State state);
+
 protected:
 
     void closeEvent(QCloseEvent * event) override;
@@ -74,6 +82,8 @@ signals:
     void zoomOutTriggered();
 
     void zoomToFitTriggered();
+
+    void actionTriggered(StateMachine::Action action);
 
 private slots:
 
@@ -115,13 +125,9 @@ private:
 
     QString getFileDialogFileText() const;
 
-    void init();
-
     QString loadRecentPath() const;
 
     void populateMenuBar();
-
-    void runState(StateMachine::State state);
 
     void saveRecentPath(QString fileName);
 
@@ -145,11 +151,9 @@ private:
 
     QString m_argMindMapFile;
 
+    std::shared_ptr<Mediator> m_mediator;
+
     const char * m_settingsGroup = "MainWindow";
-
-    Mediator * m_mediator;
-
-    StateMachine * m_stateMachine;
 
     bool m_closeNow = false;
 

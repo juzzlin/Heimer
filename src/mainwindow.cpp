@@ -21,7 +21,6 @@
 #include "mediator.hpp"
 #include "mindmapdata.hpp"
 #include "mclogger.hh"
-#include "statemachine.hpp"
 
 #include <QAction>
 #include <QApplication>
@@ -50,8 +49,6 @@ MainWindow::MainWindow(QString mindMapFile)
 : m_aboutDlg(new AboutDlg(this))
 , m_exportToPNGDialog(new ExportToPNGDialog(this))
 , m_argMindMapFile(mindMapFile)
-, m_mediator(new Mediator(*this))
-, m_stateMachine(new StateMachine)
 {
     if (!m_instance)
     {
@@ -61,19 +58,6 @@ MainWindow::MainWindow(QString mindMapFile)
     {
         qFatal("MainWindow already instantiated!");
     }
-
-    setWindowIcon(QIcon(":/heimer.png"));
-
-    init();
-
-    if (!m_argMindMapFile.isEmpty())
-    {
-        QTimer::singleShot(0, this, SLOT(openArgMindMap()));
-    }
-
-    connect(m_exportToPNGDialog, &ExportToPNGDialog::pngExportRequested, m_mediator, &Mediator::exportToPNG);
-
-    connect(m_mediator, &Mediator::exportFinished, m_exportToPNGDialog, &ExportToPNGDialog::finishExport);
 }
 
 void MainWindow::addRedoAction(QMenu & menu)
@@ -124,7 +108,7 @@ void MainWindow::createFileMenu()
     newAct->setShortcut(QKeySequence("Ctrl+N"));
     fileMenu->addAction(newAct);
     connect(newAct, &QAction::triggered, [=] () {
-        runState(m_stateMachine->calculateState(StateMachine::Action::NewSelected, *m_mediator));
+        emit actionTriggered(StateMachine::Action::NewSelected);
     });
 
     // Add "open"-action
@@ -132,7 +116,7 @@ void MainWindow::createFileMenu()
     openAct->setShortcut(QKeySequence("Ctrl+O"));
     fileMenu->addAction(openAct);
     connect(openAct, &QAction::triggered, [=] () {
-        runState(m_stateMachine->calculateState(StateMachine::Action::OpenSelected, *m_mediator));
+        emit actionTriggered(StateMachine::Action::OpenSelected);
     });
 
     fileMenu->addSeparator();
@@ -143,7 +127,7 @@ void MainWindow::createFileMenu()
     m_saveAction->setEnabled(false);
     fileMenu->addAction(m_saveAction);
     connect(m_saveAction, &QAction::triggered, [=] () {
-        runState(m_stateMachine->calculateState(StateMachine::Action::SaveSelected, *m_mediator));
+        emit actionTriggered(StateMachine::Action::SaveSelected);
     });
 
     // Add "save as"-action
@@ -152,7 +136,7 @@ void MainWindow::createFileMenu()
     m_saveAsAction->setEnabled(false);
     fileMenu->addAction(m_saveAsAction);
     connect(m_saveAsAction, &QAction::triggered, [=] () {
-        runState(m_stateMachine->calculateState(StateMachine::Action::SaveAsSelected, *m_mediator));
+        emit actionTriggered(StateMachine::Action::SaveAsSelected);
     });
 
     fileMenu->addSeparator();
@@ -162,7 +146,7 @@ void MainWindow::createFileMenu()
     exportToPNGAction->setShortcut(QKeySequence("Ctrl+Shift+E"));
     fileMenu->addAction(exportToPNGAction);
     connect(exportToPNGAction, &QAction::triggered, [=] () {
-        runState(m_stateMachine->calculateState(StateMachine::Action::ExportToPNGSelected, *m_mediator));
+        emit actionTriggered(StateMachine::Action::ExportToPNGSelected);
     });
 
     fileMenu->addSeparator();
@@ -172,7 +156,7 @@ void MainWindow::createFileMenu()
     quitAct->setShortcut(QKeySequence("Ctrl+W"));
     fileMenu->addAction(quitAct);
     connect(quitAct, &QAction::triggered, [=] () {
-        runState(m_stateMachine->calculateState(StateMachine::Action::QuitSelected, *m_mediator));
+        emit actionTriggered(StateMachine::Action::QuitSelected);
     });
 }
 
@@ -221,7 +205,7 @@ void MainWindow::showExportToPNGDialog()
     m_exportToPNGDialog->exec();
 
     // Doesn't matter if canceled or not
-    runState(m_stateMachine->calculateState(StateMachine::Action::ExportedToPNG, *m_mediator));
+    emit actionTriggered(StateMachine::Action::ExportedToPNG);
 }
 
 QString MainWindow::getFileDialogFileText() const
@@ -229,8 +213,12 @@ QString MainWindow::getFileDialogFileText() const
     return tr("Heimer Files") + " (*" + FILE_EXTENSION + ")";
 }
 
-void MainWindow::init()
+void MainWindow::initialize()
 {
+    connect(m_exportToPNGDialog, &ExportToPNGDialog::pngExportRequested, m_mediator.get(), &Mediator::exportToPNG);
+
+    connect(m_mediator.get(), &Mediator::exportFinished, m_exportToPNGDialog, &ExportToPNGDialog::finishExport);
+
     // Detect screen dimensions
     const auto screen = QGuiApplication::primaryScreen();
     const auto screenGeometry = screen->geometry();
@@ -249,7 +237,19 @@ void MainWindow::init()
 
     populateMenuBar();
 
-    runState(m_stateMachine->calculateState(StateMachine::Action::MainWindowInitialized, *m_mediator));
+    setWindowIcon(QIcon(":/heimer.png"));
+
+    if (!m_argMindMapFile.isEmpty())
+    {
+        QTimer::singleShot(0, this, SLOT(openArgMindMap()));
+    }
+
+    emit actionTriggered(StateMachine::Action::MainWindowInitialized);
+}
+
+void MainWindow::setMediator(std::shared_ptr<Mediator> mediator)
+{
+    m_mediator = mediator;
 }
 
 void MainWindow::setTitle()
@@ -274,7 +274,7 @@ MainWindow * MainWindow::instance()
 void MainWindow::closeEvent(QCloseEvent * event)
 {
     event->ignore();
-    runState(m_stateMachine->calculateState(StateMachine::Action::QuitSelected, *m_mediator));
+    emit actionTriggered(StateMachine::Action::QuitSelected);
 }
 
 void MainWindow::populateMenuBar()
@@ -359,7 +359,7 @@ void MainWindow::doOpenMindMap(QString fileName)
 
         setSaveActionStatesOnOpenedMindMap();
 
-        runState(m_stateMachine->calculateState(StateMachine::Action::MindMapOpened, *m_mediator));
+        emit actionTriggered(StateMachine::Action::MindMapOpened);
     }
 }
 
@@ -396,11 +396,11 @@ void MainWindow::saveMindMap()
         const auto msg = QString(tr("Failed to save file."));
         MCLogger().error() << msg.toStdString();
         showMessageBox(msg);
-        runState(m_stateMachine->calculateState(StateMachine::Action::MindMapSaveFailed, *m_mediator));
+        emit actionTriggered(StateMachine::Action::MindMapSaveFailed);
         return;
     }
     m_saveAction->setEnabled(false);
-    runState(m_stateMachine->calculateState(StateMachine::Action::MindMapSaved, *m_mediator));
+    emit actionTriggered(StateMachine::Action::MindMapSaved);
 }
 
 void MainWindow::saveMindMapAs()
@@ -426,14 +426,14 @@ void MainWindow::saveMindMapAs()
     {
         const auto msg = QString(tr("File '")) + fileName + tr("' saved.");
         MCLogger().debug() << msg.toStdString();
-        runState(m_stateMachine->calculateState(StateMachine::Action::MindMapSavedAs, *m_mediator));
+        emit actionTriggered(StateMachine::Action::MindMapSavedAs);
     }
     else
     {
         const auto msg = QString(tr("Failed to save file as '") + fileName + "'.");
         MCLogger().error() << msg.toStdString();
         showMessageBox(msg);
-        runState(m_stateMachine->calculateState(StateMachine::Action::MindMapSaveAsFailed, *m_mediator));
+        emit actionTriggered(StateMachine::Action::MindMapSaveAsFailed);
     }
 }
 
@@ -469,7 +469,7 @@ void MainWindow::initializeNewMindMap()
     disableUndoAndRedo();
     setSaveActionStatesOnNewMindMap();
 
-    runState(m_stateMachine->calculateState(StateMachine::Action::NewMindMapInitialized, *m_mediator));
+    emit actionTriggered(StateMachine::Action::NewMindMapInitialized);
 }
 
 void MainWindow::setSaveActionStatesOnNewMindMap()
@@ -513,13 +513,13 @@ void MainWindow::runState(StateMachine::State state)
         switch (showNotSavedDialog())
         {
         case QMessageBox::Save:
-            runState(m_stateMachine->calculateState(StateMachine::Action::NotSavedDialogAccepted, *m_mediator));
+            emit actionTriggered(StateMachine::Action::NotSavedDialogAccepted);
             break;
         case QMessageBox::Discard:
-            runState(m_stateMachine->calculateState(StateMachine::Action::NotSavedDialogDiscarded, *m_mediator));
+            emit actionTriggered(StateMachine::Action::NotSavedDialogDiscarded);
             break;
         case QMessageBox::Cancel:
-            runState(m_stateMachine->calculateState(StateMachine::Action::NotSavedDialogCanceled, *m_mediator));
+            emit actionTriggered(StateMachine::Action::NotSavedDialogCanceled);
             break;
         }
         break;
@@ -532,8 +532,4 @@ void MainWindow::runState(StateMachine::State state)
     }
 }
 
-MainWindow::~MainWindow()
-{
-    delete m_mediator;
-    delete m_stateMachine;
-}
+MainWindow::~MainWindow() = default;

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<design version="0.0.0">
+<design version="1.1.1">
  <color r="136" b="133" g="138"/>
  <graph>
   <node index="0" h="75000" x="11737" y="-67605" w="200000">
@@ -54,6 +54,10 @@
    <text>Can be ported to all platforms that supports Qt</text>
    <color r="255" b="255" g="255"/>
   </node>
+  <node index="14" h="75000" x="9285" y="-233214" w="200000">
+   <text>PNG images</text>
+   <color r="255" b="255" g="255"/>
+  </node>
   <edge index1="1" index0="0">
    <text>written in</text>
   </edge>
@@ -65,6 +69,9 @@
   </edge>
   <edge index1="6" index0="0">
    <text></text>
+  </edge>
+  <edge index1="14" index0="0">
+   <text>exports</text>
   </edge>
   <edge index1="11" index0="2">
    <text>emphasis on</text>

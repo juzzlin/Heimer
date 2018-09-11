@@ -32,23 +32,8 @@
 using std::dynamic_pointer_cast;
 
 Mediator::Mediator(MainWindow & mainWindow)
-    : m_editorScene(new EditorScene)
-    , m_editorView(new EditorView(*this))
-    , m_mainWindow(mainWindow)
+    : m_mainWindow(mainWindow)
 {
-    m_editorView->setParent(&mainWindow);
-
-    connect(m_editorView, &EditorView::backgroundColorChanged, [=] (QColor color) {
-        saveUndoPoint();
-        m_editorData->mindMapData()->setBackgroundColor(color);
-        m_editorView->setBackgroundBrush(QBrush(color));
-    });
-
-    connect(m_editorView, &EditorView::newNodeRequested, [=] (QPointF position) {
-        saveUndoPoint();
-        createAndAddNode(position);
-    });
-
     connect(&m_mainWindow, &MainWindow::zoomToFitTriggered, this, &Mediator::zoomToFit);
     connect(&m_mainWindow, &MainWindow::zoomInTriggered, this, &Mediator::zoomIn);
     connect(&m_mainWindow, &MainWindow::zoomOutTriggered, this, &Mediator::zoomOut);
@@ -58,7 +43,7 @@ void Mediator::addExistingGraphToScene()
 {
     for (auto && node : m_editorData->mindMapData()->graph().getNodes())
     {
-        if (dynamic_pointer_cast<QGraphicsItem>(node)->scene() != m_editorScene)
+        if (dynamic_pointer_cast<QGraphicsItem>(node)->scene() != m_editorScene.get())
         {
             addItem(*dynamic_pointer_cast<Node>(node));
             MCLogger().debug() << "Added an existing node " << node->index() << " to scene";
@@ -91,6 +76,11 @@ void Mediator::addItem(QGraphicsItem & item)
 bool Mediator::canBeSaved() const
 {
     return !m_editorData->fileName().isEmpty();
+}
+
+void Mediator::clearScene()
+{
+    m_editorScene->initialize();
 }
 
 void Mediator::connectEdgeToUndoMechanism(EdgePtr edge)
@@ -229,8 +219,7 @@ void Mediator::initializeNewMindMap()
 
     m_editorData->setMindMapData(std::make_shared<MindMapData>());
 
-    delete m_editorScene;
-    m_editorScene = new EditorScene;
+    m_editorScene->initialize();
 
     initializeView();
 
@@ -246,8 +235,7 @@ void Mediator::initializeView()
     MCLogger().debug() << "Initializing view";
 
     // Set scene to the view
-    m_editorView->setScene(m_editorScene);
-
+    m_editorView->setScene(m_editorScene.get());
     m_editorView->resetDummyDragItems();
 
     assert(m_editorData);
@@ -291,8 +279,7 @@ bool Mediator::openMindMap(QString fileName)
 
     try
     {
-        delete m_editorScene;
-        m_editorScene = new EditorScene;
+        m_editorScene->initialize();
 
         m_editorData->loadMindMapData(fileName);
 
@@ -356,6 +343,32 @@ Node * Mediator::selectedNode() const
 void Mediator::setEditorData(std::shared_ptr<EditorData> editorData)
 {
     m_editorData = editorData;
+
+    connect(m_editorData.get(), &EditorData::sceneCleared, this, &Mediator::clearScene);
+    connect(m_editorData.get(), &EditorData::undoEnabled, this, &Mediator::enableUndo);
+}
+
+void Mediator::setEditorScene(std::shared_ptr<EditorScene> editorScene)
+{
+    m_editorScene = editorScene;
+}
+
+void Mediator::setEditorView(EditorView & editorView)
+{
+    m_editorView = &editorView;
+
+    m_editorView->setParent(&m_mainWindow);
+
+    connect(m_editorView, &EditorView::backgroundColorChanged, [=] (QColor color) {
+        saveUndoPoint();
+        m_editorData->mindMapData()->setBackgroundColor(color);
+        m_editorView->setBackgroundBrush(QBrush(color));
+    });
+
+    connect(m_editorView, &EditorView::newNodeRequested, [=] (QPointF position) {
+        saveUndoPoint();
+        createAndAddNode(position);
+    });
 }
 
 void Mediator::setSelectedNode(Node * node)
@@ -365,10 +378,7 @@ void Mediator::setSelectedNode(Node * node)
 
 void Mediator::setupMindMapAfterUndoOrRedo()
 {
-    delete m_editorScene;
-    m_editorScene = new EditorScene;
-
-    m_editorView->setScene(m_editorScene);
+    m_editorScene->initialize();
 
     m_editorView->setBackgroundBrush(QBrush(m_editorData->backgroundColor()));
 

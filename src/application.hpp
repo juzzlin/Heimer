@@ -22,6 +22,8 @@
 #include <memory>
 
 class EditorData;
+class EditorScene;
+class EditorView;
 class MainWindow;
 class Mediator;
 class StateMachine;
@@ -38,7 +40,7 @@ public:
 
 private:
 
-    void parseArgs(int argc, char ** argv);
+    QString parseArgs(int argc, char ** argv);
 
     QApplication m_app;
 
@@ -46,13 +48,17 @@ private:
 
     QString m_mindMapFile;
 
-    std::shared_ptr<Mediator> m_mediator;
-
     std::unique_ptr<StateMachine> m_stateMachine;
 
     std::unique_ptr<MainWindow> m_mainWindow;
 
+    std::shared_ptr<Mediator> m_mediator;
+
     std::shared_ptr<EditorData> m_editorData;
+
+    std::shared_ptr<EditorScene> m_editorScene;
+
+    EditorView * m_editorView = nullptr;
 };
 
 #endif // APPLICATION_HPP

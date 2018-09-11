@@ -62,8 +62,6 @@ public:
 
     void deleteNode(Node & node);
 
-    void enableUndo(bool enable);
-
     QString fileName() const;
 
     NodeBasePtr getNodeByIndex(int index);
@@ -100,6 +98,10 @@ public:
 
     void setEditorData(std::shared_ptr<EditorData> editorData);
 
+    void setEditorScene(std::shared_ptr<EditorScene> editorScene);
+
+    void setEditorView(EditorView & editorView);
+
     void setSelectedNode(Node * node);
 
     void setupMindMapAfterUndoOrRedo();
@@ -107,6 +109,10 @@ public:
     void undo();
 
 public slots:
+
+    void clearScene();
+
+    void enableUndo(bool enable);
 
     void exportToPNG(QString filename, QSize size, bool transparentBackground);
 
@@ -134,9 +140,9 @@ private:
 
     std::shared_ptr<EditorData> m_editorData;
 
-    EditorScene * m_editorScene;
+    std::shared_ptr<EditorScene> m_editorScene;
 
-    EditorView * m_editorView;
+    EditorView * m_editorView = nullptr;
 
     MainWindow & m_mainWindow;
 };

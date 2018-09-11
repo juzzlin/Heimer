@@ -24,7 +24,6 @@ set(SRC ${NAME}.cpp
     ${EDITOR_DIR}/undostack.cpp
     ${EDITOR_DIR}/writer.cpp
     ${EDITOR_DIR}/contrib/mclogger.cc
-    mediator_mock.cpp
     )
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/unittests)

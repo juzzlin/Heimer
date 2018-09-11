@@ -30,7 +30,6 @@
 #include "mindmapdata.hpp"
 #include "node.hpp"
 
-class Mediator;
 class Node;
 class NodeBase;
 class MindMapTile;
@@ -42,7 +41,7 @@ class EditorData : public QObject
 
 public:
 
-    EditorData(Mediator & mediator);
+    EditorData();
 
     EdgePtr addEdge(EdgePtr edge);
 
@@ -88,6 +87,10 @@ signals:
 
     void isModifiedChanged(bool isModified);
 
+    void sceneCleared();
+
+    void undoEnabled(bool enable);
+
 private:
 
     EditorData(const EditorData & e) = delete;
@@ -110,8 +113,6 @@ private:
     Node * m_dragAndDropNode = nullptr;
 
     QPointF m_dragAndDropSourcePos;
-
-    Mediator & m_mediator;
 
     std::vector<QGraphicsLineItem *> m_targetNodes;
 

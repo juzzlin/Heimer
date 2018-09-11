@@ -16,7 +16,6 @@
 #include "editordata.hpp"
 
 #include "config.hpp"
-#include "mediator.hpp"
 #include "node.hpp"
 #include "serializer.hpp"
 #include "reader.hpp"
@@ -28,8 +27,7 @@
 using std::dynamic_pointer_cast;
 using std::make_shared;
 
-EditorData::EditorData(Mediator & mediator)
-    : m_mediator(mediator)
+EditorData::EditorData()
 {}
 
 QColor EditorData::backgroundColor() const
@@ -40,7 +38,7 @@ QColor EditorData::backgroundColor() const
 
 void EditorData::clearScene()
 {
-    removeNodesFromScene();
+    emit sceneCleared();
 }
 
 DragAndDropStore & EditorData::dadStore()
@@ -125,7 +123,7 @@ void EditorData::saveUndoPoint()
 {
     assert(m_mindMapData);
     m_undoStack.pushUndoPoint(m_mindMapData);
-    m_mediator.enableUndo(m_undoStack.isUndoable());
+    emit undoEnabled(m_undoStack.isUndoable());
 
     setIsModified(true);
 }
@@ -198,17 +196,6 @@ void EditorData::setSelectedNode(Node * node)
 Node * EditorData::selectedNode() const
 {
     return m_selectedNode;
-}
-
-void EditorData::removeNodesFromScene()
-{
-    if (m_mindMapData)
-    {
-        for (auto && node : m_mindMapData->graph().getNodes())
-        {
-            m_mediator.removeItem(*dynamic_pointer_cast<Node>(node)); // The scene wants a raw pointer
-        }
-    }
 }
 
 void EditorData::setIsModified(bool isModified)

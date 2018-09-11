@@ -24,6 +24,13 @@
 
 EditorScene::EditorScene()
 {
+    initialize();
+}
+
+void EditorScene::initialize()
+{
+    removeItems();
+
     const int r = 10000;
     setSceneRect(-r, -r, r * 2, r * 2);
 
@@ -33,18 +40,22 @@ EditorScene::EditorScene()
     auto leftLine = new QGraphicsLineItem(-r, -r, -r, r);
     leftLine->setPen(pen);
     addItem(leftLine);
+    m_ownItems.push_back(ItemPtr(leftLine));
 
     auto topLine = new QGraphicsLineItem(-r, -r, r, -r);
     topLine->setPen(pen);
     addItem(topLine);
+    m_ownItems.push_back(ItemPtr(topLine));
 
     auto rightLine = new QGraphicsLineItem(r, -r, r, r);
     rightLine->setPen(pen);
     addItem(rightLine);
+    m_ownItems.push_back(ItemPtr(rightLine));
 
     auto bottomLine = new QGraphicsLineItem(-r, r, r, r);
     bottomLine->setPen(pen);
     addItem(bottomLine);
+    m_ownItems.push_back(ItemPtr(bottomLine));
 }
 
 QRectF EditorScene::getNodeBoundingRectWithHeuristics() const
@@ -86,13 +97,21 @@ bool EditorScene::hasEdge(Node & node0, Node & node1)
     return false;
 }
 
-EditorScene::~EditorScene()
+void EditorScene::removeItems()
 {
     // We don't want the scene to destroy the items as they are managed elsewhere
     for (auto item : items())
     {
         removeItem(item);
     }
+
+    // This will destroy own items that also were taken out of the scene
+    m_ownItems.clear();
+}
+
+EditorScene::~EditorScene()
+{
+    removeItems();
 
     MCLogger().debug() << "EditorScene deleted";
 }

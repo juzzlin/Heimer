@@ -16,6 +16,8 @@
 #ifndef EDITORSCENE_HPP
 #define EDITORSCENE_HPP
 
+#include <memory>
+
 #include <QGraphicsScene>
 
 class Node;
@@ -26,11 +28,20 @@ public:
 
     EditorScene();
 
+    void initialize();
+
     QRectF getNodeBoundingRectWithHeuristics() const;
 
     bool hasEdge(Node & node0, Node & node1);
 
     virtual ~EditorScene();
+
+private:
+
+    void removeItems();
+
+    using ItemPtr = std::unique_ptr<QGraphicsItem>;
+    std::vector<ItemPtr> m_ownItems;
 };
 
 #endif // EDITORSCENE_HPP

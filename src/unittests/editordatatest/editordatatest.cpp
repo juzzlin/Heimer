@@ -20,16 +20,13 @@
 #include "mindmapdata.hpp"
 #include "nodebase.hpp"
 
-#include "mediator_mock.hpp"
-
 EditorDataTest::EditorDataTest()
 {
 }
 
 void EditorDataTest::testUndoSimple()
 {
-    Mediator mediator;
-    EditorData editorData(mediator);
+    EditorData editorData;
 
     editorData.setMindMapData(std::make_shared<MindMapData>());
     editorData.addNodeAt(QPointF(0, 0));
@@ -54,8 +51,7 @@ void EditorDataTest::testUndoSimple()
 
 void EditorDataTest::testRedoSimple()
 {
-    Mediator mediator;
-    EditorData editorData(mediator);
+    EditorData editorData;
 
     editorData.setMindMapData(std::make_shared<MindMapData>());
     editorData.addNodeAt(QPointF(0, 0));
@@ -74,8 +70,7 @@ void EditorDataTest::testRedoSimple()
 
 void EditorDataTest::testUndoBackgroundColor()
 {
-    Mediator mediator;
-    EditorData editorData(mediator);
+    EditorData editorData;
 
     editorData.setMindMapData(std::make_shared<MindMapData>());
     editorData.mindMapData()->setBackgroundColor(QColor(0, 0, 0));

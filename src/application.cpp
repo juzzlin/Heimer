@@ -16,6 +16,8 @@
 #include "application.hpp"
 #include "config.hpp"
 #include "editordata.hpp"
+#include "editorscene.hpp"
+#include "editorview.hpp"
 #include "mainwindow.hpp"
 #include "mediator.hpp"
 #include "statemachine.hpp"
@@ -58,7 +60,7 @@ static void initTranslations(QTranslator & appTranslator, QGuiApplication & app,
     }
 }
 
-void Application::parseArgs(int argc, char ** argv)
+QString Application::parseArgs(int argc, char ** argv)
 {
     QString lang = "";
 
@@ -82,23 +84,30 @@ void Application::parseArgs(int argc, char ** argv)
     }
 
     initTranslations(m_appTranslator, m_app, lang);
+
+    return m_mindMapFile;
 }
 
 Application::Application(int & argc, char ** argv)
     : m_app(argc, argv)
     , m_stateMachine(new StateMachine)
+    , m_mainWindow(new MainWindow(parseArgs(argc, argv)))
+    , m_mediator(new Mediator(*m_mainWindow))
+
 {
-    parseArgs(argc, argv);
-
-    m_mainWindow.reset(new MainWindow(m_mindMapFile));
-    m_mediator = std::make_shared<Mediator>(*m_mainWindow);
-
     m_mainWindow->setMediator(m_mediator);
     m_stateMachine->setMediator(m_mediator);
 
-    m_editorData.reset(new EditorData(*m_mediator));
+    m_editorData = std::make_shared<EditorData>();
     m_mediator->setEditorData(m_editorData);
 
+    m_editorScene = std::make_shared<EditorScene>();
+    m_mediator->setEditorScene(m_editorScene);
+
+    m_editorView = new EditorView(*m_mediator);
+    m_mediator->setEditorView(*m_editorView);
+
+    // Connect MainWindow and StateMachine together
     QObject::connect(m_mainWindow.get(), &MainWindow::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
     QObject::connect(m_stateMachine.get(), &StateMachine::stateChanged, m_mainWindow.get(), &MainWindow::runState);
 

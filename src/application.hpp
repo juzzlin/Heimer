@@ -17,6 +17,7 @@
 #define APPLICATION_HPP
 
 #include <QApplication>
+#include <QObject>
 #include <QTranslator>
 
 #include <memory>
@@ -28,7 +29,7 @@ class MainWindow;
 class Mediator;
 class StateMachine;
 
-class Application
+class Application : public QObject
 {
 public:
 

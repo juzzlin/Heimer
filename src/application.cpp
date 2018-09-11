@@ -93,25 +93,22 @@ Application::Application(int & argc, char ** argv)
     , m_stateMachine(new StateMachine)
     , m_mainWindow(new MainWindow(parseArgs(argc, argv)))
     , m_mediator(new Mediator(*m_mainWindow))
-
+    , m_editorData(new EditorData)
+    , m_editorScene(new EditorScene)
+    , m_editorView(new EditorView(*m_mediator))
 {
     m_mainWindow->setMediator(m_mediator);
     m_stateMachine->setMediator(m_mediator);
 
-    m_editorData = std::make_shared<EditorData>();
     m_mediator->setEditorData(m_editorData);
-
-    m_editorScene = std::make_shared<EditorScene>();
     m_mediator->setEditorScene(m_editorScene);
-
-    m_editorView = new EditorView(*m_mediator);
     m_mediator->setEditorView(*m_editorView);
 
     // Connect MainWindow and StateMachine together
-    QObject::connect(m_mainWindow.get(), &MainWindow::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
-    QObject::connect(m_stateMachine.get(), &StateMachine::stateChanged, m_mainWindow.get(), &MainWindow::runState);
+    connect(m_mainWindow.get(), &MainWindow::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
+    connect(m_stateMachine.get(), &StateMachine::stateChanged, m_mainWindow.get(), &MainWindow::runState);
 
-    QObject::connect(m_editorData.get(), &EditorData::isModifiedChanged, [=] (bool isModified) {
+    connect(m_editorData.get(), &EditorData::isModifiedChanged, [=] (bool isModified) {
         m_mainWindow->enableSave(isModified && m_mediator->canBeSaved());
     });
 

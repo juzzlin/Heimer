@@ -82,6 +82,8 @@ public:
 
     bool isModified() const;
 
+    int nodeCount() const;
+
     bool openMindMap(QString fileName);
 
     void redo();

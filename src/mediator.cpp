@@ -249,7 +249,8 @@ void Mediator::initializeView()
 bool Mediator::isLeafNode(Node & node)
 {
     auto && graph = m_editorData->mindMapData()->graph();
-    return graph.getEdgesFromNode(graph.getNode(node.index())).size() + graph.getEdgesToNode(graph.getNode(node.index())).size() == 1;
+    const int edgeCount = graph.getEdgesFromNode(graph.getNode(node.index())).size() + graph.getEdgesToNode(graph.getNode(node.index())).size();
+    return edgeCount <= 1;
 }
 
 bool Mediator::isInBetween(Node & node)
@@ -271,6 +272,11 @@ bool Mediator::isModified() const
 bool Mediator::isUndoable() const
 {
     return m_editorData->isUndoable();
+}
+
+int Mediator::nodeCount() const
+{
+    return m_editorData->mindMapData() ? m_editorData->mindMapData()->graph().numNodes() : 0;
 }
 
 bool Mediator::openMindMap(QString fileName)

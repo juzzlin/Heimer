@@ -53,7 +53,7 @@ static void printHelp()
 
 static void initTranslations(QTranslator & appTranslator, QGuiApplication & app, QString lang = "")
 {
-    if (lang == "")
+    if (lang.isEmpty())
     {
         lang = QLocale::system().name();
     }
@@ -73,8 +73,6 @@ static void initTranslations(QTranslator & appTranslator, QGuiApplication & app,
 
 void Application::parseArgs(int argc, char ** argv)
 {
-    QString lang = "";
-
     const std::vector<QString> args(argv, argv + argc);
     for (unsigned int i = 1; i < args.size(); i++)
     {
@@ -85,7 +83,7 @@ void Application::parseArgs(int argc, char ** argv)
         }
         else if (args[i] == "--lang" && (i + i) < args.size())
         {
-            lang = args[i + 1];
+            m_lang = args[i + 1];
             i++;
         }
         else
@@ -93,21 +91,24 @@ void Application::parseArgs(int argc, char ** argv)
             m_mindMapFile = args[i];
         }
     }
-
-    initTranslations(m_appTranslator, m_app, lang);
 }
 
 Application::Application(int & argc, char ** argv)
     : m_app(argc, argv)
     , m_stateMachine(new StateMachine)
-    , m_mainWindow(new MainWindow)
-    , m_mediator(new Mediator(*m_mainWindow))
-    , m_editorData(new EditorData)
-    , m_editorScene(new EditorScene)
-    , m_editorView(new EditorView(*m_mediator))
-    , m_exportToPNGDialog(new ExportToPNGDialog(m_mainWindow.get()))
 {
     parseArgs(argc, argv);
+
+    initTranslations(m_appTranslator, m_app, m_lang);
+
+    // Instantiate components here because the possible language given
+    // in the command line must have been loaded before this
+    m_mainWindow.reset(new MainWindow);
+    m_mediator.reset(new Mediator(*m_mainWindow));
+    m_editorData.reset(new EditorData);
+    m_editorScene.reset(new EditorScene);
+    m_editorView = new EditorView(*m_mediator);
+    m_exportToPNGDialog.reset(new ExportToPNGDialog(*m_mainWindow));
 
     m_mainWindow->setMediator(m_mediator);
     m_stateMachine->setMediator(m_mediator);

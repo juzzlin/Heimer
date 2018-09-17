@@ -33,8 +33,8 @@ const int MIN_IMAGE_SIZE = 0;
 const int MAX_IMAGE_SIZE = 99999;
 }
 
-ExportToPNGDialog::ExportToPNGDialog(QWidget * parent)
-    : QDialog(parent)
+ExportToPNGDialog::ExportToPNGDialog(QWidget & parent)
+    : QDialog(&parent)
 {
     setWindowTitle(tr("Export to PNG Image"));
     setMinimumWidth(480);

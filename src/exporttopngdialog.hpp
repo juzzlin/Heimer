@@ -31,7 +31,7 @@ class ExportToPNGDialog : public QDialog
 public:
 
     //! Constructor.
-    explicit ExportToPNGDialog(QWidget * parent = 0);
+    explicit ExportToPNGDialog(QWidget & parent);
 
     void setImageSize(QSize size);
 

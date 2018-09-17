@@ -87,6 +87,8 @@ private:
 
     QString m_mindMapFile;
 
+    QString m_lang;
+
     QString m_settingsGroup = "Application";
 
     std::unique_ptr<StateMachine> m_stateMachine;

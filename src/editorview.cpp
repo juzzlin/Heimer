@@ -55,10 +55,7 @@ void EditorView::createBackgroundContextMenuActions()
 {
     auto setColorAction = new QAction(QWidget::tr("Set background color"), &m_backgroundContextMenu);
     QObject::connect(setColorAction, &QAction::triggered, [this] () {
-        const auto color = QColorDialog::getColor(Qt::white, this);
-        if (color.isValid()) {
-            emit backgroundColorChanged(color);
-        }
+        emit actionTriggered(StateMachine::Action::BackgroundColorChangeRequested);
     });
 
     auto createNode = new QAction(QWidget::tr("Create floating node"), &m_backgroundContextMenu);

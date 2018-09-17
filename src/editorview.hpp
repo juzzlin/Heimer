@@ -16,6 +16,8 @@
 #ifndef EDITORVIEW_HPP
 #define EDITORVIEW_HPP
 
+#include "statemachine.hpp"
+
 #include <QGraphicsView>
 #include <QMenu>
 
@@ -60,7 +62,7 @@ protected:
 
 signals:
 
-    void backgroundColorChanged(QColor color);
+    void actionTriggered(StateMachine::Action action);
 
     void newNodeRequested(QPointF position);
 

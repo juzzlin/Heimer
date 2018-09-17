@@ -51,6 +51,8 @@ signals:
 
     void actionTriggered(StateMachine::Action action);
 
+    void backgroundColorChanged(QColor color);
+
 private:
 
     void doOpenMindMap(QString fileName);
@@ -68,6 +70,8 @@ private:
     void saveMindMapAs();
 
     void saveRecentPath(QString fileName);
+
+    void showBackgroundColorDialog();
 
     void showExportToPNGDialog();
 

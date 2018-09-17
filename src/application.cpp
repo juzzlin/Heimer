@@ -26,6 +26,7 @@
 
 #include "contrib/mclogger.hh"
 
+#include <QColorDialog>
 #include <QFileDialog>
 #include <QLocale>
 #include <QMessageBox>
@@ -115,8 +116,9 @@ Application::Application(int & argc, char ** argv)
     m_mediator->setEditorScene(m_editorScene);
     m_mediator->setEditorView(*m_editorView);
 
-    // Connect MainWindow and StateMachine together
+    // Connect views and StateMachine together
     connect(this, &Application::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
+    connect(m_editorView, &EditorView::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
     connect(m_mainWindow.get(), &MainWindow::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
     connect(m_stateMachine.get(), &StateMachine::stateChanged, this, &Application::runState);
 
@@ -179,6 +181,9 @@ void Application::runState(StateMachine::State state)
         break;
     case StateMachine::State::SaveMindMap:
         saveMindMap();
+        break;
+    case StateMachine::State::ShowBackgroundColorDialog:
+        showBackgroundColorDialog();
         break;
     case StateMachine::State::ShowExportToPNGDialog:
         showExportToPNGDialog();
@@ -298,6 +303,15 @@ void Application::saveRecentPath(QString fileName)
     settings.beginGroup(m_settingsGroup);
     settings.setValue("recentPath", fileName);
     settings.endGroup();
+}
+
+void Application::showBackgroundColorDialog()
+{
+    const auto color = QColorDialog::getColor(Qt::white, m_mainWindow.get());
+    if (color.isValid()) {
+        m_mediator->setBackgroundColor(color);
+    }
+    emit actionTriggered(StateMachine::Action::BackgroundColorChanged);
 }
 
 void Application::showExportToPNGDialog()

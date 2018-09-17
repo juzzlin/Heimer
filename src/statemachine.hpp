@@ -35,6 +35,7 @@ public:
         Init,
         InitializeNewMindMap,
         SaveMindMap,
+        ShowBackgroundColorDialog,
         ShowExportToPNGDialog,
         ShowNotSavedDialog,
         ShowOpenDialog,
@@ -44,6 +45,8 @@ public:
 
     enum class Action
     {
+        BackgroundColorChanged,
+        BackgroundColorChangeRequested,
         ExportedToPNG,
         ExportToPNGSelected,
         MainWindowInitialized,

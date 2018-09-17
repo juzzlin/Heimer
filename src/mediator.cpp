@@ -348,6 +348,13 @@ Node * Mediator::selectedNode() const
     return m_editorData->selectedNode();
 }
 
+void Mediator::setBackgroundColor(QColor color)
+{
+    saveUndoPoint();
+    m_editorData->mindMapData()->setBackgroundColor(color);
+    m_editorView->setBackgroundBrush(QBrush(color));
+}
+
 void Mediator::setEditorData(std::shared_ptr<EditorData> editorData)
 {
     m_editorData = editorData;
@@ -366,12 +373,6 @@ void Mediator::setEditorView(EditorView & editorView)
     m_editorView = &editorView;
 
     m_editorView->setParent(&m_mainWindow);
-
-    connect(m_editorView, &EditorView::backgroundColorChanged, [=] (QColor color) {
-        saveUndoPoint();
-        m_editorData->mindMapData()->setBackgroundColor(color);
-        m_editorView->setBackgroundBrush(QBrush(color));
-    });
 
     connect(m_editorView, &EditorView::newNodeRequested, [=] (QPointF position) {
         saveUndoPoint();

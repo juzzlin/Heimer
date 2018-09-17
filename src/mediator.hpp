@@ -120,6 +120,8 @@ public slots:
 
     void saveUndoPoint();
 
+    void setBackgroundColor(QColor color);
+
     QSize zoomForExport();
 
 private slots:

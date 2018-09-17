@@ -89,6 +89,17 @@ void MainWindow::createEditMenu()
     addUndoAction(*editMenu);
 
     addRedoAction(*editMenu);
+
+    editMenu->addSeparator();
+
+    auto backgroundColorAction = new QAction(tr("Set background color..."), this);
+    backgroundColorAction->setShortcut(QKeySequence("Ctrl+B"));
+
+    connect(backgroundColorAction, &QAction::triggered, [this] () {
+        emit actionTriggered(StateMachine::Action::BackgroundColorChangeRequested);
+    });
+
+    editMenu->addAction(backgroundColorAction);
 }
 
 void MainWindow::createFileMenu()

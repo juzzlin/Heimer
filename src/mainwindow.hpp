@@ -28,7 +28,6 @@
 class AboutDlg;
 class EditorData;
 class EditorView;
-class ExportToPNGDialog;
 class QAction;
 class QCheckBox;
 class QSlider;
@@ -41,7 +40,7 @@ class MainWindow : public QMainWindow
 
 public:
 
-    explicit MainWindow(QString mindMapFile = "");
+    MainWindow();
 
     ~MainWindow();
 
@@ -49,9 +48,19 @@ public:
 
     void console(QString text);
 
+    void disableUndoAndRedo();
+
     void initialize();
 
+    void initializeNewMindMap();
+
+    void saveWindowSize();
+
     void setMediator(std::shared_ptr<Mediator> mediator);
+
+    void setSaveActionStatesOnNewMindMap();
+
+    void setSaveActionStatesOnOpenedMindMap();
 
     void setTitle();
 
@@ -65,17 +74,13 @@ public slots:
 
     void showErrorDialog(QString message);
 
-    void showMessageBox(QString message);
-
-    int showNotSavedDialog();
-
-    void runState(StateMachine::State state);
-
 protected:
 
     void closeEvent(QCloseEvent * event) override;
 
 signals:
+
+    void actionTriggered(StateMachine::Action action);
 
     void zoomInTriggered();
 
@@ -83,29 +88,13 @@ signals:
 
     void zoomToFitTriggered();
 
-    void actionTriggered(StateMachine::Action action);
-
 private slots:
-
-    void doOpenMindMap(QString fileName);
-
-    void initializeNewMindMap();
-
-    void saveMindMap();
-
-    void saveMindMapAs();
 
     void setupMindMapAfterUndoOrRedo();
 
     void showAboutDlg();
 
     void showAboutQtDlg();
-
-    void showExportToPNGDialog();
-
-    void openArgMindMap();
-
-    void openMindMap();
 
 private:
 
@@ -121,25 +110,9 @@ private:
 
     void createViewMenu();
 
-    void disableUndoAndRedo();
-
-    QString getFileDialogFileText() const;
-
-    QString loadRecentPath() const;
-
     void populateMenuBar();
 
-    void saveRecentPath(QString fileName);
-
-    void saveWindowSize();
-
-    void setSaveActionStatesOnNewMindMap();
-
-    void setSaveActionStatesOnOpenedMindMap();
-
     AboutDlg * m_aboutDlg;
-
-    ExportToPNGDialog * m_exportToPNGDialog;
 
     QAction * m_saveAction = nullptr;
 

@@ -17,7 +17,6 @@
 
 #include "config.hpp"
 #include "aboutdlg.hpp"
-#include "exporttopngdialog.hpp"
 #include "mediator.hpp"
 #include "mindmapdata.hpp"
 #include "mclogger.hh"
@@ -25,15 +24,12 @@
 #include <QAction>
 #include <QApplication>
 #include <QDateTime>
-#include <QDesktopWidget>
-#include <QFileDialog>
 #include <QGraphicsLineItem>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QScreen>
 #include <QSettings>
-#include <QStandardPaths>
 #include <QTimer>
 #include <QToolBar>
 #include <QHBoxLayout>
@@ -43,12 +39,8 @@
 
 MainWindow * MainWindow::m_instance = nullptr;
 
-static const QString FILE_EXTENSION(Config::FILE_EXTENSION);
-
-MainWindow::MainWindow(QString mindMapFile)
+MainWindow::MainWindow()
 : m_aboutDlg(new AboutDlg(this))
-, m_exportToPNGDialog(new ExportToPNGDialog(this))
-, m_argMindMapFile(mindMapFile)
 {
     if (!m_instance)
     {
@@ -199,26 +191,8 @@ void MainWindow::createViewMenu()
     connect(zoomToFit, &QAction::triggered, this, &MainWindow::zoomToFitTriggered);
 }
 
-void MainWindow::showExportToPNGDialog()
-{
-    m_exportToPNGDialog->setImageSize(m_mediator->zoomForExport());
-    m_exportToPNGDialog->exec();
-
-    // Doesn't matter if canceled or not
-    emit actionTriggered(StateMachine::Action::ExportedToPNG);
-}
-
-QString MainWindow::getFileDialogFileText() const
-{
-    return tr("Heimer Files") + " (*" + FILE_EXTENSION + ")";
-}
-
 void MainWindow::initialize()
 {
-    connect(m_exportToPNGDialog, &ExportToPNGDialog::pngExportRequested, m_mediator.get(), &Mediator::exportToPNG);
-
-    connect(m_mediator.get(), &Mediator::exportFinished, m_exportToPNGDialog, &ExportToPNGDialog::finishExport);
-
     // Detect screen dimensions
     const auto screen = QGuiApplication::primaryScreen();
     const auto screenGeometry = screen->geometry();
@@ -238,11 +212,6 @@ void MainWindow::initialize()
     populateMenuBar();
 
     setWindowIcon(QIcon(":/heimer.png"));
-
-    if (!m_argMindMapFile.isEmpty())
-    {
-        QTimer::singleShot(0, this, SLOT(openArgMindMap()));
-    }
 
     emit actionTriggered(StateMachine::Action::MainWindowInitialized);
 }
@@ -288,23 +257,6 @@ void MainWindow::populateMenuBar()
     createHelpMenu();
 }
 
-void MainWindow::openArgMindMap()
-{
-    doOpenMindMap(m_argMindMapFile);
-}
-
-void MainWindow::openMindMap()
-{
-    MCLogger().debug() << "Open file";
-
-    const auto path = loadRecentPath();
-    const auto fileName = QFileDialog::getOpenFileName(this, tr("Open File"), path, getFileDialogFileText());
-    if (!fileName.isEmpty())
-    {
-        doOpenMindMap(fileName);
-    }
-}
-
 void MainWindow::disableUndoAndRedo()
 {
     m_undoAction->setEnabled(false);
@@ -328,15 +280,6 @@ void MainWindow::enableSaveAs(bool enable)
     m_saveAsAction->setEnabled(enable);
 }
 
-QString MainWindow::loadRecentPath() const
-{
-    QSettings settings;
-    settings.beginGroup(m_settingsGroup);
-    const auto path = settings.value("recentPath", QStandardPaths::writableLocation(QStandardPaths::HomeLocation)).toString();
-    settings.endGroup();
-    return path;
-}
-
 void MainWindow::showAboutDlg()
 {
     m_aboutDlg->exec();
@@ -345,30 +288,6 @@ void MainWindow::showAboutDlg()
 void MainWindow::showAboutQtDlg()
 {
     QMessageBox::aboutQt(this, tr("About Qt"));
-}
-
-void MainWindow::doOpenMindMap(QString fileName)
-{
-    MCLogger().debug() << "Opening '" << fileName.toStdString();
-
-    if (m_mediator->openMindMap(fileName))
-    {
-        disableUndoAndRedo();
-
-        saveRecentPath(fileName);
-
-        setSaveActionStatesOnOpenedMindMap();
-
-        emit actionTriggered(StateMachine::Action::MindMapOpened);
-    }
-}
-
-void MainWindow::saveRecentPath(QString fileName)
-{
-    QSettings settings;
-    settings.beginGroup(m_settingsGroup);
-    settings.setValue("recentPath", fileName);
-    settings.endGroup();
 }
 
 void MainWindow::saveWindowSize()
@@ -387,56 +306,6 @@ void MainWindow::setupMindMapAfterUndoOrRedo()
     m_mediator->setupMindMapAfterUndoOrRedo();
 }
 
-void MainWindow::saveMindMap()
-{
-    MCLogger().debug() << "Save..";
-
-    if (!m_mediator->saveMindMap())
-    {
-        const auto msg = QString(tr("Failed to save file."));
-        MCLogger().error() << msg.toStdString();
-        showMessageBox(msg);
-        emit actionTriggered(StateMachine::Action::MindMapSaveFailed);
-        return;
-    }
-    m_saveAction->setEnabled(false);
-    emit actionTriggered(StateMachine::Action::MindMapSaved);
-}
-
-void MainWindow::saveMindMapAs()
-{
-    MCLogger().debug() << "Save as..";
-
-    QString fileName = QFileDialog::getSaveFileName(this,
-        tr("Save File As"),
-        QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
-        getFileDialogFileText());
-
-    if (fileName.isEmpty())
-    {
-        return;
-    }
-
-    if (!fileName.endsWith(FILE_EXTENSION))
-    {
-        fileName += FILE_EXTENSION;
-    }
-
-    if (m_mediator->saveMindMapAs(fileName))
-    {
-        const auto msg = QString(tr("File '")) + fileName + tr("' saved.");
-        MCLogger().debug() << msg.toStdString();
-        emit actionTriggered(StateMachine::Action::MindMapSavedAs);
-    }
-    else
-    {
-        const auto msg = QString(tr("Failed to save file as '") + fileName + "'.");
-        MCLogger().error() << msg.toStdString();
-        showMessageBox(msg);
-        emit actionTriggered(StateMachine::Action::MindMapSaveAsFailed);
-    }
-}
-
 void MainWindow::showErrorDialog(QString message)
 {
     QMessageBox::critical(this,
@@ -445,27 +314,8 @@ void MainWindow::showErrorDialog(QString message)
          "");
 }
 
-void MainWindow::showMessageBox(QString message)
-{
-    QMessageBox msgBox;
-    msgBox.setText(message);
-    msgBox.exec();
-}
-
-int MainWindow::showNotSavedDialog()
-{
-    QMessageBox msgBox;
-    msgBox.setText(tr("The mind map has been modified."));
-    msgBox.setInformativeText(tr("Do you want to save your changes?"));
-    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-    msgBox.setDefaultButton(QMessageBox::Save);
-    return msgBox.exec();
-}
-
 void MainWindow::initializeNewMindMap()
 {
-    MCLogger().debug() << "New mind map";
-    m_mediator->initializeNewMindMap();
     disableUndoAndRedo();
     setSaveActionStatesOnNewMindMap();
 
@@ -482,54 +332,6 @@ void MainWindow::setSaveActionStatesOnOpenedMindMap()
 {
     m_saveAction->setEnabled(false);
     m_saveAsAction->setEnabled(true);
-}
-
-void MainWindow::runState(StateMachine::State state)
-{
-    switch (state)
-    {
-    case StateMachine::State::TryCloseWindow:
-        saveWindowSize();
-        close();
-        break;
-    case StateMachine::State::Exit:
-        saveWindowSize();
-        QApplication::exit(EXIT_SUCCESS);
-        break;
-    default:
-    case StateMachine::State::Edit:
-        setTitle();
-        break;
-    case StateMachine::State::InitializeNewMindMap:
-        initializeNewMindMap();
-        break;
-    case StateMachine::State::SaveMindMap:
-        saveMindMap();
-        break;
-    case StateMachine::State::ShowExportToPNGDialog:
-        showExportToPNGDialog();
-        break;
-    case StateMachine::State::ShowNotSavedDialog:
-        switch (showNotSavedDialog())
-        {
-        case QMessageBox::Save:
-            emit actionTriggered(StateMachine::Action::NotSavedDialogAccepted);
-            break;
-        case QMessageBox::Discard:
-            emit actionTriggered(StateMachine::Action::NotSavedDialogDiscarded);
-            break;
-        case QMessageBox::Cancel:
-            emit actionTriggered(StateMachine::Action::NotSavedDialogCanceled);
-            break;
-        }
-        break;
-    case StateMachine::State::ShowSaveAsDialog:
-        saveMindMapAs();
-        break;
-    case StateMachine::State::ShowOpenDialog:
-        openMindMap();
-        break;
-    }
 }
 
 MainWindow::~MainWindow() = default;

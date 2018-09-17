@@ -16,6 +16,8 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
+#include "statemachine.hpp"
+
 #include <QApplication>
 #include <QObject>
 #include <QTranslator>
@@ -25,12 +27,14 @@
 class EditorData;
 class EditorScene;
 class EditorView;
+class ExportToPNGDialog;
 class MainWindow;
 class Mediator;
-class StateMachine;
 
 class Application : public QObject
 {
+    Q_OBJECT
+
 public:
 
     Application(int & argc, char ** argv);
@@ -39,15 +43,47 @@ public:
 
     int run();
 
+public slots:
+
+    void runState(StateMachine::State state);
+
+signals:
+
+    void actionTriggered(StateMachine::Action action);
+
 private:
 
-    QString parseArgs(int argc, char ** argv);
+    void doOpenMindMap(QString fileName);
+
+    QString getFileDialogFileText() const;
+
+    QString loadRecentPath() const;
+
+    void openArgMindMap();
+
+    void openMindMap();
+
+    void saveMindMap();
+
+    void saveMindMapAs();
+
+    void saveRecentPath(QString fileName);
+
+    void showExportToPNGDialog();
+
+    void showMessageBox(QString message);
+
+    int showNotSavedDialog();
+
+    void parseArgs(int argc, char ** argv);
 
     QApplication m_app;
 
     QTranslator m_appTranslator;
 
     QString m_mindMapFile;
+
+    QString m_settingsGroup = "Application";
 
     std::unique_ptr<StateMachine> m_stateMachine;
 
@@ -60,6 +96,8 @@ private:
     std::shared_ptr<EditorScene> m_editorScene;
 
     EditorView * m_editorView = nullptr;
+
+    std::unique_ptr<ExportToPNGDialog> m_exportToPNGDialog;
 };
 
 #endif // APPLICATION_HPP

@@ -228,6 +228,8 @@ void Mediator::initializeNewMindMap()
     addExistingGraphToScene();
 
     QTimer::singleShot(0, this, &Mediator::zoomToFit);
+
+    m_mainWindow.initializeNewMindMap();
 }
 
 void Mediator::initializeView()

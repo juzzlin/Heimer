@@ -311,14 +311,14 @@ void Application::showExportToPNGDialog()
 
 void Application::showMessageBox(QString message)
 {
-    QMessageBox msgBox;
+    QMessageBox msgBox(m_mainWindow.get());
     msgBox.setText(message);
     msgBox.exec();
 }
 
 int Application::showNotSavedDialog()
 {
-    QMessageBox msgBox;
+    QMessageBox msgBox(m_mainWindow.get());
     msgBox.setText(tr("The mind map has been modified."));
     msgBox.setInformativeText(tr("Do you want to save your changes?"));
     msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);

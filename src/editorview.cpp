@@ -53,12 +53,12 @@ EditorView::EditorView(Mediator & mediator)
 
 void EditorView::createBackgroundContextMenuActions()
 {
-    auto setColorAction = new QAction(QWidget::tr("Set background color"), &m_backgroundContextMenu);
+    auto setColorAction = new QAction(tr("Set background color"), &m_backgroundContextMenu);
     QObject::connect(setColorAction, &QAction::triggered, [this] () {
         emit actionTriggered(StateMachine::Action::BackgroundColorChangeRequested);
     });
 
-    auto createNode = new QAction(QWidget::tr("Create floating node"), &m_backgroundContextMenu);
+    auto createNode = new QAction(tr("Create floating node"), &m_backgroundContextMenu);
     QObject::connect(createNode, &QAction::triggered, [this] () {
         emit newNodeRequested(m_clickedScenePos);
     });

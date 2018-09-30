@@ -19,6 +19,7 @@
 #include "statemachine.hpp"
 
 #include <QApplication>
+#include <QColor>
 #include <QObject>
 #include <QTranslator>
 

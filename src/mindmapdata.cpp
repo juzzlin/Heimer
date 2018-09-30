@@ -28,6 +28,7 @@ MindMapData::MindMapData(const MindMapData & other)
     , m_fileName(other.m_fileName)
     , m_version(other.m_version)
     , m_backgroundColor(other.m_backgroundColor)
+    , m_edgeWidth(other.m_edgeWidth)
 {
     copyGraph(other);
 }
@@ -62,6 +63,20 @@ QColor MindMapData::backgroundColor() const
 void MindMapData::setBackgroundColor(const QColor & backgroundColor)
 {
     m_backgroundColor = backgroundColor;
+}
+
+double MindMapData::edgeWidth() const
+{
+    return m_edgeWidth;
+}
+
+void MindMapData::setEdgeWidth(double width)
+{
+    m_edgeWidth = width;
+
+    for (auto && edge : m_graph.getEdges()) {
+        edge->setWidth(width);
+    }
 }
 
 QString MindMapData::fileName() const

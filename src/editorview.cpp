@@ -310,6 +310,7 @@ void EditorView::showDummyDragEdge(bool show)
         }
     }
 
+    m_dummyDragEdge->setWidth(m_edgeWidth);
     m_dummyDragEdge->setVisible(show);
 }
 
@@ -333,6 +334,11 @@ void EditorView::updateScale(int value)
     QTransform transform;
     transform.scale(scale, scale);
     setTransform(transform);
+}
+
+void EditorView::setEdgeWidth(double edgeWidth)
+{
+    m_edgeWidth = edgeWidth;
 }
 
 void EditorView::wheelEvent(QWheelEvent * event)

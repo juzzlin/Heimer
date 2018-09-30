@@ -112,6 +112,17 @@ void Edge::setLabelVisible(bool visible)
     m_label->setVisible(visible);
 }
 
+void Edge::setWidth(double width)
+{
+    m_width = width;
+    setPen(QPen(m_brush, width));
+    m_arrowheadL->setPen(pen());
+    m_arrowheadL->update();
+    m_arrowheadR->setPen(pen());
+    m_arrowheadR->update();
+    update();
+}
+
 void Edge::setText(const QString & text)
 {
     EdgeBase::setText(text);

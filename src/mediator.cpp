@@ -60,12 +60,16 @@ void Mediator::addExistingGraphToScene()
             auto graphicsEdge = dynamic_pointer_cast<Edge>(edge);
             assert(graphicsEdge);
             addItem(*graphicsEdge);
+            graphicsEdge->setWidth(m_editorData->mindMapData()->edgeWidth());
             node0->addGraphicsEdge(*graphicsEdge);
             node1->addGraphicsEdge(*graphicsEdge);
             graphicsEdge->updateLine();
             MCLogger().debug() << "Added an existing edge " << node0->index() << " -> " << node1->index() << " to scene";
         }
     }
+
+    m_mainWindow.setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
+    m_editorView->setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
 }
 
 void Mediator::addItem(QGraphicsItem & item)
@@ -348,9 +352,23 @@ Node * Mediator::selectedNode() const
 
 void Mediator::setBackgroundColor(QColor color)
 {
-    saveUndoPoint();
-    m_editorData->mindMapData()->setBackgroundColor(color);
-    m_editorView->setBackgroundBrush(QBrush(color));
+    if (m_editorData->mindMapData()->backgroundColor() != color)
+    {
+        saveUndoPoint();
+        m_editorData->mindMapData()->setBackgroundColor(color);
+        m_editorView->setBackgroundBrush(QBrush(color));
+    }
+}
+
+void Mediator::setEdgeWidth(double value)
+{
+    // Break loop with the spinbox
+    if (!qFuzzyCompare(m_editorData->mindMapData()->edgeWidth(), value))
+    {
+        saveUndoPoint();
+        m_editorData->mindMapData()->setEdgeWidth(value);
+        m_editorView->setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
+    }
 }
 
 void Mediator::setEditorData(std::shared_ptr<EditorData> editorData)

@@ -32,6 +32,8 @@ namespace Serializer {
 
             static constexpr auto COLOR = "color";
 
+            static constexpr auto EDGE_THICKNESS = "edge-width";
+
             static constexpr auto GRAPH = "graph";
 
             // Used for Design and Node

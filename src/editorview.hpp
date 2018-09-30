@@ -50,6 +50,10 @@ public:
 
     void zoomToFit(QRectF nodeBoundingRect);
 
+public slots:
+
+    void setEdgeWidth(double edgeWidth);
+
 protected:
 
     void mouseMoveEvent(QMouseEvent * event) override;
@@ -133,6 +137,9 @@ private:
     Node * m_dummyDragNode = nullptr;
 
     Edge * m_dummyDragEdge = nullptr;
+
+    // Width for the dummy drag edge
+    double m_edgeWidth = 1.5;
 };
 
 #endif // EDITORVIEW_HPP

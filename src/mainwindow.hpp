@@ -30,8 +30,10 @@ class EditorData;
 class EditorView;
 class QAction;
 class QCheckBox;
+class QDoubleSpinBox;
 class QSlider;
 class QTextEdit;
+class QWidgetAction;
 class Mediator;
 
 class MainWindow : public QMainWindow
@@ -72,6 +74,8 @@ public slots:
 
     void enableSaveAs(bool enable);
 
+    void setEdgeWidth(double value);
+
     void showErrorDialog(QString message);
 
 protected:
@@ -81,6 +85,8 @@ protected:
 signals:
 
     void actionTriggered(StateMachine::Action action);
+
+    void edgeWidthChanged(double width);
 
     void zoomInTriggered();
 
@@ -102,6 +108,8 @@ private:
 
     void addUndoAction(QMenu & menu);
 
+    QWidgetAction * createEdgeWidthAction();
+
     void createEditMenu();
 
     void createFileMenu();
@@ -121,6 +129,8 @@ private:
     QAction * m_undoAction = nullptr;
 
     QAction * m_redoAction = nullptr;
+
+    QDoubleSpinBox * m_edgeWidthSpinBox = nullptr;
 
     QString m_argMindMapFile;
 

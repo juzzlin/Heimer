@@ -130,6 +130,7 @@ Application::Application(int & argc, char ** argv)
     connect(m_pngExportDialog.get(), &PngExportDialog::pngExportRequested, m_mediator.get(), &Mediator::exportToPNG);
 
     connect(m_mediator.get(), &Mediator::exportFinished, m_pngExportDialog.get(), &PngExportDialog::finishExport);
+    connect(m_mainWindow.get(), &MainWindow::edgeWidthChanged, m_mediator.get(), &Mediator::setEdgeWidth);
 
     m_mainWindow->initialize();
     m_mediator->initializeView();

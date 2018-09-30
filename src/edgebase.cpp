@@ -37,6 +37,16 @@ void EdgeBase::setText(const QString & text)
     m_text = text;
 }
 
+double EdgeBase::width() const
+{
+    return m_width;
+}
+
+void EdgeBase::setWidth(double width)
+{
+    m_width = width;
+}
+
 NodeBase & EdgeBase::sourceNodeBase() const
 {
     return *m_sourceNode;

@@ -24,16 +24,21 @@
 #include <QAction>
 #include <QApplication>
 #include <QDateTime>
+#include <QDoubleSpinBox>
 #include <QGraphicsLineItem>
+#include <QLabel>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QScreen>
 #include <QSettings>
+#include <QSpinBox>
+#include <QStyle>
 #include <QTimer>
 #include <QToolBar>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QWidgetAction>
 
 #include <cassert>
 
@@ -81,7 +86,7 @@ void MainWindow::addUndoAction(QMenu & menu)
 
     menu.addAction(m_undoAction);
 }
-
+#include <QDebug>
 void MainWindow::createEditMenu()
 {
     const auto editMenu = menuBar()->addMenu(tr("&Edit"));
@@ -100,6 +105,38 @@ void MainWindow::createEditMenu()
     });
 
     editMenu->addAction(backgroundColorAction);
+
+    editMenu->addSeparator();
+
+    auto toolBar = new QToolBar(editMenu);
+    addToolBar(Qt::BottomToolBarArea, toolBar);
+    toolBar->addAction(createEdgeWidthAction());
+}
+
+QWidgetAction * MainWindow::createEdgeWidthAction()
+{
+    m_edgeWidthSpinBox = new QDoubleSpinBox(this);
+    m_edgeWidthSpinBox->setSingleStep(0.1);
+    m_edgeWidthSpinBox->setMinimum(0.1);
+    m_edgeWidthSpinBox->setMaximum(3.0);
+    m_edgeWidthSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
+    const auto dummyWidget = new QWidget(this);
+    const auto layout = new QHBoxLayout(dummyWidget);
+    dummyWidget->setLayout(layout);
+    auto label = new QLabel(tr("Edge width:"));
+    layout->addWidget(label);
+    layout->addWidget(m_edgeWidthSpinBox);
+    layout->setContentsMargins(0, 0, 0, 0);
+
+    auto action = new QWidgetAction(this);
+    action->setDefaultWidget(dummyWidget);
+
+    // The ugly cast is needed because there are QDoubleSpinBox::valueChanged(double) and QDoubleSpinBox::valueChanged(QString)
+    // In Qt > 5.10 one can use QOverload<double>::of(...)
+    connect(m_edgeWidthSpinBox, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this, &MainWindow::edgeWidthChanged);
+
+    return action;
 }
 
 void MainWindow::createFileMenu()
@@ -272,6 +309,14 @@ void MainWindow::disableUndoAndRedo()
 {
     m_undoAction->setEnabled(false);
     m_redoAction->setEnabled(false);
+}
+
+void MainWindow::setEdgeWidth(double value)
+{
+    if (!qFuzzyCompare(m_edgeWidthSpinBox->value(), value))
+    {
+        m_edgeWidthSpinBox->setValue(value);
+    }
 }
 
 void MainWindow::enableUndo(bool enable)

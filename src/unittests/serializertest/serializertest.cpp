@@ -48,6 +48,19 @@ void SerializerTest::testBackgroundColor()
     QCOMPARE(inData->backgroundColor(), outData.backgroundColor());
 }
 
+void SerializerTest::testEdgeWidth()
+{
+    MindMapData outData;
+    outData.setEdgeWidth(666.42);
+
+    // Serialize
+    const auto document = Serializer::toXml(outData);
+
+    // Deserialize
+    const auto inData = Serializer::fromXml(document);
+    QCOMPARE(inData->edgeWidth(), outData.edgeWidth());
+}
+
 void SerializerTest::testNodeDeletion()
 {
     MindMapData outData;

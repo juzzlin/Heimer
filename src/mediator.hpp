@@ -122,6 +122,8 @@ public slots:
 
     void setBackgroundColor(QColor color);
 
+    void setEdgeWidth(double value);
+
     QSize zoomForExport();
 
 private slots:

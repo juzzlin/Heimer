@@ -88,4 +88,24 @@ void EditorDataTest::testUndoBackgroundColor()
     QCOMPARE(editorData.mindMapData()->backgroundColor(), QColor(0, 0, 0));
 }
 
+void EditorDataTest::testUndoEdgeWidth()
+{
+    EditorData editorData;
+
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+    editorData.mindMapData()->setEdgeWidth(1.0);
+
+    editorData.saveUndoPoint();
+    editorData.mindMapData()->setEdgeWidth(2.0);
+
+    editorData.saveUndoPoint();
+    editorData.mindMapData()->setEdgeWidth(3.0);
+
+    editorData.undo();
+    QCOMPARE(editorData.mindMapData()->edgeWidth(), 2.0);
+
+    editorData.undo();
+    QCOMPARE(editorData.mindMapData()->edgeWidth(), 1.0);
+}
+
 QTEST_GUILESS_MAIN(EditorDataTest)

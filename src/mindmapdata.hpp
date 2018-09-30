@@ -38,6 +38,10 @@ public:
 
     void setBackgroundColor(const QColor & backgroundColor);
 
+    double edgeWidth() const;
+
+    void setEdgeWidth(double width);
+
     QString fileName() const;
 
     void setFileName(QString fileName);
@@ -59,6 +63,8 @@ private:
     QString m_version;
 
     QColor m_backgroundColor = Config::getDefaultBackgroundColor();
+
+    double m_edgeWidth = 1.5;
 
     Graph m_graph;
 };

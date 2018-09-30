@@ -42,6 +42,10 @@ public:
 
     virtual ~EdgeBase() {}
 
+    virtual double width() const;
+
+    virtual void setWidth(double width);
+
 private:
 
     NodeBase * m_sourceNode;
@@ -49,6 +53,8 @@ private:
     NodeBase * m_targetNode;
 
     QString m_text;
+
+    double m_width;
 };
 
 using EdgeBasePtr = std::shared_ptr<EdgeBase>;

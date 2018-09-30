@@ -43,9 +43,8 @@ static void writeNodes(MindMapData & mindMapData, QDomElement & root, QDomDocume
 
         // Create a child node for the text content
         auto textElement = doc.createElement(Serializer::DataKeywords::Design::Graph::Node::TEXT);
+        textElement.appendChild(doc.createTextNode(node->text()));
         nodeElement.appendChild(textElement);
-        auto textNode = doc.createTextNode(node->text());
-        textElement.appendChild(textNode);
 
         // Create a child node for color
         auto colorElement = doc.createElement(Serializer::DataKeywords::Design::Graph::Node::COLOR);
@@ -224,10 +223,9 @@ static void readGraph(const QDomElement & graph, MindMapDataPtr data)
 MindMapDataPtr Serializer::fromXml(QDomDocument document)
 {
     const auto design = document.documentElement();
-    const auto version = design.attribute(DataKeywords::Design::APPLICATION_VERSION, "UNDEFINED");
 
     auto data = make_shared<MindMapData>();
-    data->setVersion(version);
+    data->setVersion(design.attribute(DataKeywords::Design::APPLICATION_VERSION, "UNDEFINED"));
 
     readChildren(design, {
         {
@@ -239,6 +237,11 @@ MindMapDataPtr Serializer::fromXml(QDomDocument document)
             QString(Serializer::DataKeywords::Design::COLOR), [=] (const QDomElement & e) {
                 data->setBackgroundColor(readColorElement(e));
             }
+        },
+        {
+            QString(Serializer::DataKeywords::Design::EDGE_THICKNESS), [=] (const QDomElement & e) {
+                data->setEdgeWidth(readFirstTextNodeContent(e).toDouble() / SCALE);
+            }
         }
     });
 
@@ -249,8 +252,7 @@ QDomDocument Serializer::toXml(MindMapData & mindMapData)
 {
     QDomDocument doc;
 
-    auto processingInstruction = doc.createProcessingInstruction("xml", "version='1.0' encoding='UTF-8'");
-    doc.appendChild(processingInstruction);
+    doc.appendChild(doc.createProcessingInstruction("xml", "version='1.0' encoding='UTF-8'"));
 
     auto design = doc.createElement(Serializer::DataKeywords::Design::DESIGN);
     design.setAttribute(Serializer::DataKeywords::Design::APPLICATION_VERSION, Config::APPLICATION_VERSION);
@@ -261,6 +263,10 @@ QDomDocument Serializer::toXml(MindMapData & mindMapData)
     colorElement.setAttribute(Serializer::DataKeywords::Design::Color::G, mindMapData.backgroundColor().green());
     colorElement.setAttribute(Serializer::DataKeywords::Design::Color::B, mindMapData.backgroundColor().blue());
     design.appendChild(colorElement);
+
+    auto edgeWidthElement = doc.createElement(Serializer::DataKeywords::Design::EDGE_THICKNESS);
+    edgeWidthElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData.edgeWidth() * SCALE))));
+    design.appendChild(edgeWidthElement);
 
     auto graph = doc.createElement(Serializer::DataKeywords::Design::GRAPH);
     design.appendChild(graph);

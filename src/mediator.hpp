@@ -134,7 +134,7 @@ private slots:
 
 signals:
 
-    void exportFinished();
+    void exportFinished(bool success);
 
 private:
 

@@ -14,12 +14,14 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "exporttopngdialog.hpp"
+#include "config.hpp"
 
 #include <QCheckBox>
 #include <QFileDialog>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
+#include <QMessageBox>
 #include <QSpinBox>
 #include <QStandardPaths>
 #include <QTimer>
@@ -117,11 +119,17 @@ int ExportToPNGDialog::exec()
     return QDialog::exec();
 }
 
-void ExportToPNGDialog::finishExport()
+void ExportToPNGDialog::finishExport(bool success)
 {
-    m_progressBar->setValue(100);
-
-    QTimer::singleShot(500, this, &QDialog::accept);
+    if (success)
+    {
+        m_progressBar->setValue(100);
+        QTimer::singleShot(500, this, &QDialog::accept);
+    }
+    else
+    {
+        QMessageBox::critical(this, Config::APPLICATION_NAME, tr("Couldn't write to") + " '" + m_filenameLineEdit->text() + "'", QMessageBox::Ok);
+    }
 }
 
 void ExportToPNGDialog::validate()

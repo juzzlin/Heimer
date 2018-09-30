@@ -39,7 +39,7 @@ public:
 
 public slots:
 
-    void finishExport();
+    void finishExport(bool success);
 
 signals:
 

@@ -191,9 +191,7 @@ void Mediator::exportToPNG(QString filename, QSize size, bool transparentBackgro
     painter.setRenderHint(QPainter::TextAntialiasing);
     m_editorScene->render(&painter);
 
-    image.save(filename);
-
-    emit exportFinished();
+    emit exportFinished(image.save(filename));
 }
 
 QString Mediator::fileName() const

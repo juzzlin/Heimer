@@ -17,47 +17,47 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application.cpp" line="146"/>
+        <location filename="../application.cpp" line="147"/>
         <source>Heimer Files</source>
         <translation>Heimer -tiedostot</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="224"/>
+        <location filename="../application.cpp" line="225"/>
         <source>Open File</source>
         <translation>Avaa tiedosto</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="253"/>
+        <location filename="../application.cpp" line="254"/>
         <source>Failed to save file.</source>
         <translation>Tiedoston tallentaminen epäonnistui</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="271"/>
+        <location filename="../application.cpp" line="272"/>
         <source>Save File As</source>
         <translation>Tallenna Nimellä</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="287"/>
+        <location filename="../application.cpp" line="288"/>
         <source>File &apos;</source>
         <translation>Tiedosto &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="287"/>
+        <location filename="../application.cpp" line="288"/>
         <source>&apos; saved.</source>
         <translation>&apos; tallennettu.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="293"/>
+        <location filename="../application.cpp" line="294"/>
         <source>Failed to save file as &apos;</source>
         <translation>Tietoston tallentaminen epäonnistui nimellä &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="336"/>
+        <location filename="../application.cpp" line="337"/>
         <source>The mind map has been modified.</source>
         <translation>Käsitekarttaa on muokattu.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="337"/>
+        <location filename="../application.cpp" line="338"/>
         <source>Do you want to save your changes?</source>
         <translation>Haluatko tallentaa muutokset?</translation>
     </message>
@@ -92,62 +92,67 @@
 <context>
     <name>ExportToPNGDialog</name>
     <message>
-        <location filename="../exporttopngdialog.cpp" line="39"/>
+        <location filename="../exporttopngdialog.cpp" line="41"/>
         <source>Export to PNG Image</source>
         <translation>Vie PNG-kuvaksi</translation>
     </message>
     <message>
-        <location filename="../exporttopngdialog.cpp" line="45"/>
+        <location filename="../exporttopngdialog.cpp" line="47"/>
         <source>Export As</source>
         <translation>Vie nimellä</translation>
     </message>
     <message>
-        <location filename="../exporttopngdialog.cpp" line="47"/>
+        <location filename="../exporttopngdialog.cpp" line="49"/>
         <source>PNG Files</source>
         <translation>PNG-tiedostot</translation>
     </message>
     <message>
-        <location filename="../exporttopngdialog.cpp" line="143"/>
+        <location filename="../exporttopngdialog.cpp" line="131"/>
+        <source>Couldn&apos;t write to</source>
+        <translation>Vienti epäonnistui kohteeseen</translation>
+    </message>
+    <message>
+        <location filename="../exporttopngdialog.cpp" line="151"/>
         <source>Filename</source>
         <translation>Tiedostonimi</translation>
     </message>
     <message>
-        <location filename="../exporttopngdialog.cpp" line="149"/>
+        <location filename="../exporttopngdialog.cpp" line="157"/>
         <source>Export as..</source>
         <translation>Vie nimellä..</translation>
     </message>
     <message>
-        <location filename="../exporttopngdialog.cpp" line="153"/>
+        <location filename="../exporttopngdialog.cpp" line="161"/>
         <source>Image Size</source>
         <translation>Kuvan Koko</translation>
     </message>
     <message>
-        <location filename="../exporttopngdialog.cpp" line="155"/>
+        <location filename="../exporttopngdialog.cpp" line="163"/>
         <source>Width (px):</source>
         <translation>Leveys (px)</translation>
     </message>
     <message>
-        <location filename="../exporttopngdialog.cpp" line="161"/>
+        <location filename="../exporttopngdialog.cpp" line="169"/>
         <source>Height (px):</source>
         <translation>Korkeus (px)</translation>
     </message>
     <message>
-        <location filename="../exporttopngdialog.cpp" line="169"/>
+        <location filename="../exporttopngdialog.cpp" line="177"/>
         <source>Background</source>
         <translation>Tausta</translation>
     </message>
     <message>
-        <location filename="../exporttopngdialog.cpp" line="172"/>
+        <location filename="../exporttopngdialog.cpp" line="180"/>
         <source>Transparent background</source>
         <translation>Läpinäkyvä tausta</translation>
     </message>
     <message>
-        <location filename="../exporttopngdialog.cpp" line="186"/>
+        <location filename="../exporttopngdialog.cpp" line="194"/>
         <source>Cancel</source>
         <translation>Kumoa</translation>
     </message>
     <message>
-        <location filename="../exporttopngdialog.cpp" line="189"/>
+        <location filename="../exporttopngdialog.cpp" line="197"/>
         <source>Export</source>
         <translation>Vie</translation>
     </message>

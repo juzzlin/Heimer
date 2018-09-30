@@ -181,7 +181,7 @@ void Mediator::exportToPNG(QString filename, QSize size, bool transparentBackgro
 {
     zoomForExport();
 
-    MCLogger().info() << "Exporting a PNG image of size (" << size.width() << "x" << size.height() << ")";
+    MCLogger().info() << "Exporting a PNG image of size (" << size.width() << "x" << size.height() << ") to " << filename.toStdString();
 
     QImage image(size, QImage::Format_ARGB32);
     image.fill(transparentBackground ? Qt::transparent : m_editorData->backgroundColor());

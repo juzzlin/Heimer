@@ -1,40 +1,41 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<design version="0.0.0">
+<design version="1.1.1">
  <color r="128" b="255" g="200"/>
+ <edge-width>1500</edge-width>
  <graph>
   <node index="0" h="75000" x="0" y="0" w="200000">
    <text>Code Investments Ltd.</text>
    <color r="138" b="52" g="226"/>
   </node>
-  <node index="1" h="75000" x="-321359" y="-213592" w="200000">
+  <node index="1" h="75000" x="-248089" y="-122861" w="200000">
    <text>Me</text>
    <color r="239" b="41" g="41"/>
   </node>
-  <node index="2" h="75000" x="0" y="-264227" w="200000">
+  <node index="2" h="75000" x="-1441" y="-160455" w="200000">
    <text>Emily</text>
    <color r="255" b="255" g="255"/>
   </node>
-  <node index="3" h="75000" x="317475" y="-196359" w="200000">
+  <node index="3" h="75000" x="265498" y="-134316" w="200000">
    <text>Oliver</text>
    <color r="255" b="255" g="255"/>
   </node>
-  <node index="4" h="75000" x="329126" y="-2184" w="200000">
+  <node index="4" h="75000" x="278401" y="-1459" w="200000">
    <text>George</text>
    <color r="255" b="255" g="255"/>
   </node>
-  <node index="5" h="75000" x="970" y="263106" w="200000">
+  <node index="5" h="75000" x="969" y="150787" w="200000">
    <text>Jack</text>
    <color r="255" b="255" g="255"/>
   </node>
-  <node index="6" h="75000" x="-308737" y="225242" w="200000">
+  <node index="6" h="75000" x="-242070" y="118720" w="200000">
    <text>Jacob</text>
    <color r="255" b="255" g="255"/>
   </node>
-  <node index="7" h="75000" x="315533" y="238592" w="200000">
+  <node index="7" h="75000" x="261185" y="119026" w="200000">
    <text>Harry</text>
    <color r="255" b="255" g="255"/>
   </node>
-  <node index="8" h="75000" x="-331707" y="2439" w="200000">
+  <node index="8" h="75000" x="-271483" y="383" w="200000">
    <text>Noah</text>
    <color r="255" b="255" g="255"/>
   </node>

@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <design version="1.1.1">
  <color r="136" b="133" g="138"/>
+ <edge-width>2000</edge-width>
  <graph>
   <node index="0" h="75000" x="11737" y="-67605" w="200000">
    <text>Heimer</text>
@@ -54,7 +55,7 @@
    <text>Can be ported to all platforms that supports Qt</text>
    <color r="255" b="255" g="255"/>
   </node>
-  <node index="14" h="75000" x="9285" y="-233214" w="200000">
+  <node index="14" h="75000" x="11426" y="-218927" w="200000">
    <text>PNG images</text>
    <color r="255" b="255" g="255"/>
   </node>

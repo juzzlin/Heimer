@@ -48,16 +48,6 @@ PngExportDialog::PngExportDialog(QWidget & parent)
             QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
             tr("PNG Files") + " (*" + FILE_EXTENSION + ")");
 
-        if (filename.isEmpty())
-        {
-            return;
-        }
-
-        if (!filename.toLower().endsWith(FILE_EXTENSION))
-        {
-            filename += FILE_EXTENSION;
-        }
-
         m_filenameLineEdit->setText(filename);
     });
 
@@ -66,7 +56,7 @@ PngExportDialog::PngExportDialog(QWidget & parent)
     connect(m_exportButton, &QPushButton::clicked, [=] () {
         m_exportButton->setEnabled(false);
         m_progressBar->setValue(50);
-        emit pngExportRequested(m_filenameLineEdit->text(), QSize(m_imageWidthSpinBox->value(), m_imageHeightSpinBox->value()), m_transparentBackgroundCheckBox->isChecked());
+        emit pngExportRequested(m_filenameWithExtension, QSize(m_imageWidthSpinBox->value(), m_imageHeightSpinBox->value()), m_transparentBackgroundCheckBox->isChecked());
     });
 
     // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
@@ -143,6 +133,18 @@ void PngExportDialog::validate()
          m_imageWidthSpinBox->value() < MAX_IMAGE_SIZE &&
          !m_filenameLineEdit->text().isEmpty()
     );
+
+    m_filenameWithExtension = m_filenameLineEdit->text();
+
+    if (m_filenameWithExtension.isEmpty())
+    {
+        return;
+    }
+
+    if (!m_filenameWithExtension.toLower().endsWith(FILE_EXTENSION))
+    {
+        m_filenameWithExtension += FILE_EXTENSION;
+    }
 }
 
 void PngExportDialog::initWidgets()

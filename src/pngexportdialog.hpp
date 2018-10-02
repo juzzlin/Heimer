@@ -69,6 +69,8 @@ private:
 
     QCheckBox * m_transparentBackgroundCheckBox = nullptr;
 
+    QString m_filenameWithExtension;
+
     bool m_enableSpinBoxConnection = true;
 
     float m_aspectRatio = 1.0;

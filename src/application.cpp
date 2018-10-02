@@ -18,9 +18,9 @@
 #include "editordata.hpp"
 #include "editorscene.hpp"
 #include "editorview.hpp"
-#include "exporttopngdialog.hpp"
 #include "mainwindow.hpp"
 #include "mediator.hpp"
+#include "pngexportdialog.hpp"
 #include "statemachine.hpp"
 #include "userexception.hpp"
 
@@ -108,7 +108,7 @@ Application::Application(int & argc, char ** argv)
     m_editorData.reset(new EditorData);
     m_editorScene.reset(new EditorScene);
     m_editorView = new EditorView(*m_mediator);
-    m_exportToPNGDialog.reset(new ExportToPNGDialog(*m_mainWindow));
+    m_pngExportDialog.reset(new PngExportDialog(*m_mainWindow));
 
     m_mainWindow->setMediator(m_mediator);
     m_stateMachine->setMediator(m_mediator);
@@ -127,9 +127,9 @@ Application::Application(int & argc, char ** argv)
         m_mainWindow->enableSave(isModified && m_mediator->canBeSaved());
     });
 
-    connect(m_exportToPNGDialog.get(), &ExportToPNGDialog::pngExportRequested, m_mediator.get(), &Mediator::exportToPNG);
+    connect(m_pngExportDialog.get(), &PngExportDialog::pngExportRequested, m_mediator.get(), &Mediator::exportToPNG);
 
-    connect(m_mediator.get(), &Mediator::exportFinished, m_exportToPNGDialog.get(), &ExportToPNGDialog::finishExport);
+    connect(m_mediator.get(), &Mediator::exportFinished, m_pngExportDialog.get(), &PngExportDialog::finishExport);
 
     m_mainWindow->initialize();
     m_mediator->initializeView();
@@ -186,8 +186,8 @@ void Application::runState(StateMachine::State state)
     case StateMachine::State::ShowBackgroundColorDialog:
         showBackgroundColorDialog();
         break;
-    case StateMachine::State::ShowExportToPNGDialog:
-        showExportToPNGDialog();
+    case StateMachine::State::ShowPngExportDialog:
+        showPngExportDialog();
         break;
     case StateMachine::State::ShowNotSavedDialog:
         switch (showNotSavedDialog())
@@ -315,13 +315,13 @@ void Application::showBackgroundColorDialog()
     emit actionTriggered(StateMachine::Action::BackgroundColorChanged);
 }
 
-void Application::showExportToPNGDialog()
+void Application::showPngExportDialog()
 {
-    m_exportToPNGDialog->setImageSize(m_mediator->zoomForExport());
-    m_exportToPNGDialog->exec();
+    m_pngExportDialog->setImageSize(m_mediator->zoomForExport());
+    m_pngExportDialog->exec();
 
     // Doesn't matter if canceled or not
-    emit actionTriggered(StateMachine::Action::ExportedToPNG);
+    emit actionTriggered(StateMachine::Action::PngExported);
 }
 
 void Application::showMessageBox(QString message)

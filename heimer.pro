@@ -34,9 +34,9 @@ HEADERS +=  \
     $$SRC/editordata.hpp \
     $$SRC/editorscene.hpp \
     $$SRC/editorview.hpp \
-    $$SRC/exporttopngdialog.hpp \
     $$SRC/fileexception.hpp \
     $$SRC/hashseed.hpp \
+    $$SRC/pngexportdialog.hpp \
     $$SRC/layers.hpp \
     $$SRC/mainwindow.hpp \
     $$SRC/mediator.hpp \
@@ -66,8 +66,8 @@ SOURCES += \
     $$SRC/editordata.cpp \
     $$SRC/editorscene.cpp \
     $$SRC/editorview.cpp \
-    $$SRC/exporttopngdialog.cpp \
     $$SRC/hashseed.cpp \
+    $$SRC/pngexportdialog.cpp \
     $$SRC/main.cpp \
     $$SRC/mainwindow.cpp \
     $$SRC/mediator.cpp \

@@ -28,9 +28,9 @@
 class EditorData;
 class EditorScene;
 class EditorView;
-class ExportToPNGDialog;
 class MainWindow;
 class Mediator;
+class PngExportDialog;
 
 class Application : public QObject
 {
@@ -74,7 +74,7 @@ private:
 
     void showBackgroundColorDialog();
 
-    void showExportToPNGDialog();
+    void showPngExportDialog();
 
     void showMessageBox(QString message);
 
@@ -104,7 +104,7 @@ private:
 
     EditorView * m_editorView = nullptr;
 
-    std::unique_ptr<ExportToPNGDialog> m_exportToPNGDialog;
+    std::unique_ptr<PngExportDialog> m_pngExportDialog;
 };
 
 #endif // APPLICATION_HPP

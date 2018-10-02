@@ -8,7 +8,6 @@ set(SRC
     edgebase.cpp
     edgedot.cpp
     edgetextedit.cpp
-    exporttopngdialog.cpp
     fileexception.hpp
     graph.cpp
     graphicsfactory.cpp
@@ -16,6 +15,7 @@ set(SRC
     editordata.cpp
     editorscene.cpp
     editorview.cpp
+    pngexportdialog.cpp
     main.cpp
     mainwindow.cpp
     mediator.cpp

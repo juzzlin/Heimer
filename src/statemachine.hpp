@@ -36,9 +36,9 @@ public:
         InitializeNewMindMap,
         SaveMindMap,
         ShowBackgroundColorDialog,
-        ShowExportToPNGDialog,
         ShowNotSavedDialog,
         ShowOpenDialog,
+        ShowPngExportDialog,
         ShowSaveAsDialog,
         TryCloseWindow
     };
@@ -47,8 +47,6 @@ public:
     {
         BackgroundColorChanged,
         BackgroundColorChangeRequested,
-        ExportedToPNG,
-        ExportToPNGSelected,
         MainWindowInitialized,
         MindMapOpened,
         MindMapSaved,
@@ -60,6 +58,8 @@ public:
         NotSavedDialogAccepted,
         NotSavedDialogCanceled,
         NotSavedDialogDiscarded,
+        PngExported,
+        PngExportSelected,
         OpenSelected,
         QuitSelected,
         SaveSelected,

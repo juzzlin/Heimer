@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "exporttopngdialog.hpp"
+#include "pngexportdialog.hpp"
 #include "config.hpp"
 
 #include <QCheckBox>
@@ -35,7 +35,7 @@ const int MIN_IMAGE_SIZE = 0;
 const int MAX_IMAGE_SIZE = 99999;
 }
 
-ExportToPNGDialog::ExportToPNGDialog(QWidget & parent)
+PngExportDialog::PngExportDialog(QWidget & parent)
     : QDialog(&parent)
 {
     setWindowTitle(tr("Export to PNG Image"));
@@ -87,14 +87,14 @@ ExportToPNGDialog::ExportToPNGDialog(QWidget & parent)
         }
     });
 
-    connect(m_filenameLineEdit, &QLineEdit::textChanged, this, &ExportToPNGDialog::validate);
+    connect(m_filenameLineEdit, &QLineEdit::textChanged, this, &PngExportDialog::validate);
 
-    connect(m_imageWidthSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &ExportToPNGDialog::validate);
+    connect(m_imageWidthSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &PngExportDialog::validate);
 
-    connect(m_imageHeightSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &ExportToPNGDialog::validate);
+    connect(m_imageHeightSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &PngExportDialog::validate);
 }
 
-void ExportToPNGDialog::setImageSize(QSize size)
+void PngExportDialog::setImageSize(QSize size)
 {
     m_enableSpinBoxConnection = false;
 
@@ -110,7 +110,7 @@ void ExportToPNGDialog::setImageSize(QSize size)
     m_enableSpinBoxConnection = true;
 }
 
-int ExportToPNGDialog::exec()
+int PngExportDialog::exec()
 {
     m_progressBar->setValue(0);
 
@@ -119,7 +119,7 @@ int ExportToPNGDialog::exec()
     return QDialog::exec();
 }
 
-void ExportToPNGDialog::finishExport(bool success)
+void PngExportDialog::finishExport(bool success)
 {
     if (success)
     {
@@ -132,7 +132,7 @@ void ExportToPNGDialog::finishExport(bool success)
     }
 }
 
-void ExportToPNGDialog::validate()
+void PngExportDialog::validate()
 {
     m_progressBar->setValue(0);
 
@@ -145,7 +145,7 @@ void ExportToPNGDialog::validate()
     );
 }
 
-void ExportToPNGDialog::initWidgets()
+void PngExportDialog::initWidgets()
 {
     auto mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(new QLabel("<b>" + tr("Filename") + "</b>"));

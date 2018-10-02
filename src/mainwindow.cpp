@@ -149,7 +149,7 @@ void MainWindow::createFileMenu()
     exportToPNGAction->setShortcut(QKeySequence("Ctrl+Shift+E"));
     fileMenu->addAction(exportToPNGAction);
     connect(exportToPNGAction, &QAction::triggered, [=] () {
-        emit actionTriggered(StateMachine::Action::ExportToPNGSelected);
+        emit actionTriggered(StateMachine::Action::PngExportSelected);
     });
 
     fileMenu->addSeparator();

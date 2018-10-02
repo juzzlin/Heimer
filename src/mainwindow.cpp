@@ -18,23 +18,17 @@
 #include "config.hpp"
 #include "aboutdlg.hpp"
 #include "mediator.hpp"
-#include "mindmapdata.hpp"
 #include "mclogger.hh"
 
 #include <QAction>
 #include <QApplication>
-#include <QDateTime>
 #include <QDoubleSpinBox>
-#include <QGraphicsLineItem>
 #include <QLabel>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QScreen>
 #include <QSettings>
-#include <QSpinBox>
-#include <QStyle>
-#include <QTimer>
 #include <QToolBar>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -86,7 +80,7 @@ void MainWindow::addUndoAction(QMenu & menu)
 
     menu.addAction(m_undoAction);
 }
-#include <QDebug>
+
 void MainWindow::createEditMenu()
 {
     const auto editMenu = menuBar()->addMenu(tr("&Edit"));

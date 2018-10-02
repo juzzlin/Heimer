@@ -1,3 +1,23 @@
+1.2.0 - "Polished Puppy"
+========================
+
+New features:
+
+* Add background color setting also to edit menu
+* Add separators to the file menu
+* Fix GitHub Issue #23: Setting for edge thickness
+* Update icon (not sure if better)
+
+Bug Fixes:
+
+* Fix GitHub Issue #29: Errors when exporting to PNG not handled
+* Fix GitHub Issue #22: Floating nodes cannot be deleted
+* Automatically add file extension if filename manually entered
+
+Other:
+
+* Code refactorings
+
 1.1.1 - "Bugfix Night"
 ======================
 

@@ -1,10 +1,10 @@
 ## Heimer
 
-Heimer is a desktop application for creating mind maps. It's written in Qt and targeted for Linux and Windows.
+Heimer is a desktop application for creating mind maps and other suitable diagrams. It's written in Qt and targeted for Linux and Windows.
 
-Here is a simple mind map of Heimer itself:
+Here is a simple mind map of Heimer itself running on Ubuntu 18.04:
 
-![Heimer screenshot](/screenshots/1.0.0/Heimer.png?raw=true)
+![Heimer screenshot](/screenshots/1.2.0/Heimer.png?raw=true)
 
 ## Features
 
@@ -35,7 +35,9 @@ On Linux distributions that support universal Snap packages you can install Heim
 
 `$ snap install heimer`
 
-For more information, see https://snapcraft.io/heimer, https://docs.snapcraft.io/core/install
+For more information see https://snapcraft.io/heimer and https://docs.snapcraft.io/core/install
+
+Snap is the recommended way to install Heimer on Linux.
 
 ## Building the project
 

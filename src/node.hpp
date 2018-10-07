@@ -97,7 +97,7 @@ private:
 
     std::vector<QPointF> m_edgePoints;
 
-    const int m_handleRadius = 32;
+    const int m_handleRadius = 28;
 
     const int m_margin = 10;
 

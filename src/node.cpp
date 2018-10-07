@@ -160,7 +160,7 @@ void Node::createHandles()
 
     auto addHandle = new NodeHandle(*this, NodeHandle::Role::Add, m_handleRadius);
     addHandle->setParentItem(this);
-    addHandle->setPos({0, size().height() * 0.5f + m_handleRadius * 0.5f});
+    addHandle->setPos({0, size().height() * 0.5f + m_handleRadius * 0.25f});
     m_handles.push_back(addHandle);
 
     auto colorHandle = new NodeHandle(*this, NodeHandle::Role::Color, m_handleRadius);

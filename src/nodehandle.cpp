@@ -48,7 +48,8 @@ void NodeHandle::paint(QPainter * painter,
 
     static std::map<Role, QPixmap> pixmapMap = {
         {Role::Add, QPixmap(":/add.png")},
-        {Role::Color, QPixmap(":/colors.png")}
+        {Role::Color, QPixmap(":/colors.png")},
+        {Role::TextColor, QPixmap(":/colorsText.png")}
     };
 
     painter->save();

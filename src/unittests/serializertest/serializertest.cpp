@@ -125,6 +125,7 @@ void SerializerTest::testSingleNode()
     outNode->setLocation(QPointF(333.333, 666.666));
     outNode->setSize(QSize(123, 321));
     outNode->setText("Lorem ipsum");
+    outNode->setTextColor(QColor(4, 5, 6));
     outData.graph().addNode(outNode);
 
     // Serialize
@@ -141,6 +142,7 @@ void SerializerTest::testSingleNode()
     QCOMPARE(node->location(), outNode->location());
     QCOMPARE(node->size(), outNode->size());
     QCOMPARE(node->text(), outNode->text());
+    QCOMPARE(node->textColor(), outNode->textColor());
 }
 
 QTEST_GUILESS_MAIN(SerializerTest)

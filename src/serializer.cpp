@@ -29,6 +29,15 @@ static const double SCALE = 1000; // https://bugreports.qt.io/browse/QTBUG-67129
 
 using std::make_shared;
 
+static void writeColor(QDomElement & parent, QDomDocument & doc, QColor color, QString elementName)
+{
+    auto colorElement = doc.createElement(elementName);
+    colorElement.setAttribute(Serializer::DataKeywords::Design::Color::R, color.red());
+    colorElement.setAttribute(Serializer::DataKeywords::Design::Color::G, color.green());
+    colorElement.setAttribute(Serializer::DataKeywords::Design::Color::B, color.blue());
+    parent.appendChild(colorElement);
+}
+
 static void writeNodes(MindMapData & mindMapData, QDomElement & root, QDomDocument & doc)
 {
     for (auto node : mindMapData.graph().getNodes())
@@ -47,11 +56,10 @@ static void writeNodes(MindMapData & mindMapData, QDomElement & root, QDomDocume
         nodeElement.appendChild(textElement);
 
         // Create a child node for color
-        auto colorElement = doc.createElement(Serializer::DataKeywords::Design::Graph::Node::COLOR);
-        colorElement.setAttribute(Serializer::DataKeywords::Design::Color::R, node->color().red());
-        colorElement.setAttribute(Serializer::DataKeywords::Design::Color::G, node->color().green());
-        colorElement.setAttribute(Serializer::DataKeywords::Design::Color::B, node->color().blue());
-        nodeElement.appendChild(colorElement);
+        writeColor(nodeElement, doc, node->color(), Serializer::DataKeywords::Design::Graph::Node::COLOR);
+
+        // Create a child node for text color
+        writeColor(nodeElement, doc, node->textColor(), Serializer::DataKeywords::Design::Graph::Node::TEXT_COLOR);
     }
 }
 
@@ -163,6 +171,11 @@ static NodePtr readNode(const QDomElement & element)
                 node->setColor(readColorElement(e));
             }
         },
+        {
+            QString(Serializer::DataKeywords::Design::Graph::Node::TEXT_COLOR), [=] (const QDomElement & e) {
+                node->setTextColor(readColorElement(e));
+            }
+        }
     });
 
     return node;
@@ -258,11 +271,7 @@ QDomDocument Serializer::toXml(MindMapData & mindMapData)
     design.setAttribute(Serializer::DataKeywords::Design::APPLICATION_VERSION, Config::APPLICATION_VERSION);
     doc.appendChild(design);
 
-    auto colorElement = doc.createElement(Serializer::DataKeywords::Design::COLOR);
-    colorElement.setAttribute(Serializer::DataKeywords::Design::Color::R, mindMapData.backgroundColor().red());
-    colorElement.setAttribute(Serializer::DataKeywords::Design::Color::G, mindMapData.backgroundColor().green());
-    colorElement.setAttribute(Serializer::DataKeywords::Design::Color::B, mindMapData.backgroundColor().blue());
-    design.appendChild(colorElement);
+    writeColor(design, doc, mindMapData.backgroundColor(), Serializer::DataKeywords::Design::COLOR);
 
     auto edgeWidthElement = doc.createElement(Serializer::DataKeywords::Design::EDGE_THICKNESS);
     edgeWidthElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData.edgeWidth() * SCALE))));

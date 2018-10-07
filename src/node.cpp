@@ -73,6 +73,8 @@ Node::Node(const Node & other)
     setSize(other.size());
 
     setText(other.text());
+
+    setTextColor(other.textColor());
 }
 
 void Node::addGraphicsEdge(Edge & edge)
@@ -110,9 +112,14 @@ void Node::adjustSize()
 
 QRectF Node::boundingRect() const
 {
-    // The bounding rect has to cover also child nodes
-    const int margin = m_handleRadius;
-    return QRectF(-size().width() / 2 - margin, -size().height() / 2 - margin, size().width() + margin * 2, size().height() + margin * 2);
+    // Take children into account
+    QRectF nodeBox{-size().width() / 2, -size().height() / 2, size().width(), size().height()};
+    for (auto && handle : m_handles) {
+        auto handleBox = handle->boundingRect();
+        handleBox.translate(handle->pos());
+        nodeBox = nodeBox.united(handleBox);
+    }
+    return nodeBox;
 }
 
 EdgePtr Node::createAndAddGraphicsEdge(NodePtr targetNode)
@@ -153,13 +160,18 @@ void Node::createHandles()
 
     auto addHandle = new NodeHandle(*this, NodeHandle::Role::Add, m_handleRadius);
     addHandle->setParentItem(this);
-    addHandle->setPos({0, size().height() * 0.5f});
+    addHandle->setPos({0, size().height() * 0.5f + m_handleRadius * 0.5f});
     m_handles.push_back(addHandle);
 
     auto colorHandle = new NodeHandle(*this, NodeHandle::Role::Color, m_handleRadius);
     colorHandle->setParentItem(this);
-    colorHandle->setPos({size().width() * 0.5f, 0});
+    colorHandle->setPos({size().width() * 0.5f, size().height() * 0.5f});
     m_handles.push_back(colorHandle);
+
+    auto textColorHandle = new NodeHandle(*this, NodeHandle::Role::TextColor, m_handleRadius);
+    textColorHandle->setParentItem(this);
+    textColorHandle->setPos({size().width() * 0.5f + m_handleRadius * 0.5f, -size().height() * 0.5f});
+    m_handles.push_back(textColorHandle);
 }
 
 std::pair<QPointF, QPointF> Node::getNearestEdgePoints(const Node & node1, const Node & node2)
@@ -264,6 +276,15 @@ void Node::setText(const QString & text)
             adjustSize();
         }
     }
+}
+
+void Node::setTextColor(const QColor & color)
+{
+    NodeBase::setTextColor(color);
+#ifndef HEIMER_UNIT_TEST
+    m_textEdit->setDefaultTextColor(color);
+    m_textEdit->update();
+#endif
 }
 
 QString Node::text() const

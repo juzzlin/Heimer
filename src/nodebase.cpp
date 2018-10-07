@@ -39,6 +39,11 @@ void NodeBase::setLocation(QPointF newLocation)
     m_location = newLocation;
 }
 
+QRectF NodeBase::placementBoundingRect() const
+{
+    return {-size().width() / 2, -size().height() / 2, size().width(), size().height()};
+}
+
 int NodeBase::index() const
 {
     return m_index;
@@ -67,6 +72,16 @@ QColor NodeBase::color() const
 void NodeBase::setColor(const QColor & color)
 {
     m_color = color;
+}
+
+QColor NodeBase::textColor() const
+{
+    return m_textColor;
+}
+
+void NodeBase::setTextColor(const QColor & color)
+{
+    m_textColor = color;
 }
 
 NodeBase::~NodeBase()

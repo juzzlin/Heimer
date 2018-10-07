@@ -116,6 +116,8 @@ private:
 
     QAction * m_setNodeColorAction = nullptr;
 
+    QAction * m_setNodeTextColorAction = nullptr;
+
     QAction * m_deleteNodeAction = nullptr;
 
     QAction * m_deleteRow = nullptr;

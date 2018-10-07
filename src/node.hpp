@@ -50,7 +50,7 @@ public:
 
     void adjustSize();
 
-    virtual QRectF boundingRect () const override;
+    virtual QRectF boundingRect() const override;
 
     using NodePtr = std::shared_ptr<Node>;
     virtual EdgePtr createAndAddGraphicsEdge(NodePtr targetNode);
@@ -72,6 +72,8 @@ public:
     QString text() const override;
 
     void setText(const QString & text) override;
+
+    void setTextColor(const QColor & color) override;
 
 signals:
 

@@ -67,8 +67,9 @@ QRectF EditorScene::getNodeBoundingRectWithHeuristics() const
     {
         if (auto node = dynamic_cast<Node *>(item))
         {
-            rect = rect.united(node->boundingRect().adjusted(node->pos().x(), node->pos().y(), node->pos().x(), node->pos().y()));
-            nodeArea += node->boundingRect().width() * node->boundingRect().height();
+            const auto nodeRect = node->placementBoundingRect();
+            rect = rect.united(nodeRect.translated(node->pos().x(), node->pos().y()));
+            nodeArea += nodeRect.width() * nodeRect.height();
             nodes++;
         }
     }
@@ -78,7 +79,8 @@ QRectF EditorScene::getNodeBoundingRectWithHeuristics() const
     // be super big and cover the whole screen.
     const float coverage = std::pow(nodeArea / rect.width() / rect.height(), std::pow(nodes, 1.5f));
     const float adjust = 1.5f * std::max(coverage * rect.width(), coverage * rect.height());
-    return rect.adjusted(-adjust / 2, -adjust / 2, adjust / 2, adjust / 2);
+    const int margin = 60;
+    return rect.adjusted(-adjust / 2, -adjust / 2, adjust / 2, adjust / 2).adjusted(-margin, -margin, margin, margin);
 }
 
 bool EditorScene::hasEdge(Node & node0, Node & node1)

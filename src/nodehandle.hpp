@@ -31,14 +31,15 @@ public:
 
     enum class Role {
         Add,
-        Color
+        Color,
+        TextColor
     };
 
     NodeHandle(Node & parentNode, Role role, int radius);
 
     virtual ~NodeHandle();
 
-    virtual QRectF boundingRect () const override;
+    virtual QRectF boundingRect() const override;
 
     virtual void paint(QPainter * painter,
         const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;

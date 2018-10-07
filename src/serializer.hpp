@@ -53,6 +53,7 @@ namespace Serializer {
                     static constexpr auto COLOR = "color";
                     static constexpr auto INDEX = "index";
                     static constexpr auto TEXT = "text";
+                    static constexpr auto TEXT_COLOR = "text-color";
                     static constexpr auto X = "x";
                     static constexpr auto Y = "y";
                     static constexpr auto W = "w";

@@ -3,5 +3,6 @@
         <file>about.png</file>
         <file>add.png</file>
         <file>colors.png</file>
+        <file>colorsText.png</file>
     </qresource>
 </RCC>

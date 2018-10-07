@@ -81,6 +81,16 @@ void EditorView::createNodeContextMenuActions()
         }
     });
 
+    m_setNodeTextColorAction = new QAction(tr("Set text color"), &m_nodeContextMenu);
+    QObject::connect(m_setNodeTextColorAction, &QAction::triggered, [this] () {
+        assert(m_mediator.selectedNode());
+        const auto color = QColorDialog::getColor(Qt::white, this);
+        if (color.isValid()) {
+            m_mediator.saveUndoPoint();
+            m_mediator.selectedNode()->setTextColor(color);
+        }
+    });
+
     m_deleteNodeAction = new QAction(tr("Delete node"), &m_nodeContextMenu);
     QObject::connect(m_deleteNodeAction, &QAction::triggered, [this] () {
         assert(m_mediator.selectedNode());
@@ -90,6 +100,7 @@ void EditorView::createNodeContextMenuActions()
 
     // Populate the menu
     m_nodeContextMenu.addAction(m_setNodeColorAction);
+    m_nodeContextMenu.addAction(m_setNodeTextColorAction);
     m_nodeContextMenu.addSeparator();
     m_nodeContextMenu.addAction(m_deleteNodeAction);
 }
@@ -156,6 +167,10 @@ void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
     case NodeHandle::Role::Color:
         m_mediator.setSelectedNode(&nodeHandle.parentNode());
         m_setNodeColorAction->trigger();
+        break;
+    case NodeHandle::Role::TextColor:
+        m_mediator.setSelectedNode(&nodeHandle.parentNode());
+        m_setNodeTextColorAction->trigger();
         break;
     default:
         break;

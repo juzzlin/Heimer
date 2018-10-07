@@ -108,4 +108,40 @@ void EditorDataTest::testUndoEdgeWidth()
     QCOMPARE(editorData.mindMapData()->edgeWidth(), 1.0);
 }
 
+void EditorDataTest::testUndoNodeColor()
+{
+    auto data = std::make_shared<MindMapData>();
+    auto node = std::make_shared<Node>();
+    data->graph().addNode(node);
+
+    EditorData editorData;
+    editorData.setMindMapData(data);
+
+    editorData.saveUndoPoint();
+    const QColor color(1, 1, 1);
+    node->setColor(color);
+
+    editorData.undo();
+
+    QCOMPARE(node->color(), color);
+}
+
+void EditorDataTest::testUndoNodeTextColor()
+{
+    auto data = std::make_shared<MindMapData>();
+    auto node = std::make_shared<Node>();
+    data->graph().addNode(node);
+
+    EditorData editorData;
+    editorData.setMindMapData(data);
+
+    editorData.saveUndoPoint();
+    const QColor color(1, 1, 1);
+    node->setTextColor(color);
+
+    editorData.undo();
+
+    QCOMPARE(node->textColor(), color);
+}
+
 QTEST_GUILESS_MAIN(EditorDataTest)

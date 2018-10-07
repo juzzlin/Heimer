@@ -1,58 +1,72 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<design version="0.0.0">
- <color r="128" b="255" g="200"/>
+<design version="1.2.0">
+ <color r="211" b="207" g="215"/>
+ <edge-width>2500</edge-width>
  <graph>
   <node index="0" h="75000" x="4918" y="56557" w="200000">
    <text>Me</text>
    <color r="138" b="52" g="226"/>
+   <text-color r="238" b="236" g="238"/>
   </node>
-  <node index="1" h="75000" x="-249180" y="-232786" w="200000">
+  <node index="1" h="75000" x="-195734" y="-78020" w="200000">
    <text>Father</text>
-   <color r="252" b="62" g="175"/>
+   <color r="196" b="0" g="160"/>
+   <text-color r="252" b="79" g="233"/>
   </node>
-  <node index="2" h="75000" x="263934" y="-228278" w="200000">
+  <node index="2" h="75000" x="122675" y="-78178" w="200000">
    <text>Mother</text>
    <color r="237" b="0" g="212"/>
+   <text-color r="0" b="0" g="0"/>
   </node>
-  <node index="3" h="75000" x="340277" y="56944" w="200000">
+  <node index="3" h="75000" x="268686" y="56944" w="200000">
    <text>Brother</text>
    <color r="32" b="135" g="74"/>
+   <text-color r="0" b="0" g="0"/>
   </node>
-  <node index="4" h="75000" x="512500" y="-520832" w="200000">
+  <node index="4" h="75000" x="468145" y="-211117" w="200000">
    <text>Grandfather</text>
-   <color r="237" b="0" g="212"/>
+   <color r="0" b="0" g="0"/>
+   <text-color r="136" b="133" g="138"/>
   </node>
-  <node index="5" h="75000" x="181944" y="-516666" w="200000">
+  <node index="5" h="75000" x="141218" y="-233748" w="200000">
    <text>Grandmother</text>
-   <color r="237" b="0" g="212"/>
+   <color r="0" b="0" g="0"/>
+   <text-color r="234" b="207" g="207"/>
   </node>
-  <node index="6" h="75000" x="-504166" y="-520832" w="200000">
+  <node index="6" h="75000" x="-344965" y="-206975" w="200000">
    <text>Grandmother</text>
    <color r="252" b="62" g="175"/>
+   <text-color r="234" b="207" g="207"/>
   </node>
-  <node index="7" h="75000" x="-163888" y="-525000" w="200000">
+  <node index="7" h="75000" x="-95119" y="-226869" w="200000">
    <text>Grandfather</text>
-   <color r="252" b="62" g="175"/>
+   <color r="0" b="0" g="0"/>
+   <text-color r="136" b="133" g="138"/>
   </node>
-  <node index="8" h="75000" x="-396428" y="57142" w="200000">
+  <node index="8" h="75000" x="-319155" y="57142" w="200000">
    <text>Her</text>
    <color r="234" b="207" g="207"/>
+   <text-color r="0" b="0" g="0"/>
   </node>
-  <node index="9" h="75000" x="626470" y="-138725" w="200000">
+  <node index="9" h="75000" x="509424" y="-35315" w="200000">
    <text>Friend</text>
    <color r="136" b="133" g="138"/>
+   <text-color r="0" b="0" g="0"/>
   </node>
-  <node index="10" h="75000" x="-229032" y="295967" w="200000">
+  <node index="10" h="75000" x="-202895" y="186876" w="200000">
    <text>Friend</text>
    <color r="136" b="133" g="138"/>
+   <text-color r="0" b="0" g="0"/>
   </node>
-  <node index="11" h="75000" x="33870" y="300000" w="200000">
+  <node index="11" h="75000" x="35006" y="187500" w="200000">
    <text>Friend</text>
    <color r="136" b="133" g="138"/>
+   <text-color r="0" b="0" g="0"/>
   </node>
-  <node index="12" h="75000" x="369354" y="300806" w="200000">
+  <node index="12" h="75000" x="308540" y="186363" w="200000">
    <text>Mrs. Friend</text>
-   <color r="211" b="207" g="215"/>
+   <color r="238" b="236" g="238"/>
+   <text-color r="0" b="0" g="0"/>
   </node>
   <edge index1="10" index0="0">
    <text></text>
@@ -76,13 +90,13 @@
    <text></text>
   </edge>
   <edge index1="7" index0="1">
-   <text></text>
+   <text>Passed away</text>
   </edge>
   <edge index1="5" index0="2">
-   <text></text>
+   <text>Passed away</text>
   </edge>
   <edge index1="4" index0="2">
-   <text></text>
+   <text>Passed away</text>
   </edge>
   <edge index1="9" index0="3">
    <text></text>

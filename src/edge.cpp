@@ -26,6 +26,7 @@
 #include <QGraphicsEllipseItem>
 #include <QPen>
 #include <QTimer>
+#include <QVector2D>
 
 #include <cassert>
 #include <cmath>
@@ -120,7 +121,7 @@ void Edge::setWidth(double width)
     m_arrowheadL->update();
     m_arrowheadR->setPen(pen());
     m_arrowheadR->update();
-    update();
+    updateLine();
 }
 
 void Edge::setText(const QString & text)
@@ -194,7 +195,13 @@ void Edge::updateLabel()
 void Edge::updateLine()
 {
     const auto nearestPoints = Node::getNearestEdgePoints(sourceNode(), targetNode());
-    setLine(QLineF(nearestPoints.first + sourceNode().pos(), nearestPoints.second + targetNode().pos()));
+    const auto p1 = nearestPoints.first + sourceNode().pos();
+    const auto p2 = nearestPoints.second + targetNode().pos();
+
+    QVector2D direction(p2 - p1);
+    direction.normalize();
+
+    setLine(QLineF(p1 + (direction * m_width).toPointF() * 0.5f, p2 - (direction * m_width).toPointF() * 0.5f));
     updateDots(nearestPoints);
     updateLabel();
     updateArrowhead();

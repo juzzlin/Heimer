@@ -53,6 +53,7 @@ void NodeHandle::paint(QPainter * painter,
     };
 
     painter->save();
+    painter->setRenderHint(QPainter::SmoothPixmapTransform);
     painter->drawPixmap(-m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height(), pixmapMap[role()]);
     painter->restore();
 }

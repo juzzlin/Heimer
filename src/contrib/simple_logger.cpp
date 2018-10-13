@@ -1,0 +1,313 @@
+// MIT License
+//
+// Copyright (c) 2018 Jussi Lind <jussi.lind@iki.fi>
+//
+// https://github.com/juzzlin/SimpleLogger
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include "simple_logger.hpp"
+
+#include <ctime>
+#include <fstream>
+#include <iostream>
+#include <map>
+#include <stdexcept>
+
+#ifdef Q_OS_ANDROID
+#include <QDebug>
+#else
+#include <cstdio>
+#endif
+
+namespace juzzlin {
+
+class Logger::Impl
+{
+public:
+
+    Impl();
+
+    ~Impl();
+
+    std::ostringstream & trace();
+
+    std::ostringstream & debug();
+
+    std::ostringstream & info();
+
+    std::ostringstream & warning();
+
+    std::ostringstream & error();
+
+    std::ostringstream & fatal();
+
+    static void enableEchoMode(bool enable);
+
+    static void enableDateTime(bool enable);
+
+    static void setLevelSymbol(Logger::Level level, std::string symbol);
+
+    static void setLoggingLevel(Logger::Level level);
+
+    static void init(std::string filename, bool append);
+
+    void flush();
+
+    std::ostringstream & getStream(Logger::Level level);
+
+    void prefixDateTime();
+
+private:
+
+    static bool m_echoMode;
+
+    static bool m_dateTime;
+
+    static Logger::Level m_level;
+
+    static std::ofstream m_fout;
+
+    using SymbolMap = std::map<Logger::Level, std::string>;
+    static SymbolMap m_symbols;
+
+    using StreamMap = std::map<Logger::Level, std::ostream *>;
+    static StreamMap m_streams;
+
+    Logger::Level m_activeLevel = Logger::Level::Info;
+
+    std::ostringstream m_oss;
+};
+
+bool Logger::Impl::m_echoMode = true;
+
+bool Logger::Impl::m_dateTime = true;
+
+Logger::Level Logger::Impl::m_level = Logger::Level::Info;
+
+std::ofstream Logger::Impl::m_fout;
+
+// Default level symbols
+Logger::Impl::SymbolMap Logger::Impl::m_symbols = {
+    {Logger::Level::Trace,   "T:"},
+    {Logger::Level::Debug,   "D:"},
+    {Logger::Level::Info,    "I:"},
+    {Logger::Level::Warning, "W:"},
+    {Logger::Level::Error,   "E:"},
+    {Logger::Level::Fatal,   "F:"}
+};
+
+// Default streams
+Logger::Impl::StreamMap Logger::Impl::m_streams = {
+    {Logger::Level::Trace,   &std::cout},
+    {Logger::Level::Debug,   &std::cout},
+    {Logger::Level::Info,    &std::cout},
+    {Logger::Level::Warning, &std::cerr},
+    {Logger::Level::Error,   &std::cerr},
+    {Logger::Level::Fatal,   &std::cerr}
+};
+
+Logger::Impl::Impl()
+{
+}
+
+Logger::Impl::~Impl()
+{
+    flush();
+}
+
+void Logger::Impl::enableEchoMode(bool enable)
+{
+    Impl::m_echoMode = enable;
+}
+
+void Logger::Impl::enableDateTime(bool enable)
+{
+    Impl::m_dateTime = enable;
+}
+
+std::ostringstream & Logger::Impl::getStream(Logger::Level level)
+{
+    m_activeLevel = level;
+    Impl::prefixDateTime();
+    m_oss << Impl::m_symbols[level] << " ";
+    return m_oss;
+}
+
+void Logger::Impl::setLevelSymbol(Level level, std::string symbol)
+{
+    Impl::m_symbols[level] = symbol;
+}
+
+void Logger::Impl::setLoggingLevel(Logger::Level level)
+{
+    Impl::m_level = level;
+}
+
+void Logger::Impl::prefixDateTime()
+{
+    if (Impl::m_dateTime)
+    {
+        time_t rawTime;
+        time(&rawTime);
+        std::string timeStr(ctime(&rawTime));
+        timeStr.erase(timeStr.length() - 1);
+        m_oss << "[" << timeStr << "] ";
+    }
+}
+
+void Logger::Impl::flush()
+{
+    if (m_activeLevel < m_level)
+    {
+        return;
+    }
+
+    if (!m_oss.str().size())
+    {
+        return;
+    }
+
+    if (Impl::m_fout.is_open())
+    {
+        Impl::m_fout << m_oss.str() << std::endl;
+        Impl::m_fout.flush();
+    }
+
+    if (Impl::m_echoMode)
+    {
+#ifdef Q_OS_ANDROID
+        qDebug() << m_oss.str().c_str();
+#else
+        auto stream = Impl::m_streams[m_activeLevel];
+        if (stream) {
+            *stream << m_oss.str() << std::endl;
+            stream->flush();
+        }
+#endif
+    }
+}
+
+void Logger::Impl::init(std::string filename, bool append)
+{
+    if (!filename.empty())
+    {
+        Impl::m_fout.open(filename, append ? std::ofstream::out | std::ofstream::app : std::ofstream::out);
+        if (!Impl::m_fout.is_open())
+        {
+            throw std::runtime_error("ERROR!!: Couldn't open '" + filename + "' for write.\n");
+        }
+    }
+}
+
+std::ostringstream & Logger::Impl::trace()
+{
+    return getStream(Logger::Level::Trace);
+}
+
+std::ostringstream & Logger::Impl::debug()
+{
+    return getStream(Logger::Level::Debug);
+}
+
+std::ostringstream & Logger::Impl::info()
+{
+    return getStream(Logger::Level::Info);
+}
+
+std::ostringstream & Logger::Impl::warning()
+{
+    return getStream(Logger::Level::Warning);
+}
+
+std::ostringstream & Logger::Impl::error()
+{
+    return getStream(Logger::Level::Error);
+}
+
+std::ostringstream & Logger::Impl::fatal()
+{
+    return getStream(Logger::Level::Fatal);
+}
+
+Logger::Logger()
+    : m_impl(new Logger::Impl)
+{
+}
+
+void Logger::init(std::string filename, bool append)
+{
+    Impl::init(filename, append);
+}
+
+void Logger::enableEchoMode(bool enable)
+{
+    Impl::enableEchoMode(enable);
+}
+
+void Logger::enableDateTime(bool enable)
+{
+    Impl::enableDateTime(enable);
+}
+
+void Logger::setLoggingLevel(Level level)
+{
+    Impl::setLoggingLevel(level);
+}
+
+void Logger::setLevelSymbol(Level level, std::string symbol)
+{
+    Impl::setLevelSymbol(level, symbol);
+}
+
+std::ostringstream & Logger::trace()
+{
+    return m_impl->trace();
+}
+
+std::ostringstream & Logger::debug()
+{
+    return m_impl->debug();
+}
+
+std::ostringstream & Logger::info()
+{
+    return m_impl->info();
+}
+
+std::ostringstream & Logger::warning()
+{
+    return m_impl->warning();
+}
+
+std::ostringstream & Logger::error()
+{
+    return m_impl->error();
+}
+
+std::ostringstream & Logger::fatal()
+{
+    return m_impl->fatal();
+}
+
+Logger::~Logger() = default;
+
+} // juzzlin

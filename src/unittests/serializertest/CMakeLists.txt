@@ -19,7 +19,7 @@ set(SRC ${NAME}.cpp
     ${EDITOR_DIR}/nodehandle.cpp
     ${EDITOR_DIR}/serializer.cpp
     ${EDITOR_DIR}/textedit.cpp
-    ${EDITOR_DIR}/contrib/mclogger.cc
+    ${EDITOR_DIR}/contrib/simple_logger.cpp
     )
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/unittests)

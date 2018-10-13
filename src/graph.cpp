@@ -16,7 +16,7 @@
 #include "graph.hpp"
 #include "nodebase.hpp"
 
-#include "contrib/mclogger.hh"
+#include "contrib/simple_logger.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -183,5 +183,5 @@ Graph::NodeVector Graph::getNodesConnectedToNode(NodeBasePtr node)
 
 Graph::~Graph()
 {
-    MCLogger().debug() << "Graph deleted";
+    juzzlin::L().debug() << "Graph deleted";
 }

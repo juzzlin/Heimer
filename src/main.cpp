@@ -20,7 +20,7 @@
 #include "config.hpp"
 #include "hashseed.hpp"
 #include "userexception.hpp"
-#include "mclogger.hh"
+#include "simple_logger.hpp"
 
 #include <cstdlib>
 #include <iostream>
@@ -30,13 +30,22 @@
 
 static void initLogger()
 {
-    QString logPath = QDir::tempPath() + QDir::separator() + "heimer.log";
-    MCLogger::init(logPath.toStdString().c_str());
-    MCLogger::enableEchoMode(true);
-    MCLogger::enableDateTimePrefix(true);
-    MCLogger().info() << Config::QSETTINGS_SOFTWARE_NAME << " version " << VERSION;
-    MCLogger().info() << Config::COPYRIGHT;
-    MCLogger().info() << "Compiled against Qt version " << QT_VERSION_STR;
+    using juzzlin::L;
+
+    const QString logPath{QDir::tempPath() + QDir::separator() + "heimer.log"};
+    L::init(logPath.toStdString().c_str());
+    L::enableEchoMode(true);
+    L::enableDateTime(true);
+
+#ifdef NDEBUG
+    L::setLoggingLevel(L::Level::Info);
+#else
+    L::setLoggingLevel(L::Level::Debug);
+#endif
+
+    L().info() << Config::QSETTINGS_SOFTWARE_NAME << " version " << VERSION;
+    L().info() << Config::COPYRIGHT;
+    L().info() << "Compiled against Qt version " << QT_VERSION_STR;
 }
 
 int main(int argc, char ** argv)

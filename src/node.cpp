@@ -21,7 +21,7 @@
 #include "nodehandle.hpp"
 #include "textedit.hpp"
 
-#include "mclogger.hh"
+#include "simple_logger.hpp"
 
 #include <QGraphicsDropShadowEffect>
 #include <QPainter>
@@ -302,5 +302,5 @@ void Node::updateEdgeLines()
 
 Node::~Node()
 {
-    MCLogger().debug() << "Node deleted: " << index();
+    juzzlin::L().debug() << "Node deleted: " << index();
 }

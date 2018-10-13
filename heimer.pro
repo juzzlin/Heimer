@@ -51,7 +51,7 @@ HEADERS +=  \
     $$SRC/textedit.hpp \
     $$SRC/undostack.hpp \
     $$SRC/writer.hpp \
-    $$SRC/contrib/mclogger.hh \
+    $$SRC/contrib/simple_logger.hpp \
 
 SOURCES += \
     $$SRC/aboutdlg.cpp \

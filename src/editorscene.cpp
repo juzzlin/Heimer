@@ -17,7 +17,7 @@
 #include "edge.hpp"
 #include "node.hpp"
 
-#include "contrib/mclogger.hh"
+#include "contrib/simple_logger.hpp"
 
 #include <cmath>
 #include <QGraphicsLineItem>
@@ -115,5 +115,5 @@ EditorScene::~EditorScene()
 {
     removeItems();
 
-    MCLogger().debug() << "EditorScene deleted";
+    juzzlin::L().debug() << "EditorScene deleted";
 }

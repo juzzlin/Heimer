@@ -21,7 +21,7 @@
 #include "editorview.hpp"
 #include "mainwindow.hpp"
 
-#include "mclogger.hh"
+#include "simple_logger.hpp"
 
 #include <QGraphicsItem>
 #include <QGraphicsScene>
@@ -30,6 +30,7 @@
 #include <cassert>
 
 using std::dynamic_pointer_cast;
+using juzzlin::L;
 
 Mediator::Mediator(MainWindow & mainWindow)
     : m_mainWindow(mainWindow)
@@ -46,7 +47,7 @@ void Mediator::addExistingGraphToScene()
         if (dynamic_pointer_cast<QGraphicsItem>(node)->scene() != m_editorScene.get())
         {
             addItem(*dynamic_pointer_cast<Node>(node));
-            MCLogger().debug() << "Added an existing node " << node->index() << " to scene";
+            L().debug() << "Added an existing node " << node->index() << " to scene";
         }
     }
 
@@ -64,7 +65,7 @@ void Mediator::addExistingGraphToScene()
             node0->addGraphicsEdge(*graphicsEdge);
             node1->addGraphicsEdge(*graphicsEdge);
             graphicsEdge->updateLine();
-            MCLogger().debug() << "Added an existing edge " << node0->index() << " -> " << node1->index() << " to scene";
+            L().debug() << "Added an existing edge " << node0->index() << " -> " << node1->index() << " to scene";
         }
     }
 
@@ -115,14 +116,14 @@ NodeBasePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
     auto node1 = m_editorData->addNodeAt(pos);
     assert(node1);
     connectNodeToUndoMechanism(node1);
-    MCLogger().debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
+    L().debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
 
     auto node0 = dynamic_pointer_cast<Node>(getNodeByIndex(sourceNodeIndex));
     assert(node0);
 
     // Add edge from the parent node.
     connectEdgeToUndoMechanism(m_editorData->addEdge(std::make_shared<Edge>(*node0, *node1)));
-    MCLogger().debug() << "Created a new edge " << node0->index() << " -> " << node1->index();
+    L().debug() << "Created a new edge " << node0->index() << " -> " << node1->index();
 
     addExistingGraphToScene();
 
@@ -134,7 +135,7 @@ NodeBasePtr Mediator::createAndAddNode(QPointF pos)
     auto node1 = m_editorData->addNodeAt(pos);
     assert(node1);
     connectNodeToUndoMechanism(node1);
-    MCLogger().debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
+    L().debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
 
     addExistingGraphToScene();
 
@@ -167,7 +168,7 @@ void Mediator::deleteNode(Node & node)
         {
             connectEdgeToUndoMechanism(m_editorData->addEdge(
                 std::make_shared<Edge>(*dynamic_pointer_cast<Node>(node0), *dynamic_pointer_cast<Node>(node1))));
-            MCLogger().debug() << "Created a new edge " << node0->index() << " -> " << node1->index();
+            L().debug() << "Created a new edge " << node0->index() << " -> " << node1->index();
 
             addExistingGraphToScene();
         }
@@ -185,7 +186,7 @@ void Mediator::exportToPNG(QString filename, QSize size, bool transparentBackgro
 {
     zoomForExport();
 
-    MCLogger().info() << "Exporting a PNG image of size (" << size.width() << "x" << size.height() << ") to " << filename.toStdString();
+    L().info() << "Exporting a PNG image of size (" << size.width() << "x" << size.height() << ") to " << filename.toStdString();
 
     QImage image(size, QImage::Format_ARGB32);
     image.fill(transparentBackground ? Qt::transparent : m_editorData->backgroundColor());
@@ -215,7 +216,7 @@ bool Mediator::hasNodes() const
 
 void Mediator::initializeNewMindMap()
 {
-    MCLogger().debug() << "Initializing a new mind map";
+    L().debug() << "Initializing a new mind map";
 
     assert(m_editorData);
 
@@ -236,7 +237,7 @@ void Mediator::initializeNewMindMap()
 
 void Mediator::initializeView()
 {
-    MCLogger().debug() << "Initializing view";
+    L().debug() << "Initializing view";
 
     // Set scene to the view
     m_editorView->setScene(m_editorScene.get());
@@ -312,7 +313,7 @@ bool Mediator::openMindMap(QString fileName)
 
 void Mediator::redo()
 {
-    MCLogger().debug() << "Undo..";
+    L().debug() << "Undo..";
 
     m_editorView->resetDummyDragItems();
     m_editorData->redo();
@@ -335,7 +336,7 @@ bool Mediator::saveMindMap()
 
 void Mediator::saveUndoPoint()
 {
-    MCLogger().debug() << "Saving undo point..";
+    L().debug() << "Saving undo point..";
 
     m_editorData->saveUndoPoint();
 }
@@ -416,7 +417,7 @@ void Mediator::setupMindMapAfterUndoOrRedo()
 
 void Mediator::undo()
 {
-    MCLogger().debug() << "Undo..";
+    L().debug() << "Undo..";
 
     m_editorView->resetDummyDragItems();
     m_editorData->undo();

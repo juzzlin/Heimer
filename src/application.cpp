@@ -24,7 +24,7 @@
 #include "statemachine.hpp"
 #include "userexception.hpp"
 
-#include "contrib/mclogger.hh"
+#include "contrib/simple_logger.hpp"
 
 #include <QColorDialog>
 #include <QFileDialog>
@@ -37,6 +37,8 @@
 #include <iostream>
 
 namespace {
+
+using juzzlin::L;
 
 static const QString FILE_EXTENSION(Config::FILE_EXTENSION);
 
@@ -61,11 +63,11 @@ static void initTranslations(QTranslator & appTranslator, QGuiApplication & app,
     if (appTranslator.load(Config::TRANSLATIONS_RESOURCE_BASE + lang))
     {
         app.installTranslator(&appTranslator);
-        MCLogger().info() << "Loaded translations for " << lang.toStdString();
+        L().info() << "Loaded translations for " << lang.toStdString();
     }
     else
     {
-        MCLogger().warning() << "Failed to load translations for " << lang.toStdString();
+        L().warning() << "Failed to load translations for " << lang.toStdString();
     }
 }
 
@@ -220,7 +222,7 @@ void Application::openArgMindMap()
 
 void Application::openMindMap()
 {
-    MCLogger().debug() << "Open file";
+    L().debug() << "Open file";
 
     const auto path = loadRecentPath();
     const auto fileName = QFileDialog::getOpenFileName(m_mainWindow.get(), tr("Open File"), path, getFileDialogFileText());
@@ -232,7 +234,7 @@ void Application::openMindMap()
 
 void Application::doOpenMindMap(QString fileName)
 {
-    MCLogger().debug() << "Opening '" << fileName.toStdString();
+    L().debug() << "Opening '" << fileName.toStdString();
 
     if (m_mediator->openMindMap(fileName))
     {
@@ -248,12 +250,12 @@ void Application::doOpenMindMap(QString fileName)
 
 void Application::saveMindMap()
 {
-    MCLogger().debug() << "Save..";
+    L().debug() << "Save..";
 
     if (!m_mediator->saveMindMap())
     {
         const auto msg = QString(tr("Failed to save file."));
-        MCLogger().error() << msg.toStdString();
+        L().error() << msg.toStdString();
         showMessageBox(msg);
         emit actionTriggered(StateMachine::Action::MindMapSaveFailed);
         return;
@@ -266,7 +268,7 @@ void Application::saveMindMap()
 
 void Application::saveMindMapAs()
 {
-    MCLogger().debug() << "Save as..";
+    L().debug() << "Save as..";
 
     QString fileName = QFileDialog::getSaveFileName(
         m_mainWindow.get(),
@@ -287,13 +289,13 @@ void Application::saveMindMapAs()
     if (m_mediator->saveMindMapAs(fileName))
     {
         const auto msg = QString(tr("File '")) + fileName + tr("' saved.");
-        MCLogger().debug() << msg.toStdString();
+        L().debug() << msg.toStdString();
         emit actionTriggered(StateMachine::Action::MindMapSavedAs);
     }
     else
     {
         const auto msg = QString(tr("Failed to save file as '") + fileName + "'.");
-        MCLogger().error() << msg.toStdString();
+        L().error() << msg.toStdString();
         showMessageBox(msg);
         emit actionTriggered(StateMachine::Action::MindMapSaveAsFailed);
     }

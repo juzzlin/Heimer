@@ -27,7 +27,7 @@
 #include "draganddropstore.hpp"
 #include "edge.hpp"
 #include "graphicsfactory.hpp"
-#include "mclogger.hh"
+#include "simple_logger.hpp"
 #include "mediator.hpp"
 #include "mindmapdata.hpp"
 #include "node.hpp"
@@ -35,6 +35,8 @@
 
 #include <cassert>
 #include <cstdlib>
+
+using juzzlin::L;
 
 EditorView::EditorView(Mediator & mediator)
     : m_mediator(mediator)
@@ -304,7 +306,7 @@ void EditorView::resetDummyDragItems()
     delete m_dummyDragNode;
     m_dummyDragNode = nullptr;
 
-    MCLogger().debug() << "Dummy drag item reset";
+    L().debug() << "Dummy drag item reset";
 }
 
 void EditorView::showDummyDragEdge(bool show)
@@ -313,7 +315,7 @@ void EditorView::showDummyDragEdge(bool show)
     {
         if (!m_dummyDragEdge)
         {
-            MCLogger().debug() << "Creating a new dummy drag edge";
+            L().debug() << "Creating a new dummy drag edge";
             m_dummyDragEdge = new Edge(*sourceNode, *m_dummyDragNode);
             m_dummyDragEdge->setOpacity(0.5f);
             scene()->addItem(m_dummyDragEdge);
@@ -333,7 +335,7 @@ void EditorView::showDummyDragNode(bool show)
 {
     if (!m_dummyDragNode)
     {
-        MCLogger().debug() << "Creating a new dummy drag node";
+        L().debug() << "Creating a new dummy drag node";
         m_dummyDragNode = new Node;
         scene()->addItem(m_dummyDragNode);
     }

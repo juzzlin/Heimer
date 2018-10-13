@@ -16,7 +16,7 @@
 #include "statemachine.hpp"
 #include "mediator.hpp"
 
-#include "contrib/mclogger.hh"
+#include "contrib/simple_logger.hpp"
 
 StateMachine::StateMachine()
 {
@@ -122,7 +122,7 @@ void StateMachine::calculateState(StateMachine::Action action)
         break;
 
     default:
-        MCLogger().warning() << "Action " << static_cast<int>(action) << " not handled!";
+        juzzlin::L().warning() << "Action " << static_cast<int>(action) << " not handled!";
     };
 
     emit stateChanged(m_state);

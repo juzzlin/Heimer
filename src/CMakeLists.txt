@@ -30,7 +30,7 @@ set(SRC
     textedit.cpp
     undostack.cpp
     userexception.hpp
-    contrib/mclogger.cc
+    contrib/simple_logger.cpp
     layers.hpp
     writer.cpp
 )

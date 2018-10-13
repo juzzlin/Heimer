@@ -18,7 +18,7 @@
 #include "config.hpp"
 #include "aboutdlg.hpp"
 #include "mediator.hpp"
-#include "mclogger.hh"
+#include "simple_logger.hpp"
 
 #include <QAction>
 #include <QApplication>

@@ -17,7 +17,7 @@
 #include "config.hpp"
 #include "graph.hpp"
 #include "node.hpp"
-#include "mclogger.hh"
+#include "simple_logger.hpp"
 
 #include <cassert>
 #include <functional>
@@ -108,7 +108,7 @@ static QString readFirstTextNodeContent(const QDomElement & element)
 
 static void elementWarning(const QDomElement & element)
 {
-    MCLogger().warning() << "Unknown element '" << element.nodeName().toStdString() << "'";
+    juzzlin::L().warning() << "Unknown element '" << element.nodeName().toStdString() << "'";
 }
 
 // Generic helper that loops through element's children

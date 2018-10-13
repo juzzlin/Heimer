@@ -20,7 +20,7 @@
 #include "node.hpp"
 #include "edgetextedit.hpp"
 
-#include "contrib/mclogger.hh"
+#include "contrib/simple_logger.hpp"
 
 #include <QBrush>
 #include <QGraphicsEllipseItem>
@@ -220,5 +220,5 @@ Edge::~Edge()
     sourceNode().removeGraphicsEdge(*this);
     targetNode().removeGraphicsEdge(*this);
 
-    MCLogger().debug() << "Edge deleted: " << sourceNode().index() << " -> " << targetNode().index();
+    juzzlin::L().debug() << "Edge deleted: " << sourceNode().index() << " -> " << targetNode().index();
 }

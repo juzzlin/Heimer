@@ -16,7 +16,7 @@
 #include "graph.hpp"
 #include "nodebase.hpp"
 
-#include "contrib/simple_logger.hpp"
+#include "simple_logger.hpp"
 
 #include <algorithm>
 #include <cassert>

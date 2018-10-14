@@ -24,7 +24,7 @@
 #include "statemachine.hpp"
 #include "userexception.hpp"
 
-#include "contrib/simple_logger.hpp"
+#include "simple_logger.hpp"
 
 #include <QColorDialog>
 #include <QFileDialog>

@@ -16,7 +16,7 @@
 #include "statemachine.hpp"
 #include "mediator.hpp"
 
-#include "contrib/simple_logger.hpp"
+#include "simple_logger.hpp"
 
 StateMachine::StateMachine()
 {

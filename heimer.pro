@@ -17,7 +17,7 @@ contains(QT_VERSION, ^5\\..*) {
 
 SRC = src
 
-INCLUDEPATH += . $$SRC/contrib
+INCLUDEPATH += . $$SRC/contrib/SimpleLogger/src
 
 # Input
 HEADERS +=  \
@@ -51,7 +51,7 @@ HEADERS +=  \
     $$SRC/textedit.hpp \
     $$SRC/undostack.hpp \
     $$SRC/writer.hpp \
-    $$SRC/contrib/simple_logger.hpp \
+    $$SRC/contrib/SimpleLogger/src/simple_logger.hpp \
 
 SOURCES += \
     $$SRC/aboutdlg.cpp \
@@ -82,7 +82,7 @@ SOURCES += \
     $$SRC/textedit.cpp \
     $$SRC/undostack.cpp \
     $$SRC/writer.cpp \
-    $$SRC/contrib/mclogger.cc \
+    $$SRC/contrib/SimpleLogger/src/simple_logger.cpp \
 
 
 RESOURCES += data/icons/icons.qrc data/images/images.qrc data/translations/translations.qrc

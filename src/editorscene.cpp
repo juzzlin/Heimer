@@ -17,7 +17,7 @@
 #include "edge.hpp"
 #include "node.hpp"
 
-#include "contrib/simple_logger.hpp"
+#include "simple_logger.hpp"
 
 #include <cmath>
 #include <QGraphicsLineItem>

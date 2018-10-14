@@ -1,3 +1,6 @@
+add_subdirectory(contrib/SimpleLogger)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/contrib/SimpleLogger/src)
+
 # Set sources
 set(SRC
     aboutdlg.cpp
@@ -30,7 +33,6 @@ set(SRC
     textedit.cpp
     undostack.cpp
     userexception.hpp
-    contrib/simple_logger.cpp
     layers.hpp
     writer.cpp
 )
@@ -40,8 +42,6 @@ set(RCS
     ${CMAKE_SOURCE_DIR}/data/icons/icons.qrc
     ${CMAKE_SOURCE_DIR}/data/translations/translations.qrc
 )
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/contrib)
 
 qt5_add_resources(RC_SRC ${RCS})
 qt5_add_translation(QM ${TS_FILES})
@@ -79,4 +79,4 @@ endif()
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 add_executable(${BINARY_NAME} WIN32 ${SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
 
-target_link_libraries(${BINARY_NAME} Qt5::Widgets Qt5::Xml)
+target_link_libraries(${BINARY_NAME} Qt5::Widgets Qt5::Xml SimpleLogger)

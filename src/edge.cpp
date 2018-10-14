@@ -20,7 +20,7 @@
 #include "node.hpp"
 #include "edgetextedit.hpp"
 
-#include "contrib/simple_logger.hpp"
+#include "simple_logger.hpp"
 
 #include <QBrush>
 #include <QGraphicsEllipseItem>

@@ -201,6 +201,8 @@ std::pair<QPointF, QPointF> Node::getNearestEdgePoints(const Node & node1, const
 
 void Node::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 {
+    checkHandleVisibility(event->pos());
+
     QGraphicsItem::hoverEnterEvent(event);
 }
 
@@ -213,9 +215,16 @@ void Node::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
 
 void Node::hoverMoveEvent(QGraphicsSceneHoverEvent * event)
 {
+    checkHandleVisibility(event->pos());
+
+    QGraphicsItem::hoverMoveEvent(event);
+}
+
+void Node::checkHandleVisibility(QPointF pos)
+{
     // Bounding box without children
     const QRectF bbox{-size().width() / 2, -size().height() / 2, size().width(), size().height()};
-    if (bbox.contains(event->pos()))
+    if (bbox.contains(pos))
     {
         setHandlesVisible(true);
     }

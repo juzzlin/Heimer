@@ -83,6 +83,8 @@ signals:
 
 private:
 
+    void checkHandleVisibility(QPointF pos);
+
     void createEdgePoints();
 
     void createHandles();

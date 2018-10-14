@@ -201,7 +201,7 @@ void Edge::updateLine()
     QVector2D direction(p2 - p1);
     direction.normalize();
 
-    setLine(QLineF(p1 + (direction * m_width).toPointF() * 0.5f, p2 - (direction * m_width).toPointF() * 0.5f));
+    setLine(QLineF(p1, p2 - (direction * m_width).toPointF() * 0.5f));
     updateDots(nearestPoints);
     updateLabel();
     updateArrowhead();

@@ -24,6 +24,7 @@
 #include "simple_logger.hpp"
 
 #include <QGraphicsDropShadowEffect>
+#include <QGraphicsSceneHoverEvent>
 #include <QPainter>
 #include <QPen>
 #include <QVector2D>
@@ -200,8 +201,6 @@ std::pair<QPointF, QPointF> Node::getNearestEdgePoints(const Node & node1, const
 
 void Node::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 {
-    setHandlesVisible(true);
-
     QGraphicsItem::hoverEnterEvent(event);
 }
 
@@ -210,6 +209,16 @@ void Node::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
     setHandlesVisible(false);
 
     QGraphicsItem::hoverLeaveEvent(event);
+}
+
+void Node::hoverMoveEvent(QGraphicsSceneHoverEvent * event)
+{
+    // Bounding box without children
+    QRectF bbox{-size().width() / 2, -size().height() / 2, size().width(), size().height()};
+    if (bbox.contains(event->pos()))
+    {
+        setHandlesVisible(true);
+    }
 }
 
 void Node::initTextField()

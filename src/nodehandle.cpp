@@ -72,19 +72,28 @@ void NodeHandle::setVisible(bool visible)
 {
     if (visible)
     {
-        QGraphicsItem::setVisible(true);
-        m_sizeAnimation.setStartValue(0.0f);
-        m_sizeAnimation.setEndValue(1.0f);
+        if (!m_visible)
+        {
+            QGraphicsItem::setVisible(true);
+
+            m_visible = true;
+            m_sizeAnimation.setStartValue(0.0f);
+            m_sizeAnimation.setEndValue(1.0f);
+            m_sizeAnimation.stop();
+            m_sizeAnimation.start();
+        }
     }
     else
     {
-        m_sizeAnimation.setStartValue(scale());
-        m_sizeAnimation.setEndValue(0.0f);
+        if (m_visible)
+        {
+            m_visible = false;
+            m_sizeAnimation.setStartValue(scale());
+            m_sizeAnimation.setEndValue(0.0f);
+            m_sizeAnimation.stop();
+            m_sizeAnimation.start();
+        }
     }
-
-    // Reset the animation
-    m_sizeAnimation.stop();
-    m_sizeAnimation.start();
 }
 
 NodeHandle::~NodeHandle()

@@ -61,6 +61,9 @@ private:
     QPropertyAnimation m_sizeAnimation;
 
     QSize m_size;
+
+    // Logical state
+    bool m_visible = false;
 };
 
 #endif // NODEHANDLE_HPP

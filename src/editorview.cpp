@@ -194,6 +194,7 @@ void EditorView::initiateNewNodeDrag(NodeHandle & nodeHandle)
     assert(parentNode);
     m_mediator.dadStore().setSourceNode(parentNode, DragAndDropStore::Action::CreateNode);
     m_mediator.dadStore().setSourcePos(nodeHandle.pos());
+    parentNode->hoverLeaveEvent(nullptr);
     // Change cursor to the closed hand cursor.
     QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
 }

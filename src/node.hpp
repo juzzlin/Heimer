@@ -18,6 +18,7 @@
 
 #include <QObject>
 #include <QGraphicsItem>
+#include <QTimer>
 
 #include <vector>
 #include <map>
@@ -69,7 +70,7 @@ public:
 
     static std::pair<QPointF, QPointF> getNearestEdgePoints(const Node & node1, const Node & node2);
 
-    void setHandlesVisible(bool visible);
+    void setHandlesVisible(bool visible, bool all = true);
 
     QString text() const override;
 
@@ -88,6 +89,8 @@ private:
     void createEdgePoints();
 
     void createHandles();
+
+    NodeHandle * hitsHandle(QPointF pos);
 
     void initTextField();
 
@@ -112,6 +115,12 @@ private:
     const float m_minWidth = 200;
 
     TextEdit * m_textEdit;
+
+    QTimer m_handleVisibilityTimer;
+
+    QPointF m_currentMousePos;
+
+    bool m_mouseIn = false;
 };
 
 using NodePtr = std::shared_ptr<Node>;

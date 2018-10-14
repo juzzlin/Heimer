@@ -45,11 +45,15 @@ public:
     virtual void paint(QPainter * painter,
         const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
 
+    bool contains(const QPointF & pos);
+
     void setVisible(bool visible);
 
     Role role() const;
 
     Node & parentNode() const;
+
+    int radius() const;
 
 private:
 

@@ -60,6 +60,13 @@ Node::Node()
     });
 
     connect(m_textEdit, &TextEdit::undoPointRequested, this, &Node::undoPointRequested);
+
+    m_handleVisibilityTimer.setSingleShot(true);
+    m_handleVisibilityTimer.setInterval(2000);
+
+    connect(&m_handleVisibilityTimer, &QTimer::timeout, [=] () {
+        setHandlesVisible(false, false);
+    });
 }
 
 Node::Node(const Node & other)
@@ -201,6 +208,9 @@ std::pair<QPointF, QPointF> Node::getNearestEdgePoints(const Node & node1, const
 
 void Node::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 {
+    m_currentMousePos = event->pos();
+    m_mouseIn = true;
+
     checkHandleVisibility(event->pos());
 
     QGraphicsItem::hoverEnterEvent(event);
@@ -208,13 +218,20 @@ void Node::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 
 void Node::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
 {
+    m_mouseIn = false;
+
     setHandlesVisible(false);
 
-    QGraphicsItem::hoverLeaveEvent(event);
+    if (event) // EditorView may call this with a null event
+    {
+        QGraphicsItem::hoverLeaveEvent(event);
+    }
 }
 
 void Node::hoverMoveEvent(QGraphicsSceneHoverEvent * event)
 {
+    m_currentMousePos = event->pos();
+
     checkHandleVisibility(event->pos());
 
     QGraphicsItem::hoverMoveEvent(event);
@@ -226,8 +243,30 @@ void Node::checkHandleVisibility(QPointF pos)
     const QRectF bbox{-size().width() / 2, -size().height() / 2, size().width(), size().height()};
     if (bbox.contains(pos))
     {
-        setHandlesVisible(true);
+        if (hitsHandle(pos))
+        {
+            setHandlesVisible(true, false);
+        }
+        else
+        {
+            setHandlesVisible(true);
+        }
+
+        m_handleVisibilityTimer.start();
     }
+}
+
+NodeHandle * Node::hitsHandle(QPointF pos)
+{
+    for (auto handle : m_handles)
+    {
+        if (handle->contains(pos))
+        {
+            return handle;
+        }
+    }
+
+    return nullptr;
 }
 
 void Node::initTextField()
@@ -266,11 +305,34 @@ void Node::paint(QPainter * painter,
     painter->restore();
 }
 
-void Node::setHandlesVisible(bool visible)
+void Node::setHandlesVisible(bool visible, bool all)
 {
-    for (auto handle : m_handles)
+    if (all)
     {
-        handle->setVisible(visible);
+        for (auto handle : m_handles)
+        {
+            handle->setVisible(visible);
+        }
+    }
+    else
+    {
+        for (auto handle : m_handles)
+        {
+            if (!visible)
+            {
+                if (!handle->contains(m_currentMousePos))
+                {
+                    handle->setVisible(visible);
+                }
+            }
+            else
+            {
+                if (handle->contains(m_currentMousePos))
+                {
+                    handle->setVisible(visible);
+                }
+            }
+        }
     }
 }
 

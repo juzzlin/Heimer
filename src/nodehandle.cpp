@@ -28,7 +28,7 @@ NodeHandle::NodeHandle(Node & parentNode, NodeHandle::Role role, int radius)
     , m_opacityAnimation(this, "opacity")
     , m_size(QSize(m_radius * 2, m_radius * 2))
 {
-    const size_t duration = 100;
+    const size_t duration = 150;
     m_sizeAnimation.setDuration(duration);
     m_opacityAnimation.setDuration(duration);
 
@@ -66,9 +66,21 @@ Node & NodeHandle::parentNode() const
     return m_parentNode;
 }
 
+int NodeHandle::radius() const
+{
+    return m_radius;
+}
+
 NodeHandle::Role NodeHandle::role() const
 {
     return m_role;
+}
+
+bool NodeHandle::contains(const QPointF & pos)
+{
+    const auto r = radius();
+    const auto d = (pos - this->pos());
+    return d.x() * d.x() + d.y() * d.y() < r * r;
 }
 
 void NodeHandle::setVisible(bool visible)

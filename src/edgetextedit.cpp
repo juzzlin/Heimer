@@ -22,7 +22,7 @@ EdgeTextEdit::EdgeTextEdit(Edge * parentItem)
 {
     setAcceptHoverEvents(true);
 
-    m_sizeAnimation.setDuration(125);
+    m_sizeAnimation.setDuration(150);
 
     QGraphicsItem::setVisible(false);
     setOpacity(0);

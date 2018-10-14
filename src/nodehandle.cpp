@@ -28,7 +28,7 @@ NodeHandle::NodeHandle(Node & parentNode, NodeHandle::Role role, int radius)
     , m_opacityAnimation(this, "opacity")
     , m_size(QSize(m_radius * 2, m_radius * 2))
 {
-    const size_t duration = 125;
+    const size_t duration = 100;
     m_sizeAnimation.setDuration(duration);
     m_opacityAnimation.setDuration(duration);
 

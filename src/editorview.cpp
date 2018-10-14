@@ -317,7 +317,7 @@ void EditorView::showDummyDragEdge(bool show)
         {
             L().debug() << "Creating a new dummy drag edge";
             m_dummyDragEdge = new Edge(*sourceNode, *m_dummyDragNode);
-            m_dummyDragEdge->setOpacity(0.5f);
+            m_dummyDragEdge->setOpacity(0.5);
             scene()->addItem(m_dummyDragEdge);
         }
         else
@@ -340,7 +340,7 @@ void EditorView::showDummyDragNode(bool show)
         scene()->addItem(m_dummyDragNode);
     }
 
-    m_dummyDragNode->setOpacity(0.5f);
+    m_dummyDragNode->setOpacity(0.5);
     m_dummyDragNode->setVisible(show);
 }
 
@@ -378,7 +378,7 @@ void EditorView::zoomToFit(QRectF nodeBoundingRect)
     const float viewAspect = float(rect().height()) / rect().width();
     const float nodeAspect = float(nodeBoundingRect.height()) / nodeBoundingRect.width();
 
-    if (viewAspect < 1.0)
+    if (viewAspect < 1.0f)
     {
         if (nodeAspect < viewAspect)
         {

@@ -280,6 +280,8 @@ void Node::setLocation(QPointF newLocation)
     setPos(newLocation);
 
     updateEdgeLines();
+
+    setHandlesVisible(false);
 }
 
 void Node::setText(const QString & text)

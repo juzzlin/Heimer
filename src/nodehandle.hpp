@@ -25,6 +25,7 @@ class NodeHandle : public QObject, public QGraphicsItem
 {
     Q_OBJECT
     Q_PROPERTY(qreal scale READ scale WRITE setScale)
+    Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
     Q_INTERFACES(QGraphicsItem)
 
 public:
@@ -59,6 +60,8 @@ private:
     int m_radius;
 
     QPropertyAnimation m_sizeAnimation;
+
+    QPropertyAnimation m_opacityAnimation;
 
     QSize m_size;
 

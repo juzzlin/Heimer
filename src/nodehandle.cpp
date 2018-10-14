@@ -25,9 +25,12 @@ NodeHandle::NodeHandle(Node & parentNode, NodeHandle::Role role, int radius)
     , m_role(role)
     , m_radius(radius)
     , m_sizeAnimation(this, "scale")
+    , m_opacityAnimation(this, "opacity")
     , m_size(QSize(m_radius * 2, m_radius * 2))
 {
-    m_sizeAnimation.setDuration(125);
+    const size_t duration = 125;
+    m_sizeAnimation.setDuration(duration);
+    m_opacityAnimation.setDuration(duration);
 
     QGraphicsItem::setVisible(false);
 
@@ -81,6 +84,11 @@ void NodeHandle::setVisible(bool visible)
             m_sizeAnimation.setEndValue(1.0f);
             m_sizeAnimation.stop();
             m_sizeAnimation.start();
+
+            m_opacityAnimation.setStartValue(0.0f);
+            m_opacityAnimation.setEndValue(0.8f);
+            m_opacityAnimation.stop();
+            m_opacityAnimation.start();
         }
     }
     else
@@ -92,6 +100,11 @@ void NodeHandle::setVisible(bool visible)
             m_sizeAnimation.setEndValue(0.0f);
             m_sizeAnimation.stop();
             m_sizeAnimation.start();
+
+            m_opacityAnimation.setStartValue(opacity());
+            m_opacityAnimation.setEndValue(0.0f);
+            m_opacityAnimation.stop();
+            m_opacityAnimation.start();
         }
     }
 }

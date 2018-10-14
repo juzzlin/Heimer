@@ -37,7 +37,7 @@ static void initLogger()
     L::enableEchoMode(true);
     L::enableDateTime(true);
 
-#ifdef NDEBUG
+#if defined(NDEBUG) or defined(QT_NO_DEBUG)
     L::setLoggingLevel(L::Level::Info);
 #else
     L::setLoggingLevel(L::Level::Debug);

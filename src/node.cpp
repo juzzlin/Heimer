@@ -214,7 +214,7 @@ void Node::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
 void Node::hoverMoveEvent(QGraphicsSceneHoverEvent * event)
 {
     // Bounding box without children
-    QRectF bbox{-size().width() / 2, -size().height() / 2, size().width(), size().height()};
+    const QRectF bbox{-size().width() / 2, -size().height() / 2, size().width(), size().height()};
     if (bbox.contains(event->pos()))
     {
         setHandlesVisible(true);

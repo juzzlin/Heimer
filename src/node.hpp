@@ -101,6 +101,8 @@ private:
 
     const int m_handleRadius = 28;
 
+    const int m_handleRadiusSmall = 20;
+
     const int m_margin = 10;
 
     const float m_minHeight = 75;

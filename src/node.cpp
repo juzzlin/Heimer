@@ -164,14 +164,14 @@ void Node::createHandles()
     addHandle->setPos({0, size().height() * 0.5f + m_handleRadius * 0.25f});
     m_handles.push_back(addHandle);
 
-    auto colorHandle = new NodeHandle(*this, NodeHandle::Role::Color, m_handleRadius);
+    auto colorHandle = new NodeHandle(*this, NodeHandle::Role::Color, m_handleRadiusSmall);
     colorHandle->setParentItem(this);
-    colorHandle->setPos({size().width() * 0.5f, size().height() * 0.5f});
+    colorHandle->setPos({size().width() * 0.5f, size().height() * 0.5f - m_handleRadiusSmall * 0.5f});
     m_handles.push_back(colorHandle);
 
-    auto textColorHandle = new NodeHandle(*this, NodeHandle::Role::TextColor, m_handleRadius);
+    auto textColorHandle = new NodeHandle(*this, NodeHandle::Role::TextColor, m_handleRadiusSmall);
     textColorHandle->setParentItem(this);
-    textColorHandle->setPos({size().width() * 0.5f + m_handleRadius * 0.5f, -size().height() * 0.5f});
+    textColorHandle->setPos({size().width() * 0.5f, -size().height() * 0.5f + m_handleRadiusSmall * 0.5f});
     m_handles.push_back(textColorHandle);
 }
 

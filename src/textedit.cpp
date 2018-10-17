@@ -27,9 +27,8 @@ TextEdit::TextEdit(QGraphicsItem * parentItem)
 {
 #ifndef HEIMER_UNIT_TEST
     setTextInteractionFlags(Qt::TextEditorInteraction);
-#endif
-
     setDefaultTextColor({0, 0, 0});
+#endif
 }
 
 void TextEdit::keyPressEvent(QKeyEvent * event)

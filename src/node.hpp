@@ -35,6 +35,8 @@ class Node : public QObject, public QGraphicsItem, public NodeBase
 {
     Q_OBJECT
 
+    Q_INTERFACES(QGraphicsItem)
+
 public:
 
     //! Constructor.

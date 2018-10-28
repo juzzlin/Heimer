@@ -101,10 +101,6 @@ void MainWindow::createEditMenu()
     editMenu->addAction(backgroundColorAction);
 
     editMenu->addSeparator();
-
-    auto toolBar = new QToolBar(editMenu);
-    addToolBar(Qt::BottomToolBarArea, toolBar);
-    toolBar->addAction(createEdgeWidthAction());
 }
 
 QWidgetAction * MainWindow::createEdgeWidthAction()
@@ -207,6 +203,13 @@ void MainWindow::createHelpMenu()
     const auto aboutQtAct = new QAction(tr("About &Qt"), this);
     helpMenu->addAction(aboutQtAct);
     connect(aboutQtAct, SIGNAL(triggered()), this, SLOT(showAboutQtDlg()));
+}
+
+void MainWindow::createToolBar()
+{
+    auto toolBar = new QToolBar(this);
+    addToolBar(Qt::BottomToolBarArea, toolBar);
+    toolBar->addAction(createEdgeWidthAction());
 }
 
 void MainWindow::createViewMenu()

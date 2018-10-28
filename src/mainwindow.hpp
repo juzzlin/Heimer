@@ -116,6 +116,8 @@ private:
 
     void createHelpMenu();
 
+    void createToolBar();
+
     void createViewMenu();
 
     void populateMenuBar();

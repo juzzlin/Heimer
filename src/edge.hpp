@@ -58,6 +58,8 @@ public slots:
 
     virtual void setText(const QString & text) override;
 
+    virtual void setTextSize(int textSize) override;
+
 signals:
 
     void undoPointRequested();

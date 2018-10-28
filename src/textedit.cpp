@@ -33,16 +33,17 @@ TextEdit::TextEdit(QGraphicsItem * parentItem)
 
 void TextEdit::keyPressEvent(QKeyEvent * event)
 {
-    const auto prevText = toHtml();
+    const auto prevText = m_text;
 
     // Don't mix the global undo and text edit's internal undo
     if (!event->matches(QKeySequence::Undo))
     {
         QGraphicsTextItem::keyPressEvent(event);
 
-        const auto newText = toHtml();
+        const auto newText = toPlainText();
         if (prevText != newText)
         {
+            m_text = newText;
             emit textChanged(newText);
         }
     }
@@ -53,6 +54,17 @@ void TextEdit::mousePressEvent(QGraphicsSceneMouseEvent * event)
     emit undoPointRequested();
 
     QGraphicsTextItem::mousePressEvent(event);
+}
+
+QString TextEdit::text() const
+{
+    return m_text;
+}
+
+void TextEdit::setText(const QString & text)
+{
+    m_text = text;
+    setPlainText(text);
 }
 
 float TextEdit::maxHeight() const
@@ -96,6 +108,17 @@ void TextEdit::setBackgroundColor(const QColor & backgroundColor)
 void TextEdit::setMaxWidth(float maxWidth)
 {
     m_maxWidth = maxWidth;
+}
+
+void TextEdit::setTextSize(int textSize)
+{
+    m_textSize = textSize;
+#ifndef HEIMER_UNIT_TEST
+    auto && currentFont = font();
+    currentFont.setPointSize(textSize);
+    setFont(currentFont);
+    update();
+#endif
 }
 
 TextEdit::~TextEdit()

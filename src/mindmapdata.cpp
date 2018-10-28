@@ -29,6 +29,7 @@ MindMapData::MindMapData(const MindMapData & other)
     , m_version(other.m_version)
     , m_backgroundColor(other.m_backgroundColor)
     , m_edgeWidth(other.m_edgeWidth)
+    , m_textSize(other.m_textSize)
 {
     copyGraph(other);
 }
@@ -97,6 +98,24 @@ Graph & MindMapData::graph()
 const Graph & MindMapData::graph() const
 {
     return m_graph;
+}
+
+int MindMapData::textSize() const
+{
+    return m_textSize;
+}
+
+void MindMapData::setTextSize(int textSize)
+{
+    m_textSize = textSize;
+
+    for (auto && edge : m_graph.getEdges()) {
+        edge->setTextSize(textSize);
+    }
+
+    for (auto && node : m_graph.getNodes()) {
+        node->setTextSize(textSize);
+    }
 }
 
 QString MindMapData::version() const

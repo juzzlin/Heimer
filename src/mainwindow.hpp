@@ -32,6 +32,7 @@ class QAction;
 class QCheckBox;
 class QDoubleSpinBox;
 class QSlider;
+class QSpinBox;
 class QTextEdit;
 class QWidgetAction;
 class Mediator;
@@ -76,6 +77,8 @@ public slots:
 
     void setEdgeWidth(double value);
 
+    void setTextSize(int textSize);
+
     void showErrorDialog(QString message);
 
 protected:
@@ -87,6 +90,8 @@ signals:
     void actionTriggered(StateMachine::Action action);
 
     void edgeWidthChanged(double width);
+
+    void textSizeChanged(int value);
 
     void zoomInTriggered();
 
@@ -109,6 +114,8 @@ private:
     void addUndoAction(QMenu & menu);
 
     QWidgetAction * createEdgeWidthAction();
+
+    QWidgetAction * createTextSizeAction();
 
     void createEditMenu();
 
@@ -133,6 +140,8 @@ private:
     QAction * m_redoAction = nullptr;
 
     QDoubleSpinBox * m_edgeWidthSpinBox = nullptr;
+
+    QSpinBox * m_textSizeSpinBox = nullptr;
 
     QString m_argMindMapFile;
 

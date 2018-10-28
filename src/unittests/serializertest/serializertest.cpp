@@ -61,6 +61,19 @@ void SerializerTest::testEdgeWidth()
     QCOMPARE(inData->edgeWidth(), outData.edgeWidth());
 }
 
+void SerializerTest::testTextSize()
+{
+    MindMapData outData;
+    outData.setTextSize(42);
+
+    // Serialize
+    const auto document = Serializer::toXml(outData);
+
+    // Deserialize
+    const auto inData = Serializer::fromXml(document);
+    QCOMPARE(inData->textSize(), outData.textSize());
+}
+
 void SerializerTest::testNodeDeletion()
 {
     MindMapData outData;

@@ -124,6 +124,8 @@ public slots:
 
     void setEdgeWidth(double value);
 
+    void setTextSize(int textSize);
+
     QSize zoomForExport();
 
 private slots:

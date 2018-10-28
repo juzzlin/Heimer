@@ -50,6 +50,10 @@ public:
 
     const Graph & graph() const;
 
+    int textSize() const;
+
+    void setTextSize(int textSize);
+
     QString version() const;
 
     void setVersion(const QString &version);
@@ -65,6 +69,8 @@ private:
     QColor m_backgroundColor = Config::getDefaultBackgroundColor();
 
     double m_edgeWidth = 1.5;
+
+    int m_textSize = 11;
 
     Graph m_graph;
 };

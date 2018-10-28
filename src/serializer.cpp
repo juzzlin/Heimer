@@ -255,6 +255,11 @@ MindMapDataPtr Serializer::fromXml(QDomDocument document)
             QString(Serializer::DataKeywords::Design::EDGE_THICKNESS), [=] (const QDomElement & e) {
                 data->setEdgeWidth(readFirstTextNodeContent(e).toDouble() / SCALE);
             }
+        },
+        {
+            QString(Serializer::DataKeywords::Design::TEXT_SIZE), [=] (const QDomElement & e) {
+                data->setTextSize(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
+            }
         }
     });
 
@@ -276,6 +281,10 @@ QDomDocument Serializer::toXml(MindMapData & mindMapData)
     auto edgeWidthElement = doc.createElement(Serializer::DataKeywords::Design::EDGE_THICKNESS);
     edgeWidthElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData.edgeWidth() * SCALE))));
     design.appendChild(edgeWidthElement);
+
+    auto textSizeElement = doc.createElement(Serializer::DataKeywords::Design::TEXT_SIZE);
+    textSizeElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData.textSize() * SCALE))));
+    design.appendChild(textSizeElement);
 
     auto graph = doc.createElement(Serializer::DataKeywords::Design::GRAPH);
     design.appendChild(graph);

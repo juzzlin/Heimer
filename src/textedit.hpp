@@ -36,9 +36,15 @@ public:
 
     virtual void setMaxWidth(float maxWidth);
 
+    virtual void setTextSize(int textSize);
+
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) override;
 
     virtual void focusInEvent(QFocusEvent * event) override;
+
+    QString text() const;
+
+    void setText(const QString & text);
 
     virtual ~TextEdit();
 
@@ -61,6 +67,10 @@ private:
     float m_maxWidth = 0;
 
     QColor m_backgroundColor = QColor(192, 192, 192, 64);
+
+    QString m_text;
+
+    int m_textSize = 0;
 };
 
 #endif // TEXTEDIT_HPP

@@ -84,6 +84,16 @@ void NodeBase::setTextColor(const QColor & color)
     m_textColor = color;
 }
 
+int NodeBase::textSize() const
+{
+    return m_textSize;
+}
+
+void NodeBase::setTextSize(int textSize)
+{
+    m_textSize = textSize;
+}
+
 NodeBase::~NodeBase()
 {
 }

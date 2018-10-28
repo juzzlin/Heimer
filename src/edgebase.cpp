@@ -47,6 +47,16 @@ void EdgeBase::setWidth(double width)
     m_width = width;
 }
 
+int EdgeBase::textSize() const
+{
+    return m_textSize;
+}
+
+void EdgeBase::setTextSize(int textSize)
+{
+    m_textSize = textSize;
+}
+
 NodeBase & EdgeBase::sourceNodeBase() const
 {
     return *m_sourceNode;

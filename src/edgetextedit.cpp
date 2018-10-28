@@ -62,7 +62,7 @@ void EdgeTextEdit::setVisible(bool visible)
         m_sizeAnimation.stop();
         m_sizeAnimation.start();
     }
-    else if (toPlainText().isEmpty())
+    else if (text().isEmpty())
     {
         m_sizeAnimation.setStartValue(opacity());
         m_sizeAnimation.setEndValue(0.0f);

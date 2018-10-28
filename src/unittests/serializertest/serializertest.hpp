@@ -36,4 +36,6 @@ private slots:
     void testSingleEdge();
 
     void testSingleNode();
+
+    void testTextSize();
 };

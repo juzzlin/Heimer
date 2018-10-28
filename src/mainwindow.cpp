@@ -29,6 +29,7 @@
 #include <QMessageBox>
 #include <QScreen>
 #include <QSettings>
+#include <QSpinBox>
 #include <QToolBar>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -129,6 +130,31 @@ QWidgetAction * MainWindow::createEdgeWidthAction()
     return action;
 }
 
+QWidgetAction * MainWindow::createTextSizeAction()
+{
+    m_textSizeSpinBox = new QSpinBox(this);
+    m_textSizeSpinBox->setMinimum(6);
+    m_textSizeSpinBox->setMaximum(24);
+    m_textSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
+    const auto dummyWidget = new QWidget(this);
+    const auto layout = new QHBoxLayout(dummyWidget);
+    dummyWidget->setLayout(layout);
+    auto label = new QLabel(tr("Text size:"));
+    layout->addWidget(label);
+    layout->addWidget(m_textSizeSpinBox);
+    layout->setContentsMargins(0, 0, 0, 0);
+
+    auto action = new QWidgetAction(this);
+    action->setDefaultWidget(dummyWidget);
+
+    // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
+    // In Qt > 5.10 one can use QOverload<double>::of(...)
+    connect(m_textSizeSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::textSizeChanged);
+
+    return action;
+}
+
 void MainWindow::createFileMenu()
 {
     const auto fileMenu = menuBar()->addMenu(tr("&File"));
@@ -210,6 +236,8 @@ void MainWindow::createToolBar()
     auto toolBar = new QToolBar(this);
     addToolBar(Qt::BottomToolBarArea, toolBar);
     toolBar->addAction(createEdgeWidthAction());
+    toolBar->addSeparator();
+    toolBar->addAction(createTextSizeAction());
 }
 
 void MainWindow::createViewMenu()
@@ -297,6 +325,8 @@ void MainWindow::populateMenuBar()
 
     createEditMenu();
 
+    createToolBar();
+
     createViewMenu();
 
     createHelpMenu();
@@ -313,6 +343,14 @@ void MainWindow::setEdgeWidth(double value)
     if (!qFuzzyCompare(m_edgeWidthSpinBox->value(), value))
     {
         m_edgeWidthSpinBox->setValue(value);
+    }
+}
+
+void MainWindow::setTextSize(int textSize)
+{
+    if (m_textSizeSpinBox->value() != textSize)
+    {
+        m_textSizeSpinBox->setValue(textSize);
     }
 }
 

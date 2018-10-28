@@ -46,7 +46,9 @@ void Mediator::addExistingGraphToScene()
     {
         if (dynamic_pointer_cast<QGraphicsItem>(node)->scene() != m_editorScene.get())
         {
-            addItem(*dynamic_pointer_cast<Node>(node));
+            auto graphicsNode = dynamic_pointer_cast<Node>(node);
+            addItem(*graphicsNode);
+            graphicsNode->setTextSize(m_editorData->mindMapData()->textSize());
             L().debug() << "Added an existing node " << node->index() << " to scene";
         }
     }
@@ -62,6 +64,7 @@ void Mediator::addExistingGraphToScene()
             assert(graphicsEdge);
             addItem(*graphicsEdge);
             graphicsEdge->setWidth(m_editorData->mindMapData()->edgeWidth());
+            graphicsEdge->setTextSize(m_editorData->mindMapData()->textSize());
             node0->addGraphicsEdge(*graphicsEdge);
             node1->addGraphicsEdge(*graphicsEdge);
             graphicsEdge->updateLine();
@@ -70,6 +73,7 @@ void Mediator::addExistingGraphToScene()
     }
 
     m_mainWindow.setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
+    m_mainWindow.setTextSize(m_editorData->mindMapData()->textSize());
     m_editorView->setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
 }
 
@@ -400,6 +404,16 @@ void Mediator::setEditorView(EditorView & editorView)
 void Mediator::setSelectedNode(Node * node)
 {
     m_editorData->setSelectedNode(node);
+}
+
+void Mediator::setTextSize(int textSize)
+{
+    // Break loop with the spinbox
+    if (m_editorData->mindMapData()->textSize() != textSize)
+    {
+        saveUndoPoint();
+        m_editorData->mindMapData()->setTextSize(textSize);
+    }
 }
 
 void Mediator::setupMindMapAfterUndoOrRedo()

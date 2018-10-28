@@ -46,6 +46,10 @@ public:
 
     virtual void setWidth(double width);
 
+    virtual int textSize() const;
+
+    virtual void setTextSize(int textSize);
+
 private:
 
     NodeBase * m_sourceNode;
@@ -54,7 +58,9 @@ private:
 
     QString m_text;
 
-    double m_width;
+    double m_width = 2;
+
+    int m_textSize = 11; // Not sure if we should set yet another default value here..
 };
 
 using EdgeBasePtr = std::shared_ptr<EdgeBase>;

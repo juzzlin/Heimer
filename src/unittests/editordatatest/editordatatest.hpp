@@ -36,4 +36,6 @@ private slots:
     void testUndoNodeColor();
 
     void testUndoNodeTextColor();
+
+    void testUndoTextSize();
 };

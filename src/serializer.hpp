@@ -36,6 +36,8 @@ namespace Serializer {
 
             static constexpr auto GRAPH = "graph";
 
+            static constexpr auto TEXT_SIZE = "text-size";
+
             // Used for Design and Node
             struct Color
             {

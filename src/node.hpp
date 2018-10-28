@@ -80,6 +80,8 @@ public:
 
     void setTextColor(const QColor & color) override;
 
+    void setTextSize(int textSize) override;
+
 signals:
 
     void undoPointRequested();

@@ -127,9 +127,14 @@ void Edge::setWidth(double width)
 void Edge::setText(const QString & text)
 {
     EdgeBase::setText(text);
-    m_label->setPlainText(text);
+    m_label->setText(text);
 
     setLabelVisible(!text.isEmpty());
+}
+
+void Edge::setTextSize(int textSize)
+{
+    m_label->setTextSize(textSize);
 }
 
 Node & Edge::sourceNode() const

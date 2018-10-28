@@ -83,6 +83,8 @@ Node::Node(const Node & other)
     setText(other.text());
 
     setTextColor(other.textColor());
+
+    setTextSize(other.textSize());
 }
 
 void Node::addGraphicsEdge(Edge & edge)
@@ -351,7 +353,7 @@ void Node::setText(const QString & text)
     if (text != this->text())
     {
         NodeBase::setText(text);
-        m_textEdit->setHtml(text);
+        m_textEdit->setText(text);
 
         if (isTextUnderflowOrOverflow())
         {
@@ -369,9 +371,19 @@ void Node::setTextColor(const QColor & color)
 #endif
 }
 
+void Node::setTextSize(int textSize)
+{
+    m_textEdit->setTextSize(textSize);
+
+    if (isTextUnderflowOrOverflow())
+    {
+        adjustSize();
+    }
+}
+
 QString Node::text() const
 {
-    return m_textEdit->toHtml();
+    return m_textEdit->text();
 }
 
 void Node::updateEdgeLines()

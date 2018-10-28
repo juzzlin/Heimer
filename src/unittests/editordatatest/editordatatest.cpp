@@ -144,4 +144,24 @@ void EditorDataTest::testUndoNodeTextColor()
     QCOMPARE(node->textColor(), color);
 }
 
+void EditorDataTest::testUndoTextSize()
+{
+    EditorData editorData;
+
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+    editorData.mindMapData()->setTextSize(42);
+
+    editorData.saveUndoPoint();
+    editorData.mindMapData()->setTextSize(41);
+
+    editorData.saveUndoPoint();
+    editorData.mindMapData()->setTextSize(40);
+
+    editorData.undo();
+    QCOMPARE(editorData.mindMapData()->textSize(), 41);
+
+    editorData.undo();
+    QCOMPARE(editorData.mindMapData()->textSize(), 42);
+}
+
 QTEST_GUILESS_MAIN(EditorDataTest)

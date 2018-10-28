@@ -48,6 +48,10 @@ public:
 
     virtual void setTextColor(const QColor & color);
 
+    virtual int textSize() const;
+
+    virtual void setTextSize(int textSize);
+
     virtual QPointF location() const;
 
     virtual void setLocation(QPointF newLocation);
@@ -71,6 +75,8 @@ private:
     QColor m_color = Qt::white;
 
     QColor m_textColor = Qt::black;
+
+    int m_textSize = 11; // Not sure if we should set yet another default value here..
 
     QPointF m_location;
 

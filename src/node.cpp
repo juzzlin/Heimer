@@ -351,7 +351,7 @@ void Node::setText(const QString & text)
     if (text != this->text())
     {
         NodeBase::setText(text);
-        m_textEdit->setPlainText(text);
+        m_textEdit->setHtml(text);
 
         if (isTextUnderflowOrOverflow())
         {
@@ -371,7 +371,7 @@ void Node::setTextColor(const QColor & color)
 
 QString Node::text() const
 {
-    return m_textEdit->toPlainText();
+    return m_textEdit->toHtml();
 }
 
 void Node::updateEdgeLines()

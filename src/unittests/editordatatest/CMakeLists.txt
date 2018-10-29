@@ -25,7 +25,7 @@ set(SRC ${NAME}.cpp
     ${EDITOR_DIR}/writer.cpp
     )
 
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/unittests)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/unittests)
 add_executable(${NAME} ${SRC} ${MOC_SRC})
-add_test(${NAME} ${CMAKE_SOURCE_DIR}/unittests/${NAME})
+add_test(${NAME} ${CMAKE_BINARY_DIR}/unittests/${NAME})
 target_link_libraries(${NAME} Qt5::Test Qt5::Xml Qt5::Widgets SimpleLogger)

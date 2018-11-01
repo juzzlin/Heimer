@@ -1,3 +1,19 @@
+1.4.0 - "Text Teaser"
+=====================
+
+New features:
+
+* Fix GitHub Issue #28: Setting for font size
+
+Bug fixes:
+
+* Fix GitHub Issue #31: White text when using dark theme
+* Fix a warning about missing Q_INTERFACES
+
+Other:
+
+* Fix unittest output paths
+
 1.3.0 - "Colored Cream"
 =======================
 

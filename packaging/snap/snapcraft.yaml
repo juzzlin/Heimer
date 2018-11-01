@@ -1,5 +1,5 @@
 name: heimer
-version: '1.3.0'
+version: '1.4.0'
 summary: Heimer is a simple cross-platform mind map tool.
 description: |
   Heimer is a simple cross-platform mind map creation tool.
@@ -21,6 +21,7 @@ parts:
     configflags:
       - -DCMAKE_BUILD_TYPE=Release
       - -DCMAKE_INSTALL_PREFIX=/usr
+      - -DBUILD_TESTS=OFF
     build-packages:
       - qtbase5-dev
       - qttools5-dev

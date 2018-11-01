@@ -8,7 +8,7 @@ CMD="export LANG=en_US.UTF-8 && \
      mkdir -p build && \
      cd build && \
      cp ../snapcraft.yaml . && \
-     snapcraft"
+     snapcraft clean gnu-heimer -s pull && snapcraft"
 
 if [ -f /.dockerenv ]; then
     echo "Script inside Docker"

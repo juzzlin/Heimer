@@ -21,7 +21,7 @@ endif()
 
 # Global game version
 set(VERSION_MAJOR "1")
-set(VERSION_MINOR "3")
+set(VERSION_MINOR "4")
 set(VERSION_PATCH "0")
 set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
@@ -39,6 +39,8 @@ set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/COPYING)
 set(CPACK_RESOURCE_FILE_README ${CMAKE_SOURCE_DIR}/README.md)
 
 option(BIN_PATH "Optional BIN_PATH for Linux release build." "")
+
+option(BUILD_TESTS "Build unit tests." ON)
 
 # Default to release C++ flags if CMAKE_BUILD_TYPE not set
 if(NOT CMAKE_BUILD_TYPE)
@@ -86,6 +88,8 @@ setup_install_targets()
 add_subdirectory(src)
 
 # Enable CMake's unit test framework
-enable_testing()
-add_subdirectory(src/unittests)
+if(BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(src/unittests)
+endif()
 

@@ -6,6 +6,7 @@ description: |
   Emphasis on easy diagram creation, simplicity, and speed.
 grade: stable
 confinement: strict
+base: core18
 icon: ../data/icons/heimer.png
 
 apps:

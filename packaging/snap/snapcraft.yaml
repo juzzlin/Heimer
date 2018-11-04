@@ -12,7 +12,7 @@ apps:
   heimer:
     command: desktop-launch heimer
     desktop: usr/share/applications/heimer.desktop
-    plugs: [home, desktop, desktop-legacy, removable-media, unity7, x11, wayland]
+    plugs: [home, desktop, desktop-legacy, removable-media, unity7, x11, wayland, opengl]
 
 parts:
   gnu-heimer:

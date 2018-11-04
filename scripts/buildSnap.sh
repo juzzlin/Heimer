@@ -4,9 +4,7 @@
 
 CMD="export LANG=en_US.UTF-8 && \
      export LC_ALL=en_US.UTF-8 && \
-     mkdir -p /heimer/build-snap && \
-     cd /heimer/build-snap && \
-     cp ../snapcraft.yaml . && \
+     cd /heimer && \
      snapcraft clean gnu-heimer -s pull && snapcraft"
 
 if [ -f /.dockerenv ]; then

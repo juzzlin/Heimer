@@ -4,9 +4,8 @@
 
 CMD="export LANG=en_US.UTF-8 && \
      export LC_ALL=en_US.UTF-8 && \
-     cd /heimer/packaging/snap && \
-     mkdir -p build && \
-     cd build && \
+     mkdir -p /heimer/build-snap && \
+     cd /heimer/build-snap && \
      cp ../snapcraft.yaml . && \
      snapcraft clean gnu-heimer -s pull && snapcraft"
 

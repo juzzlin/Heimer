@@ -8,3 +8,7 @@ RUN apt install qttools5-dev-tools -y
 
 RUN apt install qttools5-dev -y
 
+RUN apt install libopenal-dev -y
+
+RUN apt install libvorbis-dev -y
+

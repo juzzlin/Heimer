@@ -24,3 +24,7 @@ RUN groupadd fuse
 
 RUN usermod -a -G fuse root
 
+RUN apt install libopenal-dev -y
+
+RUN apt install libvorbis-dev -y
+

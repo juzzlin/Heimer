@@ -15,7 +15,7 @@
 !define ABOUTURL               "http://juzzlin.github.io/Heimer/"
 
 ;!define MUI_FILE               ""
-!define MUI_BRANDINGTEXT       ${PRODUCTNAME}
+!define MUI_BRANDINGTEXT       "Heimer"
 ;!define MUI_HEADERIMAGE
 ;!define MUI_HEADERIMAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Header\orange.bmp"
 !define MUI_ICON               "data\icons\heimer.ico"
@@ -148,6 +148,7 @@ Section "uninstall"
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${PRODUCTNAME}"
 	
 SectionEnd
+
 
 
 

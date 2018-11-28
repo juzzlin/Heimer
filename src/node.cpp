@@ -210,33 +210,42 @@ std::pair<QPointF, QPointF> Node::getNearestEdgePoints(const Node & node1, const
 
 void Node::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 {
-    m_currentMousePos = event->pos();
-    m_mouseIn = true;
+    if (index() != -1) // Prevent right-click on the drag node
+    {
+        m_currentMousePos = event->pos();
+        m_mouseIn = true;
 
-    checkHandleVisibility(event->pos());
+        checkHandleVisibility(event->pos());
 
-    QGraphicsItem::hoverEnterEvent(event);
+        QGraphicsItem::hoverEnterEvent(event);
+    }
 }
 
 void Node::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
 {
-    m_mouseIn = false;
-
-    setHandlesVisible(false);
-
-    if (event) // EditorView may call this with a null event
+    if (index() != -1) // Prevent right-click on the drag node
     {
-        QGraphicsItem::hoverLeaveEvent(event);
+        m_mouseIn = false;
+
+        setHandlesVisible(false);
+
+        if (event) // EditorView may call this with a null event
+        {
+            QGraphicsItem::hoverLeaveEvent(event);
+        }
     }
 }
 
 void Node::hoverMoveEvent(QGraphicsSceneHoverEvent * event)
 {
-    m_currentMousePos = event->pos();
+    if (index() != -1) // Prevent right-click on the drag node
+    {
+        m_currentMousePos = event->pos();
 
-    checkHandleVisibility(event->pos());
+        checkHandleVisibility(event->pos());
 
-    QGraphicsItem::hoverMoveEvent(event);
+        QGraphicsItem::hoverMoveEvent(event);
+    }
 }
 
 void Node::checkHandleVisibility(QPointF pos)

@@ -127,13 +127,16 @@ void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
 
 void EditorView::handleMousePressEventOnNode(QMouseEvent & event, Node & node)
 {
-    if (event.button() == Qt::RightButton)
+    if (node.index() != -1) // Prevent right-click on the drag node
     {
-        handleRightButtonClickOnNode(node);
-    }
-    else if (event.button() == Qt::LeftButton)
-    {
-        handleLeftButtonClickOnNode(node);
+        if (event.button() == Qt::RightButton)
+        {
+            handleRightButtonClickOnNode(node);
+        }
+        else if (event.button() == Qt::LeftButton)
+        {
+            handleLeftButtonClickOnNode(node);
+        }
     }
 }
 
@@ -258,29 +261,32 @@ void EditorView::mousePressEvent(QMouseEvent * event)
 
 void EditorView::mouseReleaseEvent(QMouseEvent * event)
 {
-    switch (m_mediator.dadStore().action())
+    if (event->button() == Qt::LeftButton)
     {
-    case DragAndDropStore::Action::MoveNode:
-        m_mediator.dadStore().clear();
-        break;
-    case DragAndDropStore::Action::CreateNode:
-        if (auto sourceNode = m_mediator.dadStore().sourceNode())
+        switch (m_mediator.dadStore().action())
         {
-            m_mediator.createAndAddNode(sourceNode->index(), m_mappedPos - m_mediator.dadStore().sourcePos());
-
-            resetDummyDragItems();
-
+        case DragAndDropStore::Action::MoveNode:
             m_mediator.dadStore().clear();
-        }
-        break;
-    case DragAndDropStore::Action::Scroll:
-        setDragMode(NoDrag);
-        break;
-    default:
-        break;
-    }
+            break;
+        case DragAndDropStore::Action::CreateNode:
+            if (auto sourceNode = m_mediator.dadStore().sourceNode())
+            {
+                m_mediator.createAndAddNode(sourceNode->index(), m_mappedPos - m_mediator.dadStore().sourcePos());
 
-    QApplication::restoreOverrideCursor();
+                resetDummyDragItems();
+
+                m_mediator.dadStore().clear();
+            }
+            break;
+        case DragAndDropStore::Action::Scroll:
+            setDragMode(NoDrag);
+            break;
+        default:
+            break;
+        }
+
+        QApplication::restoreOverrideCursor();
+    }
 
     QGraphicsView::mouseReleaseEvent(event);
 }

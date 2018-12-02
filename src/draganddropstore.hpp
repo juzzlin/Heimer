@@ -28,7 +28,7 @@ public:
     {
         None,
         MoveNode,
-        CreateNode,
+        CreateOrConnectNode,
         Scroll
     };
 

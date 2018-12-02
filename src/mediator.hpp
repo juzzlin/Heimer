@@ -44,9 +44,15 @@ public:
 
     ~Mediator();
 
+    void addEdge(Node & node1, Node & node2);
+
     void addItem(QGraphicsItem & item);
 
+    bool areDirectlyConnected(const Node & node1, const Node & node2) const;
+
     bool canBeSaved() const;
+
+    void clearSelection();
 
     void connectEdgeToUndoMechanism(EdgePtr edge);
 
@@ -63,6 +69,8 @@ public:
     void deleteNode(Node & node);
 
     QString fileName() const;
+
+    NodePtr getBestOverlapNode(const Node & source);
 
     NodeBasePtr getNodeByIndex(int index);
 
@@ -143,6 +151,8 @@ signals:
 private:
 
     void addExistingGraphToScene();
+
+    double calculateNodeOverlapScore(const Node & node1, const Node & node2) const;
 
     void connectGraphToUndoMechanism();
 

@@ -18,6 +18,7 @@
 #include <QGraphicsItem>
 #include <QGraphicsSimpleTextItem>
 #include <QMouseEvent>
+#include <QRectF>
 #include <QStatusBar>
 #include <QString>
 #include <QTransform>
@@ -195,7 +196,7 @@ void EditorView::initiateNewNodeDrag(NodeHandle & nodeHandle)
     m_mediator.saveUndoPoint();
     auto parentNode = dynamic_cast<Node *>(nodeHandle.parentItem());
     assert(parentNode);
-    m_mediator.dadStore().setSourceNode(parentNode, DragAndDropStore::Action::CreateNode);
+    m_mediator.dadStore().setSourceNode(parentNode, DragAndDropStore::Action::CreateOrConnectNode);
     m_mediator.dadStore().setSourcePos(nodeHandle.pos());
     parentNode->hoverLeaveEvent(nullptr);
     // Change cursor to the closed hand cursor.
@@ -214,12 +215,23 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
             node->setLocation(m_mappedPos - m_mediator.dadStore().sourcePos());
         }
         break;
-    case DragAndDropStore::Action::CreateNode:
+    case DragAndDropStore::Action::CreateOrConnectNode:
+    {
         showDummyDragNode(true);
         showDummyDragEdge(true);
         m_dummyDragNode->setPos(m_mappedPos - m_mediator.dadStore().sourcePos());
         m_dummyDragEdge->updateLine();
         m_mediator.dadStore().sourceNode()->setHandlesVisible(false);
+
+        m_mediator.clearSelection();
+
+        m_connectionTargetNode = nullptr;
+        if (auto && node = m_mediator.getBestOverlapNode(*m_dummyDragNode))
+        {
+            node->setSelected(true);
+            m_connectionTargetNode = node;
+        }
+    }
         break;
     case DragAndDropStore::Action::Scroll:
         break;
@@ -268,13 +280,21 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
         case DragAndDropStore::Action::MoveNode:
             m_mediator.dadStore().clear();
             break;
-        case DragAndDropStore::Action::CreateNode:
+        case DragAndDropStore::Action::CreateOrConnectNode:
             if (auto sourceNode = m_mediator.dadStore().sourceNode())
             {
-                m_mediator.createAndAddNode(sourceNode->index(), m_mappedPos - m_mediator.dadStore().sourcePos());
+                if (m_connectionTargetNode)
+                {
+                    m_mediator.addEdge(*sourceNode, *m_connectionTargetNode);
+                    m_connectionTargetNode->setSelected(false);
+                    m_connectionTargetNode = nullptr;
+                }
+                else
+                {
+                    m_mediator.createAndAddNode(sourceNode->index(), m_mappedPos - m_mediator.dadStore().sourcePos());
+                }
 
                 resetDummyDragItems();
-
                 m_mediator.dadStore().clear();
             }
             break;

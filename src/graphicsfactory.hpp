@@ -19,7 +19,7 @@
 class QGraphicsEffect;
 
 namespace GraphicsFactory {
-QGraphicsEffect * createDropShadowEffect();
+QGraphicsEffect * createDropShadowEffect(bool selected = false);
 }
 
 #endif // GRAPHICSFACTORY_HPP

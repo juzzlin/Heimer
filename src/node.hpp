@@ -82,6 +82,8 @@ public:
 
     void setTextSize(int textSize) override;
 
+    void setSelected(bool selected) override;
+
 signals:
 
     void undoPointRequested();

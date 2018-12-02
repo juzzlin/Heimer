@@ -140,6 +140,8 @@ private:
 
     Edge * m_dummyDragEdge = nullptr;
 
+    std::shared_ptr<Node> m_connectionTargetNode;
+
     // Width for the dummy drag edge
     double m_edgeWidth = 1.5;
 };

@@ -19,6 +19,16 @@ NodeBase::NodeBase()
 {
 }
 
+bool NodeBase::selected() const
+{
+    return m_selected;
+}
+
+void NodeBase::setSelected(bool selected)
+{
+    m_selected = selected;
+}
+
 QSizeF NodeBase::size() const
 {
     return m_size;

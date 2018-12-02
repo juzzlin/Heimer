@@ -47,7 +47,7 @@ Node::Node()
 
     initTextField();
 
-    setGraphicsEffect(GraphicsFactory::createDropShadowEffect());
+    setSelected(false);
 
     connect(m_textEdit, &TextEdit::textChanged, [=] (const QString & text) {
 
@@ -355,6 +355,12 @@ void Node::setLocation(QPointF newLocation)
     updateEdgeLines();
 
     setHandlesVisible(false);
+}
+
+void Node::setSelected(bool selected)
+{
+    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(selected));
+    update();
 }
 
 void Node::setText(const QString & text)

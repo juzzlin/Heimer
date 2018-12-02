@@ -58,6 +58,10 @@ public:
 
     virtual QRectF placementBoundingRect() const;
 
+    virtual bool selected() const;
+
+    virtual void setSelected(bool selected);
+
     virtual QSizeF size() const;
 
     virtual void setSize(QSizeF size);
@@ -83,6 +87,8 @@ private:
     QSizeF m_size;
 
     QString m_text;
+
+    bool m_selected = false;
 
     int m_index = -1;
 };

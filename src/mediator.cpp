@@ -77,6 +77,15 @@ void Mediator::addExistingGraphToScene()
     m_editorView->setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
 }
 
+void Mediator::addEdge(Node & node1, Node & node2)
+{
+    // Add edge from node1 to node2
+    connectEdgeToUndoMechanism(m_editorData->addEdge(std::make_shared<Edge>(node1, node2)));
+    L().debug() << "Created a new edge " << node1.index() << " -> " << node2.index();
+
+    addExistingGraphToScene();
+}
+
 void Mediator::addItem(QGraphicsItem & item)
 {
     m_editorScene->addItem(&item);
@@ -253,6 +262,14 @@ void Mediator::initializeView()
 
     m_mainWindow.setCentralWidget(m_editorView);
     m_mainWindow.setContentsMargins(0, 0, 0, 0);
+}
+
+bool Mediator::areDirectlyConnected(const Node & node1, const Node & node2) const
+{
+    auto && graph = m_editorData->mindMapData()->graph();
+    auto node1Ptr = graph.getNode(node1.index());
+    auto node2Ptr = graph.getNode(node2.index());
+    return graph.areDirectlyConnected(node1Ptr, node2Ptr);
 }
 
 bool Mediator::isLeafNode(Node & node)
@@ -459,6 +476,62 @@ QSize Mediator::zoomForExport()
 void Mediator::zoomToFit()
 {
     m_editorView->zoomToFit(m_editorScene->getNodeBoundingRectWithHeuristics());
+}
+
+double Mediator::calculateNodeOverlapScore(const Node & node1, const Node & node2) const
+{
+    if (&node1 == &node2)
+    {
+        return 0;
+    }
+
+    const auto rect1 = node1.boundingRect().translated(node1.pos());
+    const auto rect2 = node2.boundingRect().translated(node2.pos());
+
+    if (rect1.intersects(rect2))
+    {
+        auto combined = rect1;
+        combined = combined.united(rect2);
+
+        const auto biggestArea = std::max(rect1.width() * rect1.height(), rect2.height() * rect2.width());
+
+        return biggestArea / combined.width() / combined.height();
+    }
+
+    return 0;
+}
+
+void Mediator::clearSelection()
+{
+    for (auto && node : m_editorData->mindMapData()->graph().getNodes())
+    {
+        node->setSelected(false);
+    }
+}
+
+NodePtr Mediator::getBestOverlapNode(const Node & source)
+{
+    NodePtr bestNode;
+    double bestScore = 0;
+
+    for (auto && nodeBase : m_editorData->mindMapData()->graph().getNodes())
+    {
+        if (const auto node = std::dynamic_pointer_cast<Node>(nodeBase))
+        {
+            if (node->index() != source.index() && node->index() != dadStore().sourceNode()->index() &&
+                !areDirectlyConnected(*node, *dadStore().sourceNode()))
+            {
+                const auto score = calculateNodeOverlapScore(source, *node);
+                if (score > 0.75 && score > bestScore)
+                {
+                    bestNode = node;
+                    bestScore = score;
+                }
+            }
+        }
+    }
+
+    return bestNode;
 }
 
 Mediator::~Mediator() = default;

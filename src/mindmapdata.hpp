@@ -68,7 +68,7 @@ private:
 
     QColor m_backgroundColor = Config::getDefaultBackgroundColor();
 
-    double m_edgeWidth = 1.5;
+    double m_edgeWidth = 2.0;
 
     int m_textSize = 11;
 

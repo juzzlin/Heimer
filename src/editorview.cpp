@@ -319,8 +319,7 @@ void EditorView::openBackgroundContextMenu()
 void EditorView::openNodeContextMenu()
 {
     // Allow deletion of leaf nodes or nodes between exactly two nodes.
-    m_deleteNodeAction->setEnabled(
-         m_mediator.isLeafNode(*m_mediator.selectedNode()) || m_mediator.isInBetween(*m_mediator.selectedNode()));
+    m_deleteNodeAction->setEnabled(true);
 
     m_nodeContextMenu.exec(mapToGlobal(m_clickedPos));
 }

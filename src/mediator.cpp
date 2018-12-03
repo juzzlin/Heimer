@@ -49,7 +49,7 @@ void Mediator::addExistingGraphToScene()
             auto graphicsNode = dynamic_pointer_cast<Node>(node);
             addItem(*graphicsNode);
             graphicsNode->setTextSize(m_editorData->mindMapData()->textSize());
-            L().debug() << "Added an existing node " << node->index() << " to scene";
+            L().debug() << "Added existing node " << node->index() << " to scene";
         }
     }
 
@@ -68,7 +68,7 @@ void Mediator::addExistingGraphToScene()
             node0->addGraphicsEdge(*graphicsEdge);
             node1->addGraphicsEdge(*graphicsEdge);
             graphicsEdge->updateLine();
-            L().debug() << "Added an existing edge " << node0->index() << " -> " << node1->index() << " to scene";
+            L().debug() << "Added existing edge " << node0->index() << " -> " << node1->index() << " to scene";
         }
     }
 

@@ -225,5 +225,9 @@ Edge::~Edge()
     sourceNode().removeGraphicsEdge(*this);
     targetNode().removeGraphicsEdge(*this);
 
+    // Needed to remove glitches from possibly running dot animations
+    sourceNode().update();
+    targetNode().update();
+
     juzzlin::L().debug() << "Edge deleted: " << sourceNode().index() << " -> " << targetNode().index();
 }

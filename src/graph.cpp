@@ -105,11 +105,15 @@ void Graph::addEdge(int node0, int node1)
 
 bool Graph::areDirectlyConnected(NodeBasePtr node0, NodeBasePtr node1)
 {
-    const auto nodes = getNodesConnectedToNode(node0);
-    return std::count_if(
-        nodes.begin(), nodes.end(), [=] (const NodeBasePtr & node) {
-            return node->index() == node1->index();
-        }) > 0;
+    for (auto && edge : m_edges)
+    {
+        if ((edge->sourceNodeBase().index() == node0->index() && edge->targetNodeBase().index() == node1->index()) ||
+            (edge->sourceNodeBase().index() == node1->index() && edge->targetNodeBase().index() == node0->index()))
+        {
+          return true;
+        }
+    }
+    return false;
 }
 
 int Graph::numNodes() const

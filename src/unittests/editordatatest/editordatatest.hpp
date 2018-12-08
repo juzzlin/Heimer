@@ -25,9 +25,11 @@ public:
 
 private slots:
 
-    void testUndoSimple();
+    void testUndoAddNodes();
 
-    void testRedoSimple();
+    void testRedoAddNodes();
+
+    void testUndoAddEdge();
 
     void testUndoBackgroundColor();
 

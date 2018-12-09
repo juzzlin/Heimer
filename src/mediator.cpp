@@ -411,8 +411,10 @@ void Mediator::setTextSize(int textSize)
 
 void Mediator::setupMindMapAfterUndoOrRedo()
 {
+    m_editorScene.reset(new EditorScene);
     m_editorScene->initialize();
 
+    m_editorView->setScene(m_editorScene.get());
     m_editorView->setBackgroundBrush(QBrush(m_editorData->backgroundColor()));
 
     addExistingGraphToScene();

@@ -234,7 +234,4 @@ void Edge::updateLine()
     updateArrowhead();
 }
 
-Edge::~Edge()
-{
-    juzzlin::L().debug() << "Edge deleted: " << sourceNode().index() << " -> " << targetNode().index();
-}
+Edge::~Edge() = default;

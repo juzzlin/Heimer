@@ -409,7 +409,4 @@ void Node::updateEdgeLines()
     }
 }
 
-Node::~Node()
-{
-    juzzlin::L().debug() << "Node deleted: " << index();
-}
+Node::~Node() = default;

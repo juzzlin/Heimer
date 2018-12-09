@@ -1,3 +1,29 @@
+1.5.0 - "Edge Enhancement"
+==========================
+
+New features:
+
+* Allow deletion of any node
+* Fix GitHub Issue #5: Way to connect existing node to another node
+  * Nodes can be connected together by dragging the (+) handle
+
+Bug fixes:
+
+* Remove animation glitches when node deleted during dot animations
+* Fix GitHub Issue #10: Zoom level changes on undo/redo
+* Fix GitHub Issue #34: Program crashes unsaved
+* Clear undo stack on new design
+
+Other:
+
+* Tighter fit when exporting
+* Adjust fit on dense layouts
+* Disable animations of dummy drag edge
+* Fix grammar in log messages
+* Increase default edge width to 2.0
+* Fix MUI_BRANDINGTEXT
+* Snap: Use core18
+
 1.4.0 - "Text Teaser"
 =====================
 

@@ -8,14 +8,14 @@
 !define COMPANYNAME            "Juzzlin"
 !define DESCRIPTION            "An application for mind map creation and management."
 !define VERSIONMAJOR           1
-!define VERSIONMINOR           4
+!define VERSIONMINOR           5
 !define VERSIONBUILD           0
 !define HELPURL                "http://juzzlin.github.io/Heimer/"
 !define UPDATEURL              "https://github.com/juzzlin/Heimer/releases"
 !define ABOUTURL               "http://juzzlin.github.io/Heimer/"
 
 ;!define MUI_FILE               ""
-!define MUI_BRANDINGTEXT       "Heimer"
+;!define MUI_BRANDINGTEXT       "Heimer"
 ;!define MUI_HEADERIMAGE
 ;!define MUI_HEADERIMAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Header\orange.bmp"
 !define MUI_ICON               "data\icons\heimer.ico"
@@ -148,6 +148,8 @@ Section "uninstall"
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${PRODUCTNAME}"
 	
 SectionEnd
+
+
 
 
 

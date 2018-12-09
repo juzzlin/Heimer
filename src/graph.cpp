@@ -187,5 +187,9 @@ Graph::NodeVector Graph::getNodesConnectedToNode(NodeBasePtr node)
 
 Graph::~Graph()
 {
+    // Ensure that edges are always deleted before nodes
+    m_edges.clear();
+    m_nodes.clear();
+
     juzzlin::L().debug() << "Graph deleted";
 }

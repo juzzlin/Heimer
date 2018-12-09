@@ -53,9 +53,11 @@ QString EditorData::fileName() const
 
 void EditorData::loadMindMapData(QString fileName)
 {
+#ifndef HEIMER_UNIT_TEST
     setMindMapData(Serializer::fromXml(Reader::readFromFile(fileName)));
-
+#endif
     m_fileName = fileName;
+    setIsModified(false);
 
     m_undoStack.clear();
 }
@@ -156,6 +158,8 @@ void EditorData::setMindMapData(MindMapDataPtr mindMapData)
 
     m_fileName = "";
     setIsModified(false);
+
+    m_undoStack.clear();
 }
 
 EdgePtr EditorData::addEdge(EdgePtr edge)

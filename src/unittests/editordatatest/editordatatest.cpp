@@ -212,4 +212,72 @@ void EditorDataTest::testUndoTextSize()
     QCOMPARE(editorData.mindMapData()->textSize(), 42);
 }
 
+void EditorDataTest::testUndoStackResetOnNewDesign()
+{
+    EditorData editorData;
+
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+
+    QCOMPARE(editorData.isUndoable(), false);
+
+    editorData.saveUndoPoint();
+    editorData.addNodeAt(QPointF(0, 0));
+    QCOMPARE(editorData.isUndoable(), true);
+
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+
+    QCOMPARE(editorData.isUndoable(), false);
+}
+
+void EditorDataTest::testUndoStackResetOnLoadDesign()
+{
+    EditorData editorData;
+
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+
+    QCOMPARE(editorData.isUndoable(), false);
+
+    editorData.saveUndoPoint();
+    editorData.addNodeAt(QPointF(0, 0));
+    QCOMPARE(editorData.isUndoable(), true);
+
+    editorData.loadMindMapData("dummy");
+
+    QCOMPARE(editorData.isUndoable(), false);
+}
+
+void EditorDataTest::testUndoModificationFlagOnNewDesign()
+{
+    EditorData editorData;
+
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+
+    QCOMPARE(editorData.isModified(), false);
+
+    editorData.saveUndoPoint();
+    editorData.addNodeAt(QPointF(0, 0));
+    QCOMPARE(editorData.isModified(), true);
+
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+
+    QCOMPARE(editorData.isModified(), false);
+}
+
+void EditorDataTest::testUndoModificationFlagOnLoadDesign()
+{
+    EditorData editorData;
+
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+
+    QCOMPARE(editorData.isModified(), false);
+
+    editorData.saveUndoPoint();
+    editorData.addNodeAt(QPointF(0, 0));
+    QCOMPARE(editorData.isModified(), true);
+
+    editorData.loadMindMapData("dummy");
+
+    QCOMPARE(editorData.isModified(), false);
+}
+
 QTEST_GUILESS_MAIN(EditorDataTest)

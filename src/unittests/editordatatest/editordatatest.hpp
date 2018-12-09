@@ -40,4 +40,12 @@ private slots:
     void testUndoNodeTextColor();
 
     void testUndoTextSize();
+
+    void testUndoStackResetOnNewDesign();
+
+    void testUndoStackResetOnLoadDesign();
+
+    void testUndoModificationFlagOnNewDesign();
+
+    void testUndoModificationFlagOnLoadDesign();
 };

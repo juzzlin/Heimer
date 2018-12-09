@@ -30,7 +30,7 @@ public:
 
     void initialize();
 
-    QRectF getNodeBoundingRectWithHeuristics() const;
+    QRectF getNodeBoundingRectWithHeuristics(bool isForExport = false) const;
 
     bool hasEdge(Node & node0, Node & node1);
 

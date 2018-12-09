@@ -58,7 +58,7 @@ void EditorScene::initialize()
     m_ownItems.push_back(ItemPtr(bottomLine));
 }
 
-QRectF EditorScene::getNodeBoundingRectWithHeuristics() const
+QRectF EditorScene::getNodeBoundingRectWithHeuristics(bool isForExport) const
 {
     float nodeArea = 0;
     QRectF rect;
@@ -74,12 +74,18 @@ QRectF EditorScene::getNodeBoundingRectWithHeuristics() const
         }
     }
 
+    const int margin = 60;
+
+    if (isForExport)
+    {
+        return rect.adjusted(-margin, -margin, margin, margin);
+    }
+
     // This "don't ask" heuristics tries to calculate a "nice" zoom-to-fit based on the design
     // density and node count. For example, if we have just a single node we don't want it to
     // be super big and cover the whole screen.
     const float density = std::pow(nodeArea / rect.width() / rect.height(), std::pow(nodes, 1.5f));
     const float adjust = 3.0f * std::max(density * rect.width(), density * rect.height());
-    const int margin = 60;
     return rect.adjusted(-adjust / 2, -adjust / 2, adjust / 2, adjust / 2).adjusted(-margin, -margin, margin, margin);
 }
 

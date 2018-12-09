@@ -25,23 +25,26 @@
 #include <QBrush>
 #include <QGraphicsEllipseItem>
 #include <QPen>
+#include <QPropertyAnimation>
 #include <QTimer>
 #include <QVector2D>
 
 #include <cassert>
 #include <cmath>
 
-Edge::Edge(Node & sourceNode, Node & targetNode)
+Edge::Edge(Node & sourceNode, Node & targetNode, bool enableAnimations, bool enableLabel)
     : EdgeBase(sourceNode, targetNode)
-    , m_sourceDot(new EdgeDot(this))
-    , m_targetDot(new EdgeDot(this))
-    , m_label(new EdgeTextEdit(this))
+    , m_enableAnimations(enableAnimations)
+    , m_enableLabel(enableLabel)
+    , m_sourceDot(enableAnimations ? new EdgeDot(this) : nullptr)
+    , m_targetDot(enableAnimations ? new EdgeDot(this) : nullptr)
+    , m_label(enableLabel ? new EdgeTextEdit(this) : nullptr)
     , m_arrowheadL(new QGraphicsLineItem(this))
     , m_arrowheadR(new QGraphicsLineItem(this))
-    , m_sourceDotSizeAnimation(m_sourceDot, "scale")
-    , m_targetDotSizeAnimation(m_targetDot, "scale")
+    , m_sourceDotSizeAnimation(enableAnimations ? new QPropertyAnimation(m_sourceDot, "scale", this) : nullptr)
+    , m_targetDotSizeAnimation(enableAnimations ? new QPropertyAnimation(m_targetDot, "scale", this) : nullptr)
 {
-    setAcceptHoverEvents(true);
+    setAcceptHoverEvents(true && enableAnimations);
 
     setGraphicsEffect(GraphicsFactory::createDropShadowEffect());
 
@@ -49,22 +52,25 @@ Edge::Edge(Node & sourceNode, Node & targetNode)
 
     initDots();
 
-    m_label->setZValue(static_cast<int>(Layers::EdgeLabel));
-    m_label->setBackgroundColor(QColor(0xff, 0xee, 0xaa));
+    if (m_enableLabel)
+    {
+        m_label->setZValue(static_cast<int>(Layers::EdgeLabel));
+        m_label->setBackgroundColor(QColor(0xff, 0xee, 0xaa));
 
-    connect(m_label, &TextEdit::textChanged, [=] (const QString & text) {
-        updateLabel();
-        EdgeBase::setText(text);
-    });
+        connect(m_label, &TextEdit::textChanged, [=] (const QString & text) {
+            updateLabel();
+            EdgeBase::setText(text);
+        });
 
-    connect(m_label, &TextEdit::undoPointRequested, this, &Edge::undoPointRequested);
+        connect(m_label, &TextEdit::undoPointRequested, this, &Edge::undoPointRequested);
 
-    m_labelVisibilityTimer.setSingleShot(true);
-    m_labelVisibilityTimer.setInterval(2000);
+        m_labelVisibilityTimer.setSingleShot(true);
+        m_labelVisibilityTimer.setInterval(2000);
 
-    connect(&m_labelVisibilityTimer, &QTimer::timeout, [=] () {
-        setLabelVisible(false);
-    });
+        connect(&m_labelVisibilityTimer, &QTimer::timeout, [=] () {
+            setLabelVisible(false);
+        });
+    }
 }
 
 void Edge::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
@@ -85,27 +91,30 @@ void Edge::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
 
 void Edge::initDots()
 {
-    const QColor color(255, 0, 0, 192);
-    m_sourceDot->setPen(QPen(color));
-    m_sourceDot->setBrush(QBrush(color));
+    if (m_enableAnimations)
+    {
+        const QColor color(255, 0, 0, 192);
+        m_sourceDot->setPen(QPen(color));
+        m_sourceDot->setBrush(QBrush(color));
 
-    m_targetDot->setPen(QPen(color));
-    m_targetDot->setBrush(QBrush(color));
+        m_targetDot->setPen(QPen(color));
+        m_targetDot->setBrush(QBrush(color));
 
-    const int duration = 2000;
+        const int duration = 2000;
 
-    m_sourceDotSizeAnimation.setDuration(duration);
-    m_sourceDotSizeAnimation.setStartValue(1.0f);
-    m_sourceDotSizeAnimation.setEndValue(0.0f);
+        m_sourceDotSizeAnimation->setDuration(duration);
+        m_sourceDotSizeAnimation->setStartValue(1.0f);
+        m_sourceDotSizeAnimation->setEndValue(0.0f);
 
-    const QRectF rect(-m_dotRadius, -m_dotRadius, m_dotRadius * 2, m_dotRadius * 2);
-    m_sourceDot->setRect(rect);
+        const QRectF rect(-m_dotRadius, -m_dotRadius, m_dotRadius * 2, m_dotRadius * 2);
+        m_sourceDot->setRect(rect);
 
-    m_targetDotSizeAnimation.setDuration(duration);
-    m_targetDotSizeAnimation.setStartValue(1.0f);
-    m_targetDotSizeAnimation.setEndValue(0.0f);
+        m_targetDotSizeAnimation->setDuration(duration);
+        m_targetDotSizeAnimation->setStartValue(1.0f);
+        m_targetDotSizeAnimation->setEndValue(0.0f);
 
-    m_targetDot->setRect(rect);
+        m_targetDot->setRect(rect);
+    }
 }
 
 void Edge::setLabelVisible(bool visible)
@@ -128,14 +137,20 @@ void Edge::setText(const QString & text)
 {
     EdgeBase::setText(text);
 #ifndef HEIMER_UNIT_TEST
-    m_label->setText(text);
+    if (m_label)
+    {
+        m_label->setText(text);
+    }
     setLabelVisible(!text.isEmpty());
 #endif
 }
 
 void Edge::setTextSize(int textSize)
 {
-    m_label->setTextSize(textSize);
+    if (m_label)
+    {
+        m_label->setTextSize(textSize);
+    }
 }
 
 Node & Edge::sourceNode() const
@@ -170,32 +185,38 @@ void Edge::updateArrowhead()
 
 void Edge::updateDots(const std::pair<QPointF, QPointF> & nearestPoints)
 {
-    if (m_sourceDot->pos() != nearestPoints.first)
+    if (m_enableAnimations)
     {
-        m_sourceDot->setPos(nearestPoints.first);
+        if (m_sourceDot->pos() != nearestPoints.first)
+        {
+            m_sourceDot->setPos(nearestPoints.first);
 
-        // Re-parent to source node due to Z-ordering issues
-        m_sourceDot->setParentItem(&sourceNode());
+            // Re-parent to source node due to Z-ordering issues
+            m_sourceDot->setParentItem(&sourceNode());
 
-        m_sourceDotSizeAnimation.stop();
-        m_sourceDotSizeAnimation.start();
-    }
+            m_sourceDotSizeAnimation->stop();
+            m_sourceDotSizeAnimation->start();
+        }
 
-    if (m_targetDot->pos() != nearestPoints.second)
-    {
-        m_targetDot->setPos(nearestPoints.second);
+        if (m_targetDot->pos() != nearestPoints.second)
+        {
+            m_targetDot->setPos(nearestPoints.second);
 
-        // Re-parent to target node due to Z-ordering issues
-        m_targetDot->setParentItem(&targetNode());
+            // Re-parent to target node due to Z-ordering issues
+            m_targetDot->setParentItem(&targetNode());
 
-        m_targetDotSizeAnimation.stop();
-        m_targetDotSizeAnimation.start();
+            m_targetDotSizeAnimation->stop();
+            m_targetDotSizeAnimation->start();
+        }
     }
 }
 
 void Edge::updateLabel()
 {
-    m_label->setPos((line().p1() + line().p2()) * 0.5f - QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()) * 0.5f);
+    if (m_label)
+    {
+        m_label->setPos((line().p1() + line().p2()) * 0.5f - QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()) * 0.5f);
+    }
 }
 
 void Edge::updateLine()
@@ -215,13 +236,11 @@ void Edge::updateLine()
 
 Edge::~Edge()
 {
-    delete m_label;
-
-    m_sourceDotSizeAnimation.stop();
-    m_targetDotSizeAnimation.stop();
-
-    delete m_sourceDot;
-    delete m_targetDot;
+    if (m_enableAnimations)
+    {
+        m_sourceDotSizeAnimation->stop();
+        m_targetDotSizeAnimation->stop();
+    }
 
     sourceNode().removeGraphicsEdge(*this);
     targetNode().removeGraphicsEdge(*this);

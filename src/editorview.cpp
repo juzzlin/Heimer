@@ -342,7 +342,7 @@ void EditorView::showDummyDragEdge(bool show)
         if (!m_dummyDragEdge)
         {
             L().debug() << "Creating a new dummy drag edge";
-            m_dummyDragEdge = new Edge(*sourceNode, *m_dummyDragNode);
+            m_dummyDragEdge = new Edge(*sourceNode, *m_dummyDragNode, false, false);
             m_dummyDragEdge->setOpacity(0.5);
             scene()->addItem(m_dummyDragEdge);
         }

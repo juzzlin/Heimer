@@ -18,7 +18,6 @@
 
 #include <QBrush>
 #include <QGraphicsLineItem>
-#include <QPropertyAnimation>
 #include <QTimer>
 
 #include <map>
@@ -30,6 +29,7 @@ class EdgeDot;
 class EdgeTextEdit;
 class Node;
 class QGraphicsEllipseItem;
+class QPropertyAnimation;
 
 //! A graphic representation of a graph edge between nodes.
 class Edge : public QObject, public QGraphicsLineItem, public EdgeBase
@@ -38,7 +38,7 @@ class Edge : public QObject, public QGraphicsLineItem, public EdgeBase
 
 public:
 
-    Edge(Node & sourceNode, Node & targetNode);
+    Edge(Node & sourceNode, Node & targetNode, bool enableAnimations = true, bool enableLabel = true);
 
     virtual ~Edge();
 
@@ -76,6 +76,10 @@ private:
 
     void updateLabel();
 
+    bool m_enableAnimations;
+
+    bool m_enableLabel;
+
     EdgeDot * m_sourceDot;
 
     EdgeDot * m_targetDot;
@@ -86,9 +90,9 @@ private:
 
     QGraphicsLineItem * m_arrowheadR;
 
-    QPropertyAnimation m_sourceDotSizeAnimation;
+    QPropertyAnimation * m_sourceDotSizeAnimation;
 
-    QPropertyAnimation m_targetDotSizeAnimation;
+    QPropertyAnimation * m_targetDotSizeAnimation;
 
     QTimer m_labelVisibilityTimer;
 

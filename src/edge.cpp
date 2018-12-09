@@ -236,18 +236,5 @@ void Edge::updateLine()
 
 Edge::~Edge()
 {
-    if (m_enableAnimations)
-    {
-        m_sourceDotSizeAnimation->stop();
-        m_targetDotSizeAnimation->stop();
-    }
-
-    sourceNode().removeGraphicsEdge(*this);
-    targetNode().removeGraphicsEdge(*this);
-
-    // Needed to remove glitches from possibly running dot animations
-    sourceNode().update();
-    targetNode().update();
-
     juzzlin::L().debug() << "Edge deleted: " << sourceNode().index() << " -> " << targetNode().index();
 }

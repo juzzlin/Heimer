@@ -234,4 +234,18 @@ void Edge::updateLine()
     updateArrowhead();
 }
 
-Edge::~Edge() = default;
+Edge::~Edge()
+{
+    if (m_enableAnimations)
+    {
+        m_sourceDotSizeAnimation->stop();
+        m_targetDotSizeAnimation->stop();
+    }
+
+    sourceNode().removeGraphicsEdge(*this);
+    targetNode().removeGraphicsEdge(*this);
+
+    // Needed to remove glitches from possibly running dot animations
+    sourceNode().update();
+    targetNode().update();
+}

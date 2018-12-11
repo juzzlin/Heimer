@@ -144,6 +144,8 @@ private:
 
     // Width for the dummy drag edge
     double m_edgeWidth = 1.5;
+
+    QRectF m_nodeBoundingRect;
 };
 
 #endif // EDITORVIEW_HPP

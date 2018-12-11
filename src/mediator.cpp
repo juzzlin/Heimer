@@ -411,6 +411,9 @@ void Mediator::setTextSize(int textSize)
 
 void Mediator::setupMindMapAfterUndoOrRedo()
 {
+    auto oldSceneRect = m_editorScene->sceneRect();
+    auto oldCenter = m_editorView->mapToScene(m_editorView->viewport()->rect()).boundingRect().center();
+
     m_editorScene.reset(new EditorScene);
     m_editorScene->initialize();
 
@@ -421,7 +424,8 @@ void Mediator::setupMindMapAfterUndoOrRedo()
 
     connectGraphToUndoMechanism();
 
-    zoomToFit();
+    m_editorScene->setSceneRect(oldSceneRect);
+    m_editorView->centerOn(oldCenter);
 }
 
 void Mediator::undo()

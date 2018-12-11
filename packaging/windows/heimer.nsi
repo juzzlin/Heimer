@@ -15,7 +15,7 @@
 !define ABOUTURL               "http://juzzlin.github.io/Heimer/"
 
 ;!define MUI_FILE               ""
-;!define MUI_BRANDINGTEXT       "Heimer"
+!define MUI_BRANDINGTEXT       "Heimer"
 ;!define MUI_HEADERIMAGE
 ;!define MUI_HEADERIMAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Header\orange.bmp"
 !define MUI_ICON               "data\icons\heimer.ico"

@@ -226,6 +226,7 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
         m_mediator.clearSelection();
 
         m_connectionTargetNode = nullptr;
+        // TODO: Use items() to pre-filter the nodes
         if (auto && node = m_mediator.getBestOverlapNode(*m_dummyDragNode))
         {
             node->setSelected(true);

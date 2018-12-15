@@ -64,7 +64,7 @@ void EditorView::createBackgroundContextMenuActions()
 
     auto createNode = new QAction(tr("Create floating node"), &m_backgroundContextMenu);
     QObject::connect(createNode, &QAction::triggered, [this] () {
-        emit newNodeRequested(m_clickedScenePos);
+        emit newNodeRequested(snapToGrid(m_clickedScenePos));
     });
 
     // Populate the menu
@@ -211,14 +211,14 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
     case DragAndDropStore::Action::MoveNode:
         if (auto node = m_mediator.dadStore().sourceNode())
         {
-            node->setLocation(m_mappedPos - m_mediator.dadStore().sourcePos());
+            node->setLocation(snapToGrid(m_mappedPos - m_mediator.dadStore().sourcePos()));
         }
         break;
     case DragAndDropStore::Action::CreateOrConnectNode:
     {
         showDummyDragNode(true);
         showDummyDragEdge(true);
-        m_dummyDragNode->setPos(m_mappedPos - m_mediator.dadStore().sourcePos());
+        m_dummyDragNode->setPos(snapToGrid(m_mappedPos - m_mediator.dadStore().sourcePos()));
         m_dummyDragEdge->updateLine();
         m_mediator.dadStore().sourceNode()->setHandlesVisible(false);
 
@@ -291,7 +291,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
                 }
                 else
                 {
-                    m_mediator.createAndAddNode(sourceNode->index(), m_mappedPos - m_mediator.dadStore().sourcePos());
+                    m_mediator.createAndAddNode(sourceNode->index(), snapToGrid(m_mappedPos - m_mediator.dadStore().sourcePos()));
                 }
 
                 resetDummyDragItems();
@@ -370,12 +370,29 @@ void EditorView::showDummyDragNode(bool show)
     m_dummyDragNode->setVisible(show);
 }
 
+QPointF EditorView::snapToGrid(QPointF in) const
+{
+    if (!m_gridSize)
+    {
+        return in;
+    }
+
+    return {
+        static_cast<double>(static_cast<int>(in.x() / m_gridSize) * m_gridSize),
+        static_cast<double>(static_cast<int>(in.y() / m_gridSize) * m_gridSize)};
+}
+
 void EditorView::updateScale(int value)
 {
     QTransform transform;
     const double scale = static_cast<double>(value) / 100;
     transform.scale(scale, scale);
     setTransform(transform);
+}
+
+void EditorView::setGridSize(int size)
+{
+    m_gridSize = size;
 }
 
 void EditorView::setEdgeWidth(double edgeWidth)

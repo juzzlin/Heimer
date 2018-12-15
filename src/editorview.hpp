@@ -54,6 +54,8 @@ public slots:
 
     void setEdgeWidth(double edgeWidth);
 
+    void setGridSize(int size);
+
 protected:
 
     void mouseMoveEvent(QMouseEvent * event) override;
@@ -98,6 +100,8 @@ private:
 
     void showDummyDragNode(bool show);
 
+    QPointF snapToGrid(QPointF in) const;
+
     void updateScale(int value);
 
     QMenu m_backgroundContextMenu;
@@ -141,6 +145,8 @@ private:
     Edge * m_dummyDragEdge = nullptr;
 
     std::shared_ptr<Node> m_connectionTargetNode;
+
+    int m_gridSize = 0;
 
     // Width for the dummy drag edge
     double m_edgeWidth = 1.5;

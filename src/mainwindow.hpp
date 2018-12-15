@@ -89,6 +89,8 @@ signals:
 
     void edgeWidthChanged(double width);
 
+    void gridSizeChanged(int size);
+
     void textSizeChanged(int value);
 
     void zoomInTriggered();
@@ -112,6 +114,8 @@ private:
     void addUndoAction(QMenu & menu);
 
     QWidgetAction * createEdgeWidthAction();
+
+    QWidgetAction * createGridSizeAction();
 
     QWidgetAction * createTextSizeAction();
 
@@ -138,6 +142,8 @@ private:
     QAction * m_redoAction = nullptr;
 
     QDoubleSpinBox * m_edgeWidthSpinBox = nullptr;
+
+    QSpinBox * m_gridSizeSpinBox = nullptr;
 
     QSpinBox * m_textSizeSpinBox = nullptr;
 

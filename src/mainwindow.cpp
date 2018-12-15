@@ -16,7 +16,6 @@
 #include "mainwindow.hpp"
 
 #include "constants.hpp"
-#include "config.hpp"
 #include "aboutdlg.hpp"
 #include "mediator.hpp"
 #include "simple_logger.hpp"
@@ -156,6 +155,31 @@ QWidgetAction * MainWindow::createTextSizeAction()
     return action;
 }
 
+QWidgetAction * MainWindow::createGridSizeAction()
+{
+    m_gridSizeSpinBox = new QSpinBox(this);
+    m_gridSizeSpinBox->setMinimum(Constants::Grid::MIN_SIZE);
+    m_gridSizeSpinBox->setMaximum(Constants::Grid::MAX_SIZE);
+    m_gridSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
+    const auto dummyWidget = new QWidget(this);
+    const auto layout = new QHBoxLayout(dummyWidget);
+    dummyWidget->setLayout(layout);
+    auto label = new QLabel(tr("Grid size:"));
+    layout->addWidget(label);
+    layout->addWidget(m_gridSizeSpinBox);
+    layout->setContentsMargins(0, 0, 0, 0);
+
+    auto action = new QWidgetAction(this);
+    action->setDefaultWidget(dummyWidget);
+
+    // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
+    // In Qt > 5.10 one can use QOverload<double>::of(...)
+    connect(m_gridSizeSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::gridSizeChanged);
+
+    return action;
+}
+
 void MainWindow::createFileMenu()
 {
     const auto fileMenu = menuBar()->addMenu(tr("&File"));
@@ -239,6 +263,8 @@ void MainWindow::createToolBar()
     toolBar->addAction(createEdgeWidthAction());
     toolBar->addSeparator();
     toolBar->addAction(createTextSizeAction());
+    toolBar->addSeparator();
+    toolBar->addAction(createGridSizeAction());
 }
 
 void MainWindow::createViewMenu()

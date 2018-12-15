@@ -78,6 +78,14 @@ static const int MAX_IMAGE_SIZE = 99999;
 
 } // Export
 
+namespace Grid {
+
+static const int MIN_SIZE = 0;
+
+static const int MAX_SIZE = 500;
+
+} // Grid
+
 namespace MindMap {
 
 static const QColor DEFAULT_BACKGROUND_COLOR{0x80, 0xc8, 0xff};

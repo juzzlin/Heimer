@@ -62,6 +62,10 @@ static const double MAX_SIZE = 5.0;
 
 static const double STEP = 0.1;
 
+static const int TEXT_EDIT_ANIMATION_DURATION = 150;
+
+static const int TEXT_EDIT_DURATION = 2000;
+
 } // Edge
 
 namespace Export {

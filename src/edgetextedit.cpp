@@ -14,6 +14,8 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "edgetextedit.hpp"
+
+#include "constants.hpp"
 #include "edge.hpp"
 
 EdgeTextEdit::EdgeTextEdit(Edge * parentItem)
@@ -22,13 +24,13 @@ EdgeTextEdit::EdgeTextEdit(Edge * parentItem)
 {
     setAcceptHoverEvents(true);
 
-    m_sizeAnimation.setDuration(150);
+    m_sizeAnimation.setDuration(Constants::Edge::TEXT_EDIT_ANIMATION_DURATION);
 
     QGraphicsItem::setVisible(false);
     setOpacity(0);
 
     m_visibilityTimer.setSingleShot(true);
-    m_visibilityTimer.setInterval(2000);
+    m_visibilityTimer.setInterval(Constants::Edge::TEXT_EDIT_DURATION);
 
     connect(&m_visibilityTimer, &QTimer::timeout, [=] () {
         setVisible(false);
@@ -58,14 +60,14 @@ void EdgeTextEdit::setVisible(bool visible)
     {
         QGraphicsItem::setVisible(true);
         m_sizeAnimation.setStartValue(opacity());
-        m_sizeAnimation.setEndValue(1.0f);
+        m_sizeAnimation.setEndValue(1.0);
         m_sizeAnimation.stop();
         m_sizeAnimation.start();
     }
     else if (text().isEmpty())
     {
         m_sizeAnimation.setStartValue(opacity());
-        m_sizeAnimation.setEndValue(0.0f);
+        m_sizeAnimation.setEndValue(0.0);
         m_sizeAnimation.stop();
         m_sizeAnimation.start();
     }

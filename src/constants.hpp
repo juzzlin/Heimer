@@ -106,6 +106,16 @@ static const int MIN_WIDTH = 200;
 
 } // Node
 
+namespace Scene {
+
+static const QColor BARRIER_COLOR{255, 0, 0, 128};
+
+static const int BARRIER_WIDTH = 100;
+
+static const int RADIUS = 10000;
+
+} // Scene
+
 namespace Text {
 
 static const int MIN_SIZE = 6;

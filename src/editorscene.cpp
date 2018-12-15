@@ -14,6 +14,8 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "editorscene.hpp"
+
+#include "constants.hpp"
 #include "edge.hpp"
 #include "node.hpp"
 
@@ -31,11 +33,10 @@ void EditorScene::initialize()
 {
     removeItems();
 
-    const int r = 10000;
+    const auto r = Constants::Scene::RADIUS;
     setSceneRect(-r, -r, r * 2, r * 2);
 
-    const int WIDTH = 100;
-    const auto pen = QPen(QBrush(QColor(255, 0, 0, 128)), WIDTH);
+    const auto pen = QPen(QBrush(Constants::Scene::BARRIER_COLOR), Constants::Scene::BARRIER_WIDTH);
 
     auto leftLine = new QGraphicsLineItem(-r, -r, -r, r);
     leftLine->setPen(pen);
@@ -60,7 +61,7 @@ void EditorScene::initialize()
 
 QRectF EditorScene::getNodeBoundingRectWithHeuristics(bool isForExport) const
 {
-    float nodeArea = 0;
+    double nodeArea = 0;
     QRectF rect;
     int nodes = 0;
     for (auto && item : items())
@@ -84,8 +85,8 @@ QRectF EditorScene::getNodeBoundingRectWithHeuristics(bool isForExport) const
     // This "don't ask" heuristics tries to calculate a "nice" zoom-to-fit based on the design
     // density and node count. For example, if we have just a single node we don't want it to
     // be super big and cover the whole screen.
-    const float density = std::pow(nodeArea / rect.width() / rect.height(), std::pow(nodes, 1.5f));
-    const float adjust = 3.0f * std::max(density * rect.width(), density * rect.height());
+    const double density = std::pow(nodeArea / rect.width() / rect.height(), std::pow(nodes, 1.5));
+    const double adjust = 3.0 * std::max(density * rect.width(), density * rect.height());
     return rect.adjusted(-adjust / 2, -adjust / 2, adjust / 2, adjust / 2).adjusted(-margin, -margin, margin, margin);
 }
 

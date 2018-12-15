@@ -15,6 +15,7 @@
 
 #include "nodehandle.hpp"
 
+#include "constants.hpp"
 #include "layers.hpp"
 
 #include <QPainter>
@@ -28,9 +29,8 @@ NodeHandle::NodeHandle(Node & parentNode, NodeHandle::Role role, int radius)
     , m_opacityAnimation(this, "opacity")
     , m_size(QSize(m_radius * 2, m_radius * 2))
 {
-    const size_t duration = 150;
-    m_sizeAnimation.setDuration(duration);
-    m_opacityAnimation.setDuration(duration);
+    m_sizeAnimation.setDuration(Constants::Node::HANDLE_ANIMATION_DURATION);
+    m_opacityAnimation.setDuration(Constants::Node::HANDLE_ANIMATION_DURATION);
 
     QGraphicsItem::setVisible(false);
 
@@ -92,13 +92,13 @@ void NodeHandle::setVisible(bool visible)
             QGraphicsItem::setVisible(true);
 
             m_visible = true;
-            m_sizeAnimation.setStartValue(0.0f);
-            m_sizeAnimation.setEndValue(1.0f);
+            m_sizeAnimation.setStartValue(0.0);
+            m_sizeAnimation.setEndValue(1.0);
             m_sizeAnimation.stop();
             m_sizeAnimation.start();
 
-            m_opacityAnimation.setStartValue(0.0f);
-            m_opacityAnimation.setEndValue(0.8f);
+            m_opacityAnimation.setStartValue(0.0);
+            m_opacityAnimation.setEndValue(Constants::Node::HANDLE_OPACITY);
             m_opacityAnimation.stop();
             m_opacityAnimation.start();
         }
@@ -109,12 +109,12 @@ void NodeHandle::setVisible(bool visible)
         {
             m_visible = false;
             m_sizeAnimation.setStartValue(scale());
-            m_sizeAnimation.setEndValue(0.0f);
+            m_sizeAnimation.setEndValue(0.0);
             m_sizeAnimation.stop();
             m_sizeAnimation.start();
 
             m_opacityAnimation.setStartValue(opacity());
-            m_opacityAnimation.setEndValue(0.0f);
+            m_opacityAnimation.setEndValue(0.0);
             m_opacityAnimation.stop();
             m_opacityAnimation.start();
         }

@@ -86,6 +86,10 @@ static const int DEFAULT_TEXT_SIZE = 11;
 
 namespace Node {
 
+static const int HANDLE_ANIMATION_DURATION = 150;
+
+static const double HANDLE_OPACITY = 0.8;
+
 static const int HANDLE_RADIUS = 28;
 
 static const int HANDLE_RADIUS_SMALL = 20;

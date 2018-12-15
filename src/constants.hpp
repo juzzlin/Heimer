@@ -114,6 +114,18 @@ static const int MAX_SIZE = 24;
 
 } // Text
 
+namespace View {
+
+static const double DRAG_NODE_OPACITY = 0.5;
+
+static const int ZOOM_MAX = 200;
+
+static const int ZOOM_MIN = 10;
+
+static const int ZOOM_SENSITIVITY = 10;
+
+} // View
+
 } // Constants
 
 #endif // CONSTANTS_HPP

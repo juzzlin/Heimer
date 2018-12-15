@@ -25,6 +25,7 @@
 
 #include "editorview.hpp"
 
+#include "constants.hpp"
 #include "draganddropstore.hpp"
 #include "edge.hpp"
 #include "graphicsfactory.hpp"
@@ -177,8 +178,6 @@ void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
     case NodeHandle::Role::TextColor:
         m_mediator.setSelectedNode(&nodeHandle.parentNode());
         m_setNodeTextColorAction->trigger();
-        break;
-    default:
         break;
     }
 }
@@ -367,15 +366,14 @@ void EditorView::showDummyDragNode(bool show)
         scene()->addItem(m_dummyDragNode);
     }
 
-    m_dummyDragNode->setOpacity(0.5);
+    m_dummyDragNode->setOpacity(Constants::View::DRAG_NODE_OPACITY);
     m_dummyDragNode->setVisible(show);
 }
 
 void EditorView::updateScale(int value)
 {
-    qreal scale = static_cast<qreal>(value) / 100;
-
     QTransform transform;
+    const double scale = static_cast<double>(value) / 100;
     transform.scale(scale, scale);
     setTransform(transform);
 }
@@ -387,25 +385,24 @@ void EditorView::setEdgeWidth(double edgeWidth)
 
 void EditorView::wheelEvent(QWheelEvent * event)
 {
-    const int sensitivity = 10;
-    zoom(event->delta() > 0 ? sensitivity : -sensitivity);
+    zoom(event->delta() > 0 ? Constants::View::ZOOM_SENSITIVITY : -Constants::View::ZOOM_SENSITIVITY);
 }
 
 void EditorView::zoom(int amount)
 {
     m_scaleValue += amount;
-    m_scaleValue = std::min(m_scaleValue, 200);
-    m_scaleValue = std::max(m_scaleValue, 10);
+    m_scaleValue = std::min(m_scaleValue, Constants::View::ZOOM_MAX);
+    m_scaleValue = std::max(m_scaleValue, Constants::View::ZOOM_MIN);
 
     updateScale(m_scaleValue);
 }
 
 void EditorView::zoomToFit(QRectF nodeBoundingRect)
 {
-    const float viewAspect = float(rect().height()) / rect().width();
-    const float nodeAspect = float(nodeBoundingRect.height()) / nodeBoundingRect.width();
+    const double viewAspect = rect().height() / rect().width();
+    const double nodeAspect = nodeBoundingRect.height() / nodeBoundingRect.width();
 
-    if (viewAspect < 1.0f)
+    if (viewAspect < 1.0)
     {
         if (nodeAspect < viewAspect)
         {

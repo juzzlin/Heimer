@@ -15,6 +15,7 @@
 
 #include "mainwindow.hpp"
 
+#include "constants.hpp"
 #include "config.hpp"
 #include "aboutdlg.hpp"
 #include "mediator.hpp"
@@ -107,9 +108,9 @@ void MainWindow::createEditMenu()
 QWidgetAction * MainWindow::createEdgeWidthAction()
 {
     m_edgeWidthSpinBox = new QDoubleSpinBox(this);
-    m_edgeWidthSpinBox->setSingleStep(0.1);
-    m_edgeWidthSpinBox->setMinimum(0.1);
-    m_edgeWidthSpinBox->setMaximum(3.0);
+    m_edgeWidthSpinBox->setSingleStep(Constants::Edge::STEP);
+    m_edgeWidthSpinBox->setMinimum(Constants::Edge::MIN_SIZE);
+    m_edgeWidthSpinBox->setMaximum(Constants::Edge::MAX_SIZE);
     m_edgeWidthSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
     const auto dummyWidget = new QWidget(this);

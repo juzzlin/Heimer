@@ -14,6 +14,8 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "edge.hpp"
+
+#include "constants.hpp"
 #include "edgedot.hpp"
 #include "graphicsfactory.hpp"
 #include "layers.hpp"
@@ -55,7 +57,7 @@ Edge::Edge(Node & sourceNode, Node & targetNode, bool enableAnimations, bool ena
     if (m_enableLabel)
     {
         m_label->setZValue(static_cast<int>(Layers::EdgeLabel));
-        m_label->setBackgroundColor(QColor(0xff, 0xee, 0xaa));
+        m_label->setBackgroundColor(Constants::Edge::LABEL_COLOR);
 
         connect(m_label, &TextEdit::textChanged, [=] (const QString & text) {
             updateLabel();
@@ -65,7 +67,7 @@ Edge::Edge(Node & sourceNode, Node & targetNode, bool enableAnimations, bool ena
         connect(m_label, &TextEdit::undoPointRequested, this, &Edge::undoPointRequested);
 
         m_labelVisibilityTimer.setSingleShot(true);
-        m_labelVisibilityTimer.setInterval(2000);
+        m_labelVisibilityTimer.setInterval(Constants::Edge::LABEL_DURATION);
 
         connect(&m_labelVisibilityTimer, &QTimer::timeout, [=] () {
             setLabelVisible(false);
@@ -93,25 +95,22 @@ void Edge::initDots()
 {
     if (m_enableAnimations)
     {
-        const QColor color(255, 0, 0, 192);
-        m_sourceDot->setPen(QPen(color));
-        m_sourceDot->setBrush(QBrush(color));
+        m_sourceDot->setPen(QPen(Constants::Edge::DOT_COLOR));
+        m_sourceDot->setBrush(QBrush(Constants::Edge::DOT_COLOR));
 
-        m_targetDot->setPen(QPen(color));
-        m_targetDot->setBrush(QBrush(color));
+        m_targetDot->setPen(QPen(Constants::Edge::DOT_COLOR));
+        m_targetDot->setBrush(QBrush(Constants::Edge::DOT_COLOR));
 
-        const int duration = 2000;
+        m_sourceDotSizeAnimation->setDuration(Constants::Edge::DOT_DURATION);
+        m_sourceDotSizeAnimation->setStartValue(1.0);
+        m_sourceDotSizeAnimation->setEndValue(0.0);
 
-        m_sourceDotSizeAnimation->setDuration(duration);
-        m_sourceDotSizeAnimation->setStartValue(1.0f);
-        m_sourceDotSizeAnimation->setEndValue(0.0f);
-
-        const QRectF rect(-m_dotRadius, -m_dotRadius, m_dotRadius * 2, m_dotRadius * 2);
+        const QRectF rect(-Constants::Edge::DOT_RADIUS, -Constants::Edge::DOT_RADIUS, Constants::Edge::DOT_RADIUS * 2, Constants::Edge::DOT_RADIUS * 2);
         m_sourceDot->setRect(rect);
 
-        m_targetDotSizeAnimation->setDuration(duration);
-        m_targetDotSizeAnimation->setStartValue(1.0f);
-        m_targetDotSizeAnimation->setEndValue(0.0f);
+        m_targetDotSizeAnimation->setDuration(Constants::Edge::DOT_DURATION);
+        m_targetDotSizeAnimation->setStartValue(1.0);
+        m_targetDotSizeAnimation->setEndValue(0.0);
 
         m_targetDot->setRect(rect);
     }
@@ -170,16 +169,14 @@ Node & Edge::targetNode() const
 void Edge::updateArrowhead()
 {
     QLineF line;
-    const float length = 10;
-    const float opening = 150;
-    float angle = (-this->line().angle() + opening) / 180 * M_PI;
+    double angle = (-this->line().angle() + Constants::Edge::ARROW_OPENING) / 180 * M_PI;
     line.setP1(this->line().p2());
-    line.setP2(this->line().p2() + QPointF(std::cos(angle), std::sin(angle)) * length);
+    line.setP2(this->line().p2() + QPointF(std::cos(angle), std::sin(angle)) * Constants::Edge::ARROW_LENGTH);
     m_arrowheadL->setLine(line);
 
-    angle = (-this->line().angle() - opening) / 180 * M_PI;
+    angle = (-this->line().angle() - Constants::Edge::ARROW_OPENING) / 180 * M_PI;
     line.setP1(this->line().p2());
-    line.setP2(this->line().p2() + QPointF(std::cos(angle), std::sin(angle)) * length);
+    line.setP2(this->line().p2() + QPointF(std::cos(angle), std::sin(angle)) * Constants::Edge::ARROW_LENGTH);
     m_arrowheadR->setLine(line);
 }
 
@@ -215,7 +212,7 @@ void Edge::updateLabel()
 {
     if (m_label)
     {
-        m_label->setPos((line().p1() + line().p2()) * 0.5f - QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()) * 0.5f);
+        m_label->setPos((line().p1() + line().p2()) * 0.5 - QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()) * 0.5);
     }
 }
 
@@ -228,7 +225,7 @@ void Edge::updateLine()
     QVector2D direction(p2 - p1);
     direction.normalize();
 
-    setLine(QLineF(p1, p2 - (direction * m_width).toPointF() * 0.5f));
+    setLine(QLineF(p1, p2 - (direction * m_width).toPointF() * 0.5));
     updateDots(nearestPoints);
     updateLabel();
     updateArrowhead();

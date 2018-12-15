@@ -96,8 +96,6 @@ private:
 
     QTimer m_labelVisibilityTimer;
 
-    int m_dotRadius = 10;
-
     double m_width = 1;
 
     QBrush m_brush = QBrush(QColor(0, 0, 0, 200));

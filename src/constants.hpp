@@ -16,7 +16,33 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
+#include <QColor>
+
 namespace Constants {
+
+namespace Edge {
+
+static const double ARROW_LENGTH = 10;
+
+static const double ARROW_OPENING = 150;
+
+static const QColor DOT_COLOR{255, 0, 0, 192};
+
+static const int DOT_DURATION = 2000;
+
+static const int DOT_RADIUS = 10;
+
+static const QColor LABEL_COLOR{0xff, 0xee, 0xaa};
+
+static const int LABEL_DURATION = 2000;
+
+static const double MIN_SIZE = 0.1;
+
+static const double MAX_SIZE = 5.0;
+
+static const double STEP = 0.1;
+
+} // Edge
 
 namespace Node {
 

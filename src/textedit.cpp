@@ -67,17 +67,17 @@ void TextEdit::setText(const QString & text)
     setPlainText(text);
 }
 
-float TextEdit::maxHeight() const
+double TextEdit::maxHeight() const
 {
     return m_maxHeight;
 }
 
-void TextEdit::setMaxHeight(float maxHeight)
+void TextEdit::setMaxHeight(double maxHeight)
 {
     m_maxHeight = maxHeight;
 }
 
-float TextEdit::maxWidth() const
+double TextEdit::maxWidth() const
 {
     return m_maxWidth;
 }
@@ -105,7 +105,7 @@ void TextEdit::setBackgroundColor(const QColor & backgroundColor)
     update();
 }
 
-void TextEdit::setMaxWidth(float maxWidth)
+void TextEdit::setMaxWidth(double maxWidth)
 {
     m_maxWidth = maxWidth;
 }

@@ -6,6 +6,7 @@ set(SRC
     aboutdlg.cpp
     application.cpp
     config.hpp
+    constants.hpp
     draganddropstore.cpp
     edge.cpp
     edgebase.cpp

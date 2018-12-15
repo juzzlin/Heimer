@@ -15,6 +15,7 @@
 
 #include "node.hpp"
 
+#include "constants.hpp"
 #include "edge.hpp"
 #include "graphicsfactory.hpp"
 #include "layers.hpp"
@@ -37,7 +38,7 @@ Node::Node()
 {
     setAcceptHoverEvents(true);
 
-    setSize(QSize(m_minWidth, m_minHeight));
+    setSize(QSize(Constants::Node::MIN_WIDTH, Constants::Node::MIN_HEIGHT));
 
     setZValue(static_cast<int>(Layers::Node));
 
@@ -106,8 +107,8 @@ void Node::adjustSize()
     prepareGeometryChange();
 
     setSize(QSize(
-        std::max(m_minWidth, static_cast<float>(m_textEdit->boundingRect().width() + m_margin * 2)),
-        std::max(m_minHeight, static_cast<float>(m_textEdit->boundingRect().height() + m_margin * 2))));
+        std::max(Constants::Node::MIN_WIDTH, static_cast<int>(m_textEdit->boundingRect().width() + Constants::Node::MARGIN * 2)),
+        std::max(Constants::Node::MIN_HEIGHT, static_cast<int>(m_textEdit->boundingRect().height() + Constants::Node::MARGIN * 2))));
 
     initTextField();
 
@@ -142,9 +143,9 @@ EdgePtr Node::createAndAddGraphicsEdge(NodePtr targetNode)
 
 void Node::createEdgePoints()
 {
-    const float w2 = size().width() * 0.5f;
-    const float h2 = size().height() * 0.5f;
-    const float bias = 0.1f;
+    const double w2 = size().width() * 0.5;
+    const double h2 = size().height() * 0.5;
+    const double bias = 0.1;
 
     m_edgePoints = {
         {-w2, h2},
@@ -168,25 +169,25 @@ void Node::createHandles()
     }
     m_handles.clear();
 
-    auto addHandle = new NodeHandle(*this, NodeHandle::Role::Add, m_handleRadius);
+    auto addHandle = new NodeHandle(*this, NodeHandle::Role::Add, Constants::Node::HANDLE_RADIUS);
     addHandle->setParentItem(this);
-    addHandle->setPos({0, size().height() * 0.5f});
+    addHandle->setPos({0, size().height() * 0.5});
     m_handles.push_back(addHandle);
 
-    auto colorHandle = new NodeHandle(*this, NodeHandle::Role::Color, m_handleRadiusSmall);
+    auto colorHandle = new NodeHandle(*this, NodeHandle::Role::Color, Constants::Node::HANDLE_RADIUS_SMALL);
     colorHandle->setParentItem(this);
-    colorHandle->setPos({size().width() * 0.5f, size().height() * 0.5f - m_handleRadiusSmall * 0.5f});
+    colorHandle->setPos({size().width() * 0.5, size().height() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.5});
     m_handles.push_back(colorHandle);
 
-    auto textColorHandle = new NodeHandle(*this, NodeHandle::Role::TextColor, m_handleRadiusSmall);
+    auto textColorHandle = new NodeHandle(*this, NodeHandle::Role::TextColor, Constants::Node::HANDLE_RADIUS_SMALL);
     textColorHandle->setParentItem(this);
-    textColorHandle->setPos({size().width() * 0.5f, -size().height() * 0.5f + m_handleRadiusSmall * 0.5f});
+    textColorHandle->setPos({size().width() * 0.5, -size().height() * 0.5 + Constants::Node::HANDLE_RADIUS_SMALL * 0.5});
     m_handles.push_back(textColorHandle);
 }
 
 std::pair<QPointF, QPointF> Node::getNearestEdgePoints(const Node & node1, const Node & node2)
 {
-    float bestDistance = std::numeric_limits<float>::max();
+    double bestDistance = std::numeric_limits<double>::max();
     std::pair<QPointF, QPointF> bestPair = {QPointF(), QPointF()};
 
     // This is O(n^2) but fine as there are not many points
@@ -194,7 +195,7 @@ std::pair<QPointF, QPointF> Node::getNearestEdgePoints(const Node & node1, const
     {
         for (const auto & point2 : node2.m_edgePoints)
         {
-            const float distance = std::pow(node1.pos().x() + point1.x() - node2.pos().x() - point2.x(), 2) +
+            const auto distance = std::pow(node1.pos().x() + point1.x() - node2.pos().x() - point2.x(), 2) +
                 std::pow(node1.pos().y() + point1.y() - node2.pos().y() - point2.y(), 2);
 
             if (distance < bestDistance)
@@ -283,16 +284,16 @@ NodeHandle * Node::hitsHandle(QPointF pos)
 void Node::initTextField()
 {
 #ifndef HEIMER_UNIT_TEST
-    m_textEdit->setTextWidth(size().width() - m_margin * 2);
-    m_textEdit->setPos(-m_textEdit->textWidth() * 0.5f, -size().height() * 0.5f + m_margin);
-    m_textEdit->setMaxHeight(size().height() - m_margin * 4);
-    m_textEdit->setMaxWidth(size().width() - m_margin * 2);
+    m_textEdit->setTextWidth(size().width() - Constants::Node::MARGIN * 2);
+    m_textEdit->setPos(-m_textEdit->textWidth() * 0.5, -size().height() * 0.5 + Constants::Node::MARGIN);
+    m_textEdit->setMaxHeight(size().height() - Constants::Node::MARGIN * 4);
+    m_textEdit->setMaxWidth(size().width() - Constants::Node::MARGIN * 2);
 #endif
 }
 
 bool Node::isTextUnderflowOrOverflow() const
 {
-  const float tolerance = 0.001f;
+  const double tolerance = 0.001;
   return m_textEdit->boundingRect().height() > m_textEdit->maxHeight() + tolerance ||
       m_textEdit->boundingRect().width() > m_textEdit->maxWidth() + tolerance ||
       m_textEdit->boundingRect().height() < m_textEdit->maxHeight() - tolerance ||
@@ -309,9 +310,7 @@ void Node::paint(QPainter * painter,
 
     // Background
     painter->fillRect(
-        -size().width() / 2, -size().height() / 2,
-        size().width(), size().height(),
-        QBrush(color()));
+        int(-size().width() / 2), int(-size().height() / 2), int(size().width()), int(size().height()), QBrush(color()));
 
     painter->restore();
 }

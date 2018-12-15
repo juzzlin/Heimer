@@ -26,15 +26,15 @@ public:
 
     explicit TextEdit(QGraphicsItem * parentItem);
 
-    virtual float maxHeight() const;
+    virtual double maxHeight() const;
 
-    virtual void setMaxHeight(float maxHeight);
+    virtual void setMaxHeight(double maxHeight);
 
-    virtual float maxWidth() const;
+    virtual double maxWidth() const;
 
     virtual void setBackgroundColor(const QColor & backgroundColor);
 
-    virtual void setMaxWidth(float maxWidth);
+    virtual void setMaxWidth(double maxWidth);
 
     virtual void setTextSize(int textSize);
 
@@ -62,9 +62,9 @@ protected:
 
 private:
 
-    float m_maxHeight = 0;
+    double m_maxHeight = 0;
 
-    float m_maxWidth = 0;
+    double m_maxWidth = 0;
 
     QColor m_backgroundColor = QColor(192, 192, 192, 64);
 

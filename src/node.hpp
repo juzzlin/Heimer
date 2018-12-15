@@ -110,16 +110,6 @@ private:
 
     std::vector<QPointF> m_edgePoints;
 
-    const int m_handleRadius = 28;
-
-    const int m_handleRadiusSmall = 20;
-
-    const int m_margin = 10;
-
-    const float m_minHeight = 75;
-
-    const float m_minWidth = 200;
-
     TextEdit * m_textEdit;
 
     QTimer m_handleVisibilityTimer;

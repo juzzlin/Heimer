@@ -18,9 +18,9 @@
 
 #include <QString>
 
-#include "config.hpp"
-#include "mindmapdatabase.hpp"
+#include "constants.hpp"
 #include "graph.hpp"
+#include "mindmapdatabase.hpp"
 
 class ObjectModelLoader;
 
@@ -66,11 +66,11 @@ private:
 
     QString m_version;
 
-    QColor m_backgroundColor = Config::getDefaultBackgroundColor();
+    QColor m_backgroundColor = Constants::MindMap::DEFAULT_BACKGROUND_COLOR;
 
-    double m_edgeWidth = 2.0;
+    double m_edgeWidth = Constants::MindMap::DEFAULT_EDGE_WIDTH;
 
-    int m_textSize = 11;
+    int m_textSize = Constants::MindMap::DEFAULT_TEXT_SIZE;
 
     Graph m_graph;
 };

@@ -15,7 +15,7 @@
 
 #include "editordata.hpp"
 
-#include "config.hpp"
+#include "constants.hpp"
 #include "node.hpp"
 #include "serializer.hpp"
 #include "reader.hpp"
@@ -33,7 +33,7 @@ EditorData::EditorData()
 QColor EditorData::backgroundColor() const
 {
     // Background color of "empty" editor is not the same as default color of new design
-    return m_mindMapData ? m_mindMapData->backgroundColor() : Config::getDefaultBackgroundColor();
+    return m_mindMapData ? m_mindMapData->backgroundColor() : Constants::MindMap::DEFAULT_BACKGROUND_COLOR;
 }
 
 void EditorData::clearScene()

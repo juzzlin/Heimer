@@ -44,6 +44,16 @@ static const double STEP = 0.1;
 
 } // Edge
 
+namespace MindMap {
+
+static const QColor DEFAULT_BACKGROUND_COLOR{0x80, 0xc8, 0xff};
+
+static const double DEFAULT_EDGE_WIDTH = 2.0;
+
+static const int DEFAULT_TEXT_SIZE = 11;
+
+} // MindMap
+
 namespace Node {
 
 static const int HANDLE_RADIUS = 28;
@@ -64,7 +74,7 @@ static const int MIN_SIZE = 6;
 
 static const int MAX_SIZE = 24;
 
-} // Grid
+} // Text
 
 } // Constants
 

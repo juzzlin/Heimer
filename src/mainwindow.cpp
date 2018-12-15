@@ -133,8 +133,8 @@ QWidgetAction * MainWindow::createEdgeWidthAction()
 QWidgetAction * MainWindow::createTextSizeAction()
 {
     m_textSizeSpinBox = new QSpinBox(this);
-    m_textSizeSpinBox->setMinimum(6);
-    m_textSizeSpinBox->setMaximum(24);
+    m_textSizeSpinBox->setMinimum(Constants::Text::MIN_SIZE);
+    m_textSizeSpinBox->setMaximum(Constants::Text::MAX_SIZE);
     m_textSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
     const auto dummyWidget = new QWidget(this);

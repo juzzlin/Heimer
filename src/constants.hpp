@@ -32,6 +32,14 @@ static const int MIN_WIDTH = 200;
 
 } // Node
 
+namespace Text {
+
+static const int MIN_SIZE = 6;
+
+static const int MAX_SIZE = 24;
+
+} // Grid
+
 } // Constants
 
 #endif // CONSTANTS_HPP

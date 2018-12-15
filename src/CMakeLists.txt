@@ -5,7 +5,6 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/contrib/SimpleLogger/src)
 set(SRC
     aboutdlg.cpp
     application.cpp
-    config.hpp
     constants.hpp
     draganddropstore.cpp
     edge.cpp

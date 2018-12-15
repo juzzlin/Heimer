@@ -23,7 +23,6 @@ INCLUDEPATH += . $$SRC/contrib/SimpleLogger/src
 HEADERS +=  \
     $$SRC/aboutdlg.hpp \
     $$SRC/application.hpp \
-    $$SRC/config.hpp \
     $$SRC/draganddropstore.hpp \
     $$SRC/graph.hpp \
     $$SRC/graphicsfactory.hpp \

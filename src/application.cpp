@@ -14,7 +14,7 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "application.hpp"
-#include "config.hpp"
+#include "constants.hpp"
 #include "editordata.hpp"
 #include "editorscene.hpp"
 #include "editorview.hpp"
@@ -40,12 +40,10 @@ namespace {
 
 using juzzlin::L;
 
-static const QString FILE_EXTENSION(Config::FILE_EXTENSION);
-
 static void printHelp()
 {
     std::cout << std::endl << "Heimer version " << VERSION << std::endl;
-    std::cout << Config::COPYRIGHT << std::endl << std::endl;
+    std::cout << Constants::Application::COPYRIGHT << std::endl << std::endl;
     std::cout << "Usage: heimer [options] [mindMapFile]" << std::endl << std::endl;
     std::cout << "Options:" << std::endl;
     std::cout << "--help        Show this help." << std::endl;
@@ -60,7 +58,7 @@ static void initTranslations(QTranslator & appTranslator, QGuiApplication & app,
         lang = QLocale::system().name();
     }
 
-    if (appTranslator.load(Config::TRANSLATIONS_RESOURCE_BASE + lang))
+    if (appTranslator.load(Constants::Application::TRANSLATIONS_RESOURCE_BASE + lang))
     {
         app.installTranslator(&appTranslator);
         L().info() << "Loaded translations for " << lang.toStdString();
@@ -148,7 +146,7 @@ Application::Application(int & argc, char ** argv)
 
 QString Application::getFileDialogFileText() const
 {
-    return tr("Heimer Files") + " (*" + FILE_EXTENSION + ")";
+    return tr("Heimer Files") + " (*" + Constants::Application::FILE_EXTENSION + ")";
 }
 
 QString Application::loadRecentPath() const
@@ -282,9 +280,9 @@ void Application::saveMindMapAs()
         return;
     }
 
-    if (!fileName.endsWith(FILE_EXTENSION))
+    if (!fileName.endsWith(Constants::Application::FILE_EXTENSION))
     {
-        fileName += FILE_EXTENSION;
+        fileName += Constants::Application::FILE_EXTENSION;
     }
 
     if (m_mediator->saveMindMapAs(fileName))

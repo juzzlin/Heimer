@@ -3,8 +3,8 @@
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either Config::Editor 3 of the License, or
-// (at your option) any later Config::Editor.
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 // Heimer is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
@@ -297,7 +297,7 @@ void MainWindow::setMediator(std::shared_ptr<Mediator> mediator)
 
 void MainWindow::setTitle()
 {
-    const auto appInfo = QString(Config::APPLICATION_NAME) + " " + Config::APPLICATION_VERSION;
+    const auto appInfo = QString(Constants::Application::APPLICATION_NAME) + " " + Constants::Application::APPLICATION_VERSION;
     const auto displayFileName = m_mediator->fileName().isEmpty() ? tr("New File") : m_mediator->fileName();
     if (m_mediator->isModified())
     {
@@ -401,7 +401,7 @@ void MainWindow::setupMindMapAfterUndoOrRedo()
 void MainWindow::showErrorDialog(QString message)
 {
     QMessageBox::critical(this,
-         Config::APPLICATION_NAME,
+         Constants::Application::APPLICATION_NAME,
          message,
          "");
 }

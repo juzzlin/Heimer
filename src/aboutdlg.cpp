@@ -14,7 +14,7 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "aboutdlg.hpp"
-#include "config.hpp"
+#include "constants.hpp"
 
 #include <QHBoxLayout>
 #include <QLabel>
@@ -25,7 +25,7 @@
 AboutDlg::AboutDlg(QWidget * parent)
 : QDialog(parent)
 {
-    setWindowTitle(tr("About ") + Config::APPLICATION_NAME);
+    setWindowTitle(tr("About ") + Constants::Application::APPLICATION_NAME);
     initWidgets();
 }
 
@@ -39,11 +39,11 @@ void AboutDlg::initWidgets()
 
     QLabel * infoLabel = new QLabel(this);
     infoLabel->setText(
-        QString("<h2>") + Config::APPLICATION_NAME + " v" + Config::APPLICATION_VERSION + "</h2>"
-        + "<p>" + Config::APPLICATION_NAME + tr(" is licenced under ") + "GNU GPLv3." + "</p>"
-        + "<p>" + Config::COPYRIGHT + "</p>"
-        + "<a href='" + Config::WEB_SITE_URL + "'>"
-        + Config::WEB_SITE_URL + "</a>");
+        QString("<h2>") + Constants::Application::APPLICATION_NAME + " v" + Constants::Application::APPLICATION_VERSION + "</h2>"
+        + "<p>" + Constants::Application::APPLICATION_NAME + tr(" is licenced under ") + "GNU GPLv3." + "</p>"
+        + "<p>" + Constants::Application::COPYRIGHT + "</p>"
+        + "<a href='" + Constants::Application::WEB_SITE_URL + "'>"
+        + Constants::Application::WEB_SITE_URL + "</a>");
 
     vLayout->addWidget(infoLabel);
 

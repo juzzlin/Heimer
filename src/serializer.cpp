@@ -14,7 +14,8 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "serializer.hpp"
-#include "config.hpp"
+
+#include "constants.hpp"
 #include "graph.hpp"
 #include "node.hpp"
 #include "simple_logger.hpp"
@@ -273,7 +274,7 @@ QDomDocument Serializer::toXml(MindMapData & mindMapData)
     doc.appendChild(doc.createProcessingInstruction("xml", "version='1.0' encoding='UTF-8'"));
 
     auto design = doc.createElement(Serializer::DataKeywords::Design::DESIGN);
-    design.setAttribute(Serializer::DataKeywords::Design::APPLICATION_VERSION, Config::APPLICATION_VERSION);
+    design.setAttribute(Serializer::DataKeywords::Design::APPLICATION_VERSION, Constants::Application::APPLICATION_VERSION);
     doc.appendChild(design);
 
     writeColor(design, doc, mindMapData.backgroundColor(), Serializer::DataKeywords::Design::COLOR);

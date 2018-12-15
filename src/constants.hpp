@@ -20,6 +20,26 @@
 
 namespace Constants {
 
+namespace Application {
+
+static constexpr auto APPLICATION_NAME = "Heimer";
+
+static constexpr auto APPLICATION_VERSION = VERSION;
+
+static constexpr auto COPYRIGHT = "Copyright (c) 2018 Jussi Lind";
+
+static constexpr auto FILE_EXTENSION = ".alz";
+
+static constexpr auto QSETTINGS_COMPANY_NAME = "Heimer";
+
+static constexpr auto WEB_SITE_URL = "http://juzzlin.github.io/Heimer";
+
+static constexpr auto QSETTINGS_SOFTWARE_NAME = APPLICATION_NAME;
+
+static constexpr auto TRANSLATIONS_RESOURCE_BASE = ":/heimer_";
+
+} // Application
+
 namespace Edge {
 
 static const double ARROW_LENGTH = 10;
@@ -43,6 +63,16 @@ static const double MAX_SIZE = 5.0;
 static const double STEP = 0.1;
 
 } // Edge
+
+namespace Export {
+
+static const QString FILE_EXTENSION = ".png";
+
+static const int MIN_IMAGE_SIZE = 0;
+
+static const int MAX_IMAGE_SIZE = 99999;
+
+} // Export
 
 namespace MindMap {
 

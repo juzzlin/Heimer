@@ -17,7 +17,7 @@
 #include <QSettings>
 
 #include "application.hpp"
-#include "config.hpp"
+#include "constants.hpp"
 #include "hashseed.hpp"
 #include "userexception.hpp"
 #include "simple_logger.hpp"
@@ -43,8 +43,8 @@ static void initLogger()
     L::setLoggingLevel(L::Level::Debug);
 #endif
 
-    L().info() << Config::QSETTINGS_SOFTWARE_NAME << " version " << VERSION;
-    L().info() << Config::COPYRIGHT;
+    L().info() << Constants::Application::QSETTINGS_SOFTWARE_NAME << " version " << VERSION;
+    L().info() << Constants::Application::COPYRIGHT;
     L().info() << "Compiled against Qt version " << QT_VERSION_STR;
 }
 
@@ -52,8 +52,8 @@ int main(int argc, char ** argv)
 {
     HashSeed::init();
 
-    QApplication::setOrganizationName(Config::QSETTINGS_COMPANY_NAME);
-    QApplication::setApplicationName(Config::QSETTINGS_SOFTWARE_NAME);
+    QApplication::setOrganizationName(Constants::Application::QSETTINGS_COMPANY_NAME);
+    QApplication::setApplicationName(Constants::Application::QSETTINGS_SOFTWARE_NAME);
 #ifdef Q_OS_WIN32
     QSettings::setDefaultFormat(QSettings::IniFormat);
 #endif

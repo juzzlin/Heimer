@@ -49,8 +49,6 @@ public:
 
     static MainWindow * instance();
 
-    void console(QString text);
-
     void disableUndoAndRedo();
 
     void initialize();

@@ -24,30 +24,32 @@ and then make a patch and send it via e-mail:
 
 ## Adding/updating translations
 
-Qt's translation source files are at:
+### Old update flow
 
-`src/translations/`
+1) Generate source strings
 
-You can just copy these files as a new locale and edit, but the recommended way is
-to generate/update the file from source code to make sure that the source strings
-are up-to-date:
+    `$ lupdate src/*.cpp -ts src/translations/heimer_fr.ts`
 
-`$ lupdate src/*.cpp -ts src/translations/heimer_fr.ts`
+2) Edit translations in Linguist
 
-..as an example for French.
+    `$ linguist src/translations/heimer_fr.ts`
 
-The .ts-files can then be opened in Qt's translation GUI, linguist.
+3) Create/update the `.qm` file
 
-`$ linguist src/translations/heimer_fr.ts`
+    `$ lrelease src/translations/heimer_fr.ts -qm data/translations/heimer_fr.qm`
 
-For Qt5, the Ubuntu package for these tools is `qttools5-dev-tools`.
+### New update flow
 
-After updating the strings, create the .qm file:
+This script automates the steps above (Finnish in the example):
 
-`$ lrelease src/translations/heimer_fr.ts -qm data/translations/heimer_fr.qm`
+`$ ./scripts/updateTranslationFiles.sh fi`
 
-In the case of a new locale, the new .qm file needs to be added under `data/translations` and
+### Adding a new language
+
+In the case of a new language, the new .qm file needs to be added under `data/translations` and
 `data/translations/translations.qrc` needs to be modified so that the new `.qm` file is included.
+
+### Testing
 
 Remember to TEST the translations. Heimer needs to be rebuilt after a `.qm` file is updated.
 

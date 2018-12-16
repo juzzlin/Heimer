@@ -17,47 +17,47 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application.cpp" line="148"/>
+        <location filename="../application.cpp" line="150"/>
         <source>Heimer Files</source>
         <translation>Heimer -tiedostot</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="226"/>
+        <location filename="../application.cpp" line="228"/>
         <source>Open File</source>
         <translation>Avaa tiedosto</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="255"/>
+        <location filename="../application.cpp" line="257"/>
         <source>Failed to save file.</source>
         <translation>Tiedoston tallentaminen epäonnistui</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="273"/>
+        <location filename="../application.cpp" line="275"/>
         <source>Save File As</source>
         <translation>Tallenna Nimellä</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="289"/>
+        <location filename="../application.cpp" line="291"/>
         <source>File &apos;</source>
         <translation>Tiedosto &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="289"/>
+        <location filename="../application.cpp" line="291"/>
         <source>&apos; saved.</source>
         <translation>&apos; tallennettu.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="295"/>
+        <location filename="../application.cpp" line="297"/>
         <source>Failed to save file as &apos;</source>
         <translation>Tietoston tallentaminen epäonnistui nimellä &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="338"/>
+        <location filename="../application.cpp" line="340"/>
         <source>The mind map has been modified.</source>
         <translation>Käsitekarttaa on muokattu.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="339"/>
+        <location filename="../application.cpp" line="341"/>
         <source>Do you want to save your changes?</source>
         <translation>Haluatko tallentaa muutokset?</translation>
     </message>
@@ -69,22 +69,27 @@
         <translation type="vanished">Valitse Tiedosto-&gt;Uusi tai Tiedosto-&gt;Avaa aloittaaksesi</translation>
     </message>
     <message>
-        <location filename="../editorview.cpp" line="56"/>
+        <location filename="../editorview.cpp" line="60"/>
         <source>Set background color</source>
         <translation>Aseta taustaväri</translation>
     </message>
     <message>
-        <location filename="../editorview.cpp" line="61"/>
+        <location filename="../editorview.cpp" line="65"/>
         <source>Create floating node</source>
         <translation>Luo kelluva solmu</translation>
     </message>
     <message>
-        <location filename="../editorview.cpp" line="74"/>
+        <location filename="../editorview.cpp" line="78"/>
         <source>Set node color</source>
         <translation>Aseta solmun väri</translation>
     </message>
     <message>
-        <location filename="../editorview.cpp" line="84"/>
+        <location filename="../editorview.cpp" line="88"/>
+        <source>Set text color</source>
+        <translation>Tekstin väri</translation>
+    </message>
+    <message>
+        <location filename="../editorview.cpp" line="98"/>
         <source>Delete node</source>
         <translation>Poista solmu</translation>
     </message>
@@ -147,97 +152,107 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="62"/>
+        <location filename="../mainwindow.cpp" line="57"/>
         <source>Redo</source>
         <translation>Tee Uudelleen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="77"/>
+        <location filename="../mainwindow.cpp" line="72"/>
         <source>Undo</source>
         <translation>Kumoa</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="92"/>
+        <location filename="../mainwindow.cpp" line="87"/>
         <source>&amp;Edit</source>
         <translation>&amp;Muokkaa</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="100"/>
+        <location filename="../mainwindow.cpp" line="95"/>
         <source>Set background color...</source>
         <translation>Aseta taustaväri...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="127"/>
+        <location filename="../mainwindow.cpp" line="118"/>
         <source>Edge width:</source>
         <translation>Kaaren leveys:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="144"/>
+        <location filename="../mainwindow.cpp" line="143"/>
+        <source>Text size:</source>
+        <translation>Tekstin koko:</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="168"/>
+        <source>Grid size:</source>
+        <translation>Ruudukko:</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="185"/>
         <source>&amp;File</source>
         <translation>&amp;Tiedosto</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="147"/>
+        <location filename="../mainwindow.cpp" line="188"/>
         <source>&amp;New...</source>
         <translation>&amp;Uusi</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="155"/>
+        <location filename="../mainwindow.cpp" line="196"/>
         <source>&amp;Open...</source>
         <translation>&amp;Avaa...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="165"/>
+        <location filename="../mainwindow.cpp" line="206"/>
         <source>&amp;Save</source>
         <translation>&amp;Tallenna</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="174"/>
+        <location filename="../mainwindow.cpp" line="215"/>
         <source>&amp;Save as...</source>
         <translation>&amp;Tallenna Nimellä</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="185"/>
+        <location filename="../mainwindow.cpp" line="226"/>
         <source>&amp;Export to PNG image...</source>
         <translation>&amp;Vie PNG-kuvaksi...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="195"/>
+        <location filename="../mainwindow.cpp" line="236"/>
         <source>&amp;Quit</source>
         <translation>&amp;Poistu</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="205"/>
+        <location filename="../mainwindow.cpp" line="246"/>
         <source>&amp;Help</source>
         <translation>&amp;Apua</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="208"/>
+        <location filename="../mainwindow.cpp" line="249"/>
         <source>&amp;About</source>
         <translation>&amp;Tietoa</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="213"/>
+        <location filename="../mainwindow.cpp" line="254"/>
         <source>About &amp;Qt</source>
         <translation>Tietoa &amp;Qt:sta</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="220"/>
+        <location filename="../mainwindow.cpp" line="272"/>
         <source>&amp;View</source>
         <translation>&amp;Näkymä</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="223"/>
+        <location filename="../mainwindow.cpp" line="275"/>
         <source>Zoom In</source>
         <translation>Suurenna</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="229"/>
+        <location filename="../mainwindow.cpp" line="281"/>
         <source>Zoom Out</source>
         <translation>Loitonna</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="237"/>
+        <location filename="../mainwindow.cpp" line="289"/>
         <source>&amp;Zoom To Fit</source>
         <translation>&amp;Sovita</translation>
     </message>
@@ -246,12 +261,12 @@
         <translation type="vanished">Heimer -tiedostot</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="275"/>
+        <location filename="../mainwindow.cpp" line="327"/>
         <source>New File</source>
         <translation>Uusi tiedosto</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="278"/>
+        <location filename="../mainwindow.cpp" line="330"/>
         <source>Not Saved</source>
         <translation>Ei tallennettu</translation>
     </message>
@@ -272,7 +287,7 @@
         <translation type="vanished">Avaa tiedosto</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="346"/>
+        <location filename="../mainwindow.cpp" line="408"/>
         <source>About Qt</source>
         <translation>Tietoa Qt:sta</translation>
     </message>
@@ -300,67 +315,67 @@
 <context>
     <name>PngExportDialog</name>
     <message>
-        <location filename="../pngexportdialog.cpp" line="41"/>
+        <location filename="../pngexportdialog.cpp" line="35"/>
         <source>Export to PNG Image</source>
         <translation>Vie PNG-kuvaksi</translation>
     </message>
     <message>
-        <location filename="../pngexportdialog.cpp" line="47"/>
+        <location filename="../pngexportdialog.cpp" line="41"/>
         <source>Export As</source>
         <translation>Vie nimellä</translation>
     </message>
     <message>
-        <location filename="../pngexportdialog.cpp" line="49"/>
+        <location filename="../pngexportdialog.cpp" line="43"/>
         <source>PNG Files</source>
         <translation>PNG-tiedostot</translation>
     </message>
     <message>
-        <location filename="../pngexportdialog.cpp" line="121"/>
+        <location filename="../pngexportdialog.cpp" line="115"/>
         <source>Couldn&apos;t write to</source>
         <translation>Vienti epäonnistui kohteeseen</translation>
     </message>
     <message>
-        <location filename="../pngexportdialog.cpp" line="153"/>
+        <location filename="../pngexportdialog.cpp" line="147"/>
         <source>Filename</source>
         <translation>Tiedostonimi</translation>
     </message>
     <message>
-        <location filename="../pngexportdialog.cpp" line="159"/>
+        <location filename="../pngexportdialog.cpp" line="153"/>
         <source>Export as..</source>
         <translation>Vie nimellä..</translation>
     </message>
     <message>
-        <location filename="../pngexportdialog.cpp" line="163"/>
+        <location filename="../pngexportdialog.cpp" line="157"/>
         <source>Image Size</source>
         <translation>Kuvan Koko</translation>
     </message>
     <message>
-        <location filename="../pngexportdialog.cpp" line="165"/>
+        <location filename="../pngexportdialog.cpp" line="159"/>
         <source>Width (px):</source>
         <translation>Leveys (px)</translation>
     </message>
     <message>
-        <location filename="../pngexportdialog.cpp" line="171"/>
+        <location filename="../pngexportdialog.cpp" line="165"/>
         <source>Height (px):</source>
         <translation>Korkeus (px)</translation>
     </message>
     <message>
-        <location filename="../pngexportdialog.cpp" line="179"/>
+        <location filename="../pngexportdialog.cpp" line="173"/>
         <source>Background</source>
         <translation>Tausta</translation>
     </message>
     <message>
-        <location filename="../pngexportdialog.cpp" line="182"/>
+        <location filename="../pngexportdialog.cpp" line="176"/>
         <source>Transparent background</source>
         <translation>Läpinäkyvä tausta</translation>
     </message>
     <message>
-        <location filename="../pngexportdialog.cpp" line="196"/>
+        <location filename="../pngexportdialog.cpp" line="190"/>
         <source>Cancel</source>
         <translation>Kumoa</translation>
     </message>
     <message>
-        <location filename="../pngexportdialog.cpp" line="199"/>
+        <location filename="../pngexportdialog.cpp" line="193"/>
         <source>Export</source>
         <translation>Vie</translation>
     </message>

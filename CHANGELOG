@@ -1,3 +1,15 @@
+1.6.0 - "Grid Grudge"
+=====================
+
+New features:
+
+* Fix GitHub Issue #39: Add snap to grid option
+  * By selecting grid size > 0 will automatically snap nodes to grid
+
+Other:
+
+* Update Finnish translations
+
 1.5.0 - "Edge Enhancement"
 ==========================
 

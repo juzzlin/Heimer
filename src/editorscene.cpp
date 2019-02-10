@@ -77,6 +77,11 @@ QRectF EditorScene::getNodeBoundingRectWithHeuristics(bool isForExport) const
 
     const int margin = 60;
 
+    if (!nodes)
+    {
+        return {-margin, -margin, 2 * margin, 2 * margin};
+    }
+
     if (isForExport)
     {
         return rect.adjusted(-margin, -margin, margin, margin);
@@ -85,8 +90,8 @@ QRectF EditorScene::getNodeBoundingRectWithHeuristics(bool isForExport) const
     // This "don't ask" heuristics tries to calculate a "nice" zoom-to-fit based on the design
     // density and node count. For example, if we have just a single node we don't want it to
     // be super big and cover the whole screen.
-    const double density = std::pow(nodeArea / rect.width() / rect.height(), std::pow(nodes, 1.5));
-    const double adjust = 3.0 * std::max(density * rect.width(), density * rect.height());
+    const double density = nodeArea / rect.width() / rect.height();
+    const double adjust = 3.0 * std::max(density * rect.width(), density * rect.height()) / nodes;
     return rect.adjusted(-adjust / 2, -adjust / 2, adjust / 2, adjust / 2).adjusted(-margin, -margin, margin, margin);
 }
 

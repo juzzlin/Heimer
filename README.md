@@ -17,6 +17,8 @@ Here is a simple mind map of Heimer itself running on Ubuntu 18.04:
 * Quickly add node text and edge labels
 * Nice animations
 * Full undo/redo
+* Adjustable grid
+* Translations in English, Finnish, French
 * Forever 100% free
 
 ## License

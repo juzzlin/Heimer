@@ -119,11 +119,6 @@ void EditorView::createNodeContextMenuActions()
 
 void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
 {
-    if (!m_mediator.hasNodes())
-    {
-        return;
-    }
-
     if (event.button() == Qt::LeftButton)
     {
         m_mediator.dadStore().setSourceNode(nullptr, DragAndDropStore::Action::Scroll);

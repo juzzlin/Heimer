@@ -469,7 +469,10 @@ QSize Mediator::zoomForExport()
 
 void Mediator::zoomToFit()
 {
-    m_editorView->zoomToFit(m_editorScene->getNodeBoundingRectWithHeuristics());
+    if (hasNodes())
+    {
+        m_editorView->zoomToFit(m_editorScene->getNodeBoundingRectWithHeuristics());
+    }
 }
 
 double Mediator::calculateNodeOverlapScore(const Node & node1, const Node & node2) const

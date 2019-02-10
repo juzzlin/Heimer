@@ -77,11 +77,6 @@ QRectF EditorScene::getNodeBoundingRectWithHeuristics(bool isForExport) const
 
     const int margin = 60;
 
-    if (!nodes)
-    {
-        return {-margin, -margin, 2 * margin, 2 * margin};
-    }
-
     if (isForExport)
     {
         return rect.adjusted(-margin, -margin, margin, margin);

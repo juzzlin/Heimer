@@ -304,6 +304,10 @@ void MainWindow::createViewMenu()
     const auto zoomToFit = new QAction(tr("&Zoom To Fit"), this);
     viewMenu->addAction(zoomToFit);
     connect(zoomToFit, &QAction::triggered, this, &MainWindow::zoomToFitTriggered);
+
+    connect(viewMenu, &QMenu::aboutToShow, [=] () {
+        zoomToFit->setEnabled(m_mediator->hasNodes());
+    });
 }
 
 void MainWindow::initialize()

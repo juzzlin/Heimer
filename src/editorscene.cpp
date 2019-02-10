@@ -17,6 +17,7 @@
 
 #include "constants.hpp"
 #include "edge.hpp"
+#include "magiczoom.hpp"
 #include "node.hpp"
 
 #include "simple_logger.hpp"
@@ -59,35 +60,9 @@ void EditorScene::initialize()
     m_ownItems.push_back(ItemPtr(bottomLine));
 }
 
-QRectF EditorScene::getNodeBoundingRectWithHeuristics(bool isForExport) const
+QRectF EditorScene::zoomToFit(bool isForExport) const
 {
-    double nodeArea = 0;
-    QRectF rect;
-    int nodes = 0;
-    for (auto && item : items())
-    {
-        if (auto node = dynamic_cast<Node *>(item))
-        {
-            const auto nodeRect = node->placementBoundingRect();
-            rect = rect.united(nodeRect.translated(node->pos().x(), node->pos().y()));
-            nodeArea += nodeRect.width() * nodeRect.height();
-            nodes++;
-        }
-    }
-
-    const int margin = 60;
-
-    if (isForExport)
-    {
-        return rect.adjusted(-margin, -margin, margin, margin);
-    }
-
-    // This "don't ask" heuristics tries to calculate a "nice" zoom-to-fit based on the design
-    // density and node count. For example, if we have just a single node we don't want it to
-    // be super big and cover the whole screen.
-    const double density = nodeArea / rect.width() / rect.height();
-    const double adjust = 3.0 * std::max(density * rect.width(), density * rect.height()) / pow(nodes, 1.5);
-    return rect.adjusted(-adjust / 2, -adjust / 2, adjust / 2, adjust / 2).adjusted(-margin, -margin, margin, margin);
+    return MagicZoom::calculateRectangle(*this, isForExport);
 }
 
 bool EditorScene::hasEdge(Node & node0, Node & node1)

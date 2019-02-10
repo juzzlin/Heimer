@@ -21,6 +21,7 @@ set(SRC
     pngexportdialog.cpp
     main.cpp
     mainwindow.cpp
+    magiczoom.cpp
     mediator.cpp
     mindmapdata.cpp
     mindmapdatabase.cpp

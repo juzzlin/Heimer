@@ -463,7 +463,7 @@ void Mediator::zoomOut()
 QSize Mediator::zoomForExport()
 {
     m_editorScene->clearSelection();
-    m_editorScene->setSceneRect(m_editorScene->getNodeBoundingRectWithHeuristics(true));
+    m_editorScene->setSceneRect(m_editorScene->zoomToFit(true));
     return m_editorScene->sceneRect().size().toSize();
 }
 
@@ -471,7 +471,7 @@ void Mediator::zoomToFit()
 {
     if (hasNodes())
     {
-        m_editorView->zoomToFit(m_editorScene->getNodeBoundingRectWithHeuristics());
+        m_editorView->zoomToFit(m_editorScene->zoomToFit());
     }
 }
 

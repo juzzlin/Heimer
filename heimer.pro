@@ -37,6 +37,7 @@ HEADERS +=  \
     $$SRC/hashseed.hpp \
     $$SRC/pngexportdialog.hpp \
     $$SRC/layers.hpp \
+    $$SRC/magiczoom.hpp \
     $$SRC/mainwindow.hpp \
     $$SRC/mediator.hpp \
     $$SRC/mindmapdata.hpp \
@@ -67,6 +68,7 @@ SOURCES += \
     $$SRC/editorview.cpp \
     $$SRC/hashseed.cpp \
     $$SRC/pngexportdialog.cpp \
+    $$SRC/magiczoom.cpp \
     $$SRC/main.cpp \
     $$SRC/mainwindow.cpp \
     $$SRC/mediator.cpp \

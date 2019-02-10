@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2019 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,35 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef EDITORSCENE_HPP
-#define EDITORSCENE_HPP
+#ifndef MAGIC_ZOOM_HPP
+#define MAGIC_ZOOM_HPP
 
-#include <memory>
+#include <QRectF>
 
-#include <QGraphicsScene>
+class EditorScene;
 
-class Node;
+namespace MagicZoom {
 
-class EditorScene : public QGraphicsScene
-{
-public:
+QRectF calculateRectangle(const EditorScene & scene, bool isForExport);
 
-    EditorScene();
+} // MagicZoom
 
-    void initialize();
-
-    QRectF zoomToFit(bool isForExport = false) const;
-
-    bool hasEdge(Node & node0, Node & node1);
-
-    virtual ~EditorScene();
-
-private:
-
-    void removeItems();
-
-    using ItemPtr = std::unique_ptr<QGraphicsItem>;
-    std::vector<ItemPtr> m_ownItems;
-};
-
-#endif // EDITORSCENE_HPP
+#endif // MAGIC_ZOOM_HPP

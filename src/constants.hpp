@@ -90,6 +90,8 @@ namespace MindMap {
 
 static const QColor DEFAULT_BACKGROUND_COLOR{0x80, 0xc8, 0xff};
 
+static const QColor DEFAULT_EDGE_COLOR{0, 0, 0, 200};
+
 static const double DEFAULT_EDGE_WIDTH = 2.0;
 
 static const int DEFAULT_TEXT_SIZE = 11;

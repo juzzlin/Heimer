@@ -91,6 +91,11 @@ void Edge::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
     QGraphicsItem::hoverLeaveEvent(event);
 }
 
+QPen Edge::getPen() const
+{
+    return QPen{QBrush{QColor{color().red(), color().green(), color().blue(), 200}}, width()};
+}
+
 void Edge::initDots()
 {
     if (m_enableAnimations)
@@ -123,8 +128,21 @@ void Edge::setLabelVisible(bool visible)
 
 void Edge::setWidth(double width)
 {
-    m_width = width;
-    setPen(QPen(m_brush, width));
+    EdgeBase::setWidth(width);
+
+    setPen(getPen());
+    m_arrowheadL->setPen(pen());
+    m_arrowheadL->update();
+    m_arrowheadR->setPen(pen());
+    m_arrowheadR->update();
+    updateLine();
+}
+
+void Edge::setColor(const QColor & color)
+{
+    EdgeBase::setColor(color);
+
+    setPen(getPen());
     m_arrowheadL->setPen(pen());
     m_arrowheadL->update();
     m_arrowheadR->setPen(pen());
@@ -225,7 +243,7 @@ void Edge::updateLine()
     QVector2D direction(p2 - p1);
     direction.normalize();
 
-    setLine(QLineF(p1, p2 - (direction * m_width).toPointF() * 0.5));
+    setLine(QLineF(p1, p2 - (direction * width()).toPointF() * 0.5));
     updateDots(nearestPoints);
     updateLabel();
     updateArrowhead();

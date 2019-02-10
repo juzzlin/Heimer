@@ -18,6 +18,7 @@
 
 #include <memory>
 
+#include <QColor>
 #include <QString>
 
 class NodeBase;
@@ -35,6 +36,10 @@ public:
     virtual NodeBase & sourceNodeBase() const;
 
     virtual NodeBase & targetNodeBase() const;
+
+    QColor color() const;
+
+    virtual void setColor(const QColor & color);
 
     QString text() const;
 
@@ -61,6 +66,8 @@ private:
     double m_width = 2;
 
     int m_textSize = 11; // Not sure if we should set yet another default value here..
+
+    QColor m_color;
 };
 
 using EdgeBasePtr = std::shared_ptr<EdgeBase>;

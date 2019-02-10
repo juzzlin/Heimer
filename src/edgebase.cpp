@@ -32,6 +32,16 @@ void EdgeBase::setTargetNode(NodeBase & targetNode)
     m_targetNode = &targetNode;
 }
 
+QColor EdgeBase::color() const
+{
+    return m_color;
+}
+
+void EdgeBase::setColor(const QColor & color)
+{
+    m_color = color;
+}
+
 void EdgeBase::setText(const QString & text)
 {
     m_text = text;

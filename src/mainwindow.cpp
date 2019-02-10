@@ -102,6 +102,17 @@ void MainWindow::createEditMenu()
     editMenu->addAction(backgroundColorAction);
 
     editMenu->addSeparator();
+
+    auto edgeColorAction = new QAction(tr("Set edge color..."), this);
+    edgeColorAction->setShortcut(QKeySequence("Ctrl+E"));
+
+    connect(edgeColorAction, &QAction::triggered, [this] () {
+        emit actionTriggered(StateMachine::Action::EdgeColorChangeRequested);
+    });
+
+    editMenu->addAction(edgeColorAction);
+
+    editMenu->addSeparator();
 }
 
 QWidgetAction * MainWindow::createEdgeWidthAction()

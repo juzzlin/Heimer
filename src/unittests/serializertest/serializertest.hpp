@@ -29,6 +29,8 @@ private slots:
 
     void testBackgroundColor();
 
+    void testEdgeColor();
+
     void testEdgeWidth();
 
     void testNodeDeletion();

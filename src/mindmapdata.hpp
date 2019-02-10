@@ -38,6 +38,10 @@ public:
 
     void setBackgroundColor(const QColor & backgroundColor);
 
+    QColor edgeColor() const;
+
+    void setEdgeColor(const QColor & edgeColor);
+
     double edgeWidth() const;
 
     void setEdgeWidth(double width);
@@ -67,6 +71,8 @@ private:
     QString m_version;
 
     QColor m_backgroundColor = Constants::MindMap::DEFAULT_BACKGROUND_COLOR;
+
+    QColor m_edgeColor = Constants::MindMap::DEFAULT_EDGE_COLOR;
 
     double m_edgeWidth = Constants::MindMap::DEFAULT_EDGE_WIDTH;
 

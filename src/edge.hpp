@@ -16,7 +16,6 @@
 #ifndef EDGE_HPP
 #define EDGE_HPP
 
-#include <QBrush>
 #include <QGraphicsLineItem>
 #include <QTimer>
 
@@ -54,6 +53,8 @@ public slots:
 
     void updateLine();
 
+    virtual void setColor(const QColor & color) override;
+
     virtual void setWidth(double width) override;
 
     virtual void setText(const QString & text) override;
@@ -65,6 +66,8 @@ signals:
     void undoPointRequested();
 
 private:
+
+    QPen getPen() const;
 
     void initDots();
 
@@ -95,10 +98,6 @@ private:
     QPropertyAnimation * m_targetDotSizeAnimation;
 
     QTimer m_labelVisibilityTimer;
-
-    double m_width = 1;
-
-    QBrush m_brush = QBrush(QColor(0, 0, 0, 200));
 };
 
 using EdgePtr = std::shared_ptr<Edge>;

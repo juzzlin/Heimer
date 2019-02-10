@@ -74,6 +74,8 @@ private:
 
     void showBackgroundColorDialog();
 
+    void showEdgeColorDialog();
+
     void showPngExportDialog();
 
     void showMessageBox(QString message);

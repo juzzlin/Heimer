@@ -63,6 +63,7 @@ void Mediator::addExistingGraphToScene()
             auto graphicsEdge = dynamic_pointer_cast<Edge>(edge);
             assert(graphicsEdge);
             addItem(*graphicsEdge);
+            graphicsEdge->setColor(m_editorData->mindMapData()->edgeColor());
             graphicsEdge->setWidth(m_editorData->mindMapData()->edgeWidth());
             graphicsEdge->setTextSize(m_editorData->mindMapData()->textSize());
             node0->addGraphicsEdge(*graphicsEdge);
@@ -74,6 +75,7 @@ void Mediator::addExistingGraphToScene()
 
     m_mainWindow.setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
     m_mainWindow.setTextSize(m_editorData->mindMapData()->textSize());
+    m_editorView->setEdgeColor(m_editorData->mindMapData()->edgeColor());
     m_editorView->setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
 }
 
@@ -355,6 +357,16 @@ void Mediator::setBackgroundColor(QColor color)
         saveUndoPoint();
         m_editorData->mindMapData()->setBackgroundColor(color);
         m_editorView->setBackgroundBrush(QBrush(color));
+    }
+}
+
+void Mediator::setEdgeColor(QColor color)
+{
+    if (m_editorData->mindMapData()->edgeColor() != color)
+    {
+        saveUndoPoint();
+        m_editorData->mindMapData()->setEdgeColor(color);
+        m_editorView->setEdgeColor(color);
     }
 }
 

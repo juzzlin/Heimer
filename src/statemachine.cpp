@@ -30,6 +30,10 @@ void StateMachine::calculateState(StateMachine::Action action)
         m_state = State::ShowBackgroundColorDialog;
         break;
 
+    case Action::EdgeColorChangeRequested:
+        m_state = State::ShowEdgeColorDialog;
+        break;
+
     case Action::PngExportSelected:
         m_state = State::ShowPngExportDialog;
         break;
@@ -71,6 +75,7 @@ void StateMachine::calculateState(StateMachine::Action action)
         break;
 
     case Action::BackgroundColorChanged:
+    case Action::EdgeColorChanged:
     case Action::PngExported:
     case Action::NewMindMapInitialized:
     case Action::NotSavedDialogCanceled:

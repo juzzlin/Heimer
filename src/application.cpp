@@ -189,6 +189,9 @@ void Application::runState(StateMachine::State state)
     case StateMachine::State::ShowBackgroundColorDialog:
         showBackgroundColorDialog();
         break;
+    case StateMachine::State::ShowEdgeColorDialog:
+        showEdgeColorDialog();
+        break;
     case StateMachine::State::ShowPngExportDialog:
         showPngExportDialog();
         break;
@@ -316,6 +319,15 @@ void Application::showBackgroundColorDialog()
         m_mediator->setBackgroundColor(color);
     }
     emit actionTriggered(StateMachine::Action::BackgroundColorChanged);
+}
+
+void Application::showEdgeColorDialog()
+{
+    const auto color = QColorDialog::getColor(Qt::white, m_mainWindow.get());
+    if (color.isValid()) {
+        m_mediator->setEdgeColor(color);
+    }
+    emit actionTriggered(StateMachine::Action::EdgeColorChanged);
 }
 
 void Application::showPngExportDialog()

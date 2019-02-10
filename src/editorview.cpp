@@ -57,19 +57,27 @@ EditorView::EditorView(Mediator & mediator)
 
 void EditorView::createBackgroundContextMenuActions()
 {
-    auto setColorAction = new QAction(tr("Set background color"), &m_backgroundContextMenu);
-    QObject::connect(setColorAction, &QAction::triggered, [this] () {
+    auto setBackgroundColorAction = new QAction(tr("Set background color"), &m_backgroundContextMenu);
+    QObject::connect(setBackgroundColorAction, &QAction::triggered, [this] () {
         emit actionTriggered(StateMachine::Action::BackgroundColorChangeRequested);
     });
+
+    m_backgroundContextMenu.addAction(setBackgroundColorAction);
+    m_backgroundContextMenu.addSeparator();
+
+    auto setEdgeColorAction = new QAction(tr("Set edge color"), &m_backgroundContextMenu);
+    QObject::connect(setEdgeColorAction, &QAction::triggered, [this] () {
+        emit actionTriggered(StateMachine::Action::EdgeColorChangeRequested);
+    });
+
+    m_backgroundContextMenu.addAction(setEdgeColorAction);
+    m_backgroundContextMenu.addSeparator();
 
     auto createNode = new QAction(tr("Create floating node"), &m_backgroundContextMenu);
     QObject::connect(createNode, &QAction::triggered, [this] () {
         emit newNodeRequested(snapToGrid(m_clickedScenePos));
     });
 
-    // Populate the menu
-    m_backgroundContextMenu.addAction(setColorAction);
-    m_backgroundContextMenu.addSeparator();
     m_backgroundContextMenu.addAction(createNode);
 }
 
@@ -353,6 +361,7 @@ void EditorView::showDummyDragEdge(bool show)
         }
     }
 
+    m_dummyDragEdge->setColor(m_edgeColor);
     m_dummyDragEdge->setWidth(m_edgeWidth);
     m_dummyDragEdge->setVisible(show);
 }
@@ -393,6 +402,11 @@ void EditorView::updateScale(int value)
 void EditorView::setGridSize(int size)
 {
     m_gridSize = size;
+}
+
+void EditorView::setEdgeColor(const QColor & edgeColor)
+{
+    m_edgeColor = edgeColor;
 }
 
 void EditorView::setEdgeWidth(double edgeWidth)

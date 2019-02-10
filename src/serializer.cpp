@@ -253,6 +253,11 @@ MindMapDataPtr Serializer::fromXml(QDomDocument document)
             }
         },
         {
+            QString(Serializer::DataKeywords::Design::EDGE_COLOR), [=] (const QDomElement & e) {
+                data->setEdgeColor(readColorElement(e));
+            }
+        },
+        {
             QString(Serializer::DataKeywords::Design::EDGE_THICKNESS), [=] (const QDomElement & e) {
                 data->setEdgeWidth(readFirstTextNodeContent(e).toDouble() / SCALE);
             }
@@ -278,6 +283,8 @@ QDomDocument Serializer::toXml(MindMapData & mindMapData)
     doc.appendChild(design);
 
     writeColor(design, doc, mindMapData.backgroundColor(), Serializer::DataKeywords::Design::COLOR);
+
+    writeColor(design, doc, mindMapData.edgeColor(), Serializer::DataKeywords::Design::EDGE_COLOR);
 
     auto edgeWidthElement = doc.createElement(Serializer::DataKeywords::Design::EDGE_THICKNESS);
     edgeWidthElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData.edgeWidth() * SCALE))));

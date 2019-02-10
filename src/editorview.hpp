@@ -18,6 +18,7 @@
 
 #include "statemachine.hpp"
 
+#include <QColor>
 #include <QGraphicsView>
 #include <QMenu>
 
@@ -51,6 +52,8 @@ public:
     void zoomToFit(QRectF nodeBoundingRect);
 
 public slots:
+
+    void setEdgeColor(const QColor & edgeColor);
 
     void setEdgeWidth(double edgeWidth);
 
@@ -150,6 +153,8 @@ private:
 
     // Width for the dummy drag edge
     double m_edgeWidth = 1.5;
+
+    QColor m_edgeColor;
 
     QRectF m_nodeBoundingRect;
 };

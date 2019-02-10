@@ -36,6 +36,7 @@ public:
         InitializeNewMindMap,
         SaveMindMap,
         ShowBackgroundColorDialog,
+        ShowEdgeColorDialog,
         ShowNotSavedDialog,
         ShowOpenDialog,
         ShowPngExportDialog,
@@ -47,6 +48,8 @@ public:
     {
         BackgroundColorChanged,
         BackgroundColorChangeRequested,
+        EdgeColorChanged,
+        EdgeColorChangeRequested,
         MainWindowInitialized,
         MindMapOpened,
         MindMapSaved,

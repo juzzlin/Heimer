@@ -28,6 +28,7 @@ MindMapData::MindMapData(const MindMapData & other)
     , m_fileName(other.m_fileName)
     , m_version(other.m_version)
     , m_backgroundColor(other.m_backgroundColor)
+    , m_edgeColor(other.m_edgeColor)
     , m_edgeWidth(other.m_edgeWidth)
     , m_textSize(other.m_textSize)
 {
@@ -64,6 +65,20 @@ QColor MindMapData::backgroundColor() const
 void MindMapData::setBackgroundColor(const QColor & backgroundColor)
 {
     m_backgroundColor = backgroundColor;
+}
+
+QColor MindMapData::edgeColor() const
+{
+    return m_edgeColor;
+}
+
+void MindMapData::setEdgeColor(const QColor & edgeColor)
+{
+    m_edgeColor = edgeColor;
+
+    for (auto && edge : m_graph.getEdges()) {
+        edge->setColor(edgeColor);
+    }
 }
 
 double MindMapData::edgeWidth() const

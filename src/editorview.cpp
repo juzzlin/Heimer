@@ -430,7 +430,7 @@ void EditorView::zoom(int amount)
 
 void EditorView::zoomToFit(QRectF nodeBoundingRect)
 {
-    const double viewAspect = rect().height() / rect().width();
+    const double viewAspect = double(rect().height()) / rect().width();
     const double nodeAspect = nodeBoundingRect.height() / nodeBoundingRect.width();
 
     if (viewAspect < 1.0)

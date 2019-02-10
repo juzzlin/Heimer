@@ -142,7 +142,7 @@ NodeBasePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 
     addExistingGraphToScene();
 
-    return node1;
+    return std::move(node1); // Fix a static analyzer warning: avoid copy on older compilers
 }
 
 NodeBasePtr Mediator::createAndAddNode(QPointF pos)
@@ -154,7 +154,7 @@ NodeBasePtr Mediator::createAndAddNode(QPointF pos)
 
     addExistingGraphToScene();
 
-    return node1;
+    return std::move(node1); // Fix a static analyzer warning: avoid copy on older compilers
 }
 
 DragAndDropStore & Mediator::dadStore()
@@ -253,8 +253,7 @@ bool Mediator::areDirectlyConnected(const Node & node1, const Node & node2) cons
 bool Mediator::isLeafNode(Node & node)
 {
     auto && graph = m_editorData->mindMapData()->graph();
-    const int edgeCount = graph.getEdgesFromNode(graph.getNode(node.index())).size() + graph.getEdgesToNode(graph.getNode(node.index())).size();
-    return edgeCount <= 1;
+    return graph.getEdgesFromNode(graph.getNode(node.index())).size() + graph.getEdgesToNode(graph.getNode(node.index())).size() <= 1;
 }
 
 bool Mediator::isInBetween(Node & node)

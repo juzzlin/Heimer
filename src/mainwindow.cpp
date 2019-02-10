@@ -250,6 +250,10 @@ void MainWindow::createFileMenu()
     connect(quitAct, &QAction::triggered, [=] () {
         emit actionTriggered(StateMachine::Action::QuitSelected);
     });
+
+    connect(fileMenu, &QMenu::aboutToShow, [=] () {
+        exportToPNGAction->setEnabled(m_mediator->hasNodes());
+    });
 }
 
 void MainWindow::createHelpMenu()

@@ -39,6 +39,10 @@
 
 MainWindow * MainWindow::m_instance = nullptr;
 
+namespace  {
+static const auto threeDots = "...";
+}
+
 MainWindow::MainWindow()
 : m_aboutDlg(new AboutDlg(this))
 {
@@ -92,7 +96,7 @@ void MainWindow::createEditMenu()
 
     editMenu->addSeparator();
 
-    auto backgroundColorAction = new QAction(tr("Set background color..."), this);
+    auto backgroundColorAction = new QAction(tr("Set background color") + threeDots, this);
     backgroundColorAction->setShortcut(QKeySequence("Ctrl+B"));
 
     connect(backgroundColorAction, &QAction::triggered, [this] () {
@@ -103,7 +107,7 @@ void MainWindow::createEditMenu()
 
     editMenu->addSeparator();
 
-    auto edgeColorAction = new QAction(tr("Set edge color..."), this);
+    auto edgeColorAction = new QAction(tr("Set edge color") + threeDots, this);
     edgeColorAction->setShortcut(QKeySequence("Ctrl+E"));
 
     connect(edgeColorAction, &QAction::triggered, [this] () {
@@ -196,7 +200,7 @@ void MainWindow::createFileMenu()
     const auto fileMenu = menuBar()->addMenu(tr("&File"));
 
     // Add "new"-action
-    const auto newAct = new QAction(tr("&New..."), this);
+    const auto newAct = new QAction(tr("&New") + threeDots, this);
     newAct->setShortcut(QKeySequence("Ctrl+N"));
     fileMenu->addAction(newAct);
     connect(newAct, &QAction::triggered, [=] () {
@@ -204,7 +208,7 @@ void MainWindow::createFileMenu()
     });
 
     // Add "open"-action
-    const auto openAct = new QAction(tr("&Open..."), this);
+    const auto openAct = new QAction(tr("&Open") + threeDots, this);
     openAct->setShortcut(QKeySequence("Ctrl+O"));
     fileMenu->addAction(openAct);
     connect(openAct, &QAction::triggered, [=] () {
@@ -223,7 +227,7 @@ void MainWindow::createFileMenu()
     });
 
     // Add "save as"-action
-    m_saveAsAction = new QAction(tr("&Save as..."), this);
+    m_saveAsAction = new QAction(tr("&Save as") + threeDots, this);
     m_saveAsAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
     m_saveAsAction->setEnabled(false);
     fileMenu->addAction(m_saveAsAction);
@@ -234,7 +238,7 @@ void MainWindow::createFileMenu()
     fileMenu->addSeparator();
 
     // Add "export to PNG image"-action
-    const auto exportToPNGAction = new QAction(tr("&Export to PNG image..."), this);
+    const auto exportToPNGAction = new QAction(tr("&Export to PNG image") + threeDots, this);
     exportToPNGAction->setShortcut(QKeySequence("Ctrl+Shift+E"));
     fileMenu->addAction(exportToPNGAction);
     connect(exportToPNGAction, &QAction::triggered, [=] () {

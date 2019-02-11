@@ -13,17 +13,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef READER_HPP
-#define READER_HPP
+#ifndef EDGETEXTEDIT_HPP
+#define EDGETEXTEDIT_HPP
 
-#include <QDomDocument>
+#include "text_edit.hpp"
 
-#include "file_exception.hpp"
+#include <QPropertyAnimation>
+#include <QTimer>
 
-namespace Reader {
+class Edge;
 
-    QDomDocument readFromFile(QString filePath);
+class EdgeTextEdit : public TextEdit
+{
+public:
 
-}
+    EdgeTextEdit(Edge * parentItem);
 
-#endif // READER_HPP
+    void setVisible(bool visible);
+
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
+
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
+
+private:
+
+    QPropertyAnimation m_sizeAnimation;
+
+    QTimer m_visibilityTimer;
+};
+
+#endif // EDGETEXTEDIT_HPP

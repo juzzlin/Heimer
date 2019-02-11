@@ -13,17 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef READER_HPP
-#define READER_HPP
+#include "hash_seed.hpp"
 
-#include <QDomDocument>
-
-#include "file_exception.hpp"
-
-namespace Reader {
-
-    QDomDocument readFromFile(QString filePath);
-
+void HashSeed::init()
+{
+#if QT_VERSION >= 0x50600
+    qSetGlobalQHashSeed(0);
+#else
+    qt_qhash_seed.store(0);
+#endif
 }
-
-#endif // READER_HPP

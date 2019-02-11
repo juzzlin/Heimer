@@ -13,17 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef READER_HPP
-#define READER_HPP
+#include "edge_dot.hpp"
 
-#include <QDomDocument>
-
-#include "file_exception.hpp"
-
-namespace Reader {
-
-    QDomDocument readFromFile(QString filePath);
-
+EdgeDot::EdgeDot(QGraphicsItem * parentItem)
+    : QGraphicsEllipseItem(parentItem)
+{
 }
-
-#endif // READER_HPP

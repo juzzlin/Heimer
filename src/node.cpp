@@ -17,10 +17,10 @@
 
 #include "constants.hpp"
 #include "edge.hpp"
-#include "graphicsfactory.hpp"
+#include "graphics_factory.hpp"
 #include "layers.hpp"
-#include "nodehandle.hpp"
-#include "textedit.hpp"
+#include "node_handle.hpp"
+#include "text_edit.hpp"
 
 #include "simple_logger.hpp"
 

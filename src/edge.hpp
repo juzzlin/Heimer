@@ -22,7 +22,7 @@
 #include <map>
 #include <memory>
 
-#include "edgebase.hpp"
+#include "edge_base.hpp"
 
 class EdgeDot;
 class EdgeTextEdit;

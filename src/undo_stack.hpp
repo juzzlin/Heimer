@@ -13,17 +13,42 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef READER_HPP
-#define READER_HPP
+#ifndef UNDOSTACK_HPP
+#define UNDOSTACK_HPP
 
-#include <QDomDocument>
+#include "mind_map_data.hpp"
 
-#include "file_exception.hpp"
+#include <list>
 
-namespace Reader {
+class UndoStack
+{
+public:
 
-    QDomDocument readFromFile(QString filePath);
+    UndoStack(int maxHistorySize = -1);
 
-}
+    void pushUndoPoint(MindMapDataPtr mindMapData);
 
-#endif // READER_HPP
+    void pushRedoPoint(MindMapDataPtr mindMapData);
+
+    void clear();
+
+    bool isUndoable() const;
+
+    MindMapDataPtr undo();
+
+    bool isRedoable() const;
+
+    MindMapDataPtr redo();
+
+private:
+
+    using MindMapDataVector = std::list<MindMapDataPtr>;
+
+    MindMapDataVector m_undoStack;
+
+    MindMapDataVector m_redoStack;
+
+    int m_maxHistorySize;
+};
+
+#endif // UNDOSTACK_HPP

@@ -18,8 +18,8 @@
 
 #include "application.hpp"
 #include "constants.hpp"
-#include "hashseed.hpp"
-#include "userexception.hpp"
+#include "hash_seed.hpp"
+#include "user_exception.hpp"
 #include "simple_logger.hpp"
 
 #include <cstdlib>

@@ -15,11 +15,11 @@
 
 #include "mediator.hpp"
 
-#include "draganddropstore.hpp"
-#include "editordata.hpp"
-#include "editorscene.hpp"
-#include "editorview.hpp"
-#include "mainwindow.hpp"
+#include "drag_and_drop_store.hpp"
+#include "editor_data.hpp"
+#include "editor_scene.hpp"
+#include "editor_view.hpp"
+#include "main_window.hpp"
 
 #include "simple_logger.hpp"
 

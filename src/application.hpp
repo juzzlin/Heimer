@@ -16,7 +16,7 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
-#include "statemachine.hpp"
+#include "state_machine.hpp"
 
 #include <QApplication>
 #include <QColor>

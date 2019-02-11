@@ -16,11 +16,11 @@
 #include "edge.hpp"
 
 #include "constants.hpp"
-#include "edgedot.hpp"
-#include "graphicsfactory.hpp"
+#include "edge_dot.hpp"
+#include "graphics_factory.hpp"
 #include "layers.hpp"
 #include "node.hpp"
-#include "edgetextedit.hpp"
+#include "edge_text_edit.hpp"
 
 #include "simple_logger.hpp"
 

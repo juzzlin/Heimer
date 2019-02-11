@@ -13,17 +13,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef READER_HPP
-#define READER_HPP
+#include "graphics_factory.hpp"
 
-#include <QDomDocument>
+#include <QGraphicsDropShadowEffect>
 
-#include "file_exception.hpp"
-
-namespace Reader {
-
-    QDomDocument readFromFile(QString filePath);
-
+QGraphicsEffect * GraphicsFactory::createDropShadowEffect(bool selected)
+{
+    QGraphicsDropShadowEffect * shadow = new QGraphicsDropShadowEffect();
+    if (!selected)
+    {
+        shadow->setOffset(QPointF(3, 3));
+        shadow->setBlurRadius(5);
+    }
+    else
+    {
+        shadow->setOffset(QPointF(0, 0));
+        shadow->setColor(QColor(255, 0, 0));
+        shadow->setBlurRadius(50);
+    }
+    return shadow;
 }
-
-#endif // READER_HPP

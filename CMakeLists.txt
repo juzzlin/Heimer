@@ -91,6 +91,6 @@ add_subdirectory(src)
 # Enable CMake's unit test framework
 if(BUILD_TESTS)
     enable_testing()
-    add_subdirectory(src/unittests)
+    add_subdirectory(src/unit_tests)
 endif()
 

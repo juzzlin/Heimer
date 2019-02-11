@@ -15,14 +15,14 @@
 
 #include "application.hpp"
 #include "constants.hpp"
-#include "editordata.hpp"
-#include "editorscene.hpp"
-#include "editorview.hpp"
-#include "mainwindow.hpp"
+#include "editor_data.hpp"
+#include "editor_scene.hpp"
+#include "editor_view.hpp"
+#include "main_window.hpp"
 #include "mediator.hpp"
-#include "pngexportdialog.hpp"
-#include "statemachine.hpp"
-#include "userexception.hpp"
+#include "png_export_dialog.hpp"
+#include "state_machine.hpp"
+#include "user_exception.hpp"
 
 #include "simple_logger.hpp"
 

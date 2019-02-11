@@ -21,67 +21,67 @@ INCLUDEPATH += . $$SRC/contrib/SimpleLogger/src
 
 # Input
 HEADERS +=  \
-    $$SRC/aboutdlg.hpp \
+    $$SRC/about_dlg.hpp \
     $$SRC/application.hpp \
-    $$SRC/draganddropstore.hpp \
+    $$SRC/drag_and_drop_store.hpp \
     $$SRC/graph.hpp \
-    $$SRC/graphicsfactory.hpp \
+    $$SRC/graphics_factory.hpp \
     $$SRC/edge.hpp \
-    $$SRC/edgebase.hpp \
-    $$SRC/edgedot.hpp \
-    $$SRC/edgetextedit.hpp \
-    $$SRC/editordata.hpp \
-    $$SRC/editorscene.hpp \
-    $$SRC/editorview.hpp \
-    $$SRC/fileexception.hpp \
-    $$SRC/hashseed.hpp \
-    $$SRC/pngexportdialog.hpp \
+    $$SRC/edge_base.hpp \
+    $$SRC/edge_dot.hpp \
+    $$SRC/edge_text_edit.hpp \
+    $$SRC/editor_data.hpp \
+    $$SRC/editor_scene.hpp \
+    $$SRC/editor_view.hpp \
+    $$SRC/file_exception.hpp \
+    $$SRC/hash_seed.hpp \
+    $$SRC/png_export_dialog.hpp \
     $$SRC/layers.hpp \
-    $$SRC/magiczoom.hpp \
-    $$SRC/mainwindow.hpp \
+    $$SRC/magic_zoom.hpp \
+    $$SRC/main_window.hpp \
     $$SRC/mediator.hpp \
-    $$SRC/mindmapdata.hpp \
-    $$SRC/mindmapdatabase.hpp \
+    $$SRC/mind_map_data.hpp \
+    $$SRC/mind_map_data_base.hpp \
     $$SRC/node.hpp \
-    $$SRC/nodebase.hpp \
-    $$SRC/nodehandle.hpp \
+    $$SRC/node_base.hpp \
+    $$SRC/node_handle.hpp \
     $$SRC/reader.hpp \
     $$SRC/serializer.hpp \
-    $$SRC/statemachine.hpp \
-    $$SRC/textedit.hpp \
-    $$SRC/undostack.hpp \
+    $$SRC/state_machine.hpp \
+    $$SRC/text_edit.hpp \
+    $$SRC/undo_stack.hpp \
     $$SRC/writer.hpp \
     $$SRC/contrib/SimpleLogger/src/simple_logger.hpp \
 
 SOURCES += \
-    $$SRC/aboutdlg.cpp \
+    $$SRC/about_dlg.cpp \
     $$SRC/application.cpp \
-    $$SRC/draganddropstore.cpp \
+    $$SRC/drag_and_drop_store.cpp \
     $$SRC/graph.cpp \
-    $$SRC/graphicsfactory.cpp \
+    $$SRC/graphics_factory.cpp \
     $$SRC/edge.cpp \
-    $$SRC/edgebase.cpp \
-    $$SRC/edgedot.cpp \
-    $$SRC/edgetextedit.cpp \
-    $$SRC/editordata.cpp \
-    $$SRC/editorscene.cpp \
-    $$SRC/editorview.cpp \
-    $$SRC/hashseed.cpp \
-    $$SRC/pngexportdialog.cpp \
-    $$SRC/magiczoom.cpp \
+    $$SRC/edge_base.cpp \
+    $$SRC/edge_dot.cpp \
+    $$SRC/edge_text_edit.cpp \
+    $$SRC/editor_data.cpp \
+    $$SRC/editor_scene.cpp \
+    $$SRC/editor_view.cpp \
+    $$SRC/hash_seed.cpp \
+    $$SRC/png_export_dialog.cpp \
+    $$SRC/magic_zoom.cpp \
     $$SRC/main.cpp \
-    $$SRC/mainwindow.cpp \
+    $$SRC/main_window.cpp \
     $$SRC/mediator.cpp \
-    $$SRC/mindmapdata.cpp \
-    $$SRC/mindmapdatabase.cpp \
+    $$SRC/mind_map_data.cpp \
+    $$SRC/mind_map_data_base.cpp \
     $$SRC/node.cpp \
-    $$SRC/nodebase.cpp \
-    $$SRC/nodehandle.cpp \
+    $$SRC/node_base.cpp \
+    $$SRC/node_handle.cpp \
     $$SRC/reader.cpp \
     $$SRC/serializer.cpp \
-    $$SRC/statemachine.cpp \
-    $$SRC/textedit.cpp \
-    $$SRC/undostack.cpp \
+    $$SRC/state_machine.cpp \
+    $$SRC/text_edit.cpp \
+    $$SRC/undo_stack.cpp \
     $$SRC/writer.cpp \
     $$SRC/contrib/SimpleLogger/src/simple_logger.cpp \
 

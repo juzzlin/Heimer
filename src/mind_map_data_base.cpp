@@ -13,17 +13,38 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef READER_HPP
-#define READER_HPP
+#include "mind_map_data_base.hpp"
 
-#include <QDomDocument>
-
-#include "file_exception.hpp"
-
-namespace Reader {
-
-    QDomDocument readFromFile(QString filePath);
-
+MindMapDataBase::MindMapDataBase(QString name)
+    : m_name(name)
+{
 }
 
-#endif // READER_HPP
+MindMapDataBase::MindMapDataBase(const MindMapDataBase & other)
+    : m_name(other.m_name)
+{
+}
+
+QString MindMapDataBase::name() const
+{
+    return m_name;
+}
+
+unsigned int MindMapDataBase::index() const
+{
+    return m_index;
+}
+
+void MindMapDataBase::setName(QString name)
+{
+    m_name = name;
+}
+
+void MindMapDataBase::setIndex(unsigned int index)
+{
+    m_index = index;
+}
+
+MindMapDataBase::~MindMapDataBase()
+{
+}

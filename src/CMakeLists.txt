@@ -3,37 +3,37 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/contrib/SimpleLogger/src)
 
 # Set sources
 set(SRC
-    aboutdlg.cpp
+    about_dlg.cpp
     application.cpp
     constants.hpp
-    draganddropstore.cpp
+    drag_and_drop_store.cpp
     edge.cpp
-    edgebase.cpp
-    edgedot.cpp
-    edgetextedit.cpp
-    fileexception.hpp
+    edge_base.cpp
+    edge_dot.cpp
+    edge_text_edit.cpp
+    file_exception.hpp
     graph.cpp
-    graphicsfactory.cpp
-    hashseed.cpp
-    editordata.cpp
-    editorscene.cpp
-    editorview.cpp
-    pngexportdialog.cpp
+    graphics_factory.cpp
+    hash_seed.cpp
+    editor_data.cpp
+    editor_scene.cpp
+    editor_view.cpp
+    png_export_dialog.cpp
     main.cpp
-    mainwindow.cpp
-    magiczoom.cpp
+    main_window.cpp
+    magic_zoom.cpp
     mediator.cpp
-    mindmapdata.cpp
-    mindmapdatabase.cpp
+    mind_map_data.cpp
+    mind_map_data_base.cpp
     node.cpp
-    nodebase.cpp
-    nodehandle.cpp
+    node_base.cpp
+    node_handle.cpp
     reader.cpp
     serializer.cpp
-    statemachine.cpp
-    textedit.cpp
-    undostack.cpp
-    userexception.hpp
+    state_machine.cpp
+    text_edit.cpp
+    undo_stack.cpp
+    user_exception.hpp
     layers.hpp
     writer.cpp
 )

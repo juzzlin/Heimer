@@ -14,7 +14,7 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "graph.hpp"
-#include "nodebase.hpp"
+#include "node_base.hpp"
 
 #include "simple_logger.hpp"
 

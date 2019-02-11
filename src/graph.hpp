@@ -16,8 +16,8 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 
-#include "nodebase.hpp"
-#include "edgebase.hpp"
+#include "node_base.hpp"
+#include "edge_base.hpp"
 
 #include <map>
 #include <set>

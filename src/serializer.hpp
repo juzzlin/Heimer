@@ -16,7 +16,7 @@
 #ifndef SERIALIZER_HPP
 #define SERIALIZER_HPP
 
-#include "mindmapdata.hpp"
+#include "mind_map_data.hpp"
 
 #include <QDomDocument>
 

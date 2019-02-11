@@ -23,7 +23,7 @@
 #include <vector>
 #include <map>
 
-#include "nodebase.hpp"
+#include "node_base.hpp"
 #include "edge.hpp"
 
 class NodeHandle;

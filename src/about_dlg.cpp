@@ -40,10 +40,14 @@ void AboutDlg::initWidgets()
     QLabel * infoLabel = new QLabel(this);
     infoLabel->setText(
         QString("<h2>") + Constants::Application::APPLICATION_NAME + " v" + Constants::Application::APPLICATION_VERSION + "</h2>"
-        + "<p>" + Constants::Application::APPLICATION_NAME + tr(" is licenced under ") + "GNU GPLv3." + "</p>"
-        + "<p>" + Constants::Application::COPYRIGHT + "</p>"
-        + "<a href='" + Constants::Application::WEB_SITE_URL + "'>"
-        + Constants::Application::WEB_SITE_URL + "</a>");
+        + "<p>" + Constants::Application::APPLICATION_NAME + tr(" is licenced under ") + "GNU GPLv3."
+        + " " + Constants::Application::COPYRIGHT + ".</p>"
+        + tr("Project website: ") + "<a href='" + Constants::Application::WEB_SITE_URL + "'>"
+        + Constants::Application::WEB_SITE_URL + "</a>"
+        + "<p>" + tr("Support ") + Constants::Application::APPLICATION_NAME + tr(" on Patreon: ")
+        + "<a href='" + Constants::Application::SUPPORT_SITE_URL + "'>"
+        + Constants::Application::SUPPORT_SITE_URL + "</a></p>"
+    );
 
     vLayout->addWidget(infoLabel);
 

@@ -56,3 +56,7 @@ Building for Linux in a nutshell:
 
 `$ sudo make install`
 
+## Donations
+
+https://www.patreon.com/juzzlin
+

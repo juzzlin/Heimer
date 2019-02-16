@@ -13,6 +13,21 @@
         <source> is licenced under </source>
         <translation> on lisensoitu lisenssillä </translation>
     </message>
+    <message>
+        <location filename="../about_dlg.cpp" line="45"/>
+        <source>Project website: </source>
+        <translation>Projektin nettisivu: </translation>
+    </message>
+    <message>
+        <location filename="../about_dlg.cpp" line="47"/>
+        <source>Support </source>
+        <translation>Tue </translation>
+    </message>
+    <message>
+        <location filename="../about_dlg.cpp" line="47"/>
+        <source> on Patreon: </source>
+        <translation>ia Patreonissa: </translation>
+    </message>
 </context>
 <context>
     <name>Application</name>

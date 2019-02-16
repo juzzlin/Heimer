@@ -1,3 +1,21 @@
+1.7.0 - "Merry Misc"
+====================
+
+New features:
+
+* French translations
+* Fix GitHub Issue #18: Setting for edge colors
+
+Bug fixes:
+
+* Fix GitHub Issue #47: Cannot open context menu if design is empty
+* Fix GitHub Issue #46: Zoom to fit is broken on certain aspect ratios
+
+Other:
+
+* Disable zoom to fit if no nodes
+* Disable export if no nodes
+
 1.6.0 - "Grid Grudge"
 =====================
 

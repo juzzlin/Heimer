@@ -13,6 +13,21 @@
         <source> is licenced under </source>
         <translation> est sous licence </translation>
     </message>
+    <message>
+        <location filename="../about_dlg.cpp" line="45"/>
+        <source>Project website: </source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../about_dlg.cpp" line="47"/>
+        <source>Support </source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../about_dlg.cpp" line="47"/>
+        <source> on Patreon: </source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>Application</name>
@@ -72,7 +87,7 @@
     <message>
         <location filename="../editor_view.cpp" line="68"/>
         <source>Set edge color</source>
-        <translation type="unfinished"></translation>
+        <translation>Affichage de la couleur du bord</translation>
     </message>
     <message>
         <location filename="../editor_view.cpp" line="76"/>
@@ -120,7 +135,7 @@
     <message>
         <location filename="../main_window.cpp" line="110"/>
         <source>Set edge color</source>
-        <translation type="unfinished"></translation>
+        <translation>Affichage de la couleur du bord</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="133"/>

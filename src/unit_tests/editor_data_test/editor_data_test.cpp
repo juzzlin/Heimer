@@ -185,13 +185,51 @@ void EditorDataTest::testUndoNodeColor()
     EditorData editorData;
     editorData.setMindMapData(data);
 
+    const QColor color0(1, 1, 1);
+    node->setColor(color0);
+
+    QCOMPARE(node->color(), color0);
+
     editorData.saveUndoPoint();
-    const QColor color(1, 1, 1);
+
+    const QColor color(6, 6, 6);
     node->setColor(color);
+
+    QCOMPARE(node->color(), color);
 
     editorData.undo();
 
-    QCOMPARE(node->color(), color);
+    auto && undoneNode = editorData.getNodeByIndex(node->index());
+
+    QCOMPARE(undoneNode->color(), color0);
+}
+
+void EditorDataTest::testUndoNodeLocation()
+{
+    auto data = std::make_shared<MindMapData>();
+    auto node = std::make_shared<Node>();
+    data->graph().addNode(node);
+
+    EditorData editorData;
+    editorData.setMindMapData(data);
+
+    const QPointF location0(1, 1);
+    node->setLocation(location0);
+
+    QCOMPARE(node->location(), location0);
+
+    editorData.saveUndoPoint();
+
+    const QPointF location(666, 666);
+    node->setLocation(location);
+
+    QCOMPARE(node->location(), location);
+
+    editorData.undo();
+
+    auto && undoneNode = editorData.getNodeByIndex(node->index());
+
+    QCOMPARE(undoneNode->location(), location0);
 }
 
 void EditorDataTest::testUndoNodeTextColor()
@@ -203,13 +241,18 @@ void EditorDataTest::testUndoNodeTextColor()
     EditorData editorData;
     editorData.setMindMapData(data);
 
+    const QColor color0(1, 1, 1);
+    node->setTextColor(color0);
+
     editorData.saveUndoPoint();
-    const QColor color(1, 1, 1);
+    const QColor color(6, 6, 6);
     node->setTextColor(color);
 
     editorData.undo();
 
-    QCOMPARE(node->textColor(), color);
+    auto && undoneNode = editorData.getNodeByIndex(node->index());
+
+    QCOMPARE(undoneNode->textColor(), color0);
 }
 
 void EditorDataTest::testUndoTextSize()

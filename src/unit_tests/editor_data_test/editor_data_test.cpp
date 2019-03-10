@@ -71,6 +71,10 @@ void EditorDataTest::testGroupSelection()
     QCOMPARE(editorData.selectionGroupSize(), size_t(2));
     QCOMPARE(node0->selected(), true);
     QCOMPARE(node1->selected(), true);
+
+    editorData.loadMindMapData(""); // Doesn't really load anything if in unit tests
+
+    QCOMPARE(editorData.selectionGroupSize(), size_t(0));
 }
 
 void EditorDataTest::testUndoAddNodes()

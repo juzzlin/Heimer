@@ -53,6 +53,8 @@ QString EditorData::fileName() const
 
 void EditorData::loadMindMapData(QString fileName)
 {
+    clearSelectionGroup();
+
 #ifndef HEIMER_UNIT_TEST
     setMindMapData(Serializer::fromXml(Reader::readFromFile(fileName)));
 #endif

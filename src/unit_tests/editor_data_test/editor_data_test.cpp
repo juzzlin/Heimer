@@ -134,6 +134,9 @@ void EditorDataTest::testUndoBackgroundColor()
 
     editorData.undo();
     QCOMPARE(editorData.mindMapData()->backgroundColor(), QColor(0, 0, 0));
+
+    editorData.redo();
+    QCOMPARE(editorData.mindMapData()->backgroundColor(), QColor(1, 1, 1));
 }
 
 void EditorDataTest::testUndoEdgeColor()
@@ -154,6 +157,9 @@ void EditorDataTest::testUndoEdgeColor()
 
     editorData.undo();
     QCOMPARE(editorData.mindMapData()->edgeColor(), QColor(1, 2, 3));
+
+    editorData.redo();
+    QCOMPARE(editorData.mindMapData()->edgeColor(), QColor(2, 3, 4));
 }
 
 void EditorDataTest::testUndoEdgeWidth()
@@ -174,6 +180,9 @@ void EditorDataTest::testUndoEdgeWidth()
 
     editorData.undo();
     QCOMPARE(editorData.mindMapData()->edgeWidth(), 1.0);
+
+    editorData.redo();
+    QCOMPARE(editorData.mindMapData()->edgeWidth(), 2.0);
 }
 
 void EditorDataTest::testUndoNodeColor()
@@ -202,6 +211,12 @@ void EditorDataTest::testUndoNodeColor()
     auto && undoneNode = editorData.getNodeByIndex(node->index());
 
     QCOMPARE(undoneNode->color(), color0);
+
+    editorData.redo();
+
+    auto && redoneNode = editorData.getNodeByIndex(node->index());
+
+    QCOMPARE(redoneNode->color(), color);
 }
 
 void EditorDataTest::testUndoNodeLocation()
@@ -230,6 +245,12 @@ void EditorDataTest::testUndoNodeLocation()
     auto && undoneNode = editorData.getNodeByIndex(node->index());
 
     QCOMPARE(undoneNode->location(), location0);
+
+    editorData.redo();
+
+    auto && redoneNode = editorData.getNodeByIndex(node->index());
+
+    QCOMPARE(redoneNode->location(), location);
 }
 
 void EditorDataTest::testUndoNodeTextColor()
@@ -253,6 +274,12 @@ void EditorDataTest::testUndoNodeTextColor()
     auto && undoneNode = editorData.getNodeByIndex(node->index());
 
     QCOMPARE(undoneNode->textColor(), color0);
+
+    editorData.redo();
+
+    auto && redoneNode = editorData.getNodeByIndex(node->index());
+
+    QCOMPARE(redoneNode->textColor(), color);
 }
 
 void EditorDataTest::testUndoTextSize()
@@ -273,6 +300,9 @@ void EditorDataTest::testUndoTextSize()
 
     editorData.undo();
     QCOMPARE(editorData.mindMapData()->textSize(), 42);
+
+    editorData.redo();
+    QCOMPARE(editorData.mindMapData()->textSize(), 41);
 }
 
 void EditorDataTest::testUndoStackResetOnNewDesign()

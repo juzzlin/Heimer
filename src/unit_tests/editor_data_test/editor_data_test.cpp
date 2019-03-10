@@ -107,13 +107,30 @@ void EditorDataTest::testUndoAddEdge()
 
     editorData.undo();
 
-    QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(node0, node1), true);
-    QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(node2, node1), false);
+    auto && undoneNode0 = editorData.getNodeByIndex(node0->index());
+    auto && undoneNode1 = editorData.getNodeByIndex(node1->index());
+    auto && undoneNode2 = editorData.getNodeByIndex(node2->index());
+
+    QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(undoneNode0, undoneNode1), true);
+    QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(undoneNode2, undoneNode1), false);
 
     editorData.undo();
 
-    QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(node0, node1), false);
-    QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(node2, node1), false);
+    undoneNode0 = editorData.getNodeByIndex(node0->index());
+    undoneNode1 = editorData.getNodeByIndex(node1->index());
+    undoneNode2 = editorData.getNodeByIndex(node2->index());
+
+    QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(undoneNode0, undoneNode1), false);
+    QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(undoneNode2, undoneNode1), false);
+
+    editorData.redo();
+
+    undoneNode0 = editorData.getNodeByIndex(node0->index());
+    undoneNode1 = editorData.getNodeByIndex(node1->index());
+    undoneNode2 = editorData.getNodeByIndex(node2->index());
+
+    QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(undoneNode0, undoneNode1), true);
+    QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(undoneNode2, undoneNode1), false);
 }
 
 void EditorDataTest::testUndoBackgroundColor()

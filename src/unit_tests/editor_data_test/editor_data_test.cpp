@@ -77,6 +77,26 @@ void EditorDataTest::testGroupSelection()
     QCOMPARE(editorData.selectionGroupSize(), size_t(0));
 }
 
+void EditorDataTest::testLoadState()
+{
+    EditorData editorData;
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+
+    const auto node0 = editorData.addNodeAt(QPointF(0, 0));
+
+    editorData.toggleNodeInSelectionGroup(*node0);
+    editorData.setSelectedNode(node0.get());
+    editorData.saveUndoPoint();
+
+    QCOMPARE(editorData.isUndoable(), true);
+
+    editorData.loadMindMapData(""); // Doesn't really load anything if in unit tests
+
+    QCOMPARE(editorData.isUndoable(), false);
+    QCOMPARE(editorData.selectionGroupSize(), size_t(0));
+    QCOMPARE(editorData.selectedNode(), nullptr);
+}
+
 void EditorDataTest::testUndoAddNodes()
 {
     EditorData editorData;
@@ -373,6 +393,26 @@ void EditorDataTest::testUndoTextSize()
 
     editorData.redo();
     QCOMPARE(editorData.mindMapData()->textSize(), 41);
+}
+
+void EditorDataTest::testUndoState()
+{
+    EditorData editorData;
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+
+    const auto node0 = editorData.addNodeAt(QPointF(0, 0));
+
+    editorData.toggleNodeInSelectionGroup(*node0);
+    editorData.setSelectedNode(node0.get());
+    editorData.saveUndoPoint();
+
+    QCOMPARE(editorData.isUndoable(), true);
+
+    editorData.undo();
+
+    QCOMPARE(editorData.isUndoable(), false);
+    QCOMPARE(editorData.selectionGroupSize(), size_t(0));
+    QCOMPARE(editorData.selectedNode(), nullptr);
 }
 
 void EditorDataTest::testUndoStackResetOnNewDesign()

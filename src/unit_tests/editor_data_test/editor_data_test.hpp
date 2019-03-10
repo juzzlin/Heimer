@@ -29,6 +29,8 @@ private slots:
 
     void testGroupSelection();
 
+    void testLoadState();
+
     void testUndoAddNodes();
 
     void testRedoAddNodes();
@@ -48,6 +50,8 @@ private slots:
     void testUndoNodeTextColor();
 
     void testUndoTextSize();
+
+    void testUndoState();
 
     void testUndoStackResetOnNewDesign();
 

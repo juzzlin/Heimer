@@ -55,6 +55,8 @@ void EditorData::loadMindMapData(QString fileName)
 {
     clearSelectionGroup();
 
+    m_selectedNode = nullptr;
+
 #ifndef HEIMER_UNIT_TEST
     setMindMapData(Serializer::fromXml(Reader::readFromFile(fileName)));
 #endif
@@ -78,6 +80,8 @@ void EditorData::undo()
 {
     if (m_undoStack.isUndoable())
     {
+        clearSelectionGroup();
+
         m_selectedNode = nullptr;
 
         m_dragAndDropNode = nullptr;

@@ -358,6 +358,7 @@ void Node::setLocation(QPointF newLocation)
 
 void Node::setSelected(bool selected)
 {
+    NodeBase::setSelected(selected);
     setGraphicsEffect(GraphicsFactory::createDropShadowEffect(selected));
     update();
 }

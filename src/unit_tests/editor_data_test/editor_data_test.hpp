@@ -25,6 +25,10 @@ public:
 
 private slots:
 
+    void testGroupMove();
+
+    void testGroupSelection();
+
     void testUndoAddNodes();
 
     void testRedoAddNodes();

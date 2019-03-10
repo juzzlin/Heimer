@@ -93,6 +93,11 @@ void Mediator::addItem(QGraphicsItem & item)
     m_editorScene->addItem(&item);
 }
 
+void Mediator::clearSelectionGroup()
+{
+    m_editorData->clearSelectionGroup();
+}
+
 bool Mediator::canBeSaved() const
 {
     return !m_editorData->fileName().isEmpty();
@@ -277,6 +282,11 @@ bool Mediator::isUndoable() const
     return m_editorData->isUndoable();
 }
 
+void Mediator::moveSelectionGroup(Node & reference, QPointF location)
+{
+    m_editorData->moveSelectionGroup(reference, location);
+}
+
 int Mediator::nodeCount() const
 {
     return m_editorData->mindMapData() ? m_editorData->mindMapData()->graph().numNodes() : 0;
@@ -322,6 +332,11 @@ void Mediator::removeItem(QGraphicsItem & item)
     m_editorScene->removeItem(&item);
 }
 
+void Mediator::toggleNodeInSelectionGroup(Node & node)
+{
+    m_editorData->toggleNodeInSelectionGroup(node);
+}
+
 bool Mediator::saveMindMapAs(QString fileName)
 {
     return m_editorData->saveMindMapAs(fileName);
@@ -347,6 +362,11 @@ QSize Mediator::sceneRectSize() const
 Node * Mediator::selectedNode() const
 {
     return m_editorData->selectedNode();
+}
+
+size_t Mediator::selectionGroupSize() const
+{
+    return m_editorData->selectionGroupSize();
 }
 
 void Mediator::setBackgroundColor(QColor color)
@@ -461,7 +481,8 @@ void Mediator::zoomOut()
 
 QSize Mediator::zoomForExport()
 {
-    m_editorScene->clearSelection();
+    clearSelectedNode();
+    clearSelectionGroup();
     m_editorScene->setSceneRect(m_editorScene->zoomToFit(true));
     return m_editorScene->sceneRect().size().toSize();
 }
@@ -497,7 +518,7 @@ double Mediator::calculateNodeOverlapScore(const Node & node1, const Node & node
     return 0;
 }
 
-void Mediator::clearSelection()
+void Mediator::clearSelectedNode()
 {
     for (auto && node : m_editorData->mindMapData()->graph().getNodes())
     {

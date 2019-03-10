@@ -44,11 +44,16 @@ public:
     QPointF sourcePos() const;
     void setSourcePos(const QPointF & sourcePos);
 
+    QPointF sourcePosOnNode() const;
+    void setSourcePosOnNode(const QPointF & sourcePosOnNode);
+
 private:
 
     Node * m_sourceNode = nullptr;
 
     QPointF m_sourcePos;
+
+    QPointF m_sourcePosOnNode;
 
     Action m_action = Action::None;
 };

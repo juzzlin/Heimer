@@ -22,6 +22,8 @@
 #include <QGraphicsView>
 #include <QMenu>
 
+#include <set>
+
 class Edge;
 class Node;
 class NodeHandle;
@@ -95,9 +97,13 @@ private:
 
     void initiateNewNodeDrag(NodeHandle & nodeHandle);
 
+    bool isControlPressed() const;
+
     void openBackgroundContextMenu();
 
     void openNodeContextMenu();
+
+    void removeNodeFromSelectionGroup(Node & node);
 
     void showDummyDragEdge(bool show);
 

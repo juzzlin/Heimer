@@ -30,6 +30,7 @@ void DragAndDropStore::clear()
 {
     m_sourceNode = nullptr;
     m_sourcePos = QPointF();
+    m_sourcePosOnNode = QPointF();
     m_action = Action::None;
 }
 
@@ -49,7 +50,17 @@ void DragAndDropStore::setSourcePos(const QPointF & sourcePos)
     m_sourcePos = sourcePos;
 }
 
+void DragAndDropStore::setSourcePosOnNode(const QPointF & sourcePos)
+{
+    m_sourcePosOnNode = sourcePos;
+}
+
 QPointF DragAndDropStore::sourcePos() const
 {
     return m_sourcePos;
+}
+
+QPointF DragAndDropStore::sourcePosOnNode() const
+{
+    return m_sourcePosOnNode;
 }

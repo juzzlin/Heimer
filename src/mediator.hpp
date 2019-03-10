@@ -52,7 +52,9 @@ public:
 
     bool canBeSaved() const;
 
-    void clearSelection();
+    void clearSelectedNode();
+
+    void clearSelectionGroup();
 
     void connectEdgeToUndoMechanism(EdgePtr edge);
 
@@ -90,6 +92,8 @@ public:
 
     bool isModified() const;
 
+    void moveSelectionGroup(Node & reference, QPointF location);
+
     int nodeCount() const;
 
     bool openMindMap(QString fileName);
@@ -106,6 +110,8 @@ public:
 
     Node * selectedNode() const;
 
+    size_t selectionGroupSize() const;
+
     void setEditorData(std::shared_ptr<EditorData> editorData);
 
     void setEditorScene(std::shared_ptr<EditorScene> editorScene);
@@ -115,6 +121,8 @@ public:
     void setSelectedNode(Node * node);
 
     void setupMindMapAfterUndoOrRedo();
+
+    void toggleNodeInSelectionGroup(Node & node);
 
     void undo();
 

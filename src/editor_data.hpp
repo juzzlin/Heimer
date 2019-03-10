@@ -17,6 +17,7 @@
 #define EDITORDATA_HPP
 
 #include <memory>
+#include <set>
 #include <vector>
 
 #include <QObject>
@@ -47,6 +48,8 @@ public:
 
     NodePtr addNodeAt(QPointF pos);
 
+    void clearSelectionGroup();
+
     QColor backgroundColor() const;
 
     DragAndDropStore & dadStore();
@@ -65,6 +68,8 @@ public:
 
     MindMapDataPtr mindMapData();
 
+    void moveSelectionGroup(Node & reference, QPointF location);
+
     void redo();
 
     bool saveMindMap();
@@ -80,6 +85,10 @@ public:
     void setSelectedNode(Node * node);
 
     Node * selectedNode() const;
+
+    size_t selectionGroupSize() const;
+
+    void toggleNodeInSelectionGroup(Node & node);
 
     void undo();
 
@@ -109,6 +118,8 @@ private:
     UndoStack m_undoStack;
 
     Node * m_selectedNode = nullptr;
+
+    std::set<Node *> m_selectionGroup;
 
     Node * m_dragAndDropNode = nullptr;
 

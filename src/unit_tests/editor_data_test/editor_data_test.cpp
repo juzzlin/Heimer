@@ -24,6 +24,55 @@ EditorDataTest::EditorDataTest()
 {
 }
 
+void EditorDataTest::testGroupMove()
+{
+    EditorData editorData;
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+    auto node0 = editorData.addNodeAt(QPointF(0, 0));
+    auto node1 = editorData.addNodeAt(QPointF(1, 1));
+
+    editorData.toggleNodeInSelectionGroup(*node0);
+    editorData.toggleNodeInSelectionGroup(*node1);
+
+    editorData.moveSelectionGroup(*node0, {1, 1});
+
+    QCOMPARE(qFuzzyCompare(node0->location().x(), 1), true);
+    QCOMPARE(qFuzzyCompare(node0->location().y(), 1), true);
+    QCOMPARE(qFuzzyCompare(node1->location().x(), 2), true);
+    QCOMPARE(qFuzzyCompare(node1->location().y(), 2), true);
+}
+
+void EditorDataTest::testGroupSelection()
+{
+    EditorData editorData;
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+
+    const auto node0 = editorData.addNodeAt(QPointF(0, 0));
+    const auto node1 = editorData.addNodeAt(QPointF(1, 1));
+
+    QCOMPARE(editorData.selectionGroupSize(), size_t(0));
+
+    editorData.toggleNodeInSelectionGroup(*node0);
+    editorData.toggleNodeInSelectionGroup(*node1);
+
+    QCOMPARE(editorData.selectionGroupSize(), size_t(2));
+    QCOMPARE(node0->selected(), true);
+    QCOMPARE(node1->selected(), true);
+
+    editorData.clearSelectionGroup();
+
+    QCOMPARE(editorData.selectionGroupSize(), size_t(0));
+    QCOMPARE(node0->selected(), false);
+    QCOMPARE(node1->selected(), false);
+
+    editorData.toggleNodeInSelectionGroup(*node0);
+    editorData.toggleNodeInSelectionGroup(*node1);
+
+    QCOMPARE(editorData.selectionGroupSize(), size_t(2));
+    QCOMPARE(node0->selected(), true);
+    QCOMPARE(node1->selected(), true);
+}
+
 void EditorDataTest::testUndoAddNodes()
 {
     EditorData editorData;

@@ -162,6 +162,20 @@ void EditorData::setMindMapData(MindMapDataPtr mindMapData)
     m_undoStack.clear();
 }
 
+void EditorData::toggleNodeInSelectionGroup(Node & node)
+{
+    if (node.selected())
+    {
+        m_selectionGroup.erase(&node);
+        node.setSelected(false);
+    }
+    else
+    {
+        m_selectionGroup.insert(&node);
+        node.setSelected(true);
+    }
+}
+
 EdgePtr EditorData::addEdge(EdgePtr edge)
 {
     assert(m_mindMapData);
@@ -180,6 +194,15 @@ NodePtr EditorData::addNodeAt(QPointF pos)
     return node;
 }
 
+void EditorData::clearSelectionGroup()
+{
+    for (auto && node : m_selectionGroup)
+    {
+        node->setSelected(false);
+    }
+    m_selectionGroup.clear();
+}
+
 NodeBasePtr EditorData::getNodeByIndex(int index)
 {
     assert(m_mindMapData);
@@ -192,6 +215,28 @@ MindMapDataPtr EditorData::mindMapData()
     return m_mindMapData;
 }
 
+void EditorData::moveSelectionGroup(Node & reference, QPointF location)
+{
+    std::map<int, QPointF> delta;
+    for (auto && node : m_selectionGroup)
+    {
+        if (node->index() != reference.index())
+        {
+            delta[node->index()] = node->location() - reference.location();
+        }
+    }
+
+    reference.setLocation(location);
+
+    for (auto && node : m_selectionGroup)
+    {
+        if (node->index() != reference.index())
+        {
+            node->setLocation(reference.location() + delta[node->index()]);
+        }
+    }
+}
+
 void EditorData::setSelectedNode(Node * node)
 {
     m_selectedNode = node;
@@ -200,6 +245,11 @@ void EditorData::setSelectedNode(Node * node)
 Node * EditorData::selectedNode() const
 {
     return m_selectedNode;
+}
+
+size_t EditorData::selectionGroupSize() const
+{
+    return m_selectionGroup.size();
 }
 
 void EditorData::setIsModified(bool isModified)

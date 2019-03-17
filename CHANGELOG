@@ -1,3 +1,23 @@
+1.8.0 - "Mighty Move"
+=====================
+
+New features:
+
+* Fix GitHub Issue #26: Multi-selection for nodes
+  * Ctrl + Left click selects/deselects nodes
+  * Ctrl + Left click on background clears selection
+
+Bug fixes:
+
+* Tests
+  * Fix edge-specific undo tests
+  * Fix node-specific undo tests
+
+Other:
+
+* Tests
+  * Add redo tests
+
 1.7.0 - "Merry Misc"
 ====================
 

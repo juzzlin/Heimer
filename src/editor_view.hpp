@@ -131,12 +131,6 @@ private:
 
     QPointF m_clickedScenePos;
 
-    QAction * m_clearComputerHint = nullptr;
-
-    QAction * m_setComputerHintBrakeHard = nullptr;
-
-    QAction * m_setComputerHintBrake = nullptr;
-
     QAction * m_setNodeColorAction = nullptr;
 
     QAction * m_setNodeTextColorAction = nullptr;
@@ -144,16 +138,6 @@ private:
     QAction * m_deleteEdgeAction = nullptr;
 
     QAction * m_deleteNodeAction = nullptr;
-
-    QAction * m_deleteRow = nullptr;
-
-    QAction * m_deleteCol = nullptr;
-
-    QAction * m_excludeFromMinimap = nullptr;
-
-    QAction * m_forceStationaryAction = nullptr;
-
-    QGraphicsSimpleTextItem * m_helloText = nullptr;
 
     QPointF m_mappedPos;
 

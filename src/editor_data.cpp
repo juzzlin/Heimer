@@ -55,6 +55,8 @@ void EditorData::loadMindMapData(QString fileName)
 {
     clearSelectionGroup();
 
+    m_selectedEdge = nullptr;
+
     m_selectedNode = nullptr;
 
 #ifndef HEIMER_UNIT_TEST
@@ -82,6 +84,8 @@ void EditorData::undo()
     {
         clearSelectionGroup();
 
+        m_selectedEdge = nullptr;
+
         m_selectedNode = nullptr;
 
         m_dragAndDropNode = nullptr;
@@ -105,6 +109,8 @@ void EditorData::redo()
 {
     if (m_undoStack.isRedoable())
     {
+        m_selectedEdge = nullptr;
+
         m_selectedNode = nullptr;
 
         m_dragAndDropNode = nullptr;
@@ -190,6 +196,20 @@ EdgePtr EditorData::addEdge(EdgePtr edge)
     return edge;
 }
 
+void EditorData::deleteEdge(Edge & edge)
+{
+    assert(m_mindMapData);
+
+    m_mindMapData->graph().deleteEdge(edge.sourceNode().index(), edge.targetNode().index());
+}
+
+void EditorData::deleteNode(Node & node)
+{
+    assert(m_mindMapData);
+
+    m_mindMapData->graph().deleteNode(node.index());
+}
+
 NodePtr EditorData::addNodeAt(QPointF pos)
 {
     assert(m_mindMapData);
@@ -243,9 +263,19 @@ void EditorData::moveSelectionGroup(Node & reference, QPointF location)
     }
 }
 
+void EditorData::setSelectedEdge(Edge * edge)
+{
+    m_selectedEdge = edge;
+}
+
 void EditorData::setSelectedNode(Node * node)
 {
     m_selectedNode = node;
+}
+
+Edge * EditorData::selectedEdge() const
+{
+    return m_selectedEdge;
 }
 
 Node * EditorData::selectedNode() const

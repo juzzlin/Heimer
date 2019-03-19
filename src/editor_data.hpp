@@ -46,6 +46,10 @@ public:
 
     EdgePtr addEdge(EdgePtr edge);
 
+    void deleteEdge(Edge & edge);
+
+    void deleteNode(Node & node);
+
     NodePtr addNodeAt(QPointF pos);
 
     void clearSelectionGroup();
@@ -82,7 +86,11 @@ public:
 
     void setMindMapData(MindMapDataPtr newMindMapData);
 
+    void setSelectedEdge(Edge * edge);
+
     void setSelectedNode(Node * node);
+
+    Edge * selectedEdge() const;
 
     Node * selectedNode() const;
 
@@ -116,6 +124,8 @@ private:
     MindMapDataPtr m_mindMapData;
 
     UndoStack m_undoStack;
+
+    Edge * m_selectedEdge = nullptr;
 
     Node * m_selectedNode = nullptr;
 

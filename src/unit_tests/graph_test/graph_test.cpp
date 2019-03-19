@@ -143,6 +143,30 @@ void GraphTest::testAreNodesDirectlyConnected()
     QVERIFY(!dut.areDirectlyConnected(node0, node2));
 }
 
+void GraphTest::testDeleteEdge()
+{
+    Graph dut;
+
+    auto node0 = make_shared<NodeBase>();
+    dut.addNode(node0);
+
+    auto node1 = make_shared<NodeBase>();
+    dut.addNode(node1);
+
+    auto edge = make_shared<EdgeBase>(*node0, *node1);
+    dut.addEdge(edge);
+
+    QCOMPARE(dut.getEdges().size(), static_cast<size_t>(1));
+
+    QCOMPARE(dut.areDirectlyConnected(node0, node1), true);
+
+    dut.deleteEdge(node0->index(), node1->index());
+
+    QCOMPARE(dut.getEdges().size(), static_cast<size_t>(0));
+
+    QCOMPARE(dut.areDirectlyConnected(node0, node1), false);
+}
+
 void GraphTest::testDeleteNode()
 {
     Graph dut;

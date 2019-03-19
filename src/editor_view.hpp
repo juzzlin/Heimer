@@ -81,9 +81,13 @@ private:
 
     void createBackgroundContextMenuActions();
 
+    void createEdgeContextMenuActions();
+
     void createNodeContextMenuActions();
 
     void handleMousePressEventOnBackground(QMouseEvent & event);
+
+    void handleMousePressEventOnEdge(QMouseEvent & event, Edge & edge);
 
     void handleMousePressEventOnNode(QMouseEvent & event, Node & node);
 
@@ -93,6 +97,8 @@ private:
 
     void handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle);
 
+    void handleRightButtonClickOnEdge(Edge & edge);
+
     void handleRightButtonClickOnNode(Node & node);
 
     void initiateNewNodeDrag(NodeHandle & nodeHandle);
@@ -100,6 +106,8 @@ private:
     bool isControlPressed() const;
 
     void openBackgroundContextMenu();
+
+    void openEdgeContextMenu();
 
     void openNodeContextMenu();
 
@@ -114,6 +122,8 @@ private:
     void updateScale(int value);
 
     QMenu m_backgroundContextMenu;
+
+    QMenu m_edgeContextMenu;
 
     QMenu m_nodeContextMenu;
 
@@ -130,6 +140,8 @@ private:
     QAction * m_setNodeColorAction = nullptr;
 
     QAction * m_setNodeTextColorAction = nullptr;
+
+    QAction * m_deleteEdgeAction = nullptr;
 
     QAction * m_deleteNodeAction = nullptr;
 

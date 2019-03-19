@@ -1,3 +1,11 @@
+x.y.z
+=====
+
+New features:
+
+* Fix GitHub Issue #25: Add a way to delete edges
+  * Right-click on edge opens context menu with a delete option
+
 1.8.0 - "Mighty Move"
 =====================
 

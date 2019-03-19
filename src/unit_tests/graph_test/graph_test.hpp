@@ -35,6 +35,8 @@ private slots:
 
     void testAreNodesDirectlyConnected();
 
+    void testDeleteEdge();
+
     void testDeleteNode();
 
     void testDeleteNodeInvolvingEdge();

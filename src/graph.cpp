@@ -48,6 +48,24 @@ void Graph::addNode(NodeBasePtr node)
     m_nodes.push_back(node);
 }
 
+void Graph::deleteEdge(int index0, int index1)
+{
+    EdgeVector::iterator edgeIter;
+    bool edgeErased = false;
+    do
+    {
+        edgeIter = std::find_if(
+            m_edges.begin(), m_edges.end(), [=] (const EdgeBasePtr & edge){
+                return edge->sourceNodeBase().index() == index0 && edge->targetNodeBase().index() == index1;
+            });
+        edgeErased = edgeIter != m_edges.end();
+        if (edgeErased)
+        {
+            m_edges.erase(edgeIter);
+        }
+    } while (edgeErased);
+}
+
 void Graph::deleteNode(int index)
 {
     const auto iter = std::find_if(m_nodes.begin(), m_nodes.end(), [=] (const NodeBasePtr & node) {

@@ -48,6 +48,8 @@ public:
 
     void addEdge(EdgeBasePtr edge);
 
+    void deleteEdge(int index0, int index1);
+
     bool areDirectlyConnected(NodeBasePtr node0, NodeBasePtr node1);
 
     //! Warning: this should not be used outside unit tests as it creates a pure EdgeBase

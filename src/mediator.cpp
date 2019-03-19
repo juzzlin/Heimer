@@ -167,10 +167,15 @@ DragAndDropStore & Mediator::dadStore()
     return m_editorData->dadStore();
 }
 
+void Mediator::deleteEdge(Edge & edge)
+{
+    m_editorData->deleteEdge(edge);
+}
+
 void Mediator::deleteNode(Node & node)
 {
     m_editorView->resetDummyDragItems();
-    m_editorData->mindMapData()->graph().deleteNode(node.index());
+    m_editorData->deleteNode(node);
 }
 
 void Mediator::enableUndo(bool enable)
@@ -359,6 +364,11 @@ QSize Mediator::sceneRectSize() const
     return m_editorScene->sceneRect().size().toSize();
 }
 
+Edge * Mediator::selectedEdge() const
+{
+    return m_editorData->selectedEdge();
+}
+
 Node * Mediator::selectedNode() const
 {
     return m_editorData->selectedNode();
@@ -423,6 +433,11 @@ void Mediator::setEditorView(EditorView & editorView)
         saveUndoPoint();
         createAndAddNode(position);
     });
+}
+
+void Mediator::setSelectedEdge(Edge * edge)
+{
+    m_editorData->setSelectedEdge(edge);
 }
 
 void Mediator::setSelectedNode(Node * node)

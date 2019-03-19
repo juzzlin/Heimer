@@ -46,6 +46,7 @@ EditorView::EditorView(Mediator & mediator)
     : m_mediator(mediator)
 {
     createBackgroundContextMenuActions();
+    createEdgeContextMenuActions();
     createNodeContextMenuActions();
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -81,6 +82,19 @@ void EditorView::createBackgroundContextMenuActions()
     });
 
     m_backgroundContextMenu.addAction(createNode);
+}
+
+void EditorView::createEdgeContextMenuActions()
+{
+    m_deleteEdgeAction = new QAction(tr("Delete edge"), &m_edgeContextMenu);
+    QObject::connect(m_deleteEdgeAction, &QAction::triggered, [=] {
+        assert(m_mediator.selectedEdge());
+        m_mediator.saveUndoPoint();
+        m_mediator.deleteEdge(*m_mediator.selectedEdge());
+    });
+
+    // Populate the menu
+    m_edgeContextMenu.addAction(m_deleteEdgeAction);
 }
 
 void EditorView::createNodeContextMenuActions()
@@ -136,6 +150,14 @@ void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
     else if (event.button() == Qt::RightButton)
     {
         openBackgroundContextMenu();
+    }
+}
+
+void EditorView::handleMousePressEventOnEdge(QMouseEvent & event, Edge & edge)
+{
+    if (event.button() == Qt::RightButton)
+    {
+        handleRightButtonClickOnEdge(edge);
     }
 }
 
@@ -207,6 +229,13 @@ void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
         m_setNodeTextColorAction->trigger();
         break;
     }
+}
+
+void EditorView::handleRightButtonClickOnEdge(Edge & edge)
+{
+    m_mediator.setSelectedEdge(&edge);
+
+    openEdgeContextMenu();
 }
 
 void EditorView::handleRightButtonClickOnNode(Node & node)
@@ -287,9 +316,11 @@ void EditorView::mousePressEvent(QMouseEvent * event)
     m_clickedPos = event->pos();
     m_clickedScenePos = mapToScene(m_clickedPos);
 
+    const int tolerance = Constants::View::CLICK_TOLERANCE;
+    QRectF clickRect(m_clickedScenePos.x() - tolerance, m_clickedScenePos.y() - tolerance, tolerance * 2, tolerance * 2);
+
     // Fetch all items at the location
-    QList<QGraphicsItem *> items = scene()->items(
-        m_clickedScenePos, Qt::IntersectsItemShape, Qt::DescendingOrder);
+    QList<QGraphicsItem *> items = scene()->items(clickRect, Qt::IntersectsItemShape, Qt::DescendingOrder);
 
     if (items.size())
     {
@@ -297,6 +328,10 @@ void EditorView::mousePressEvent(QMouseEvent * event)
         if (auto node = dynamic_cast<Node *>(item))
         {
             handleMousePressEventOnNode(*event, *node);
+        }
+        else if (auto edge = dynamic_cast<Edge *>(item))
+        {
+            handleMousePressEventOnEdge(*event, *edge);
         }
         else if (auto node = dynamic_cast<NodeHandle *>(item))
         {
@@ -354,6 +389,11 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
 void EditorView::openBackgroundContextMenu()
 {
     m_backgroundContextMenu.exec(mapToGlobal(m_clickedPos));
+}
+
+void EditorView::openEdgeContextMenu()
+{
+    m_edgeContextMenu.exec(mapToGlobal(m_clickedPos));
 }
 
 void EditorView::openNodeContextMenu()

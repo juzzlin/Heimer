@@ -68,6 +68,8 @@ public:
 
     DragAndDropStore & dadStore();
 
+    void deleteEdge(Edge & edge);
+
     void deleteNode(Node & node);
 
     QString fileName() const;
@@ -108,6 +110,8 @@ public:
 
     QSize sceneRectSize() const;
 
+    Edge * selectedEdge() const;
+
     Node * selectedNode() const;
 
     size_t selectionGroupSize() const;
@@ -117,6 +121,8 @@ public:
     void setEditorScene(std::shared_ptr<EditorScene> editorScene);
 
     void setEditorView(EditorView & editorView);
+
+    void setSelectedEdge(Edge * edge);
 
     void setSelectedNode(Node * node);
 

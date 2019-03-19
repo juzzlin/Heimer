@@ -138,6 +138,8 @@ static const int MAX_SIZE = 24;
 
 namespace View {
 
+static const int CLICK_TOLERANCE = 5;
+
 static const double DRAG_NODE_OPACITY = 0.5;
 
 static const int ZOOM_MAX = 200;

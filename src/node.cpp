@@ -92,16 +92,24 @@ Node::Node(const Node & other)
 
 void Node::addGraphicsEdge(Edge & edge)
 {
+#ifndef HEIMER_UNIT_TEST
     m_graphicsEdges.push_back(&edge);
+#else
+    Q_UNUSED(edge);
+#endif
 }
 
 void Node::removeGraphicsEdge(Edge & edge)
 {
+#ifndef HEIMER_UNIT_TEST
     auto iter = std::find(m_graphicsEdges.begin(), m_graphicsEdges.end(), &edge);
     if (iter != m_graphicsEdges.end())
     {
         m_graphicsEdges.erase(iter);
     }
+#else
+    Q_UNUSED(edge);
+#endif
 }
 
 void Node::adjustSize()
@@ -318,6 +326,14 @@ void Node::paint(QPainter * painter,
     painter->setRenderHint(QPainter::Antialiasing);
     painter->fillPath(path, QBrush(color()));
     painter->restore();
+}
+
+void Node::setColor(const QColor & color)
+{
+    NodeBase::setColor(color);
+#ifndef HEIMER_UNIT_TEST
+    update();
+#endif
 }
 
 void Node::setCornerRadius(int value)

@@ -31,6 +31,8 @@ public:
 
     void setVisible(bool visible);
 
+    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent * event) override;
+
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
 
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;

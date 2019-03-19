@@ -120,19 +120,19 @@ void EditorDataTest::testUndoAddNodes()
     QCOMPARE(editorData.isModified(), true); // Currently saveUndoPoint() triggers isModified
 
     editorData.addNodeAt(QPointF(1, 1));
-    QCOMPARE(editorData.mindMapData()->graph().numNodes(), 2);
+    QCOMPARE(editorData.mindMapData()->graph().numNodes(), static_cast<size_t>(2));
 
     editorData.undo();
     QCOMPARE(editorData.isUndoable(), true);
-    QCOMPARE(editorData.mindMapData()->graph().numNodes(), 1);
+    QCOMPARE(editorData.mindMapData()->graph().numNodes(), static_cast<size_t>(1));
 
     editorData.undo();
     QCOMPARE(editorData.isUndoable(), false);
-    QCOMPARE(editorData.mindMapData()->graph().numNodes(), 0);
+    QCOMPARE(editorData.mindMapData()->graph().numNodes(), static_cast<size_t>(0));
 
     editorData.undo();
     QCOMPARE(editorData.isUndoable(), false);
-    QCOMPARE(editorData.mindMapData()->graph().numNodes(), 0);
+    QCOMPARE(editorData.mindMapData()->graph().numNodes(), static_cast<size_t>(0));
 }
 
 void EditorDataTest::testRedoAddNodes()
@@ -143,15 +143,15 @@ void EditorDataTest::testRedoAddNodes()
     editorData.addNodeAt(QPointF(0, 0));
     editorData.saveUndoPoint();
     editorData.addNodeAt(QPointF(1, 1));
-    QCOMPARE(editorData.mindMapData()->graph().numNodes(), 2);
+    QCOMPARE(editorData.mindMapData()->graph().numNodes(), static_cast<size_t>(2));
 
     editorData.undo();
     QCOMPARE(editorData.isUndoable(), false);
-    QCOMPARE(editorData.mindMapData()->graph().numNodes(), 1);
+    QCOMPARE(editorData.mindMapData()->graph().numNodes(), static_cast<size_t>(1));
 
     editorData.redo();
     QCOMPARE(editorData.isUndoable(), true);
-    QCOMPARE(editorData.mindMapData()->graph().numNodes(), 2);
+    QCOMPARE(editorData.mindMapData()->graph().numNodes(), static_cast<size_t>(2));
 }
 
 void EditorDataTest::testUndoAddEdge()
@@ -208,6 +208,42 @@ void EditorDataTest::testUndoAddEdge()
 
     QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(undoneNode0, undoneNode1), true);
     QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(undoneNode2, undoneNode1), false);
+}
+
+void EditorDataTest::testUndoArrowMode()
+{
+    auto data = std::make_shared<MindMapData>();
+    EditorData editorData;
+    editorData.setMindMapData(data);
+
+    auto node0 = std::make_shared<Node>();
+    data->graph().addNode(node0);
+    auto node1 = std::make_shared<Node>();
+    data->graph().addNode(node1);
+
+    auto edge01 = std::make_shared<Edge>(*node0, *node1);
+
+    editorData.addEdge(edge01);
+
+    QCOMPARE(edge01->arrowMode(), EdgeBase::ArrowMode::Single);
+
+    edge01->setArrowMode(EdgeBase::ArrowMode::Double);
+
+    editorData.saveUndoPoint();
+
+    edge01->setArrowMode(EdgeBase::ArrowMode::Hidden);
+
+    editorData.undo();
+
+    auto undoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
+
+    QCOMPARE(undoneEdge->arrowMode(), EdgeBase::ArrowMode::Double);
+
+    editorData.redo();
+
+    auto redoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
+
+    QCOMPARE(redoneEdge->arrowMode(), EdgeBase::ArrowMode::Hidden);
 }
 
 void EditorDataTest::testUndoDeleteEdge()
@@ -340,6 +376,76 @@ void EditorDataTest::testUndoEdgeWidth()
 
     editorData.redo();
     QCOMPARE(editorData.mindMapData()->edgeWidth(), 2.0);
+}
+
+void EditorDataTest::testUndoEdgeText()
+{
+    auto data = std::make_shared<MindMapData>();
+    EditorData editorData;
+    editorData.setMindMapData(data);
+
+    auto node0 = std::make_shared<Node>();
+    data->graph().addNode(node0);
+    auto node1 = std::make_shared<Node>();
+    data->graph().addNode(node1);
+
+    auto edge01 = std::make_shared<Edge>(*node0, *node1);
+
+    editorData.addEdge(edge01);
+
+    const auto text0 = "First";
+    edge01->setText(text0);
+
+    editorData.saveUndoPoint();
+
+    const auto text1 = "Second";
+    edge01->setText(text1);
+
+    editorData.undo();
+
+    auto undoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
+
+    QCOMPARE(undoneEdge->text(), QString(text0));
+
+    editorData.redo();
+
+    auto redoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
+
+    QCOMPARE(redoneEdge->text(), QString(text1));
+}
+
+void EditorDataTest::testUndoEdgeReversed()
+{
+    auto data = std::make_shared<MindMapData>();
+    EditorData editorData;
+    editorData.setMindMapData(data);
+
+    auto node0 = std::make_shared<Node>();
+    data->graph().addNode(node0);
+    auto node1 = std::make_shared<Node>();
+    data->graph().addNode(node1);
+
+    auto edge01 = std::make_shared<Edge>(*node0, *node1);
+
+    editorData.addEdge(edge01);
+
+    edge01->setReversed(false);
+
+    editorData.saveUndoPoint();
+
+    edge01->setReversed(true);
+
+    editorData.undo();
+
+    auto undoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
+
+    QCOMPARE(undoneEdge->reversed(), false);
+
+    editorData.redo();
+
+    auto redoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
+
+    QCOMPARE(redoneEdge->reversed(), true);
 }
 
 void EditorDataTest::testUndoNodeColor()

@@ -133,13 +133,21 @@ private:
 
     QPointF m_clickedScenePos;
 
+    QAction * m_doubleArrowAction = nullptr;
+
+    QAction * m_singleArrowAction = nullptr;
+
     QAction * m_setNodeColorAction = nullptr;
 
     QAction * m_setNodeTextColorAction = nullptr;
 
-    QAction * m_deleteEdgeAction = nullptr;
-
     QAction * m_deleteNodeAction = nullptr;
+
+    QAction * m_changeEdgeDirectionAction = nullptr;
+
+    QAction * m_hideEdgeArrowAction = nullptr;
+
+    QAction * m_deleteEdgeAction = nullptr;
 
     QPointF m_mappedPos;
 
@@ -150,6 +158,8 @@ private:
     Node * m_dummyDragNode = nullptr;
 
     Edge * m_dummyDragEdge = nullptr;
+
+    Edge * m_selectedEdge = nullptr;
 
     std::shared_ptr<Node> m_connectionTargetNode;
 

@@ -16,6 +16,7 @@
 #ifndef TEXTEDIT_HPP
 #define TEXTEDIT_HPP
 
+#include <QGraphicsSceneMouseEvent>
 #include <QGraphicsTextItem>
 
 class TextEdit : public QGraphicsTextItem
@@ -46,7 +47,7 @@ public:
 
     void setText(const QString & text);
 
-    virtual ~TextEdit();
+    virtual ~TextEdit() override;
 
 signals:
 

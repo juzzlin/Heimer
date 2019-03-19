@@ -84,37 +84,57 @@
         <translation type="vanished">Valitse Tiedosto-&gt;Uusi tai Tiedosto-&gt;Avaa aloittaaksesi</translation>
     </message>
     <message>
-        <location filename="../editor_view.cpp" line="63"/>
+        <location filename="../editor_view.cpp" line="64"/>
         <source>Set background color</source>
         <translation>Aseta taustaväri</translation>
     </message>
     <message>
-        <location filename="../editor_view.cpp" line="71"/>
+        <location filename="../editor_view.cpp" line="72"/>
         <source>Set edge color</source>
         <translation>Aseta kaaren väri</translation>
     </message>
     <message>
-        <location filename="../editor_view.cpp" line="79"/>
+        <location filename="../editor_view.cpp" line="80"/>
         <source>Create floating node</source>
         <translation>Luo kelluva solmu</translation>
     </message>
     <message>
-        <location filename="../editor_view.cpp" line="89"/>
+        <location filename="../editor_view.cpp" line="90"/>
+        <source>Change direction</source>
+        <translation>Vaihda suuntaa</translation>
+    </message>
+    <message>
+        <location filename="../editor_view.cpp" line="97"/>
+        <source>Hide arrow</source>
+        <translation>Piilota nuoli</translation>
+    </message>
+    <message>
+        <location filename="../editor_view.cpp" line="104"/>
+        <source>Single arrow</source>
+        <translation>Yksi nuoli</translation>
+    </message>
+    <message>
+        <location filename="../editor_view.cpp" line="111"/>
+        <source>Double arrow</source>
+        <translation>Kaksi nuolta</translation>
+    </message>
+    <message>
+        <location filename="../editor_view.cpp" line="118"/>
         <source>Delete edge</source>
         <translation>Poista kaari</translation>
     </message>
     <message>
-        <location filename="../editor_view.cpp" line="102"/>
+        <location filename="../editor_view.cpp" line="157"/>
         <source>Set node color</source>
         <translation>Aseta solmun väri</translation>
     </message>
     <message>
-        <location filename="../editor_view.cpp" line="112"/>
+        <location filename="../editor_view.cpp" line="167"/>
         <source>Set text color</source>
         <translation>Tekstin väri</translation>
     </message>
     <message>
-        <location filename="../editor_view.cpp" line="122"/>
+        <location filename="../editor_view.cpp" line="177"/>
         <source>Delete node</source>
         <translation>Poista solmu</translation>
     </message>

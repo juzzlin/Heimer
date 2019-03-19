@@ -86,7 +86,7 @@ void GraphTest::testAddNode()
 
     dut.addNode(node);
 
-    QCOMPARE(dut.numNodes(), 1);
+    QCOMPARE(dut.numNodes(), static_cast<size_t>(1));
     QCOMPARE(node->index(), 0); // Node index should be automatic
 
     node = make_shared<NodeBase>();
@@ -94,14 +94,14 @@ void GraphTest::testAddNode()
 
     dut.addNode(node);
 
-    QCOMPARE(dut.numNodes(), 2);
+    QCOMPARE(dut.numNodes(), static_cast<size_t>(2));
     QCOMPARE(node->index(), 666); // Node index should be forced to 666
 
     node = make_shared<NodeBase>();
 
     dut.addNode(node);
 
-    QCOMPARE(dut.numNodes(), 3);
+    QCOMPARE(dut.numNodes(), static_cast<size_t>(3));
     QCOMPARE(node->index(), 667); // Node index should be automatically 667
 }
 
@@ -112,12 +112,12 @@ void GraphTest::testAddTwoNodes()
     auto node0 = make_shared<NodeBase>();
     dut.addNode(node0);
 
-    QCOMPARE(dut.numNodes(), 1);
+    QCOMPARE(dut.numNodes(), static_cast<size_t>(1));
 
     auto node1 = make_shared<NodeBase>();
     dut.addNode(node1);
 
-    QCOMPARE(dut.numNodes(), 2);
+    QCOMPARE(dut.numNodes(), static_cast<size_t>(2));
     QCOMPARE(node0->index(), 0);
     QCOMPARE(node1->index(), 1);
 }
@@ -174,11 +174,11 @@ void GraphTest::testDeleteNode()
 
     dut.addNode(node);
 
-    QCOMPARE(dut.numNodes(), 1);
+    QCOMPARE(dut.numNodes(), static_cast<size_t>(1));
 
     dut.deleteNode(node->index());
 
-    QCOMPARE(dut.numNodes(), 0);
+    QCOMPARE(dut.numNodes(), static_cast<size_t>(0));
 }
 
 void GraphTest::testDeleteNodeInvolvingEdge()
@@ -191,7 +191,7 @@ void GraphTest::testDeleteNodeInvolvingEdge()
     auto node1 = make_shared<NodeBase>();
     dut.addNode(node1);
 
-    QCOMPARE(dut.numNodes(), 2);
+    QCOMPARE(dut.numNodes(), static_cast<size_t>(2));
 
     dut.addEdge(make_shared<EdgeBase>(*node0, *node1));
 
@@ -201,7 +201,7 @@ void GraphTest::testDeleteNodeInvolvingEdge()
 
     dut.deleteNode(node0->index());
 
-    QCOMPARE(dut.numNodes(), 1);
+    QCOMPARE(dut.numNodes(), static_cast<size_t>(1));
 
     QCOMPARE(dut.getEdgesToNode(node1).size(), static_cast<size_t>(0));
 }

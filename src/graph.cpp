@@ -134,7 +134,7 @@ bool Graph::areDirectlyConnected(NodeBasePtr node0, NodeBasePtr node1)
     return false;
 }
 
-int Graph::numNodes() const
+size_t Graph::numNodes() const
 {
     return m_nodes.size();
 }

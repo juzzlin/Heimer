@@ -56,7 +56,7 @@ public:
 #ifdef HEIMER_UNIT_TEST
     void addEdge(int node0, int node1);
 #endif
-    int numNodes() const;
+    size_t numNodes() const;
 
     EdgeVector getEdgesFromNode(NodeBasePtr node);
 

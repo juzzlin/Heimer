@@ -142,6 +142,8 @@ void SerializerTest::testSingleEdge()
     auto edge = std::make_shared<EdgeBase>(*outNode0, *outNode1);
     const QString text = "Lorem ipsum";
     edge->setText(text);
+    edge->setReversed(true);
+    edge->setArrowMode(EdgeBase::ArrowMode::Double);
     outData.graph().addEdge(edge);
 
     // Serialize
@@ -152,7 +154,9 @@ void SerializerTest::testSingleEdge()
 
     auto edges = inData->graph().getEdgesFromNode(outNode0);
     QCOMPARE(edges.size(), static_cast<size_t>(1));
-    QCOMPARE((*edges.begin())->text(), text);
+    QCOMPARE((*edges.begin())->text(), edge->text());
+    QCOMPARE((*edges.begin())->reversed(), edge->reversed());
+    QCOMPARE((*edges.begin())->arrowMode(), edge->arrowMode());
 }
 
 void SerializerTest::testSingleNode()

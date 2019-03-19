@@ -76,6 +76,8 @@ public:
 
     QString text() const override;
 
+    void setColor(const QColor & color) override;
+
     void setCornerRadius(int value) override;
 
     void setText(const QString & text) override;

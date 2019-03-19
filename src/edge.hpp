@@ -40,7 +40,7 @@ public:
 
     Edge(Node & sourceNode, Node & targetNode, bool enableAnimations = true, bool enableLabel = true);
 
-    virtual ~Edge();
+    virtual ~Edge() override;
 
     Node & sourceNode() const;
 
@@ -54,6 +54,8 @@ public slots:
 
     void updateLine();
 
+    virtual void setArrowMode(ArrowMode arrowMode) override;
+
     virtual void setColor(const QColor & color) override;
 
     virtual void setWidth(double width) override;
@@ -61,6 +63,10 @@ public slots:
     virtual void setText(const QString & text) override;
 
     virtual void setTextSize(int textSize) override;
+
+    virtual void setReversed(bool reversed) override;
+
+    virtual void setSelected(bool selected) override;
 
 signals:
 
@@ -71,6 +77,8 @@ private:
     QPen getPen() const;
 
     void initDots();
+
+    void setArrowHeadPen(const QPen & pen);
 
     void setLabelVisible(bool visible);
 
@@ -90,9 +98,13 @@ private:
 
     EdgeTextEdit * m_label;
 
-    QGraphicsLineItem * m_arrowheadL;
+    QGraphicsLineItem * m_arrowheadL0;
 
-    QGraphicsLineItem * m_arrowheadR;
+    QGraphicsLineItem * m_arrowheadR0;
+
+    QGraphicsLineItem * m_arrowheadL1;
+
+    QGraphicsLineItem * m_arrowheadR1;
 
     QPropertyAnimation * m_sourceDotSizeAnimation;
 

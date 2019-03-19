@@ -37,6 +37,8 @@ private slots:
 
     void testUndoAddEdge();
 
+    void testUndoArrowMode();
+
     void testUndoDeleteEdge();
 
     void testUndoBackgroundColor();
@@ -46,6 +48,10 @@ private slots:
     void testUndoEdgeColor();
 
     void testUndoEdgeWidth();
+
+    void testUndoEdgeText();
+
+    void testUndoEdgeReversed();
 
     void testUndoNodeColor();
 

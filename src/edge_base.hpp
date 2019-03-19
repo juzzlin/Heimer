@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef EDGEBASE_HPP
-#define EDGEBASE_HPP
+#ifndef EDGE_BASE_HPP
+#define EDGE_BASE_HPP
 
 #include <memory>
 
@@ -27,6 +27,13 @@ class EdgeBase
 {
 public:
 
+    enum class ArrowMode
+    {
+        Single = 0,
+        Double = 1,
+        Hidden = 2
+    };
+
     EdgeBase(NodeBase & sourceNode, NodeBase & targetNode);
 
     virtual void setSourceNode(NodeBase & sourceNode);
@@ -36,6 +43,10 @@ public:
     virtual NodeBase & sourceNodeBase() const;
 
     virtual NodeBase & targetNodeBase() const;
+
+    ArrowMode arrowMode() const;
+
+    virtual void setArrowMode(ArrowMode arrowMode);
 
     QColor color() const;
 
@@ -55,6 +66,14 @@ public:
 
     virtual void setTextSize(int textSize);
 
+    virtual bool reversed() const;
+
+    virtual void setReversed(bool reversed);
+
+    virtual bool selected() const;
+
+    virtual void setSelected(bool selected);
+
 private:
 
     NodeBase * m_sourceNode;
@@ -68,8 +87,14 @@ private:
     int m_textSize = 11; // Not sure if we should set yet another default value here..
 
     QColor m_color;
+
+    bool m_reversed = false;
+
+    bool m_selected = false;
+
+    ArrowMode m_arrowMode = ArrowMode::Single;
 };
 
 using EdgeBasePtr = std::shared_ptr<EdgeBase>;
 
-#endif // EDGEBASE_HPP
+#endif // EDGE_BASE_HPP

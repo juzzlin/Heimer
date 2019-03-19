@@ -31,6 +31,8 @@
 #include <QTimer>
 #include <QVector2D>
 
+#include <QtMath>
+
 #include <cassert>
 #include <cmath>
 
@@ -41,8 +43,10 @@ Edge::Edge(Node & sourceNode, Node & targetNode, bool enableAnimations, bool ena
     , m_sourceDot(enableAnimations ? new EdgeDot(this) : nullptr)
     , m_targetDot(enableAnimations ? new EdgeDot(this) : nullptr)
     , m_label(enableLabel ? new EdgeTextEdit(this) : nullptr)
-    , m_arrowheadL(new QGraphicsLineItem(this))
-    , m_arrowheadR(new QGraphicsLineItem(this))
+    , m_arrowheadL0(new QGraphicsLineItem(this))
+    , m_arrowheadR0(new QGraphicsLineItem(this))
+    , m_arrowheadL1(new QGraphicsLineItem(this))
+    , m_arrowheadR1(new QGraphicsLineItem(this))
     , m_sourceDotSizeAnimation(enableAnimations ? new QPropertyAnimation(m_sourceDot, "scale", this) : nullptr)
     , m_targetDotSizeAnimation(enableAnimations ? new QPropertyAnimation(m_targetDot, "scale", this) : nullptr)
 {
@@ -121,6 +125,18 @@ void Edge::initDots()
     }
 }
 
+void Edge::setArrowHeadPen(const QPen & pen)
+{
+    m_arrowheadL0->setPen(pen);
+    m_arrowheadL0->update();
+    m_arrowheadR0->setPen(pen);
+    m_arrowheadR0->update();
+    m_arrowheadL1->setPen(pen);
+    m_arrowheadL1->update();
+    m_arrowheadR1->setPen(pen);
+    m_arrowheadR1->update();
+}
+
 void Edge::setLabelVisible(bool visible)
 {
     m_label->setVisible(visible);
@@ -131,11 +147,16 @@ void Edge::setWidth(double width)
     EdgeBase::setWidth(width);
 
     setPen(getPen());
-    m_arrowheadL->setPen(pen());
-    m_arrowheadL->update();
-    m_arrowheadR->setPen(pen());
-    m_arrowheadR->update();
+    setArrowHeadPen(pen());
     updateLine();
+}
+
+void Edge::setArrowMode(ArrowMode arrowMode)
+{
+    EdgeBase::setArrowMode(arrowMode);
+#ifndef HEIMER_UNIT_TEST
+    updateLine();
+#endif
 }
 
 void Edge::setColor(const QColor & color)
@@ -143,10 +164,7 @@ void Edge::setColor(const QColor & color)
     EdgeBase::setColor(color);
 
     setPen(getPen());
-    m_arrowheadL->setPen(pen());
-    m_arrowheadL->update();
-    m_arrowheadR->setPen(pen());
-    m_arrowheadR->update();
+    setArrowHeadPen(pen());
     updateLine();
 }
 
@@ -170,6 +188,20 @@ void Edge::setTextSize(int textSize)
     }
 }
 
+void Edge::setReversed(bool reversed)
+{
+    EdgeBase::setReversed(reversed);
+
+    updateArrowhead();
+}
+
+void Edge::setSelected(bool selected)
+{
+    EdgeBase::setSelected(selected);
+    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(selected));
+    update();
+}
+
 Node & Edge::sourceNode() const
 {
     auto node = dynamic_cast<Node *>(&sourceNodeBase());
@@ -186,16 +218,62 @@ Node & Edge::targetNode() const
 
 void Edge::updateArrowhead()
 {
-    QLineF line;
-    double angle = (-this->line().angle() + Constants::Edge::ARROW_OPENING) / 180 * M_PI;
-    line.setP1(this->line().p2());
-    line.setP2(this->line().p2() + QPointF(std::cos(angle), std::sin(angle)) * Constants::Edge::ARROW_LENGTH);
-    m_arrowheadL->setLine(line);
+    const auto point0 = reversed() ? this->line().p1() : this->line().p2();
+    const auto angle0 = reversed() ? -this->line().angle() + 180 : -this->line().angle();
+    const auto point1 = reversed() ? this->line().p2() : this->line().p1();
+    const auto angle1 = reversed() ? -this->line().angle() : -this->line().angle() + 180;
 
-    angle = (-this->line().angle() - Constants::Edge::ARROW_OPENING) / 180 * M_PI;
-    line.setP1(this->line().p2());
-    line.setP2(this->line().p2() + QPointF(std::cos(angle), std::sin(angle)) * Constants::Edge::ARROW_LENGTH);
-    m_arrowheadR->setLine(line);
+    QLineF lineL0;
+    QLineF lineR0;
+    QLineF lineL1;
+    QLineF lineR1;
+
+    switch (arrowMode()) {
+    case ArrowMode::Single: {
+        lineL0.setP1(point0);
+        const auto angleL = qDegreesToRadians(angle0 + Constants::Edge::ARROW_OPENING);
+        lineL0.setP2(point0 + QPointF(std::cos(angleL), std::sin(angleL)) * Constants::Edge::ARROW_LENGTH);
+        lineR0.setP1(point0);
+        const auto angleR = qDegreesToRadians(angle0 - Constants::Edge::ARROW_OPENING);
+        lineR0.setP2(point0 + QPointF(std::cos(angleR), std::sin(angleR)) * Constants::Edge::ARROW_LENGTH);
+        m_arrowheadL0->setLine(lineL0);
+        m_arrowheadR0->setLine(lineR0);
+        m_arrowheadL0->show();
+        m_arrowheadR0->show();
+        m_arrowheadL1->hide();
+        m_arrowheadR1->hide();
+        break;
+    }
+    case ArrowMode::Double: {
+        lineL0.setP1(point0);
+        const auto angleL0 = qDegreesToRadians(angle0 + Constants::Edge::ARROW_OPENING);
+        lineL0.setP2(point0 + QPointF(std::cos(angleL0), std::sin(angleL0)) * Constants::Edge::ARROW_LENGTH);
+        lineR0.setP1(point0);
+        const auto angleR0 = qDegreesToRadians(angle0 - Constants::Edge::ARROW_OPENING);
+        lineR0.setP2(point0 + QPointF(std::cos(angleR0), std::sin(angleR0)) * Constants::Edge::ARROW_LENGTH);
+        lineL1.setP1(point1);
+        m_arrowheadL0->setLine(lineL0);
+        m_arrowheadR0->setLine(lineR0);
+        m_arrowheadL0->show();
+        m_arrowheadR0->show();
+        const auto angleL1 = qDegreesToRadians(angle1 + Constants::Edge::ARROW_OPENING);
+        lineL1.setP2(point1 + QPointF(std::cos(angleL1), std::sin(angleL1)) * Constants::Edge::ARROW_LENGTH);
+        lineR1.setP1(point1);
+        const auto angleR1 = qDegreesToRadians(angle1 - Constants::Edge::ARROW_OPENING);
+        lineR1.setP2(point1 + QPointF(std::cos(angleR1), std::sin(angleR1)) * Constants::Edge::ARROW_LENGTH);
+        m_arrowheadL1->setLine(lineL1);
+        m_arrowheadR1->setLine(lineR1);
+        m_arrowheadL1->show();
+        m_arrowheadR1->show();
+        break;
+    }
+    case ArrowMode::Hidden:
+        m_arrowheadL0->hide();
+        m_arrowheadR0->hide();
+        m_arrowheadL1->hide();
+        m_arrowheadR1->hide();
+        break;
+    }
 }
 
 void Edge::updateDots(const std::pair<EdgePoint, EdgePoint> & nearestPoints)
@@ -263,10 +341,12 @@ Edge::~Edge()
         delete m_targetDot;
     }
 
+#ifndef HEIMER_UNIT_TEST
     sourceNode().removeGraphicsEdge(*this);
     targetNode().removeGraphicsEdge(*this);
 
     // Needed to remove glitches from possibly running dot animations
     sourceNode().update();
     targetNode().update();
+#endif
 }

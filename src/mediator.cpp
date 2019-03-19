@@ -457,11 +457,33 @@ void Mediator::setEditorView(EditorView & editorView)
 
 void Mediator::setSelectedEdge(Edge * edge)
 {
+    L().debug() << __func__ << "(): " << reinterpret_cast<uint64_t>(edge);
+
+    if (m_editorData->selectedEdge()) {
+        m_editorData->selectedEdge()->setSelected(false);
+    }
+
+    if (edge)
+    {
+        edge->setSelected(true);
+    }
+
     m_editorData->setSelectedEdge(edge);
 }
 
 void Mediator::setSelectedNode(Node * node)
 {
+    L().debug() << __func__ << "(): " << reinterpret_cast<uint64_t>(node);
+
+    if (selectedNode()) {
+        selectedNode()->setSelected(false);
+    }
+
+    if (node)
+    {
+        node->setSelected(true);
+    }
+
     m_editorData->setSelectedNode(node);
 }
 

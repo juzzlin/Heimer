@@ -72,6 +72,8 @@ namespace Serializer {
                 {
                     static constexpr auto INDEX0 = "index0";
                     static constexpr auto INDEX1 = "index1";
+                    static constexpr auto ARROW_MODE = "arrow-mode";
+                    static constexpr auto REVERSED = "reversed";
                 };
             };
         };

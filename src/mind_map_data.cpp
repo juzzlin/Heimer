@@ -53,7 +53,9 @@ void MindMapData::copyGraph(const MindMapData & other)
         auto targetNode = std::dynamic_pointer_cast<Node>(m_graph.getNode(edgeBase->targetNodeBase().index()));
 
         auto edge = std::make_shared<Edge>(*sourceNode, *targetNode);
+        edge->setArrowMode(edgeBase->arrowMode());
         edge->setText(edgeBase->text());
+        edge->setReversed(edgeBase->reversed());
         m_graph.addEdge(edge);
     }
 }

@@ -74,6 +74,8 @@ static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocume
             auto edgeElement = doc.createElement(Serializer::DataKeywords::Design::Graph::EDGE);
             edgeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX0, edge->sourceNodeBase().index());
             edgeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX1, edge->targetNodeBase().index());
+            edgeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::ARROW_MODE, static_cast<int>(edge->arrowMode()));
+            edgeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::REVERSED, edge->reversed());
             root.appendChild(edgeElement);
 
             // Create a child node for the text content
@@ -191,6 +193,8 @@ static EdgePtr readEdge(const QDomElement & element, MindMapDataPtr data)
 {
     const int index0 = element.attribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX0, "-1").toInt();
     const int index1 = element.attribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX1, "-1").toInt();
+    const int reversed = element.attribute(Serializer::DataKeywords::Design::Graph::Edge::REVERSED, "0").toInt();
+    const int arrowMode = element.attribute(Serializer::DataKeywords::Design::Graph::Edge::ARROW_MODE, "0").toInt();
 
 #ifdef HEIMER_UNIT_TEST
     auto node0 = data->graph().getNode(index0);
@@ -206,6 +210,8 @@ static EdgePtr readEdge(const QDomElement & element, MindMapDataPtr data)
     assert(node1);
     auto edge = make_shared<Edge>(*node0, *node1);
 #endif
+    edge->setArrowMode(static_cast<EdgeBase::ArrowMode>(arrowMode));
+    edge->setReversed(reversed);
 
     readChildren(element, {
         {

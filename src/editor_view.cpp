@@ -28,6 +28,7 @@
 #include "constants.hpp"
 #include "mouse_action.hpp"
 #include "edge.hpp"
+#include "edge_text_edit.hpp"
 #include "graphics_factory.hpp"
 #include "simple_logger.hpp"
 #include "mediator.hpp"
@@ -86,61 +87,122 @@ void EditorView::createBackgroundContextMenuActions()
 
 void EditorView::createEdgeContextMenuActions()
 {
-    m_deleteEdgeAction = new QAction(tr("Delete edge"), &m_edgeContextMenu);
-    QObject::connect(m_deleteEdgeAction, &QAction::triggered, [=] {
+    m_changeEdgeDirectionAction = new QAction(tr("Change direction"), &m_edgeContextMenu);
+    QObject::connect(m_changeEdgeDirectionAction, &QAction::triggered, [=] {
+        auto edge = m_mediator.selectedEdge();
+        m_mediator.saveUndoPoint();
+        edge->setReversed(!edge->reversed());
+    });
+
+    m_hideEdgeArrowAction = new QAction(tr("Hide arrow"), &m_edgeContextMenu);
+    QObject::connect(m_hideEdgeArrowAction, &QAction::triggered, [=] {
         assert(m_mediator.selectedEdge());
         m_mediator.saveUndoPoint();
-        m_mediator.deleteEdge(*m_mediator.selectedEdge());
+        m_mediator.selectedEdge()->setArrowMode(EdgeBase::ArrowMode::Hidden);
+    });
+
+    m_singleArrowAction = new QAction(tr("Single arrow"), &m_edgeContextMenu);
+    QObject::connect(m_singleArrowAction, &QAction::triggered, [=] {
+        assert(m_mediator.selectedEdge());
+        m_mediator.saveUndoPoint();
+        m_mediator.selectedEdge()->setArrowMode(EdgeBase::ArrowMode::Single);
+    });
+
+    m_doubleArrowAction = new QAction(tr("Double arrow"), &m_edgeContextMenu);
+    QObject::connect(m_doubleArrowAction, &QAction::triggered, [=] {
+        assert(m_mediator.selectedEdge());
+        m_mediator.saveUndoPoint();
+        m_mediator.selectedEdge()->setArrowMode(EdgeBase::ArrowMode::Double);
+    });
+
+    m_deleteEdgeAction = new QAction(tr("Delete edge"), &m_edgeContextMenu);
+    QObject::connect(m_deleteEdgeAction, &QAction::triggered, [=] {
+        m_mediator.setSelectedEdge(nullptr);
+        m_mediator.saveUndoPoint();
+        // Use a separate variable and timer here because closing the menu will always nullify the selected edge
+        QTimer::singleShot(0, [=] {
+            m_mediator.deleteEdge(*m_selectedEdge);
+        });
     });
 
     // Populate the menu
+    m_edgeContextMenu.addAction(m_changeEdgeDirectionAction);
+    m_edgeContextMenu.addSeparator();
+    m_edgeContextMenu.addAction(m_hideEdgeArrowAction);
+    m_edgeContextMenu.addSeparator();
+    m_edgeContextMenu.addAction(m_singleArrowAction);
+    m_edgeContextMenu.addAction(m_doubleArrowAction);
+    m_edgeContextMenu.addSeparator();
     m_edgeContextMenu.addAction(m_deleteEdgeAction);
+
+    // Set selected edge when the menu opens.
+    connect(&m_edgeContextMenu, &QMenu::aboutToShow, [=] {
+        m_selectedEdge = m_mediator.selectedEdge();
+        m_changeEdgeDirectionAction->setEnabled(m_selectedEdge->arrowMode() != EdgeBase::ArrowMode::Double && m_selectedEdge->arrowMode() != EdgeBase::ArrowMode::Hidden);
+        m_doubleArrowAction->setEnabled(m_selectedEdge->arrowMode() != EdgeBase::ArrowMode::Double);
+        m_hideEdgeArrowAction->setEnabled(m_selectedEdge->arrowMode() != EdgeBase::ArrowMode::Hidden);
+        m_singleArrowAction->setEnabled(m_selectedEdge->arrowMode() != EdgeBase::ArrowMode::Single);
+    });
+
+    // Always clear edge selection when the menu closes.
+    connect(&m_edgeContextMenu, &QMenu::aboutToHide, [=] {
+        QTimer::singleShot(0, [=] {
+            m_mediator.setSelectedEdge(nullptr);
+        });
+    });
 }
 
 void EditorView::createNodeContextMenuActions()
 {
     m_setNodeColorAction = new QAction(tr("Set node color"), &m_nodeContextMenu);
     QObject::connect(m_setNodeColorAction, &QAction::triggered, [this] () {
-        assert(m_mediator.selectedNode());
+        auto node = m_mediator.selectedNode();
         const auto color = QColorDialog::getColor(Qt::white, this);
         if (color.isValid()) {
             m_mediator.saveUndoPoint();
-            m_mediator.selectedNode()->setColor(color);
+            node->setColor(color);
         }
     });
 
     m_setNodeTextColorAction = new QAction(tr("Set text color"), &m_nodeContextMenu);
     QObject::connect(m_setNodeTextColorAction, &QAction::triggered, [this] () {
-        assert(m_mediator.selectedNode());
+        auto node = m_mediator.selectedNode();
         const auto color = QColorDialog::getColor(Qt::white, this);
         if (color.isValid()) {
             m_mediator.saveUndoPoint();
-            m_mediator.selectedNode()->setTextColor(color);
+            node->setTextColor(color);
         }
     });
 
     m_deleteNodeAction = new QAction(tr("Delete node"), &m_nodeContextMenu);
     QObject::connect(m_deleteNodeAction, &QAction::triggered, [this] () {
-        assert(m_mediator.selectedNode());
         m_mediator.saveUndoPoint();
         m_mediator.deleteNode(*m_mediator.selectedNode());
+        m_mediator.setSelectedNode(nullptr);
     });
 
     // Populate the menu
     m_nodeContextMenu.addAction(m_setNodeColorAction);
+    m_nodeContextMenu.addSeparator();
     m_nodeContextMenu.addAction(m_setNodeTextColorAction);
     m_nodeContextMenu.addSeparator();
     m_nodeContextMenu.addAction(m_deleteNodeAction);
+
+    connect(&m_nodeContextMenu, &QMenu::aboutToHide, [=] {
+        QTimer::singleShot(0, [=] {
+            m_mediator.setSelectedNode(nullptr);
+        });
+    });
 }
 
 void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
 {
-    // Only clear selection group if Ctrl pressed
-    if (isControlPressed() && m_mediator.selectionGroupSize())
+    if (m_mediator.selectionGroupSize())
     {
         m_mediator.clearSelectionGroup();
-        return;
     }
+    m_mediator.setSelectedEdge(nullptr);
+    m_mediator.setSelectedNode(nullptr);
 
     if (event.button() == Qt::LeftButton)
     {
@@ -341,6 +403,19 @@ void EditorView::mousePressEvent(QMouseEvent * event)
         else if (auto node = dynamic_cast<NodeHandle *>(item))
         {
             handleMousePressEventOnNodeHandle(*event, *node);
+        }
+        // This hack enables edge context menu even if user clicks on the edge text edit.
+        // Must be the last else-if branch.
+        else if (auto edgeTextEdit = dynamic_cast<EdgeTextEdit *>(item))
+        {
+            if (event->button() == Qt::RightButton)
+            {
+                auto edge = dynamic_cast<Edge *>(edgeTextEdit->parentItem());
+                if (edge) {
+                    handleMousePressEventOnEdge(*event, *edge);
+                    return;
+                }
+            }
         }
     }
     else

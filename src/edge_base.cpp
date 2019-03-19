@@ -32,6 +32,16 @@ void EdgeBase::setTargetNode(NodeBase & targetNode)
     m_targetNode = &targetNode;
 }
 
+EdgeBase::ArrowMode EdgeBase::arrowMode() const
+{
+    return m_arrowMode;
+}
+
+void EdgeBase::setArrowMode(EdgeBase::ArrowMode arrowMode)
+{
+    m_arrowMode = arrowMode;
+}
+
 QColor EdgeBase::color() const
 {
     return m_color;
@@ -65,6 +75,26 @@ int EdgeBase::textSize() const
 void EdgeBase::setTextSize(int textSize)
 {
     m_textSize = textSize;
+}
+
+bool EdgeBase::reversed() const
+{
+    return m_reversed;
+}
+
+void EdgeBase::setReversed(bool reversed)
+{
+    m_reversed = reversed;
+}
+
+bool EdgeBase::selected() const
+{
+    return m_selected;
+}
+
+void EdgeBase::setSelected(bool selected)
+{
+    m_selected = selected;
 }
 
 NodeBase & EdgeBase::sourceNodeBase() const

@@ -272,6 +272,11 @@ bool Mediator::isInBetween(Node & node)
     return graph.getEdgesFromNode(graph.getNode(node.index())).size() + graph.getEdgesToNode(graph.getNode(node.index())).size() == 2;
 }
 
+bool Mediator::isInSelectionGroup(Node & node)
+{
+    return m_editorData->isInSelectionGroup(node);
+}
+
 bool Mediator::isRedoable() const
 {
     return m_editorData->isRedoable();

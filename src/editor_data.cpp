@@ -236,6 +236,11 @@ NodeBasePtr EditorData::getNodeByIndex(int index)
     return m_mindMapData->graph().getNode(index);
 }
 
+bool EditorData::isInSelectionGroup(Node & node)
+{
+    return m_selectionGroup.count(&node);
+}
+
 MindMapDataPtr EditorData::mindMapData()
 {
     return m_mindMapData;

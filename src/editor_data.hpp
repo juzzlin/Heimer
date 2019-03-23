@@ -62,6 +62,8 @@ public:
 
     NodeBasePtr getNodeByIndex(int index);
 
+    bool isInSelectionGroup(Node & node);
+
     bool isUndoable() const;
 
     bool isRedoable() const;

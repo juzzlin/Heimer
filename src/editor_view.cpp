@@ -272,6 +272,11 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
     case DragAndDropStore::Action::MoveNode:
         if (const auto node = m_mediator.dadStore().sourceNode())
         {
+            if (!m_mediator.isInSelectionGroup(*node))
+            {
+                m_mediator.clearSelectionGroup();
+            }
+
             if (m_mediator.selectionGroupSize())
             {
                 m_mediator.moveSelectionGroup(*node, snapToGrid(m_mappedPos - m_mediator.dadStore().sourcePosOnNode()));

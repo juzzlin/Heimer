@@ -86,6 +86,8 @@ public:
 
     bool isInBetween(Node & node);
 
+    bool isInSelectionGroup(Node & node);
+
     bool isLeafNode(Node & node);
 
     bool isUndoable() const;

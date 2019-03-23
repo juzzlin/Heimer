@@ -13,20 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Dust Racing 2D. If not, see <http://www.gnu.org/licenses/>.
 
-#include "drag_and_drop_store.hpp"
+#include "mouse_action.hpp"
 
 #include "node.hpp"
 
-DragAndDropStore::DragAndDropStore()
+MouseAction::MouseAction()
 {
 }
 
-DragAndDropStore::Action DragAndDropStore::action() const
+MouseAction::Action MouseAction::action() const
 {
     return m_action;
 }
 
-void DragAndDropStore::clear()
+void MouseAction::clear()
 {
     m_sourceNode = nullptr;
     m_sourcePos = QPointF();
@@ -34,33 +34,33 @@ void DragAndDropStore::clear()
     m_action = Action::None;
 }
 
-void DragAndDropStore::setSourceNode(Node * node, DragAndDropStore::Action action)
+void MouseAction::setSourceNode(Node * node, MouseAction::Action action)
 {
     m_sourceNode = node;
     m_action = action;
 }
 
-Node * DragAndDropStore::sourceNode() const
+Node * MouseAction::sourceNode() const
 {
     return m_sourceNode;
 }
 
-void DragAndDropStore::setSourcePos(const QPointF & sourcePos)
+void MouseAction::setSourcePos(const QPointF & sourcePos)
 {
     m_sourcePos = sourcePos;
 }
 
-void DragAndDropStore::setSourcePosOnNode(const QPointF & sourcePos)
+void MouseAction::setSourcePosOnNode(const QPointF & sourcePos)
 {
     m_sourcePosOnNode = sourcePos;
 }
 
-QPointF DragAndDropStore::sourcePos() const
+QPointF MouseAction::sourcePos() const
 {
     return m_sourcePos;
 }
 
-QPointF DragAndDropStore::sourcePosOnNode() const
+QPointF MouseAction::sourcePosOnNode() const
 {
     return m_sourcePosOnNode;
 }

@@ -26,7 +26,7 @@
 #include "editor_view.hpp"
 
 #include "constants.hpp"
-#include "drag_and_drop_store.hpp"
+#include "mouse_action.hpp"
 #include "edge.hpp"
 #include "graphics_factory.hpp"
 #include "simple_logger.hpp"
@@ -144,7 +144,7 @@ void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
 
     if (event.button() == Qt::LeftButton)
     {
-        m_mediator.dadStore().setSourceNode(nullptr, DragAndDropStore::Action::Scroll);
+        m_mediator.mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
         setDragMode(ScrollHandDrag);
     }
     else if (event.button() == Qt::RightButton)
@@ -204,9 +204,9 @@ void EditorView::handleLeftButtonClickOnNode(Node & node)
         m_mediator.saveUndoPoint();
 
         node.setZValue(node.zValue() + 1);
-        m_mediator.dadStore().setSourceNode(&node, DragAndDropStore::Action::MoveNode);
-        m_mediator.dadStore().setSourcePos(m_mappedPos);
-        m_mediator.dadStore().setSourcePosOnNode(m_mappedPos - node.pos());
+        m_mediator.mouseAction().setSourceNode(&node, MouseAction::Action::MoveNode);
+        m_mediator.mouseAction().setSourcePos(m_mappedPos);
+        m_mediator.mouseAction().setSourcePosOnNode(m_mappedPos - node.pos());
 
         // Change cursor to the closed hand cursor.
         QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
@@ -251,8 +251,8 @@ void EditorView::initiateNewNodeDrag(NodeHandle & nodeHandle)
     m_mediator.saveUndoPoint();
     auto parentNode = dynamic_cast<Node *>(nodeHandle.parentItem());
     assert(parentNode);
-    m_mediator.dadStore().setSourceNode(parentNode, DragAndDropStore::Action::CreateOrConnectNode);
-    m_mediator.dadStore().setSourcePosOnNode(nodeHandle.pos());
+    m_mediator.mouseAction().setSourceNode(parentNode, MouseAction::Action::CreateOrConnectNode);
+    m_mediator.mouseAction().setSourcePosOnNode(nodeHandle.pos());
     parentNode->hoverLeaveEvent(nullptr);
     // Change cursor to the closed hand cursor.
     QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
@@ -267,10 +267,10 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
 {
     m_mappedPos = mapToScene(event->pos());
 
-    switch (m_mediator.dadStore().action())
+    switch (m_mediator.mouseAction().action())
     {
-    case DragAndDropStore::Action::MoveNode:
-        if (const auto node = m_mediator.dadStore().sourceNode())
+    case MouseAction::Action::MoveNode:
+        if (const auto node = m_mediator.mouseAction().sourceNode())
         {
             if (!m_mediator.isInSelectionGroup(*node))
             {
@@ -279,21 +279,21 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
 
             if (m_mediator.selectionGroupSize())
             {
-                m_mediator.moveSelectionGroup(*node, snapToGrid(m_mappedPos - m_mediator.dadStore().sourcePosOnNode()));
+                m_mediator.moveSelectionGroup(*node, snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
             }
             else
             {
-                node->setLocation(snapToGrid(m_mappedPos - m_mediator.dadStore().sourcePosOnNode()));
+                node->setLocation(snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
             }
         }
         break;
-    case DragAndDropStore::Action::CreateOrConnectNode:
+    case MouseAction::Action::CreateOrConnectNode:
     {
         showDummyDragNode(true);
         showDummyDragEdge(true);
-        m_dummyDragNode->setPos(snapToGrid(m_mappedPos - m_mediator.dadStore().sourcePosOnNode()));
+        m_dummyDragNode->setPos(snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
         m_dummyDragEdge->updateLine();
-        m_mediator.dadStore().sourceNode()->setHandlesVisible(false);
+        m_mediator.mouseAction().sourceNode()->setHandlesVisible(false);
 
         m_mediator.clearSelectedNode();
         m_mediator.clearSelectionGroup();
@@ -307,7 +307,7 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
         }
     }
         break;
-    case DragAndDropStore::Action::Scroll:
+    case MouseAction::Action::Scroll:
         break;
     default:
         break;
@@ -355,13 +355,13 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
 {
     if (event->button() == Qt::LeftButton)
     {
-        switch (m_mediator.dadStore().action())
+        switch (m_mediator.mouseAction().action())
         {
-        case DragAndDropStore::Action::MoveNode:
-            m_mediator.dadStore().clear();
+        case MouseAction::Action::MoveNode:
+            m_mediator.mouseAction().clear();
             break;
-        case DragAndDropStore::Action::CreateOrConnectNode:
-            if (auto sourceNode = m_mediator.dadStore().sourceNode())
+        case MouseAction::Action::CreateOrConnectNode:
+            if (auto sourceNode = m_mediator.mouseAction().sourceNode())
             {
                 if (m_connectionTargetNode)
                 {
@@ -371,14 +371,14 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
                 }
                 else
                 {
-                    m_mediator.createAndAddNode(sourceNode->index(), snapToGrid(m_mappedPos - m_mediator.dadStore().sourcePosOnNode()));
+                    m_mediator.createAndAddNode(sourceNode->index(), snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
                 }
 
                 resetDummyDragItems();
-                m_mediator.dadStore().clear();
+                m_mediator.mouseAction().clear();
             }
             break;
-        case DragAndDropStore::Action::Scroll:
+        case MouseAction::Action::Scroll:
             setDragMode(NoDrag);
             break;
         default:
@@ -422,7 +422,7 @@ void EditorView::resetDummyDragItems()
 
 void EditorView::showDummyDragEdge(bool show)
 {
-    if (auto sourceNode = m_mediator.dadStore().sourceNode())
+    if (auto sourceNode = m_mediator.mouseAction().sourceNode())
     {
         if (!m_dummyDragEdge)
         {

@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Dust Racing 2D. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef DRAGANDDROPSTORE_HPP
-#define DRAGANDDROPSTORE_HPP
+#ifndef MOUSE_ACTION_HPP
+#define MOUSE_ACTION_HPP
 
 #include <QPointF>
 
 class Node;
 
-class DragAndDropStore
+class MouseAction
 {
 public:
 
@@ -32,7 +32,7 @@ public:
         Scroll
     };
 
-    DragAndDropStore();
+    MouseAction();
 
     void clear();
 
@@ -58,4 +58,4 @@ private:
     Action m_action = Action::None;
 };
 
-#endif // DRAGANDDROPSTORE_HPP
+#endif // MOUSE_ACTION_HPP

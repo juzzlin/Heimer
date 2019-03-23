@@ -41,9 +41,9 @@ void EditorData::clearScene()
     emit sceneCleared();
 }
 
-DragAndDropStore & EditorData::dadStore()
+MouseAction & EditorData::mouseAction()
 {
-    return m_dadStore;
+    return m_mouseAction;
 }
 
 QString EditorData::fileName() const

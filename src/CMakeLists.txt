@@ -6,7 +6,6 @@ set(SRC
     about_dlg.cpp
     application.cpp
     constants.hpp
-    drag_and_drop_store.cpp
     edge.cpp
     edge_base.cpp
     edge_dot.cpp
@@ -25,6 +24,7 @@ set(SRC
     mediator.cpp
     mind_map_data.cpp
     mind_map_data_base.cpp
+    mouse_action.cpp
     node.cpp
     node_base.cpp
     node_handle.cpp

@@ -23,7 +23,6 @@ INCLUDEPATH += . $$SRC/contrib/SimpleLogger/src
 HEADERS +=  \
     $$SRC/about_dlg.hpp \
     $$SRC/application.hpp \
-    $$SRC/drag_and_drop_store.hpp \
     $$SRC/graph.hpp \
     $$SRC/graphics_factory.hpp \
     $$SRC/edge.hpp \
@@ -42,6 +41,7 @@ HEADERS +=  \
     $$SRC/mediator.hpp \
     $$SRC/mind_map_data.hpp \
     $$SRC/mind_map_data_base.hpp \
+    $$SRC/mouse_action.hpp \
     $$SRC/node.hpp \
     $$SRC/node_base.hpp \
     $$SRC/node_handle.hpp \
@@ -56,7 +56,6 @@ HEADERS +=  \
 SOURCES += \
     $$SRC/about_dlg.cpp \
     $$SRC/application.cpp \
-    $$SRC/drag_and_drop_store.cpp \
     $$SRC/graph.cpp \
     $$SRC/graphics_factory.cpp \
     $$SRC/edge.cpp \
@@ -74,6 +73,7 @@ SOURCES += \
     $$SRC/mediator.cpp \
     $$SRC/mind_map_data.cpp \
     $$SRC/mind_map_data_base.cpp \
+    $$SRC/mouse_action.cpp \
     $$SRC/node.cpp \
     $$SRC/node_base.cpp \
     $$SRC/node_handle.cpp \

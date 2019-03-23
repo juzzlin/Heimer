@@ -24,7 +24,7 @@
 #include <QPointF>
 #include <QString>
 
-#include "drag_and_drop_store.hpp"
+#include "mouse_action.hpp"
 #include "edge.hpp"
 #include "file_exception.hpp"
 #include "undo_stack.hpp"
@@ -56,7 +56,7 @@ public:
 
     QColor backgroundColor() const;
 
-    DragAndDropStore & dadStore();
+    MouseAction & mouseAction();
 
     QString fileName() const;
 
@@ -121,7 +121,7 @@ private:
 
     void setIsModified(bool isModified);
 
-    DragAndDropStore m_dadStore;
+    MouseAction m_mouseAction;
 
     MindMapDataPtr m_mindMapData;
 

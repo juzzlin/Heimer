@@ -22,7 +22,7 @@
 
 #include "node.hpp"
 
-class DragAndDropStore;
+class MouseAction;
 class EditorData;
 class EditorScene;
 class EditorView;
@@ -66,7 +66,7 @@ public:
     // Create a new floating node
     NodeBasePtr createAndAddNode(QPointF pos);
 
-    DragAndDropStore & dadStore();
+    MouseAction & mouseAction();
 
     void deleteEdge(Edge & edge);
 

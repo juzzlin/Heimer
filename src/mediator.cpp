@@ -15,7 +15,7 @@
 
 #include "mediator.hpp"
 
-#include "drag_and_drop_store.hpp"
+#include "mouse_action.hpp"
 #include "editor_data.hpp"
 #include "editor_scene.hpp"
 #include "editor_view.hpp"
@@ -162,9 +162,9 @@ NodeBasePtr Mediator::createAndAddNode(QPointF pos)
     return std::move(node1); // Fix a static analyzer warning: avoid copy on older compilers
 }
 
-DragAndDropStore & Mediator::dadStore()
+MouseAction & Mediator::mouseAction()
 {
-    return m_editorData->dadStore();
+    return m_editorData->mouseAction();
 }
 
 void Mediator::deleteEdge(Edge & edge)
@@ -555,8 +555,8 @@ NodePtr Mediator::getBestOverlapNode(const Node & source)
     {
         if (const auto node = std::dynamic_pointer_cast<Node>(nodeBase))
         {
-            if (node->index() != source.index() && node->index() != dadStore().sourceNode()->index() &&
-                !areDirectlyConnected(*node, *dadStore().sourceNode()))
+            if (node->index() != source.index() && node->index() != mouseAction().sourceNode()->index() &&
+                !areDirectlyConnected(*node, *mouseAction().sourceNode()))
             {
                 const auto score = calculateNodeOverlapScore(source, *node);
                 if (score > 0.75 && score > bestScore)

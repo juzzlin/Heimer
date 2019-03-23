@@ -79,6 +79,16 @@ QColor NodeBase::color() const
     return m_color;
 }
 
+int NodeBase::cornerRadius() const
+{
+    return m_cornerRadius;
+}
+
+void NodeBase::setCornerRadius(int cornerRadius)
+{
+    m_cornerRadius = cornerRadius;
+}
+
 void NodeBase::setColor(const QColor & color)
 {
     m_color = color;

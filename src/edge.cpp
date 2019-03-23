@@ -198,13 +198,13 @@ void Edge::updateArrowhead()
     m_arrowheadR->setLine(line);
 }
 
-void Edge::updateDots(const std::pair<QPointF, QPointF> & nearestPoints)
+void Edge::updateDots(const std::pair<EdgePoint, EdgePoint> & nearestPoints)
 {
     if (m_enableAnimations)
     {
-        if (m_sourceDot->pos() != nearestPoints.first)
+        if (m_sourceDot->pos() != nearestPoints.first.location)
         {
-            m_sourceDot->setPos(nearestPoints.first);
+            m_sourceDot->setPos(nearestPoints.first.location);
 
             // Re-parent to source node due to Z-ordering issues
             m_sourceDot->setParentItem(&sourceNode());
@@ -213,9 +213,9 @@ void Edge::updateDots(const std::pair<QPointF, QPointF> & nearestPoints)
             m_sourceDotSizeAnimation->start();
         }
 
-        if (m_targetDot->pos() != nearestPoints.second)
+        if (m_targetDot->pos() != nearestPoints.second.location)
         {
-            m_targetDot->setPos(nearestPoints.second);
+            m_targetDot->setPos(nearestPoints.second.location);
 
             // Re-parent to target node due to Z-ordering issues
             m_targetDot->setParentItem(&targetNode());
@@ -237,13 +237,17 @@ void Edge::updateLabel()
 void Edge::updateLine()
 {
     const auto nearestPoints = Node::getNearestEdgePoints(sourceNode(), targetNode());
-    const auto p1 = nearestPoints.first + sourceNode().pos();
-    const auto p2 = nearestPoints.second + targetNode().pos();
+    const auto p1 = nearestPoints.first.location + sourceNode().pos();
+    const auto p2 = nearestPoints.second.location + targetNode().pos();
 
     QVector2D direction(p2 - p1);
     direction.normalize();
 
-    setLine(QLineF(p1, p2 - (direction * width()).toPointF() * 0.5));
+    setLine(QLineF(
+        p1 - (nearestPoints.first.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction * sourceNode().cornerRadius()).toPointF() : QPointF{0, 0}),
+        p2 + (nearestPoints.second.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction * targetNode().cornerRadius()).toPointF() : QPointF{0, 0}) -
+            (direction * static_cast<float>(width())).toPointF() * Constants::Edge::WIDTH_SCALE));
+
     updateDots(nearestPoints);
     updateLabel();
     updateArrowhead();

@@ -273,6 +273,29 @@ void EditorDataTest::testUndoBackgroundColor()
     QCOMPARE(editorData.mindMapData()->backgroundColor(), QColor(1, 1, 1));
 }
 
+void EditorDataTest::testUndoCornerRadius()
+{
+    EditorData editorData;
+
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+    editorData.mindMapData()->setCornerRadius(12);
+
+    editorData.saveUndoPoint();
+    editorData.mindMapData()->setCornerRadius(11);
+
+    editorData.saveUndoPoint();
+    editorData.mindMapData()->setCornerRadius(10);
+
+    editorData.undo();
+    QCOMPARE(editorData.mindMapData()->cornerRadius(), 11);
+
+    editorData.undo();
+    QCOMPARE(editorData.mindMapData()->cornerRadius(), 12);
+
+    editorData.redo();
+    QCOMPARE(editorData.mindMapData()->cornerRadius(), 11);
+}
+
 void EditorDataTest::testUndoEdgeColor()
 {
     EditorData editorData;

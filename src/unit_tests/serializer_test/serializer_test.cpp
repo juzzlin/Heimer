@@ -48,6 +48,19 @@ void SerializerTest::testBackgroundColor()
     QCOMPARE(inData->backgroundColor(), outData.backgroundColor());
 }
 
+void SerializerTest::testCornerRadius()
+{
+    MindMapData outData;
+    outData.setCornerRadius(Constants::Node::DEFAULT_CORNER_RADIUS + 1);
+
+    // Serialize
+    const auto document = Serializer::toXml(outData);
+
+    // Deserialize
+    const auto inData = Serializer::fromXml(document);
+    QCOMPARE(inData->cornerRadius(), outData.cornerRadius());
+}
+
 void SerializerTest::testEdgeColor()
 {
     MindMapData outData;

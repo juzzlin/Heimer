@@ -45,7 +45,7 @@ public:
 
     explicit EditorView(Mediator & mediator);
 
-    ~EditorView();
+    ~EditorView() override;
 
     void resetDummyDragItems();
 
@@ -54,6 +54,8 @@ public:
     void zoomToFit(QRectF nodeBoundingRect);
 
 public slots:
+
+    void setCornerRadius(int cornerRadius);
 
     void setEdgeColor(const QColor & edgeColor);
 
@@ -150,6 +152,8 @@ private:
     Edge * m_dummyDragEdge = nullptr;
 
     std::shared_ptr<Node> m_connectionTargetNode;
+
+    int m_cornerRadius = 0;
 
     int m_gridSize = 0;
 

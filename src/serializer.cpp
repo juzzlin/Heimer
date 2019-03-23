@@ -266,6 +266,11 @@ MindMapDataPtr Serializer::fromXml(QDomDocument document)
             QString(Serializer::DataKeywords::Design::TEXT_SIZE), [=] (const QDomElement & e) {
                 data->setTextSize(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
             }
+        },
+        {
+            QString(Serializer::DataKeywords::Design::CORNER_RADIUS), [=] (const QDomElement & e) {
+                data->setCornerRadius(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
+            }
         }
     });
 
@@ -293,6 +298,10 @@ QDomDocument Serializer::toXml(MindMapData & mindMapData)
     auto textSizeElement = doc.createElement(Serializer::DataKeywords::Design::TEXT_SIZE);
     textSizeElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData.textSize() * SCALE))));
     design.appendChild(textSizeElement);
+
+    auto cornerRadiusElement = doc.createElement(Serializer::DataKeywords::Design::CORNER_RADIUS);
+    cornerRadiusElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData.cornerRadius() * SCALE))));
+    design.appendChild(cornerRadiusElement);
 
     auto graph = doc.createElement(Serializer::DataKeywords::Design::GRAPH);
     design.appendChild(graph);

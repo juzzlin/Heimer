@@ -119,6 +119,31 @@ void MainWindow::createEditMenu()
     editMenu->addSeparator();
 }
 
+QWidgetAction * MainWindow::createCornerRadiusAction()
+{
+    m_cornerRadiusSpinBox = new QSpinBox(this);
+    m_cornerRadiusSpinBox->setMinimum(0);
+    m_cornerRadiusSpinBox->setMaximum(Constants::Node::MAX_CORNER_RADIUS);
+    m_cornerRadiusSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
+    const auto dummyWidget = new QWidget(this);
+    const auto layout = new QHBoxLayout(dummyWidget);
+    dummyWidget->setLayout(layout);
+    auto label = new QLabel(tr("Corner radius:"));
+    layout->addWidget(label);
+    layout->addWidget(m_cornerRadiusSpinBox);
+    layout->setContentsMargins(0, 0, 0, 0);
+
+    auto action = new QWidgetAction(this);
+    action->setDefaultWidget(dummyWidget);
+
+    // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
+    // In Qt > 5.10 one can use QOverload<double>::of(...)
+    connect(m_cornerRadiusSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::cornerRadiusChanged);
+
+    return action;
+}
+
 QWidgetAction * MainWindow::createEdgeWidthAction()
 {
     m_edgeWidthSpinBox = new QDoubleSpinBox(this);
@@ -284,6 +309,8 @@ void MainWindow::createToolBar()
     toolBar->addAction(createTextSizeAction());
     toolBar->addSeparator();
     toolBar->addAction(createGridSizeAction());
+    toolBar->addSeparator();
+    toolBar->addAction(createCornerRadiusAction());
 }
 
 void MainWindow::createViewMenu()
@@ -325,7 +352,7 @@ void MainWindow::initialize()
     // Read dialog size data
     QSettings settings;
     settings.beginGroup(m_settingsGroup);
-    const float defaultScale = 0.8;
+    const double defaultScale = 0.8;
     resize(settings.value("size", QSize(width, height) * defaultScale).toSize());
     settings.endGroup();
 
@@ -386,6 +413,14 @@ void MainWindow::disableUndoAndRedo()
 {
     m_undoAction->setEnabled(false);
     m_redoAction->setEnabled(false);
+}
+
+void MainWindow::setCornerRadius(int value)
+{
+    if (m_cornerRadiusSpinBox->value() != value)
+    {
+        m_cornerRadiusSpinBox->setValue(value);
+    }
 }
 
 void MainWindow::setEdgeWidth(double value)

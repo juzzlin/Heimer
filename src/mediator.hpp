@@ -146,6 +146,8 @@ public slots:
 
     void setBackgroundColor(QColor color);
 
+    void setCornerRadius(int value);
+
     void setEdgeColor(QColor color);
 
     void setEdgeWidth(double value);

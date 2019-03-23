@@ -38,6 +38,10 @@ public:
 
     void setBackgroundColor(const QColor & backgroundColor);
 
+    int cornerRadius() const;
+
+    void setCornerRadius(int cornerRadius);
+
     QColor edgeColor() const;
 
     void setEdgeColor(const QColor & edgeColor);
@@ -77,6 +81,8 @@ private:
     double m_edgeWidth = Constants::MindMap::DEFAULT_EDGE_WIDTH;
 
     int m_textSize = Constants::MindMap::DEFAULT_TEXT_SIZE;
+
+    int m_cornerRadius = Constants::Node::DEFAULT_CORNER_RADIUS;
 
     Graph m_graph;
 };

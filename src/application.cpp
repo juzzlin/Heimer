@@ -130,6 +130,7 @@ Application::Application(int & argc, char ** argv)
     connect(m_pngExportDialog.get(), &PngExportDialog::pngExportRequested, m_mediator.get(), &Mediator::exportToPNG);
 
     connect(m_mediator.get(), &Mediator::exportFinished, m_pngExportDialog.get(), &PngExportDialog::finishExport);
+    connect(m_mainWindow.get(), &MainWindow::cornerRadiusChanged, m_mediator.get(), &Mediator::setCornerRadius);
     connect(m_mainWindow.get(), &MainWindow::edgeWidthChanged, m_mediator.get(), &Mediator::setEdgeWidth);
     connect(m_mainWindow.get(), &MainWindow::textSizeChanged, m_mediator.get(), &Mediator::setTextSize);
     connect(m_mainWindow.get(), &MainWindow::gridSizeChanged, m_editorView, &EditorView::setGridSize);

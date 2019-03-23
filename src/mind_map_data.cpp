@@ -31,6 +31,7 @@ MindMapData::MindMapData(const MindMapData & other)
     , m_edgeColor(other.m_edgeColor)
     , m_edgeWidth(other.m_edgeWidth)
     , m_textSize(other.m_textSize)
+    , m_cornerRadius(other.m_cornerRadius)
 {
     copyGraph(other);
 }
@@ -65,6 +66,20 @@ QColor MindMapData::backgroundColor() const
 void MindMapData::setBackgroundColor(const QColor & backgroundColor)
 {
     m_backgroundColor = backgroundColor;
+}
+
+int MindMapData::cornerRadius() const
+{
+    return m_cornerRadius;
+}
+
+void MindMapData::setCornerRadius(int cornerRadius)
+{
+    m_cornerRadius = cornerRadius;
+
+    for (auto && node : m_graph.getNodes()) {
+        node->setCornerRadius(cornerRadius);
+    }
 }
 
 QColor MindMapData::edgeColor() const

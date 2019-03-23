@@ -48,6 +48,8 @@ static const double ARROW_LENGTH = 10;
 
 static const double ARROW_OPENING = 150;
 
+static const double CORNER_RADIUS_SCALE = 0.3;
+
 static const QColor DOT_COLOR{255, 0, 0, 192};
 
 static const int DOT_DURATION = 2000;
@@ -67,6 +69,8 @@ static const double STEP = 0.1;
 static const int TEXT_EDIT_ANIMATION_DURATION = 150;
 
 static const int TEXT_EDIT_DURATION = 2000;
+
+static const double WIDTH_SCALE = 0.5;
 
 } // Edge
 
@@ -102,6 +106,8 @@ static const int DEFAULT_TEXT_SIZE = 11;
 
 namespace Node {
 
+static const int DEFAULT_CORNER_RADIUS = 5;
+
 static const int HANDLE_ANIMATION_DURATION = 150;
 
 static const double HANDLE_OPACITY = 0.8;
@@ -111,6 +117,8 @@ static const int HANDLE_RADIUS = 28;
 static const int HANDLE_RADIUS_SMALL = 20;
 
 static const int MARGIN = 10;
+
+static const int MAX_CORNER_RADIUS = 20;
 
 static const int MIN_HEIGHT = 75;
 

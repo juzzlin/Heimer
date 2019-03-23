@@ -9,6 +9,7 @@ set(SRC
     edge.cpp
     edge_base.cpp
     edge_dot.cpp
+    edge_point.hpp
     edge_text_edit.cpp
     file_exception.hpp
     graph.cpp

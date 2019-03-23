@@ -48,6 +48,7 @@ void Mediator::addExistingGraphToScene()
         {
             auto graphicsNode = dynamic_pointer_cast<Node>(node);
             addItem(*graphicsNode);
+            graphicsNode->setCornerRadius(m_editorData->mindMapData()->cornerRadius());
             graphicsNode->setTextSize(m_editorData->mindMapData()->textSize());
             L().debug() << "Added existing node " << node->index() << " to scene";
         }
@@ -73,8 +74,11 @@ void Mediator::addExistingGraphToScene()
         }
     }
 
+    m_mainWindow.setCornerRadius(m_editorData->mindMapData()->cornerRadius());
     m_mainWindow.setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
     m_mainWindow.setTextSize(m_editorData->mindMapData()->textSize());
+
+    m_editorView->setCornerRadius(m_editorData->mindMapData()->cornerRadius());
     m_editorView->setEdgeColor(m_editorData->mindMapData()->edgeColor());
     m_editorView->setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
 }
@@ -391,6 +395,17 @@ void Mediator::setBackgroundColor(QColor color)
         saveUndoPoint();
         m_editorData->mindMapData()->setBackgroundColor(color);
         m_editorView->setBackgroundBrush(QBrush(color));
+    }
+}
+
+void Mediator::setCornerRadius(int value)
+{
+    // Break loop with the spinbox
+    if (m_editorData->mindMapData()->cornerRadius() != value)
+    {
+        saveUndoPoint();
+        m_editorData->mindMapData()->setCornerRadius(value);
+        m_editorView->setCornerRadius(m_editorData->mindMapData()->cornerRadius());
     }
 }
 

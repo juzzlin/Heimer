@@ -25,6 +25,7 @@
 
 #include "node_base.hpp"
 #include "edge.hpp"
+#include "edge_point.hpp"
 
 class NodeHandle;
 class QGraphicsTextItem;
@@ -45,36 +46,37 @@ public:
     //! Copy constructor.
     Node(const Node & other);
 
-    virtual ~Node();
+    ~Node() override;
 
-    virtual void addGraphicsEdge(Edge & edge);
+    void addGraphicsEdge(Edge & edge);
 
-    virtual void removeGraphicsEdge(Edge & edge);
+    void removeGraphicsEdge(Edge & edge);
 
     void adjustSize();
 
-    virtual QRectF boundingRect() const override;
+    QRectF boundingRect() const override;
 
     using NodePtr = std::shared_ptr<Node>;
-    virtual EdgePtr createAndAddGraphicsEdge(NodePtr targetNode);
+    EdgePtr createAndAddGraphicsEdge(NodePtr targetNode);
 
-    virtual void paint(QPainter * painter,
-        const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
+    void paint(QPainter * painter,  const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
 
     //! Sets the Node and QGraphicsItem locations.
-    virtual void setLocation(QPointF newLocation);
+    void setLocation(QPointF newLocation) override;
 
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
 
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
 
-    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent * event) override;
+    void hoverMoveEvent(QGraphicsSceneHoverEvent * event) override;
 
-    static std::pair<QPointF, QPointF> getNearestEdgePoints(const Node & node1, const Node & node2);
+    static std::pair<EdgePoint, EdgePoint> getNearestEdgePoints(const Node & node1, const Node & node2);
 
     void setHandlesVisible(bool visible, bool all = true);
 
     QString text() const override;
+
+    void setCornerRadius(int value) override;
 
     void setText(const QString & text) override;
 
@@ -108,7 +110,7 @@ private:
 
     std::vector<Edge *> m_graphicsEdges;
 
-    std::vector<QPointF> m_edgePoints;
+    std::vector<EdgePoint> m_edgePoints;
 
     TextEdit * m_textEdit;
 

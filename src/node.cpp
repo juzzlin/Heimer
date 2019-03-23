@@ -75,6 +75,8 @@ Node::Node(const Node & other)
 {
     setColor(other.color());
 
+    setCornerRadius(other.cornerRadius());
+
     setIndex(other.index());
 
     setLocation(other.location());
@@ -148,14 +150,14 @@ void Node::createEdgePoints()
     const double bias = 0.1;
 
     m_edgePoints = {
-        {-w2, h2},
-        {0, h2 + bias},
-        {w2, h2},
-        {w2 + bias, 0},
-        {w2, -h2},
-        {0, -h2 - bias},
-        {-w2, -h2},
-        {-w2 - bias, 0}
+        { {-w2, h2},       true  },
+        { {0, h2 + bias},  false },
+        { {w2, h2},        true  },
+        { {w2 + bias, 0},  false },
+        { {w2, -h2},       true  },
+        { {0, -h2 - bias}, false },
+        { {-w2, -h2},      true  },
+        { {-w2 - bias, 0}, false }
     };
 }
 
@@ -185,18 +187,18 @@ void Node::createHandles()
     m_handles.push_back(textColorHandle);
 }
 
-std::pair<QPointF, QPointF> Node::getNearestEdgePoints(const Node & node1, const Node & node2)
+std::pair<EdgePoint, EdgePoint> Node::getNearestEdgePoints(const Node & node1, const Node & node2)
 {
     double bestDistance = std::numeric_limits<double>::max();
-    std::pair<QPointF, QPointF> bestPair = {QPointF(), QPointF()};
+    std::pair<EdgePoint, EdgePoint> bestPair = {EdgePoint(), EdgePoint()};
 
     // This is O(n^2) but fine as there are not many points
     for (const auto & point1 : node1.m_edgePoints)
     {
         for (const auto & point2 : node2.m_edgePoints)
         {
-            const auto distance = std::pow(node1.pos().x() + point1.x() - node2.pos().x() - point2.x(), 2) +
-                std::pow(node1.pos().y() + point1.y() - node2.pos().y() - point2.y(), 2);
+            const auto distance = std::pow(node1.pos().x() + point1.location.x() - node2.pos().x() - point2.location.x(), 2) +
+                std::pow(node1.pos().y() + point1.location.y() - node2.pos().y() - point2.location.y(), 2);
 
             if (distance < bestDistance)
             {
@@ -309,10 +311,26 @@ void Node::paint(QPainter * painter,
     painter->save();
 
     // Background
-    painter->fillRect(
-        int(-size().width() / 2), int(-size().height() / 2), int(size().width()), int(size().height()), QBrush(color()));
 
+    QPainterPath path;
+    QRectF rect(-size().width() / 2, -size().height() / 2, size().width(), size().height());
+    path.addRoundedRect(rect, cornerRadius(), cornerRadius());
+    painter->setRenderHint(QPainter::Antialiasing);
+    painter->fillPath(path, QBrush(color()));
     painter->restore();
+}
+
+void Node::setCornerRadius(int value)
+{
+    NodeBase::setCornerRadius(value);
+
+    updateEdgeLines();
+
+    // Needed to redraw immediately on e.g. a new design. Otherwise updates start to work only after
+    // the first mouse over, which is a bit weird.
+    prepareGeometryChange();
+
+    update();
 }
 
 void Node::setHandlesVisible(bool visible, bool all)

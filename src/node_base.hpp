@@ -44,6 +44,10 @@ public:
 
     virtual void setColor(const QColor & color);
 
+    virtual int cornerRadius() const;
+
+    virtual void setCornerRadius(int cornerRadius);
+
     virtual QColor textColor() const;
 
     virtual void setTextColor(const QColor & color);
@@ -77,6 +81,8 @@ public:
 private:
 
     QColor m_color = Qt::white;
+
+    int m_cornerRadius = 0;
 
     QColor m_textColor = Qt::black;
 

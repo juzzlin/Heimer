@@ -452,6 +452,7 @@ void EditorView::showDummyDragNode(bool show)
         scene()->addItem(m_dummyDragNode);
     }
 
+    m_dummyDragNode->setCornerRadius(m_cornerRadius);
     m_dummyDragNode->setOpacity(Constants::View::DRAG_NODE_OPACITY);
     m_dummyDragNode->setVisible(show);
 }
@@ -474,6 +475,11 @@ void EditorView::updateScale(int value)
     const double scale = static_cast<double>(value) / 100;
     transform.scale(scale, scale);
     setTransform(transform);
+}
+
+void EditorView::setCornerRadius(int cornerRadius)
+{
+    m_cornerRadius = cornerRadius;
 }
 
 void EditorView::setGridSize(int size)

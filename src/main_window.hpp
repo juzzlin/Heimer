@@ -45,7 +45,7 @@ public:
 
     MainWindow();
 
-    ~MainWindow();
+    ~MainWindow() override;
 
     static MainWindow * instance();
 
@@ -73,6 +73,8 @@ public slots:
 
     void enableSaveAs(bool enable);
 
+    void setCornerRadius(int value);
+
     void setEdgeWidth(double value);
 
     void setTextSize(int textSize);
@@ -86,6 +88,8 @@ protected:
 signals:
 
     void actionTriggered(StateMachine::Action action);
+
+    void cornerRadiusChanged(int size);
 
     void edgeWidthChanged(double width);
 
@@ -112,6 +116,8 @@ private:
     void addRedoAction(QMenu & menu);
 
     void addUndoAction(QMenu & menu);
+
+    QWidgetAction * createCornerRadiusAction();
 
     QWidgetAction * createEdgeWidthAction();
 
@@ -142,6 +148,8 @@ private:
     QAction * m_redoAction = nullptr;
 
     QDoubleSpinBox * m_edgeWidthSpinBox = nullptr;
+
+    QSpinBox * m_cornerRadiusSpinBox = nullptr;
 
     QSpinBox * m_gridSizeSpinBox = nullptr;
 

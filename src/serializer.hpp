@@ -32,6 +32,8 @@ namespace Serializer {
 
             static constexpr auto COLOR = "color";
 
+            static constexpr auto CORNER_RADIUS = "corner-radius";
+
             static constexpr auto EDGE_COLOR = "edge-color";
 
             static constexpr auto EDGE_THICKNESS = "edge-width";

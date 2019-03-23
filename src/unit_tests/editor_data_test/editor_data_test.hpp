@@ -41,6 +41,8 @@ private slots:
 
     void testUndoBackgroundColor();
 
+    void testUndoCornerRadius();
+
     void testUndoEdgeColor();
 
     void testUndoEdgeWidth();

@@ -23,6 +23,7 @@
 #include <memory>
 
 #include "edge_base.hpp"
+#include "edge_point.hpp"
 
 class EdgeDot;
 class EdgeTextEdit;
@@ -75,7 +76,7 @@ private:
 
     void updateArrowhead();
 
-    void updateDots(const std::pair<QPointF, QPointF> & nearestPoints);
+    void updateDots(const std::pair<EdgePoint, EdgePoint> & nearestPoints);
 
     void updateLabel();
 

@@ -16,6 +16,30 @@ apps:
     plugs: [home, desktop, desktop-legacy, removable-media, unity7, x11, wayland, opengl]
 
 parts:
+  desktop-qt5:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: qt
+    plugin: make
+    make-parameters: ["FLAVOR=qt5"]
+    build-packages:
+      - build-essential
+      - qtbase5-dev
+      - dpkg-dev
+    stage-packages:
+      - libxkbcommon0
+      - ttf-ubuntu-font-family
+      - dmz-cursor-theme
+      - light-themes
+      - adwaita-icon-theme
+      - gnome-themes-standard
+      - shared-mime-info
+      - libqt5gui5
+      - libgdk-pixbuf2.0-0
+      - libqt5xml5
+      - libqt5svg5 # for loading icon themes which are svg
+      - locales-all
+      - xdg-user-dirs
+      - fcitx-frontend-qt5
   gnu-heimer:
     source: .
     plugin: cmake
@@ -28,6 +52,7 @@ parts:
       - qttools5-dev
       - qttools5-dev-tools
     stage-packages:
+      - libqt5gui5
       - libqt5xml5
     after: [desktop-qt5]
     override-prime: |

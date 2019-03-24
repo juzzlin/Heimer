@@ -3,8 +3,17 @@ x.y.z
 
 New features:
 
+* Fix GitHub Issue #53: Add option to set corner radius
 * Fix GitHub Issue #25: Add a way to delete edges
   * Right-click on edge opens context menu with a delete option
+
+Bug fixes:
+
+* Fix GitHub Issue #54: Moving a non-selected node moves selection group
+
+Other:
+
+* Snap: Fix desktop-qt5 not working as a remote part anymore
 
 1.8.0 - "Mighty Move"
 =====================

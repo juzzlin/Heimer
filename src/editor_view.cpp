@@ -520,22 +520,22 @@ void EditorView::zoomToFit(QRectF nodeBoundingRect)
     {
         if (nodeAspect < viewAspect)
         {
-            m_scaleValue = rect().width() * 100 / nodeBoundingRect.width();
+            m_scaleValue = static_cast<int>(rect().width() * 100 / nodeBoundingRect.width());
         }
         else
         {
-            m_scaleValue = rect().height() * 100 / nodeBoundingRect.height();
+            m_scaleValue = static_cast<int>(rect().height() * 100 / nodeBoundingRect.height());
         }
     }
     else
     {
         if (nodeAspect > viewAspect)
         {
-            m_scaleValue = rect().height() * 100 / nodeBoundingRect.height();
+            m_scaleValue = static_cast<int>(rect().height() * 100 / nodeBoundingRect.height());
         }
         else
         {
-            m_scaleValue = rect().width() * 100 / nodeBoundingRect.width();
+            m_scaleValue = static_cast<int>(rect().width() * 100 / nodeBoundingRect.width());
         }
     }
 

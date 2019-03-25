@@ -98,6 +98,10 @@ void StateMachine::calculateState(StateMachine::Action action)
         }
         break;
 
+    case Action::OpeningMindMapFailed:
+        m_state = State::InitializeNewMindMap;
+        break;
+
     case Action::QuitSelected:
         m_quitType = QuitType::Close;
         if (m_mediator->isModified())

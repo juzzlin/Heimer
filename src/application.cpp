@@ -250,6 +250,10 @@ void Application::doOpenMindMap(QString fileName)
 
         emit actionTriggered(StateMachine::Action::MindMapOpened);
     }
+    else
+    {
+        emit actionTriggered(StateMachine::Action::OpeningMindMapFailed);
+    }
 }
 
 void Application::saveMindMap()

@@ -63,6 +63,7 @@ public:
         NotSavedDialogDiscarded,
         PngExported,
         PngExportSelected,
+        OpeningMindMapFailed,
         OpenSelected,
         QuitSelected,
         SaveSelected,

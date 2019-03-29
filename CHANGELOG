@@ -4,6 +4,8 @@ x.y.z
 New features:
 
 * Fix GitHub Issue #53: Add option to set corner radius
+* Fix GitHub Issue #32: Add mechanism to set arrow direction
+  * Right-click on edge shows a context menu with options to set single arrow, double arrow, hide arrows, and reverse the direction
 * Fix GitHub Issue #25: Add a way to delete edges
   * Right-click on edge opens context menu with a delete option
 

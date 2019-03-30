@@ -161,6 +161,8 @@ private:
 
     Edge * m_selectedEdge = nullptr;
 
+    Node * m_selectedNode = nullptr;
+
     std::shared_ptr<Node> m_connectionTargetNode;
 
     int m_cornerRadius = 0;

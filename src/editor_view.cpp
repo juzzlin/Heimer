@@ -176,9 +176,12 @@ void EditorView::createNodeContextMenuActions()
 
     m_deleteNodeAction = new QAction(tr("Delete node"), &m_nodeContextMenu);
     QObject::connect(m_deleteNodeAction, &QAction::triggered, [this] () {
-        m_mediator.saveUndoPoint();
-        m_mediator.deleteNode(*m_mediator.selectedNode());
         m_mediator.setSelectedNode(nullptr);
+        m_mediator.saveUndoPoint();
+        // Use a separate variable and timer here because closing the menu will always nullify the selected edge
+        QTimer::singleShot(0, [=] {
+            m_mediator.deleteNode(*m_selectedNode);
+        });
     });
 
     // Populate the menu
@@ -187,6 +190,10 @@ void EditorView::createNodeContextMenuActions()
     m_nodeContextMenu.addAction(m_setNodeTextColorAction);
     m_nodeContextMenu.addSeparator();
     m_nodeContextMenu.addAction(m_deleteNodeAction);
+
+    connect(&m_nodeContextMenu, &QMenu::aboutToShow, [=] {
+        m_selectedNode = m_mediator.selectedNode();
+    });
 
     connect(&m_nodeContextMenu, &QMenu::aboutToHide, [=] {
         QTimer::singleShot(0, [=] {
@@ -245,6 +252,8 @@ void EditorView::handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHand
         return;
     }
 
+    m_mediator.clearSelectionGroup();
+
     if (event.button() == Qt::LeftButton)
     {
         handleLeftButtonClickOnNodeHandle(nodeHandle);
@@ -261,6 +270,11 @@ void EditorView::handleLeftButtonClickOnNode(Node & node)
     }
     else
     {
+        // Clear selection group if the node is not in it
+        if (m_mediator.selectionGroupSize() && !m_mediator.isInSelectionGroup(node)) {
+            m_mediator.clearSelectionGroup();
+        }
+
         // User is initiating a node move drag
 
         m_mediator.saveUndoPoint();
@@ -291,6 +305,8 @@ void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
         m_setNodeTextColorAction->trigger();
         break;
     }
+
+    m_mediator.setSelectedNode(nullptr);
 }
 
 void EditorView::handleRightButtonClickOnEdge(Edge & edge)
@@ -302,6 +318,8 @@ void EditorView::handleRightButtonClickOnEdge(Edge & edge)
 
 void EditorView::handleRightButtonClickOnNode(Node & node)
 {
+    m_mediator.clearSelectionGroup();
+
     m_mediator.setSelectedNode(&node);
 
     openNodeContextMenu();

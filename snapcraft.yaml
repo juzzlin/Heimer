@@ -15,6 +15,12 @@ apps:
     desktop: usr/share/applications/heimer.desktop
     plugs: [home, desktop, desktop-legacy, removable-media, unity7, x11, wayland, opengl]
 
+plugs: # additional plug to fix mouse cursor theme
+  icon-themes:
+    interface: content
+    target: $SNAP/data-dir/icons
+    default-provider: gtk-common-themes
+
 parts:
   desktop-qt5:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
@@ -40,6 +46,7 @@ parts:
       - locales-all
       - xdg-user-dirs
       - fcitx-frontend-qt5
+      - qt5-style-plugins # for mouse cursor theme fix
   gnu-heimer:
     source: .
     plugin: cmake

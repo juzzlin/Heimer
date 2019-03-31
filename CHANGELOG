@@ -3,6 +3,21 @@ x.y.z
 
 New features:
 
+*
+
+Bug fixes:
+
+*
+
+Other:
+
+*
+
+1.9.0 - "Arrow Amalgam"
+=======================
+
+New features:
+
 * Fix GitHub Issue #53: Add option to set corner radius
 * Fix GitHub Issue #32: Add mechanism to set arrow direction
   * Right-click on edge shows a context menu with options to set single arrow, double arrow, hide arrows, and reverse the direction
@@ -16,6 +31,7 @@ Bug fixes:
 Other:
 
 * Snap: Fix desktop-qt5 not working as a remote part anymore
+* Snap: Fix mouse cursor theme
 
 1.8.0 - "Mighty Move"
 =====================

@@ -19,6 +19,7 @@
 #include <QGraphicsSimpleTextItem>
 #include <QMouseEvent>
 #include <QRectF>
+#include <QRubberBand>
 #include <QStatusBar>
 #include <QString>
 #include <QTransform>
@@ -202,6 +203,13 @@ void EditorView::createNodeContextMenuActions()
     });
 }
 
+void EditorView::finishRubberBand()
+{
+    m_mediator.setRectagleSelection({mapToScene(m_rubberBand->geometry().topLeft()), mapToScene(m_rubberBand->geometry().bottomRight())});
+
+    m_rubberBand->hide();
+}
+
 void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
 {
     if (m_mediator.selectionGroupSize())
@@ -213,8 +221,15 @@ void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
 
     if (event.button() == Qt::LeftButton)
     {
-        m_mediator.mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
-        setDragMode(ScrollHandDrag);
+        if (isControlPressed())
+        {
+            initiateRubberBand();
+        }
+        else
+        {
+            m_mediator.mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
+            setDragMode(ScrollHandDrag);
+        }
     }
     else if (event.button() == Qt::RightButton)
     {
@@ -338,6 +353,17 @@ void EditorView::initiateNewNodeDrag(NodeHandle & nodeHandle)
     QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
 }
 
+void EditorView::initiateRubberBand()
+{
+    m_mediator.mouseAction().setRubberBandOrigin(m_clickedPos);
+    if (!m_rubberBand)
+    {
+        m_rubberBand = new QRubberBand{QRubberBand::Rectangle, this};
+    }
+    m_rubberBand->setGeometry(QRect{m_clickedPos, QSize{}});
+    m_rubberBand->show();
+}
+
 bool EditorView::isControlPressed() const
 {
     return QGuiApplication::queryKeyboardModifiers().testFlag(Qt::ControlModifier);
@@ -345,6 +371,7 @@ bool EditorView::isControlPressed() const
 
 void EditorView::mouseMoveEvent(QMouseEvent * event)
 {
+    m_pos = event->pos();
     m_mappedPos = mapToScene(event->pos());
 
     switch (m_mediator.mouseAction().action())
@@ -386,6 +413,9 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
             m_connectionTargetNode = node;
         }
     }
+        break;
+    case MouseAction::Action::RubberBand:
+        updateRubberBand();
         break;
     case MouseAction::Action::Scroll:
         break;
@@ -470,6 +500,10 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
                 resetDummyDragItems();
                 m_mediator.mouseAction().clear();
             }
+            break;
+        case MouseAction::Action::RubberBand:
+            finishRubberBand();
+            m_mediator.mouseAction().clear();
             break;
         case MouseAction::Action::Scroll:
             setDragMode(NoDrag);
@@ -568,6 +602,11 @@ void EditorView::updateScale(int value)
     const double scale = static_cast<double>(value) / 100;
     transform.scale(scale, scale);
     setTransform(transform);
+}
+
+void EditorView::updateRubberBand()
+{
+    m_rubberBand->setGeometry(QRect(m_mediator.mouseAction().rubberBandOrigin().toPoint(), m_pos.toPoint()).normalized());
 }
 
 void EditorView::setCornerRadius(int cornerRadius)

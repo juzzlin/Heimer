@@ -36,6 +36,7 @@ class QMouseEvent;
 class QPaintEvent;
 class QWheelEvent;
 class QGraphicsSimpleTextItem;
+class QRubberBand;
 
 class EditorView : public QGraphicsView
 {
@@ -87,6 +88,8 @@ private:
 
     void createNodeContextMenuActions();
 
+    void finishRubberBand();
+
     void handleMousePressEventOnBackground(QMouseEvent & event);
 
     void handleMousePressEventOnEdge(QMouseEvent & event, Edge & edge);
@@ -105,6 +108,8 @@ private:
 
     void initiateNewNodeDrag(NodeHandle & nodeHandle);
 
+    void initiateRubberBand();
+
     bool isControlPressed() const;
 
     void openBackgroundContextMenu();
@@ -122,6 +127,8 @@ private:
     QPointF snapToGrid(QPointF in) const;
 
     void updateScale(int value);
+
+    void updateRubberBand();
 
     QMenu m_backgroundContextMenu;
 
@@ -149,6 +156,8 @@ private:
 
     QAction * m_deleteEdgeAction = nullptr;
 
+    QPointF m_pos;
+
     QPointF m_mappedPos;
 
     int m_scaleValue = 100;
@@ -175,6 +184,8 @@ private:
     QColor m_edgeColor;
 
     QRectF m_nodeBoundingRect;
+
+    QRubberBand * m_rubberBand = nullptr;
 };
 
 #endif // EDITORVIEW_HPP

@@ -55,6 +55,17 @@ void MouseAction::setSourcePosOnNode(const QPointF & sourcePos)
     m_sourcePosOnNode = sourcePos;
 }
 
+QPointF MouseAction::rubberBandOrigin() const
+{
+    return m_rubberBandOrigin;
+}
+
+void MouseAction::setRubberBandOrigin(const QPointF & rubberBandOrigin)
+{
+    m_rubberBandOrigin = rubberBandOrigin;
+    m_action = Action::RubberBand;
+}
+
 QPointF MouseAction::sourcePos() const
 {
     return m_sourcePos;

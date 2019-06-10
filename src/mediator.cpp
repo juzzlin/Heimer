@@ -455,6 +455,18 @@ void Mediator::setEditorView(EditorView & editorView)
     });
 }
 
+void Mediator::setRectagleSelection(QRectF rect)
+{
+    clearSelectionGroup();
+
+    const auto items = m_editorScene->items(rect, Qt::ContainsItemShape);
+    for (auto && item : items) {
+        if (auto node = dynamic_cast<Node *>(item)) {
+            toggleNodeInSelectionGroup(*node);
+        }
+    }
+}
+
 void Mediator::setSelectedEdge(Edge * edge)
 {
     L().debug() << __func__ << "(): " << reinterpret_cast<uint64_t>(edge);

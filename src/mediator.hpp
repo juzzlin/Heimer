@@ -124,6 +124,8 @@ public:
 
     void setEditorView(EditorView & editorView);
 
+    void setRectagleSelection(QRectF rect);
+
     void setSelectedEdge(Edge * edge);
 
     void setSelectedNode(Node * node);

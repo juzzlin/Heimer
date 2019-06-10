@@ -29,6 +29,7 @@ public:
         None,
         MoveNode,
         CreateOrConnectNode,
+        RubberBand,
         Scroll
     };
 
@@ -47,6 +48,9 @@ public:
     QPointF sourcePosOnNode() const;
     void setSourcePosOnNode(const QPointF & sourcePosOnNode);
 
+    QPointF rubberBandOrigin() const;
+    void setRubberBandOrigin(const QPointF & rubberBandOrigin);
+
 private:
 
     Node * m_sourceNode = nullptr;
@@ -54,6 +58,8 @@ private:
     QPointF m_sourcePos;
 
     QPointF m_sourcePosOnNode;
+
+    QPointF m_rubberBandOrigin;
 
     Action m_action = Action::None;
 };

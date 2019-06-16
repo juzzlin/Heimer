@@ -32,6 +32,7 @@ public:
 
     QRectF zoomToFit(bool isForExport = false) const;
 
+    //! Checks if the graphics scene already has the given edge item added
     bool hasEdge(Node & node0, Node & node1);
 
     virtual ~EditorScene();

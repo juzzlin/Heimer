@@ -5,6 +5,7 @@ New features:
 
 * Fix GitHub Issue #58: Add selection rectangle for nodes
   * With Ctrl pressed one can now draw a selection rectangle
+* Add Italian translations
 
 Bug fixes:
 

@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>heimer_fi.qm</file>
         <file>heimer_fr.qm</file>
+        <file>heimer_it.qm</file>
     </qresource>
 </RCC>

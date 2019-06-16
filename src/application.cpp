@@ -47,7 +47,7 @@ static void printHelp()
     std::cout << "Usage: heimer [options] [mindMapFile]" << std::endl << std::endl;
     std::cout << "Options:" << std::endl;
     std::cout << "--help        Show this help." << std::endl;
-    std::cout << "--lang [lang] Force language: fi, fr." << std::endl;
+    std::cout << "--lang [lang] Force language: fi, fr, it." << std::endl;
     std::cout << std::endl;
 }
 

@@ -3,7 +3,8 @@ x.y.z
 
 New features:
 
-*
+* Fix GitHub Issue #58: Add selection rectangle for nodes
+  * With Ctrl pressed one can now draw a selection rectangle
 
 Bug fixes:
 

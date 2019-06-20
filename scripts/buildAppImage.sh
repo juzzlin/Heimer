@@ -2,7 +2,7 @@
 
 # Builds AppImage in Docker
 
-HEIMER_VERSION=1.9.0
+HEIMER_VERSION=1.10.0
 
 CMD="export LANG=en_US.UTF-8 && \
      export LC_ALL=en_US.UTF-8 && \

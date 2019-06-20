@@ -3,17 +3,18 @@ x.y.z
 
 New features:
 
-* Fix GitHub Issue #58: Add selection rectangle for nodes
-  * With Ctrl pressed one can now draw a selection rectangle
-* Add Italian translations
-
 Bug fixes:
-
-*
 
 Other:
 
-*
+1.10.0 - "Summer Serafina"
+==========================
+
+New features:
+
+* Fix GitHub Issue #58: Add selection rectangle for nodes
+  * With Ctrl pressed one can now draw a selection rectangle
+* Add Italian translations
 
 1.9.0 - "Arrow Amalgam"
 =======================

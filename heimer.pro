@@ -4,7 +4,7 @@
 TEMPLATE = app
 TARGET   = heimer
 
-DEFINES += VERSION=\\\"1.8.0\\\"
+DEFINES += VERSION=\\\"1.10.0\\\"
 QMAKE_CXXFLAGS += -std=gnu++11
 
 # Qt version check

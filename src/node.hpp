@@ -80,6 +80,8 @@ public:
 
     void setCornerRadius(int value) override;
 
+    void setTextInputActive();
+
     void setText(const QString & text) override;
 
     void setTextColor(const QColor & color) override;

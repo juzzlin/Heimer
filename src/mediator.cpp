@@ -151,6 +151,8 @@ NodeBasePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 
     addExistingGraphToScene();
 
+    node1->setTextInputActive();
+
     return std::move(node1); // Fix a static analyzer warning: avoid copy on older compilers
 }
 
@@ -162,6 +164,10 @@ NodeBasePtr Mediator::createAndAddNode(QPointF pos)
     L().debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
 
     addExistingGraphToScene();
+
+    QTimer::singleShot(0, [node1] () { // Needed due to the context menu
+        node1->setTextInputActive();
+    });
 
     return std::move(node1); // Fix a static analyzer warning: avoid copy on older compilers
 }

@@ -19,6 +19,7 @@ set(SRC ${NAME}.cpp
     ${EDITOR_DIR}/node_base.cpp
     ${EDITOR_DIR}/node_handle.cpp
     ${EDITOR_DIR}/reader.cpp
+    ${EDITOR_DIR}/selection_group.cpp
     ${EDITOR_DIR}/serializer.cpp
     ${EDITOR_DIR}/text_edit.cpp
     ${EDITOR_DIR}/undo_stack.cpp

@@ -592,6 +592,36 @@ void EditorDataTest::testUndoState()
     QCOMPARE(editorData.selectedNode(), nullptr);
 }
 
+void EditorDataTest::testRedoState()
+{
+    EditorData editorData;
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+
+    const auto node0 = editorData.addNodeAt(QPointF(0, 0));
+    const auto node1 = editorData.addNodeAt(QPointF(100, 0));
+    const auto edge01 = editorData.addEdge(std::make_shared<Edge>(*node0, *node1));
+
+    editorData.toggleNodeInSelectionGroup(*node0);
+    editorData.setSelectedEdge(edge01.get());
+    editorData.setSelectedNode(node0.get());
+    editorData.saveUndoPoint();
+
+    QCOMPARE(editorData.isUndoable(), true);
+
+    editorData.undo();
+
+    editorData.toggleNodeInSelectionGroup(*node0);
+    editorData.setSelectedEdge(edge01.get());
+    editorData.setSelectedNode(node0.get());
+
+    editorData.redo();
+
+    QCOMPARE(editorData.isUndoable(), true);
+    QCOMPARE(editorData.selectionGroupSize(), size_t(0));
+    QCOMPARE(editorData.selectedEdge(), nullptr);
+    QCOMPARE(editorData.selectedNode(), nullptr);
+}
+
 void EditorDataTest::testUndoStackResetOnNewDesign()
 {
     EditorData editorData;

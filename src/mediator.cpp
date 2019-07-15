@@ -491,17 +491,6 @@ void Mediator::setSelectedEdge(Edge * edge)
 
 void Mediator::setSelectedNode(Node * node)
 {
-    L().debug() << __func__ << "(): " << reinterpret_cast<uint64_t>(node);
-
-    if (selectedNode()) {
-        selectedNode()->setSelected(false);
-    }
-
-    if (node)
-    {
-        node->setSelected(true);
-    }
-
     m_editorData->setSelectedNode(node);
 }
 

@@ -30,6 +30,7 @@ set(SRC
     node_base.cpp
     node_handle.cpp
     reader.cpp
+    selection_group.cpp
     serializer.cpp
     state_machine.cpp
     text_edit.cpp

@@ -17,6 +17,7 @@
 
 #include "constants.hpp"
 #include "node.hpp"
+#include "selection_group.hpp"
 #include "serializer.hpp"
 #include "reader.hpp"
 #include "writer.hpp"
@@ -28,6 +29,7 @@ using std::dynamic_pointer_cast;
 using std::make_shared;
 
 EditorData::EditorData()
+    : m_selectionGroup(new SelectionGroup)
 {}
 
 QColor EditorData::backgroundColor() const
@@ -57,8 +59,6 @@ void EditorData::loadMindMapData(QString fileName)
 
     m_selectedEdge = nullptr;
 
-    m_selectedNode = nullptr;
-
 #ifndef HEIMER_UNIT_TEST
     setMindMapData(Serializer::fromXml(Reader::readFromFile(fileName)));
 #endif
@@ -86,8 +86,6 @@ void EditorData::undo()
 
         m_selectedEdge = nullptr;
 
-        m_selectedNode = nullptr;
-
         m_dragAndDropNode = nullptr;
 
         saveRedoPoint();
@@ -109,9 +107,9 @@ void EditorData::redo()
 {
     if (m_undoStack.isRedoable())
     {
-        m_selectedEdge = nullptr;
+        clearSelectionGroup();
 
-        m_selectedNode = nullptr;
+        m_selectedEdge = nullptr;
 
         m_dragAndDropNode = nullptr;
 
@@ -176,16 +174,7 @@ void EditorData::setMindMapData(MindMapDataPtr mindMapData)
 
 void EditorData::toggleNodeInSelectionGroup(Node & node)
 {
-    if (node.selected())
-    {
-        m_selectionGroup.erase(&node);
-        node.setSelected(false);
-    }
-    else
-    {
-        m_selectionGroup.insert(&node);
-        node.setSelected(true);
-    }
+    m_selectionGroup->toggleNode(node);
 }
 
 EdgePtr EditorData::addEdge(EdgePtr edge)
@@ -222,11 +211,7 @@ NodePtr EditorData::addNodeAt(QPointF pos)
 
 void EditorData::clearSelectionGroup()
 {
-    for (auto && node : m_selectionGroup)
-    {
-        node->setSelected(false);
-    }
-    m_selectionGroup.clear();
+    m_selectionGroup->clear();
 }
 
 NodeBasePtr EditorData::getNodeByIndex(int index)
@@ -238,7 +223,7 @@ NodeBasePtr EditorData::getNodeByIndex(int index)
 
 bool EditorData::isInSelectionGroup(Node & node)
 {
-    return m_selectionGroup.count(&node);
+    return m_selectionGroup->hasNode(node);
 }
 
 MindMapDataPtr EditorData::mindMapData()
@@ -248,24 +233,7 @@ MindMapDataPtr EditorData::mindMapData()
 
 void EditorData::moveSelectionGroup(Node & reference, QPointF location)
 {
-    std::map<int, QPointF> delta;
-    for (auto && node : m_selectionGroup)
-    {
-        if (node->index() != reference.index())
-        {
-            delta[node->index()] = node->location() - reference.location();
-        }
-    }
-
-    reference.setLocation(location);
-
-    for (auto && node : m_selectionGroup)
-    {
-        if (node->index() != reference.index())
-        {
-            node->setLocation(reference.location() + delta[node->index()]);
-        }
-    }
+    m_selectionGroup->move(reference, location);
 }
 
 void EditorData::setSelectedEdge(Edge * edge)
@@ -275,7 +243,7 @@ void EditorData::setSelectedEdge(Edge * edge)
 
 void EditorData::setSelectedNode(Node * node)
 {
-    m_selectedNode = node;
+    m_selectionGroup->setSelectedNode(node);
 }
 
 Edge * EditorData::selectedEdge() const
@@ -285,12 +253,12 @@ Edge * EditorData::selectedEdge() const
 
 Node * EditorData::selectedNode() const
 {
-    return m_selectedNode;
+    return m_selectionGroup->selectedNode();
 }
 
 size_t EditorData::selectionGroupSize() const
 {
-    return m_selectionGroup.size();
+    return m_selectionGroup->size();
 }
 
 void EditorData::setIsModified(bool isModified)
@@ -301,3 +269,5 @@ void EditorData::setIsModified(bool isModified)
         emit isModifiedChanged(isModified);
     }
 }
+
+EditorData::~EditorData() = default;

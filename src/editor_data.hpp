@@ -34,6 +34,7 @@
 class Node;
 class NodeBase;
 class MindMapTile;
+class SelectionGroup;
 class QGraphicsLineItem;
 
 class EditorData : public QObject
@@ -43,6 +44,8 @@ class EditorData : public QObject
 public:
 
     EditorData();
+
+    ~EditorData();
 
     EdgePtr addEdge(EdgePtr edge);
 
@@ -125,13 +128,11 @@ private:
 
     MindMapDataPtr m_mindMapData;
 
+    std::unique_ptr<SelectionGroup> m_selectionGroup;
+
     UndoStack m_undoStack;
 
     Edge * m_selectedEdge = nullptr;
-
-    Node * m_selectedNode = nullptr;
-
-    std::set<Node *> m_selectionGroup;
 
     Node * m_dragAndDropNode = nullptr;
 

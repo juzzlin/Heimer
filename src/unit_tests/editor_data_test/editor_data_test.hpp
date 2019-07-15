@@ -35,6 +35,8 @@ private slots:
 
     void testRedoAddNodes();
 
+    void testRedoState();
+
     void testUndoAddEdge();
 
     void testUndoArrowMode();

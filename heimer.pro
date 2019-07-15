@@ -46,6 +46,7 @@ HEADERS +=  \
     $$SRC/node_base.hpp \
     $$SRC/node_handle.hpp \
     $$SRC/reader.hpp \
+    $$SRC/selection_group.hpp \
     $$SRC/serializer.hpp \
     $$SRC/state_machine.hpp \
     $$SRC/text_edit.hpp \
@@ -78,6 +79,7 @@ SOURCES += \
     $$SRC/node_base.cpp \
     $$SRC/node_handle.cpp \
     $$SRC/reader.cpp \
+    $$SRC/selection_group.cpp \
     $$SRC/serializer.cpp \
     $$SRC/state_machine.cpp \
     $$SRC/text_edit.cpp \

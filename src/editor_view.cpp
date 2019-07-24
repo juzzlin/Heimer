@@ -47,9 +47,8 @@ using juzzlin::L;
 EditorView::EditorView(Mediator & mediator)
     : m_mediator(mediator)
 {
-    createBackgroundContextMenuActions();
     createEdgeContextMenuActions();
-    createNodeContextMenuActions();
+    createMainContextMenuActions();
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -60,30 +59,86 @@ EditorView::EditorView(Mediator & mediator)
     setRenderHint(QPainter::Antialiasing);
 }
 
-void EditorView::createBackgroundContextMenuActions()
+void EditorView::createMainContextMenuActions()
 {
-    auto setBackgroundColorAction = new QAction(tr("Set background color"), &m_backgroundContextMenu);
+    auto setBackgroundColorAction = new QAction(tr("Set background color"), &m_mainContextMenu);
     QObject::connect(setBackgroundColorAction, &QAction::triggered, [this] () {
         emit actionTriggered(StateMachine::Action::BackgroundColorChangeRequested);
     });
 
-    m_backgroundContextMenu.addAction(setBackgroundColorAction);
-    m_backgroundContextMenu.addSeparator();
+    m_mainContextMenuActions[MainContextMenuMode::Background].push_back(setBackgroundColorAction);
 
-    auto setEdgeColorAction = new QAction(tr("Set edge color"), &m_backgroundContextMenu);
+    auto setEdgeColorAction = new QAction(tr("Set edge color"), &m_mainContextMenu);
     QObject::connect(setEdgeColorAction, &QAction::triggered, [this] () {
         emit actionTriggered(StateMachine::Action::EdgeColorChangeRequested);
     });
 
-    m_backgroundContextMenu.addAction(setEdgeColorAction);
-    m_backgroundContextMenu.addSeparator();
+    m_mainContextMenuActions[MainContextMenuMode::Background].push_back(setEdgeColorAction);
 
-    auto createNode = new QAction(tr("Create floating node"), &m_backgroundContextMenu);
-    QObject::connect(createNode, &QAction::triggered, [this] () {
+    auto createNodeAction = new QAction(tr("Create floating node"), &m_mainContextMenu);
+    QObject::connect(createNodeAction, &QAction::triggered, [this] () {
         emit newNodeRequested(snapToGrid(m_clickedScenePos));
     });
 
-    m_backgroundContextMenu.addAction(createNode);
+    m_mainContextMenuActions[MainContextMenuMode::Background].push_back(createNodeAction);
+
+    m_setNodeColorAction = new QAction(tr("Set node color"), &m_mainContextMenu);
+    QObject::connect(m_setNodeColorAction, &QAction::triggered, [this] () {
+        auto node = m_mediator.selectedNode();
+        const auto color = QColorDialog::getColor(Qt::white, this);
+        if (color.isValid()) {
+            m_mediator.saveUndoPoint();
+            node->setColor(color);
+        }
+    });
+
+    m_mainContextMenuActions[MainContextMenuMode::Node].push_back(m_setNodeColorAction);
+
+    m_setNodeTextColorAction = new QAction(tr("Set text color"), &m_mainContextMenu);
+    QObject::connect(m_setNodeTextColorAction, &QAction::triggered, [this] () {
+        auto node = m_mediator.selectedNode();
+        const auto color = QColorDialog::getColor(Qt::white, this);
+        if (color.isValid()) {
+            m_mediator.saveUndoPoint();
+            node->setTextColor(color);
+        }
+    });
+
+    m_mainContextMenuActions[MainContextMenuMode::Node].push_back(m_setNodeTextColorAction);
+
+    m_deleteNodeAction = new QAction(tr("Delete node"), &m_mainContextMenu);
+    QObject::connect(m_deleteNodeAction, &QAction::triggered, [this] () {
+        m_mediator.setSelectedNode(nullptr);
+        m_mediator.saveUndoPoint();
+        // Use a separate variable and timer here because closing the menu will always nullify the selected edge
+        QTimer::singleShot(0, [=] {
+            m_mediator.deleteNode(*m_selectedNode);
+        });
+    });
+
+    m_mainContextMenuActions[MainContextMenuMode::Node].push_back(m_deleteNodeAction);
+
+    // Populate the menu
+    m_mainContextMenu.addAction(setBackgroundColorAction);
+    m_mainContextMenu.addSeparator();
+    m_mainContextMenu.addAction(setEdgeColorAction);
+    m_mainContextMenu.addSeparator();
+    m_mainContextMenu.addAction(createNodeAction);
+    m_mainContextMenu.addAction(m_setNodeColorAction);
+    m_mainContextMenu.addSeparator();
+    m_mainContextMenu.addAction(m_setNodeTextColorAction);
+    m_mainContextMenu.addSeparator();
+    m_mainContextMenu.addAction(m_deleteNodeAction);
+
+    connect(&m_mainContextMenu, &QMenu::aboutToShow, [=] {
+        m_selectedNode = m_mediator.selectedNode();
+    });
+
+    connect(&m_mainContextMenu, &QMenu::aboutToHide, [=] {
+        QTimer::singleShot(0, [=] {
+            m_mediator.setSelectedNode(nullptr);
+        });
+    });
 }
 
 void EditorView::createEdgeContextMenuActions()
@@ -153,56 +208,6 @@ void EditorView::createEdgeContextMenuActions()
     });
 }
 
-void EditorView::createNodeContextMenuActions()
-{
-    m_setNodeColorAction = new QAction(tr("Set node color"), &m_nodeContextMenu);
-    QObject::connect(m_setNodeColorAction, &QAction::triggered, [this] () {
-        auto node = m_mediator.selectedNode();
-        const auto color = QColorDialog::getColor(Qt::white, this);
-        if (color.isValid()) {
-            m_mediator.saveUndoPoint();
-            node->setColor(color);
-        }
-    });
-
-    m_setNodeTextColorAction = new QAction(tr("Set text color"), &m_nodeContextMenu);
-    QObject::connect(m_setNodeTextColorAction, &QAction::triggered, [this] () {
-        auto node = m_mediator.selectedNode();
-        const auto color = QColorDialog::getColor(Qt::white, this);
-        if (color.isValid()) {
-            m_mediator.saveUndoPoint();
-            node->setTextColor(color);
-        }
-    });
-
-    m_deleteNodeAction = new QAction(tr("Delete node"), &m_nodeContextMenu);
-    QObject::connect(m_deleteNodeAction, &QAction::triggered, [this] () {
-        m_mediator.setSelectedNode(nullptr);
-        m_mediator.saveUndoPoint();
-        // Use a separate variable and timer here because closing the menu will always nullify the selected edge
-        QTimer::singleShot(0, [=] {
-            m_mediator.deleteNode(*m_selectedNode);
-        });
-    });
-
-    // Populate the menu
-    m_nodeContextMenu.addAction(m_setNodeColorAction);
-    m_nodeContextMenu.addSeparator();
-    m_nodeContextMenu.addAction(m_setNodeTextColorAction);
-    m_nodeContextMenu.addSeparator();
-    m_nodeContextMenu.addAction(m_deleteNodeAction);
-
-    connect(&m_nodeContextMenu, &QMenu::aboutToShow, [=] {
-        m_selectedNode = m_mediator.selectedNode();
-    });
-
-    connect(&m_nodeContextMenu, &QMenu::aboutToHide, [=] {
-        QTimer::singleShot(0, [=] {
-            m_mediator.setSelectedNode(nullptr);
-        });
-    });
-}
-
 void EditorView::finishRubberBand()
 {
     m_mediator.setRectagleSelection({mapToScene(m_rubberBand->geometry().topLeft()), mapToScene(m_rubberBand->geometry().bottomRight())});
@@ -233,7 +238,7 @@ void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
     }
     else if (event.button() == Qt::RightButton)
     {
-        openBackgroundContextMenu();
+        openMainContextMenu(MainContextMenuMode::Background);
     }
 }
 
@@ -337,7 +342,7 @@ void EditorView::handleRightButtonClickOnNode(Node & node)
 
     m_mediator.setSelectedNode(&node);
 
-    openNodeContextMenu();
+    openMainContextMenu(MainContextMenuMode::Node);
 }
 
 void EditorView::initiateNewNodeDrag(NodeHandle & nodeHandle)
@@ -518,22 +523,28 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
     QGraphicsView::mouseReleaseEvent(event);
 }
 
-void EditorView::openBackgroundContextMenu()
-{
-    m_backgroundContextMenu.exec(mapToGlobal(m_clickedPos));
-}
-
 void EditorView::openEdgeContextMenu()
 {
     m_edgeContextMenu.exec(mapToGlobal(m_clickedPos));
 }
 
-void EditorView::openNodeContextMenu()
+void EditorView::openMainContextMenu(MainContextMenuMode mode)
 {
-    // Allow deletion of leaf nodes or nodes between exactly two nodes.
-    m_deleteNodeAction->setEnabled(true);
+    for (auto && modePair : m_mainContextMenuActions)
+    {
+        for (auto && action : modePair.second)
+        {
+            action->setVisible(modePair.first == mode);
+        }
+    }
 
-    m_nodeContextMenu.exec(mapToGlobal(m_clickedPos));
+    if (mode == MainContextMenuMode::Node)
+    {
+        // Allow deletion of leaf nodes or nodes between exactly two nodes.
+        m_deleteNodeAction->setEnabled(true);
+    }
+
+    m_mainContextMenu.exec(mapToGlobal(m_clickedPos));
 }
 
 void EditorView::resetDummyDragItems()

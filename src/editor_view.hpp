@@ -82,11 +82,15 @@ signals:
 
 private:
 
-    void createBackgroundContextMenuActions();
+    enum class MainContextMenuMode
+    {
+        Background,
+        Node
+    };
 
     void createEdgeContextMenuActions();
 
-    void createNodeContextMenuActions();
+    void createMainContextMenuActions();
 
     void finishRubberBand();
 
@@ -116,7 +120,7 @@ private:
 
     void openEdgeContextMenu();
 
-    void openNodeContextMenu();
+    void openMainContextMenu(MainContextMenuMode mode);
 
     void removeNodeFromSelectionGroup(Node & node);
 
@@ -130,11 +134,9 @@ private:
 
     void updateRubberBand();
 
-    QMenu m_backgroundContextMenu;
-
     QMenu m_edgeContextMenu;
 
-    QMenu m_nodeContextMenu;
+    QMenu m_mainContextMenu;
 
     QPoint m_clickedPos;
 
@@ -155,6 +157,8 @@ private:
     QAction * m_hideEdgeArrowAction = nullptr;
 
     QAction * m_deleteEdgeAction = nullptr;
+
+    std::map<MainContextMenuMode, std::vector<QAction *> > m_mainContextMenuActions;
 
     QPointF m_pos;
 

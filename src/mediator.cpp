@@ -172,6 +172,22 @@ NodeBasePtr Mediator::createAndAddNode(QPointF pos)
     return std::move(node1); // Fix a static analyzer warning: avoid copy on older compilers
 }
 
+NodeBasePtr Mediator::pasteNodeAt(Node & source, QPointF pos)
+{
+    auto copiedNode = m_editorData->copyNodeAt(source, pos);
+    assert(copiedNode);
+    connectNodeToUndoMechanism(copiedNode);
+    L().debug() << "Pasted node at (" << pos.x() << "," << pos.y() << ")";
+
+    addExistingGraphToScene();
+
+    QTimer::singleShot(0, [copiedNode] () { // Needed due to the context menu
+        copiedNode->setTextInputActive();
+    });
+
+    return std::move(copiedNode); // Fix a static analyzer warning: avoid copy on older compilers
+}
+
 MouseAction & Mediator::mouseAction()
 {
     return m_editorData->mouseAction();

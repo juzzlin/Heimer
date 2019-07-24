@@ -32,49 +32,77 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application.cpp" line="151"/>
+        <location filename="../application.cpp" line="164"/>
         <source>Heimer Files</source>
         <translation>Heimer -tiedostot</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="232"/>
+        <location filename="../application.cpp" line="245"/>
         <source>Open File</source>
         <translation>Avaa tiedosto</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="261"/>
+        <location filename="../application.cpp" line="278"/>
         <source>Failed to save file.</source>
         <translation>Tiedoston tallentaminen epäonnistui</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="279"/>
+        <location filename="../application.cpp" line="296"/>
         <source>Save File As</source>
         <translation>Tallenna Nimellä</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="295"/>
+        <location filename="../application.cpp" line="312"/>
         <source>File &apos;</source>
         <translation>Tiedosto &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="295"/>
+        <location filename="../application.cpp" line="312"/>
         <source>&apos; saved.</source>
         <translation>&apos; tallennettu.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="301"/>
+        <location filename="../application.cpp" line="318"/>
         <source>Failed to save file as &apos;</source>
         <translation>Tietoston tallentaminen epäonnistui nimellä &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="353"/>
+        <location filename="../application.cpp" line="370"/>
         <source>The mind map has been modified.</source>
         <translation>Käsitekarttaa on muokattu.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="354"/>
+        <location filename="../application.cpp" line="371"/>
         <source>Do you want to save your changes?</source>
         <translation>Haluatko tallentaa muutokset?</translation>
+    </message>
+</context>
+<context>
+    <name>EdgeContextMenu</name>
+    <message>
+        <location filename="../edge_context_menu.cpp" line="27"/>
+        <source>Change direction</source>
+        <translation>Vaihda suuntaa</translation>
+    </message>
+    <message>
+        <location filename="../edge_context_menu.cpp" line="34"/>
+        <source>Hide arrow</source>
+        <translation>Piilota nuoli</translation>
+    </message>
+    <message>
+        <location filename="../edge_context_menu.cpp" line="41"/>
+        <source>Single arrow</source>
+        <translation>Yksi nuoli</translation>
+    </message>
+    <message>
+        <location filename="../edge_context_menu.cpp" line="48"/>
+        <source>Double arrow</source>
+        <translation>Kaksi nuolta</translation>
+    </message>
+    <message>
+        <location filename="../edge_context_menu.cpp" line="55"/>
+        <source>Delete edge</source>
+        <translation>Poista kaari</translation>
     </message>
 </context>
 <context>
@@ -84,59 +112,48 @@
         <translation type="vanished">Valitse Tiedosto-&gt;Uusi tai Tiedosto-&gt;Avaa aloittaaksesi</translation>
     </message>
     <message>
-        <location filename="../editor_view.cpp" line="64"/>
         <source>Set background color</source>
-        <translation>Aseta taustaväri</translation>
+        <translation type="vanished">Aseta taustaväri</translation>
     </message>
     <message>
-        <location filename="../editor_view.cpp" line="72"/>
         <source>Set edge color</source>
-        <translation>Aseta kaaren väri</translation>
+        <translation type="vanished">Aseta kaaren väri</translation>
     </message>
     <message>
-        <location filename="../editor_view.cpp" line="80"/>
         <source>Create floating node</source>
-        <translation>Luo kelluva solmu</translation>
+        <translation type="vanished">Luo kelluva solmu</translation>
     </message>
     <message>
-        <location filename="../editor_view.cpp" line="90"/>
         <source>Change direction</source>
-        <translation>Vaihda suuntaa</translation>
+        <translation type="vanished">Vaihda suuntaa</translation>
     </message>
     <message>
-        <location filename="../editor_view.cpp" line="97"/>
         <source>Hide arrow</source>
-        <translation>Piilota nuoli</translation>
+        <translation type="vanished">Piilota nuoli</translation>
     </message>
     <message>
-        <location filename="../editor_view.cpp" line="104"/>
         <source>Single arrow</source>
-        <translation>Yksi nuoli</translation>
+        <translation type="vanished">Yksi nuoli</translation>
     </message>
     <message>
-        <location filename="../editor_view.cpp" line="111"/>
         <source>Double arrow</source>
-        <translation>Kaksi nuolta</translation>
+        <translation type="vanished">Kaksi nuolta</translation>
     </message>
     <message>
-        <location filename="../editor_view.cpp" line="118"/>
         <source>Delete edge</source>
-        <translation>Poista kaari</translation>
+        <translation type="vanished">Poista kaari</translation>
     </message>
     <message>
-        <location filename="../editor_view.cpp" line="157"/>
         <source>Set node color</source>
-        <translation>Aseta solmun väri</translation>
+        <translation type="vanished">Aseta solmun väri</translation>
     </message>
     <message>
-        <location filename="../editor_view.cpp" line="167"/>
         <source>Set text color</source>
-        <translation>Tekstin väri</translation>
+        <translation type="vanished">Tekstin väri</translation>
     </message>
     <message>
-        <location filename="../editor_view.cpp" line="177"/>
         <source>Delete node</source>
-        <translation>Poista solmu</translation>
+        <translation type="vanished">Poista solmu</translation>
     </message>
 </context>
 <context>
@@ -192,6 +209,49 @@
     <message>
         <source>Export</source>
         <translation type="vanished">Vie</translation>
+    </message>
+</context>
+<context>
+    <name>MainContextMenu</name>
+    <message>
+        <location filename="../main_context_menu.cpp" line="30"/>
+        <source>Copy node</source>
+        <translation>Kopioi solmu</translation>
+    </message>
+    <message>
+        <location filename="../main_context_menu.cpp" line="31"/>
+        <source>Paste node</source>
+        <translation>Liimaa solmu</translation>
+    </message>
+    <message>
+        <location filename="../main_context_menu.cpp" line="53"/>
+        <source>Set background color</source>
+        <translation>Aseta taustaväri</translation>
+    </message>
+    <message>
+        <location filename="../main_context_menu.cpp" line="59"/>
+        <source>Set edge color</source>
+        <translation>Aseta kaaren väri</translation>
+    </message>
+    <message>
+        <location filename="../main_context_menu.cpp" line="65"/>
+        <source>Create floating node</source>
+        <translation>Luo kelluva solmu</translation>
+    </message>
+    <message>
+        <location filename="../main_context_menu.cpp" line="71"/>
+        <source>Set node color</source>
+        <translation>Aseta solmun väri</translation>
+    </message>
+    <message>
+        <location filename="../main_context_menu.cpp" line="82"/>
+        <source>Set text color</source>
+        <translation>Tekstin väri</translation>
+    </message>
+    <message>
+        <location filename="../main_context_menu.cpp" line="93"/>
+        <source>Delete node</source>
+        <translation>Poista solmu</translation>
     </message>
 </context>
 <context>

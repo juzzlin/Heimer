@@ -66,6 +66,26 @@ void MouseAction::setRubberBandOrigin(const QPointF & rubberBandOrigin)
     m_action = Action::RubberBand;
 }
 
+QPointF MouseAction::mappedPos() const
+{
+    return m_mappedPos;
+}
+
+void MouseAction::setMappedPos(const QPointF & mappedPos)
+{
+    m_mappedPos = mappedPos;
+}
+
+QPointF MouseAction::clickedScenePos() const
+{
+    return m_clickedScenePos;
+}
+
+void MouseAction::setClickedScenePos(const QPointF & clickedScenePos)
+{
+    m_clickedScenePos = clickedScenePos;
+}
+
 QPointF MouseAction::sourcePos() const
 {
     return m_sourcePos;

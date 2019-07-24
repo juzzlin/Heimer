@@ -51,9 +51,19 @@ public:
     QPointF rubberBandOrigin() const;
     void setRubberBandOrigin(const QPointF & rubberBandOrigin);
 
+    QPointF mappedPos() const;
+    void setMappedPos(const QPointF & mappedPos);
+
+    QPointF clickedScenePos() const;
+    void setClickedScenePos(const QPointF & clickedScenePos);
+
 private:
 
     Node * m_sourceNode = nullptr;
+
+    QPointF m_clickedScenePos;
+
+    QPointF m_mappedPos;
 
     QPointF m_sourcePos;
 

@@ -57,6 +57,8 @@ public:
 
     void clearSelectionGroup();
 
+    NodePtr copyNodeAt(Node & source, QPointF pos);
+
     QColor backgroundColor() const;
 
     MouseAction & mouseAction();

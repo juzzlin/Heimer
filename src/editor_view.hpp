@@ -16,6 +16,9 @@
 #ifndef EDITORVIEW_HPP
 #define EDITORVIEW_HPP
 
+#include "copy_paste.hpp"
+#include "grid.hpp"
+#include "main_context_menu.hpp"
 #include "state_machine.hpp"
 
 #include <QColor>
@@ -81,15 +84,13 @@ signals:
 
     void newNodeRequested(QPointF position);
 
+private slots:
+
+    void openNodeColorDialog();
+
+    void openNodeTextColorDialog();
+
 private:
-
-    enum class MainContextMenuMode
-    {
-        Background,
-        Node
-    };
-
-    void createMainContextMenuActions();
 
     void finishRubberBand();
 
@@ -119,7 +120,7 @@ private:
 
     void openEdgeContextMenu();
 
-    void openMainContextMenu(MainContextMenuMode mode);
+    void openMainContextMenu(MainContextMenu::Mode mode);
 
     void removeNodeFromSelectionGroup(Node & node);
 
@@ -127,35 +128,23 @@ private:
 
     void showDummyDragNode(bool show);
 
-    QPointF snapToGrid(QPointF in) const;
-
     void updateScale(int value);
 
     void updateRubberBand();
 
-    QMenu m_mainContextMenu;
+    Grid m_grid;
 
     QPoint m_clickedPos;
-
-    QPointF m_clickedScenePos;
 
     QAction * m_doubleArrowAction = nullptr;
 
     QAction * m_singleArrowAction = nullptr;
-
-    QAction * m_setNodeColorAction = nullptr;
-
-    QAction * m_setNodeTextColorAction = nullptr;
-
-    QAction * m_deleteNodeAction = nullptr;
 
     QAction * m_changeEdgeDirectionAction = nullptr;
 
     QAction * m_hideEdgeArrowAction = nullptr;
 
     QAction * m_deleteEdgeAction = nullptr;
-
-    std::map<MainContextMenuMode, std::vector<QAction *> > m_mainContextMenuActions;
 
     QPointF m_pos;
 
@@ -165,17 +154,15 @@ private:
 
     Mediator & m_mediator;
 
+    CopyPaste m_copyPaste;
+
     Node * m_dummyDragNode = nullptr;
 
     Edge * m_dummyDragEdge = nullptr;
 
-    Node * m_selectedNode = nullptr;
-
     std::shared_ptr<Node> m_connectionTargetNode;
 
     int m_cornerRadius = 0;
-
-    int m_gridSize = 0;
 
     // Width for the dummy drag edge
     double m_edgeWidth = 1.5;
@@ -187,6 +174,8 @@ private:
     QRubberBand * m_rubberBand = nullptr;
 
     EdgeContextMenu * m_edgeContextMenu;
+
+    MainContextMenu * m_mainContextMenu;
 };
 
 #endif // EDITORVIEW_HPP

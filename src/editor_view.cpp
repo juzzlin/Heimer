@@ -46,12 +46,11 @@
 using juzzlin::L;
 
 EditorView::EditorView(Mediator & mediator)
-    : m_mainContextMenu(this)
-    , m_mediator(mediator)
+    : m_mediator(mediator)
+    , m_copyPaste(mediator, m_grid)
     , m_edgeContextMenu(new EdgeContextMenu(this, m_mediator))
+    , m_mainContextMenu(new MainContextMenu(this, m_mediator, m_grid, m_copyPaste))
 {
-    createMainContextMenuActions();
-
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -59,88 +58,12 @@ EditorView::EditorView(Mediator & mediator)
     setMouseTracking(true);
 
     setRenderHint(QPainter::Antialiasing);
-}
 
-void EditorView::createMainContextMenuActions()
-{
-    auto setBackgroundColorAction = new QAction(tr("Set background color"), &m_mainContextMenu);
-    QObject::connect(setBackgroundColorAction, &QAction::triggered, [this] () {
-        emit actionTriggered(StateMachine::Action::BackgroundColorChangeRequested);
-    });
-
-    m_mainContextMenuActions[MainContextMenuMode::Background].push_back(setBackgroundColorAction);
-
-    auto setEdgeColorAction = new QAction(tr("Set edge color"), &m_mainContextMenu);
-    QObject::connect(setEdgeColorAction, &QAction::triggered, [this] () {
-        emit actionTriggered(StateMachine::Action::EdgeColorChangeRequested);
-    });
-
-    m_mainContextMenuActions[MainContextMenuMode::Background].push_back(setEdgeColorAction);
-
-    auto createNodeAction = new QAction(tr("Create floating node"), &m_mainContextMenu);
-    QObject::connect(createNodeAction, &QAction::triggered, [this] () {
-        emit newNodeRequested(snapToGrid(m_clickedScenePos));
-    });
-
-    m_mainContextMenuActions[MainContextMenuMode::Background].push_back(createNodeAction);
-
-    m_setNodeColorAction = new QAction(tr("Set node color"), &m_mainContextMenu);
-    QObject::connect(m_setNodeColorAction, &QAction::triggered, [this] () {
-        auto node = m_mediator.selectedNode();
-        const auto color = QColorDialog::getColor(Qt::white, this);
-        if (color.isValid()) {
-            m_mediator.saveUndoPoint();
-            node->setColor(color);
-        }
-    });
-
-    m_mainContextMenuActions[MainContextMenuMode::Node].push_back(m_setNodeColorAction);
-
-    m_setNodeTextColorAction = new QAction(tr("Set text color"), &m_mainContextMenu);
-    QObject::connect(m_setNodeTextColorAction, &QAction::triggered, [this] () {
-        auto node = m_mediator.selectedNode();
-        const auto color = QColorDialog::getColor(Qt::white, this);
-        if (color.isValid()) {
-            m_mediator.saveUndoPoint();
-            node->setTextColor(color);
-        }
-    });
-
-    m_mainContextMenuActions[MainContextMenuMode::Node].push_back(m_setNodeTextColorAction);
-
-    m_deleteNodeAction = new QAction(tr("Delete node"), &m_mainContextMenu);
-    QObject::connect(m_deleteNodeAction, &QAction::triggered, [this] () {
-        m_mediator.setSelectedNode(nullptr);
-        m_mediator.saveUndoPoint();
-        // Use a separate variable and timer here because closing the menu will always nullify the selected edge
-        QTimer::singleShot(0, [=] {
-            m_mediator.deleteNode(*m_selectedNode);
-        });
-    });
-
-    m_mainContextMenuActions[MainContextMenuMode::Node].push_back(m_deleteNodeAction);
-
-    // Populate the menu
-    m_mainContextMenu.addAction(setBackgroundColorAction);
-    m_mainContextMenu.addSeparator();
-    m_mainContextMenu.addAction(setEdgeColorAction);
-    m_mainContextMenu.addSeparator();
-    m_mainContextMenu.addAction(createNodeAction);
-    m_mainContextMenu.addAction(m_setNodeColorAction);
-    m_mainContextMenu.addSeparator();
-    m_mainContextMenu.addAction(m_setNodeTextColorAction);
-    m_mainContextMenu.addSeparator();
-    m_mainContextMenu.addAction(m_deleteNodeAction);
-
-    connect(&m_mainContextMenu, &QMenu::aboutToShow, [=] {
-        m_selectedNode = m_mediator.selectedNode();
-    });
-
-    connect(&m_mainContextMenu, &QMenu::aboutToHide, [=] {
-        QTimer::singleShot(0, [=] {
-            m_mediator.setSelectedNode(nullptr);
-        });
-    });
+    // Forward signals from main context menu
+    connect(m_mainContextMenu, &MainContextMenu::actionTriggered, this, &EditorView::actionTriggered);
+    connect(m_mainContextMenu, &MainContextMenu::newNodeRequested, this, &EditorView::newNodeRequested);
+    connect(m_mainContextMenu, &MainContextMenu::nodeColorActionTriggered, this, &EditorView::openNodeColorDialog);
+    connect(m_mainContextMenu, &MainContextMenu::nodeTextColorActionTriggered, this, &EditorView::openNodeTextColorDialog);
 }
 
 void EditorView::finishRubberBand()
@@ -173,7 +96,7 @@ void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
     }
     else if (event.button() == Qt::RightButton)
     {
-        openMainContextMenu(MainContextMenuMode::Background);
+        openMainContextMenu(MainContextMenu::Mode::Background);
     }
 }
 
@@ -253,11 +176,11 @@ void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
         break;
     case NodeHandle::Role::Color:
         m_mediator.setSelectedNode(&nodeHandle.parentNode());
-        m_setNodeColorAction->trigger();
+        openNodeColorDialog();
         break;
     case NodeHandle::Role::TextColor:
         m_mediator.setSelectedNode(&nodeHandle.parentNode());
-        m_setNodeTextColorAction->trigger();
+        openNodeTextColorDialog();
         break;
     }
 
@@ -277,7 +200,7 @@ void EditorView::handleRightButtonClickOnNode(Node & node)
 
     m_mediator.setSelectedNode(&node);
 
-    openMainContextMenu(MainContextMenuMode::Node);
+    openMainContextMenu(MainContextMenu::Mode::Node);
 }
 
 void EditorView::initiateNewNodeDrag(NodeHandle & nodeHandle)
@@ -313,6 +236,7 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
 {
     m_pos = event->pos();
     m_mappedPos = mapToScene(event->pos());
+    m_mediator.mouseAction().setMappedPos(m_mappedPos);
 
     switch (m_mediator.mouseAction().action())
     {
@@ -326,11 +250,11 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
 
             if (m_mediator.selectionGroupSize())
             {
-                m_mediator.moveSelectionGroup(*node, snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
+                m_mediator.moveSelectionGroup(*node, m_grid.snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
             }
             else
             {
-                node->setLocation(snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
+                node->setLocation(m_grid.snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
             }
         }
         break;
@@ -338,7 +262,7 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
     {
         showDummyDragNode(true);
         showDummyDragEdge(true);
-        m_dummyDragNode->setPos(snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
+        m_dummyDragNode->setPos(m_grid.snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
         m_dummyDragEdge->updateLine();
         m_mediator.mouseAction().sourceNode()->setHandlesVisible(false);
 
@@ -369,10 +293,11 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
 void EditorView::mousePressEvent(QMouseEvent * event)
 {
     m_clickedPos = event->pos();
-    m_clickedScenePos = mapToScene(m_clickedPos);
+    const auto clickedScenePos = mapToScene(m_clickedPos);
+    m_mediator.mouseAction().setClickedScenePos(clickedScenePos);
 
     const int tolerance = Constants::View::CLICK_TOLERANCE;
-    QRectF clickRect(m_clickedScenePos.x() - tolerance, m_clickedScenePos.y() - tolerance, tolerance * 2, tolerance * 2);
+    QRectF clickRect(clickedScenePos.x() - tolerance, clickedScenePos.y() - tolerance, tolerance * 2, tolerance * 2);
 
     // Fetch all items at the location
     QList<QGraphicsItem *> items = scene()->items(clickRect, Qt::IntersectsItemShape, Qt::DescendingOrder);
@@ -434,7 +359,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
                 }
                 else
                 {
-                    m_mediator.createAndAddNode(sourceNode->index(), snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
+                    m_mediator.createAndAddNode(sourceNode->index(), m_grid.snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
                 }
 
                 resetDummyDragItems();
@@ -463,23 +388,30 @@ void EditorView::openEdgeContextMenu()
     m_edgeContextMenu->exec(mapToGlobal(m_clickedPos));
 }
 
-void EditorView::openMainContextMenu(MainContextMenuMode mode)
+void EditorView::openMainContextMenu(MainContextMenu::Mode mode)
 {
-    for (auto && modePair : m_mainContextMenuActions)
-    {
-        for (auto && action : modePair.second)
-        {
-            action->setVisible(modePair.first == mode);
-        }
-    }
+    m_mainContextMenu->setMode(mode);
+    m_mainContextMenu->exec(mapToGlobal(m_clickedPos));
+}
 
-    if (mode == MainContextMenuMode::Node)
-    {
-        // Allow deletion of leaf nodes or nodes between exactly two nodes.
-        m_deleteNodeAction->setEnabled(true);
+void EditorView::openNodeColorDialog()
+{
+    auto node = m_mediator.selectedNode();
+    const auto color = QColorDialog::getColor(Qt::white, this);
+    if (color.isValid()) {
+        m_mediator.saveUndoPoint();
+        node->setColor(color);
     }
+}
 
-    m_mainContextMenu.exec(mapToGlobal(m_clickedPos));
+void EditorView::openNodeTextColorDialog()
+{
+    auto node = m_mediator.selectedNode();
+    const auto color = QColorDialog::getColor(Qt::white, this);
+    if (color.isValid()) {
+        m_mediator.saveUndoPoint();
+        node->setTextColor(color);
+    }
 }
 
 void EditorView::resetDummyDragItems()
@@ -530,18 +462,6 @@ void EditorView::showDummyDragNode(bool show)
     m_dummyDragNode->setVisible(show);
 }
 
-QPointF EditorView::snapToGrid(QPointF in) const
-{
-    if (!m_gridSize)
-    {
-        return in;
-    }
-
-    return {
-        static_cast<double>(static_cast<int>(in.x() / m_gridSize) * m_gridSize),
-        static_cast<double>(static_cast<int>(in.y() / m_gridSize) * m_gridSize)};
-}
-
 void EditorView::updateScale(int value)
 {
     QTransform transform;
@@ -562,7 +482,7 @@ void EditorView::setCornerRadius(int cornerRadius)
 
 void EditorView::setGridSize(int size)
 {
-    m_gridSize = size;
+    m_grid.setSize(size);
 }
 
 void EditorView::setEdgeColor(const QColor & edgeColor)

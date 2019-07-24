@@ -6,6 +6,7 @@ set(SRC
     about_dlg.cpp
     application.cpp
     constants.hpp
+    copy_paste.cpp
     edge.cpp
     edge_base.cpp
     edge_context_menu.cpp
@@ -15,12 +16,14 @@ set(SRC
     file_exception.hpp
     graph.cpp
     graphics_factory.cpp
+    grid.cpp
     hash_seed.cpp
     editor_data.cpp
     editor_scene.cpp
     editor_view.cpp
     png_export_dialog.cpp
     main.cpp
+    main_context_menu.cpp
     main_window.cpp
     magic_zoom.cpp
     mediator.cpp

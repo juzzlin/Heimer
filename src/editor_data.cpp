@@ -209,6 +209,17 @@ NodePtr EditorData::addNodeAt(QPointF pos)
     return node;
 }
 
+NodePtr EditorData::copyNodeAt(Node & source, QPointF pos)
+{
+    assert(m_mindMapData);
+
+    auto node = make_shared<Node>(source);
+    node->setIndex(-1); // Results in new index to be assigned
+    node->setLocation(pos);
+    m_mindMapData->graph().addNode(node);
+    return node;
+}
+
 void EditorData::clearSelectionGroup()
 {
     m_selectionGroup->clear();

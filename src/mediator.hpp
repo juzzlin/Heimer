@@ -100,6 +100,8 @@ public:
 
     int nodeCount() const;
 
+    NodeBasePtr pasteNodeAt(Node & source, QPointF pos);
+
     bool openMindMap(QString fileName);
 
     void redo();

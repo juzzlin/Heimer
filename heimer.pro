@@ -23,8 +23,10 @@ INCLUDEPATH += . $$SRC/contrib/SimpleLogger/src
 HEADERS +=  \
     $$SRC/about_dlg.hpp \
     $$SRC/application.hpp \
+    $$SRC/copy_paste.hpp \
     $$SRC/graph.hpp \
     $$SRC/graphics_factory.hpp \
+    $$SRC/grid.hpp \
     $$SRC/edge.hpp \
     $$SRC/edge_base.hpp \
     $$SRC/edge_context_menu.hpp \
@@ -38,6 +40,7 @@ HEADERS +=  \
     $$SRC/png_export_dialog.hpp \
     $$SRC/layers.hpp \
     $$SRC/magic_zoom.hpp \
+    $$SRC/main_context_menu.hpp \
     $$SRC/main_window.hpp \
     $$SRC/mediator.hpp \
     $$SRC/mind_map_data.hpp \
@@ -58,8 +61,10 @@ HEADERS +=  \
 SOURCES += \
     $$SRC/about_dlg.cpp \
     $$SRC/application.cpp \
+    $$SRC/copy_paste.cpp \
     $$SRC/graph.cpp \
     $$SRC/graphics_factory.cpp \
+    $$SRC/grid.cpp \
     $$SRC/edge.cpp \
     $$SRC/edge_base.cpp \
     $$SRC/edge_context_menu.cpp \
@@ -72,6 +77,7 @@ SOURCES += \
     $$SRC/png_export_dialog.cpp \
     $$SRC/magic_zoom.cpp \
     $$SRC/main.cpp \
+    $$SRC/main_context_menu.cpp \
     $$SRC/main_window.cpp \
     $$SRC/mediator.cpp \
     $$SRC/mind_map_data.cpp \

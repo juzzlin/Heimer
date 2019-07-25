@@ -27,6 +27,7 @@
 #include "editor_view.hpp"
 
 #include "constants.hpp"
+#include "edge_context_menu.hpp"
 #include "mouse_action.hpp"
 #include "edge.hpp"
 #include "edge_text_edit.hpp"
@@ -45,9 +46,10 @@
 using juzzlin::L;
 
 EditorView::EditorView(Mediator & mediator)
-    : m_mediator(mediator)
+    : m_mainContextMenu(this)
+    , m_mediator(mediator)
+    , m_edgeContextMenu(new EdgeContextMenu(this, m_mediator))
 {
-    createEdgeContextMenuActions();
     createMainContextMenuActions();
 
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -137,73 +139,6 @@ void EditorView::createMainContextMenuActions()
     connect(&m_mainContextMenu, &QMenu::aboutToHide, [=] {
         QTimer::singleShot(0, [=] {
             m_mediator.setSelectedNode(nullptr);
-        });
-    });
-}
-
-void EditorView::createEdgeContextMenuActions()
-{
-    m_changeEdgeDirectionAction = new QAction(tr("Change direction"), &m_edgeContextMenu);
-    QObject::connect(m_changeEdgeDirectionAction, &QAction::triggered, [=] {
-        auto edge = m_mediator.selectedEdge();
-        m_mediator.saveUndoPoint();
-        edge->setReversed(!edge->reversed());
-    });
-
-    m_hideEdgeArrowAction = new QAction(tr("Hide arrow"), &m_edgeContextMenu);
-    QObject::connect(m_hideEdgeArrowAction, &QAction::triggered, [=] {
-        assert(m_mediator.selectedEdge());
-        m_mediator.saveUndoPoint();
-        m_mediator.selectedEdge()->setArrowMode(EdgeBase::ArrowMode::Hidden);
-    });
-
-    m_singleArrowAction = new QAction(tr("Single arrow"), &m_edgeContextMenu);
-    QObject::connect(m_singleArrowAction, &QAction::triggered, [=] {
-        assert(m_mediator.selectedEdge());
-        m_mediator.saveUndoPoint();
-        m_mediator.selectedEdge()->setArrowMode(EdgeBase::ArrowMode::Single);
-    });
-
-    m_doubleArrowAction = new QAction(tr("Double arrow"), &m_edgeContextMenu);
-    QObject::connect(m_doubleArrowAction, &QAction::triggered, [=] {
-        assert(m_mediator.selectedEdge());
-        m_mediator.saveUndoPoint();
-        m_mediator.selectedEdge()->setArrowMode(EdgeBase::ArrowMode::Double);
-    });
-
-    m_deleteEdgeAction = new QAction(tr("Delete edge"), &m_edgeContextMenu);
-    QObject::connect(m_deleteEdgeAction, &QAction::triggered, [=] {
-        m_mediator.setSelectedEdge(nullptr);
-        m_mediator.saveUndoPoint();
-        // Use a separate variable and timer here because closing the menu will always nullify the selected edge
-        QTimer::singleShot(0, [=] {
-            m_mediator.deleteEdge(*m_selectedEdge);
-        });
-    });
-
-    // Populate the menu
-    m_edgeContextMenu.addAction(m_changeEdgeDirectionAction);
-    m_edgeContextMenu.addSeparator();
-    m_edgeContextMenu.addAction(m_hideEdgeArrowAction);
-    m_edgeContextMenu.addSeparator();
-    m_edgeContextMenu.addAction(m_singleArrowAction);
-    m_edgeContextMenu.addAction(m_doubleArrowAction);
-    m_edgeContextMenu.addSeparator();
-    m_edgeContextMenu.addAction(m_deleteEdgeAction);
-
-    // Set selected edge when the menu opens.
-    connect(&m_edgeContextMenu, &QMenu::aboutToShow, [=] {
-        m_selectedEdge = m_mediator.selectedEdge();
-        m_changeEdgeDirectionAction->setEnabled(m_selectedEdge->arrowMode() != EdgeBase::ArrowMode::Double && m_selectedEdge->arrowMode() != EdgeBase::ArrowMode::Hidden);
-        m_doubleArrowAction->setEnabled(m_selectedEdge->arrowMode() != EdgeBase::ArrowMode::Double);
-        m_hideEdgeArrowAction->setEnabled(m_selectedEdge->arrowMode() != EdgeBase::ArrowMode::Hidden);
-        m_singleArrowAction->setEnabled(m_selectedEdge->arrowMode() != EdgeBase::ArrowMode::Single);
-    });
-
-    // Always clear edge selection when the menu closes.
-    connect(&m_edgeContextMenu, &QMenu::aboutToHide, [=] {
-        QTimer::singleShot(0, [=] {
-            m_mediator.setSelectedEdge(nullptr);
         });
     });
 }
@@ -525,7 +460,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
 
 void EditorView::openEdgeContextMenu()
 {
-    m_edgeContextMenu.exec(mapToGlobal(m_clickedPos));
+    m_edgeContextMenu->exec(mapToGlobal(m_clickedPos));
 }
 
 void EditorView::openMainContextMenu(MainContextMenuMode mode)

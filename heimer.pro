@@ -27,6 +27,7 @@ HEADERS +=  \
     $$SRC/graphics_factory.hpp \
     $$SRC/edge.hpp \
     $$SRC/edge_base.hpp \
+    $$SRC/edge_context_menu.hpp \
     $$SRC/edge_dot.hpp \
     $$SRC/edge_text_edit.hpp \
     $$SRC/editor_data.hpp \
@@ -61,6 +62,7 @@ SOURCES += \
     $$SRC/graphics_factory.cpp \
     $$SRC/edge.cpp \
     $$SRC/edge_base.cpp \
+    $$SRC/edge_context_menu.cpp \
     $$SRC/edge_dot.cpp \
     $$SRC/edge_text_edit.cpp \
     $$SRC/editor_data.cpp \

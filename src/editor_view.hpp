@@ -25,6 +25,7 @@
 #include <set>
 
 class Edge;
+class EdgeContextMenu;
 class Node;
 class NodeHandle;
 class Mediator;
@@ -88,8 +89,6 @@ private:
         Node
     };
 
-    void createEdgeContextMenuActions();
-
     void createMainContextMenuActions();
 
     void finishRubberBand();
@@ -134,8 +133,6 @@ private:
 
     void updateRubberBand();
 
-    QMenu m_edgeContextMenu;
-
     QMenu m_mainContextMenu;
 
     QPoint m_clickedPos;
@@ -172,8 +169,6 @@ private:
 
     Edge * m_dummyDragEdge = nullptr;
 
-    Edge * m_selectedEdge = nullptr;
-
     Node * m_selectedNode = nullptr;
 
     std::shared_ptr<Node> m_connectionTargetNode;
@@ -190,6 +185,8 @@ private:
     QRectF m_nodeBoundingRect;
 
     QRubberBand * m_rubberBand = nullptr;
+
+    EdgeContextMenu * m_edgeContextMenu;
 };
 
 #endif // EDITORVIEW_HPP

@@ -8,6 +8,7 @@ set(SRC
     constants.hpp
     edge.cpp
     edge_base.cpp
+    edge_context_menu.cpp
     edge_dot.cpp
     edge_point.hpp
     edge_text_edit.cpp

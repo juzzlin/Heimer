@@ -88,6 +88,8 @@ private:
 
     QTranslator m_appTranslator;
 
+    QTranslator m_qtTranslator;
+
     QString m_mindMapFile;
 
     QString m_lang;

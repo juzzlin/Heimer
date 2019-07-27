@@ -28,6 +28,7 @@
 
 #include <QColorDialog>
 #include <QFileDialog>
+#include <QLibraryInfo>
 #include <QLocale>
 #include <QMessageBox>
 #include <QObject>
@@ -51,21 +52,33 @@ static void printHelp()
     std::cout << std::endl;
 }
 
-static void initTranslations(QTranslator & appTranslator, QGuiApplication & app, QString lang = "")
+static void initTranslations(QTranslator & appTranslator, QTranslator & qtTranslator, QGuiApplication & app, QString lang = "")
 {
     if (lang.isEmpty())
     {
         lang = QLocale::system().name();
     }
 
-    if (appTranslator.load(Constants::Application::TRANSLATIONS_RESOURCE_BASE + lang))
+    // Qt's built-in translations
+    if (qtTranslator.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
     {
-        app.installTranslator(&appTranslator);
-        L().info() << "Loaded translations for " << lang.toStdString();
+        app.installTranslator(&qtTranslator);
+        L().info() << "Loaded Qt translations for " << lang.toStdString();
     }
     else
     {
-        L().warning() << "Failed to load translations for " << lang.toStdString();
+        L().warning() << "Failed to load Qt translations for " << lang.toStdString();
+    }
+
+    // Application's translations
+    if (appTranslator.load(Constants::Application::TRANSLATIONS_RESOURCE_BASE + lang))
+    {
+        app.installTranslator(&appTranslator);
+        L().info() << "Loaded application translations for " << lang.toStdString();
+    }
+    else
+    {
+        L().warning() << "Failed to load application translations for " << lang.toStdString();
     }
 }
 
@@ -99,7 +112,7 @@ Application::Application(int & argc, char ** argv)
 {
     parseArgs(argc, argv);
 
-    initTranslations(m_appTranslator, m_app, m_lang);
+    initTranslations(m_appTranslator, m_qtTranslator, m_app, m_lang);
 
     // Instantiate components here because the possible language given
     // in the command line must have been loaded before this

@@ -3,13 +3,18 @@ x.y.z
 
 New features:
 
-* Fix GitHub Issue #59: Enable text entry in newly created nodes
-* Fix GitHub Issue #61: System dialogs are not localized
-* Fix GitHub Issue #55: Ability to copy the node without connection
-
 Bug fixes:
 
 Other:
+
+1.11.0
+======
+
+New features:
+
+* Fix GitHub Issue #59: Enable text entry in newly created nodes
+* Fix GitHub Issue #61: System dialogs are not localized
+* Fix GitHub Issue #55: Ability to copy the node without connection
 
 1.10.0 - "Summer Serafina"
 ==========================

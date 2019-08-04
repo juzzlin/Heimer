@@ -32,14 +32,12 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     , m_mediator(mediator)
     , m_copyPaste(copyPaste)
 {
-    m_copyNodeAction->setShortcut(QKeySequence("Ctrl+C")); // Note: Couldn't make this work
     QObject::connect(m_copyNodeAction, &QAction::triggered, [this] {
         juzzlin::L().debug() << "Copy node triggered";
         m_copyPaste.copy(*m_mediator.selectedNode());
     });
     m_mainContextMenuActions[Mode::All].push_back(m_copyNodeAction);
 
-    m_pasteNodeAction->setShortcut(QKeySequence("Ctrl+V")); // Note: Couldn't make this work
     QObject::connect(m_pasteNodeAction, &QAction::triggered, [this] {
         juzzlin::L().debug() << "Paste node triggered";
         if (!m_copyPaste.isEmpty())

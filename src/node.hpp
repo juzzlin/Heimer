@@ -17,6 +17,7 @@
 #define NODE_HPP
 
 #include <QGraphicsItem>
+#include <QImage>
 #include <QObject>
 #include <QTimer>
 
@@ -27,6 +28,7 @@
 #include "edge_point.hpp"
 #include "node_base.hpp"
 
+class Image;
 class NodeHandle;
 class QGraphicsTextItem;
 class TextEdit;
@@ -89,9 +91,15 @@ public:
 
     void setSelected(bool selected) override;
 
+    void setImageRef(size_t imageRef) override;
+
+    void applyImage(const Image & image);
+
 signals:
 
     void undoPointRequested();
+
+    void imageRequested(size_t imageRef, Node & node);
 
 private:
     void checkHandleVisibility(QPointF pos);
@@ -121,6 +129,8 @@ private:
     QPointF m_currentMousePos;
 
     bool m_mouseIn = false;
+
+    QPixmap m_pixmap;
 };
 
 using NodePtr = std::shared_ptr<Node>;

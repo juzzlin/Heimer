@@ -18,6 +18,7 @@
 #include "editor_data.hpp"
 #include "editor_scene.hpp"
 #include "editor_view.hpp"
+#include "image_manager.hpp"
 #include "main_window.hpp"
 #include "mouse_action.hpp"
 
@@ -110,12 +111,18 @@ void Mediator::clearScene()
 
 void Mediator::connectEdgeToUndoMechanism(EdgePtr edge)
 {
-    connect(edge.get(), &Edge::undoPointRequested, this, &Mediator::saveUndoPoint);
+    connect(edge.get(), &Edge::undoPointRequested, this, &Mediator::saveUndoPoint, Qt::UniqueConnection);
 }
 
 void Mediator::connectNodeToUndoMechanism(NodePtr node)
 {
-    connect(node.get(), &Node::undoPointRequested, this, &Mediator::saveUndoPoint);
+    connect(node.get(), &Node::undoPointRequested, this, &Mediator::saveUndoPoint, Qt::UniqueConnection);
+}
+
+void Mediator::connectNodeToImageManager(NodePtr node)
+{
+    connect(node.get(), &Node::imageRequested, &m_editorData->mindMapData()->imageManager(), &ImageManager::handleImageRequest, Qt::UniqueConnection);
+    node->setImageRef(node->imageRef()); // This effectively results in a fetch from ImageManager
 }
 
 void Mediator::connectGraphToUndoMechanism()
@@ -129,11 +136,19 @@ void Mediator::connectGraphToUndoMechanism()
     }
 }
 
+void Mediator::connectGraphToImageManager()
+{
+    for (auto && node : m_editorData->mindMapData()->graph().getNodes()) {
+        connectNodeToImageManager(std::dynamic_pointer_cast<Node>(node));
+    }
+}
+
 NodeBasePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 {
     auto node1 = m_editorData->addNodeAt(pos);
     assert(node1);
     connectNodeToUndoMechanism(node1);
+    connectNodeToImageManager(node1);
     L().debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
 
     auto node0 = dynamic_pointer_cast<Node>(getNodeByIndex(sourceNodeIndex));
@@ -155,6 +170,7 @@ NodeBasePtr Mediator::createAndAddNode(QPointF pos)
     auto node1 = m_editorData->addNodeAt(pos);
     assert(node1);
     connectNodeToUndoMechanism(node1);
+    connectNodeToImageManager(node1);
     L().debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
 
     addExistingGraphToScene();
@@ -171,6 +187,7 @@ NodeBasePtr Mediator::pasteNodeAt(Node & source, QPointF pos)
     auto copiedNode = m_editorData->copyNodeAt(source, pos);
     assert(copiedNode);
     connectNodeToUndoMechanism(copiedNode);
+    connectNodeToImageManager(copiedNode);
     L().debug() << "Pasted node at (" << pos.x() << "," << pos.y() << ")";
 
     addExistingGraphToScene();
@@ -241,13 +258,16 @@ void Mediator::initializeNewMindMap()
 
     assert(m_editorData);
 
+    m_editorData->clearImages();
     m_editorData->setMindMapData(std::make_shared<MindMapData>());
 
     m_editorScene->initialize();
 
     initializeView();
 
-    connectNodeToUndoMechanism(m_editorData->addNodeAt(QPointF(0, 0)));
+    const auto node = m_editorData->addNodeAt(QPointF(0, 0));
+    connectNodeToUndoMechanism(node);
+    connectNodeToImageManager(node);
 
     addExistingGraphToScene();
 
@@ -317,7 +337,7 @@ void Mediator::moveSelectionGroup(Node & reference, QPointF location)
     m_editorData->moveSelectionGroup(reference, location);
 }
 
-int Mediator::nodeCount() const
+size_t Mediator::nodeCount() const
 {
     return m_editorData->mindMapData() ? m_editorData->mindMapData()->graph().numNodes() : 0;
 }
@@ -336,6 +356,7 @@ bool Mediator::openMindMap(QString fileName)
         addExistingGraphToScene();
 
         connectGraphToUndoMechanism();
+        connectGraphToImageManager();
 
         zoomToFit();
     } catch (const FileException & e) {
@@ -519,6 +540,7 @@ void Mediator::setupMindMapAfterUndoOrRedo()
     addExistingGraphToScene();
 
     connectGraphToUndoMechanism();
+    connectGraphToImageManager();
 
     m_editorScene->setSceneRect(oldSceneRect);
     m_editorView->centerOn(oldCenter);

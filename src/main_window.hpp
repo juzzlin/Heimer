@@ -36,6 +36,7 @@ class QSpinBox;
 class QTextEdit;
 class QWidgetAction;
 class Mediator;
+class Node;
 
 class MainWindow : public QMainWindow
 {

@@ -37,6 +37,8 @@ HEADERS +=  \
     $$SRC/editor_view.hpp \
     $$SRC/file_exception.hpp \
     $$SRC/hash_seed.hpp \
+    $$SRC/image.hpp \
+    $$SRC/image_manager.hpp \
     $$SRC/png_export_dialog.hpp \
     $$SRC/layers.hpp \
     $$SRC/magic_zoom.hpp \
@@ -74,6 +76,8 @@ SOURCES += \
     $$SRC/editor_scene.cpp \
     $$SRC/editor_view.cpp \
     $$SRC/hash_seed.cpp \
+    $$SRC/image.cpp \
+    $$SRC/image_manager.cpp \
     $$SRC/png_export_dialog.cpp \
     $$SRC/magic_zoom.cpp \
     $$SRC/main.cpp \

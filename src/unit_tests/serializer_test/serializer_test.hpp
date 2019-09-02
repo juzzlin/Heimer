@@ -34,6 +34,8 @@ private slots:
 
     void testEdgeWidth();
 
+    void testNotUsedImages();
+
     void testNodeDeletion();
 
     void testSingleEdge();
@@ -41,4 +43,6 @@ private slots:
     void testSingleNode();
 
     void testTextSize();
+
+    void testUsedImages();
 };

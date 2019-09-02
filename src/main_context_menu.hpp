@@ -46,7 +46,7 @@ public:
 
 signals:
 
-    void actionTriggered(StateMachine::Action action);
+    void actionTriggered(StateMachine::Action action, Node * node = nullptr);
 
     void nodeColorActionTriggered();
 
@@ -58,6 +58,8 @@ private:
     QAction * m_copyNodeAction;
 
     QAction * m_pasteNodeAction;
+
+    QAction * m_removeImageAction;
 
     Node * m_selectedNode = nullptr;
 

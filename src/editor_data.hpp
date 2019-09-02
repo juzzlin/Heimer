@@ -54,6 +54,8 @@ public:
 
     NodePtr addNodeAt(QPointF pos);
 
+    void clearImages();
+
     void clearSelectionGroup();
 
     NodePtr copyNodeAt(Node & source, QPointF pos);

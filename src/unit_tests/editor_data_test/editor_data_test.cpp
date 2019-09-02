@@ -89,6 +89,7 @@ void EditorDataTest::testLoadState()
     editorData.toggleNodeInSelectionGroup(*node0);
     editorData.setSelectedEdge(edge01.get());
     editorData.setSelectedNode(node0.get());
+    editorData.mindMapData()->imageManager().addImage({});
     editorData.saveUndoPoint();
 
     QCOMPARE(editorData.isUndoable(), true);
@@ -98,6 +99,7 @@ void EditorDataTest::testLoadState()
     QCOMPARE(editorData.isUndoable(), false);
     QCOMPARE(editorData.selectionGroupSize(), size_t(0));
     QCOMPARE(editorData.selectedEdge(), nullptr);
+    QCOMPARE(editorData.mindMapData()->imageManager().images().size(), size_t { 0 });
     QCOMPARE(editorData.selectedNode(), nullptr);
 }
 
@@ -479,6 +481,38 @@ void EditorDataTest::testUndoNodeColor()
     const auto redoneNode = editorData.getNodeByIndex(node->index());
 
     QCOMPARE(redoneNode->color(), color);
+}
+
+void EditorDataTest::testUndoNodeImage()
+{
+    const auto data = std::make_shared<MindMapData>();
+    const auto node = std::make_shared<Node>();
+    data->graph().addNode(node);
+
+    EditorData editorData;
+    editorData.setMindMapData(data);
+
+    node->setImageRef(1);
+
+    QCOMPARE(node->imageRef(), size_t { 1 });
+
+    editorData.saveUndoPoint();
+
+    node->setImageRef(2);
+
+    QCOMPARE(node->imageRef(), size_t { 2 });
+
+    editorData.undo();
+
+    const auto undoneNode = editorData.getNodeByIndex(node->index());
+
+    QCOMPARE(undoneNode->imageRef(), size_t { 1 });
+
+    editorData.redo();
+
+    const auto redoneNode = editorData.getNodeByIndex(node->index());
+
+    QCOMPARE(redoneNode->imageRef(), size_t { 2 });
 }
 
 void EditorDataTest::testUndoNodeLocation()

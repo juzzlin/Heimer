@@ -31,6 +31,8 @@ set(SRC
     editor_data.cpp
     editor_scene.cpp
     editor_view.cpp
+    image.cpp
+    image_manager.cpp
     png_export_dialog.cpp
     main.cpp
     main_context_menu.cpp

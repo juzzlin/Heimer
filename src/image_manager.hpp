@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2019 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,19 +13,41 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SERIALIZER_HPP
-#define SERIALIZER_HPP
+#ifndef IMAGE_MANAGER_HPP
+#define IMAGE_MANAGER_HPP
 
-#include "mind_map_data.hpp"
+#include <QObject>
 
-#include <QDomDocument>
+#include <map>
 
-namespace Serializer {
+#include "image.hpp"
 
-MindMapDataPtr fromXml(QDomDocument document);
+class Node;
 
-QDomDocument toXml(MindMapData & mindMapData);
+class ImageManager : public QObject
+{
+    Q_OBJECT
 
-} // namespace Serializer
+public:
+    ImageManager();
 
-#endif // SERIALIZER_HPP
+    void clear();
+
+    size_t addImage(const Image & image);
+
+    void setImage(const Image & image);
+
+    std::pair<Image, bool> getImage(size_t id);
+
+    void handleImageRequest(size_t id, Node & node);
+
+    using ImageVector = std::vector<Image>;
+    ImageVector images() const;
+
+private:
+    std::map<size_t, Image> m_images;
+
+    size_t m_count = 0;
+};
+
+#endif // IMAGE_MANAGER_HPP

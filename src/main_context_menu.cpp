@@ -99,6 +99,21 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
 
     m_mainContextMenuActions[Mode::Node].push_back(deleteNodeAction);
 
+    auto attachImageAction(new QAction(tr("Attach image..."), this));
+    QObject::connect(attachImageAction, &QAction::triggered, [this] {
+        emit actionTriggered(StateMachine::Action::ImageAttachmentRequested, m_selectedNode);
+    });
+
+    m_mainContextMenuActions[Mode::Node].push_back(attachImageAction);
+
+    m_removeImageAction = new QAction(tr("Remove attached image"), this);
+    QObject::connect(m_removeImageAction, &QAction::triggered, [this] {
+        m_mediator.saveUndoPoint();
+        m_selectedNode->setImageRef(0);
+    });
+
+    m_mainContextMenuActions[Mode::Node].push_back(m_removeImageAction);
+
     // Populate the menu
     addAction(m_copyNodeAction);
     addAction(m_pasteNodeAction);
@@ -113,9 +128,15 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     addAction(setNodeTextColorAction);
     addSeparator();
     addAction(deleteNodeAction);
+    addSeparator();
+    addAction(attachImageAction);
+    addAction(m_removeImageAction);
 
     connect(this, &QMenu::aboutToShow, [=] {
         m_selectedNode = m_mediator.selectedNode();
+        if (m_selectedNode) {
+            m_removeImageAction->setEnabled(m_selectedNode->imageRef());
+        }
     });
 
     connect(this, &QMenu::aboutToHide, [=] {

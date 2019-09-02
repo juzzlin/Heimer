@@ -74,6 +74,16 @@ void NodeBase::setText(const QString & text)
     m_text = text;
 }
 
+size_t NodeBase::imageRef() const
+{
+    return m_imageRef;
+}
+
+void NodeBase::setImageRef(size_t imageRef)
+{
+    m_imageRef = imageRef;
+}
+
 QColor NodeBase::color() const
 {
     return m_color;

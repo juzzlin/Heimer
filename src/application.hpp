@@ -28,8 +28,10 @@
 class EditorData;
 class EditorScene;
 class EditorView;
+class ImageManager;
 class MainWindow;
 class Mediator;
+class Node;
 class PngExportDialog;
 
 class Application : public QObject
@@ -58,6 +60,8 @@ private:
 
     QString getFileDialogFileText() const;
 
+    QString loadRecentImagePath() const;
+
     QString loadRecentPath() const;
 
     void openArgMindMap();
@@ -68,11 +72,15 @@ private:
 
     void saveMindMapAs();
 
+    void saveRecentImagePath(QString fileName);
+
     void saveRecentPath(QString fileName);
 
     void showBackgroundColorDialog();
 
     void showEdgeColorDialog();
+
+    void showImageFileDialog();
 
     void showPngExportDialog();
 
@@ -105,6 +113,8 @@ private:
     std::shared_ptr<EditorScene> m_editorScene;
 
     EditorView * m_editorView = nullptr;
+
+    Node * m_actionNode = nullptr;
 
     std::unique_ptr<PngExportDialog> m_pngExportDialog;
 };

@@ -59,6 +59,8 @@ public:
 
     void connectNodeToUndoMechanism(NodePtr node);
 
+    void connectNodeToImageManager(NodePtr node);
+
     // Create a new node and add edge to the source (parent) node
     NodeBasePtr createAndAddNode(int sourceNodeIndex, QPointF pos);
 
@@ -97,7 +99,7 @@ public:
 
     void moveSelectionGroup(Node & reference, QPointF location);
 
-    int nodeCount() const;
+    size_t nodeCount() const;
 
     NodeBasePtr pasteNodeAt(Node & source, QPointF pos);
 
@@ -177,6 +179,8 @@ private:
     double calculateNodeOverlapScore(const Node & node1, const Node & node2) const;
 
     void connectGraphToUndoMechanism();
+
+    void connectGraphToImageManager();
 
     std::shared_ptr<EditorData> m_editorData;
 

@@ -12,6 +12,8 @@ set(SRC ${NAME}.cpp
     ${EDITOR_DIR}/graph.cpp
     ${EDITOR_DIR}/graphics_factory.cpp
     ${EDITOR_DIR}/hash_seed.cpp
+    ${EDITOR_DIR}/image.cpp
+    ${EDITOR_DIR}/image_manager.cpp
     ${EDITOR_DIR}/mind_map_data.cpp
     ${EDITOR_DIR}/mind_map_data_base.cpp
     ${EDITOR_DIR}/node.cpp

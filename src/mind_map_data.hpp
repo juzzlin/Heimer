@@ -20,6 +20,7 @@
 
 #include "constants.hpp"
 #include "graph.hpp"
+#include "image_manager.hpp"
 #include "mind_map_data_base.hpp"
 
 class ObjectModelLoader;
@@ -65,6 +66,10 @@ public:
 
     void setVersion(const QString & version);
 
+    ImageManager & imageManager();
+
+    const ImageManager & imageManager() const;
+
 private:
     void copyGraph(const MindMapData & other);
 
@@ -83,6 +88,8 @@ private:
     int m_cornerRadius = Constants::Node::DEFAULT_CORNER_RADIUS;
 
     Graph m_graph;
+
+    static ImageManager m_imageManager;
 };
 
 typedef std::shared_ptr<MindMapData> MindMapDataPtr;

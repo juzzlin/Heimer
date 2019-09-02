@@ -24,7 +24,98 @@
 #include <functional>
 #include <map>
 
+#include <QDebug>
 #include <QDomElement>
+#include <QFile>
+#include <QTemporaryDir>
+
+namespace Serializer {
+namespace DataKeywords {
+namespace Design {
+
+static constexpr auto DESIGN = "design";
+
+static constexpr auto APPLICATION_VERSION = "version";
+
+static constexpr auto COLOR = "color";
+
+static constexpr auto CORNER_RADIUS = "corner-radius";
+
+static constexpr auto EDGE_COLOR = "edge-color";
+
+static constexpr auto EDGE_THICKNESS = "edge-width";
+
+static constexpr auto GRAPH = "graph";
+
+static constexpr auto IMAGE = "image";
+
+static constexpr auto TEXT_SIZE = "text-size";
+
+// Used for Design and Node
+namespace Color {
+
+static constexpr auto R = "r";
+
+static constexpr auto G = "g";
+
+static constexpr auto B = "b";
+} // namespace Color
+
+namespace Graph {
+
+static constexpr auto NODE = "node";
+
+namespace Node {
+
+static constexpr auto COLOR = "color";
+
+static constexpr auto IMAGE = "image";
+
+static constexpr auto INDEX = "index";
+
+static constexpr auto TEXT = "text";
+
+static constexpr auto TEXT_COLOR = "text-color";
+
+static constexpr auto X = "x";
+
+static constexpr auto Y = "y";
+
+static constexpr auto W = "w";
+
+static constexpr auto H = "h";
+
+namespace Image {
+
+static constexpr auto REF = "ref";
+} // namespace Image
+} // namespace Node
+
+static constexpr auto EDGE = "edge";
+
+namespace Edge {
+
+static constexpr auto INDEX0 = "index0";
+
+static constexpr auto INDEX1 = "index1";
+
+static constexpr auto ARROW_MODE = "arrow-mode";
+
+static constexpr auto REVERSED = "reversed";
+
+} // namespace Edge
+} // namespace Graph
+
+namespace Image {
+
+static constexpr auto ID = "id";
+
+static constexpr auto PATH = "path";
+
+} // namespace Image
+} // namespace Design
+
+} // namespace DataKeywords
 
 static const double SCALE = 1000; // https://bugreports.qt.io/browse/QTBUG-67129
 
@@ -36,6 +127,13 @@ static void writeColor(QDomElement & parent, QDomDocument & doc, QColor color, Q
     colorElement.setAttribute(Serializer::DataKeywords::Design::Color::R, color.red());
     colorElement.setAttribute(Serializer::DataKeywords::Design::Color::G, color.green());
     colorElement.setAttribute(Serializer::DataKeywords::Design::Color::B, color.blue());
+    parent.appendChild(colorElement);
+}
+
+static void writeImageRef(QDomElement & parent, QDomDocument & doc, size_t imageRef, QString elementName)
+{
+    auto colorElement = doc.createElement(elementName);
+    colorElement.setAttribute(Serializer::DataKeywords::Design::Graph::Node::Image::REF, static_cast<int>(imageRef));
     parent.appendChild(colorElement);
 }
 
@@ -60,14 +158,18 @@ static void writeNodes(MindMapData & mindMapData, QDomElement & root, QDomDocume
 
         // Create a child node for text color
         writeColor(nodeElement, doc, node->textColor(), Serializer::DataKeywords::Design::Graph::Node::TEXT_COLOR);
+
+        // Create a child node for image ref
+        if (node->imageRef()) {
+            writeImageRef(nodeElement, doc, node->imageRef(), Serializer::DataKeywords::Design::Graph::Node::IMAGE);
+        }
     }
 }
 
 static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocument & doc)
 {
     for (auto node : mindMapData.graph().getNodes()) {
-        auto edges = mindMapData.graph().getEdgesFromNode(node);
-        for (auto && edge : edges) {
+        for (auto && edge : mindMapData.graph().getEdgesFromNode(node)) {
             auto edgeElement = doc.createElement(Serializer::DataKeywords::Design::Graph::EDGE);
             edgeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX0, edge->sourceNodeBase().index());
             edgeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX1, edge->targetNodeBase().index());
@@ -84,6 +186,65 @@ static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocume
     }
 }
 
+static QString getBase64Data(std::string path)
+{
+#ifndef HEIMER_UNIT_TEST
+    QFile in(path.c_str());
+    if (!in.open(QIODevice::ReadOnly)) {
+        throw std::runtime_error("Cannot open file: '" + path + "'");
+    }
+    return in.readAll().toBase64(QByteArray::Base64Encoding);
+#else
+    Q_UNUSED(path)
+    return "";
+#endif
+}
+
+static QImage base64ToQImage(const std::string & base64, size_t imageId, std::string imagePath)
+{
+#ifndef HEIMER_UNIT_TEST
+    QTemporaryDir dir;
+    if (dir.isValid()) {
+        QFileInfo info(imagePath.c_str());
+        const auto extractedFilePath = (dir.path() + QDir::separator() + info.fileName()).toStdString();
+        juzzlin::L().info() << "Extracting embedded image id=" << imageId << " to '" << extractedFilePath << "'";
+        QByteArray bytes = QByteArray::fromBase64(base64.c_str(), QByteArray::Base64Encoding);
+        QFile out(extractedFilePath.c_str());
+        if (!out.open(QIODevice::WriteOnly)) {
+            throw std::runtime_error("Cannot open file: '" + extractedFilePath + "' for write!");
+        }
+        auto bytesWritten = out.write(bytes);
+        juzzlin::L().info() << "Bytes written: " << bytesWritten << ", " << (bytesWritten == bytes.length() ? "OK" : "SIZE MISMATCH");
+        return QImage { extractedFilePath.c_str() };
+    }
+#else
+    Q_UNUSED(base64)
+    Q_UNUSED(imageId)
+    Q_UNUSED(imagePath)
+#endif
+    return QImage {};
+}
+
+static void writeImages(MindMapData & mindMapData, QDomElement & root, QDomDocument & doc)
+{
+    for (auto && node : mindMapData.graph().getNodes()) {
+        if (node->imageRef()) {
+            Image image;
+            bool exists;
+            std::tie(image, exists) = mindMapData.imageManager().getImage(node->imageRef());
+            if (exists) {
+                auto imageElement = doc.createElement(Serializer::DataKeywords::Design::IMAGE);
+                imageElement.setAttribute(Serializer::DataKeywords::Design::Image::ID, static_cast<int>(image.id()));
+                imageElement.setAttribute(Serializer::DataKeywords::Design::Image::PATH, image.path().c_str());
+                root.appendChild(imageElement);
+
+                // Create a child node for the image content
+                imageElement.appendChild(doc.createTextNode(getBase64Data(image.path())));
+            }
+        }
+    }
+}
+
 static QColor readColorElement(const QDomElement & element)
 {
     return {
@@ -91,6 +252,11 @@ static QColor readColorElement(const QDomElement & element)
         element.attribute(Serializer::DataKeywords::Design::Color::G, "255").toInt(),
         element.attribute(Serializer::DataKeywords::Design::Color::B, "255").toInt()
     };
+}
+
+static size_t readImageElement(const QDomElement & element)
+{
+    return static_cast<size_t>(element.attribute(Serializer::DataKeywords::Design::Graph::Node::Image::REF, "0").toInt());
 }
 
 static QString readFirstTextNodeContent(const QDomElement & element)
@@ -159,6 +325,9 @@ static NodePtr readNode(const QDomElement & element)
                              } },
                             { QString(Serializer::DataKeywords::Design::Graph::Node::TEXT_COLOR), [=](const QDomElement & e) {
                                  node->setTextColor(readColorElement(e));
+                             } },
+                            { QString(Serializer::DataKeywords::Design::Graph::Node::IMAGE), [=](const QDomElement & e) {
+                                 node->setImageRef(readImageElement(e));
                              } } });
 
     return node;
@@ -212,7 +381,7 @@ static void readGraph(const QDomElement & graph, MindMapDataPtr data)
                         });
 }
 
-MindMapDataPtr Serializer::fromXml(QDomDocument document)
+MindMapDataPtr fromXml(QDomDocument document)
 {
     const auto design = document.documentElement();
 
@@ -231,6 +400,13 @@ MindMapDataPtr Serializer::fromXml(QDomDocument document)
                            { QString(Serializer::DataKeywords::Design::EDGE_THICKNESS), [=](const QDomElement & e) {
                                 data->setEdgeWidth(readFirstTextNodeContent(e).toDouble() / SCALE);
                             } },
+                           { QString(Serializer::DataKeywords::Design::IMAGE), [=](const QDomElement & e) {
+                                const auto id = e.attribute(Serializer::DataKeywords::Design::Image::ID).toUInt();
+                                const auto path = e.attribute(Serializer::DataKeywords::Design::Image::PATH).toStdString();
+                                Image image(base64ToQImage(readFirstTextNodeContent(e).toStdString(), id, path), path);
+                                image.setId(id);
+                                data->imageManager().setImage(image);
+                            } },
                            { QString(Serializer::DataKeywords::Design::TEXT_SIZE), [=](const QDomElement & e) {
                                 data->setTextSize(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
                             } },
@@ -241,7 +417,7 @@ MindMapDataPtr Serializer::fromXml(QDomDocument document)
     return data;
 }
 
-QDomDocument Serializer::toXml(MindMapData & mindMapData)
+QDomDocument toXml(MindMapData & mindMapData)
 {
     QDomDocument doc;
 
@@ -271,7 +447,12 @@ QDomDocument Serializer::toXml(MindMapData & mindMapData)
     design.appendChild(graph);
 
     writeNodes(mindMapData, graph, doc);
+
     writeEdges(mindMapData, graph, doc);
+
+    writeImages(mindMapData, design, doc);
 
     return doc;
 }
+
+} // namespace Serializer

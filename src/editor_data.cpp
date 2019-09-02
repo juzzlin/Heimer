@@ -56,6 +56,7 @@ QString EditorData::fileName() const
 
 void EditorData::loadMindMapData(QString fileName)
 {
+    clearImages();
     clearSelectionGroup();
 
     m_selectedEdge = nullptr;
@@ -216,6 +217,11 @@ NodePtr EditorData::copyNodeAt(Node & source, QPointF pos)
     node->setLocation(pos);
     m_mindMapData->graph().addNode(node);
     return node;
+}
+
+void EditorData::clearImages()
+{
+    m_mindMapData->imageManager().clear();
 }
 
 void EditorData::clearSelectionGroup()

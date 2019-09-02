@@ -32,47 +32,67 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application.cpp" line="153"/>
+        <location filename="../application.cpp" line="157"/>
         <source>Heimer Files</source>
         <translation>Heimer -tiedostot</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="232"/>
+        <location filename="../application.cpp" line="230"/>
         <source>Open File</source>
         <translation>Avaa tiedosto</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="260"/>
+        <location filename="../application.cpp" line="258"/>
         <source>Failed to save file.</source>
         <translation>Tiedoston tallentaminen epäonnistui</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="277"/>
+        <location filename="../application.cpp" line="275"/>
         <source>Save File As</source>
         <translation>Tallenna Nimellä</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="290"/>
+        <location filename="../application.cpp" line="288"/>
         <source>File &apos;</source>
         <translation>Tiedosto &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="290"/>
+        <location filename="../application.cpp" line="288"/>
         <source>&apos; saved.</source>
         <translation>&apos; tallennettu.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="294"/>
+        <location filename="../application.cpp" line="292"/>
         <source>Failed to save file as &apos;</source>
         <translation>Tietoston tallentaminen epäonnistui nimellä &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="346"/>
+        <location filename="../application.cpp" line="356"/>
+        <source>Open an image</source>
+        <translation>Avaa kuvatiedosto</translation>
+    </message>
+    <message>
+        <location filename="../application.cpp" line="356"/>
+        <source>Image Files</source>
+        <translation>Kuvatiedostot</translation>
+    </message>
+    <message>
+        <location filename="../application.cpp" line="369"/>
+        <source>Load image</source>
+        <translation>Kuvanlataus</translation>
+    </message>
+    <message>
+        <location filename="../application.cpp" line="369"/>
+        <source>Failed to load image &apos;</source>
+        <translation>Kuvan lataaminen epäonnistui: &apos;</translation>
+    </message>
+    <message>
+        <location filename="../application.cpp" line="392"/>
         <source>The mind map has been modified.</source>
         <translation>Käsitekarttaa on muokattu.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="347"/>
+        <location filename="../application.cpp" line="393"/>
         <source>Do you want to save your changes?</source>
         <translation>Haluatko tallentaa muutokset?</translation>
     </message>
@@ -253,6 +273,16 @@
         <source>Delete node</source>
         <translation>Poista solmu</translation>
     </message>
+    <message>
+        <location filename="../main_context_menu.cpp" line="102"/>
+        <source>Attach image...</source>
+        <translation>Liitä kuva...</translation>
+    </message>
+    <message>
+        <location filename="../main_context_menu.cpp" line="109"/>
+        <source>Remove attached image</source>
+        <translation>Poista liitetty kuva</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
@@ -362,17 +392,17 @@
         <translation>Koko Näyttö</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="331"/>
+        <location filename="../main_window.cpp" line="333"/>
         <source>Zoom In</source>
         <translation>Suurenna</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="337"/>
+        <location filename="../main_window.cpp" line="339"/>
         <source>Zoom Out</source>
         <translation>Loitonna</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="345"/>
+        <location filename="../main_window.cpp" line="347"/>
         <source>&amp;Zoom To Fit</source>
         <translation>&amp;Sovita</translation>
     </message>
@@ -381,12 +411,12 @@
         <translation type="vanished">Heimer -tiedostot</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="387"/>
+        <location filename="../main_window.cpp" line="389"/>
         <source>New File</source>
         <translation>Uusi tiedosto</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="389"/>
+        <location filename="../main_window.cpp" line="391"/>
         <source>Not Saved</source>
         <translation>Ei tallennettu</translation>
     </message>
@@ -407,7 +437,7 @@
         <translation type="vanished">Avaa tiedosto</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="470"/>
+        <location filename="../main_window.cpp" line="472"/>
         <source>About Qt</source>
         <translation>Tietoa Qt:sta</translation>
     </message>

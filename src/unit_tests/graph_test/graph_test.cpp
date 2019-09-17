@@ -28,23 +28,23 @@ void GraphTest::testAddEdge()
 {
     Graph dut;
 
-    auto node0 = make_shared<NodeBase>();
+    const auto node0 = make_shared<NodeBase>();
     dut.addNode(node0);
 
-    auto node1 = make_shared<NodeBase>();
+    const auto node1 = make_shared<NodeBase>();
     dut.addNode(node1);
 
-    auto edge = make_shared<EdgeBase>(*node0, *node1);
+    const auto edge = make_shared<EdgeBase>(*node0, *node1);
     dut.addEdge(edge);
     dut.addEdge(edge); // Check that doubles are ignored
 
-    auto edgesFrom0 = dut.getEdgesFromNode(node0);
+    const auto edgesFrom0 = dut.getEdgesFromNode(node0);
     QCOMPARE(edgesFrom0.size(), static_cast<size_t>(1));
     QCOMPARE(edgesFrom0.at(0)->sourceNodeBase().index(), node0->index());
 
     QCOMPARE(dut.getEdgesToNode(node0).size(), static_cast<size_t>(0));
 
-    auto edgesTo1 = dut.getEdgesToNode(node1);
+    const auto edgesTo1 = dut.getEdgesToNode(node1);
     QCOMPARE(edgesTo1.size(), static_cast<size_t>(1));
     QCOMPARE(edgesTo1.at(0)->sourceNodeBase().index(), node0->index());
 
@@ -55,22 +55,22 @@ void GraphTest::testAddEdgeByIndices()
 {
     Graph dut;
 
-    auto node0 = make_shared<NodeBase>();
+    const auto node0 = make_shared<NodeBase>();
     dut.addNode(node0);
 
-    auto node1 = make_shared<NodeBase>();
+    const auto node1 = make_shared<NodeBase>();
     dut.addNode(node1);
 
     dut.addEdge(node0->index(), node1->index());
     dut.addEdge(node0->index(), node1->index()); // Check that doubles are ignored
 
-    auto edgesFrom0 = dut.getEdgesFromNode(node0);
+    const auto edgesFrom0 = dut.getEdgesFromNode(node0);
     QCOMPARE(edgesFrom0.size(), static_cast<size_t>(1));
     QCOMPARE(edgesFrom0.at(0)->sourceNodeBase().index(), node0->index());
 
     QCOMPARE(dut.getEdgesToNode(node0).size(), static_cast<size_t>(0));
 
-    auto edgesTo1 = dut.getEdgesToNode(node1);
+    const auto edgesTo1 = dut.getEdgesToNode(node1);
     QCOMPARE(edgesTo1.size(), static_cast<size_t>(1));
     QCOMPARE(edgesTo1.at(0)->sourceNodeBase().index(), node0->index());
 
@@ -109,12 +109,12 @@ void GraphTest::testAddTwoNodes()
 {
     Graph dut;
 
-    auto node0 = make_shared<NodeBase>();
+    const auto node0 = make_shared<NodeBase>();
     dut.addNode(node0);
 
     QCOMPARE(dut.numNodes(), static_cast<size_t>(1));
 
-    auto node1 = make_shared<NodeBase>();
+    const auto node1 = make_shared<NodeBase>();
     dut.addNode(node1);
 
     QCOMPARE(dut.numNodes(), static_cast<size_t>(2));
@@ -126,13 +126,13 @@ void GraphTest::testAreNodesDirectlyConnected()
 {
     Graph dut;
 
-    auto node0 = make_shared<NodeBase>();
+    const auto node0 = make_shared<NodeBase>();
     dut.addNode(node0);
 
-    auto node1 = make_shared<NodeBase>();
+    const auto node1 = make_shared<NodeBase>();
     dut.addNode(node1);
 
-    auto node2 = make_shared<NodeBase>();
+    const auto node2 = make_shared<NodeBase>();
     dut.addNode(node2);
 
     dut.addEdge(std::make_shared<EdgeBase>(*node0, *node1));
@@ -147,13 +147,13 @@ void GraphTest::testDeleteEdge()
 {
     Graph dut;
 
-    auto node0 = make_shared<NodeBase>();
+    const auto node0 = make_shared<NodeBase>();
     dut.addNode(node0);
 
-    auto node1 = make_shared<NodeBase>();
+    const auto node1 = make_shared<NodeBase>();
     dut.addNode(node1);
 
-    auto edge = make_shared<EdgeBase>(*node0, *node1);
+    const auto edge = make_shared<EdgeBase>(*node0, *node1);
     dut.addEdge(edge);
 
     QCOMPARE(dut.getEdges().size(), static_cast<size_t>(1));
@@ -170,7 +170,7 @@ void GraphTest::testDeleteEdge()
 void GraphTest::testDeleteNode()
 {
     Graph dut;
-    auto node = make_shared<NodeBase>();
+    const auto node = make_shared<NodeBase>();
 
     dut.addNode(node);
 
@@ -185,10 +185,10 @@ void GraphTest::testDeleteNodeInvolvingEdge()
 {
     Graph dut;
 
-    auto node0 = make_shared<NodeBase>();
+    const auto node0 = make_shared<NodeBase>();
     dut.addNode(node0);
 
-    auto node1 = make_shared<NodeBase>();
+    const auto node1 = make_shared<NodeBase>();
     dut.addNode(node1);
 
     QCOMPARE(dut.numNodes(), static_cast<size_t>(2));
@@ -210,16 +210,16 @@ void GraphTest::testGetEdges()
 {
     Graph dut;
 
-    auto node0 = make_shared<NodeBase>();
+    const auto node0 = make_shared<NodeBase>();
     dut.addNode(node0);
 
-    auto node1 = make_shared<NodeBase>();
+    const auto node1 = make_shared<NodeBase>();
     dut.addNode(node1);
 
     dut.addEdge(std::make_shared<EdgeBase>(*node0, *node1));
     dut.addEdge(std::make_shared<EdgeBase>(*node1, *node0));
 
-    auto edges = dut.getEdges();
+    const auto edges = dut.getEdges();
     QCOMPARE(edges.size(), static_cast<size_t>(2));
 
     QVERIFY(std::count_if(edges.begin(), edges.end(), [=] (const EdgeBasePtr & edge) {
@@ -235,13 +235,13 @@ void GraphTest::testGetNodes()
 {
     Graph dut;
 
-    auto node0 = make_shared<NodeBase>();
+    const auto node0 = make_shared<NodeBase>();
     dut.addNode(node0);
 
-    auto node1 = make_shared<NodeBase>();
+    const auto node1 = make_shared<NodeBase>();
     dut.addNode(node1);
 
-    auto nodes = dut.getNodes();
+    const auto nodes = dut.getNodes();
     QCOMPARE(nodes.size(), static_cast<size_t>(2));
 
     QVERIFY(std::count_if(nodes.begin(), nodes.end(), [] (NodeBasePtr node) {
@@ -257,19 +257,19 @@ void GraphTest::testGetNodesConnectedToNode()
 {
     Graph dut;
 
-    auto node0 = make_shared<NodeBase>();
+    const auto node0 = make_shared<NodeBase>();
     dut.addNode(node0);
 
-    auto node1 = make_shared<NodeBase>();
+    const auto node1 = make_shared<NodeBase>();
     dut.addNode(node1);
 
-    auto node2 = make_shared<NodeBase>();
+    const auto node2 = make_shared<NodeBase>();
     dut.addNode(node2);
 
     dut.addEdge(std::make_shared<EdgeBase>(*node0, *node1));
     dut.addEdge(std::make_shared<EdgeBase>(*node2, *node0));
 
-    auto nodes = dut.getNodesConnectedToNode(node0);
+    const auto nodes = dut.getNodesConnectedToNode(node0);
 
     QVERIFY(nodes.size() == 2);
 
@@ -282,7 +282,7 @@ void GraphTest::testGetNodesConnectedToNode()
 void GraphTest::testGetNodeByIndex()
 {
     Graph dut;
-    auto node = make_shared<NodeBase>();
+    const auto node = make_shared<NodeBase>();
 
     dut.addNode(node);
 
@@ -292,7 +292,7 @@ void GraphTest::testGetNodeByIndex()
 void GraphTest::testGetNodeByIndex_NotFound()
 {
     Graph dut;
-    auto node = make_shared<NodeBase>();
+    const auto node = make_shared<NodeBase>();
 
     dut.addNode(node);
 

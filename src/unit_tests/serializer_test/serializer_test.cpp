@@ -125,7 +125,7 @@ void SerializerTest::testNodeDeletion()
     // Deserialize
     const auto inData = Serializer::fromXml(document);
 
-    auto edges = inData->graph().getEdgesFromNode(outNode0);
+    const auto edges = inData->graph().getEdgesFromNode(outNode0);
     QCOMPARE(edges.size(), static_cast<size_t>(1));
 }
 
@@ -133,13 +133,13 @@ void SerializerTest::testSingleEdge()
 {
     MindMapData outData;
 
-    auto outNode0 = std::make_shared<NodeBase>();
+    const auto outNode0 = std::make_shared<NodeBase>();
     outData.graph().addNode(outNode0);
 
-    auto outNode1 = std::make_shared<NodeBase>();
+    const auto outNode1 = std::make_shared<NodeBase>();
     outData.graph().addNode(outNode1);
 
-    auto edge = std::make_shared<EdgeBase>(*outNode0, *outNode1);
+    const auto edge = std::make_shared<EdgeBase>(*outNode0, *outNode1);
     const QString text = "Lorem ipsum";
     edge->setText(text);
     edge->setReversed(true);
@@ -152,7 +152,7 @@ void SerializerTest::testSingleEdge()
     // Deserialize
     const auto inData = Serializer::fromXml(document);
 
-    auto edges = inData->graph().getEdgesFromNode(outNode0);
+    const auto edges = inData->graph().getEdgesFromNode(outNode0);
     QCOMPARE(edges.size(), static_cast<size_t>(1));
     QCOMPARE((*edges.begin())->text(), edge->text());
     QCOMPARE((*edges.begin())->reversed(), edge->reversed());
@@ -163,7 +163,7 @@ void SerializerTest::testSingleNode()
 {
     MindMapData outData;
 
-    auto outNode = std::make_shared<NodeBase>();
+    const auto outNode = std::make_shared<NodeBase>();
     outNode->setColor(QColor(1, 2, 3));
     outNode->setLocation(QPointF(333.333, 666.666));
     outNode->setSize(QSize(123, 321));
@@ -178,7 +178,7 @@ void SerializerTest::testSingleNode()
     const auto inData = Serializer::fromXml(document);
     QVERIFY(inData->graph().numNodes() == 1);
 
-    auto node = inData->graph().getNode(0);
+    const auto node = inData->graph().getNode(0);
     QVERIFY(node != nullptr);
     QCOMPARE(node->index(), outNode->index());
     QCOMPARE(node->color(), outNode->color());

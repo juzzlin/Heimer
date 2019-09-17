@@ -156,24 +156,24 @@ void EditorDataTest::testRedoAddNodes()
 
 void EditorDataTest::testUndoAddEdge()
 {
-    auto data = std::make_shared<MindMapData>();
+    const auto data = std::make_shared<MindMapData>();
     EditorData editorData;
     editorData.setMindMapData(data);
 
-    auto node0 = std::make_shared<Node>();
+    const auto node0 = std::make_shared<Node>();
     data->graph().addNode(node0);
-    auto node1 = std::make_shared<Node>();
+    const auto node1 = std::make_shared<Node>();
     data->graph().addNode(node1);
-    auto node2 = std::make_shared<Node>();
+    const auto node2 = std::make_shared<Node>();
     data->graph().addNode(node2);
 
-    auto edge01 = std::make_shared<Edge>(*node0, *node1);
+    const auto edge01 = std::make_shared<Edge>(*node0, *node1);
 
     editorData.saveUndoPoint();
 
     editorData.addEdge(edge01);
 
-    auto edge21 = std::make_shared<Edge>(*node2, *node1);
+    const auto edge21 = std::make_shared<Edge>(*node2, *node1);
 
     editorData.saveUndoPoint();
 
@@ -184,9 +184,9 @@ void EditorDataTest::testUndoAddEdge()
 
     editorData.undo();
 
-    auto && undoneNode0 = editorData.getNodeByIndex(node0->index());
-    auto && undoneNode1 = editorData.getNodeByIndex(node1->index());
-    auto && undoneNode2 = editorData.getNodeByIndex(node2->index());
+    auto undoneNode0 = editorData.getNodeByIndex(node0->index());
+    auto undoneNode1 = editorData.getNodeByIndex(node1->index());
+    auto undoneNode2 = editorData.getNodeByIndex(node2->index());
 
     QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(undoneNode0, undoneNode1), true);
     QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(undoneNode2, undoneNode1), false);
@@ -212,16 +212,16 @@ void EditorDataTest::testUndoAddEdge()
 
 void EditorDataTest::testUndoArrowMode()
 {
-    auto data = std::make_shared<MindMapData>();
+    const auto data = std::make_shared<MindMapData>();
     EditorData editorData;
     editorData.setMindMapData(data);
 
-    auto node0 = std::make_shared<Node>();
+    const auto node0 = std::make_shared<Node>();
     data->graph().addNode(node0);
-    auto node1 = std::make_shared<Node>();
+    const auto node1 = std::make_shared<Node>();
     data->graph().addNode(node1);
 
-    auto edge01 = std::make_shared<Edge>(*node0, *node1);
+    const auto edge01 = std::make_shared<Edge>(*node0, *node1);
 
     editorData.addEdge(edge01);
 
@@ -235,29 +235,29 @@ void EditorDataTest::testUndoArrowMode()
 
     editorData.undo();
 
-    auto undoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
+    const auto undoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
 
     QCOMPARE(undoneEdge->arrowMode(), EdgeBase::ArrowMode::Double);
 
     editorData.redo();
 
-    auto redoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
+    const auto redoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
 
     QCOMPARE(redoneEdge->arrowMode(), EdgeBase::ArrowMode::Hidden);
 }
 
 void EditorDataTest::testUndoDeleteEdge()
 {
-    auto data = std::make_shared<MindMapData>();
+    const auto data = std::make_shared<MindMapData>();
     EditorData editorData;
     editorData.setMindMapData(data);
 
-    auto node0 = std::make_shared<Node>();
+    const auto node0 = std::make_shared<Node>();
     data->graph().addNode(node0);
-    auto node1 = std::make_shared<Node>();
+    const auto node1 = std::make_shared<Node>();
     data->graph().addNode(node1);
 
-    auto edge01 = std::make_shared<Edge>(*node0, *node1);
+    const auto edge01 = std::make_shared<Edge>(*node0, *node1);
 
     editorData.saveUndoPoint();
 
@@ -380,17 +380,16 @@ void EditorDataTest::testUndoEdgeWidth()
 
 void EditorDataTest::testUndoEdgeText()
 {
-    auto data = std::make_shared<MindMapData>();
+    const auto data = std::make_shared<MindMapData>();
     EditorData editorData;
     editorData.setMindMapData(data);
 
-    auto node0 = std::make_shared<Node>();
+    const auto node0 = std::make_shared<Node>();
     data->graph().addNode(node0);
-    auto node1 = std::make_shared<Node>();
+    const auto node1 = std::make_shared<Node>();
     data->graph().addNode(node1);
 
-    auto edge01 = std::make_shared<Edge>(*node0, *node1);
-
+    const auto edge01 = std::make_shared<Edge>(*node0, *node1);
     editorData.addEdge(edge01);
 
     const auto text0 = "First";
@@ -403,29 +402,29 @@ void EditorDataTest::testUndoEdgeText()
 
     editorData.undo();
 
-    auto undoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
+    const auto undoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
 
     QCOMPARE(undoneEdge->text(), QString(text0));
 
     editorData.redo();
 
-    auto redoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
+    const auto redoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
 
     QCOMPARE(redoneEdge->text(), QString(text1));
 }
 
 void EditorDataTest::testUndoEdgeReversed()
 {
-    auto data = std::make_shared<MindMapData>();
+    const auto data = std::make_shared<MindMapData>();
     EditorData editorData;
     editorData.setMindMapData(data);
 
-    auto node0 = std::make_shared<Node>();
+    const auto node0 = std::make_shared<Node>();
     data->graph().addNode(node0);
-    auto node1 = std::make_shared<Node>();
+    const auto node1 = std::make_shared<Node>();
     data->graph().addNode(node1);
 
-    auto edge01 = std::make_shared<Edge>(*node0, *node1);
+    const auto edge01 = std::make_shared<Edge>(*node0, *node1);
 
     editorData.addEdge(edge01);
 
@@ -437,21 +436,21 @@ void EditorDataTest::testUndoEdgeReversed()
 
     editorData.undo();
 
-    auto undoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
+    const auto undoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
 
     QCOMPARE(undoneEdge->reversed(), false);
 
     editorData.redo();
 
-    auto redoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
+    const auto redoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
 
     QCOMPARE(redoneEdge->reversed(), true);
 }
 
 void EditorDataTest::testUndoNodeColor()
 {
-    auto data = std::make_shared<MindMapData>();
-    auto node = std::make_shared<Node>();
+    const auto data = std::make_shared<MindMapData>();
+    const auto node = std::make_shared<Node>();
     data->graph().addNode(node);
 
     EditorData editorData;
@@ -471,21 +470,21 @@ void EditorDataTest::testUndoNodeColor()
 
     editorData.undo();
 
-    auto && undoneNode = editorData.getNodeByIndex(node->index());
+    const auto undoneNode = editorData.getNodeByIndex(node->index());
 
     QCOMPARE(undoneNode->color(), color0);
 
     editorData.redo();
 
-    auto && redoneNode = editorData.getNodeByIndex(node->index());
+    const auto redoneNode = editorData.getNodeByIndex(node->index());
 
     QCOMPARE(redoneNode->color(), color);
 }
 
 void EditorDataTest::testUndoNodeLocation()
 {
-    auto data = std::make_shared<MindMapData>();
-    auto node = std::make_shared<Node>();
+    const auto data = std::make_shared<MindMapData>();
+    const auto node = std::make_shared<Node>();
     data->graph().addNode(node);
 
     EditorData editorData;
@@ -505,21 +504,21 @@ void EditorDataTest::testUndoNodeLocation()
 
     editorData.undo();
 
-    auto && undoneNode = editorData.getNodeByIndex(node->index());
+    const auto undoneNode = editorData.getNodeByIndex(node->index());
 
     QCOMPARE(undoneNode->location(), location0);
 
     editorData.redo();
 
-    auto && redoneNode = editorData.getNodeByIndex(node->index());
+    const auto redoneNode = editorData.getNodeByIndex(node->index());
 
     QCOMPARE(redoneNode->location(), location);
 }
 
 void EditorDataTest::testUndoNodeTextColor()
 {
-    auto data = std::make_shared<MindMapData>();
-    auto node = std::make_shared<Node>();
+    const auto data = std::make_shared<MindMapData>();
+    const auto node = std::make_shared<Node>();
     data->graph().addNode(node);
 
     EditorData editorData;
@@ -534,13 +533,13 @@ void EditorDataTest::testUndoNodeTextColor()
 
     editorData.undo();
 
-    auto && undoneNode = editorData.getNodeByIndex(node->index());
+    const auto undoneNode = editorData.getNodeByIndex(node->index());
 
     QCOMPARE(undoneNode->textColor(), color0);
 
     editorData.redo();
 
-    auto && redoneNode = editorData.getNodeByIndex(node->index());
+    const auto redoneNode = editorData.getNodeByIndex(node->index());
 
     QCOMPARE(redoneNode->textColor(), color);
 }

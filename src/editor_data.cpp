@@ -17,9 +17,9 @@
 
 #include "constants.hpp"
 #include "node.hpp"
+#include "reader.hpp"
 #include "selection_group.hpp"
 #include "serializer.hpp"
-#include "reader.hpp"
 #include "writer.hpp"
 
 #include <cassert>
@@ -29,8 +29,9 @@ using std::dynamic_pointer_cast;
 using std::make_shared;
 
 EditorData::EditorData()
-    : m_selectionGroup(new SelectionGroup)
-{}
+  : m_selectionGroup(new SelectionGroup)
+{
+}
 
 QColor EditorData::backgroundColor() const
 {
@@ -80,8 +81,7 @@ bool EditorData::isUndoable() const
 
 void EditorData::undo()
 {
-    if (m_undoStack.isUndoable())
-    {
+    if (m_undoStack.isUndoable()) {
         clearSelectionGroup();
 
         m_selectedEdge = nullptr;
@@ -105,8 +105,7 @@ bool EditorData::isRedoable() const
 
 void EditorData::redo()
 {
-    if (m_undoStack.isRedoable())
-    {
+    if (m_undoStack.isRedoable()) {
         clearSelectionGroup();
 
         m_selectedEdge = nullptr;
@@ -152,8 +151,7 @@ bool EditorData::saveMindMapAs(QString fileName)
 {
     assert(m_mindMapData);
 
-    if (Writer::writeToFile(Serializer::toXml(*m_mindMapData), fileName))
-    {
+    if (Writer::writeToFile(Serializer::toXml(*m_mindMapData), fileName)) {
         m_fileName = fileName;
         setIsModified(false);
         return true;
@@ -274,8 +272,7 @@ size_t EditorData::selectionGroupSize() const
 
 void EditorData::setIsModified(bool isModified)
 {
-    if (isModified != m_isModified)
-    {
+    if (isModified != m_isModified) {
         m_isModified = isModified;
         emit isModifiedChanged(isModified);
     }

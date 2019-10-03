@@ -25,7 +25,6 @@ class Node;
 class SelectionGroup
 {
 public:
-
     void clear();
 
     bool hasNode(Node & node) const;
@@ -41,7 +40,6 @@ public:
     void toggleNode(Node & node);
 
 private:
-
     std::set<Node *> m_nodes;
 
     Node * m_selectedNode = nullptr;

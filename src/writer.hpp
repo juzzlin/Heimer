@@ -20,7 +20,7 @@
 
 namespace Writer {
 
-    bool writeToFile(QDomDocument document, QString filePath);
+bool writeToFile(QDomDocument document, QString filePath);
 }
 
 #endif // WRITER_HPP

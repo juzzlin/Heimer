@@ -37,7 +37,6 @@ class Application : public QObject
     Q_OBJECT
 
 public:
-
     Application(int & argc, char ** argv);
 
     ~Application();
@@ -55,7 +54,6 @@ signals:
     void backgroundColorChanged(QColor color);
 
 private:
-
     void doOpenMindMap(QString fileName);
 
     QString getFileDialogFileText() const;

@@ -23,7 +23,6 @@ class Node;
 class MouseAction
 {
 public:
-
     enum class Action
     {
         None,
@@ -58,7 +57,6 @@ public:
     void setClickedScenePos(const QPointF & clickedScenePos);
 
 private:
-
     Node * m_sourceNode = nullptr;
 
     QPointF m_clickedScenePos;

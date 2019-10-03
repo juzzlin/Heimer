@@ -21,8 +21,8 @@
 #include <cassert>
 
 EdgeContextMenu::EdgeContextMenu(QWidget * parent, Mediator & mediator)
-    : QMenu(parent)
-    , m_mediator(mediator)
+  : QMenu(parent)
+  , m_mediator(mediator)
 {
     auto changeEdgeDirectionAction(new QAction(tr("Change direction"), this));
     QObject::connect(changeEdgeDirectionAction, &QAction::triggered, [=] {

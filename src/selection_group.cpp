@@ -21,8 +21,7 @@
 
 void SelectionGroup::clear()
 {
-    for (auto && node : m_nodes)
-    {
+    for (auto && node : m_nodes) {
         node->setSelected(false);
     }
     m_nodes.clear();
@@ -38,20 +37,16 @@ bool SelectionGroup::hasNode(Node & node) const
 void SelectionGroup::move(Node & reference, QPointF location)
 {
     std::map<int, QPointF> delta;
-    for (auto && node : m_nodes)
-    {
-        if (node->index() != reference.index())
-        {
+    for (auto && node : m_nodes) {
+        if (node->index() != reference.index()) {
             delta[node->index()] = node->location() - reference.location();
         }
     }
 
     reference.setLocation(location);
 
-    for (auto && node : m_nodes)
-    {
-        if (node->index() != reference.index())
-        {
+    for (auto && node : m_nodes) {
+        if (node->index() != reference.index()) {
             node->setLocation(reference.location() + delta[node->index()]);
         }
     }
@@ -63,8 +58,7 @@ void SelectionGroup::setSelectedNode(Node * node)
         selectedNode()->setSelected(false);
     }
 
-    if (node)
-    {
+    if (node) {
         node->setSelected(true);
     }
 
@@ -83,13 +77,10 @@ size_t SelectionGroup::size() const
 
 void SelectionGroup::toggleNode(Node & node)
 {
-    if (node.selected())
-    {
+    if (node.selected()) {
         m_nodes.erase(&node);
         node.setSelected(false);
-    }
-    else
-    {
+    } else {
         m_nodes.insert(&node);
         node.setSelected(true);
     }

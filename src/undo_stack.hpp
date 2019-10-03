@@ -23,7 +23,6 @@
 class UndoStack
 {
 public:
-
     UndoStack(int maxHistorySize = -1);
 
     void pushUndoPoint(MindMapDataPtr mindMapData);
@@ -41,7 +40,6 @@ public:
     MindMapDataPtr redo();
 
 private:
-
     using MindMapDataVector = std::list<MindMapDataPtr>;
 
     MindMapDataVector m_undoStack;

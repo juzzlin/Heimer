@@ -20,9 +20,9 @@
 
 struct EdgePoint
 {
-    EdgePoint(QPointF location = {0, 0}, bool isCorner = false)
-        : location(location)
-        , isCorner(isCorner)
+    EdgePoint(QPointF location = { 0, 0 }, bool isCorner = false)
+      : location(location)
+      , isCorner(isCorner)
     {
     }
 

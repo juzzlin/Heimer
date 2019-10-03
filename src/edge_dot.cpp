@@ -16,6 +16,6 @@
 #include "edge_dot.hpp"
 
 EdgeDot::EdgeDot(QGraphicsItem * parentItem)
-    : QGraphicsEllipseItem(parentItem)
+  : QGraphicsEllipseItem(parentItem)
 {
 }

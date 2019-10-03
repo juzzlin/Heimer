@@ -27,7 +27,6 @@ class StateMachine : public QObject
     Q_OBJECT
 
 public:
-
     enum class State
     {
         Edit,
@@ -91,7 +90,6 @@ signals:
     void stateChanged(StateMachine::State state);
 
 private:
-
     State m_state = State::Init;
 
     QuitType m_quitType = QuitType::None;

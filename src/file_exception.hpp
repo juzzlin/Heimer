@@ -16,16 +16,15 @@
 #ifndef FILEEXCEPTION_HPP
 #define FILEEXCEPTION_HPP
 
-#include <stdexcept>
 #include <QString>
+#include <stdexcept>
 
 class FileException : public std::runtime_error
 {
 public:
-
     explicit FileException(QString msg)
-        : runtime_error(msg.toStdString())
-        , m_message(msg)
+      : runtime_error(msg.toStdString())
+      , m_message(msg)
     {
     }
 
@@ -35,7 +34,6 @@ public:
     }
 
 private:
-
     QString m_message;
 };
 

@@ -26,12 +26,12 @@ void Grid::setSize(int size)
 
 QPointF Grid::snapToGrid(QPointF in) const
 {
-    if (!m_size)
-    {
+    if (!m_size) {
         return in;
     }
 
     return {
         static_cast<double>(static_cast<int>(in.x() / m_size) * m_size),
-        static_cast<double>(static_cast<int>(in.y() / m_size) * m_size)};
+        static_cast<double>(static_cast<int>(in.y() / m_size) * m_size)
+    };
 }

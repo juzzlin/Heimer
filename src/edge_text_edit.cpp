@@ -19,8 +19,8 @@
 #include "edge.hpp"
 
 EdgeTextEdit::EdgeTextEdit(Edge * parentItem)
-    : TextEdit(parentItem)
-    , m_sizeAnimation(this, "opacity")
+  : TextEdit(parentItem)
+  , m_sizeAnimation(this, "opacity")
 {
     setAcceptHoverEvents(true);
 
@@ -32,7 +32,7 @@ EdgeTextEdit::EdgeTextEdit(Edge * parentItem)
     m_visibilityTimer.setSingleShot(true);
     m_visibilityTimer.setInterval(Constants::Edge::TEXT_EDIT_DURATION);
 
-    connect(&m_visibilityTimer, &QTimer::timeout, [=] () {
+    connect(&m_visibilityTimer, &QTimer::timeout, [=]() {
         setVisible(false);
     });
 }
@@ -62,16 +62,13 @@ void EdgeTextEdit::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
 
 void EdgeTextEdit::setVisible(bool visible)
 {
-    if (visible)
-    {
+    if (visible) {
         QGraphicsItem::setVisible(true);
         m_sizeAnimation.setStartValue(opacity());
         m_sizeAnimation.setEndValue(1.0);
         m_sizeAnimation.stop();
         m_sizeAnimation.start();
-    }
-    else if (text().isEmpty())
-    {
+    } else if (text().isEmpty()) {
         m_sizeAnimation.setStartValue(opacity());
         m_sizeAnimation.setEndValue(0.0);
         m_sizeAnimation.stop();

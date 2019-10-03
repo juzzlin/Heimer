@@ -15,22 +15,22 @@
 
 #include "main_context_menu.hpp"
 
+#include "contrib/SimpleLogger/src/simple_logger.hpp"
 #include "copy_paste.hpp"
 #include "grid.hpp"
 #include "mediator.hpp"
 #include "mouse_action.hpp"
 #include "node.hpp"
-#include "contrib/SimpleLogger/src/simple_logger.hpp"
 
 #include <QColorDialog>
 #include <QTimer>
 
 MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & grid, CopyPaste & copyPaste)
-    : QMenu(parent)
-    , m_copyNodeAction(new QAction(tr("Copy node"), this))
-    , m_pasteNodeAction(new QAction(tr("Paste node"), this))
-    , m_mediator(mediator)
-    , m_copyPaste(copyPaste)
+  : QMenu(parent)
+  , m_copyNodeAction(new QAction(tr("Copy node"), this))
+  , m_pasteNodeAction(new QAction(tr("Paste node"), this))
+  , m_mediator(mediator)
+  , m_copyPaste(copyPaste)
 {
     QObject::connect(m_copyNodeAction, &QAction::triggered, [this] {
         juzzlin::L().debug() << "Copy node triggered";
@@ -40,8 +40,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
 
     QObject::connect(m_pasteNodeAction, &QAction::triggered, [this] {
         juzzlin::L().debug() << "Paste node triggered";
-        if (!m_copyPaste.isEmpty())
-        {
+        if (!m_copyPaste.isEmpty()) {
             m_mediator.saveUndoPoint();
             m_copyPaste.paste();
         }
@@ -128,10 +127,8 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
 
 void MainContextMenu::setMode(const Mode & mode)
 {
-    for (auto && modePair : m_mainContextMenuActions)
-    {
-        for (auto && action : modePair.second)
-        {
+    for (auto && modePair : m_mainContextMenuActions) {
+        for (auto && action : modePair.second) {
             action->setVisible(modePair.first == mode || modePair.first == Mode::All);
         }
     }

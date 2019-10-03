@@ -26,7 +26,6 @@ class Edge;
 class EdgeTextEdit : public TextEdit
 {
 public:
-
     EdgeTextEdit(Edge * parentItem);
 
     void setVisible(bool visible);
@@ -38,7 +37,6 @@ public:
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
 
 private:
-
     QPropertyAnimation m_sizeAnimation;
 
     QTimer m_visibilityTimer;

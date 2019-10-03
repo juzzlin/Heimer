@@ -24,11 +24,9 @@ class Mediator;
 class EdgeContextMenu : public QMenu
 {
 public:
-
     EdgeContextMenu(QWidget * parent, Mediator & mediator);
 
 private:
-
     Mediator & m_mediator;
 
     Edge * m_selectedEdge = nullptr;

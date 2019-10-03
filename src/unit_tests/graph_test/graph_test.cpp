@@ -222,13 +222,15 @@ void GraphTest::testGetEdges()
     const auto edges = dut.getEdges();
     QCOMPARE(edges.size(), static_cast<size_t>(2));
 
-    QVERIFY(std::count_if(edges.begin(), edges.end(), [=] (const EdgeBasePtr & edge) {
-        return edge->sourceNodeBase().index() == node0->index() && edge->targetNodeBase().index() == node1->index();
-    }) == 1);
+    QVERIFY(std::count_if(edges.begin(), edges.end(), [=](const EdgeBasePtr & edge) {
+                return edge->sourceNodeBase().index() == node0->index() && edge->targetNodeBase().index() == node1->index();
+            })
+            == 1);
 
-    QVERIFY(std::count_if(edges.begin(), edges.end(), [=] (const EdgeBasePtr & edge) {
-        return edge->sourceNodeBase().index() == node1->index() && edge->targetNodeBase().index() == node0->index();
-    }) == 1);
+    QVERIFY(std::count_if(edges.begin(), edges.end(), [=](const EdgeBasePtr & edge) {
+                return edge->sourceNodeBase().index() == node1->index() && edge->targetNodeBase().index() == node0->index();
+            })
+            == 1);
 }
 
 void GraphTest::testGetNodes()
@@ -244,13 +246,15 @@ void GraphTest::testGetNodes()
     const auto nodes = dut.getNodes();
     QCOMPARE(nodes.size(), static_cast<size_t>(2));
 
-    QVERIFY(std::count_if(nodes.begin(), nodes.end(), [] (NodeBasePtr node) {
-        return node->index() == 0;
-    }) == 1);
+    QVERIFY(std::count_if(nodes.begin(), nodes.end(), [](NodeBasePtr node) {
+                return node->index() == 0;
+            })
+            == 1);
 
-    QVERIFY(std::count_if(nodes.begin(), nodes.end(), [] (NodeBasePtr node) {
-        return node->index() == 1;
-    }) == 1);
+    QVERIFY(std::count_if(nodes.begin(), nodes.end(), [](NodeBasePtr node) {
+                return node->index() == 1;
+            })
+            == 1);
 }
 
 void GraphTest::testGetNodesConnectedToNode()

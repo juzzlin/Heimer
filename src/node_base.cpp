@@ -51,7 +51,7 @@ void NodeBase::setLocation(QPointF newLocation)
 
 QRectF NodeBase::placementBoundingRect() const
 {
-    return {-size().width() / 2, -size().height() / 2, size().width(), size().height()};
+    return { -size().width() / 2, -size().height() / 2, size().width(), size().height() };
 }
 
 int NodeBase::index() const

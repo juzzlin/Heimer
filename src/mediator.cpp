@@ -15,11 +15,11 @@
 
 #include "mediator.hpp"
 
-#include "mouse_action.hpp"
 #include "editor_data.hpp"
 #include "editor_scene.hpp"
 #include "editor_view.hpp"
 #include "main_window.hpp"
+#include "mouse_action.hpp"
 
 #include "simple_logger.hpp"
 
@@ -29,11 +29,11 @@
 
 #include <cassert>
 
-using std::dynamic_pointer_cast;
 using juzzlin::L;
+using std::dynamic_pointer_cast;
 
 Mediator::Mediator(MainWindow & mainWindow)
-    : m_mainWindow(mainWindow)
+  : m_mainWindow(mainWindow)
 {
     connect(&m_mainWindow, &MainWindow::zoomToFitTriggered, this, &Mediator::zoomToFit);
     connect(&m_mainWindow, &MainWindow::zoomInTriggered, this, &Mediator::zoomIn);
@@ -42,10 +42,8 @@ Mediator::Mediator(MainWindow & mainWindow)
 
 void Mediator::addExistingGraphToScene()
 {
-    for (auto && node : m_editorData->mindMapData()->graph().getNodes())
-    {
-        if (dynamic_pointer_cast<QGraphicsItem>(node)->scene() != m_editorScene.get())
-        {
+    for (auto && node : m_editorData->mindMapData()->graph().getNodes()) {
+        if (dynamic_pointer_cast<QGraphicsItem>(node)->scene() != m_editorScene.get()) {
             auto graphicsNode = dynamic_pointer_cast<Node>(node);
             addItem(*graphicsNode);
             graphicsNode->setCornerRadius(m_editorData->mindMapData()->cornerRadius());
@@ -54,13 +52,11 @@ void Mediator::addExistingGraphToScene()
         }
     }
 
-    for (auto && edge : m_editorData->mindMapData()->graph().getEdges())
-    {
+    for (auto && edge : m_editorData->mindMapData()->graph().getEdges()) {
         auto node0 = dynamic_pointer_cast<Node>(getNodeByIndex(edge->sourceNodeBase().index()));
         auto node1 = dynamic_pointer_cast<Node>(getNodeByIndex(edge->targetNodeBase().index()));
 
-        if (!m_editorScene->hasEdge(*node0, *node1))
-        {
+        if (!m_editorScene->hasEdge(*node0, *node1)) {
             auto graphicsEdge = dynamic_pointer_cast<Edge>(edge);
             assert(graphicsEdge);
             addItem(*graphicsEdge);
@@ -124,13 +120,11 @@ void Mediator::connectNodeToUndoMechanism(NodePtr node)
 
 void Mediator::connectGraphToUndoMechanism()
 {
-    for (auto && node : m_editorData->mindMapData()->graph().getNodes())
-    {
+    for (auto && node : m_editorData->mindMapData()->graph().getNodes()) {
         connectNodeToUndoMechanism(std::dynamic_pointer_cast<Node>(node));
     }
 
-    for (auto && edge : m_editorData->mindMapData()->graph().getEdges())
-    {
+    for (auto && edge : m_editorData->mindMapData()->graph().getEdges()) {
         connectEdgeToUndoMechanism(std::dynamic_pointer_cast<Edge>(edge));
     }
 }
@@ -165,7 +159,7 @@ NodeBasePtr Mediator::createAndAddNode(QPointF pos)
 
     addExistingGraphToScene();
 
-    QTimer::singleShot(0, [node1] () { // Needed due to the context menu
+    QTimer::singleShot(0, [node1]() { // Needed due to the context menu
         node1->setTextInputActive();
     });
 
@@ -181,7 +175,7 @@ NodeBasePtr Mediator::pasteNodeAt(Node & source, QPointF pos)
 
     addExistingGraphToScene();
 
-    QTimer::singleShot(0, [copiedNode] () { // Needed due to the context menu
+    QTimer::singleShot(0, [copiedNode]() { // Needed due to the context menu
         copiedNode->setTextInputActive();
     });
 
@@ -332,8 +326,7 @@ bool Mediator::openMindMap(QString fileName)
 {
     assert(m_editorData);
 
-    try
-    {
+    try {
         m_editorScene->initialize();
 
         m_editorData->loadMindMapData(fileName);
@@ -345,9 +338,7 @@ bool Mediator::openMindMap(QString fileName)
         connectGraphToUndoMechanism();
 
         zoomToFit();
-    }
-    catch (const FileException & e)
-    {
+    } catch (const FileException & e) {
         m_mainWindow.showErrorDialog(e.message());
         return false;
     }
@@ -412,8 +403,7 @@ size_t Mediator::selectionGroupSize() const
 
 void Mediator::setBackgroundColor(QColor color)
 {
-    if (m_editorData->mindMapData()->backgroundColor() != color)
-    {
+    if (m_editorData->mindMapData()->backgroundColor() != color) {
         saveUndoPoint();
         m_editorData->mindMapData()->setBackgroundColor(color);
         m_editorView->setBackgroundBrush(QBrush(color));
@@ -423,8 +413,7 @@ void Mediator::setBackgroundColor(QColor color)
 void Mediator::setCornerRadius(int value)
 {
     // Break loop with the spinbox
-    if (m_editorData->mindMapData()->cornerRadius() != value)
-    {
+    if (m_editorData->mindMapData()->cornerRadius() != value) {
         saveUndoPoint();
         m_editorData->mindMapData()->setCornerRadius(value);
         m_editorView->setCornerRadius(m_editorData->mindMapData()->cornerRadius());
@@ -433,8 +422,7 @@ void Mediator::setCornerRadius(int value)
 
 void Mediator::setEdgeColor(QColor color)
 {
-    if (m_editorData->mindMapData()->edgeColor() != color)
-    {
+    if (m_editorData->mindMapData()->edgeColor() != color) {
         saveUndoPoint();
         m_editorData->mindMapData()->setEdgeColor(color);
         m_editorView->setEdgeColor(color);
@@ -444,8 +432,7 @@ void Mediator::setEdgeColor(QColor color)
 void Mediator::setEdgeWidth(double value)
 {
     // Break loop with the spinbox
-    if (!qFuzzyCompare(m_editorData->mindMapData()->edgeWidth(), value))
-    {
+    if (!qFuzzyCompare(m_editorData->mindMapData()->edgeWidth(), value)) {
         saveUndoPoint();
         m_editorData->mindMapData()->setEdgeWidth(value);
         m_editorView->setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
@@ -471,7 +458,7 @@ void Mediator::setEditorView(EditorView & editorView)
 
     m_editorView->setParent(&m_mainWindow);
 
-    connect(m_editorView, &EditorView::newNodeRequested, [=] (QPointF position) {
+    connect(m_editorView, &EditorView::newNodeRequested, [=](QPointF position) {
         saveUndoPoint();
         createAndAddNode(position);
     });
@@ -497,8 +484,7 @@ void Mediator::setSelectedEdge(Edge * edge)
         m_editorData->selectedEdge()->setSelected(false);
     }
 
-    if (edge)
-    {
+    if (edge) {
         edge->setSelected(true);
     }
 
@@ -513,8 +499,7 @@ void Mediator::setSelectedNode(Node * node)
 void Mediator::setTextSize(int textSize)
 {
     // Break loop with the spinbox
-    if (m_editorData->mindMapData()->textSize() != textSize)
-    {
+    if (m_editorData->mindMapData()->textSize() != textSize) {
         saveUndoPoint();
         m_editorData->mindMapData()->setTextSize(textSize);
     }
@@ -569,24 +554,21 @@ QSize Mediator::zoomForExport()
 
 void Mediator::zoomToFit()
 {
-    if (hasNodes())
-    {
+    if (hasNodes()) {
         m_editorView->zoomToFit(m_editorScene->zoomToFit());
     }
 }
 
 double Mediator::calculateNodeOverlapScore(const Node & node1, const Node & node2) const
 {
-    if (&node1 == &node2)
-    {
+    if (&node1 == &node2) {
         return 0;
     }
 
     const auto rect1 = node1.boundingRect().translated(node1.pos());
     const auto rect2 = node2.boundingRect().translated(node2.pos());
 
-    if (rect1.intersects(rect2))
-    {
+    if (rect1.intersects(rect2)) {
         auto combined = rect1;
         combined = combined.united(rect2);
 
@@ -600,8 +582,7 @@ double Mediator::calculateNodeOverlapScore(const Node & node1, const Node & node
 
 void Mediator::clearSelectedNode()
 {
-    for (auto && node : m_editorData->mindMapData()->graph().getNodes())
-    {
+    for (auto && node : m_editorData->mindMapData()->graph().getNodes()) {
         node->setSelected(false);
     }
 }
@@ -611,16 +592,11 @@ NodePtr Mediator::getBestOverlapNode(const Node & source)
     NodePtr bestNode;
     double bestScore = 0;
 
-    for (auto && nodeBase : m_editorData->mindMapData()->graph().getNodes())
-    {
-        if (const auto node = std::dynamic_pointer_cast<Node>(nodeBase))
-        {
-            if (node->index() != source.index() && node->index() != mouseAction().sourceNode()->index() &&
-                !areDirectlyConnected(*node, *mouseAction().sourceNode()))
-            {
+    for (auto && nodeBase : m_editorData->mindMapData()->graph().getNodes()) {
+        if (const auto node = std::dynamic_pointer_cast<Node>(nodeBase)) {
+            if (node->index() != source.index() && node->index() != mouseAction().sourceNode()->index() && !areDirectlyConnected(*node, *mouseAction().sourceNode())) {
                 const auto score = calculateNodeOverlapScore(source, *node);
-                if (score > 0.75 && score > bestScore)
-                {
+                if (score > 0.75 && score > bestScore) {
                     bestNode = node;
                     bestScore = score;
                 }

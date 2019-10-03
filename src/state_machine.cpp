@@ -24,8 +24,7 @@ StateMachine::StateMachine()
 
 void StateMachine::calculateState(StateMachine::Action action)
 {
-    switch (action)
-    {
+    switch (action) {
     case Action::BackgroundColorChangeRequested:
         m_state = State::ShowBackgroundColorDialog;
         break;
@@ -40,12 +39,9 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::NewSelected:
         m_quitType = QuitType::New;
-        if (m_mediator->isModified())
-        {
+        if (m_mediator->isModified()) {
             m_state = State::ShowNotSavedDialog;
-        }
-        else
-        {
+        } else {
             m_state = State::InitializeNewMindMap;
         }
         break;
@@ -57,8 +53,7 @@ void StateMachine::calculateState(StateMachine::Action action)
     case Action::NotSavedDialogDiscarded:
     case Action::MindMapSaved:
     case Action::MindMapSavedAs:
-        switch (m_quitType)
-        {
+        switch (m_quitType) {
         case QuitType::Close:
             m_state = State::Exit;
             break;
@@ -88,12 +83,9 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::OpenSelected:
         m_quitType = QuitType::Open;
-        if (m_mediator->isModified())
-        {
+        if (m_mediator->isModified()) {
             m_state = State::ShowNotSavedDialog;
-        }
-        else
-        {
+        } else {
             m_state = State::ShowOpenDialog;
         }
         break;
@@ -104,24 +96,18 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::QuitSelected:
         m_quitType = QuitType::Close;
-        if (m_mediator->isModified())
-        {
+        if (m_mediator->isModified()) {
             m_state = State::ShowNotSavedDialog;
-        }
-        else
-        {
+        } else {
             m_state = State::Exit;
         }
         break;
 
     case Action::NotSavedDialogAccepted:
     case Action::SaveSelected:
-        if (m_mediator->canBeSaved())
-        {
+        if (m_mediator->canBeSaved()) {
             m_state = State::SaveMindMap;
-        }
-        else
-        {
+        } else {
             m_state = State::ShowSaveAsDialog;
         }
         break;

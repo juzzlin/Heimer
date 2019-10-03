@@ -43,9 +43,12 @@ using juzzlin::L;
 
 static void printHelp()
 {
-    std::cout << std::endl << "Heimer version " << VERSION << std::endl;
-    std::cout << Constants::Application::COPYRIGHT << std::endl << std::endl;
-    std::cout << "Usage: heimer [options] [mindMapFile]" << std::endl << std::endl;
+    std::cout << std::endl
+              << "Heimer version " << VERSION << std::endl;
+    std::cout << Constants::Application::COPYRIGHT << std::endl
+              << std::endl;
+    std::cout << "Usage: heimer [options] [mindMapFile]" << std::endl
+              << std::endl;
     std::cout << "Options:" << std::endl;
     std::cout << "--help        Show this help." << std::endl;
     std::cout << "--lang [lang] Force language: fi, fr, it." << std::endl;
@@ -54,61 +57,48 @@ static void printHelp()
 
 static void initTranslations(QTranslator & appTranslator, QTranslator & qtTranslator, QGuiApplication & app, QString lang = "")
 {
-    if (lang.isEmpty())
-    {
+    if (lang.isEmpty()) {
         lang = QLocale::system().name();
     }
 
     // Qt's built-in translations
-    if (qtTranslator.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
-    {
+    if (qtTranslator.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
         app.installTranslator(&qtTranslator);
         L().info() << "Loaded Qt translations for " << lang.toStdString();
-    }
-    else
-    {
+    } else {
         L().warning() << "Failed to load Qt translations for " << lang.toStdString();
     }
 
     // Application's translations
-    if (appTranslator.load(Constants::Application::TRANSLATIONS_RESOURCE_BASE + lang))
-    {
+    if (appTranslator.load(Constants::Application::TRANSLATIONS_RESOURCE_BASE + lang)) {
         app.installTranslator(&appTranslator);
         L().info() << "Loaded application translations for " << lang.toStdString();
-    }
-    else
-    {
+    } else {
         L().warning() << "Failed to load application translations for " << lang.toStdString();
     }
 }
 
-}
+} // namespace
 
 void Application::parseArgs(int argc, char ** argv)
 {
     const std::vector<QString> args(argv, argv + argc);
-    for (unsigned int i = 1; i < args.size(); i++)
-    {
-        if (args[i] == "-h" || args[i] == "--help")
-        {
+    for (unsigned int i = 1; i < args.size(); i++) {
+        if (args[i] == "-h" || args[i] == "--help") {
             printHelp();
             throw UserException("Exit due to help.");
-        }
-        else if (args[i] == "--lang" && (i + i) < args.size())
-        {
+        } else if (args[i] == "--lang" && (i + i) < args.size()) {
             m_lang = args[i + 1];
             i++;
-        }
-        else
-        {
+        } else {
             m_mindMapFile = args[i];
         }
     }
 }
 
 Application::Application(int & argc, char ** argv)
-    : m_app(argc, argv)
-    , m_stateMachine(new StateMachine)
+  : m_app(argc, argv)
+  , m_stateMachine(new StateMachine)
 {
     parseArgs(argc, argv);
 
@@ -136,7 +126,7 @@ Application::Application(int & argc, char ** argv)
     connect(m_mainWindow.get(), &MainWindow::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
     connect(m_stateMachine.get(), &StateMachine::stateChanged, this, &Application::runState);
 
-    connect(m_editorData.get(), &EditorData::isModifiedChanged, [=] (bool isModified) {
+    connect(m_editorData.get(), &EditorData::isModifiedChanged, [=](bool isModified) {
         m_mainWindow->enableSave(isModified && m_mediator->canBeSaved());
     });
 
@@ -153,8 +143,7 @@ Application::Application(int & argc, char ** argv)
 
     m_mainWindow->show();
 
-    if (!m_mindMapFile.isEmpty())
-    {
+    if (!m_mindMapFile.isEmpty()) {
         QTimer::singleShot(0, this, &Application::openArgMindMap);
     }
 }
@@ -180,8 +169,7 @@ int Application::run()
 
 void Application::runState(StateMachine::State state)
 {
-    switch (state)
-    {
+    switch (state) {
     case StateMachine::State::TryCloseWindow:
         m_mainWindow->saveWindowSize();
         m_mainWindow->close();
@@ -210,8 +198,7 @@ void Application::runState(StateMachine::State state)
         showPngExportDialog();
         break;
     case StateMachine::State::ShowNotSavedDialog:
-        switch (showNotSavedDialog())
-        {
+        switch (showNotSavedDialog()) {
         case QMessageBox::Save:
             emit actionTriggered(StateMachine::Action::NotSavedDialogAccepted);
             break;
@@ -243,8 +230,7 @@ void Application::openMindMap()
 
     const auto path = loadRecentPath();
     const auto fileName = QFileDialog::getOpenFileName(m_mainWindow.get(), tr("Open File"), path, getFileDialogFileText());
-    if (!fileName.isEmpty())
-    {
+    if (!fileName.isEmpty()) {
         doOpenMindMap(fileName);
     }
 }
@@ -253,8 +239,7 @@ void Application::doOpenMindMap(QString fileName)
 {
     L().debug() << "Opening '" << fileName.toStdString();
 
-    if (m_mediator->openMindMap(fileName))
-    {
+    if (m_mediator->openMindMap(fileName)) {
         m_mainWindow->disableUndoAndRedo();
 
         saveRecentPath(fileName);
@@ -262,9 +247,7 @@ void Application::doOpenMindMap(QString fileName)
         m_mainWindow->setSaveActionStatesOnOpenedMindMap();
 
         emit actionTriggered(StateMachine::Action::MindMapOpened);
-    }
-    else
-    {
+    } else {
         emit actionTriggered(StateMachine::Action::OpeningMindMapFailed);
     }
 }
@@ -273,8 +256,7 @@ void Application::saveMindMap()
 {
     L().debug() << "Save..";
 
-    if (!m_mediator->saveMindMap())
-    {
+    if (!m_mediator->saveMindMap()) {
         const auto msg = QString(tr("Failed to save file."));
         L().error() << msg.toStdString();
         showMessageBox(msg);
@@ -286,35 +268,29 @@ void Application::saveMindMap()
     emit actionTriggered(StateMachine::Action::MindMapSaved);
 }
 
-
 void Application::saveMindMapAs()
 {
     L().debug() << "Save as..";
 
     QString fileName = QFileDialog::getSaveFileName(
-        m_mainWindow.get(),
-        tr("Save File As"),
-        QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
-        getFileDialogFileText());
+      m_mainWindow.get(),
+      tr("Save File As"),
+      QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
+      getFileDialogFileText());
 
-    if (fileName.isEmpty())
-    {
+    if (fileName.isEmpty()) {
         return;
     }
 
-    if (!fileName.endsWith(Constants::Application::FILE_EXTENSION))
-    {
+    if (!fileName.endsWith(Constants::Application::FILE_EXTENSION)) {
         fileName += Constants::Application::FILE_EXTENSION;
     }
 
-    if (m_mediator->saveMindMapAs(fileName))
-    {
+    if (m_mediator->saveMindMapAs(fileName)) {
         const auto msg = QString(tr("File '")) + fileName + tr("' saved.");
         L().debug() << msg.toStdString();
         emit actionTriggered(StateMachine::Action::MindMapSavedAs);
-    }
-    else
-    {
+    } else {
         const auto msg = QString(tr("Failed to save file as '") + fileName + "'.");
         L().error() << msg.toStdString();
         showMessageBox(msg);

@@ -26,7 +26,6 @@ class NodeBase;
 class EdgeBase
 {
 public:
-
     enum class ArrowMode
     {
         Single = 0,
@@ -56,7 +55,9 @@ public:
 
     virtual void setText(const QString & text);
 
-    virtual ~EdgeBase() {}
+    virtual ~EdgeBase()
+    {
+    }
 
     virtual double width() const;
 
@@ -75,7 +76,6 @@ public:
     virtual void setSelected(bool selected);
 
 private:
-
     NodeBase * m_sourceNode;
 
     NodeBase * m_targetNode;

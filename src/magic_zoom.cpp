@@ -25,10 +25,8 @@ QRectF MagicZoom::calculateRectangle(const EditorScene & scene, bool isForExport
     double nodeArea = 0;
     QRectF rect;
     int nodes = 0;
-    for (auto && item : scene.items())
-    {
-        if (auto node = dynamic_cast<Node *>(item))
-        {
+    for (auto && item : scene.items()) {
+        if (auto node = dynamic_cast<Node *>(item)) {
             const auto nodeRect = node->placementBoundingRect();
             rect = rect.united(nodeRect.translated(node->pos().x(), node->pos().y()));
             nodeArea += nodeRect.width() * nodeRect.height();
@@ -38,8 +36,7 @@ QRectF MagicZoom::calculateRectangle(const EditorScene & scene, bool isForExport
 
     const int margin = 60;
 
-    if (isForExport)
-    {
+    if (isForExport) {
         return rect.adjusted(-margin, -margin, margin, margin);
     }
 

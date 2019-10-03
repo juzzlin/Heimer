@@ -33,14 +33,10 @@ void Graph::clear()
 
 void Graph::addNode(NodeBasePtr node)
 {
-    if (node->index() == -1)
-    {
+    if (node->index() == -1) {
         node->setIndex(m_count++);
-    }
-    else
-    {
-        if (node->index() >= m_count)
-        {
+    } else {
+        if (node->index() >= m_count) {
             m_count = node->index() + 1;
         }
     }
@@ -52,15 +48,13 @@ void Graph::deleteEdge(int index0, int index1)
 {
     EdgeVector::iterator edgeIter;
     bool edgeErased = false;
-    do
-    {
+    do {
         edgeIter = std::find_if(
-            m_edges.begin(), m_edges.end(), [=] (const EdgeBasePtr & edge){
-                return edge->sourceNodeBase().index() == index0 && edge->targetNodeBase().index() == index1;
-            });
+          m_edges.begin(), m_edges.end(), [=](const EdgeBasePtr & edge) {
+              return edge->sourceNodeBase().index() == index0 && edge->targetNodeBase().index() == index1;
+          });
         edgeErased = edgeIter != m_edges.end();
-        if (edgeErased)
-        {
+        if (edgeErased) {
             m_edges.erase(edgeIter);
         }
     } while (edgeErased);
@@ -68,24 +62,20 @@ void Graph::deleteEdge(int index0, int index1)
 
 void Graph::deleteNode(int index)
 {
-    const auto iter = std::find_if(m_nodes.begin(), m_nodes.end(), [=] (const NodeBasePtr & node) {
+    const auto iter = std::find_if(m_nodes.begin(), m_nodes.end(), [=](const NodeBasePtr & node) {
         return node->index() == index;
     });
 
-    if (iter != m_nodes.end())
-    {
+    if (iter != m_nodes.end()) {
         EdgeVector::iterator edgeIter;
         bool edgeErased = false;
-        do
-        {
+        do {
             edgeIter = std::find_if(
-                m_edges.begin(), m_edges.end(), [=](const EdgeBasePtr & edge){
-                    return edge->sourceNodeBase().index() == index ||
-                           edge->targetNodeBase().index() == index;
-                });
+              m_edges.begin(), m_edges.end(), [=](const EdgeBasePtr & edge) {
+                  return edge->sourceNodeBase().index() == index || edge->targetNodeBase().index() == index;
+              });
             edgeErased = edgeIter != m_edges.end();
-            if (edgeErased)
-            {
+            if (edgeErased) {
                 m_edges.erase(edgeIter);
             }
         } while (edgeErased);
@@ -98,11 +88,10 @@ void Graph::addEdge(EdgeBasePtr newEdge)
 {
     // Add if such edge doesn't already exist
     if (std::count_if(
-        m_edges.begin(), m_edges.end(), [=](const EdgeBasePtr & edge){
-            return edge->sourceNodeBase().index() == newEdge->sourceNodeBase().index() &&
-                   edge->targetNodeBase().index() == newEdge->targetNodeBase().index();
-        }) == 0)
-    {
+          m_edges.begin(), m_edges.end(), [=](const EdgeBasePtr & edge) {
+              return edge->sourceNodeBase().index() == newEdge->sourceNodeBase().index() && edge->targetNodeBase().index() == newEdge->targetNodeBase().index();
+          })
+        == 0) {
         m_edges.push_back(newEdge);
     }
 }
@@ -112,10 +101,10 @@ void Graph::addEdge(int node0, int node1)
 {
     // Add if such edge doesn't already exist
     if (std::count_if(
-        m_edges.begin(), m_edges.end(), [=](const EdgeBasePtr & edge){
-            return edge->sourceNodeBase().index() == node0 && edge->targetNodeBase().index() == node1;
-        }) == 0)
-    {
+          m_edges.begin(), m_edges.end(), [=](const EdgeBasePtr & edge) {
+              return edge->sourceNodeBase().index() == node0 && edge->targetNodeBase().index() == node1;
+          })
+        == 0) {
         m_edges.push_back(std::make_shared<EdgeBase>(*getNode(node0), *getNode(node1)));
     }
 }
@@ -123,12 +112,9 @@ void Graph::addEdge(int node0, int node1)
 
 bool Graph::areDirectlyConnected(NodeBasePtr node0, NodeBasePtr node1)
 {
-    for (auto && edge : m_edges)
-    {
-        if ((edge->sourceNodeBase().index() == node0->index() && edge->targetNodeBase().index() == node1->index()) ||
-            (edge->sourceNodeBase().index() == node1->index() && edge->targetNodeBase().index() == node0->index()))
-        {
-          return true;
+    for (auto && edge : m_edges) {
+        if ((edge->sourceNodeBase().index() == node0->index() && edge->targetNodeBase().index() == node1->index()) || (edge->sourceNodeBase().index() == node1->index() && edge->targetNodeBase().index() == node0->index())) {
+            return true;
         }
     }
     return false;
@@ -147,10 +133,8 @@ const Graph::EdgeVector & Graph::getEdges() const
 Graph::EdgeVector Graph::getEdgesFromNode(NodeBasePtr node)
 {
     Graph::EdgeVector edges;
-    for (auto && edge : m_edges)
-    {
-        if (edge->sourceNodeBase().index() == node->index())
-        {
+    for (auto && edge : m_edges) {
+        if (edge->sourceNodeBase().index() == node->index()) {
             edges.push_back(edge);
         }
     }
@@ -160,10 +144,8 @@ Graph::EdgeVector Graph::getEdgesFromNode(NodeBasePtr node)
 Graph::EdgeVector Graph::getEdgesToNode(NodeBasePtr node)
 {
     Graph::EdgeVector edges;
-    for (auto && edge : m_edges)
-    {
-        if (edge->targetNodeBase().index() == node->index())
-        {
+    for (auto && edge : m_edges) {
+        if (edge->targetNodeBase().index() == node->index()) {
             edges.push_back(edge);
         }
     }
@@ -172,7 +154,7 @@ Graph::EdgeVector Graph::getEdgesToNode(NodeBasePtr node)
 
 NodeBasePtr Graph::getNode(int index)
 {
-    auto iter = std::find_if(m_nodes.begin(), m_nodes.end(), [=] (const NodeBasePtr & node) {
+    auto iter = std::find_if(m_nodes.begin(), m_nodes.end(), [=](const NodeBasePtr & node) {
         return node->index() == index;
     });
     return iter != m_nodes.end() ? *iter : NodeBasePtr();
@@ -190,13 +172,11 @@ Graph::NodeVector Graph::getNodesConnectedToNode(NodeBasePtr node)
     auto && from = getEdgesFromNode(node);
     auto && to = getEdgesToNode(node);
 
-    for (auto && edge : to)
-    {
+    for (auto && edge : to) {
         result.push_back(getNode(edge->sourceNodeBase().index()));
     }
 
-    for (auto && edge : from)
-    {
+    for (auto && edge : from) {
         result.push_back(getNode(edge->targetNodeBase().index()));
     }
 

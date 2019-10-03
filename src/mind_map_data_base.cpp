@@ -16,12 +16,12 @@
 #include "mind_map_data_base.hpp"
 
 MindMapDataBase::MindMapDataBase(QString name)
-    : m_name(name)
+  : m_name(name)
 {
 }
 
 MindMapDataBase::MindMapDataBase(const MindMapDataBase & other)
-    : m_name(other.m_name)
+  : m_name(other.m_name)
 {
 }
 

@@ -20,7 +20,6 @@ class SerializerTest : public QObject
     Q_OBJECT
 
 public:
-
     SerializerTest();
 
 private slots:

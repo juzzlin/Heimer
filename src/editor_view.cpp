@@ -27,16 +27,16 @@
 #include "editor_view.hpp"
 
 #include "constants.hpp"
-#include "edge_context_menu.hpp"
-#include "mouse_action.hpp"
 #include "edge.hpp"
+#include "edge_context_menu.hpp"
 #include "edge_text_edit.hpp"
 #include "graphics_factory.hpp"
-#include "simple_logger.hpp"
 #include "mediator.hpp"
 #include "mind_map_data.hpp"
+#include "mouse_action.hpp"
 #include "node.hpp"
 #include "node_handle.hpp"
+#include "simple_logger.hpp"
 
 #include "contrib/SimpleLogger/src/simple_logger.hpp"
 
@@ -46,10 +46,10 @@
 using juzzlin::L;
 
 EditorView::EditorView(Mediator & mediator)
-    : m_mediator(mediator)
-    , m_copyPaste(mediator, m_grid)
-    , m_edgeContextMenu(new EdgeContextMenu(this, m_mediator))
-    , m_mainContextMenu(new MainContextMenu(this, m_mediator, m_grid, m_copyPaste))
+  : m_mediator(mediator)
+  , m_copyPaste(mediator, m_grid)
+  , m_edgeContextMenu(new EdgeContextMenu(this, m_mediator))
+  , m_mainContextMenu(new MainContextMenu(this, m_mediator, m_grid, m_copyPaste))
 {
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -68,42 +68,34 @@ EditorView::EditorView(Mediator & mediator)
 
 void EditorView::finishRubberBand()
 {
-    m_mediator.setRectagleSelection({mapToScene(m_rubberBand->geometry().topLeft()), mapToScene(m_rubberBand->geometry().bottomRight())});
+    m_mediator.setRectagleSelection({ mapToScene(m_rubberBand->geometry().topLeft()), mapToScene(m_rubberBand->geometry().bottomRight()) });
 
     m_rubberBand->hide();
 }
 
 void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
 {
-    if (m_mediator.selectionGroupSize())
-    {
+    if (m_mediator.selectionGroupSize()) {
         m_mediator.clearSelectionGroup();
     }
     m_mediator.setSelectedEdge(nullptr);
     m_mediator.setSelectedNode(nullptr);
 
-    if (event.button() == Qt::LeftButton)
-    {
-        if (isControlPressed())
-        {
+    if (event.button() == Qt::LeftButton) {
+        if (isControlPressed()) {
             initiateRubberBand();
-        }
-        else
-        {
+        } else {
             m_mediator.mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
             setDragMode(ScrollHandDrag);
         }
-    }
-    else if (event.button() == Qt::RightButton)
-    {
+    } else if (event.button() == Qt::RightButton) {
         openMainContextMenu(MainContextMenu::Mode::Background);
     }
 }
 
 void EditorView::handleMousePressEventOnEdge(QMouseEvent & event, Edge & edge)
 {
-    if (event.button() == Qt::RightButton)
-    {
+    if (event.button() == Qt::RightButton) {
         handleRightButtonClickOnEdge(edge);
     }
 }
@@ -112,12 +104,9 @@ void EditorView::handleMousePressEventOnNode(QMouseEvent & event, Node & node)
 {
     if (node.index() != -1) // Prevent right-click on the drag node
     {
-        if (event.button() == Qt::RightButton)
-        {
+        if (event.button() == Qt::RightButton) {
             handleRightButtonClickOnNode(node);
-        }
-        else if (event.button() == Qt::LeftButton)
-        {
+        } else if (event.button() == Qt::LeftButton) {
             handleLeftButtonClickOnNode(node);
         }
     }
@@ -125,29 +114,24 @@ void EditorView::handleMousePressEventOnNode(QMouseEvent & event, Node & node)
 
 void EditorView::handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHandle & nodeHandle)
 {
-    if (isControlPressed())
-    {
+    if (isControlPressed()) {
         return;
     }
 
     m_mediator.clearSelectionGroup();
 
-    if (event.button() == Qt::LeftButton)
-    {
+    if (event.button() == Qt::LeftButton) {
         handleLeftButtonClickOnNodeHandle(nodeHandle);
     }
 }
 
 void EditorView::handleLeftButtonClickOnNode(Node & node)
 {
-    if (isControlPressed())
-    {
+    if (isControlPressed()) {
         // Use is selecting a node
 
         m_mediator.toggleNodeInSelectionGroup(node);
-    }
-    else
-    {
+    } else {
         // Clear selection group if the node is not in it
         if (m_mediator.selectionGroupSize() && !m_mediator.isInSelectionGroup(node)) {
             m_mediator.clearSelectionGroup();
@@ -169,8 +153,7 @@ void EditorView::handleLeftButtonClickOnNode(Node & node)
 
 void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
 {
-    switch (nodeHandle.role())
-    {
+    switch (nodeHandle.role()) {
     case NodeHandle::Role::Add:
         initiateNewNodeDrag(nodeHandle);
         break;
@@ -219,11 +202,10 @@ void EditorView::initiateNewNodeDrag(NodeHandle & nodeHandle)
 void EditorView::initiateRubberBand()
 {
     m_mediator.mouseAction().setRubberBandOrigin(m_clickedPos);
-    if (!m_rubberBand)
-    {
-        m_rubberBand = new QRubberBand{QRubberBand::Rectangle, this};
+    if (!m_rubberBand) {
+        m_rubberBand = new QRubberBand { QRubberBand::Rectangle, this };
     }
-    m_rubberBand->setGeometry(QRect{m_clickedPos, QSize{}});
+    m_rubberBand->setGeometry(QRect { m_clickedPos, QSize {} });
     m_rubberBand->show();
 }
 
@@ -238,28 +220,21 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
     m_mappedPos = mapToScene(event->pos());
     m_mediator.mouseAction().setMappedPos(m_mappedPos);
 
-    switch (m_mediator.mouseAction().action())
-    {
+    switch (m_mediator.mouseAction().action()) {
     case MouseAction::Action::MoveNode:
-        if (const auto node = m_mediator.mouseAction().sourceNode())
-        {
-            if (!m_mediator.isInSelectionGroup(*node))
-            {
+        if (const auto node = m_mediator.mouseAction().sourceNode()) {
+            if (!m_mediator.isInSelectionGroup(*node)) {
                 m_mediator.clearSelectionGroup();
             }
 
-            if (m_mediator.selectionGroupSize())
-            {
+            if (m_mediator.selectionGroupSize()) {
                 m_mediator.moveSelectionGroup(*node, m_grid.snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
-            }
-            else
-            {
+            } else {
                 node->setLocation(m_grid.snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
             }
         }
         break;
-    case MouseAction::Action::CreateOrConnectNode:
-    {
+    case MouseAction::Action::CreateOrConnectNode: {
         showDummyDragNode(true);
         showDummyDragEdge(true);
         m_dummyDragNode->setPos(m_grid.snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
@@ -271,13 +246,11 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
 
         m_connectionTargetNode = nullptr;
         // TODO: Use items() to pre-filter the nodes
-        if (auto && node = m_mediator.getBestOverlapNode(*m_dummyDragNode))
-        {
+        if (auto && node = m_mediator.getBestOverlapNode(*m_dummyDragNode)) {
             node->setSelected(true);
             m_connectionTargetNode = node;
         }
-    }
-        break;
+    } break;
     case MouseAction::Action::RubberBand:
         updateRubberBand();
         break;
@@ -302,27 +275,19 @@ void EditorView::mousePressEvent(QMouseEvent * event)
     // Fetch all items at the location
     QList<QGraphicsItem *> items = scene()->items(clickRect, Qt::IntersectsItemShape, Qt::DescendingOrder);
 
-    if (items.size())
-    {
+    if (items.size()) {
         auto item = *items.begin();
-        if (auto node = dynamic_cast<Node *>(item))
-        {
+        if (auto node = dynamic_cast<Node *>(item)) {
             handleMousePressEventOnNode(*event, *node);
-        }
-        else if (auto edge = dynamic_cast<Edge *>(item))
-        {
+        } else if (auto edge = dynamic_cast<Edge *>(item)) {
             handleMousePressEventOnEdge(*event, *edge);
-        }
-        else if (auto node = dynamic_cast<NodeHandle *>(item))
-        {
+        } else if (auto node = dynamic_cast<NodeHandle *>(item)) {
             handleMousePressEventOnNodeHandle(*event, *node);
         }
         // This hack enables edge context menu even if user clicks on the edge text edit.
         // Must be the last else-if branch.
-        else if (auto edgeTextEdit = dynamic_cast<EdgeTextEdit *>(item))
-        {
-            if (event->button() == Qt::RightButton)
-            {
+        else if (auto edgeTextEdit = dynamic_cast<EdgeTextEdit *>(item)) {
+            if (event->button() == Qt::RightButton) {
                 auto edge = dynamic_cast<Edge *>(edgeTextEdit->parentItem());
                 if (edge) {
                     handleMousePressEventOnEdge(*event, *edge);
@@ -330,9 +295,7 @@ void EditorView::mousePressEvent(QMouseEvent * event)
                 }
             }
         }
-    }
-    else
-    {
+    } else {
         handleMousePressEventOnBackground(*event);
     }
 
@@ -341,24 +304,18 @@ void EditorView::mousePressEvent(QMouseEvent * event)
 
 void EditorView::mouseReleaseEvent(QMouseEvent * event)
 {
-    if (event->button() == Qt::LeftButton)
-    {
-        switch (m_mediator.mouseAction().action())
-        {
+    if (event->button() == Qt::LeftButton) {
+        switch (m_mediator.mouseAction().action()) {
         case MouseAction::Action::MoveNode:
             m_mediator.mouseAction().clear();
             break;
         case MouseAction::Action::CreateOrConnectNode:
-            if (auto sourceNode = m_mediator.mouseAction().sourceNode())
-            {
-                if (m_connectionTargetNode)
-                {
+            if (auto sourceNode = m_mediator.mouseAction().sourceNode()) {
+                if (m_connectionTargetNode) {
                     m_mediator.addEdge(*sourceNode, *m_connectionTargetNode);
                     m_connectionTargetNode->setSelected(false);
                     m_connectionTargetNode = nullptr;
-                }
-                else
-                {
+                } else {
                     m_mediator.createAndAddNode(sourceNode->index(), m_grid.snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
                 }
 
@@ -427,17 +384,13 @@ void EditorView::resetDummyDragItems()
 
 void EditorView::showDummyDragEdge(bool show)
 {
-    if (auto sourceNode = m_mediator.mouseAction().sourceNode())
-    {
-        if (!m_dummyDragEdge)
-        {
+    if (auto sourceNode = m_mediator.mouseAction().sourceNode()) {
+        if (!m_dummyDragEdge) {
             L().debug() << "Creating a new dummy drag edge";
             m_dummyDragEdge = new Edge(*sourceNode, *m_dummyDragNode, false, false);
             m_dummyDragEdge->setOpacity(0.5);
             scene()->addItem(m_dummyDragEdge);
-        }
-        else
-        {
+        } else {
             m_dummyDragEdge->setSourceNode(*sourceNode);
             m_dummyDragEdge->setTargetNode(*m_dummyDragNode);
         }
@@ -450,8 +403,7 @@ void EditorView::showDummyDragEdge(bool show)
 
 void EditorView::showDummyDragNode(bool show)
 {
-    if (!m_dummyDragNode)
-    {
+    if (!m_dummyDragNode) {
         L().debug() << "Creating a new dummy drag node";
         m_dummyDragNode = new Node;
         scene()->addItem(m_dummyDragNode);
@@ -514,25 +466,16 @@ void EditorView::zoomToFit(QRectF nodeBoundingRect)
     const double viewAspect = double(rect().height()) / rect().width();
     const double nodeAspect = nodeBoundingRect.height() / nodeBoundingRect.width();
 
-    if (viewAspect < 1.0)
-    {
-        if (nodeAspect < viewAspect)
-        {
+    if (viewAspect < 1.0) {
+        if (nodeAspect < viewAspect) {
             m_scaleValue = static_cast<int>(rect().width() * 100 / nodeBoundingRect.width());
-        }
-        else
-        {
+        } else {
             m_scaleValue = static_cast<int>(rect().height() * 100 / nodeBoundingRect.height());
         }
-    }
-    else
-    {
-        if (nodeAspect > viewAspect)
-        {
+    } else {
+        if (nodeAspect > viewAspect) {
             m_scaleValue = static_cast<int>(rect().height() * 100 / nodeBoundingRect.height());
-        }
-        else
-        {
+        } else {
             m_scaleValue = static_cast<int>(rect().width() * 100 / nodeBoundingRect.width());
         }
     }

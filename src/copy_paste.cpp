@@ -21,8 +21,8 @@
 #include "node.hpp"
 
 CopyPaste::CopyPaste(Mediator & mediator, Grid & grid)
-    : m_mediator(mediator)
-    , m_grid(grid)
+  : m_mediator(mediator)
+  , m_grid(grid)
 {
 }
 

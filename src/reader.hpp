@@ -22,7 +22,7 @@
 
 namespace Reader {
 
-    QDomDocument readFromFile(QString filePath);
+QDomDocument readFromFile(QString filePath);
 
 }
 

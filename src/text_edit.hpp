@@ -24,7 +24,6 @@ class TextEdit : public QGraphicsTextItem
     Q_OBJECT
 
 public:
-
     explicit TextEdit(QGraphicsItem * parentItem);
 
     virtual double maxHeight() const;
@@ -56,13 +55,11 @@ signals:
     void undoPointRequested();
 
 protected:
-
     virtual void keyPressEvent(QKeyEvent * event) override;
 
     virtual void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
 
 private:
-
     double m_maxHeight = 0;
 
     double m_maxWidth = 0;

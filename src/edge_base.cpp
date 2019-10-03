@@ -17,8 +17,8 @@
 #include "node_base.hpp"
 
 EdgeBase::EdgeBase(NodeBase & sourceNode, NodeBase & targetNode)
-    : m_sourceNode(&sourceNode)
-    , m_targetNode(&targetNode)
+  : m_sourceNode(&sourceNode)
+  , m_targetNode(&targetNode)
 {
 }
 

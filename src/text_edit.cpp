@@ -23,11 +23,11 @@
 #include <QTextOption>
 
 TextEdit::TextEdit(QGraphicsItem * parentItem)
-    : QGraphicsTextItem(parentItem)
+  : QGraphicsTextItem(parentItem)
 {
 #ifndef HEIMER_UNIT_TEST
     setTextInteractionFlags(Qt::TextEditorInteraction);
-    setDefaultTextColor({0, 0, 0});
+    setDefaultTextColor({ 0, 0, 0 });
 #endif
 }
 
@@ -36,13 +36,11 @@ void TextEdit::keyPressEvent(QKeyEvent * event)
     const auto prevText = m_text;
 
     // Don't mix the global undo and text edit's internal undo
-    if (!event->matches(QKeySequence::Undo))
-    {
+    if (!event->matches(QKeySequence::Undo)) {
         QGraphicsTextItem::keyPressEvent(event);
 
         const auto newText = toPlainText();
-        if (prevText != newText)
-        {
+        if (prevText != newText) {
             m_text = newText;
             emit textChanged(newText);
         }

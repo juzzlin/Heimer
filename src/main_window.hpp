@@ -16,9 +16,9 @@
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
-#include <QMainWindow>
 #include <QCloseEvent>
 #include <QGraphicsScene>
+#include <QMainWindow>
 #include <QString>
 
 #include "state_machine.hpp"
@@ -42,7 +42,6 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-
     MainWindow();
 
     ~MainWindow() override;
@@ -82,7 +81,6 @@ public slots:
     void showErrorDialog(QString message);
 
 protected:
-
     void closeEvent(QCloseEvent * event) override;
 
 signals:
@@ -112,7 +110,6 @@ private slots:
     void showAboutQtDlg();
 
 private:
-
     void addRedoAction(QMenu & menu);
 
     void addUndoAction(QMenu & menu);
@@ -167,4 +164,3 @@ private:
 };
 
 #endif // MAINWINDOW_HPP
-

@@ -16,8 +16,8 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 
-#include "node_base.hpp"
 #include "edge_base.hpp"
+#include "node_base.hpp"
 
 #include <map>
 #include <set>
@@ -27,12 +27,11 @@ class NodeBase;
 class Graph
 {
 public:
-
     Graph();
 
     Graph(const Graph & other) = delete;
 
-    Graph & operator= (const Graph & other) = delete;
+    Graph & operator=(const Graph & other) = delete;
 
     virtual ~Graph();
 
@@ -71,7 +70,6 @@ public:
     NodeVector getNodesConnectedToNode(NodeBasePtr node);
 
 private:
-
     NodeVector m_nodes;
 
     EdgeVector m_edges;

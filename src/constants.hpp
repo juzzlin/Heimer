@@ -40,7 +40,7 @@ static constexpr auto SUPPORT_SITE_URL = "https://www.patreon.com/juzzlin";
 
 static constexpr auto TRANSLATIONS_RESOURCE_BASE = ":/heimer_";
 
-} // Application
+} // namespace Application
 
 namespace Edge {
 
@@ -50,13 +50,13 @@ static const double ARROW_OPENING = 150;
 
 static const double CORNER_RADIUS_SCALE = 0.3;
 
-static const QColor DOT_COLOR{255, 0, 0, 192};
+static const QColor DOT_COLOR { 255, 0, 0, 192 };
 
 static const int DOT_DURATION = 2000;
 
 static const int DOT_RADIUS = 10;
 
-static const QColor LABEL_COLOR{0xff, 0xee, 0xaa};
+static const QColor LABEL_COLOR { 0xff, 0xee, 0xaa };
 
 static const int LABEL_DURATION = 2000;
 
@@ -72,7 +72,7 @@ static const int TEXT_EDIT_DURATION = 2000;
 
 static const double WIDTH_SCALE = 0.5;
 
-} // Edge
+} // namespace Edge
 
 namespace Export {
 
@@ -82,7 +82,7 @@ static const int MIN_IMAGE_SIZE = 0;
 
 static const int MAX_IMAGE_SIZE = 99999;
 
-} // Export
+} // namespace Export
 
 namespace Grid {
 
@@ -90,19 +90,19 @@ static const int MIN_SIZE = 0;
 
 static const int MAX_SIZE = 500;
 
-} // Grid
+} // namespace Grid
 
 namespace MindMap {
 
-static const QColor DEFAULT_BACKGROUND_COLOR{0x80, 0xc8, 0xff};
+static const QColor DEFAULT_BACKGROUND_COLOR { 0x80, 0xc8, 0xff };
 
-static const QColor DEFAULT_EDGE_COLOR{0, 0, 0, 200};
+static const QColor DEFAULT_EDGE_COLOR { 0, 0, 0, 200 };
 
 static const double DEFAULT_EDGE_WIDTH = 2.0;
 
 static const int DEFAULT_TEXT_SIZE = 11;
 
-} // MindMap
+} // namespace MindMap
 
 namespace Node {
 
@@ -124,17 +124,17 @@ static const int MIN_HEIGHT = 75;
 
 static const int MIN_WIDTH = 200;
 
-} // Node
+} // namespace Node
 
 namespace Scene {
 
-static const QColor BARRIER_COLOR{255, 0, 0, 128};
+static const QColor BARRIER_COLOR { 255, 0, 0, 128 };
 
 static const int BARRIER_WIDTH = 100;
 
 static const int RADIUS = 10000;
 
-} // Scene
+} // namespace Scene
 
 namespace Text {
 
@@ -142,7 +142,7 @@ static const int MIN_SIZE = 6;
 
 static const int MAX_SIZE = 24;
 
-} // Text
+} // namespace Text
 
 namespace View {
 
@@ -156,8 +156,8 @@ static const int ZOOM_MIN = 10;
 
 static const int ZOOM_SENSITIVITY = 10;
 
-} // View
+} // namespace View
 
-} // Constants
+} // namespace Constants
 
 #endif // CONSTANTS_HPP

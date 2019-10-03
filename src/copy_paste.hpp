@@ -25,7 +25,6 @@ class Node;
 class CopyPaste
 {
 public:
-
     CopyPaste(Mediator & mediator, Grid & grid);
 
     void copy(const Node & source);
@@ -35,7 +34,6 @@ public:
     bool isEmpty() const;
 
 private:
-
     Mediator & m_mediator;
 
     Grid & m_grid;

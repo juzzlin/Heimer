@@ -20,7 +20,6 @@ class GraphTest : public QObject
     Q_OBJECT
 
 public:
-
     GraphTest();
 
 private slots:

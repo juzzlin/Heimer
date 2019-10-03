@@ -41,8 +41,7 @@ static void writeColor(QDomElement & parent, QDomDocument & doc, QColor color, Q
 
 static void writeNodes(MindMapData & mindMapData, QDomElement & root, QDomDocument & doc)
 {
-    for (auto node : mindMapData.graph().getNodes())
-    {
+    for (auto node : mindMapData.graph().getNodes()) {
         auto nodeElement = doc.createElement(Serializer::DataKeywords::Design::Graph::NODE);
         nodeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Node::INDEX, node->index());
         nodeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Node::X, static_cast<int>(node->location().x() * SCALE));
@@ -66,11 +65,9 @@ static void writeNodes(MindMapData & mindMapData, QDomElement & root, QDomDocume
 
 static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocument & doc)
 {
-    for (auto node : mindMapData.graph().getNodes())
-    {
+    for (auto node : mindMapData.graph().getNodes()) {
         auto edges = mindMapData.graph().getEdgesFromNode(node);
-        for (auto && edge : edges)
-        {
+        for (auto && edge : edges) {
             auto edgeElement = doc.createElement(Serializer::DataKeywords::Design::Graph::EDGE);
             edgeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX0, edge->sourceNodeBase().index());
             edgeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX1, edge->targetNodeBase().index());
@@ -98,11 +95,9 @@ static QColor readColorElement(const QDomElement & element)
 
 static QString readFirstTextNodeContent(const QDomElement & element)
 {
-    for (int i = 0; i < element.childNodes().count(); i++)
-    {
+    for (int i = 0; i < element.childNodes().count(); i++) {
         const auto child = element.childNodes().at(i);
-        if (child.isText())
-        {
+        if (child.isText()) {
             return child.toText().nodeValue();
         }
     }
@@ -115,20 +110,15 @@ static void elementWarning(const QDomElement & element)
 }
 
 // Generic helper that loops through element's children
-static void readChildren(const QDomElement & root, std::map<QString, std::function<void (const QDomElement &)> > handlerMap)
+static void readChildren(const QDomElement & root, std::map<QString, std::function<void(const QDomElement &)>> handlerMap)
 {
     auto domNode = root.firstChild();
-    while (!domNode.isNull())
-    {
+    while (!domNode.isNull()) {
         auto element = domNode.toElement();
-        if (!element.isNull())
-        {
-            if (handlerMap.count(element.nodeName()))
-            {
+        if (!element.isNull()) {
+            if (handlerMap.count(element.nodeName())) {
                 handlerMap[element.nodeName()](element);
-            }
-            else
-            {
+            } else {
                 elementWarning(element);
             }
         }
@@ -152,34 +142,24 @@ static NodePtr readNode(const QDomElement & element)
 #endif
     node->setIndex(element.attribute(Serializer::DataKeywords::Design::Graph::Node::INDEX, "-1").toInt());
     node->setLocation(QPointF(
-        element.attribute(Serializer::DataKeywords::Design::Graph::Node::X, "0").toInt() / SCALE,
-        element.attribute(Serializer::DataKeywords::Design::Graph::Node::Y, "0").toInt() / SCALE));
+      element.attribute(Serializer::DataKeywords::Design::Graph::Node::X, "0").toInt() / SCALE,
+      element.attribute(Serializer::DataKeywords::Design::Graph::Node::Y, "0").toInt() / SCALE));
 
-    if (element.hasAttribute(Serializer::DataKeywords::Design::Graph::Node::W) &&
-        element.hasAttribute(Serializer::DataKeywords::Design::Graph::Node::H))
-    {
-       node->setSize(QSizeF(
-           element.attribute(Serializer::DataKeywords::Design::Graph::Node::W).toInt() / SCALE,
-           element.attribute(Serializer::DataKeywords::Design::Graph::Node::H).toInt() / SCALE));
+    if (element.hasAttribute(Serializer::DataKeywords::Design::Graph::Node::W) && element.hasAttribute(Serializer::DataKeywords::Design::Graph::Node::H)) {
+        node->setSize(QSizeF(
+          element.attribute(Serializer::DataKeywords::Design::Graph::Node::W).toInt() / SCALE,
+          element.attribute(Serializer::DataKeywords::Design::Graph::Node::H).toInt() / SCALE));
     }
 
-    readChildren(element, {
-        {
-            QString(Serializer::DataKeywords::Design::Graph::Node::TEXT), [=] (const QDomElement & e) {
-                node->setText(readFirstTextNodeContent(e));
-            }
-        },
-        {
-            QString(Serializer::DataKeywords::Design::Graph::Node::COLOR), [=] (const QDomElement & e) {
-                node->setColor(readColorElement(e));
-            }
-        },
-        {
-            QString(Serializer::DataKeywords::Design::Graph::Node::TEXT_COLOR), [=] (const QDomElement & e) {
-                node->setTextColor(readColorElement(e));
-            }
-        }
-    });
+    readChildren(element, { { QString(Serializer::DataKeywords::Design::Graph::Node::TEXT), [=](const QDomElement & e) {
+                                 node->setText(readFirstTextNodeContent(e));
+                             } },
+                            { QString(Serializer::DataKeywords::Design::Graph::Node::COLOR), [=](const QDomElement & e) {
+                                 node->setColor(readColorElement(e));
+                             } },
+                            { QString(Serializer::DataKeywords::Design::Graph::Node::TEXT_COLOR), [=](const QDomElement & e) {
+                                 node->setTextColor(readColorElement(e));
+                             } } });
 
     return node;
 }
@@ -213,13 +193,9 @@ static EdgePtr readEdge(const QDomElement & element, MindMapDataPtr data)
     edge->setArrowMode(static_cast<EdgeBase::ArrowMode>(arrowMode));
     edge->setReversed(reversed);
 
-    readChildren(element, {
-        {
-            QString(Serializer::DataKeywords::Design::Graph::Node::TEXT), [=] (const QDomElement & e) {
-                edge->setText(readFirstTextNodeContent(e));
-            }
-        }
-    });
+    readChildren(element, { { QString(Serializer::DataKeywords::Design::Graph::Node::TEXT), [=](const QDomElement & e) {
+                                 edge->setText(readFirstTextNodeContent(e));
+                             } } });
 
     return edge;
 }
@@ -227,17 +203,13 @@ static EdgePtr readEdge(const QDomElement & element, MindMapDataPtr data)
 static void readGraph(const QDomElement & graph, MindMapDataPtr data)
 {
     readChildren(graph, {
-        {
-            QString(Serializer::DataKeywords::Design::Graph::NODE), [=] (const QDomElement & e) {
-                data->graph().addNode(readNode(e));
-            }
-        },
-        {
-            QString(Serializer::DataKeywords::Design::Graph::EDGE), [=] (const QDomElement & e) {
-                data->graph().addEdge(readEdge(e, data));
-            }
-        },
-    });
+                          { QString(Serializer::DataKeywords::Design::Graph::NODE), [=](const QDomElement & e) {
+                               data->graph().addNode(readNode(e));
+                           } },
+                          { QString(Serializer::DataKeywords::Design::Graph::EDGE), [=](const QDomElement & e) {
+                               data->graph().addEdge(readEdge(e, data));
+                           } },
+                        });
 }
 
 MindMapDataPtr Serializer::fromXml(QDomDocument document)
@@ -247,38 +219,24 @@ MindMapDataPtr Serializer::fromXml(QDomDocument document)
     auto data = make_shared<MindMapData>();
     data->setVersion(design.attribute(DataKeywords::Design::APPLICATION_VERSION, "UNDEFINED"));
 
-    readChildren(design, {
-        {
-            QString(Serializer::DataKeywords::Design::GRAPH), [=] (const QDomElement & e) {
-                readGraph(e, data);
-            }
-        },
-        {
-            QString(Serializer::DataKeywords::Design::COLOR), [=] (const QDomElement & e) {
-                data->setBackgroundColor(readColorElement(e));
-            }
-        },
-        {
-            QString(Serializer::DataKeywords::Design::EDGE_COLOR), [=] (const QDomElement & e) {
-                data->setEdgeColor(readColorElement(e));
-            }
-        },
-        {
-            QString(Serializer::DataKeywords::Design::EDGE_THICKNESS), [=] (const QDomElement & e) {
-                data->setEdgeWidth(readFirstTextNodeContent(e).toDouble() / SCALE);
-            }
-        },
-        {
-            QString(Serializer::DataKeywords::Design::TEXT_SIZE), [=] (const QDomElement & e) {
-                data->setTextSize(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
-            }
-        },
-        {
-            QString(Serializer::DataKeywords::Design::CORNER_RADIUS), [=] (const QDomElement & e) {
-                data->setCornerRadius(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
-            }
-        }
-    });
+    readChildren(design, { { QString(Serializer::DataKeywords::Design::GRAPH), [=](const QDomElement & e) {
+                                readGraph(e, data);
+                            } },
+                           { QString(Serializer::DataKeywords::Design::COLOR), [=](const QDomElement & e) {
+                                data->setBackgroundColor(readColorElement(e));
+                            } },
+                           { QString(Serializer::DataKeywords::Design::EDGE_COLOR), [=](const QDomElement & e) {
+                                data->setEdgeColor(readColorElement(e));
+                            } },
+                           { QString(Serializer::DataKeywords::Design::EDGE_THICKNESS), [=](const QDomElement & e) {
+                                data->setEdgeWidth(readFirstTextNodeContent(e).toDouble() / SCALE);
+                            } },
+                           { QString(Serializer::DataKeywords::Design::TEXT_SIZE), [=](const QDomElement & e) {
+                                data->setTextSize(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
+                            } },
+                           { QString(Serializer::DataKeywords::Design::CORNER_RADIUS), [=](const QDomElement & e) {
+                                data->setCornerRadius(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
+                            } } });
 
     return data;
 }

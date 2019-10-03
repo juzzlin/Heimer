@@ -24,6 +24,6 @@ namespace MagicZoom {
 
 QRectF calculateRectangle(const EditorScene & scene, bool isForExport);
 
-} // MagicZoom
+} // namespace MagicZoom
 
 #endif // MAGIC_ZOOM_HPP

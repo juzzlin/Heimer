@@ -23,7 +23,7 @@ class UserException : public std::runtime_error
 {
 public:
     explicit UserException(std::string msg)
-        : runtime_error(msg)
+      : runtime_error(msg)
     {
     }
 };

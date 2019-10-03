@@ -16,7 +16,7 @@
 #include "undo_stack.hpp"
 
 UndoStack::UndoStack(int maxHistorySize)
-    : m_maxHistorySize(maxHistorySize)
+  : m_maxHistorySize(maxHistorySize)
 {
 }
 
@@ -25,8 +25,7 @@ void UndoStack::pushUndoPoint(MindMapDataPtr mindMapData)
     auto copyData = new MindMapData(*mindMapData);
     m_undoStack.push_back(MindMapDataPtr(copyData));
 
-    if (static_cast<int>(m_undoStack.size()) > m_maxHistorySize && m_maxHistorySize != -1)
-    {
+    if (static_cast<int>(m_undoStack.size()) > m_maxHistorySize && m_maxHistorySize != -1) {
         m_undoStack.pop_front();
     }
 }
@@ -36,8 +35,7 @@ void UndoStack::pushRedoPoint(MindMapDataPtr mindMapData)
     auto copyData = new MindMapData(*mindMapData);
     m_redoStack.push_back(MindMapDataPtr(copyData));
 
-    if (static_cast<int>(m_redoStack.size()) > m_maxHistorySize && m_maxHistorySize != -1)
-    {
+    if (static_cast<int>(m_redoStack.size()) > m_maxHistorySize && m_maxHistorySize != -1) {
         m_redoStack.pop_front();
     }
 }
@@ -55,8 +53,7 @@ bool UndoStack::isUndoable() const
 
 MindMapDataPtr UndoStack::undo()
 {
-    if (isUndoable())
-    {
+    if (isUndoable()) {
         auto head = m_undoStack.back();
         m_undoStack.pop_back();
         return head;
@@ -72,8 +69,7 @@ bool UndoStack::isRedoable() const
 
 MindMapDataPtr UndoStack::redo()
 {
-    if (isRedoable())
-    {
+    if (isRedoable()) {
         auto head = m_redoStack.back();
         m_redoStack.pop_back();
         return head;

@@ -39,7 +39,6 @@ class Mediator : public QObject
     Q_OBJECT
 
 public:
-
     explicit Mediator(MainWindow & mainWindow);
 
     ~Mediator();
@@ -173,7 +172,6 @@ signals:
     void exportFinished(bool success);
 
 private:
-
     void addExistingGraphToScene();
 
     double calculateNodeOverlapScore(const Node & node1, const Node & node2) const;

@@ -16,9 +16,9 @@
 #include "editor_data_test.hpp"
 
 #include "editor_data.hpp"
-#include "serializer.hpp"
 #include "mind_map_data.hpp"
 #include "node_base.hpp"
+#include "serializer.hpp"
 
 EditorDataTest::EditorDataTest()
 {
@@ -34,7 +34,7 @@ void EditorDataTest::testGroupMove()
     editorData.toggleNodeInSelectionGroup(*node0);
     editorData.toggleNodeInSelectionGroup(*node1);
 
-    editorData.moveSelectionGroup(*node0, {1, 1});
+    editorData.moveSelectionGroup(*node0, { 1, 1 });
 
     QCOMPARE(qFuzzyCompare(node0->location().x(), 1), true);
     QCOMPARE(qFuzzyCompare(node0->location().y(), 1), true);
@@ -337,13 +337,13 @@ void EditorDataTest::testUndoEdgeColor()
     EditorData editorData;
 
     editorData.setMindMapData(std::make_shared<MindMapData>());
-    editorData.mindMapData()->setEdgeColor({1, 2, 3});
+    editorData.mindMapData()->setEdgeColor({ 1, 2, 3 });
 
     editorData.saveUndoPoint();
-    editorData.mindMapData()->setEdgeColor({2, 3, 4});
+    editorData.mindMapData()->setEdgeColor({ 2, 3, 4 });
 
     editorData.saveUndoPoint();
-    editorData.mindMapData()->setEdgeColor({4, 5, 6});
+    editorData.mindMapData()->setEdgeColor({ 4, 5, 6 });
 
     editorData.undo();
     QCOMPARE(editorData.mindMapData()->edgeColor(), QColor(2, 3, 4));

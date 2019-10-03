@@ -20,18 +20,19 @@
 #include <memory>
 
 MindMapData::MindMapData(QString name)
-    : MindMapDataBase(name)
-{}
+  : MindMapDataBase(name)
+{
+}
 
 MindMapData::MindMapData(const MindMapData & other)
-    : MindMapDataBase(other)
-    , m_fileName(other.m_fileName)
-    , m_version(other.m_version)
-    , m_backgroundColor(other.m_backgroundColor)
-    , m_edgeColor(other.m_edgeColor)
-    , m_edgeWidth(other.m_edgeWidth)
-    , m_textSize(other.m_textSize)
-    , m_cornerRadius(other.m_cornerRadius)
+  : MindMapDataBase(other)
+  , m_fileName(other.m_fileName)
+  , m_version(other.m_version)
+  , m_backgroundColor(other.m_backgroundColor)
+  , m_edgeColor(other.m_edgeColor)
+  , m_edgeWidth(other.m_edgeWidth)
+  , m_textSize(other.m_textSize)
+  , m_cornerRadius(other.m_cornerRadius)
 {
     copyGraph(other);
 }
@@ -41,14 +42,12 @@ void MindMapData::copyGraph(const MindMapData & other)
     m_graph.clear();
 
     // Use copy constructor for nodes
-    for (auto && nodeBase : other.m_graph.getNodes())
-    {
+    for (auto && nodeBase : other.m_graph.getNodes()) {
         m_graph.addNode(std::make_shared<Node>(*std::dynamic_pointer_cast<Node>(nodeBase)));
     }
 
     // Create new edges
-    for (auto && edgeBase : other.m_graph.getEdges())
-    {
+    for (auto && edgeBase : other.m_graph.getEdges()) {
         auto sourceNode = std::dynamic_pointer_cast<Node>(m_graph.getNode(edgeBase->sourceNodeBase().index()));
         auto targetNode = std::dynamic_pointer_cast<Node>(m_graph.getNode(edgeBase->targetNodeBase().index()));
 

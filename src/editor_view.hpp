@@ -47,7 +47,6 @@ class EditorView : public QGraphicsView
     Q_OBJECT
 
 public:
-
     explicit EditorView(Mediator & mediator);
 
     ~EditorView() override;
@@ -69,7 +68,6 @@ public slots:
     void setGridSize(int size);
 
 protected:
-
     void mouseMoveEvent(QMouseEvent * event) override;
 
     void mousePressEvent(QMouseEvent * event) override;
@@ -91,7 +89,6 @@ private slots:
     void openNodeTextColorDialog();
 
 private:
-
     void finishRubberBand();
 
     void handleMousePressEventOnBackground(QMouseEvent & event);

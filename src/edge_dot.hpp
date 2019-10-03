@@ -16,8 +16,8 @@
 #ifndef EDGEDOT_HPP
 #define EDGEDOT_HPP
 
-#include <QObject>
 #include <QGraphicsEllipseItem>
+#include <QObject>
 
 class EdgeDot : public QObject, public QGraphicsEllipseItem
 {
@@ -25,7 +25,6 @@ class EdgeDot : public QObject, public QGraphicsEllipseItem
     Q_PROPERTY(qreal scale READ scale WRITE setScale)
 
 public:
-
     explicit EdgeDot(QGraphicsItem * parentItem = nullptr);
 };
 

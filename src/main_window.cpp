@@ -15,14 +15,15 @@
 
 #include "main_window.hpp"
 
-#include "constants.hpp"
 #include "about_dlg.hpp"
+#include "constants.hpp"
 #include "mediator.hpp"
 #include "simple_logger.hpp"
 
 #include <QAction>
 #include <QApplication>
 #include <QDoubleSpinBox>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QMenu>
 #include <QMenuBar>
@@ -31,7 +32,6 @@
 #include <QSettings>
 #include <QSpinBox>
 #include <QToolBar>
-#include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QWidgetAction>
 
@@ -39,19 +39,16 @@
 
 MainWindow * MainWindow::m_instance = nullptr;
 
-namespace  {
+namespace {
 static const auto threeDots = "...";
 }
 
 MainWindow::MainWindow()
-: m_aboutDlg(new AboutDlg(this))
+  : m_aboutDlg(new AboutDlg(this))
 {
-    if (!m_instance)
-    {
+    if (!m_instance) {
         m_instance = this;
-    }
-    else
-    {
+    } else {
         qFatal("MainWindow already instantiated!");
     }
 }
@@ -61,7 +58,7 @@ void MainWindow::addRedoAction(QMenu & menu)
     m_redoAction = new QAction(tr("Redo"), this);
     m_redoAction->setShortcut(QKeySequence("Ctrl+Shift+Z"));
 
-    connect(m_redoAction, &QAction::triggered,  [this] () {
+    connect(m_redoAction, &QAction::triggered, [this]() {
         m_mediator->redo();
         setupMindMapAfterUndoOrRedo();
     });
@@ -76,7 +73,7 @@ void MainWindow::addUndoAction(QMenu & menu)
     m_undoAction = new QAction(tr("Undo"), this);
     m_undoAction->setShortcut(QKeySequence("Ctrl+Z"));
 
-    connect(m_undoAction, &QAction::triggered, [this] () {
+    connect(m_undoAction, &QAction::triggered, [this]() {
         m_mediator->undo();
         setupMindMapAfterUndoOrRedo();
     });
@@ -99,7 +96,7 @@ void MainWindow::createEditMenu()
     auto backgroundColorAction = new QAction(tr("Set background color") + threeDots, this);
     backgroundColorAction->setShortcut(QKeySequence("Ctrl+B"));
 
-    connect(backgroundColorAction, &QAction::triggered, [this] () {
+    connect(backgroundColorAction, &QAction::triggered, [this]() {
         emit actionTriggered(StateMachine::Action::BackgroundColorChangeRequested);
     });
 
@@ -110,7 +107,7 @@ void MainWindow::createEditMenu()
     auto edgeColorAction = new QAction(tr("Set edge color") + threeDots, this);
     edgeColorAction->setShortcut(QKeySequence("Ctrl+E"));
 
-    connect(edgeColorAction, &QAction::triggered, [this] () {
+    connect(edgeColorAction, &QAction::triggered, [this]() {
         emit actionTriggered(StateMachine::Action::EdgeColorChangeRequested);
     });
 
@@ -139,7 +136,7 @@ QWidgetAction * MainWindow::createCornerRadiusAction()
 
     // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
     // In Qt > 5.10 one can use QOverload<double>::of(...)
-    connect(m_cornerRadiusSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::cornerRadiusChanged);
+    connect(m_cornerRadiusSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::cornerRadiusChanged);
 
     return action;
 }
@@ -165,7 +162,7 @@ QWidgetAction * MainWindow::createEdgeWidthAction()
 
     // The ugly cast is needed because there are QDoubleSpinBox::valueChanged(double) and QDoubleSpinBox::valueChanged(QString)
     // In Qt > 5.10 one can use QOverload<double>::of(...)
-    connect(m_edgeWidthSpinBox, static_cast<void(QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this, &MainWindow::edgeWidthChanged);
+    connect(m_edgeWidthSpinBox, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this, &MainWindow::edgeWidthChanged);
 
     return action;
 }
@@ -190,7 +187,7 @@ QWidgetAction * MainWindow::createTextSizeAction()
 
     // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
     // In Qt > 5.10 one can use QOverload<double>::of(...)
-    connect(m_textSizeSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::textSizeChanged);
+    connect(m_textSizeSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::textSizeChanged);
 
     return action;
 }
@@ -215,7 +212,7 @@ QWidgetAction * MainWindow::createGridSizeAction()
 
     // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
     // In Qt > 5.10 one can use QOverload<double>::of(...)
-    connect(m_gridSizeSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::gridSizeChanged);
+    connect(m_gridSizeSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::gridSizeChanged);
 
     return action;
 }
@@ -228,7 +225,7 @@ void MainWindow::createFileMenu()
     const auto newAct = new QAction(tr("&New") + threeDots, this);
     newAct->setShortcut(QKeySequence("Ctrl+N"));
     fileMenu->addAction(newAct);
-    connect(newAct, &QAction::triggered, [=] () {
+    connect(newAct, &QAction::triggered, [=]() {
         emit actionTriggered(StateMachine::Action::NewSelected);
     });
 
@@ -236,7 +233,7 @@ void MainWindow::createFileMenu()
     const auto openAct = new QAction(tr("&Open") + threeDots, this);
     openAct->setShortcut(QKeySequence("Ctrl+O"));
     fileMenu->addAction(openAct);
-    connect(openAct, &QAction::triggered, [=] () {
+    connect(openAct, &QAction::triggered, [=]() {
         emit actionTriggered(StateMachine::Action::OpenSelected);
     });
 
@@ -247,7 +244,7 @@ void MainWindow::createFileMenu()
     m_saveAction->setShortcut(QKeySequence("Ctrl+S"));
     m_saveAction->setEnabled(false);
     fileMenu->addAction(m_saveAction);
-    connect(m_saveAction, &QAction::triggered, [=] () {
+    connect(m_saveAction, &QAction::triggered, [=]() {
         emit actionTriggered(StateMachine::Action::SaveSelected);
     });
 
@@ -256,7 +253,7 @@ void MainWindow::createFileMenu()
     m_saveAsAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
     m_saveAsAction->setEnabled(false);
     fileMenu->addAction(m_saveAsAction);
-    connect(m_saveAsAction, &QAction::triggered, [=] () {
+    connect(m_saveAsAction, &QAction::triggered, [=]() {
         emit actionTriggered(StateMachine::Action::SaveAsSelected);
     });
 
@@ -266,7 +263,7 @@ void MainWindow::createFileMenu()
     const auto exportToPNGAction = new QAction(tr("&Export to PNG image") + threeDots, this);
     exportToPNGAction->setShortcut(QKeySequence("Ctrl+Shift+E"));
     fileMenu->addAction(exportToPNGAction);
-    connect(exportToPNGAction, &QAction::triggered, [=] () {
+    connect(exportToPNGAction, &QAction::triggered, [=]() {
         emit actionTriggered(StateMachine::Action::PngExportSelected);
     });
 
@@ -276,11 +273,11 @@ void MainWindow::createFileMenu()
     const auto quitAct = new QAction(tr("&Quit"), this);
     quitAct->setShortcut(QKeySequence("Ctrl+W"));
     fileMenu->addAction(quitAct);
-    connect(quitAct, &QAction::triggered, [=] () {
+    connect(quitAct, &QAction::triggered, [=]() {
         emit actionTriggered(StateMachine::Action::QuitSelected);
     });
 
-    connect(fileMenu, &QMenu::aboutToShow, [=] () {
+    connect(fileMenu, &QMenu::aboutToShow, [=]() {
         exportToPNGAction->setEnabled(m_mediator->hasNodes());
     });
 }
@@ -336,7 +333,7 @@ void MainWindow::createViewMenu()
     viewMenu->addAction(zoomToFit);
     connect(zoomToFit, &QAction::triggered, this, &MainWindow::zoomToFitTriggered);
 
-    connect(viewMenu, &QMenu::aboutToShow, [=] () {
+    connect(viewMenu, &QMenu::aboutToShow, [=]() {
         zoomToFit->setEnabled(m_mediator->hasNodes());
     });
 }
@@ -375,12 +372,9 @@ void MainWindow::setTitle()
 {
     const auto appInfo = QString(Constants::Application::APPLICATION_NAME) + " " + Constants::Application::APPLICATION_VERSION;
     const auto displayFileName = m_mediator->fileName().isEmpty() ? tr("New File") : m_mediator->fileName();
-    if (m_mediator->isModified())
-    {
+    if (m_mediator->isModified()) {
         setWindowTitle(appInfo + " - " + displayFileName + " - " + tr("Not Saved"));
-    }
-    else
-    {
+    } else {
         setWindowTitle(appInfo + " - " + displayFileName);
     }
 }
@@ -417,24 +411,21 @@ void MainWindow::disableUndoAndRedo()
 
 void MainWindow::setCornerRadius(int value)
 {
-    if (m_cornerRadiusSpinBox->value() != value)
-    {
+    if (m_cornerRadiusSpinBox->value() != value) {
         m_cornerRadiusSpinBox->setValue(value);
     }
 }
 
 void MainWindow::setEdgeWidth(double value)
 {
-    if (!qFuzzyCompare(m_edgeWidthSpinBox->value(), value))
-    {
+    if (!qFuzzyCompare(m_edgeWidthSpinBox->value(), value)) {
         m_edgeWidthSpinBox->setValue(value);
     }
 }
 
 void MainWindow::setTextSize(int textSize)
 {
-    if (m_textSizeSpinBox->value() != textSize)
-    {
+    if (m_textSizeSpinBox->value() != textSize) {
         m_textSizeSpinBox->setValue(textSize);
     }
 }
@@ -485,9 +476,9 @@ void MainWindow::setupMindMapAfterUndoOrRedo()
 void MainWindow::showErrorDialog(QString message)
 {
     QMessageBox::critical(this,
-         Constants::Application::APPLICATION_NAME,
-         message,
-         "");
+                          Constants::Application::APPLICATION_NAME,
+                          message,
+                          "");
 }
 
 void MainWindow::initializeNewMindMap()

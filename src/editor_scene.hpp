@@ -25,7 +25,6 @@ class Node;
 class EditorScene : public QGraphicsScene
 {
 public:
-
     EditorScene();
 
     void initialize();
@@ -38,7 +37,6 @@ public:
     virtual ~EditorScene();
 
 private:
-
     void removeItems();
 
     using ItemPtr = std::unique_ptr<QGraphicsItem>;

@@ -19,8 +19,8 @@
 #include "application.hpp"
 #include "constants.hpp"
 #include "hash_seed.hpp"
-#include "user_exception.hpp"
 #include "simple_logger.hpp"
+#include "user_exception.hpp"
 
 #include <cstdlib>
 #include <iostream>
@@ -32,7 +32,7 @@ static void initLogger()
 {
     using juzzlin::L;
 
-    const QString logPath{QDir::tempPath() + QDir::separator() + "heimer.log"};
+    const QString logPath { QDir::tempPath() + QDir::separator() + "heimer.log" };
     L::init(logPath.toStdString().c_str());
     L::enableEchoMode(true);
     L::enableDateTime(true);
@@ -60,18 +60,14 @@ int main(int argc, char ** argv)
 
     std::unique_ptr<Application> app;
 
-    try
-    {
+    try {
         initLogger();
 
         app.reset(new Application(argc, argv));
 
         return app->run();
-    }
-    catch (std::exception & e)
-    {
-        if (!dynamic_cast<UserException *>(&e))
-        {
+    } catch (std::exception & e) {
+        if (!dynamic_cast<UserException *>(&e)) {
             std::cerr << e.what() << std::endl;
         }
 

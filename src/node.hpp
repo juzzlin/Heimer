@@ -16,16 +16,16 @@
 #ifndef NODE_HPP
 #define NODE_HPP
 
-#include <QObject>
 #include <QGraphicsItem>
+#include <QObject>
 #include <QTimer>
 
-#include <vector>
 #include <map>
+#include <vector>
 
-#include "node_base.hpp"
 #include "edge.hpp"
 #include "edge_point.hpp"
+#include "node_base.hpp"
 
 class NodeHandle;
 class QGraphicsTextItem;
@@ -39,7 +39,6 @@ class Node : public QObject, public QGraphicsItem, public NodeBase
     Q_INTERFACES(QGraphicsItem)
 
 public:
-
     //! Constructor.
     Node();
 
@@ -59,7 +58,7 @@ public:
     using NodePtr = std::shared_ptr<Node>;
     EdgePtr createAndAddGraphicsEdge(NodePtr targetNode);
 
-    void paint(QPainter * painter,  const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
 
     //! Sets the Node and QGraphicsItem locations.
     void setLocation(QPointF newLocation) override;
@@ -95,7 +94,6 @@ signals:
     void undoPointRequested();
 
 private:
-
     void checkHandleVisibility(QPointF pos);
 
     void createEdgePoints();

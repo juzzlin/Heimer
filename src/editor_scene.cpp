@@ -22,8 +22,8 @@
 
 #include "simple_logger.hpp"
 
-#include <cmath>
 #include <QGraphicsLineItem>
+#include <cmath>
 
 EditorScene::EditorScene()
 {
@@ -67,13 +67,9 @@ QRectF EditorScene::zoomToFit(bool isForExport) const
 
 bool EditorScene::hasEdge(Node & node0, Node & node1)
 {
-    for (auto && item : items())
-    {
-        if (auto edge = dynamic_cast<Edge *>(item))
-        {
-            if (edge->sourceNode().index() == node0.index() &&
-                edge->targetNode().index() == node1.index())
-            {
+    for (auto && item : items()) {
+        if (auto edge = dynamic_cast<Edge *>(item)) {
+            if (edge->sourceNode().index() == node0.index() && edge->targetNode().index() == node1.index()) {
                 return true;
             }
         }
@@ -84,8 +80,7 @@ bool EditorScene::hasEdge(Node & node0, Node & node1)
 void EditorScene::removeItems()
 {
     // We don't want the scene to destroy the items as they are managed elsewhere
-    for (auto item : items())
-    {
+    for (auto item : items()) {
         removeItem(item);
     }
 

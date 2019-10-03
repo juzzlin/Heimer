@@ -24,12 +24,12 @@
 #include <QPointF>
 #include <QString>
 
-#include "mouse_action.hpp"
 #include "edge.hpp"
 #include "file_exception.hpp"
-#include "undo_stack.hpp"
 #include "mind_map_data.hpp"
+#include "mouse_action.hpp"
 #include "node.hpp"
+#include "undo_stack.hpp"
 
 class Node;
 class NodeBase;
@@ -42,7 +42,6 @@ class EditorData : public QObject
     Q_OBJECT
 
 public:
-
     EditorData();
 
     ~EditorData();
@@ -116,9 +115,8 @@ signals:
     void undoEnabled(bool enable);
 
 private:
-
     EditorData(const EditorData & e) = delete;
-    EditorData & operator= (const EditorData & e) = delete;
+    EditorData & operator=(const EditorData & e) = delete;
 
     void clearScene();
 

@@ -37,7 +37,6 @@ class Edge : public QObject, public QGraphicsLineItem, public EdgeBase
     Q_OBJECT
 
 public:
-
     Edge(Node & sourceNode, Node & targetNode, bool enableAnimations = true, bool enableLabel = true);
 
     virtual ~Edge() override;
@@ -73,7 +72,6 @@ signals:
     void undoPointRequested();
 
 private:
-
     QPen getPen() const;
 
     void initDots();

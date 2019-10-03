@@ -20,7 +20,6 @@ class EditorDataTest : public QObject
     Q_OBJECT
 
 public:
-
     EditorDataTest();
 
 private slots:

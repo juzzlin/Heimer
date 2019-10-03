@@ -21,7 +21,6 @@
 class Grid
 {
 public:
-
     Grid();
 
     void setSize(int gridSize);
@@ -29,7 +28,6 @@ public:
     QPointF snapToGrid(QPointF in) const;
 
 private:
-
     int m_size = 0;
 };
 

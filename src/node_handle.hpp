@@ -29,8 +29,8 @@ class NodeHandle : public QObject, public QGraphicsItem
     Q_INTERFACES(QGraphicsItem)
 
 public:
-
-    enum class Role {
+    enum class Role
+    {
         Add,
         Color,
         TextColor
@@ -43,7 +43,7 @@ public:
     virtual QRectF boundingRect() const override;
 
     virtual void paint(QPainter * painter,
-        const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
+                       const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
 
     bool contains(const QPointF & pos);
 
@@ -56,7 +56,6 @@ public:
     int radius() const;
 
 private:
-
     Node & m_parentNode;
 
     Role m_role;

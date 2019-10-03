@@ -24,7 +24,6 @@ class Graph;
 class MindMapDataBase
 {
 public:
-
     /** Keywords used in the track data files.
      *  TODO: Use constexpr when MSVC supports it properly. */
     struct DataKeywords
@@ -77,7 +76,7 @@ public:
     //! Copy constructor.
     MindMapDataBase(const MindMapDataBase & other);
 
-    MindMapDataBase & operator= (const MindMapDataBase & other) = delete;
+    MindMapDataBase & operator=(const MindMapDataBase & other) = delete;
 
     //! Destructor.
     virtual ~MindMapDataBase();
@@ -99,7 +98,6 @@ public:
     virtual const Graph & graph() const = 0;
 
 private:
-
     QString m_name;
 
     unsigned int m_index;

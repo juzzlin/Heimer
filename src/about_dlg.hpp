@@ -24,12 +24,10 @@ class AboutDlg : public QDialog
     Q_OBJECT
 
 public:
-
     //! Constructor.
     explicit AboutDlg(QWidget * parent = 0);
 
 private:
-
     void initWidgets();
 };
 

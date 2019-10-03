@@ -17,10 +17,10 @@
 #define NODEBASE_HPP
 
 #include <QColor>
+#include <QPointF>
 #include <QRectF>
 #include <QSizeF>
 #include <QString>
-#include <QPointF>
 
 #include <memory>
 #include <vector>
@@ -29,14 +29,13 @@
 class NodeBase
 {
 public:
-
     using NodeBasePtr = std::shared_ptr<NodeBase>;
 
     NodeBase();
 
     NodeBase(NodeBase & other) = delete;
 
-    NodeBase & operator= (NodeBase & other) = delete;
+    NodeBase & operator=(NodeBase & other) = delete;
 
     virtual ~NodeBase();
 
@@ -79,7 +78,6 @@ public:
     virtual void setText(const QString & text);
 
 private:
-
     QColor m_color = Qt::white;
 
     int m_cornerRadius = 0;

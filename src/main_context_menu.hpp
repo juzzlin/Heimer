@@ -33,7 +33,6 @@ class MainContextMenu : public QMenu
     Q_OBJECT
 
 public:
-
     enum class Mode
     {
         All,
@@ -56,14 +55,13 @@ signals:
     void newNodeRequested(QPointF position);
 
 private:
-
     QAction * m_copyNodeAction;
 
     QAction * m_pasteNodeAction;
 
     Node * m_selectedNode = nullptr;
 
-    std::map<Mode, std::vector<QAction *> > m_mainContextMenuActions;
+    std::map<Mode, std::vector<QAction *>> m_mainContextMenuActions;
 
     Mediator & m_mediator;
 

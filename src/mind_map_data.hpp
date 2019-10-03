@@ -27,7 +27,6 @@ class ObjectModelLoader;
 class MindMapData : public MindMapDataBase
 {
 public:
-
     MindMapData(QString name = "");
 
     MindMapData(const MindMapData & other);
@@ -64,10 +63,9 @@ public:
 
     QString version() const;
 
-    void setVersion(const QString &version);
+    void setVersion(const QString & version);
 
 private:
-
     void copyGraph(const MindMapData & other);
 
     QString m_fileName;

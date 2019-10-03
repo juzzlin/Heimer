@@ -29,7 +29,6 @@ class PngExportDialog : public QDialog
     Q_OBJECT
 
 public:
-
     //! Constructor.
     explicit PngExportDialog(QWidget & parent);
 
@@ -50,7 +49,6 @@ private slots:
     void validate();
 
 private:
-
     void initWidgets();
 
     QLineEdit * m_filenameLineEdit = nullptr;

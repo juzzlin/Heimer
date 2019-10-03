@@ -1,0 +1,9 @@
+#!/bin/bash
+
+CLANG_FORMAT=clang-format
+
+FILES=$(find src -name *hpp -or -name *cpp | grep -v contrib)
+${CLANG_FORMAT} -i -style=file ${FILES}
+
+echo "Done."
+

@@ -79,6 +79,8 @@ Heimer can be forced to given lang (Finnish in the example):
 
 * Use auto
 
+* Config for clang-format in .clang-format
+
 ## Coding style examples
 
 ### Class header example:
@@ -118,7 +120,7 @@ private:
     int * m_somePointer;
 };
 
-typedef std::shared_ptr<MyFooClass> MyFooClassPtr;
+using std::shared_ptr<MyFooClass> = MyFooClassPtr;
 
 #endif // MYFOOCLASS_HPP
 ```
@@ -129,17 +131,15 @@ typedef std::shared_ptr<MyFooClass> MyFooClassPtr;
 #include "myfooclass.hpp"
 
 namespace {
-static const int MAX_CARS = 10;
+static const int MAX_ITEMS = 10;
 }
 
 MyFooClass::MyFooClass()
     : m_someMember(false)
     , m_somePointer(nullptr)
 {
-    if (something())
-    {
-        for (int i = 0; i < MAX_CARS; i++)
-        {
+    if (something()) {
+        for (int i = 0; i < MAX_ITEMS; i++) {
             doSomething(i);
         }
     }
@@ -160,6 +160,3 @@ MyFooClass::~MyFooClass()
 }
 ```
 
-## Contact
-
-E-mail: <jussi.lind@iki.fi>

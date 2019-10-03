@@ -16,7 +16,7 @@ function(setup_install_targets)
 
     # !! Note that currently this creates an installer that doesn't work.
     # !! A statically linked Qt5 is assumed and that has problems with CMake.
-    # !! Use scripts/buildWindowsInstaller.sh instead.
+    # !! Use scripts/build-windows-installer instead.
 
     install(PROGRAMS ${CMAKE_BINARY_DIR}/${BINARY_NAME}.exe DESTINATION ${BIN_PATH})
     install(FILES AUTHORS CHANGELOG COPYING README.md DESTINATION ${DOC_PATH})

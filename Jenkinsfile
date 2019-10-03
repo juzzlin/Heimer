@@ -70,7 +70,7 @@ pipeline {
                 }
             }
             steps {
-                sh "./scripts/buildWindowsInstaller.sh"
+                sh "./scripts/build-windows-installer"
             }
             post {
                 always {

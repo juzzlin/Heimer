@@ -4,7 +4,7 @@ pipeline {
         stage('CMake Debug build and unit tests') {
             agent {
                 docker {
-                    image 'juzzlin/qt5:18.04'
+                    image 'juzzlin/qt5-18.04:latest'
                     args '--privileged -t -v $WORKSPACE:/heimer'
                 }
             }
@@ -17,7 +17,7 @@ pipeline {
         stage('QMake build') {
             agent {
                 docker {
-                    image 'juzzlin/qt5:18.04'
+                    image 'juzzlin/qt5-18.04:latest'
                     args '--privileged -t -v $WORKSPACE:/heimer'
                 }
             }
@@ -29,7 +29,7 @@ pipeline {
         stage('Debian package / Ubuntu 16.04') {
             agent {
                 docker {
-                    image 'juzzlin/qt5:16.04'
+                    image 'juzzlin/qt5-16.04:latest'
                     args '--privileged -t -v $WORKSPACE:/heimer'
                 }
             }
@@ -47,7 +47,7 @@ pipeline {
         stage('Debian package / Ubuntu 18.04') {
             agent {
                 docker {
-                    image 'juzzlin/qt5:18.04'
+                    image 'juzzlin/qt5-18.04:latest'
                     args '--privileged -t -v $WORKSPACE:/heimer'
                 }
             }

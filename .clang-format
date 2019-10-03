@@ -21,7 +21,7 @@ BraceWrapping:
     IndentBraces: false
 ColumnLimit: 0
 CommentPragmas: "^!|^:"
-CompactNamespaces: true
+CompactNamespaces: false
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 ConstructorInitializerIndentWidth: 2
 ContinuationIndentWidth: 2

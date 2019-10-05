@@ -65,7 +65,7 @@ pipeline {
         stage('NSIS installer') {
             agent {
                 docker {
-                    image 'juzzlin/mxe-qt5:latest'
+                    image 'juzzlin/mxe-qt5-18.04:latest'
                     args '--privileged -t -v $WORKSPACE:/heimer'
                 }
             }

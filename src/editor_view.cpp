@@ -138,16 +138,7 @@ void EditorView::handleLeftButtonClickOnNode(Node & node)
         }
 
         // User is initiating a node move drag
-
-        m_mediator.saveUndoPoint();
-
-        node.setZValue(node.zValue() + 1);
-        m_mediator.mouseAction().setSourceNode(&node, MouseAction::Action::MoveNode);
-        m_mediator.mouseAction().setSourcePos(m_mappedPos);
-        m_mediator.mouseAction().setSourcePosOnNode(m_mappedPos - node.pos());
-
-        // Change cursor to the closed hand cursor.
-        QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
+        initiateNodeDrag(node);
     }
 }
 
@@ -156,6 +147,9 @@ void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
     switch (nodeHandle.role()) {
     case NodeHandle::Role::Add:
         initiateNewNodeDrag(nodeHandle);
+        break;
+    case NodeHandle::Role::Drag:
+        initiateNodeDrag(nodeHandle.parentNode());
         break;
     case NodeHandle::Role::Color:
         m_mediator.setSelectedNode(&nodeHandle.parentNode());
@@ -195,6 +189,19 @@ void EditorView::initiateNewNodeDrag(NodeHandle & nodeHandle)
     m_mediator.mouseAction().setSourceNode(parentNode, MouseAction::Action::CreateOrConnectNode);
     m_mediator.mouseAction().setSourcePosOnNode(nodeHandle.pos());
     parentNode->hoverLeaveEvent(nullptr);
+    // Change cursor to the closed hand cursor.
+    QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
+}
+
+void EditorView::initiateNodeDrag(Node & node)
+{
+    m_mediator.saveUndoPoint();
+
+    node.setZValue(node.zValue() + 1);
+    m_mediator.mouseAction().setSourceNode(&node, MouseAction::Action::MoveNode);
+    m_mediator.mouseAction().setSourcePos(m_mappedPos);
+    m_mediator.mouseAction().setSourcePosOnNode(m_mappedPos - node.pos());
+
     // Change cursor to the closed hand cursor.
     QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
 }

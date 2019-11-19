@@ -33,6 +33,7 @@ public:
     {
         Add,
         Color,
+        Drag,
         TextColor
     };
 

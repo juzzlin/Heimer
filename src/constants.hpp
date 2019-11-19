@@ -114,6 +114,8 @@ static const double HANDLE_OPACITY = 0.8;
 
 static const int HANDLE_RADIUS = 28;
 
+static const int HANDLE_RADIUS_MEDIUM = 24;
+
 static const int HANDLE_RADIUS_SMALL = 20;
 
 static const int MARGIN = 10;

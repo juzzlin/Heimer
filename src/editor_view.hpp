@@ -109,6 +109,8 @@ private:
 
     void initiateNewNodeDrag(NodeHandle & nodeHandle);
 
+    void initiateNodeDrag(Node & node);
+
     void initiateRubberBand();
 
     bool isControlPressed() const;

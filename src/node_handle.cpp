@@ -46,11 +46,12 @@ QRectF NodeHandle::boundingRect() const
 void NodeHandle::paint(QPainter * painter,
                        const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
-    Q_UNUSED(widget);
-    Q_UNUSED(option);
+    Q_UNUSED(widget)
+    Q_UNUSED(option)
 
     static std::map<Role, QPixmap> pixmapMap = {
         { Role::Add, QPixmap(":/add.png") },
+        { Role::Drag, QPixmap(":/drag.png") },
         { Role::Color, QPixmap(":/colors.png") },
         { Role::TextColor, QPixmap(":/colorsText.png") }
     };

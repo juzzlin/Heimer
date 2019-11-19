@@ -189,6 +189,11 @@ void Node::createHandles()
     textColorHandle->setParentItem(this);
     textColorHandle->setPos({ size().width() * 0.5, -size().height() * 0.5 + Constants::Node::HANDLE_RADIUS_SMALL * 0.5 });
     m_handles.push_back(textColorHandle);
+
+    auto dragHandle = new NodeHandle(*this, NodeHandle::Role::Drag, Constants::Node::HANDLE_RADIUS_MEDIUM);
+    dragHandle->setParentItem(this);
+    dragHandle->setPos({ -size().width() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15, -size().height() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15 });
+    m_handles.push_back(dragHandle);
 }
 
 std::pair<EdgePoint, EdgePoint> Node::getNearestEdgePoints(const Node & node1, const Node & node2)

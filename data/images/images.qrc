@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>about.png</file>
         <file>add.png</file>
+        <file>drag.png</file>
         <file>colors.png</file>
         <file>colorsText.png</file>
     </qresource>

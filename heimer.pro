@@ -5,7 +5,7 @@ TEMPLATE = app
 TARGET   = heimer
 
 DEFINES += VERSION=\\\"1.11.0\\\"
-QMAKE_CXXFLAGS += -std=gnu++11
+CONFIG += c++11
 
 # Qt version check
 contains(QT_VERSION, ^5\\..*) {

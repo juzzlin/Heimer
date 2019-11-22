@@ -314,6 +314,21 @@ void MainWindow::createViewMenu()
 {
     const auto viewMenu = menuBar()->addMenu(tr("&View"));
 
+    // Add "fullScreen"-action
+    const auto fullScreen = new QAction(tr("Full Screen"), this);
+    viewMenu->addAction(fullScreen);
+    connect(fullScreen, &QAction::triggered, [=]() {
+        if (isFullScreen()) {
+            showNormal();
+            resize(m_sizeBeforeFullScreen);
+        } else {
+            m_sizeBeforeFullScreen = size();
+            showFullScreen();
+        }
+    });
+
+    viewMenu->addSeparator();
+
     // Add "zoom in"-action
     const auto zoomIn = new QAction(tr("Zoom In"), this);
     viewMenu->addAction(zoomIn);

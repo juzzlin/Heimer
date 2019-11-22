@@ -4,6 +4,8 @@ x.y.z
 New features:
 
 * Fix GitHub Issue #67: Button to drag cards
+* Fix GitHub Issue #66: Add fullscreen option
+  * There's now View => Full Screen
 
 Bug fixes:
 

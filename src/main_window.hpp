@@ -160,6 +160,8 @@ private:
 
     bool m_closeNow = false;
 
+    QSize m_sizeBeforeFullScreen;
+
     static MainWindow * m_instance;
 };
 

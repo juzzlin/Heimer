@@ -23,6 +23,8 @@ class Mediator;
 
 class EdgeContextMenu : public QMenu
 {
+    Q_OBJECT
+
 public:
     EdgeContextMenu(QWidget * parent, Mediator & mediator);
 

@@ -2,10 +2,10 @@
 # (there are problems with static Qt and CMake)
 
 TEMPLATE = app
-TARGET   = heimer
+TARGET = heimer
 
 DEFINES += VERSION=\\\"1.11.0\\\"
-CONFIG += c++11
+CONFIG += c++11 lrelease embed_translations
 
 # Qt version check
 contains(QT_VERSION, ^5\\..*) {
@@ -95,8 +95,14 @@ SOURCES += \
     $$SRC/writer.cpp \
     $$SRC/contrib/SimpleLogger/src/simple_logger.cpp \
 
+QM_FILES_RESOURCE_PREFIX = /translations
 
-RESOURCES += data/icons/icons.qrc data/images/images.qrc data/translations/translations.qrc
+TRANSLATIONS += \ 
+$$SRC/translations/heimer_fi.ts \ 
+$$SRC/translations/heimer_fr.ts \ 
+$$SRC/translations/heimer_it.ts 
+
+RESOURCES += data/icons/icons.qrc data/images/images.qrc
 RC_FILE = data/icons/WindowsHeimer.rc
 
 data.files = AUTHORS CHANGELOG COPYING README

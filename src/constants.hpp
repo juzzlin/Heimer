@@ -38,7 +38,7 @@ static constexpr auto QSETTINGS_SOFTWARE_NAME = APPLICATION_NAME;
 
 static constexpr auto SUPPORT_SITE_URL = "https://www.patreon.com/juzzlin";
 
-static constexpr auto TRANSLATIONS_RESOURCE_BASE = ":/heimer_";
+static constexpr auto TRANSLATIONS_RESOURCE_BASE = ":/translations/heimer_";
 
 } // namespace Application
 

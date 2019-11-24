@@ -11,6 +11,8 @@ Bug fixes:
 
 Other:
 
+* Fix GitHub Issue #68: Build .qm-files as part of the build process
+
 1.11.0
 ======
 

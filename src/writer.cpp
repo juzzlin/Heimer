@@ -23,7 +23,7 @@ bool Writer::writeToFile(QDomDocument document, QString filePath)
     QFile file(filePath);
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream out(&file);
-        out << document.toString();
+        out << document;
         file.close();
         return true;
     }

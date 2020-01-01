@@ -23,7 +23,7 @@ ImageManager::ImageManager()
 
 void ImageManager::clear()
 {
-    juzzlin::L().info() << "Clearing ImageManager";
+    juzzlin::L().debug() << "Clearing ImageManager";
 
     m_images.clear();
     m_count = 0;
@@ -35,7 +35,7 @@ size_t ImageManager::addImage(const Image & image)
     m_images[id] = image;
     m_images[id].setId(id);
 
-    juzzlin::L().info() << "Adding new image, path=" << image.path() << ", id=" << id;
+    juzzlin::L().debug() << "Adding new image, path=" << image.path() << ", id=" << id;
 
     return id;
 }
@@ -49,7 +49,7 @@ void ImageManager::setImage(const Image & image)
     m_count = std::max(image.id(), m_count);
     m_images[image.id()] = image;
 
-    juzzlin::L().info() << "Setting image, path=" << image.path() << ", id=" << image.id();
+    juzzlin::L().debug() << "Setting image, path=" << image.path() << ", id=" << image.id();
 }
 
 std::pair<Image, bool> ImageManager::getImage(size_t id)
@@ -64,7 +64,7 @@ void ImageManager::handleImageRequest(size_t id, Node & node)
 {
     const auto && imagePair = getImage(id);
     if (imagePair.second) {
-        juzzlin::L().info() << "Applying image id=" << id << " to node " << node.index();
+        juzzlin::L().debug() << "Applying image id=" << id << " to node " << node.index();
         node.applyImage(imagePair.first);
     } else {
         juzzlin::L().warning() << "Cannot find image with id=" << id;

@@ -51,6 +51,7 @@ static void printHelp()
     std::cout << "Usage: heimer [options] [mindMapFile]" << std::endl
               << std::endl;
     std::cout << "Options:" << std::endl;
+    std::cout << "--debug       Show debug logging." << std::endl;
     std::cout << "--help        Show this help." << std::endl;
     std::cout << "--lang [lang] Force language: fi, fr, it." << std::endl;
     std::cout << std::endl;
@@ -85,7 +86,9 @@ void Application::parseArgs(int argc, char ** argv)
 {
     const std::vector<QString> args(argv, argv + argc);
     for (unsigned int i = 1; i < args.size(); i++) {
-        if (args[i] == "-h" || args[i] == "--help") {
+        if (args[i] == "--debug") {
+            L::setLoggingLevel(L::Level::Debug);
+        } else if (args[i] == "-h" || args[i] == "--help") {
             printHelp();
             throw UserException("Exit due to help.");
         } else if (args[i] == "--lang" && (i + i) < args.size()) {

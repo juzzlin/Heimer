@@ -62,7 +62,7 @@ pipeline {
                 }
             }
         }
-        stage('NSIS installer') {
+        stage('Build NSIS installer') {
             agent {
                 docker {
                     image 'juzzlin/mxe-qt5-18.04:latest'
@@ -78,6 +78,17 @@ pipeline {
                 }
             }
 
+        }
+        stage('Build AppImage') {
+            agent any
+            steps {
+                sh "./scripts/build-app-image"
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'build-appimage/*.AppImage', fingerprint: true
+                }
+            }
         }
     }
 }

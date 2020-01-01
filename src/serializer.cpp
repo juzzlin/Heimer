@@ -264,7 +264,8 @@ static QString readFirstTextNodeContent(const QDomElement & element)
     for (int i = 0; i < element.childNodes().count(); i++) {
         const auto child = element.childNodes().at(i);
         if (child.isText()) {
-            return child.toText().nodeValue();
+            // See: https://github.com/juzzlin/Heimer/issues/73
+            return child.toText().nodeValue().replace(13, "");
         }
     }
     return "";

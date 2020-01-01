@@ -6,6 +6,7 @@ New features:
 Bug fixes:
 
 * Fix GitHub Issue #72: UTF-8 saving not working (on Windows)
+* Fix GitHub Issue #73: Extra newlines on Windows 
 
 Other:
 

@@ -11,7 +11,7 @@ CMD="export LANG=en_US.UTF-8 && \
      cd /heimer && \
      mkdir -p build-windows-docker && \
      cd build-windows-docker && ${QMAKE} .. && \
-     make -j3 && \
+     make clean && make -j4 && \
      cd release && \
      cp -rv ../../data . && \
      cp -v ../../AUTHORS . && \

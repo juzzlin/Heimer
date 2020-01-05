@@ -5,10 +5,19 @@ New features:
 
 Bug fixes:
 
+Other:
+
+1.13.0
+======
+
+Bug fixes:
+
 * Fix GitHub Issue #72: UTF-8 saving not working (on Windows)
 * Fix GitHub Issue #73: Extra newlines on Windows 
 
 Other:
+
+* Add --debug and turn some info logs into debug logs
 
 1.12.0
 ======

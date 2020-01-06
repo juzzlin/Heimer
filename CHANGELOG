@@ -5,9 +5,14 @@ New features:
 
 Bug fixes:
 
-* Fix GitHub Issue #75: Unpredictable crash on delete node via context menu
-
 Other:
+
+1.13.1
+======
+
+Bug fixes:
+
+* Fix GitHub Issue #75: Unpredictable crash on delete node via context menu
 
 1.13.0
 ======

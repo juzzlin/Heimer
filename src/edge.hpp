@@ -82,7 +82,7 @@ private:
 
     void updateArrowhead();
 
-    void updateDots(const std::pair<EdgePoint, EdgePoint> & nearestPoints);
+    void updateDots();
 
     void updateLabel();
 

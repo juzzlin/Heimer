@@ -104,9 +104,11 @@ void Edge::initDots()
     if (m_enableAnimations) {
         m_sourceDot->setPen(QPen(Constants::Edge::DOT_COLOR));
         m_sourceDot->setBrush(QBrush(Constants::Edge::DOT_COLOR));
+        m_sourceDot->setZValue(zValue() + 10);
 
         m_targetDot->setPen(QPen(Constants::Edge::DOT_COLOR));
         m_targetDot->setBrush(QBrush(Constants::Edge::DOT_COLOR));
+        m_targetDot->setZValue(zValue() + 10);
 
         m_sourceDotSizeAnimation->setDuration(Constants::Edge::DOT_DURATION);
         m_sourceDotSizeAnimation->setStartValue(1.0);
@@ -200,14 +202,14 @@ void Edge::setSelected(bool selected)
 
 Node & Edge::sourceNode() const
 {
-    auto node = dynamic_cast<Node *>(&sourceNodeBase());
+    const auto node = dynamic_cast<Node *>(&sourceNodeBase());
     assert(node);
     return *node;
 }
 
 Node & Edge::targetNode() const
 {
-    auto node = dynamic_cast<Node *>(&targetNodeBase());
+    const auto node = dynamic_cast<Node *>(&targetNodeBase());
     assert(node);
     return *node;
 }
@@ -272,25 +274,17 @@ void Edge::updateArrowhead()
     }
 }
 
-void Edge::updateDots(const std::pair<EdgePoint, EdgePoint> & nearestPoints)
+void Edge::updateDots()
 {
     if (m_enableAnimations) {
-        if (m_sourceDot->pos() != nearestPoints.first.location) {
-            m_sourceDot->setPos(nearestPoints.first.location);
-
-            // Re-parent to source node due to Z-ordering issues
-            m_sourceDot->setParentItem(&sourceNode());
-
+        if (m_sourceDot->pos() != line().p1()) {
+            m_sourceDot->setPos(line().p1());
             m_sourceDotSizeAnimation->stop();
             m_sourceDotSizeAnimation->start();
         }
 
-        if (m_targetDot->pos() != nearestPoints.second.location) {
-            m_targetDot->setPos(nearestPoints.second.location);
-
-            // Re-parent to target node due to Z-ordering issues
-            m_targetDot->setParentItem(&targetNode());
-
+        if (m_targetDot->pos() != line().p2()) {
+            m_targetDot->setPos(line().p2());
             m_targetDotSizeAnimation->stop();
             m_targetDotSizeAnimation->start();
         }
@@ -317,26 +311,22 @@ void Edge::updateLine()
       p1 - (nearestPoints.first.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction * sourceNode().cornerRadius()).toPointF() : QPointF { 0, 0 }),
       p2 + (nearestPoints.second.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction * targetNode().cornerRadius()).toPointF() : QPointF { 0, 0 }) - (direction * static_cast<float>(width())).toPointF() * Constants::Edge::WIDTH_SCALE));
 
-    updateDots(nearestPoints);
+    updateDots();
     updateLabel();
     updateArrowhead();
 }
 
 Edge::~Edge()
 {
+#ifndef HEIMER_UNIT_TEST
+    juzzlin::L().debug() << "Deleting edge " << sourceNode().index() << " -> " << targetNode().index();
+
     if (m_enableAnimations) {
         m_sourceDotSizeAnimation->stop();
         m_targetDotSizeAnimation->stop();
-        delete m_sourceDot;
-        delete m_targetDot;
     }
 
-#ifndef HEIMER_UNIT_TEST
     sourceNode().removeGraphicsEdge(*this);
     targetNode().removeGraphicsEdge(*this);
-
-    // Needed to remove glitches from possibly running dot animations
-    sourceNode().update();
-    targetNode().update();
 #endif
 }

@@ -20,9 +20,9 @@ if(POLICY CMP0071)
 endif()
 
 # Global game version
-set(VERSION_MAJOR "1")
-set(VERSION_MINOR "13")
-set(VERSION_PATCH "1")
+set(VERSION_MAJOR 1)
+set(VERSION_MINOR 13)
+set(VERSION_PATCH 1)
 set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 # Some common CPack variables

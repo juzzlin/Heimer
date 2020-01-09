@@ -82,9 +82,8 @@ double TextEdit::maxWidth() const
 
 void TextEdit::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
-    QStyleOptionGraphicsItem * style = const_cast<QStyleOptionGraphicsItem *>(option);
-
     // Remove the HasFocus style state, to prevent the dotted line from being drawn.
+    auto style = const_cast<QStyleOptionGraphicsItem *>(option);
     style->state &= ~QStyle::State_HasFocus;
 
     painter->fillRect(option->rect, m_backgroundColor);

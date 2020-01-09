@@ -54,7 +54,6 @@ Node::Node()
 
     connect(m_textEdit, &TextEdit::textChanged, [=](const QString & text) {
         setText(text);
-
         if (isTextUnderflowOrOverflow()) {
             adjustSize();
         }
@@ -104,7 +103,7 @@ void Node::addGraphicsEdge(Edge & edge)
 void Node::removeGraphicsEdge(Edge & edge)
 {
 #ifndef HEIMER_UNIT_TEST
-    auto iter = std::find(m_graphicsEdges.begin(), m_graphicsEdges.end(), &edge);
+    const auto iter = std::find(m_graphicsEdges.begin(), m_graphicsEdges.end(), &edge);
     if (iter != m_graphicsEdges.end()) {
         m_graphicsEdges.erase(iter);
     }
@@ -117,9 +116,9 @@ void Node::adjustSize()
 {
     prepareGeometryChange();
 
-    setSize(QSize(
+    setSize(QSize {
       std::max(Constants::Node::MIN_WIDTH, static_cast<int>(m_textEdit->boundingRect().width() + Constants::Node::MARGIN * 2)),
-      std::max(Constants::Node::MIN_HEIGHT, static_cast<int>(m_textEdit->boundingRect().height() + Constants::Node::MARGIN * 2))));
+      std::max(Constants::Node::MIN_HEIGHT, static_cast<int>(m_textEdit->boundingRect().height() + Constants::Node::MARGIN * 2)) });
 
     initTextField();
 
@@ -146,7 +145,7 @@ QRectF Node::boundingRect() const
 
 EdgePtr Node::createAndAddGraphicsEdge(NodePtr targetNode)
 {
-    auto edge = std::make_shared<Edge>(*this, *targetNode);
+    const auto edge = std::make_shared<Edge>(*this, *targetNode);
     edge->updateLine();
     m_graphicsEdges.push_back(edge.get());
     return edge;
@@ -179,22 +178,22 @@ void Node::createHandles()
     }
     m_handles.clear();
 
-    auto addHandle = new NodeHandle(*this, NodeHandle::Role::Add, Constants::Node::HANDLE_RADIUS);
+    const auto addHandle = new NodeHandle(*this, NodeHandle::Role::Add, Constants::Node::HANDLE_RADIUS);
     addHandle->setParentItem(this);
     addHandle->setPos({ 0, size().height() * 0.5 });
     m_handles.push_back(addHandle);
 
-    auto colorHandle = new NodeHandle(*this, NodeHandle::Role::Color, Constants::Node::HANDLE_RADIUS_SMALL);
+    const auto colorHandle = new NodeHandle(*this, NodeHandle::Role::Color, Constants::Node::HANDLE_RADIUS_SMALL);
     colorHandle->setParentItem(this);
     colorHandle->setPos({ size().width() * 0.5, size().height() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.5 });
     m_handles.push_back(colorHandle);
 
-    auto textColorHandle = new NodeHandle(*this, NodeHandle::Role::TextColor, Constants::Node::HANDLE_RADIUS_SMALL);
+    const auto textColorHandle = new NodeHandle(*this, NodeHandle::Role::TextColor, Constants::Node::HANDLE_RADIUS_SMALL);
     textColorHandle->setParentItem(this);
     textColorHandle->setPos({ size().width() * 0.5, -size().height() * 0.5 + Constants::Node::HANDLE_RADIUS_SMALL * 0.5 });
     m_handles.push_back(textColorHandle);
 
-    auto dragHandle = new NodeHandle(*this, NodeHandle::Role::Drag, Constants::Node::HANDLE_RADIUS_MEDIUM);
+    const auto dragHandle = new NodeHandle(*this, NodeHandle::Role::Drag, Constants::Node::HANDLE_RADIUS_MEDIUM);
     dragHandle->setParentItem(this);
     dragHandle->setPos({ -size().width() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15, -size().height() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15 });
     m_handles.push_back(dragHandle);
@@ -206,10 +205,9 @@ std::pair<EdgePoint, EdgePoint> Node::getNearestEdgePoints(const Node & node1, c
     std::pair<EdgePoint, EdgePoint> bestPair = { EdgePoint(), EdgePoint() };
 
     // This is O(n^2) but fine as there are not many points
-    for (const auto & point1 : node1.m_edgePoints) {
-        for (const auto & point2 : node2.m_edgePoints) {
+    for (auto && point1 : node1.m_edgePoints) {
+        for (auto && point2 : node2.m_edgePoints) {
             const auto distance = std::pow(node1.pos().x() + point1.location.x() - node2.pos().x() - point2.location.x(), 2) + std::pow(node1.pos().y() + point1.location.y() - node2.pos().y() - point2.location.y(), 2);
-
             if (distance < bestDistance) {
                 bestDistance = distance;
                 bestPair = { point1, point2 };
@@ -277,7 +275,7 @@ void Node::checkHandleVisibility(QPointF pos)
 
 NodeHandle * Node::hitsHandle(QPointF pos)
 {
-    for (auto handle : m_handles) {
+    for (auto && handle : m_handles) {
         if (handle->contains(pos)) {
             return handle;
         }
@@ -302,8 +300,7 @@ bool Node::isTextUnderflowOrOverflow() const
     return m_textEdit->boundingRect().height() > m_textEdit->maxHeight() + tolerance || m_textEdit->boundingRect().width() > m_textEdit->maxWidth() + tolerance || m_textEdit->boundingRect().height() < m_textEdit->maxHeight() - tolerance || m_textEdit->boundingRect().width() < m_textEdit->maxWidth() - tolerance;
 }
 
-void Node::paint(QPainter * painter,
-                 const QStyleOptionGraphicsItem * option, QWidget * widget)
+void Node::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
     Q_UNUSED(widget)
     Q_UNUSED(option)
@@ -373,11 +370,11 @@ void Node::setCornerRadius(int value)
 void Node::setHandlesVisible(bool visible, bool all)
 {
     if (all) {
-        for (auto handle : m_handles) {
+        for (auto && handle : m_handles) {
             handle->setVisible(visible);
         }
     } else {
-        for (auto handle : m_handles) {
+        for (auto && handle : m_handles) {
             if (!visible) {
                 if (!handle->contains(m_currentMousePos)) {
                     handle->setVisible(visible);
@@ -471,7 +468,7 @@ void Node::applyImage(const Image & image)
 
 void Node::updateEdgeLines()
 {
-    for (auto edge : m_graphicsEdges) {
+    for (auto && edge : m_graphicsEdges) {
         edge->updateLine();
     }
 }

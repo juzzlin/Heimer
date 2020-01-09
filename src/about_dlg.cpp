@@ -31,13 +31,13 @@ AboutDlg::AboutDlg(QWidget * parent)
 
 void AboutDlg::initWidgets()
 {
-    QVBoxLayout * vLayout = new QVBoxLayout(this);
-    QLabel * pixmapLabel = new QLabel(this);
+    const auto vLayout = new QVBoxLayout(this);
+    const auto pixmapLabel = new QLabel(this);
 
     pixmapLabel->setPixmap(QPixmap(":/about.png").scaled(512, 512));
     vLayout->addWidget(pixmapLabel);
 
-    QLabel * infoLabel = new QLabel(this);
+    const auto infoLabel = new QLabel(this);
     infoLabel->setText(
       QString("<h2>") + Constants::Application::APPLICATION_NAME + " v" + Constants::Application::APPLICATION_VERSION + "</h2>"
       + "<p>" + Constants::Application::APPLICATION_NAME + tr(" is licenced under ") + "GNU GPLv3."
@@ -50,10 +50,10 @@ void AboutDlg::initWidgets()
 
     vLayout->addWidget(infoLabel);
 
-    QHBoxLayout * buttonLayout = new QHBoxLayout();
-    QPushButton * button = new QPushButton("&Ok", this);
+    const auto buttonLayout = new QHBoxLayout();
+    const auto button = new QPushButton("&Ok", this);
 
-    connect(button, SIGNAL(clicked()), this, SLOT(accept()));
+    connect(button, &QPushButton::clicked, this, &AboutDlg::accept);
 
     buttonLayout->addWidget(button);
     buttonLayout->insertStretch(0);

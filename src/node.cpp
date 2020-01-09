@@ -54,9 +54,7 @@ Node::Node()
 
     connect(m_textEdit, &TextEdit::textChanged, [=](const QString & text) {
         setText(text);
-        if (isTextUnderflowOrOverflow()) {
-            adjustSize();
-        }
+        adjustSize();
     });
 
     connect(m_textEdit, &TextEdit::undoPointRequested, this, &Node::undoPointRequested);
@@ -67,6 +65,11 @@ Node::Node()
     connect(&m_handleVisibilityTimer, &QTimer::timeout, [=]() {
         setHandlesVisible(false, false);
     });
+
+    // Set the background transparent as the TextEdit background will be rendered in Node::paint().
+    // The reason for this is that TextEdit's background affects only the area that includes letters
+    // and we want to render a larger area.
+    m_textEdit->setBackgroundColor({ 0, 0, 0, 0 });
 }
 
 Node::Node(const Node & other)
@@ -116,17 +119,21 @@ void Node::adjustSize()
 {
     prepareGeometryChange();
 
-    setSize(QSize {
-      std::max(Constants::Node::MIN_WIDTH, static_cast<int>(m_textEdit->boundingRect().width() + Constants::Node::MARGIN * 2)),
-      std::max(Constants::Node::MIN_HEIGHT, static_cast<int>(m_textEdit->boundingRect().height() + Constants::Node::MARGIN * 2)) });
+    const auto margin = Constants::Node::MARGIN * 2;
+    const auto newSize = QSize {
+        std::max(Constants::Node::MIN_WIDTH, static_cast<int>(m_textEdit->boundingRect().width() + margin)),
+        std::max(Constants::Node::MIN_HEIGHT, static_cast<int>(m_textEdit->boundingRect().height() + margin))
+    };
 
-    initTextField();
+    setSize(newSize);
 
     createHandles();
 
     createEdgePoints();
 
     updateEdgeLines();
+
+    initTextField();
 
     update();
 }
@@ -199,6 +206,16 @@ void Node::createHandles()
     m_handles.push_back(dragHandle);
 }
 
+QRectF Node::expandedTextEditRect() const
+{
+    auto textEditRect = QRectF {};
+    textEditRect.setX(m_textEdit->pos().x());
+    textEditRect.setY(m_textEdit->pos().y());
+    textEditRect.setWidth(size().width() - Constants::Node::MARGIN * 2);
+    textEditRect.setHeight(m_textEdit->boundingRect().height());
+    return textEditRect;
+}
+
 std::pair<EdgePoint, EdgePoint> Node::getNearestEdgePoints(const Node & node1, const Node & node2)
 {
     double bestDistance = std::numeric_limits<double>::max();
@@ -258,6 +275,18 @@ void Node::hoverMoveEvent(QGraphicsSceneHoverEvent * event)
     }
 }
 
+void Node::mousePressEvent(QGraphicsSceneMouseEvent * event)
+{
+    if (index() != -1) // Prevent left-click on the drag node
+    {
+        if (expandedTextEditRect().contains(event->pos())) {
+            m_textEdit->setFocus();
+        }
+
+        QGraphicsItem::mousePressEvent(event);
+    }
+}
+
 void Node::checkHandleVisibility(QPointF pos)
 {
     // Bounding box without children
@@ -287,17 +316,9 @@ NodeHandle * Node::hitsHandle(QPointF pos)
 void Node::initTextField()
 {
 #ifndef HEIMER_UNIT_TEST
-    m_textEdit->setTextWidth(size().width() - Constants::Node::MARGIN * 2);
-    m_textEdit->setPos(-m_textEdit->textWidth() * 0.5, -size().height() * 0.5 + Constants::Node::MARGIN);
-    m_textEdit->setMaxHeight(size().height() - Constants::Node::MARGIN * 4);
-    m_textEdit->setMaxWidth(size().width() - Constants::Node::MARGIN * 2);
+    m_textEdit->setTextWidth(-1);
+    m_textEdit->setPos(-size().width() * 0.5 + Constants::Node::MARGIN, -size().height() * 0.5 + Constants::Node::MARGIN);
 #endif
-}
-
-bool Node::isTextUnderflowOrOverflow() const
-{
-    const double tolerance = 0.001;
-    return m_textEdit->boundingRect().height() > m_textEdit->maxHeight() + tolerance || m_textEdit->boundingRect().width() > m_textEdit->maxWidth() + tolerance || m_textEdit->boundingRect().height() < m_textEdit->maxHeight() - tolerance || m_textEdit->boundingRect().width() < m_textEdit->maxWidth() - tolerance;
 }
 
 void Node::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
@@ -342,6 +363,10 @@ void Node::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
     } else {
         painter->fillPath(path, QBrush(color()));
     }
+
+    // Patch for TextEdit
+
+    painter->fillRect(expandedTextEditRect(), Constants::Node::TEXT_EDIT_BACKGROUND_COLOR);
 
     painter->restore();
 }
@@ -417,9 +442,7 @@ void Node::setText(const QString & text)
         NodeBase::setText(text);
         m_textEdit->setText(text);
 
-        if (isTextUnderflowOrOverflow()) {
-            adjustSize();
-        }
+        adjustSize();
     }
 }
 
@@ -436,9 +459,7 @@ void Node::setTextSize(int textSize)
 {
     m_textEdit->setTextSize(textSize);
 
-    if (isTextUnderflowOrOverflow()) {
-        adjustSize();
-    }
+    adjustSize();
 }
 
 QString Node::text() const

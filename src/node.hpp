@@ -71,6 +71,8 @@ public:
 
     void hoverMoveEvent(QGraphicsSceneHoverEvent * event) override;
 
+    void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
+
     static std::pair<EdgePoint, EdgePoint> getNearestEdgePoints(const Node & node1, const Node & node2);
 
     void setHandlesVisible(bool visible, bool all = true);
@@ -108,11 +110,11 @@ private:
 
     void createHandles();
 
+    QRectF expandedTextEditRect() const;
+
     NodeHandle * hitsHandle(QPointF pos);
 
     void initTextField();
-
-    bool isTextUnderflowOrOverflow() const;
 
     void updateEdgeLines();
 

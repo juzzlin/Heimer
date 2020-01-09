@@ -26,21 +26,11 @@ class TextEdit : public QGraphicsTextItem
 public:
     explicit TextEdit(QGraphicsItem * parentItem);
 
-    virtual double maxHeight() const;
-
-    virtual void setMaxHeight(double maxHeight);
-
-    virtual double maxWidth() const;
-
     virtual void setBackgroundColor(const QColor & backgroundColor);
-
-    virtual void setMaxWidth(double maxWidth);
 
     virtual void setTextSize(int textSize);
 
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) override;
-
-    virtual void focusInEvent(QFocusEvent * event) override;
 
     QString text() const;
 

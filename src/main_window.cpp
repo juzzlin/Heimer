@@ -19,6 +19,7 @@
 #include "constants.hpp"
 #include "mediator.hpp"
 #include "simple_logger.hpp"
+#include "whats_new_dlg.hpp"
 
 #include <QAction>
 #include <QApplication>
@@ -45,6 +46,7 @@ static const auto threeDots = "...";
 
 MainWindow::MainWindow()
   : m_aboutDlg(new AboutDlg(this))
+  , m_whatsNewDlg(new WhatsNewDlg(this))
 {
     if (!m_instance) {
         m_instance = this;
@@ -295,6 +297,13 @@ void MainWindow::createHelpMenu()
     const auto aboutQtAct = new QAction(tr("About &Qt"), this);
     helpMenu->addAction(aboutQtAct);
     connect(aboutQtAct, SIGNAL(triggered()), this, SLOT(showAboutQtDlg()));
+
+    helpMenu->addSeparator();
+
+    // Add "What's new"-action
+    const auto whatsNewAct = new QAction(tr("What's New"), this);
+    helpMenu->addAction(whatsNewAct);
+    connect(whatsNewAct, SIGNAL(triggered()), this, SLOT(showWhatsNewDlg()));
 }
 
 void MainWindow::createToolBar()
@@ -470,6 +479,11 @@ void MainWindow::showAboutDlg()
 void MainWindow::showAboutQtDlg()
 {
     QMessageBox::aboutQt(this, tr("About Qt"));
+}
+
+void MainWindow::showWhatsNewDlg()
+{
+    m_whatsNewDlg->exec();
 }
 
 void MainWindow::saveWindowSize()

@@ -53,6 +53,7 @@ set(SRC
     undo_stack.cpp
     user_exception.hpp
     layers.hpp
+    whats_new_dlg.cpp
     writer.cpp
 )
 
@@ -61,6 +62,7 @@ set(SRC
 configure_file(${CMAKE_SOURCE_DIR}/data/translations/translations.qrc ${CMAKE_BINARY_DIR}/data/translations/translations.qrc COPYONLY)
 
 set(RCS
+    ${CMAKE_SOURCE_DIR}/meta.qrc
     ${CMAKE_SOURCE_DIR}/data/images/images.qrc
     ${CMAKE_SOURCE_DIR}/data/icons/icons.qrc
     ${CMAKE_BINARY_DIR}/data/translations/translations.qrc

@@ -57,6 +57,7 @@ HEADERS +=  \
     $$SRC/state_machine.hpp \
     $$SRC/text_edit.hpp \
     $$SRC/undo_stack.hpp \
+    $$SRC/whats_new_dlg.hpp \
     $$SRC/writer.hpp \
     $$SRC/contrib/SimpleLogger/src/simple_logger.hpp \
 
@@ -96,6 +97,7 @@ SOURCES += \
     $$SRC/state_machine.cpp \
     $$SRC/text_edit.cpp \
     $$SRC/undo_stack.cpp \
+    $$SRC/whats_new_dlg.cpp \
     $$SRC/writer.cpp \
     $$SRC/contrib/SimpleLogger/src/simple_logger.cpp \
 
@@ -106,7 +108,7 @@ $$SRC/translations/heimer_fi.ts \
 $$SRC/translations/heimer_fr.ts \ 
 $$SRC/translations/heimer_it.ts 
 
-RESOURCES += data/icons/icons.qrc data/images/images.qrc
+RESOURCES += meta.qrc data/icons/icons.qrc data/images/images.qrc
 RC_FILE = data/icons/WindowsHeimer.rc
 
 data.files = AUTHORS CHANGELOG COPYING README

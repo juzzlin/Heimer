@@ -4,7 +4,7 @@ Heimer is a desktop application for creating mind maps and other suitable diagra
 
 Here is a simple mind map of Heimer itself running on Ubuntu 18.04:
 
-![Heimer screenshot](/screenshots/1.2.0/Heimer.png?raw=true)
+![Heimer screenshot](/screenshots/1.14.0/Heimer.png?raw=true)
 
 <a href="https://www.youtube.com/watch?feature=player_embedded&v=NXJp6tmmZdE">A very short introduction video to Heimer 1.9.0</a>
 

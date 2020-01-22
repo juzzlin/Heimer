@@ -8,8 +8,8 @@
 !define COMPANYNAME            "Juzzlin"
 !define DESCRIPTION            "An application for mind map creation and management."
 !define VERSIONMAJOR 1
-!define VERSIONMINOR 13
-!define VERSIONBUILD 1
+!define VERSIONMINOR 14
+!define VERSIONBUILD 0
 !define HELPURL                "http://juzzlin.github.io/Heimer/"
 !define UPDATEURL              "https://github.com/juzzlin/Heimer/releases"
 !define ABOUTURL               "http://juzzlin.github.io/Heimer/"

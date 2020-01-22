@@ -2,15 +2,20 @@ x.y.z
 =====
 
 New features:
+  
+Bug fixes:
+
+Other:
+
+1.14.0
+======
+
+New features:
 
 * Add What's New dialog
   - Help => What's New
 * Fix Github Issue #41: Allow nodes to be resized horizontally
   - Nodes will now automatically scale also horizontally by the text width
-  
-Bug fixes:
-
-Other:
 
 1.13.1
 ======

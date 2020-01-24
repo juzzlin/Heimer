@@ -94,7 +94,7 @@ static const int MAX_SIZE = 500;
 
 namespace MindMap {
 
-static const QColor DEFAULT_BACKGROUND_COLOR { 0x80, 0xc8, 0xff };
+static const QColor DEFAULT_BACKGROUND_COLOR { 0xba, 0xbd, 0xb6 };
 
 static const QColor DEFAULT_EDGE_COLOR { 0, 0, 0, 200 };
 

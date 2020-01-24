@@ -61,6 +61,7 @@ void WhatsNewDlg::initWidgets()
     file.close();
 
     textEdit->setText(data);
+    textEdit->setReadOnly(true);
     QFont font = textEdit->font();
     font.setFamily("Courier New");
     font.setStyleHint(QFont::Monospace);

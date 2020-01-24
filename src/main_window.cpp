@@ -18,6 +18,8 @@
 #include "about_dlg.hpp"
 #include "constants.hpp"
 #include "mediator.hpp"
+#include "recent_files_manager.hpp"
+#include "recent_files_menu.hpp"
 #include "simple_logger.hpp"
 #include "whats_new_dlg.hpp"
 
@@ -239,6 +241,14 @@ void MainWindow::createFileMenu()
         emit actionTriggered(StateMachine::Action::OpenSelected);
     });
 
+    // Add "Recent Files"-menu
+    const auto recentFilesMenu = new RecentFilesMenu;
+    const auto recentFilesMenuAction = fileMenu->addMenu(recentFilesMenu);
+    recentFilesMenuAction->setText(tr("Recent &Files"));
+    connect(recentFilesMenu, &RecentFilesMenu::fileSelected, [=]() {
+        emit actionTriggered(StateMachine::Action::RecentFileSelected);
+    });
+
     fileMenu->addSeparator();
 
     // Add "save"-action
@@ -281,6 +291,7 @@ void MainWindow::createFileMenu()
 
     connect(fileMenu, &QMenu::aboutToShow, [=]() {
         exportToPNGAction->setEnabled(m_mediator->hasNodes());
+        recentFilesMenuAction->setEnabled(RecentFilesManager::instance().hasRecentFiles());
     });
 }
 

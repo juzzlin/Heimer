@@ -22,6 +22,7 @@
 #include "main_window.hpp"
 #include "mediator.hpp"
 #include "png_export_dialog.hpp"
+#include "recent_files_manager.hpp"
 #include "state_machine.hpp"
 #include "user_exception.hpp"
 
@@ -183,7 +184,10 @@ void Application::runState(StateMachine::State state)
     case StateMachine::State::InitializeNewMindMap:
         m_mediator->initializeNewMindMap();
         break;
-    case StateMachine::State::SaveMindMap:
+    case StateMachine::State::OpenRecent:
+        doOpenMindMap(RecentFilesManager::instance().selectedFile());
+        break;
+    case StateMachine::State::Save:
         saveMindMap();
         break;
     case StateMachine::State::ShowBackgroundColorDialog:

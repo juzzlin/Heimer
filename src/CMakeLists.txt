@@ -46,6 +46,8 @@ set(SRC
     node_base.cpp
     node_handle.cpp
     reader.cpp
+    recent_files_manager.cpp
+    recent_files_menu.cpp
     selection_group.cpp
     serializer.cpp
     state_machine.cpp

@@ -2,6 +2,8 @@ x.y.z
 =====
 
 New features:
+
+* Fix Github Issue #9: Show list of recent files
   
 Bug fixes:
 

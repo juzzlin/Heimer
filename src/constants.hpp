@@ -130,6 +130,16 @@ static const QColor TEXT_EDIT_BACKGROUND_COLOR { 0x00, 0x00, 0x00, 0x10 };
 
 } // namespace Node
 
+namespace RecentFiles {
+
+static const int MAX_FILES = 8;
+
+static const QString QSETTINGS_ARRAY_KEY = "recentFilesArray";
+
+static const QString QSETTINGS_FILE_PATH_KEY = "filePath";
+
+} // namespace RecentFiles
+
 namespace Scene {
 
 static const QColor BARRIER_COLOR { 255, 0, 0, 128 };

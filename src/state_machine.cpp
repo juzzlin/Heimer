@@ -67,6 +67,9 @@ void StateMachine::calculateState(StateMachine::Action action)
         case QuitType::Open:
             m_state = State::ShowOpenDialog;
             break;
+        case QuitType::OpenRecent:
+            m_state = State::OpenRecent;
+            break;
         default:
             m_state = State::Edit;
             break;
@@ -111,7 +114,7 @@ void StateMachine::calculateState(StateMachine::Action action)
     case Action::NotSavedDialogAccepted:
     case Action::SaveSelected:
         if (m_mediator->canBeSaved()) {
-            m_state = State::SaveMindMap;
+            m_state = State::Save;
         } else {
             m_state = State::ShowSaveAsDialog;
         }
@@ -121,9 +124,18 @@ void StateMachine::calculateState(StateMachine::Action action)
         m_state = State::ShowSaveAsDialog;
         break;
 
+    case Action::RecentFileSelected:
+        m_quitType = QuitType::OpenRecent;
+        if (m_mediator->isModified()) {
+            m_state = State::ShowNotSavedDialog;
+        } else {
+            m_state = State::OpenRecent;
+        }
+        break;
+
     default:
         juzzlin::L().warning() << "Action " << static_cast<int>(action) << " not handled!";
-    };
+    }
 
     emit stateChanged(m_state);
 }

@@ -21,6 +21,7 @@ set(SRC ${NAME}.cpp
     ${EDITOR_DIR}/node_base.cpp
     ${EDITOR_DIR}/node_handle.cpp
     ${EDITOR_DIR}/reader.cpp
+    ${EDITOR_DIR}/recent_files_manager.cpp
     ${EDITOR_DIR}/selection_group.cpp
     ${EDITOR_DIR}/serializer.cpp
     ${EDITOR_DIR}/text_edit.cpp

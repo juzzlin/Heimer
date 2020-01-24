@@ -52,6 +52,8 @@ HEADERS +=  \
     $$SRC/node_base.hpp \
     $$SRC/node_handle.hpp \
     $$SRC/reader.hpp \
+    $$SRC/recent_files_manager.hpp \
+    $$SRC/recent_files_menu.hpp \
     $$SRC/selection_group.hpp \
     $$SRC/serializer.hpp \
     $$SRC/state_machine.hpp \
@@ -92,6 +94,8 @@ SOURCES += \
     $$SRC/node_base.cpp \
     $$SRC/node_handle.cpp \
     $$SRC/reader.cpp \
+    $$SRC/recent_files_manager.cpp \
+    $$SRC/recent_files_menu.cpp \
     $$SRC/selection_group.cpp \
     $$SRC/serializer.cpp \
     $$SRC/state_machine.cpp \

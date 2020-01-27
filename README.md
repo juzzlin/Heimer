@@ -45,8 +45,9 @@ Snap is the recommended way to install Heimer on Linux.
 
 ## Building the project
 
-Please refer to the INSTALL document for build/install instructions if you're
-going to build Heimer from sources.
+Currently the build depends on `Qt5` only (`qt5-default`, `qttools5-dev-tools`, `qttools-dev` packages on Ubuntu).
+
+The "official" build system for Linux is `CMake` although `qmake` project files are also provided.
 
 Building for Linux in a nutshell:
 
@@ -54,7 +55,13 @@ Building for Linux in a nutshell:
 
 `$ cmake ..`
 
-`$ make`
+`$ make -j4`
+
+Run unit tests:
+
+`$ ctest`
+
+Install locally:
 
 `$ sudo make install`
 

@@ -58,6 +58,12 @@ Building for Linux in a nutshell:
 
 `$ sudo make install`
 
+Debian package (`.deb`) can be created like this:
+
+`$ cpack -G DEB`
+
+See `Jenkinsfile` on how to build other packages in Docker.
+
 ## Donations
 
 https://www.patreon.com/juzzlin

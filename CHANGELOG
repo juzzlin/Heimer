@@ -3,13 +3,20 @@ x.y.z
 
 New features:
 
+Bug fixes:
+
+Other:
+
+1.15.0
+======
+
+New features:
+
 * Fix Github Issue #9: Show list of recent files
   
 Bug fixes:
 
 * Fix Github Issue #79: What's new view is editable 
-
-Other:
 
 1.14.0
 ======

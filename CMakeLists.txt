@@ -19,9 +19,9 @@ if(POLICY CMP0071)
     cmake_policy(SET CMP0071 NEW)
 endif()
 
-# Global game version
+# Global version
 set(VERSION_MAJOR 1)
-set(VERSION_MINOR 14)
+set(VERSION_MINOR 15)
 set(VERSION_PATCH 0)
 set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 

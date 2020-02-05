@@ -17,3 +17,11 @@ else()
 endif()
 set_target_properties(${LIBRARY_NAME} PROPERTIES VERSION ${VERSION} SOVERSION ${VERSION_MAJOR})
 set_target_properties(${LIBRARY_NAME} PROPERTIES PUBLIC_HEADER ${HDR})
+
+install(TARGETS ${LIBRARY_NAME}
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    PUBLIC_HEADER DESTINATION include
+)
+
+add_subdirectory(tests)

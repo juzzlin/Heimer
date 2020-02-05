@@ -57,6 +57,15 @@ public:
         Fatal
     };
 
+    enum class TimestampMode
+    {
+        None = 0,
+        DateTime,
+        EpochSeconds,
+        EpochMilliseconds,
+        EpochMicroseconds
+    };
+
     //! Constructor.
     Logger();
 
@@ -73,10 +82,6 @@ public:
     //! \param enable Echo everything if true. Default is false.
     static void enableEchoMode(bool enable);
 
-    //! Enable/disable date and time prefix.
-    //! \param enable Prefix with date and time if true. Default is true.
-    static void enableDateTime(bool enable);
-
     //! Set the logging level.
     //! \param level The minimum level. Default is Info.
     static void setLoggingLevel(Level level);
@@ -85,6 +90,11 @@ public:
     //! \param level The level.
     //! \param symbol The symbol outputted for the messages of this level.
     static void setLevelSymbol(Level level, std::string symbol);
+
+    //! Set/enable timestamp mode.
+    //! \param timestampMode Timestamp mode enumeration.
+    //! \param separator Separator string outputted after timestamp.
+    static void setTimestampMode(TimestampMode timestampMode, std::string separator = " ");
 
     //! Get stream to the trace log message.
     std::ostringstream & trace();

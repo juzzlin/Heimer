@@ -35,7 +35,18 @@ static void initLogger()
     const QString logPath { QDir::tempPath() + QDir::separator() + "heimer.log" };
     L::init(logPath.toStdString().c_str());
     L::enableEchoMode(true);
-    L::enableDateTime(true);
+    L::setTimestampMode(L::TimestampMode::DateTime, " ");
+    const std::map<L::Level, std::string> symbols = {
+        { L::Level::Debug, "D" },
+        { L::Level::Error, "E" },
+        { L::Level::Fatal, "F" },
+        { L::Level::Info, "I" },
+        { L::Level::Trace, "T" },
+        { L::Level::Warning, "W" }
+    };
+    for (auto && symbol : symbols) {
+        L::setLevelSymbol(symbol.first, "[" + symbol.second + "]");
+    }
 
 #if defined(NDEBUG) or defined(QT_NO_DEBUG)
     L::setLoggingLevel(L::Level::Info);

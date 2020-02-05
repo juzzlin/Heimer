@@ -6,9 +6,11 @@ cmake_policy(VERSION 2.8.12)
 option(SIMPLE_LOGGER_BUILD_SHARED_LIB "Build a shared library" OFF)
 
 set(VERSION_MAJOR "1")
-set(VERSION_MINOR "1")
-set(VERSION_PATCH "0")
+set(VERSION_MINOR "3")
+set(VERSION_PATCH "1")
 set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
+
+enable_testing()
 
 # Default to release C++ flags if CMAKE_BUILD_TYPE not set
 if(NOT CMAKE_BUILD_TYPE)

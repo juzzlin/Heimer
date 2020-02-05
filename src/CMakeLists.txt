@@ -1,5 +1,5 @@
 add_subdirectory(contrib/SimpleLogger)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/contrib/SimpleLogger/src)
+include_directories(contrib/SimpleLogger/src)
 
 # Translation files in src/translations (without .ts)
 set(TS heimer_fi heimer_fr heimer_it)

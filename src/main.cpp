@@ -24,7 +24,6 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <memory>
 
 #include <QDir>
 
@@ -69,21 +68,13 @@ int main(int argc, char ** argv)
     QSettings::setDefaultFormat(QSettings::IniFormat);
 #endif
 
-    std::unique_ptr<Application> app;
-
     try {
         initLogger();
-
-        app.reset(new Application(argc, argv));
-
-        return app->run();
+        return Application(argc, argv).run();
     } catch (std::exception & e) {
         if (!dynamic_cast<UserException *>(&e)) {
             std::cerr << e.what() << std::endl;
         }
-
-        app.reset();
-
         return EXIT_FAILURE;
     }
 }

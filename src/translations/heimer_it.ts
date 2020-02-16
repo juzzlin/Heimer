@@ -204,7 +204,7 @@
     </message>
     <message>
         <source>Image Size</source>
-        <translation>Dimensione dell&apos;immagine</translation>
+        <translation>Dimensione dell'&apos;immagine</translation>
     </message>
     <message>
         <source>Width (px):</source>
@@ -276,7 +276,7 @@
     <message>
         <location filename="../main_context_menu.cpp" line="102"/>
         <source>Attach image...</source>
-        <translation>Allega immagine ...</translation>
+        <translation>Allega immagine...</translation>
     </message>
     <message>
         <location filename="../main_context_menu.cpp" line="109"/>
@@ -287,13 +287,13 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <source>Rifare</source>
-        <translation type="vanished">Indietro</translation>
+        <source>Redo</source>
+        <translation>Indietro</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="62"/>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>Indietro</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="77"/>
@@ -408,7 +408,7 @@
     <message>
         <location filename="../main_window.cpp" line="353"/>
         <source>Zoom In</source>
-        <translation>Ingrandire</translation>
+        <translation>Zoom Avanti</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="359"/>

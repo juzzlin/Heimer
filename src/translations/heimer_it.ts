@@ -126,112 +126,6 @@
     </message>
 </context>
 <context>
-    <name>EditorView</name>
-    <message>
-        <source>Choose File-&gt;New or File-&gt;Open to begin</source>
-        <translation type="vanished">Scegli File-&gt;Nuovo o File-&gt;Apri per iniziare</translation>
-    </message>
-    <message>
-        <source>Set background color</source>
-        <translation type="vanished">Imposta il colore di sfondo</translation>
-    </message>
-    <message>
-        <source>Set edge color</source>
-        <translation type="vanished">Imposta il colore del bordo</translation>
-    </message>
-    <message>
-        <source>Create floating node</source>
-        <translation type="vanished">Crea un nodo mobile</translation>
-    </message>
-    <message>
-        <source>Change direction</source>
-        <translation type="vanished">Cambia direzione</translation>
-    </message>
-    <message>
-        <source>Hide arrow</source>
-        <translation type="vanished">Nascondi la freccia</translation>
-    </message>
-    <message>
-        <source>Single arrow</source>
-        <translation type="vanished">Singola freccia</translation>
-    </message>
-    <message>
-        <source>Double arrow</source>
-        <translation type="vanished">Doppia freccia</translation>
-    </message>
-    <message>
-        <source>Delete edge</source>
-        <translation type="vanished">Elimina bordo</translation>
-    </message>
-    <message>
-        <source>Set node color</source>
-        <translation type="vanished">Imposta il colore del nodo</translation>
-    </message>
-    <message>
-        <source>Set text color</source>
-        <translation type="vanished">Imposta il colore del testo</translation>
-    </message>
-    <message>
-        <source>Delete node</source>
-        <translation type="vanished">Cancella nodo</translation>
-    </message>
-</context>
-<context>
-    <name>ExportToPNGDialog</name>
-    <message>
-        <source>Export to PNG Image</source>
-        <translation type="vanished">Esporta in immagine PNG</translation>
-    </message>
-    <message>
-        <source>Export As</source>
-        <translation type="vanished">Esporta Come</translation>
-    </message>
-    <message>
-        <source>PNG Files</source>
-        <translation type="vanished">PNG-Files</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t write to</source>
-        <translation type="vanished">Non puoi scrivere a</translation>
-    </message>
-    <message>
-        <source>Filename</source>
-        <translation type="vanished">Nome file</translation>
-    </message>
-    <message>
-        <source>Export as..</source>
-        <translation type="vanished">Esporta come..</translation>
-    </message>
-    <message>
-        <source>Image Size</source>
-        <translation type="vanished">Dimensione dell&apos;&apos;immagine</translation>
-    </message>
-    <message>
-        <source>Width (px):</source>
-        <translation type="vanished">Larghezza (px):</translation>
-    </message>
-    <message>
-        <source>Height (px):</source>
-        <translation type="vanished">Altezza (px):</translation>
-    </message>
-    <message>
-        <source>Background</source>
-        <translation type="vanished">Sfondo</translation>
-    </message>
-    <message>
-        <source>Transparent background</source>
-        <translation type="vanished">Sfondo trasparente</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Cancella</translation>
-    </message>
-    <message>
-        <source>Export</source>
-        <translation type="vanished">Esporta</translation>
-    </message>
-</context>
-<context>
     <name>MainContextMenu</name>
     <message>
         <location filename="../main_context_menu.cpp" line="30"/>
@@ -417,10 +311,6 @@
         <translation>&amp;Zoom ottimizzato</translation>
     </message>
     <message>
-        <source>Heimer Files</source>
-        <translation type="vanished">Heimer Files</translation>
-    </message>
-    <message>
         <location filename="../main_window.cpp" line="409"/>
         <source>New File</source>
         <translation>Nuovo File</translation>
@@ -431,45 +321,9 @@
         <translation>Non salvato</translation>
     </message>
     <message>
-        <source>The mind map has been modified.</source>
-        <translation type="vanished">La mappa mentale è stata modificata.</translation>
-    </message>
-    <message>
-        <source>Do you want to save your changes?</source>
-        <translation type="vanished">Vuoi salvare le tue modifiche?</translation>
-    </message>
-    <message>
-        <source>New file</source>
-        <translation type="vanished">Nuovo file</translation>
-    </message>
-    <message>
-        <source>Open File</source>
-        <translation type="vanished">Apri File</translation>
-    </message>
-    <message>
         <location filename="../main_window.cpp" line="492"/>
         <source>About Qt</source>
         <translation>Informazioni su QT</translation>
-    </message>
-    <message>
-        <source>Failed to save file.</source>
-        <translation type="vanished">Impossibile salvare il file.</translation>
-    </message>
-    <message>
-        <source>Save File As</source>
-        <translation type="vanished">Salva File Come</translation>
-    </message>
-    <message>
-        <source>File &apos;</source>
-        <translation type="vanished">File &apos;</translation>
-    </message>
-    <message>
-        <source>&apos; saved.</source>
-        <translation type="vanished">&apos;salvato.</translation>
-    </message>
-    <message>
-        <source>Failed to save file as &apos;</source>
-        <translation type="vanished">Impossibile salvare il file come &apos;</translation>
     </message>
 </context>
 <context>

@@ -26,6 +26,7 @@
 #include "state_machine.hpp"
 #include "user_exception.hpp"
 
+#include "argengine.hpp"
 #include "simple_logger.hpp"
 
 #include <QColorDialog>
@@ -41,22 +42,8 @@
 
 namespace {
 
+using juzzlin::Argengine;
 using juzzlin::L;
-
-static void printHelp()
-{
-    std::cout << std::endl
-              << "Heimer version " << VERSION << std::endl;
-    std::cout << Constants::Application::COPYRIGHT << std::endl
-              << std::endl;
-    std::cout << "Usage: heimer [options] [mindMapFile]" << std::endl
-              << std::endl;
-    std::cout << "Options:" << std::endl;
-    std::cout << "--debug       Show debug logging." << std::endl;
-    std::cout << "--help        Show this help." << std::endl;
-    std::cout << "--lang [lang] Force language: fi, fr, it." << std::endl;
-    std::cout << std::endl;
-}
 
 static void initTranslations(QTranslator & appTranslator, QTranslator & qtTranslator, QGuiApplication & app, QString lang = "")
 {
@@ -85,20 +72,27 @@ static void initTranslations(QTranslator & appTranslator, QTranslator & qtTransl
 
 void Application::parseArgs(int argc, char ** argv)
 {
-    const std::vector<QString> args(argv, argv + argc);
-    for (unsigned int i = 1; i < args.size(); i++) {
-        if (args[i] == "--debug") {
-            L::setLoggingLevel(L::Level::Debug);
-        } else if (args[i] == "-h" || args[i] == "--help") {
-            printHelp();
-            throw UserException("Exit due to help.");
-        } else if (args[i] == "--lang" && (i + i) < args.size()) {
-            m_lang = args[i + 1];
-            i++;
-        } else {
-            m_mindMapFile = args[i];
-        }
-    }
+    Argengine ae(argc, argv);
+
+    ae.addOption(
+      { "-d", "--debug" }, [] {
+          L::setLoggingLevel(L::Level::Debug);
+      },
+      false, "Show debug logging.");
+
+    ae.addOption(
+      { "--lang" }, [this](std::string value) {
+          m_lang = value.c_str();
+      },
+      false, "Force language: fi, fr, it.");
+
+    ae.setPositionalArgumentCallback([this](Argengine::ArgumentVector args) {
+        m_mindMapFile = args.at(0).c_str();
+    });
+
+    ae.setHelpText(std::string("\nUsage: ") + argv[0] + " [OPTIONS] [MIND_MAP_FILE]");
+
+    ae.parse();
 }
 
 Application::Application(int & argc, char ** argv)

@@ -17,7 +17,7 @@ contains(QT_VERSION, ^5\\..*) {
 
 SRC = src
 
-INCLUDEPATH += . $$SRC/contrib/SimpleLogger/src
+INCLUDEPATH += . $$SRC/contrib/SimpleLogger/src $$SRC/contrib/Argengine/src
 
 # Input
 HEADERS +=  \
@@ -61,6 +61,7 @@ HEADERS +=  \
     $$SRC/undo_stack.hpp \
     $$SRC/whats_new_dlg.hpp \
     $$SRC/writer.hpp \
+    $$SRC/contrib/Argengine/src/argengine.hpp \
     $$SRC/contrib/SimpleLogger/src/simple_logger.hpp \
 
 SOURCES += \
@@ -103,6 +104,7 @@ SOURCES += \
     $$SRC/undo_stack.cpp \
     $$SRC/whats_new_dlg.cpp \
     $$SRC/writer.cpp \
+    $$SRC/contrib/Argengine/src/argengine.cpp \
     $$SRC/contrib/SimpleLogger/src/simple_logger.cpp \
 
 QM_FILES_RESOURCE_PREFIX = /translations

@@ -1,6 +1,9 @@
 add_subdirectory(contrib/SimpleLogger)
 include_directories(contrib/SimpleLogger/src)
 
+add_subdirectory(contrib/Argengine)
+include_directories(contrib/Argengine/src)
+
 # Translation files in src/translations (without .ts)
 set(TS heimer_fi heimer_fr heimer_it)
 set(TS_FILES)
@@ -106,4 +109,4 @@ endif()
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 add_executable(${BINARY_NAME} WIN32 ${SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
 
-target_link_libraries(${BINARY_NAME} Qt5::Widgets Qt5::Xml SimpleLogger)
+target_link_libraries(${BINARY_NAME} Qt5::Widgets Qt5::Xml SimpleLogger Argengine)

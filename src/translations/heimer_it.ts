@@ -32,67 +32,67 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application.cpp" line="161"/>
+        <location filename="../application.cpp" line="155"/>
         <source>Heimer Files</source>
         <translation>Heimer Files</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="237"/>
+        <location filename="../application.cpp" line="231"/>
         <source>Open File</source>
         <translation>Apri file</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="265"/>
+        <location filename="../application.cpp" line="259"/>
         <source>Failed to save file.</source>
         <translation>Impossibile salvare il file.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="282"/>
+        <location filename="../application.cpp" line="276"/>
         <source>Save File As</source>
         <translation>Salva file come</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="295"/>
+        <location filename="../application.cpp" line="289"/>
         <source>File &apos;</source>
         <translation>File &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="295"/>
+        <location filename="../application.cpp" line="289"/>
         <source>&apos; saved.</source>
         <translation>&apos; salvato.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="299"/>
+        <location filename="../application.cpp" line="293"/>
         <source>Failed to save file as &apos;</source>
         <translation>Impossibile salvare il file come &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="363"/>
+        <location filename="../application.cpp" line="357"/>
         <source>Open an image</source>
         <translation>Apri un immagine</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="363"/>
+        <location filename="../application.cpp" line="357"/>
         <source>Image Files</source>
         <translation>File Immagine</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="376"/>
+        <location filename="../application.cpp" line="370"/>
         <source>Load image</source>
         <translation>Carica Immagine</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="376"/>
+        <location filename="../application.cpp" line="370"/>
         <source>Failed to load image &apos;</source>
         <translation>Impossibile caricare imagine &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="399"/>
+        <location filename="../application.cpp" line="393"/>
         <source>The mind map has been modified.</source>
         <translation>La mappa mentale è stata modificata.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="400"/>
+        <location filename="../application.cpp" line="394"/>
         <source>Do you want to save your changes?</source>
         <translation>Vuoi salvare le tue modifiche?</translation>
     </message>
@@ -129,106 +129,106 @@
     <name>EditorView</name>
     <message>
         <source>Choose File-&gt;New or File-&gt;Open to begin</source>
-        <translation>Scegli File-&gt;Nuovo o File-&gt;Apri per iniziare</translation>
+        <translation type="vanished">Scegli File-&gt;Nuovo o File-&gt;Apri per iniziare</translation>
     </message>
     <message>
         <source>Set background color</source>
-        <translation>Imposta il colore di sfondo</translation>
+        <translation type="vanished">Imposta il colore di sfondo</translation>
     </message>
     <message>
         <source>Set edge color</source>
-        <translation>Imposta il colore del bordo</translation>
+        <translation type="vanished">Imposta il colore del bordo</translation>
     </message>
     <message>
         <source>Create floating node</source>
-        <translation>Crea un nodo mobile</translation>
+        <translation type="vanished">Crea un nodo mobile</translation>
     </message>
     <message>
         <source>Change direction</source>
-        <translation>Cambia direzione</translation>
+        <translation type="vanished">Cambia direzione</translation>
     </message>
     <message>
         <source>Hide arrow</source>
-        <translation>Nascondi la freccia</translation>
+        <translation type="vanished">Nascondi la freccia</translation>
     </message>
     <message>
         <source>Single arrow</source>
-        <translation>Singola freccia</translation>
+        <translation type="vanished">Singola freccia</translation>
     </message>
     <message>
         <source>Double arrow</source>
-        <translation>Doppia freccia</translation>
+        <translation type="vanished">Doppia freccia</translation>
     </message>
     <message>
         <source>Delete edge</source>
-        <translation>Elimina bordo</translation>
+        <translation type="vanished">Elimina bordo</translation>
     </message>
     <message>
         <source>Set node color</source>
-        <translation>Imposta il colore del nodo</translation>
+        <translation type="vanished">Imposta il colore del nodo</translation>
     </message>
     <message>
         <source>Set text color</source>
-        <translation>Imposta il colore del nodo</translation>
+        <translation type="vanished">Imposta il colore del testo</translation>
     </message>
     <message>
         <source>Delete node</source>
-        <translation>Cancella nodo</translation>
+        <translation type="vanished">Cancella nodo</translation>
     </message>
 </context>
 <context>
     <name>ExportToPNGDialog</name>
     <message>
         <source>Export to PNG Image</source>
-        <translation>Esporta in immagine PNG</translation>
+        <translation type="vanished">Esporta in immagine PNG</translation>
     </message>
     <message>
         <source>Export As</source>
-        <translation>Esporta Come</translation>
+        <translation type="vanished">Esporta Come</translation>
     </message>
     <message>
         <source>PNG Files</source>
-        <translation>PNG-Files</translation>
+        <translation type="vanished">PNG-Files</translation>
     </message>
     <message>
         <source>Couldn&apos;t write to</source>
-        <translation>Non puoi scrivere a</translation>
+        <translation type="vanished">Non puoi scrivere a</translation>
     </message>
     <message>
         <source>Filename</source>
-        <translation>Nome file</translation>
+        <translation type="vanished">Nome file</translation>
     </message>
     <message>
         <source>Export as..</source>
-        <translation>Esporta come..</translation>
+        <translation type="vanished">Esporta come..</translation>
     </message>
     <message>
         <source>Image Size</source>
-        <translation>Dimensione dell'&apos;immagine</translation>
+        <translation type="vanished">Dimensione dell&apos;&apos;immagine</translation>
     </message>
     <message>
         <source>Width (px):</source>
-        <translation>Larghezza (px):</translation>
+        <translation type="vanished">Larghezza (px):</translation>
     </message>
     <message>
         <source>Height (px):</source>
-        <translation>Altezza (px):</translation>
+        <translation type="vanished">Altezza (px):</translation>
     </message>
     <message>
         <source>Background</source>
-        <translation>Sfondo</translation>
+        <translation type="vanished">Sfondo</translation>
     </message>
     <message>
         <source>Transparent background</source>
-        <translation>Sfondo trasparente</translation>
+        <translation type="vanished">Sfondo trasparente</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancella</translation>
+        <translation type="vanished">Cancella</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation>Esporta</translation>
+        <translation type="vanished">Esporta</translation>
     </message>
 </context>
 <context>
@@ -266,7 +266,7 @@
     <message>
         <location filename="../main_context_menu.cpp" line="79"/>
         <source>Set text color</source>
-        <translation>Imposta il colore del nodo</translation>
+        <translation>Imposta il colore del testo</translation>
     </message>
     <message>
         <location filename="../main_context_menu.cpp" line="90"/>
@@ -281,15 +281,11 @@
     <message>
         <location filename="../main_context_menu.cpp" line="109"/>
         <source>Remove attached image</source>
-        <translation>Rimuovi l'immagine allegata</translation>
+        <translation>Rimuovi l&apos;immagine allegata</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
-    <message>
-        <source>Redo</source>
-        <translation>Indietro</translation>
-    </message>
     <message>
         <location filename="../main_window.cpp" line="62"/>
         <source>Redo</source>
@@ -318,7 +314,7 @@
     <message>
         <location filename="../main_window.cpp" line="133"/>
         <source>Corner radius:</source>
-        <translation>Raggio dell'&apos;angolo:</translation>
+        <translation>Raggio dell&apos;&apos;angolo:</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="159"/>
@@ -393,7 +389,7 @@
     <message>
         <location filename="../main_window.cpp" line="315"/>
         <source>What&apos;s New</source>
-        <translation>Cosa c'è di nuovo</translation>
+        <translation>Cosa c&apos;è di nuovo</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="335"/>
@@ -422,7 +418,7 @@
     </message>
     <message>
         <source>Heimer Files</source>
-        <translation>Heimer Files</translation>
+        <translation type="vanished">Heimer Files</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="409"/>
@@ -436,19 +432,19 @@
     </message>
     <message>
         <source>The mind map has been modified.</source>
-        <translation>La mappa mentale è stata modificata.</translation>
+        <translation type="vanished">La mappa mentale è stata modificata.</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
-        <translation>Vuoi salvare le tue modifiche?</translation>
+        <translation type="vanished">Vuoi salvare le tue modifiche?</translation>
     </message>
     <message>
         <source>New file</source>
-        <translation>Nuovo file</translation>
+        <translation type="vanished">Nuovo file</translation>
     </message>
     <message>
         <source>Open File</source>
-        <translation>Apri File</translation>
+        <translation type="vanished">Apri File</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="492"/>
@@ -457,23 +453,23 @@
     </message>
     <message>
         <source>Failed to save file.</source>
-        <translation>Impossibile salvare il file.</translation>
+        <translation type="vanished">Impossibile salvare il file.</translation>
     </message>
     <message>
         <source>Save File As</source>
-        <translation>Salva File Come</translation>
+        <translation type="vanished">Salva File Come</translation>
     </message>
     <message>
         <source>File &apos;</source>
-        <translation>File &apos;</translation>
+        <translation type="vanished">File &apos;</translation>
     </message>
     <message>
         <source>&apos; saved.</source>
-        <translation>&apos;salvato.</translation>
+        <translation type="vanished">&apos;salvato.</translation>
     </message>
     <message>
         <source>Failed to save file as &apos;</source>
-        <translation>Impossibile salvare il file come &apos;</translation>
+        <translation type="vanished">Impossibile salvare il file come &apos;</translation>
     </message>
 </context>
 <context>
@@ -562,7 +558,7 @@
     <message>
         <location filename="../whats_new_dlg.cpp" line="29"/>
         <source>What&apos;s New</source>
-        <translation>Cosa c'è di nuovo</translation>
+        <translation>Cosa c&apos;è di nuovo</translation>
     </message>
 </context>
 </TS>

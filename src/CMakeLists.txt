@@ -1,7 +1,7 @@
-add_subdirectory(contrib/SimpleLogger)
+add_subdirectory(contrib/SimpleLogger EXCLUDE_FROM_ALL)
 include_directories(contrib/SimpleLogger/src)
 
-add_subdirectory(contrib/Argengine)
+add_subdirectory(contrib/Argengine EXCLUDE_FROM_ALL)
 include_directories(contrib/Argengine/src)
 
 # Translation files in src/translations (without .ts)

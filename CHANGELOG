@@ -7,6 +7,14 @@ Bug fixes:
 
 Other:
 
+1.15.1
+======
+
+Other:
+
+* Update Italian translations
+* Use Argengine as the CLI argument parser
+
 1.15.0
 ======
 

@@ -32,7 +32,7 @@ Copy contents of `Argengine` under your main project (or clone as a Git submodul
 In your `CMakeLists.txt`:
 
 ```
-add_subdirectory(Argengine)
+add_subdirectory(Argengine EXCLUDE_FROM_ALL)
 include_directories(Argengine/src)
 ```
 
@@ -50,6 +50,8 @@ In your code:
 
 ## Use as a library
 
+Build and install:
+
 `$ mkdir build && cd build`
 
 `$ cmake ..`
@@ -57,6 +59,8 @@ In your code:
 `$ make`
 
 `$ sudo make install`
+
+Link to `libArgengine_static.a` or `libArgengine.so`.
 
 # Usage In A Nutshell
 

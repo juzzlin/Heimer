@@ -20,18 +20,32 @@ Looking for a simple logger for your C++ project? `SimpleLogger` might be for yo
 
 Just add `src/simple_logger.hpp` and `src/simple_logger.cpp` to your project and start using it!
 
-## Use as a CMake subproject
+## Use as a CMake subproject (Recommended)
 
 Copy contents of `SimpleLogger` under your main project (or clone as a Git submodule).
 
 In your `CMakeLists.txt`:
 
 ```
-add_subdirectory(SimpleLogger)
+add_subdirectory(SimpleLogger EXCLUDE_FROM_ALL)
 include_directories(SimpleLogger/src)
 ```
 
+Link to the library:
+
+```
+target_link_libraries(${YOUR_TARGET_NAME} SimpleLogger)
+```
+
+In your code:
+
+```
+#include "simple_logger.hpp"
+```
+
 ## Use as a library
+
+Build and install:
 
 `$ mkdir build && cd build`
 
@@ -40,6 +54,8 @@ include_directories(SimpleLogger/src)
 `$ make`
 
 `$ sudo make install`
+
+Link to `libSimpleLogger_static.a` or `libSimpleLogger.so`.
 
 # Examples
 
@@ -125,6 +141,15 @@ L().info() << "Something happened";
 Outputs something like this:
 
 `1562955750677 ## I: Something happened`
+
+## Set custom output stream
+
+```
+using juzzlin::L;
+
+std::stringstream ssI;
+L::setStream(L::Level::Info, ssI);
+```
 
 # Requirements
 

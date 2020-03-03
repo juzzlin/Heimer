@@ -109,4 +109,4 @@ endif()
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 add_executable(${BINARY_NAME} WIN32 ${SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
 
-target_link_libraries(${BINARY_NAME} Qt5::Widgets Qt5::Xml SimpleLogger Argengine)
+target_link_libraries(${BINARY_NAME} Qt5::Widgets Qt5::Xml SimpleLogger_static Argengine_static)

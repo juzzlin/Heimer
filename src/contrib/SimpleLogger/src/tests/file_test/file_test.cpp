@@ -37,7 +37,7 @@ int main(int, char **)
 {
     using juzzlin::L;
 
-    const auto logFile = "hello_world.log";
+    const auto logFile = "file_test.log";
 
     L::init(logFile);
     L::enableEchoMode(true);

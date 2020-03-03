@@ -46,20 +46,20 @@ namespace juzzlin {
 class Logger
 {
 public:
-
     enum class Level
     {
-        Trace = 0,
+        Trace,
         Debug,
         Info,
         Warning,
         Error,
-        Fatal
+        Fatal,
+        None
     };
 
     enum class TimestampMode
     {
-        None = 0,
+        None,
         DateTime,
         EpochSeconds,
         EpochMilliseconds,
@@ -96,6 +96,14 @@ public:
     //! \param separator Separator string outputted after timestamp.
     static void setTimestampMode(TimestampMode timestampMode, std::string separator = " ");
 
+    //! Set specific stream.
+    //! \param level The level.
+    //! \param stream The output stream.
+    static void setStream(Level level, std::ostream & stream);
+
+    //! \return Library version in x.y.z
+    static std::string version();
+
     //! Get stream to the trace log message.
     std::ostringstream & trace();
 
@@ -115,7 +123,6 @@ public:
     std::ostringstream & fatal();
 
 private:
-
     Logger(const Logger & r) = delete;
     Logger & operator=(const Logger & r) = delete;
 

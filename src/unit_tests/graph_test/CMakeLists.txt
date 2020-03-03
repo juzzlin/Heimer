@@ -8,4 +8,4 @@ set(SRC ${NAME}.cpp ${EDITOR_DIR}/edge_base.cpp ${EDITOR_DIR}/graph.cpp ${EDITOR
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/unit_tests)
 add_executable(${NAME} ${SRC} ${MOC_SRC})
 add_test(${NAME} ${CMAKE_BINARY_DIR}/unit_tests/${NAME})
-target_link_libraries(${NAME} Qt5::Test Qt5::Widgets SimpleLogger)
+target_link_libraries(${NAME} Qt5::Test Qt5::Widgets SimpleLogger_static)

@@ -66,6 +66,8 @@ public:
 
     static void setTimestampMode(Logger::TimestampMode timestampMode, std::string separator);
 
+    static void setStream(Level level, std::ostream & stream);
+
     static void init(std::string filename, bool append);
 
     void flush();
@@ -92,9 +94,11 @@ private:
     using StreamMap = std::map<Logger::Level, std::ostream *>;
     static StreamMap m_streams;
 
-    static std::mutex m_mutex;
+    static std::recursive_mutex m_mutex;
 
     Logger::Level m_activeLevel = Logger::Level::Info;
+
+    std::lock_guard<std::recursive_mutex> m_lock;
 
     std::ostringstream m_oss;
 };
@@ -129,18 +133,16 @@ Logger::Impl::StreamMap Logger::Impl::m_streams = {
     {Logger::Level::Fatal,   &std::cerr}
 };
 
-std::mutex Logger::Impl::m_mutex;
+std::recursive_mutex Logger::Impl::m_mutex;
 
 Logger::Impl::Impl()
+  : m_lock(Logger::Impl::m_mutex)
 {
-    Logger::Impl::m_mutex.lock();
 }
 
 Logger::Impl::~Impl()
 {
     flush();
-
-    Logger::Impl::m_mutex.unlock();
 }
 
 void Logger::Impl::enableEchoMode(bool enable)
@@ -282,6 +284,11 @@ std::ostringstream & Logger::Impl::fatal()
     return getStream(Logger::Level::Fatal);
 }
 
+void Logger::Impl::setStream(Level level, std::ostream & stream)
+{
+    Logger::Impl::m_streams[level] = &stream;
+}
+
 Logger::Logger()
     : m_impl(new Logger::Impl)
 {
@@ -312,6 +319,11 @@ void Logger::setTimestampMode(TimestampMode timestampMode, std::string separator
     Impl::setTimestampMode(timestampMode, separator);
 }
 
+void Logger::setStream(Level level, std::ostream & stream)
+{
+    Impl::setStream(level, stream);
+}
+
 std::ostringstream & Logger::trace()
 {
     return m_impl->trace();
@@ -340,6 +352,11 @@ std::ostringstream & Logger::error()
 std::ostringstream & Logger::fatal()
 {
     return m_impl->fatal();
+}
+
+std::string Logger::version()
+{
+    return "1.4.0";
 }
 
 Logger::~Logger() = default;

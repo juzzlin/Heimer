@@ -393,6 +393,8 @@ void MainWindow::initialize()
 
     populateMenuBar();
 
+    createToolBar();
+
     setWindowIcon(QIcon(":/heimer.png"));
 
     emit actionTriggered(StateMachine::Action::MainWindowInitialized);
@@ -430,8 +432,6 @@ void MainWindow::populateMenuBar()
     createFileMenu();
 
     createEditMenu();
-
-    createToolBar();
 
     createViewMenu();
 

@@ -50,6 +50,8 @@ public:
 
     static MainWindow * instance();
 
+    bool copyOnDragEnabled() const;
+
     void disableUndoAndRedo();
 
     void initialize();
@@ -157,6 +159,8 @@ private:
     QSpinBox * m_gridSizeSpinBox = nullptr;
 
     QSpinBox * m_textSizeSpinBox = nullptr;
+
+    QCheckBox * m_copyOnDragCheckBox = nullptr;
 
     QString m_argMindMapFile;
 

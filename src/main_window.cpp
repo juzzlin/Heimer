@@ -25,6 +25,7 @@
 
 #include <QAction>
 #include <QApplication>
+#include <QCheckBox>
 #include <QDoubleSpinBox>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -49,6 +50,15 @@ static const auto threeDots = "...";
 MainWindow::MainWindow()
   : m_aboutDlg(new AboutDlg(this))
   , m_whatsNewDlg(new WhatsNewDlg(this))
+  , m_saveAction(new QAction(tr("&Save"), this))
+  , m_saveAsAction(new QAction(tr("&Save as") + threeDots, this))
+  , m_undoAction(new QAction(tr("Undo"), this))
+  , m_redoAction(new QAction(tr("Redo"), this))
+  , m_edgeWidthSpinBox(new QDoubleSpinBox(this))
+  , m_cornerRadiusSpinBox(new QSpinBox(this))
+  , m_gridSizeSpinBox(new QSpinBox(this))
+  , m_textSizeSpinBox(new QSpinBox(this))
+  , m_copyOnDragCheckBox(new QCheckBox(tr("Copy on drag"), this))
 {
     if (!m_instance) {
         m_instance = this;
@@ -319,7 +329,7 @@ void MainWindow::createHelpMenu()
 
 void MainWindow::createToolBar()
 {
-    auto toolBar = new QToolBar(this);
+    const auto toolBar = new QToolBar(this);
     addToolBar(Qt::BottomToolBarArea, toolBar);
     toolBar->addAction(createEdgeWidthAction());
     toolBar->addSeparator();
@@ -328,6 +338,11 @@ void MainWindow::createToolBar()
     toolBar->addAction(createGridSizeAction());
     toolBar->addSeparator();
     toolBar->addAction(createCornerRadiusAction());
+
+    const auto spacer = new QWidget;
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    toolBar->addWidget(spacer);
+    toolBar->addWidget(m_copyOnDragCheckBox);
 }
 
 void MainWindow::createViewMenu()
@@ -438,6 +453,11 @@ void MainWindow::populateMenuBar()
     createViewMenu();
 
     createHelpMenu();
+}
+
+bool MainWindow::copyOnDragEnabled() const
+{
+    return m_copyOnDragCheckBox->isChecked();
 }
 
 void MainWindow::disableUndoAndRedo()

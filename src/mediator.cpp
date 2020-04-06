@@ -145,14 +145,14 @@ void Mediator::connectGraphToImageManager()
 
 NodeBasePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 {
-    const auto node1 = m_editorData->addNodeAt(pos);
+    const auto node0 = dynamic_pointer_cast<Node>(getNodeByIndex(sourceNodeIndex));
+    assert(node0);
+
+    const auto node1 = m_mainWindow.copyOnDragEnabled() ? m_editorData->copyNodeAt(*node0, pos) : m_editorData->addNodeAt(pos);
     assert(node1);
     connectNodeToUndoMechanism(node1);
     connectNodeToImageManager(node1);
     L().debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
-
-    const auto node0 = dynamic_pointer_cast<Node>(getNodeByIndex(sourceNodeIndex));
-    assert(node0);
 
     // Add edge from the parent node.
     connectEdgeToUndoMechanism(m_editorData->addEdge(std::make_shared<Edge>(*node0, *node1)));

@@ -336,14 +336,16 @@ void MainWindow::createViewMenu()
 
     // Add "fullScreen"-action
     const auto fullScreen = new QAction(tr("Full Screen"), this);
+    fullScreen->setCheckable(true);
+    fullScreen->setChecked(false);
     viewMenu->addAction(fullScreen);
-    connect(fullScreen, &QAction::triggered, [=]() {
-        if (isFullScreen()) {
-            showNormal();
-            resize(m_sizeBeforeFullScreen);
-        } else {
+    connect(fullScreen, &QAction::triggered, [=](bool checked) {
+        if (checked) {
             m_sizeBeforeFullScreen = size();
             showFullScreen();
+        } else {
+            showNormal();
+            resize(m_sizeBeforeFullScreen);
         }
     });
 

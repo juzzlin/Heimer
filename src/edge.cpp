@@ -277,17 +277,27 @@ void Edge::updateArrowhead()
 void Edge::updateDots()
 {
     if (m_enableAnimations) {
-        if (m_sourceDot->pos() != line().p1()) {
-            m_sourceDot->setPos(line().p1());
+        // Trigger new animation if relative connection location has changed
+        const auto newRelativeSourcePos = line().p1() - sourceNode().pos();
+        if (m_previousRelativeSourcePos != newRelativeSourcePos) {
+            m_previousRelativeSourcePos = newRelativeSourcePos;
             m_sourceDotSizeAnimation->stop();
             m_sourceDotSizeAnimation->start();
         }
 
-        if (m_targetDot->pos() != line().p2()) {
-            m_targetDot->setPos(line().p2());
+        // Update location of possibly active animation
+        m_sourceDot->setPos(line().p1());
+
+        // Trigger new animation if relative connection location has changed
+        const auto newRelativeTargetPos = line().p2() - targetNode().pos();
+        if (m_previousRelativeTargetPos != newRelativeTargetPos) {
+            m_previousRelativeTargetPos = newRelativeTargetPos;
             m_targetDotSizeAnimation->stop();
             m_targetDotSizeAnimation->start();
         }
+
+        // Update location of possibly active animation
+        m_targetDot->setPos(line().p2());
     }
 }
 

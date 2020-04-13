@@ -94,6 +94,10 @@ private:
 
     EdgeDot * m_targetDot;
 
+    QPointF m_previousRelativeSourcePos;
+
+    QPointF m_previousRelativeTargetPos;
+
     EdgeTextEdit * m_label;
 
     QGraphicsLineItem * m_arrowheadL0;

@@ -528,10 +528,10 @@ void Mediator::setTextSize(int textSize)
 
 void Mediator::setupMindMapAfterUndoOrRedo()
 {
-    auto oldSceneRect = m_editorScene->sceneRect();
-    auto oldCenter = m_editorView->mapToScene(m_editorView->viewport()->rect()).boundingRect().center();
+    const auto oldSceneRect = m_editorScene->sceneRect();
+    const auto oldCenter = m_editorView->mapToScene(m_editorView->viewport()->rect()).boundingRect().center();
 
-    m_editorScene.reset(new EditorScene);
+    m_editorScene = std::make_unique<EditorScene>();
     m_editorScene->initialize();
 
     m_editorView->setScene(m_editorScene.get());

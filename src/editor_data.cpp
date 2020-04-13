@@ -30,7 +30,7 @@ using std::dynamic_pointer_cast;
 using std::make_shared;
 
 EditorData::EditorData()
-  : m_selectionGroup(new SelectionGroup)
+  : m_selectionGroup(std::make_unique<SelectionGroup>())
 {
 }
 
@@ -136,7 +136,7 @@ bool EditorData::saveMindMap()
 void EditorData::saveUndoPoint()
 {
     assert(m_mindMapData);
-    m_undoStack.pushUndoPoint(m_mindMapData);
+    m_undoStack.pushUndoPoint(*m_mindMapData);
     emit undoEnabled(m_undoStack.isUndoable());
 
     setIsModified(true);
@@ -145,7 +145,7 @@ void EditorData::saveUndoPoint()
 void EditorData::saveRedoPoint()
 {
     assert(m_mindMapData);
-    m_undoStack.pushRedoPoint(m_mindMapData);
+    m_undoStack.pushRedoPoint(*m_mindMapData);
 
     setIsModified(true);
 }
@@ -205,7 +205,7 @@ NodePtr EditorData::addNodeAt(QPointF pos)
 {
     assert(m_mindMapData);
 
-    auto node = make_shared<Node>();
+    const auto node = make_shared<Node>();
     node->setLocation(pos);
     m_mindMapData->graph().addNode(node);
     return node;
@@ -215,7 +215,7 @@ NodePtr EditorData::copyNodeAt(Node & source, QPointF pos)
 {
     assert(m_mindMapData);
 
-    auto node = make_shared<Node>(source);
+    const auto node = make_shared<Node>(source);
     node->setIndex(-1); // Results in new index to be assigned
     node->setLocation(pos);
     m_mindMapData->graph().addNode(node);

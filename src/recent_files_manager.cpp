@@ -41,7 +41,7 @@ RecentFilesManager::RecentFilesManager()
 RecentFilesManager & RecentFilesManager::instance()
 {
     if (!RecentFilesManager::m_instance) {
-        RecentFilesManager::m_instance.reset(new RecentFilesManager);
+        RecentFilesManager::m_instance = std::make_unique<RecentFilesManager>();
         juzzlin::L().debug() << "RecentFilesManager created";
     }
 

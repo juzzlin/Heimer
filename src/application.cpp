@@ -97,7 +97,7 @@ void Application::parseArgs(int argc, char ** argv)
 
 Application::Application(int & argc, char ** argv)
   : m_app(argc, argv)
-  , m_stateMachine(new StateMachine)
+  , m_stateMachine(std::make_unique<StateMachine>())
 {
     parseArgs(argc, argv);
 
@@ -105,12 +105,12 @@ Application::Application(int & argc, char ** argv)
 
     // Instantiate components here because the possible language given
     // in the command line must have been loaded before this
-    m_mainWindow.reset(new MainWindow);
-    m_mediator.reset(new Mediator(*m_mainWindow));
-    m_editorData.reset(new EditorData);
-    m_editorScene.reset(new EditorScene);
+    m_mainWindow = std::make_unique<MainWindow>();
+    m_mediator = std::make_unique<Mediator>(*m_mainWindow);
+    m_editorData = std::make_unique<EditorData>();
+    m_editorScene = std::make_unique<EditorScene>();
     m_editorView = new EditorView(*m_mediator);
-    m_pngExportDialog.reset(new PngExportDialog(*m_mainWindow));
+    m_pngExportDialog = std::make_unique<PngExportDialog>(*m_mainWindow);
 
     m_mainWindow->setMediator(m_mediator);
     m_stateMachine->setMediator(m_mediator);

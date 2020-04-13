@@ -25,22 +25,22 @@ class UndoStack
 public:
     UndoStack(int maxHistorySize = -1);
 
-    void pushUndoPoint(MindMapDataPtr mindMapData);
+    void pushUndoPoint(const MindMapData & mindMapData);
 
-    void pushRedoPoint(MindMapDataPtr mindMapData);
+    void pushRedoPoint(const MindMapData & mindMapData);
 
     void clear();
 
     bool isUndoable() const;
 
-    MindMapDataPtr undo();
+    std::unique_ptr<MindMapData> undo();
 
     bool isRedoable() const;
 
-    MindMapDataPtr redo();
+    std::unique_ptr<MindMapData> redo();
 
 private:
-    using MindMapDataVector = std::list<MindMapDataPtr>;
+    using MindMapDataVector = std::list<std::unique_ptr<MindMapData>>;
 
     MindMapDataVector m_undoStack;
 

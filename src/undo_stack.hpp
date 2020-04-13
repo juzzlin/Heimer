@@ -19,11 +19,13 @@
 #include "mind_map_data.hpp"
 
 #include <list>
+#include <memory>
 
 class UndoStack
 {
 public:
-    UndoStack(int maxHistorySize = -1);
+    //! \param maxHistorySize The size of undo stack or 0 for "unlimited".
+    UndoStack(size_t maxHistorySize = 0);
 
     void pushUndoPoint(const MindMapData & mindMapData);
 
@@ -46,7 +48,7 @@ private:
 
     MindMapDataVector m_redoStack;
 
-    int m_maxHistorySize;
+    size_t m_maxHistorySize;
 };
 
 #endif // UNDOSTACK_HPP

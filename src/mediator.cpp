@@ -45,7 +45,7 @@ void Mediator::addExistingGraphToScene()
 {
     for (auto && node : m_editorData->mindMapData()->graph().getNodes()) {
         if (dynamic_pointer_cast<QGraphicsItem>(node)->scene() != m_editorScene.get()) {
-            auto graphicsNode = dynamic_pointer_cast<Node>(node);
+            const auto graphicsNode = dynamic_pointer_cast<Node>(node);
             addItem(*graphicsNode);
             graphicsNode->setCornerRadius(m_editorData->mindMapData()->cornerRadius());
             graphicsNode->setTextSize(m_editorData->mindMapData()->textSize());
@@ -54,8 +54,8 @@ void Mediator::addExistingGraphToScene()
     }
 
     for (auto && edge : m_editorData->mindMapData()->graph().getEdges()) {
-        auto node0 = dynamic_pointer_cast<Node>(getNodeByIndex(edge->sourceNodeBase().index()));
-        auto node1 = dynamic_pointer_cast<Node>(getNodeByIndex(edge->targetNodeBase().index()));
+        const auto node0 = dynamic_pointer_cast<Node>(getNodeByIndex(edge->sourceNodeBase().index()));
+        const auto node1 = dynamic_pointer_cast<Node>(getNodeByIndex(edge->targetNodeBase().index()));
 
         if (!m_editorScene->hasEdge(*node0, *node1)) {
             auto graphicsEdge = dynamic_pointer_cast<Edge>(edge);
@@ -145,13 +145,13 @@ void Mediator::connectGraphToImageManager()
 
 NodeBasePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 {
-    auto node1 = m_editorData->addNodeAt(pos);
+    const auto node1 = m_editorData->addNodeAt(pos);
     assert(node1);
     connectNodeToUndoMechanism(node1);
     connectNodeToImageManager(node1);
     L().debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
 
-    auto node0 = dynamic_pointer_cast<Node>(getNodeByIndex(sourceNodeIndex));
+    const auto node0 = dynamic_pointer_cast<Node>(getNodeByIndex(sourceNodeIndex));
     assert(node0);
 
     // Add edge from the parent node.
@@ -167,7 +167,7 @@ NodeBasePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 
 NodeBasePtr Mediator::createAndAddNode(QPointF pos)
 {
-    auto node1 = m_editorData->addNodeAt(pos);
+    const auto node1 = m_editorData->addNodeAt(pos);
     assert(node1);
     connectNodeToUndoMechanism(node1);
     connectNodeToImageManager(node1);
@@ -184,7 +184,7 @@ NodeBasePtr Mediator::createAndAddNode(QPointF pos)
 
 NodeBasePtr Mediator::pasteNodeAt(Node & source, QPointF pos)
 {
-    auto copiedNode = m_editorData->copyNodeAt(source, pos);
+    const auto copiedNode = m_editorData->copyNodeAt(source, pos);
     assert(copiedNode);
     connectNodeToUndoMechanism(copiedNode);
     connectNodeToImageManager(copiedNode);
@@ -295,8 +295,8 @@ void Mediator::initializeView()
 bool Mediator::areDirectlyConnected(const Node & node1, const Node & node2) const
 {
     auto && graph = m_editorData->mindMapData()->graph();
-    auto node1Ptr = graph.getNode(node1.index());
-    auto node2Ptr = graph.getNode(node2.index());
+    const auto node1Ptr = graph.getNode(node1.index());
+    const auto node2Ptr = graph.getNode(node2.index());
     return graph.areDirectlyConnected(node1Ptr, node2Ptr);
 }
 
@@ -491,7 +491,7 @@ void Mediator::setRectagleSelection(QRectF rect)
 
     const auto items = m_editorScene->items(rect, Qt::ContainsItemShape);
     for (auto && item : items) {
-        if (auto node = dynamic_cast<Node *>(item)) {
+        if (const auto node = dynamic_cast<Node *>(item)) {
             toggleNodeInSelectionGroup(*node);
         }
     }

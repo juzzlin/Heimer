@@ -301,15 +301,19 @@ void Edge::updateLabel()
 void Edge::updateLine()
 {
     const auto nearestPoints = Node::getNearestEdgePoints(sourceNode(), targetNode());
-    const auto p1 = nearestPoints.first.location + sourceNode().pos();
-    const auto p2 = nearestPoints.second.location + targetNode().pos();
 
-    QVector2D direction(p2 - p1);
-    direction.normalize();
+    const auto p1 = nearestPoints.first.location + sourceNode().pos();
+    QVector2D direction1(sourceNode().pos() - p1);
+    direction1.normalize();
+
+    const auto p2 = nearestPoints.second.location + targetNode().pos();
+    QVector2D direction2(targetNode().pos() - p2);
+    direction2.normalize();
 
     setLine(QLineF(
-      p1 - (nearestPoints.first.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction * sourceNode().cornerRadius()).toPointF() : QPointF { 0, 0 }),
-      p2 + (nearestPoints.second.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction * targetNode().cornerRadius()).toPointF() : QPointF { 0, 0 }) - (direction * static_cast<float>(width())).toPointF() * Constants::Edge::WIDTH_SCALE));
+      p1 + (nearestPoints.first.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction1 * sourceNode().cornerRadius()).toPointF() : QPointF { 0, 0 }),
+      p2 + (nearestPoints.second.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction2 * targetNode().cornerRadius()).toPointF() : QPointF { 0, 0 }) - //
+        (direction2 * static_cast<float>(width())).toPointF() * Constants::Edge::WIDTH_SCALE));
 
     updateDots();
     updateLabel();

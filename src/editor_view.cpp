@@ -381,10 +381,8 @@ void EditorView::openNodeTextColorDialog()
 void EditorView::resetDummyDragItems()
 {
     // Ensure new dummy nodes and related graphics items are created (again) when needed.
-    delete m_dummyDragEdge;
-    m_dummyDragEdge = nullptr;
-    delete m_dummyDragNode;
-    m_dummyDragNode = nullptr;
+    m_dummyDragEdge.reset();
+    m_dummyDragNode.reset();
 
     L().debug() << "Dummy drag item reset";
 }
@@ -394,9 +392,9 @@ void EditorView::showDummyDragEdge(bool show)
     if (const auto sourceNode = m_mediator.mouseAction().sourceNode()) {
         if (!m_dummyDragEdge) {
             L().debug() << "Creating a new dummy drag edge";
-            m_dummyDragEdge = new Edge(*sourceNode, *m_dummyDragNode, false, false);
+            m_dummyDragEdge = std::make_unique<Edge>(*sourceNode, *m_dummyDragNode, false, false);
             m_dummyDragEdge->setOpacity(0.5);
-            scene()->addItem(m_dummyDragEdge);
+            scene()->addItem(m_dummyDragEdge.get());
         } else {
             m_dummyDragEdge->setSourceNode(*sourceNode);
             m_dummyDragEdge->setTargetNode(*m_dummyDragNode);
@@ -412,8 +410,8 @@ void EditorView::showDummyDragNode(bool show)
 {
     if (!m_dummyDragNode) {
         L().debug() << "Creating a new dummy drag node";
-        m_dummyDragNode = new Node;
-        scene()->addItem(m_dummyDragNode);
+        m_dummyDragNode = std::make_unique<Node>();
+        scene()->addItem(m_dummyDragNode.get());
     }
 
     m_dummyDragNode->setCornerRadius(m_cornerRadius);

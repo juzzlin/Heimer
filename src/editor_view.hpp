@@ -155,9 +155,9 @@ private:
 
     CopyPaste m_copyPaste;
 
-    Node * m_dummyDragNode = nullptr;
+    std::unique_ptr<Node> m_dummyDragNode;
 
-    Edge * m_dummyDragEdge = nullptr;
+    std::unique_ptr<Edge> m_dummyDragEdge;
 
     std::shared_ptr<Node> m_connectionTargetNode;
 

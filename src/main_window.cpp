@@ -374,6 +374,7 @@ void MainWindow::createViewMenu()
 
     // Add "zoom to fit"-action
     const auto zoomToFit = new QAction(tr("&Zoom To Fit"), this);
+    zoomToFit->setShortcut(QKeySequence("Ctrl+0"));
     viewMenu->addAction(zoomToFit);
     connect(zoomToFit, &QAction::triggered, this, &MainWindow::zoomToFitTriggered);
 

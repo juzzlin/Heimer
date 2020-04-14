@@ -6,6 +6,7 @@ New features:
 * Fix GitHub Issue #83: Add option to copy-drag nodes
   - By checking "Copy on drag" checkbox on the toolbar
     one can copy a node just by dragging a new connected node
+* Add Ctrl+0 as shortcut for zoom to fit
 
 Bug fixes:
 

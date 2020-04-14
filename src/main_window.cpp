@@ -69,7 +69,6 @@ MainWindow::MainWindow()
 
 void MainWindow::addRedoAction(QMenu & menu)
 {
-    m_redoAction = new QAction(tr("Redo"), this);
     m_redoAction->setShortcut(QKeySequence("Ctrl+Shift+Z"));
 
     connect(m_redoAction, &QAction::triggered, [this]() {
@@ -84,7 +83,6 @@ void MainWindow::addRedoAction(QMenu & menu)
 
 void MainWindow::addUndoAction(QMenu & menu)
 {
-    m_undoAction = new QAction(tr("Undo"), this);
     m_undoAction->setShortcut(QKeySequence("Ctrl+Z"));
 
     connect(m_undoAction, &QAction::triggered, [this]() {
@@ -107,7 +105,7 @@ void MainWindow::createEditMenu()
 
     editMenu->addSeparator();
 
-    auto backgroundColorAction = new QAction(tr("Set background color") + threeDots, this);
+    const auto backgroundColorAction = new QAction(tr("Set background color") + threeDots, this);
     backgroundColorAction->setShortcut(QKeySequence("Ctrl+B"));
 
     connect(backgroundColorAction, &QAction::triggered, [this]() {
@@ -118,7 +116,7 @@ void MainWindow::createEditMenu()
 
     editMenu->addSeparator();
 
-    auto edgeColorAction = new QAction(tr("Set edge color") + threeDots, this);
+    const auto edgeColorAction = new QAction(tr("Set edge color") + threeDots, this);
     edgeColorAction->setShortcut(QKeySequence("Ctrl+E"));
 
     connect(edgeColorAction, &QAction::triggered, [this]() {
@@ -132,7 +130,6 @@ void MainWindow::createEditMenu()
 
 QWidgetAction * MainWindow::createCornerRadiusAction()
 {
-    m_cornerRadiusSpinBox = new QSpinBox(this);
     m_cornerRadiusSpinBox->setMinimum(0);
     m_cornerRadiusSpinBox->setMaximum(Constants::Node::MAX_CORNER_RADIUS);
     m_cornerRadiusSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -140,12 +137,12 @@ QWidgetAction * MainWindow::createCornerRadiusAction()
     const auto dummyWidget = new QWidget(this);
     const auto layout = new QHBoxLayout(dummyWidget);
     dummyWidget->setLayout(layout);
-    auto label = new QLabel(tr("Corner radius:"));
+    const auto label = new QLabel(tr("Corner radius:"));
     layout->addWidget(label);
     layout->addWidget(m_cornerRadiusSpinBox);
     layout->setContentsMargins(0, 0, 0, 0);
 
-    auto action = new QWidgetAction(this);
+    const auto action = new QWidgetAction(this);
     action->setDefaultWidget(dummyWidget);
 
     // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
@@ -157,7 +154,6 @@ QWidgetAction * MainWindow::createCornerRadiusAction()
 
 QWidgetAction * MainWindow::createEdgeWidthAction()
 {
-    m_edgeWidthSpinBox = new QDoubleSpinBox(this);
     m_edgeWidthSpinBox->setSingleStep(Constants::Edge::STEP);
     m_edgeWidthSpinBox->setMinimum(Constants::Edge::MIN_SIZE);
     m_edgeWidthSpinBox->setMaximum(Constants::Edge::MAX_SIZE);
@@ -166,12 +162,12 @@ QWidgetAction * MainWindow::createEdgeWidthAction()
     const auto dummyWidget = new QWidget(this);
     const auto layout = new QHBoxLayout(dummyWidget);
     dummyWidget->setLayout(layout);
-    auto label = new QLabel(tr("Edge width:"));
+    const auto label = new QLabel(tr("Edge width:"));
     layout->addWidget(label);
     layout->addWidget(m_edgeWidthSpinBox);
     layout->setContentsMargins(0, 0, 0, 0);
 
-    auto action = new QWidgetAction(this);
+    const auto action = new QWidgetAction(this);
     action->setDefaultWidget(dummyWidget);
 
     // The ugly cast is needed because there are QDoubleSpinBox::valueChanged(double) and QDoubleSpinBox::valueChanged(QString)
@@ -183,7 +179,6 @@ QWidgetAction * MainWindow::createEdgeWidthAction()
 
 QWidgetAction * MainWindow::createTextSizeAction()
 {
-    m_textSizeSpinBox = new QSpinBox(this);
     m_textSizeSpinBox->setMinimum(Constants::Text::MIN_SIZE);
     m_textSizeSpinBox->setMaximum(Constants::Text::MAX_SIZE);
     m_textSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -191,12 +186,12 @@ QWidgetAction * MainWindow::createTextSizeAction()
     const auto dummyWidget = new QWidget(this);
     const auto layout = new QHBoxLayout(dummyWidget);
     dummyWidget->setLayout(layout);
-    auto label = new QLabel(tr("Text size:"));
+    const auto label = new QLabel(tr("Text size:"));
     layout->addWidget(label);
     layout->addWidget(m_textSizeSpinBox);
     layout->setContentsMargins(0, 0, 0, 0);
 
-    auto action = new QWidgetAction(this);
+    const auto action = new QWidgetAction(this);
     action->setDefaultWidget(dummyWidget);
 
     // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
@@ -208,7 +203,6 @@ QWidgetAction * MainWindow::createTextSizeAction()
 
 QWidgetAction * MainWindow::createGridSizeAction()
 {
-    m_gridSizeSpinBox = new QSpinBox(this);
     m_gridSizeSpinBox->setMinimum(Constants::Grid::MIN_SIZE);
     m_gridSizeSpinBox->setMaximum(Constants::Grid::MAX_SIZE);
     m_gridSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -216,12 +210,12 @@ QWidgetAction * MainWindow::createGridSizeAction()
     const auto dummyWidget = new QWidget(this);
     const auto layout = new QHBoxLayout(dummyWidget);
     dummyWidget->setLayout(layout);
-    auto label = new QLabel(tr("Grid size:"));
+    const auto label = new QLabel(tr("Grid size:"));
     layout->addWidget(label);
     layout->addWidget(m_gridSizeSpinBox);
     layout->setContentsMargins(0, 0, 0, 0);
 
-    auto action = new QWidgetAction(this);
+    const auto action = new QWidgetAction(this);
     action->setDefaultWidget(dummyWidget);
 
     // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
@@ -262,7 +256,6 @@ void MainWindow::createFileMenu()
     fileMenu->addSeparator();
 
     // Add "save"-action
-    m_saveAction = new QAction(tr("&Save"), this);
     m_saveAction->setShortcut(QKeySequence("Ctrl+S"));
     m_saveAction->setEnabled(false);
     fileMenu->addAction(m_saveAction);
@@ -271,7 +264,6 @@ void MainWindow::createFileMenu()
     });
 
     // Add "save as"-action
-    m_saveAsAction = new QAction(tr("&Save as") + threeDots, this);
     m_saveAsAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
     m_saveAsAction->setEnabled(false);
     fileMenu->addAction(m_saveAsAction);

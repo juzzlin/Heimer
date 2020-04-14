@@ -3,9 +3,19 @@ x.y.z
 
 New features:
 
+* Fix GitHub Issue #83: Add option to copy-drag nodes
+  - By checking "Copy on drag" checkbox on the toolbar
+    one can copy a node just by dragging a new connected node
+
 Bug fixes:
 
+* Fix GitHub Issue #70: Edge tries to reposition while moving a group
+
 Other:
+
+* Make the Full Screen menu action checkable to avoid confusion
+* General code refactoring
+* Upgraded to C++14
 
 1.15.1
 ======

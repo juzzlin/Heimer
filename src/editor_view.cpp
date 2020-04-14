@@ -128,8 +128,7 @@ void EditorView::handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHand
 void EditorView::handleLeftButtonClickOnNode(Node & node)
 {
     if (isControlPressed()) {
-        // Use is selecting a node
-
+        // User is selecting a node
         m_mediator.toggleNodeInSelectionGroup(node);
     } else {
         // Clear selection group if the node is not in it

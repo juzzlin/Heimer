@@ -283,19 +283,19 @@ void EditorView::mousePressEvent(QMouseEvent * event)
     QList<QGraphicsItem *> items = scene()->items(clickRect, Qt::IntersectsItemShape, Qt::DescendingOrder);
 
     if (items.size()) {
-        auto item = *items.begin();
-        if (auto node = dynamic_cast<Node *>(item)) {
+        const auto item = *items.begin();
+        if (const auto node = dynamic_cast<Node *>(item)) {
             handleMousePressEventOnNode(*event, *node);
-        } else if (auto edge = dynamic_cast<Edge *>(item)) {
+        } else if (const auto edge = dynamic_cast<Edge *>(item)) {
             handleMousePressEventOnEdge(*event, *edge);
-        } else if (auto node = dynamic_cast<NodeHandle *>(item)) {
+        } else if (const auto node = dynamic_cast<NodeHandle *>(item)) {
             handleMousePressEventOnNodeHandle(*event, *node);
         }
         // This hack enables edge context menu even if user clicks on the edge text edit.
         // Must be the last else-if branch.
-        else if (auto edgeTextEdit = dynamic_cast<EdgeTextEdit *>(item)) {
+        else if (const auto edgeTextEdit = dynamic_cast<EdgeTextEdit *>(item)) {
             if (event->button() == Qt::RightButton) {
-                auto edge = dynamic_cast<Edge *>(edgeTextEdit->parentItem());
+                const auto edge = dynamic_cast<Edge *>(edgeTextEdit->parentItem());
                 if (edge) {
                     handleMousePressEventOnEdge(*event, *edge);
                     return;
@@ -370,7 +370,7 @@ void EditorView::openNodeColorDialog()
 
 void EditorView::openNodeTextColorDialog()
 {
-    auto node = m_mediator.selectedNode();
+    const auto node = m_mediator.selectedNode();
     const auto color = QColorDialog::getColor(Qt::white, this);
     if (color.isValid()) {
         m_mediator.saveUndoPoint();
@@ -391,7 +391,7 @@ void EditorView::resetDummyDragItems()
 
 void EditorView::showDummyDragEdge(bool show)
 {
-    if (auto sourceNode = m_mediator.mouseAction().sourceNode()) {
+    if (const auto sourceNode = m_mediator.mouseAction().sourceNode()) {
         if (!m_dummyDragEdge) {
             L().debug() << "Creating a new dummy drag edge";
             m_dummyDragEdge = new Edge(*sourceNode, *m_dummyDragNode, false, false);
@@ -494,6 +494,4 @@ void EditorView::zoomToFit(QRectF nodeBoundingRect)
     m_nodeBoundingRect = nodeBoundingRect;
 }
 
-EditorView::~EditorView()
-{
-}
+EditorView::~EditorView() = default;

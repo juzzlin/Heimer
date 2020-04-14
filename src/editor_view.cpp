@@ -184,7 +184,7 @@ void EditorView::initiateNewNodeDrag(NodeHandle & nodeHandle)
 {
     // User is initiating a new node drag
     m_mediator.saveUndoPoint();
-    auto parentNode = dynamic_cast<Node *>(nodeHandle.parentItem());
+    const auto parentNode = dynamic_cast<Node *>(nodeHandle.parentItem());
     assert(parentNode);
     m_mediator.mouseAction().setSourceNode(parentNode, MouseAction::Action::CreateOrConnectNode);
     m_mediator.mouseAction().setSourcePosOnNode(nodeHandle.pos());
@@ -277,10 +277,10 @@ void EditorView::mousePressEvent(QMouseEvent * event)
     m_mediator.mouseAction().setClickedScenePos(clickedScenePos);
 
     const int tolerance = Constants::View::CLICK_TOLERANCE;
-    QRectF clickRect(clickedScenePos.x() - tolerance, clickedScenePos.y() - tolerance, tolerance * 2, tolerance * 2);
+    const QRectF clickRect(clickedScenePos.x() - tolerance, clickedScenePos.y() - tolerance, tolerance * 2, tolerance * 2);
 
     // Fetch all items at the location
-    QList<QGraphicsItem *> items = scene()->items(clickRect, Qt::IntersectsItemShape, Qt::DescendingOrder);
+    const QList<QGraphicsItem *> items = scene()->items(clickRect, Qt::IntersectsItemShape, Qt::DescendingOrder);
 
     if (items.size()) {
         const auto item = *items.begin();

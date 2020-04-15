@@ -81,6 +81,8 @@ private:
 
     void showImageFileDialog();
 
+    void showLayoutOptimizationDialog();
+
     void showPngExportDialog();
 
     void showMessageBox(QString message);

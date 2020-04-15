@@ -20,6 +20,7 @@ Here is a simple mind map of Heimer itself running on Ubuntu 18.04:
 * Nice animations
 * Full undo/redo
 * Adjustable grid
+* Automatic layout optimization
 * Translations in English, Finnish, French, Italian
 * Forever 100% free
 

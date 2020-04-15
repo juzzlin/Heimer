@@ -323,6 +323,11 @@ void Mediator::moveSelectionGroup(Node & reference, QPointF location)
     m_editorData->moveSelectionGroup(reference, location);
 }
 
+MindMapDataPtr Mediator::mindMapData() const
+{
+    return m_editorData->mindMapData();
+}
+
 size_t Mediator::nodeCount() const
 {
     return m_editorData->mindMapData() ? m_editorData->mindMapData()->graph().numNodes() : 0;

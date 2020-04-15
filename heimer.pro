@@ -40,6 +40,8 @@ HEADERS +=  \
     $$SRC/image_manager.hpp \
     $$SRC/png_export_dialog.hpp \
     $$SRC/layers.hpp \
+    $$SRC/layout_optimization_dialog.hpp \
+    $$SRC/layout_optimizer.hpp \
     $$SRC/magic_zoom.hpp \
     $$SRC/main_context_menu.hpp \
     $$SRC/main_window.hpp \
@@ -80,6 +82,8 @@ SOURCES += \
     $$SRC/image.cpp \
     $$SRC/image_manager.cpp \
     $$SRC/png_export_dialog.cpp \
+    $$SRC/layout_optimization_dialog.cpp \
+    $$SRC/layout_optimizer.cpp \
     $$SRC/magic_zoom.cpp \
     $$SRC/main.cpp \
     $$SRC/main_context_menu.cpp \

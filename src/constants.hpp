@@ -146,6 +146,28 @@ static const QString QSETTINGS_FILE_PATH_KEY = "filePath";
 
 } // namespace RecentFiles
 
+namespace LayoutOptimizer {
+
+static const int DEFAULT_MIN_EDGE_LENGTH = 100;
+
+static const int MIN_EDGE_LENGTH = 10;
+
+static const int MAX_EDGE_LENGTH = 250;
+
+static const double DEFAULT_ASPECT_RATIO = 1.0;
+
+static const double MIN_ASPECT_RATIO = 0.1;
+
+static const double MAX_ASPECT_RATIO = 10;
+
+static const auto QSETTINGS_GROUP = "LayoutOptimizer";
+
+static const auto QSETTINGS_ASPECT_RATIO_KEY = "aspectRatio";
+
+static const auto QSETTINGS_MIN_EDGE_LENGTH_KEY = "minEdgeLength";
+
+} // LayoutOptimizer
+
 namespace Scene {
 
 static const QColor BARRIER_COLOR { 255, 0, 0, 128 };

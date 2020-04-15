@@ -19,6 +19,8 @@
 #include "editor_scene.hpp"
 #include "editor_view.hpp"
 #include "image_manager.hpp"
+#include "layout_optimization_dialog.hpp"
+#include "layout_optimizer.hpp"
 #include "main_window.hpp"
 #include "mediator.hpp"
 #include "png_export_dialog.hpp"
@@ -193,6 +195,9 @@ void Application::runState(StateMachine::State state)
         break;
     case StateMachine::State::ShowPngExportDialog:
         showPngExportDialog();
+        break;
+    case StateMachine::State::ShowLayoutOptimizationDialog:
+        showLayoutOptimizationDialog();
         break;
     case StateMachine::State::ShowNotSavedDialog:
         switch (showNotSavedDialog()) {
@@ -376,6 +381,19 @@ void Application::showPngExportDialog()
 
     // Doesn't matter if canceled or not
     emit actionTriggered(StateMachine::Action::PngExported);
+}
+
+void Application::showLayoutOptimizationDialog()
+{
+    LayoutOptimizer layoutOptimizer{ m_mediator->mindMapData() };
+    LayoutOptimizationDialog dialog{ *m_mainWindow, layoutOptimizer };
+    connect(&dialog, &LayoutOptimizationDialog::undoPointRequested, m_mediator.get(), &Mediator::saveUndoPoint);
+
+    if (dialog.exec() == QDialog::Accepted) {
+        m_mediator->zoomToFit();
+    }
+
+    emit actionTriggered(StateMachine::Action::LayoutOptimized);
 }
 
 void Application::showMessageBox(QString message)

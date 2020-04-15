@@ -25,17 +25,20 @@ set(SRC
     edge_dot.cpp
     edge_point.hpp
     edge_text_edit.cpp
+    editor_data.cpp
+    editor_scene.cpp
+    editor_view.cpp
     file_exception.hpp
     graph.cpp
     graphics_factory.cpp
     grid.cpp
     hash_seed.cpp
-    editor_data.cpp
-    editor_scene.cpp
-    editor_view.cpp
     image.cpp
     image_manager.cpp
     png_export_dialog.cpp
+    layers.hpp
+    layout_optimization_dialog.cpp
+    layout_optimizer.cpp
     main.cpp
     main_context_menu.cpp
     main_window.cpp
@@ -46,6 +49,7 @@ set(SRC
     mouse_action.cpp
     node.cpp
     node_handle.cpp
+    png_export_dialog.cpp
     reader.cpp
     recent_files_manager.cpp
     recent_files_menu.cpp
@@ -55,7 +59,6 @@ set(SRC
     text_edit.cpp
     undo_stack.cpp
     user_exception.hpp
-    layers.hpp
     whats_new_dlg.cpp
     writer.cpp
 )

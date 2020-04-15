@@ -126,6 +126,15 @@ void MainWindow::createEditMenu()
     editMenu->addAction(edgeColorAction);
 
     editMenu->addSeparator();
+
+    auto optimizeLayoutAction = new QAction(tr("Optimize layout") + threeDots, this);
+    optimizeLayoutAction->setShortcut(QKeySequence("Ctrl+Shift+O"));
+
+    connect(optimizeLayoutAction, &QAction::triggered, [=] {
+        emit actionTriggered(StateMachine::Action::LayoutOptimizationRequested);
+    });
+
+    editMenu->addAction(optimizeLayoutAction);
 }
 
 QWidgetAction * MainWindow::createCornerRadiusAction()

@@ -139,7 +139,7 @@ static void writeImageRef(QDomElement & parent, QDomDocument & doc, size_t image
 
 static void writeNodes(MindMapData & mindMapData, QDomElement & root, QDomDocument & doc)
 {
-    for (auto node : mindMapData.graph().getNodes()) {
+    for (auto && node : mindMapData.graph().getNodes()) {
         auto nodeElement = doc.createElement(Serializer::DataKeywords::Design::Graph::NODE);
         nodeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Node::INDEX, node->index());
         nodeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Node::X, static_cast<int>(node->location().x() * SCALE));
@@ -168,7 +168,7 @@ static void writeNodes(MindMapData & mindMapData, QDomElement & root, QDomDocume
 
 static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocument & doc)
 {
-    for (auto node : mindMapData.graph().getNodes()) {
+    for (auto && node : mindMapData.graph().getNodes()) {
         for (auto && edge : mindMapData.graph().getEdgesFromNode(node)) {
             auto edgeElement = doc.createElement(Serializer::DataKeywords::Design::Graph::EDGE);
             edgeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX0, edge->sourceNodeBase().index());
@@ -180,7 +180,7 @@ static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocume
             // Create a child node for the text content
             auto textElement = doc.createElement(Serializer::DataKeywords::Design::Graph::Node::TEXT);
             edgeElement.appendChild(textElement);
-            auto textNode = doc.createTextNode(edge->text());
+            const auto textNode = doc.createTextNode(edge->text());
             textElement.appendChild(textNode);
         }
     }
@@ -196,7 +196,7 @@ static QString getBase64Data(std::string path)
     return in.readAll().toBase64(QByteArray::Base64Encoding);
 #else
     Q_UNUSED(path)
-    return "";
+    return {};
 #endif
 }
 
@@ -222,7 +222,7 @@ static QImage base64ToQImage(const std::string & base64, size_t imageId, std::st
     Q_UNUSED(imageId)
     Q_UNUSED(imagePath)
 #endif
-    return QImage {};
+    return {};
 }
 
 static void writeImages(MindMapData & mindMapData, QDomElement & root, QDomDocument & doc)
@@ -268,7 +268,7 @@ static QString readFirstTextNodeContent(const QDomElement & element)
             return child.toText().nodeValue().replace(13, "");
         }
     }
-    return "";
+    return {};
 }
 
 static void elementWarning(const QDomElement & element)
@@ -281,7 +281,7 @@ static void readChildren(const QDomElement & root, std::map<QString, std::functi
 {
     auto domNode = root.firstChild();
     while (!domNode.isNull()) {
-        auto element = domNode.toElement();
+        const auto element = domNode.toElement();
         if (!element.isNull()) {
             if (handlerMap.count(element.nodeName())) {
                 handlerMap[element.nodeName()](element);
@@ -302,10 +302,10 @@ static NodePtr readNode(const QDomElement & element)
 #endif
 {
 #ifdef HEIMER_UNIT_TEST
-    auto node = make_shared<NodeBase>();
+    const auto node = make_shared<NodeBase>();
 #else
     // Init a new node. QGraphicsScene will take the ownership eventually.
-    auto node = make_shared<Node>();
+    const auto node = make_shared<Node>();
 #endif
     node->setIndex(element.attribute(Serializer::DataKeywords::Design::Graph::Node::INDEX, "-1").toInt());
     node->setLocation(QPointF(
@@ -347,18 +347,18 @@ static EdgePtr readEdge(const QDomElement & element, MindMapDataPtr data)
     const int arrowMode = element.attribute(Serializer::DataKeywords::Design::Graph::Edge::ARROW_MODE, "0").toInt();
 
 #ifdef HEIMER_UNIT_TEST
-    auto node0 = data->graph().getNode(index0);
+    const auto node0 = data->graph().getNode(index0);
     assert(node0);
-    auto node1 = data->graph().getNode(index1);
+    const auto node1 = data->graph().getNode(index1);
     assert(node1);
-    auto edge = make_shared<EdgeBase>(*node0, *node1);
+    const auto edge = make_shared<EdgeBase>(*node0, *node1);
 #else
     // Init a new edge. QGraphicsScene will take the ownership eventually.
-    auto node0 = std::dynamic_pointer_cast<Node>(data->graph().getNode(index0));
+    const auto node0 = std::dynamic_pointer_cast<Node>(data->graph().getNode(index0));
     assert(node0);
-    auto node1 = std::dynamic_pointer_cast<Node>(data->graph().getNode(index1));
+    const auto node1 = std::dynamic_pointer_cast<Node>(data->graph().getNode(index1));
     assert(node1);
-    auto edge = make_shared<Edge>(*node0, *node1);
+    const auto edge = make_shared<Edge>(*node0, *node1);
 #endif
     edge->setArrowMode(static_cast<EdgeBase::ArrowMode>(arrowMode));
     edge->setReversed(reversed);
@@ -385,8 +385,7 @@ static void readGraph(const QDomElement & graph, MindMapDataPtr data)
 MindMapDataPtr fromXml(QDomDocument document)
 {
     const auto design = document.documentElement();
-
-    auto data = make_shared<MindMapData>();
+    const auto data = make_shared<MindMapData>();
     data->setVersion(design.attribute(DataKeywords::Design::APPLICATION_VERSION, "UNDEFINED"));
 
     readChildren(design, { { QString(Serializer::DataKeywords::Design::GRAPH), [=](const QDomElement & e) {

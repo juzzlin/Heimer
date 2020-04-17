@@ -3,9 +3,19 @@ x.y.z
 
 New features:
 
+Bug fixes:
+
+Other:
+
+1.16.0
+======
+
+New features:
+
 * Fix GitHub Issue #83: Add option to copy-drag nodes
   - By checking "Copy on drag" checkbox on the toolbar
     one can copy a node just by dragging a new connected node
+
 * Add Ctrl+0 as shortcut for zoom to fit
 
 Bug fixes:
@@ -15,7 +25,9 @@ Bug fixes:
 Other:
 
 * Make the Full Screen menu action checkable to avoid confusion
+
 * General code refactoring
+
 * Upgraded to C++14
 
 1.15.1

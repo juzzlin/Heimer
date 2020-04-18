@@ -54,6 +54,7 @@ parts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DCMAKE_INSTALL_PREFIX=/usr
       - -DBUILD_TESTS=OFF
+      - -DPACKAGE_TYPE=Snap
     build-packages:
       - qtbase5-dev
       - qttools5-dev

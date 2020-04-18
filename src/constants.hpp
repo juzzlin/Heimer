@@ -24,6 +24,12 @@ namespace Application {
 
 static constexpr auto APPLICATION_NAME = "Heimer";
 
+#ifndef PACKAGE_TYPE
+static constexpr auto APPLICATION_PACKAGE_TYPE = "N/A";
+#else
+static constexpr auto APPLICATION_PACKAGE_TYPE = PACKAGE_TYPE;
+#endif
+
 static constexpr auto APPLICATION_VERSION = VERSION;
 
 static constexpr auto COPYRIGHT = "Copyright (c) 2018-2020 Jussi Lind";

@@ -8,7 +8,7 @@ CMD="export LANG=en_US.UTF-8 && \
      export LC_ALL=en_US.UTF-8 && \
      rm -rf /heimer-build-appimage && mkdir -p /heimer/build-appimage && \
      cd /heimer/build-appimage && \
-     cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_TESTS=OFF && \
+     cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_TESTS=OFF -DPACKAGE_TYPE=AppImage && \
      make -j$(nproc) && \
      make DESTDIR=appdir -j$(nproc) install && find appdir/ && \
      wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"  && \

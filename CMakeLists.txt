@@ -49,6 +49,11 @@ if(NOT CMAKE_BUILD_TYPE)
 MinSizeRel." FORCE)
 endif()
 
+# Package type info shown in the About dialog
+if(PACKAGE_TYPE)
+    add_definitions(-DPACKAGE_TYPE="${PACKAGE_TYPE}")
+endif()
+
 if(UNIX)
     include("InstallLinux.cmake")
 elseif(WIN32)

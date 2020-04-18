@@ -15,16 +15,21 @@
     </message>
     <message>
         <location filename="../about_dlg.cpp" line="45"/>
+        <source>Package type: </source>
+        <translation>Paketoinnin tyyppi: </translation>
+    </message>
+    <message>
+        <location filename="../about_dlg.cpp" line="46"/>
         <source>Project website: </source>
         <translation>Projektin nettisivu: </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="47"/>
+        <location filename="../about_dlg.cpp" line="48"/>
         <source>Support </source>
         <translation>Tue </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="47"/>
+        <location filename="../about_dlg.cpp" line="48"/>
         <source> on Patreon: </source>
         <translation>ia Patreonissa: </translation>
     </message>
@@ -426,12 +431,12 @@
         <translation type="vanished">Heimer -tiedostot</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="420"/>
+        <location filename="../main_window.cpp" line="421"/>
         <source>New File</source>
         <translation>Uusi tiedosto</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="422"/>
+        <location filename="../main_window.cpp" line="423"/>
         <source>Not Saved</source>
         <translation>Ei tallennettu</translation>
     </message>
@@ -452,7 +457,7 @@
         <translation type="vanished">Avaa tiedosto</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="506"/>
+        <location filename="../main_window.cpp" line="507"/>
         <source>About Qt</source>
         <translation>Tietoa Qt:sta</translation>
     </message>

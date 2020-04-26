@@ -35,21 +35,21 @@ EdgeContextMenu::EdgeContextMenu(QWidget * parent, Mediator & mediator)
     QObject::connect(hideEdgeArrowAction, &QAction::triggered, [=] {
         assert(m_mediator.selectedEdge());
         m_mediator.saveUndoPoint();
-        m_mediator.selectedEdge()->setArrowMode(EdgeBase::ArrowMode::Hidden);
+        m_mediator.selectedEdge()->setArrowMode(Edge::ArrowMode::Hidden);
     });
 
     auto singleArrowAction(new QAction(tr("Single arrow"), this));
     QObject::connect(singleArrowAction, &QAction::triggered, [=] {
         assert(m_mediator.selectedEdge());
         m_mediator.saveUndoPoint();
-        m_mediator.selectedEdge()->setArrowMode(EdgeBase::ArrowMode::Single);
+        m_mediator.selectedEdge()->setArrowMode(Edge::ArrowMode::Single);
     });
 
     auto doubleArrowAction(new QAction(tr("Double arrow"), this));
     QObject::connect(doubleArrowAction, &QAction::triggered, [=] {
         assert(m_mediator.selectedEdge());
         m_mediator.saveUndoPoint();
-        m_mediator.selectedEdge()->setArrowMode(EdgeBase::ArrowMode::Double);
+        m_mediator.selectedEdge()->setArrowMode(Edge::ArrowMode::Double);
     });
 
     auto deleteEdgeAction(new QAction(tr("Delete edge"), this));
@@ -75,10 +75,10 @@ EdgeContextMenu::EdgeContextMenu(QWidget * parent, Mediator & mediator)
     // Set selected edge when the menu opens.
     connect(this, &QMenu::aboutToShow, [=] {
         m_selectedEdge = m_mediator.selectedEdge();
-        changeEdgeDirectionAction->setEnabled(m_selectedEdge->arrowMode() != EdgeBase::ArrowMode::Double && m_selectedEdge->arrowMode() != EdgeBase::ArrowMode::Hidden);
-        doubleArrowAction->setEnabled(m_selectedEdge->arrowMode() != EdgeBase::ArrowMode::Double);
-        hideEdgeArrowAction->setEnabled(m_selectedEdge->arrowMode() != EdgeBase::ArrowMode::Hidden);
-        singleArrowAction->setEnabled(m_selectedEdge->arrowMode() != EdgeBase::ArrowMode::Single);
+        changeEdgeDirectionAction->setEnabled(m_selectedEdge->arrowMode() != Edge::ArrowMode::Double && m_selectedEdge->arrowMode() != Edge::ArrowMode::Hidden);
+        doubleArrowAction->setEnabled(m_selectedEdge->arrowMode() != Edge::ArrowMode::Double);
+        hideEdgeArrowAction->setEnabled(m_selectedEdge->arrowMode() != Edge::ArrowMode::Hidden);
+        singleArrowAction->setEnabled(m_selectedEdge->arrowMode() != Edge::ArrowMode::Single);
     });
 
     // Always clear edge selection when the menu closes.

@@ -51,7 +51,7 @@ void Graph::deleteEdge(int index0, int index1)
     do {
         edgeIter = std::find_if(
           m_edges.begin(), m_edges.end(), [=](const EdgePtr & edge) {
-              return edge->sourceNodeBase().index() == index0 && edge->targetNodeBase().index() == index1;
+              return edge->sourceNode().index() == index0 && edge->targetNode().index() == index1;
           });
         edgeErased = edgeIter != m_edges.end();
         if (edgeErased) {
@@ -72,7 +72,7 @@ void Graph::deleteNode(int index)
         do {
             edgeIter = std::find_if(
               m_edges.begin(), m_edges.end(), [=](const EdgePtr & edge) {
-                  return edge->sourceNodeBase().index() == index || edge->targetNodeBase().index() == index;
+                  return edge->sourceNode().index() == index || edge->targetNode().index() == index;
               });
             edgeErased = edgeIter != m_edges.end();
             if (edgeErased) {
@@ -89,7 +89,7 @@ void Graph::addEdge(EdgePtr newEdge)
     // Add if such edge doesn't already exist
     if (std::count_if(
           m_edges.begin(), m_edges.end(), [=](const EdgePtr & edge) {
-              return edge->sourceNodeBase().index() == newEdge->sourceNodeBase().index() && edge->targetNodeBase().index() == newEdge->targetNodeBase().index();
+              return edge->sourceNode().index() == newEdge->sourceNode().index() && edge->targetNode().index() == newEdge->targetNode().index();
           })
         == 0) {
         m_edges.push_back(newEdge);
@@ -102,7 +102,7 @@ void Graph::addEdge(int node0, int node1)
     // Add if such edge doesn't already exist
     if (std::count_if(
           m_edges.begin(), m_edges.end(), [=](const EdgePtr & edge) {
-              return edge->sourceNodeBase().index() == node0 && edge->targetNodeBase().index() == node1;
+              return edge->sourceNode().index() == node0 && edge->targetNode().index() == node1;
           })
         == 0) {
         m_edges.push_back(std::make_shared<Edge>(*getNode(node0), *getNode(node1)));
@@ -113,7 +113,7 @@ void Graph::addEdge(int node0, int node1)
 bool Graph::areDirectlyConnected(NodePtr node0, NodePtr node1)
 {
     for (auto && edge : m_edges) {
-        if ((edge->sourceNodeBase().index() == node0->index() && edge->targetNodeBase().index() == node1->index()) || (edge->sourceNodeBase().index() == node1->index() && edge->targetNodeBase().index() == node0->index())) {
+        if ((edge->sourceNode().index() == node0->index() && edge->targetNode().index() == node1->index()) || (edge->sourceNode().index() == node1->index() && edge->targetNode().index() == node0->index())) {
             return true;
         }
     }
@@ -134,7 +134,7 @@ Graph::EdgeVector Graph::getEdgesFromNode(NodePtr node)
 {
     Graph::EdgeVector edges;
     for (auto && edge : m_edges) {
-        if (edge->sourceNodeBase().index() == node->index()) {
+        if (edge->sourceNode().index() == node->index()) {
             edges.push_back(edge);
         }
     }
@@ -145,7 +145,7 @@ Graph::EdgeVector Graph::getEdgesToNode(NodePtr node)
 {
     Graph::EdgeVector edges;
     for (auto && edge : m_edges) {
-        if (edge->targetNodeBase().index() == node->index()) {
+        if (edge->targetNode().index() == node->index()) {
             edges.push_back(edge);
         }
     }
@@ -173,11 +173,11 @@ Graph::NodeVector Graph::getNodesConnectedToNode(NodePtr node)
     auto && to = getEdgesToNode(node);
 
     for (auto && edge : to) {
-        result.push_back(getNode(edge->sourceNodeBase().index()));
+        result.push_back(getNode(edge->sourceNode().index()));
     }
 
     for (auto && edge : from) {
-        result.push_back(getNode(edge->targetNodeBase().index()));
+        result.push_back(getNode(edge->targetNode().index()));
     }
 
     return result;

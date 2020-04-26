@@ -22,7 +22,6 @@
 #include <map>
 #include <memory>
 
-#include "edge_base.hpp"
 #include "edge_point.hpp"
 
 class EdgeDot;
@@ -32,11 +31,18 @@ class QGraphicsEllipseItem;
 class QPropertyAnimation;
 
 //! A graphic representation of a graph edge between nodes.
-class Edge : public QObject, public QGraphicsLineItem, public EdgeBase
+class Edge : public QObject, public QGraphicsLineItem
 {
     Q_OBJECT
 
 public:
+    enum class ArrowMode
+    {
+        Single = 0,
+        Double = 1,
+        Hidden = 2
+    };
+
     Edge(Node & sourceNode, Node & targetNode, bool enableAnimations = true, bool enableLabel = true);
 
     virtual ~Edge() override;
@@ -45,27 +51,37 @@ public:
 
     Node & targetNode() const;
 
+    void setSourceNode(Node & sourceNode);
+
+    void setTargetNode(Node & targetNode);
+
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
 
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
+
+    QString text() const;
+
+    ArrowMode arrowMode() const;
+
+    bool reversed() const;
 
 public slots:
 
     void updateLine();
 
-    virtual void setArrowMode(ArrowMode arrowMode) override;
+    void setArrowMode(ArrowMode arrowMode);
 
-    virtual void setColor(const QColor & color) override;
+    void setColor(const QColor & color);
 
-    virtual void setWidth(double width) override;
+    void setWidth(double width);
 
-    virtual void setText(const QString & text) override;
+    void setText(const QString & text);
 
-    virtual void setTextSize(int textSize) override;
+    void setTextSize(int textSize);
 
-    virtual void setReversed(bool reversed) override;
+    void setReversed(bool reversed);
 
-    virtual void setSelected(bool selected) override;
+    void setSelected(bool selected);
 
 signals:
 
@@ -85,6 +101,24 @@ private:
     void updateDots();
 
     void updateLabel();
+
+    Node * m_sourceNode = nullptr;
+
+    Node * m_targetNode = nullptr;
+
+    QString m_text;
+
+    double m_width = 2;
+
+    int m_textSize = 11; // Not sure if we should set yet another default value here..
+
+    QColor m_color;
+
+    bool m_reversed = false;
+
+    bool m_selected = false;
+
+    ArrowMode m_arrowMode = ArrowMode::Single;
 
     bool m_enableAnimations;
 

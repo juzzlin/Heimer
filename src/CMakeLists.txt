@@ -21,7 +21,6 @@ set(SRC
     constants.hpp
     copy_paste.cpp
     edge.cpp
-    edge_base.cpp
     edge_context_menu.cpp
     edge_dot.cpp
     edge_point.hpp

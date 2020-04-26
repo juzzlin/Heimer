@@ -6,7 +6,6 @@ set(NAME editor_data_test)
 set(SRC ${NAME}.cpp
     ${EDITOR_DIR}/mouse_action.cpp
     ${EDITOR_DIR}/edge.cpp
-    ${EDITOR_DIR}/edge_base.cpp
     ${EDITOR_DIR}/edge_dot.cpp
     ${EDITOR_DIR}/edge_text_edit.cpp
     ${EDITOR_DIR}/editor_data.cpp

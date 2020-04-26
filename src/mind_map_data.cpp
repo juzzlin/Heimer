@@ -50,8 +50,8 @@ void MindMapData::copyGraph(const MindMapData & other)
 
     // Create new edges
     for (auto && otherEdge : other.m_graph.getEdges()) {
-        auto sourceNode = m_graph.getNode(otherEdge->sourceNodeBase().index());
-        auto targetNode = m_graph.getNode(otherEdge->targetNodeBase().index());
+        auto sourceNode = m_graph.getNode(otherEdge->sourceNode().index());
+        auto targetNode = m_graph.getNode(otherEdge->targetNode().index());
         auto edge = std::make_shared<Edge>(*sourceNode, *targetNode);
         edge->setArrowMode(otherEdge->arrowMode());
         edge->setText(otherEdge->text());

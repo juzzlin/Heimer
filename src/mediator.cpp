@@ -52,8 +52,8 @@ void Mediator::addExistingGraphToScene()
     }
 
     for (auto && edge : m_editorData->mindMapData()->graph().getEdges()) {
-        const auto node0 = getNodeByIndex(edge->sourceNodeBase().index());
-        const auto node1 = getNodeByIndex(edge->targetNodeBase().index());
+        const auto node0 = getNodeByIndex(edge->sourceNode().index());
+        const auto node1 = getNodeByIndex(edge->targetNode().index());
         if (!m_editorScene->hasEdge(*node0, *node1)) {
             addItem(*edge);
             edge->setColor(m_editorData->mindMapData()->edgeColor());

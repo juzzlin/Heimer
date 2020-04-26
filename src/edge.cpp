@@ -37,7 +37,8 @@
 #include <cmath>
 
 Edge::Edge(Node & sourceNode, Node & targetNode, bool enableAnimations, bool enableLabel)
-  : EdgeBase(sourceNode, targetNode)
+  : m_sourceNode(&sourceNode)
+  , m_targetNode(&targetNode)
   , m_enableAnimations(enableAnimations)
   , m_enableLabel(enableLabel)
   , m_sourceDot(enableAnimations ? new EdgeDot(this) : nullptr)
@@ -64,7 +65,7 @@ Edge::Edge(Node & sourceNode, Node & targetNode, bool enableAnimations, bool ena
 
         connect(m_label, &TextEdit::textChanged, [=](const QString & text) {
             updateLabel();
-            EdgeBase::setText(text);
+            m_text = text;
         });
 
         connect(m_label, &TextEdit::undoPointRequested, this, &Edge::undoPointRequested);
@@ -96,7 +97,7 @@ void Edge::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
 
 QPen Edge::getPen() const
 {
-    return QPen { QBrush { QColor { color().red(), color().green(), color().blue(), 200 } }, width() };
+    return QPen { QBrush { QColor { m_color.red(), m_color.green(), m_color.blue(), 200 } }, m_width };
 }
 
 void Edge::initDots()
@@ -144,7 +145,7 @@ void Edge::setLabelVisible(bool visible)
 
 void Edge::setWidth(double width)
 {
-    EdgeBase::setWidth(width);
+    m_width = width;
 
     setPen(getPen());
     setArrowHeadPen(pen());
@@ -153,7 +154,7 @@ void Edge::setWidth(double width)
 
 void Edge::setArrowMode(ArrowMode arrowMode)
 {
-    EdgeBase::setArrowMode(arrowMode);
+    m_arrowMode = arrowMode;
 #ifndef HEIMER_UNIT_TEST
     updateLine();
 #endif
@@ -161,7 +162,7 @@ void Edge::setArrowMode(ArrowMode arrowMode)
 
 void Edge::setColor(const QColor & color)
 {
-    EdgeBase::setColor(color);
+    m_color = color;
 
     setPen(getPen());
     setArrowHeadPen(pen());
@@ -170,7 +171,7 @@ void Edge::setColor(const QColor & color)
 
 void Edge::setText(const QString & text)
 {
-    EdgeBase::setText(text);
+    m_text = text;
 #ifndef HEIMER_UNIT_TEST
     if (m_label) {
         m_label->setText(text);
@@ -188,45 +189,41 @@ void Edge::setTextSize(int textSize)
 
 void Edge::setReversed(bool reversed)
 {
-    EdgeBase::setReversed(reversed);
+    m_reversed = reversed;
 
     updateArrowhead();
 }
 
 void Edge::setSelected(bool selected)
 {
-    EdgeBase::setSelected(selected);
+    m_selected = selected;
     setGraphicsEffect(GraphicsFactory::createDropShadowEffect(selected));
     update();
 }
 
 Node & Edge::sourceNode() const
 {
-    const auto node = dynamic_cast<Node *>(&sourceNodeBase());
-    assert(node);
-    return *node;
+    return *m_sourceNode;
 }
 
 Node & Edge::targetNode() const
 {
-    const auto node = dynamic_cast<Node *>(&targetNodeBase());
-    assert(node);
-    return *node;
+    return *m_targetNode;
 }
 
 void Edge::updateArrowhead()
 {
-    const auto point0 = reversed() ? this->line().p1() : this->line().p2();
-    const auto angle0 = reversed() ? -this->line().angle() + 180 : -this->line().angle();
-    const auto point1 = reversed() ? this->line().p2() : this->line().p1();
-    const auto angle1 = reversed() ? -this->line().angle() : -this->line().angle() + 180;
+    const auto point0 = m_reversed ? this->line().p1() : this->line().p2();
+    const auto angle0 = m_reversed ? -this->line().angle() + 180 : -this->line().angle();
+    const auto point1 = m_reversed ? this->line().p2() : this->line().p1();
+    const auto angle1 = m_reversed ? -this->line().angle() : -this->line().angle() + 180;
 
     QLineF lineL0;
     QLineF lineR0;
     QLineF lineL1;
     QLineF lineR1;
 
-    switch (arrowMode()) {
+    switch (m_arrowMode) {
     case ArrowMode::Single: {
         lineL0.setP1(point0);
         const auto angleL = qDegreesToRadians(angle0 + Constants::Edge::ARROW_OPENING);
@@ -308,6 +305,31 @@ void Edge::updateLabel()
     }
 }
 
+void Edge::setTargetNode(Node & targetNode)
+{
+    m_targetNode = &targetNode;
+}
+
+void Edge::setSourceNode(Node & sourceNode)
+{
+    m_sourceNode = &sourceNode;
+}
+
+bool Edge::reversed() const
+{
+    return m_reversed;
+}
+
+Edge::ArrowMode Edge::arrowMode() const
+{
+    return m_arrowMode;
+}
+
+QString Edge::text() const
+{
+    return m_text;
+}
+
 void Edge::updateLine()
 {
     const auto nearestPoints = Node::getNearestEdgePoints(sourceNode(), targetNode());
@@ -323,7 +345,7 @@ void Edge::updateLine()
     setLine(QLineF(
       p1 + (nearestPoints.first.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction1 * sourceNode().cornerRadius()).toPointF() : QPointF { 0, 0 }),
       p2 + (nearestPoints.second.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction2 * targetNode().cornerRadius()).toPointF() : QPointF { 0, 0 }) - //
-        (direction2 * static_cast<float>(width())).toPointF() * Constants::Edge::WIDTH_SCALE));
+        (direction2 * static_cast<float>(m_width)).toPointF() * Constants::Edge::WIDTH_SCALE));
 
     updateDots();
     updateLabel();

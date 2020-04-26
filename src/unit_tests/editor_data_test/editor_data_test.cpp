@@ -227,25 +227,25 @@ void EditorDataTest::testUndoArrowMode()
 
     editorData.addEdge(edge01);
 
-    QCOMPARE(edge01->arrowMode(), EdgeBase::ArrowMode::Single);
+    QCOMPARE(edge01->arrowMode(), Edge::ArrowMode::Single);
 
-    edge01->setArrowMode(EdgeBase::ArrowMode::Double);
+    edge01->setArrowMode(Edge::ArrowMode::Double);
 
     editorData.saveUndoPoint();
 
-    edge01->setArrowMode(EdgeBase::ArrowMode::Hidden);
+    edge01->setArrowMode(Edge::ArrowMode::Hidden);
 
     editorData.undo();
 
     const auto undoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
 
-    QCOMPARE(undoneEdge->arrowMode(), EdgeBase::ArrowMode::Double);
+    QCOMPARE(undoneEdge->arrowMode(), Edge::ArrowMode::Double);
 
     editorData.redo();
 
     const auto redoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
 
-    QCOMPARE(redoneEdge->arrowMode(), EdgeBase::ArrowMode::Hidden);
+    QCOMPARE(redoneEdge->arrowMode(), Edge::ArrowMode::Hidden);
 }
 
 void EditorDataTest::testUndoDeleteEdge()

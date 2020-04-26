@@ -5,7 +5,6 @@ add_definitions(-DHEIMER_UNIT_TEST)
 set(NAME graph_test)
 set(SRC
     ${NAME}.cpp
-    ${EDITOR_DIR}/edge_base.cpp
     ${EDITOR_DIR}/edge.cpp
     ${EDITOR_DIR}/edge_dot.cpp
     ${EDITOR_DIR}/edge_text_edit.cpp

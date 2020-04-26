@@ -26,7 +26,6 @@
 
 #include "edge.hpp"
 #include "edge_point.hpp"
-#include "node_base.hpp"
 
 class Image;
 class NodeHandle;
@@ -34,7 +33,7 @@ class QGraphicsTextItem;
 class TextEdit;
 
 //! Freely placeable target node.
-class Node : public QObject, public QGraphicsItem, public NodeBase
+class Node : public QObject, public QGraphicsItem
 {
     Q_OBJECT
 
@@ -63,7 +62,9 @@ public:
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
 
     //! Sets the Node and QGraphicsItem locations.
-    void setLocation(QPointF newLocation) override;
+    void setLocation(QPointF newLocation);
+
+    QRectF placementBoundingRect() const;
 
     void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
 
@@ -77,23 +78,43 @@ public:
 
     void setHandlesVisible(bool visible, bool all = true);
 
-    QString text() const override;
+    int index() const;
 
-    void setColor(const QColor & color) override;
+    void setIndex(int index);
 
-    void setCornerRadius(int value) override;
+    QString text() const;
+
+    QColor color() const;
+
+    void setColor(const QColor & color);
+
+    int cornerRadius() const;
+
+    void setCornerRadius(int value);
+
+    QPointF location() const;
+
+    bool selected() const;
+
+    void setSelected(bool selected);
+
+    QSizeF size() const;
+
+    void setSize(const QSizeF & size);
 
     void setTextInputActive();
 
-    void setText(const QString & text) override;
+    void setText(const QString & text);
 
-    void setTextColor(const QColor & color) override;
+    QColor textColor() const;
 
-    void setTextSize(int textSize) override;
+    void setTextColor(const QColor & color);
 
-    void setSelected(bool selected) override;
+    void setTextSize(int textSize);
 
-    void setImageRef(size_t imageRef) override;
+    size_t imageRef() const;
+
+    void setImageRef(size_t imageRef);
 
     void applyImage(const Image & image);
 
@@ -117,6 +138,26 @@ private:
     void initTextField();
 
     void updateEdgeLines();
+
+    QColor m_color = Qt::white;
+
+    int m_cornerRadius = 0;
+
+    QColor m_textColor = Qt::black;
+
+    int m_textSize = 11; // Not sure if we should set yet another default value here..
+
+    QPointF m_location;
+
+    QSizeF m_size;
+
+    QString m_text;
+
+    bool m_selected = false;
+
+    int m_index = -1;
+
+    size_t m_imageRef = 0;
 
     std::vector<NodeHandle *> m_handles;
 

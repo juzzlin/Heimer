@@ -11,7 +11,6 @@ set(SRC
     ${EDITOR_DIR}/graph.cpp
     ${EDITOR_DIR}/graphics_factory.cpp
     ${EDITOR_DIR}/image.cpp
-    ${EDITOR_DIR}/node_base.cpp
     ${EDITOR_DIR}/node.cpp
     ${EDITOR_DIR}/node_handle.cpp
     ${EDITOR_DIR}/text_edit.cpp

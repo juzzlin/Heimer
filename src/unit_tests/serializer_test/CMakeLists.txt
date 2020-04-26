@@ -16,7 +16,6 @@ set(SRC ${NAME}.cpp
     ${EDITOR_DIR}/mind_map_data.cpp
     ${EDITOR_DIR}/mind_map_data_base.cpp
     ${EDITOR_DIR}/node.cpp
-    ${EDITOR_DIR}/node_base.cpp
     ${EDITOR_DIR}/node_handle.cpp
     ${EDITOR_DIR}/serializer.cpp
     ${EDITOR_DIR}/text_edit.cpp

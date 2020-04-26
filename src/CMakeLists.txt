@@ -45,7 +45,6 @@ set(SRC
     mind_map_data_base.cpp
     mouse_action.cpp
     node.cpp
-    node_base.cpp
     node_handle.cpp
     reader.cpp
     recent_files_manager.cpp

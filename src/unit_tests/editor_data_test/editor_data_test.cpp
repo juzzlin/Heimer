@@ -17,7 +17,6 @@
 
 #include "editor_data.hpp"
 #include "mind_map_data.hpp"
-#include "node_base.hpp"
 #include "serializer.hpp"
 
 EditorDataTest::EditorDataTest()

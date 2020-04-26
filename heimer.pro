@@ -48,7 +48,6 @@ HEADERS +=  \
     $$SRC/mind_map_data_base.hpp \
     $$SRC/mouse_action.hpp \
     $$SRC/node.hpp \
-    $$SRC/node_base.hpp \
     $$SRC/node_handle.hpp \
     $$SRC/reader.hpp \
     $$SRC/recent_files_manager.hpp \
@@ -90,7 +89,6 @@ SOURCES += \
     $$SRC/mind_map_data_base.cpp \
     $$SRC/mouse_action.cpp \
     $$SRC/node.cpp \
-    $$SRC/node_base.cpp \
     $$SRC/node_handle.cpp \
     $$SRC/reader.cpp \
     $$SRC/recent_files_manager.cpp \

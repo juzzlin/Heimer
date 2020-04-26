@@ -40,7 +40,7 @@ Node::Node()
 {
     setAcceptHoverEvents(true);
 
-    setSize(QSize(Constants::Node::MIN_WIDTH, Constants::Node::MIN_HEIGHT));
+    m_size = QSize(Constants::Node::MIN_WIDTH, Constants::Node::MIN_HEIGHT);
 
     setZValue(static_cast<int>(Layers::Node));
 
@@ -75,23 +75,23 @@ Node::Node()
 Node::Node(const Node & other)
   : Node()
 {
-    setColor(other.color());
+    setColor(other.m_color);
 
-    setCornerRadius(other.cornerRadius());
+    setCornerRadius(other.m_cornerRadius);
 
-    setImageRef(other.imageRef());
+    setImageRef(other.m_imageRef);
 
-    setIndex(other.index());
+    setIndex(other.m_index);
 
-    setLocation(other.location());
+    setLocation(other.m_location);
 
-    setSize(other.size());
+    m_size = other.m_size;
 
     setText(other.text());
 
-    setTextColor(other.textColor());
+    setTextColor(other.m_textColor);
 
-    setTextSize(other.textSize());
+    setTextSize(other.m_textSize);
 }
 
 void Node::addGraphicsEdge(Edge & edge)
@@ -125,7 +125,7 @@ void Node::adjustSize()
         std::max(Constants::Node::MIN_HEIGHT, static_cast<int>(m_textEdit->boundingRect().height() + margin))
     };
 
-    setSize(newSize);
+    m_size = newSize;
 
     createHandles();
 
@@ -141,7 +141,7 @@ void Node::adjustSize()
 QRectF Node::boundingRect() const
 {
     // Take children into account
-    QRectF nodeBox { -size().width() / 2, -size().height() / 2, size().width(), size().height() };
+    QRectF nodeBox { -m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height() };
     for (auto && handle : m_handles) {
         auto handleBox = handle->boundingRect();
         handleBox.translate(handle->pos());
@@ -160,8 +160,8 @@ EdgePtr Node::createAndAddGraphicsEdge(NodePtr targetNode)
 
 void Node::createEdgePoints()
 {
-    const double w2 = size().width() * 0.5;
-    const double h2 = size().height() * 0.5;
+    const double w2 = m_size.width() * 0.5;
+    const double h2 = m_size.height() * 0.5;
     const double bias = 0.1;
 
     m_edgePoints = {
@@ -187,22 +187,22 @@ void Node::createHandles()
 
     const auto addHandle = new NodeHandle(*this, NodeHandle::Role::Add, Constants::Node::HANDLE_RADIUS);
     addHandle->setParentItem(this);
-    addHandle->setPos({ 0, size().height() * 0.5 });
+    addHandle->setPos({ 0, m_size.height() * 0.5 });
     m_handles.push_back(addHandle);
 
     const auto colorHandle = new NodeHandle(*this, NodeHandle::Role::Color, Constants::Node::HANDLE_RADIUS_SMALL);
     colorHandle->setParentItem(this);
-    colorHandle->setPos({ size().width() * 0.5, size().height() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.5 });
+    colorHandle->setPos({ m_size.width() * 0.5, m_size.height() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.5 });
     m_handles.push_back(colorHandle);
 
     const auto textColorHandle = new NodeHandle(*this, NodeHandle::Role::TextColor, Constants::Node::HANDLE_RADIUS_SMALL);
     textColorHandle->setParentItem(this);
-    textColorHandle->setPos({ size().width() * 0.5, -size().height() * 0.5 + Constants::Node::HANDLE_RADIUS_SMALL * 0.5 });
+    textColorHandle->setPos({ m_size.width() * 0.5, -m_size.height() * 0.5 + Constants::Node::HANDLE_RADIUS_SMALL * 0.5 });
     m_handles.push_back(textColorHandle);
 
     const auto dragHandle = new NodeHandle(*this, NodeHandle::Role::Drag, Constants::Node::HANDLE_RADIUS_MEDIUM);
     dragHandle->setParentItem(this);
-    dragHandle->setPos({ -size().width() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15, -size().height() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15 });
+    dragHandle->setPos({ -m_size.width() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15, -m_size.height() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15 });
     m_handles.push_back(dragHandle);
 }
 
@@ -211,7 +211,7 @@ QRectF Node::expandedTextEditRect() const
     auto textEditRect = QRectF {};
     textEditRect.setX(m_textEdit->pos().x());
     textEditRect.setY(m_textEdit->pos().y());
-    textEditRect.setWidth(size().width() - Constants::Node::MARGIN * 2);
+    textEditRect.setWidth(m_size.width() - Constants::Node::MARGIN * 2);
     textEditRect.setHeight(m_textEdit->boundingRect().height());
     return textEditRect;
 }
@@ -290,7 +290,7 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent * event)
 void Node::checkHandleVisibility(QPointF pos)
 {
     // Bounding box without children
-    const QRectF bbox { -size().width() / 2, -size().height() / 2, size().width(), size().height() };
+    const QRectF bbox { -m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height() };
     if (bbox.contains(pos)) {
         if (hitsHandle(pos)) {
             setHandlesVisible(true, false);
@@ -317,7 +317,7 @@ void Node::initTextField()
 {
 #ifndef HEIMER_UNIT_TEST
     m_textEdit->setTextWidth(-1);
-    m_textEdit->setPos(-size().width() * 0.5 + Constants::Node::MARGIN, -size().height() * 0.5 + Constants::Node::MARGIN);
+    m_textEdit->setPos(-m_size.width() * 0.5 + Constants::Node::MARGIN, -m_size.height() * 0.5 + Constants::Node::MARGIN);
 #endif
 }
 
@@ -331,37 +331,37 @@ void Node::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
     // Background
 
     QPainterPath path;
-    const QRectF rect(-size().width() / 2, -size().height() / 2, size().width(), size().height());
-    path.addRoundedRect(rect, cornerRadius(), cornerRadius());
+    const QRectF rect(-m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height());
+    path.addRoundedRect(rect, m_cornerRadius, m_cornerRadius);
     painter->setRenderHint(QPainter::Antialiasing);
 
     if (!m_pixmap.isNull()) {
-        QPixmap scaledPixmap(static_cast<int>(size().width()), static_cast<int>(size().height()));
+        QPixmap scaledPixmap(static_cast<int>(m_size.width()), static_cast<int>(m_size.height()));
         scaledPixmap.fill(Qt::transparent);
         QPainter pixmapPainter(&scaledPixmap);
         QPainterPath scaledPath;
-        const QRectF scaledRect(0, 0, size().width(), size().height());
-        scaledPath.addRoundedRect(scaledRect, cornerRadius(), cornerRadius());
+        const QRectF scaledRect(0, 0, m_size.width(), m_size.height());
+        scaledPath.addRoundedRect(scaledRect, m_cornerRadius, m_cornerRadius);
 
         const auto pixmapAspect = static_cast<double>(m_pixmap.width()) / m_pixmap.height();
-        const auto nodeAspect = size().width() / size().height();
+        const auto nodeAspect = m_size.width() / m_size.height();
         if (nodeAspect > 1.0) {
             if (pixmapAspect > nodeAspect) {
-                pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToHeight(static_cast<int>(size().height()))));
+                pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToHeight(static_cast<int>(m_size.height()))));
             } else {
-                pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToWidth(static_cast<int>(size().width()))));
+                pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToWidth(static_cast<int>(m_size.width()))));
             }
         } else {
             if (pixmapAspect < nodeAspect) {
-                pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToWidth(static_cast<int>(size().width()))));
+                pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToWidth(static_cast<int>(m_size.width()))));
             } else {
-                pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToHeight(static_cast<int>(size().height()))));
+                pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToHeight(static_cast<int>(m_size.height()))));
             }
         }
 
         painter->drawPixmap(rect, scaledPixmap, scaledRect);
     } else {
-        painter->fillPath(path, QBrush(color()));
+        painter->fillPath(path, QBrush(m_color));
     }
 
     // Patch for TextEdit
@@ -373,15 +373,20 @@ void Node::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
 
 void Node::setColor(const QColor & color)
 {
-    NodeBase::setColor(color);
+    m_color = color;
 #ifndef HEIMER_UNIT_TEST
     update();
 #endif
 }
 
+int Node::cornerRadius() const
+{
+    return m_cornerRadius;
+}
+
 void Node::setCornerRadius(int value)
 {
-    NodeBase::setCornerRadius(value);
+    m_cornerRadius = value;
 
     updateEdgeLines();
 
@@ -413,9 +418,14 @@ void Node::setHandlesVisible(bool visible, bool all)
     }
 }
 
+QPointF Node::location() const
+{
+    return m_location;
+}
+
 void Node::setLocation(QPointF newLocation)
 {
-    NodeBase::setLocation(newLocation);
+    m_location = newLocation;
     setPos(newLocation);
 
     updateEdgeLines();
@@ -423,9 +433,19 @@ void Node::setLocation(QPointF newLocation)
     setHandlesVisible(false);
 }
 
+QRectF Node::placementBoundingRect() const
+{
+    return { -m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height() };
+}
+
+bool Node::selected() const
+{
+    return m_selected;
+}
+
 void Node::setSelected(bool selected)
 {
-    NodeBase::setSelected(selected);
+    m_selected = selected;
     setGraphicsEffect(GraphicsFactory::createDropShadowEffect(selected));
     update();
 }
@@ -436,19 +456,32 @@ void Node::setTextInputActive()
     m_textEdit->setFocus();
 }
 
+QString Node::text() const
+{
+#ifndef HEIMER_UNIT_TEST
+    return m_textEdit->text();
+#else
+    return m_text;
+#endif
+}
+
 void Node::setText(const QString & text)
 {
-    if (text != this->text()) {
-        NodeBase::setText(text);
+    if (text != m_text) {
+        m_text = text;
         m_textEdit->setText(text);
-
         adjustSize();
     }
 }
 
+QColor Node::textColor() const
+{
+    return m_textColor;
+}
+
 void Node::setTextColor(const QColor & color)
 {
-    NodeBase::setTextColor(color);
+    m_textColor = color;
 #ifndef HEIMER_UNIT_TEST
     m_textEdit->setDefaultTextColor(color);
     m_textEdit->update();
@@ -457,26 +490,21 @@ void Node::setTextColor(const QColor & color)
 
 void Node::setTextSize(int textSize)
 {
+    m_textSize = textSize;
+#ifndef HEIMER_UNIT_TEST
     m_textEdit->setTextSize(textSize);
-
     adjustSize();
-}
-
-QString Node::text() const
-{
-    return m_textEdit->text();
+#endif
 }
 
 void Node::setImageRef(size_t imageRef)
 {
     if (imageRef) {
-        NodeBase::setImageRef(imageRef);
+        m_imageRef = imageRef;
         emit imageRequested(imageRef, *this);
-    } else {
-        if (NodeBase::imageRef()) {
-            NodeBase::setImageRef(imageRef);
-            applyImage(Image {});
-        }
+    } else if (m_imageRef) {
+        m_imageRef = imageRef;
+        applyImage({});
     }
 }
 
@@ -492,6 +520,36 @@ void Node::updateEdgeLines()
     for (auto && edge : m_graphicsEdges) {
         edge->updateLine();
     }
+}
+
+QSizeF Node::size() const
+{
+    return m_size;
+}
+
+void Node::setSize(const QSizeF & size)
+{
+    m_size = size;
+}
+
+size_t Node::imageRef() const
+{
+    return m_imageRef;
+}
+
+QColor Node::color() const
+{
+    return m_color;
+}
+
+int Node::index() const
+{
+    return m_index;
+}
+
+void Node::setIndex(int index)
+{
+    m_index = index;
 }
 
 Node::~Node()

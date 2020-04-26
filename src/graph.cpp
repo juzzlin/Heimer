@@ -14,7 +14,7 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "graph.hpp"
-#include "node_base.hpp"
+#include "node.hpp"
 
 #include "simple_logger.hpp"
 
@@ -31,7 +31,7 @@ void Graph::clear()
     m_nodes.clear();
 }
 
-void Graph::addNode(NodeBasePtr node)
+void Graph::addNode(NodePtr node)
 {
     if (node->index() == -1) {
         node->setIndex(m_count++);
@@ -50,7 +50,7 @@ void Graph::deleteEdge(int index0, int index1)
     bool edgeErased = false;
     do {
         edgeIter = std::find_if(
-          m_edges.begin(), m_edges.end(), [=](const EdgeBasePtr & edge) {
+          m_edges.begin(), m_edges.end(), [=](const EdgePtr & edge) {
               return edge->sourceNodeBase().index() == index0 && edge->targetNodeBase().index() == index1;
           });
         edgeErased = edgeIter != m_edges.end();
@@ -62,7 +62,7 @@ void Graph::deleteEdge(int index0, int index1)
 
 void Graph::deleteNode(int index)
 {
-    const auto iter = std::find_if(m_nodes.begin(), m_nodes.end(), [=](const NodeBasePtr & node) {
+    const auto iter = std::find_if(m_nodes.begin(), m_nodes.end(), [=](const NodePtr & node) {
         return node->index() == index;
     });
 
@@ -71,7 +71,7 @@ void Graph::deleteNode(int index)
         bool edgeErased = false;
         do {
             edgeIter = std::find_if(
-              m_edges.begin(), m_edges.end(), [=](const EdgeBasePtr & edge) {
+              m_edges.begin(), m_edges.end(), [=](const EdgePtr & edge) {
                   return edge->sourceNodeBase().index() == index || edge->targetNodeBase().index() == index;
               });
             edgeErased = edgeIter != m_edges.end();
@@ -84,11 +84,11 @@ void Graph::deleteNode(int index)
     }
 }
 
-void Graph::addEdge(EdgeBasePtr newEdge)
+void Graph::addEdge(EdgePtr newEdge)
 {
     // Add if such edge doesn't already exist
     if (std::count_if(
-          m_edges.begin(), m_edges.end(), [=](const EdgeBasePtr & edge) {
+          m_edges.begin(), m_edges.end(), [=](const EdgePtr & edge) {
               return edge->sourceNodeBase().index() == newEdge->sourceNodeBase().index() && edge->targetNodeBase().index() == newEdge->targetNodeBase().index();
           })
         == 0) {
@@ -101,16 +101,16 @@ void Graph::addEdge(int node0, int node1)
 {
     // Add if such edge doesn't already exist
     if (std::count_if(
-          m_edges.begin(), m_edges.end(), [=](const EdgeBasePtr & edge) {
+          m_edges.begin(), m_edges.end(), [=](const EdgePtr & edge) {
               return edge->sourceNodeBase().index() == node0 && edge->targetNodeBase().index() == node1;
           })
         == 0) {
-        m_edges.push_back(std::make_shared<EdgeBase>(*getNode(node0), *getNode(node1)));
+        m_edges.push_back(std::make_shared<Edge>(*getNode(node0), *getNode(node1)));
     }
 }
 #endif
 
-bool Graph::areDirectlyConnected(NodeBasePtr node0, NodeBasePtr node1)
+bool Graph::areDirectlyConnected(NodePtr node0, NodePtr node1)
 {
     for (auto && edge : m_edges) {
         if ((edge->sourceNodeBase().index() == node0->index() && edge->targetNodeBase().index() == node1->index()) || (edge->sourceNodeBase().index() == node1->index() && edge->targetNodeBase().index() == node0->index())) {
@@ -130,7 +130,7 @@ const Graph::EdgeVector & Graph::getEdges() const
     return m_edges;
 }
 
-Graph::EdgeVector Graph::getEdgesFromNode(NodeBasePtr node)
+Graph::EdgeVector Graph::getEdgesFromNode(NodePtr node)
 {
     Graph::EdgeVector edges;
     for (auto && edge : m_edges) {
@@ -141,7 +141,7 @@ Graph::EdgeVector Graph::getEdgesFromNode(NodeBasePtr node)
     return edges;
 }
 
-Graph::EdgeVector Graph::getEdgesToNode(NodeBasePtr node)
+Graph::EdgeVector Graph::getEdgesToNode(NodePtr node)
 {
     Graph::EdgeVector edges;
     for (auto && edge : m_edges) {
@@ -152,12 +152,12 @@ Graph::EdgeVector Graph::getEdgesToNode(NodeBasePtr node)
     return edges;
 }
 
-NodeBasePtr Graph::getNode(int index)
+NodePtr Graph::getNode(int index)
 {
-    auto iter = std::find_if(m_nodes.begin(), m_nodes.end(), [=](const NodeBasePtr & node) {
+    auto iter = std::find_if(m_nodes.begin(), m_nodes.end(), [=](const NodePtr & node) {
         return node->index() == index;
     });
-    return iter != m_nodes.end() ? *iter : NodeBasePtr();
+    return iter != m_nodes.end() ? *iter : NodePtr {};
 }
 
 const Graph::NodeVector & Graph::getNodes() const
@@ -165,7 +165,7 @@ const Graph::NodeVector & Graph::getNodes() const
     return m_nodes;
 }
 
-Graph::NodeVector Graph::getNodesConnectedToNode(NodeBasePtr node)
+Graph::NodeVector Graph::getNodesConnectedToNode(NodePtr node)
 {
     NodeVector result;
 

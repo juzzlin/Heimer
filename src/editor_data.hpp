@@ -66,7 +66,7 @@ public:
 
     QString fileName() const;
 
-    NodeBasePtr getNodeByIndex(int index);
+    NodePtr getNodeByIndex(int index);
 
     bool isInSelectionGroup(Node & node);
 

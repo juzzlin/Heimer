@@ -16,13 +16,13 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 
-#include "edge_base.hpp"
-#include "node_base.hpp"
+#include "edge.hpp"
+#include "node.hpp"
 
 #include <map>
 #include <set>
 
-class NodeBase;
+class Node;
 
 class Graph
 {
@@ -35,39 +35,38 @@ public:
 
     virtual ~Graph();
 
-    using NodeVector = std::vector<NodeBasePtr>;
+    using NodeVector = std::vector<NodePtr>;
 
-    using EdgeVector = std::vector<EdgeBasePtr>;
+    using EdgeVector = std::vector<EdgePtr>;
 
     void clear();
 
-    void addNode(NodeBasePtr node);
+    void addNode(NodePtr node);
 
     void deleteNode(int index);
 
-    void addEdge(EdgeBasePtr edge);
+    void addEdge(EdgePtr edge);
 
     void deleteEdge(int index0, int index1);
 
-    bool areDirectlyConnected(NodeBasePtr node0, NodeBasePtr node1);
+    bool areDirectlyConnected(NodePtr node0, NodePtr node1);
 
-    //! Warning: this should not be used outside unit tests as it creates a pure EdgeBase
 #ifdef HEIMER_UNIT_TEST
     void addEdge(int node0, int node1);
 #endif
     size_t numNodes() const;
 
-    EdgeVector getEdgesFromNode(NodeBasePtr node);
+    EdgeVector getEdgesFromNode(NodePtr node);
 
-    EdgeVector getEdgesToNode(NodeBasePtr node);
+    EdgeVector getEdgesToNode(NodePtr node);
 
     const EdgeVector & getEdges() const;
 
-    NodeBasePtr getNode(int index);
+    NodePtr getNode(int index);
 
     const NodeVector & getNodes() const;
 
-    NodeVector getNodesConnectedToNode(NodeBasePtr node);
+    NodeVector getNodesConnectedToNode(NodePtr node);
 
 private:
     NodeVector m_nodes;

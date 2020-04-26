@@ -26,7 +26,6 @@
 #include <cassert>
 #include <memory>
 
-using std::dynamic_pointer_cast;
 using std::make_shared;
 
 EditorData::EditorData()
@@ -232,7 +231,7 @@ void EditorData::clearSelectionGroup()
     m_selectionGroup->clear();
 }
 
-NodeBasePtr EditorData::getNodeByIndex(int index)
+NodePtr EditorData::getNodeByIndex(int index)
 {
     assert(m_mindMapData);
 

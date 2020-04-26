@@ -62,10 +62,10 @@ public:
     void connectNodeToImageManager(NodePtr node);
 
     // Create a new node and add edge to the source (parent) node
-    NodeBasePtr createAndAddNode(int sourceNodeIndex, QPointF pos);
+    NodePtr createAndAddNode(int sourceNodeIndex, QPointF pos);
 
     // Create a new floating node
-    NodeBasePtr createAndAddNode(QPointF pos);
+    NodePtr createAndAddNode(QPointF pos);
 
     MouseAction & mouseAction();
 
@@ -77,7 +77,7 @@ public:
 
     NodePtr getBestOverlapNode(const Node & source);
 
-    NodeBasePtr getNodeByIndex(int index);
+    NodePtr getNodeByIndex(int index);
 
     bool hasNodes() const;
 
@@ -101,7 +101,7 @@ public:
 
     size_t nodeCount() const;
 
-    NodeBasePtr pasteNodeAt(Node & source, QPointF pos);
+    NodePtr pasteNodeAt(Node & source, QPointF pos);
 
     bool openMindMap(QString fileName);
 

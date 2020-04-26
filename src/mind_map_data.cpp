@@ -44,19 +44,18 @@ void MindMapData::copyGraph(const MindMapData & other)
     m_graph.clear();
 
     // Use copy constructor for nodes
-    for (auto && nodeBase : other.m_graph.getNodes()) {
-        m_graph.addNode(std::make_shared<Node>(*std::dynamic_pointer_cast<Node>(nodeBase)));
+    for (auto && node : other.m_graph.getNodes()) {
+        m_graph.addNode(std::make_shared<Node>(*node));
     }
 
     // Create new edges
-    for (auto && edgeBase : other.m_graph.getEdges()) {
-        auto sourceNode = std::dynamic_pointer_cast<Node>(m_graph.getNode(edgeBase->sourceNodeBase().index()));
-        auto targetNode = std::dynamic_pointer_cast<Node>(m_graph.getNode(edgeBase->targetNodeBase().index()));
-
+    for (auto && otherEdge : other.m_graph.getEdges()) {
+        auto sourceNode = m_graph.getNode(otherEdge->sourceNodeBase().index());
+        auto targetNode = m_graph.getNode(otherEdge->targetNodeBase().index());
         auto edge = std::make_shared<Edge>(*sourceNode, *targetNode);
-        edge->setArrowMode(edgeBase->arrowMode());
-        edge->setText(edgeBase->text());
-        edge->setReversed(edgeBase->reversed());
+        edge->setArrowMode(otherEdge->arrowMode());
+        edge->setText(otherEdge->text());
+        edge->setReversed(otherEdge->reversed());
         m_graph.addEdge(edge);
     }
 }

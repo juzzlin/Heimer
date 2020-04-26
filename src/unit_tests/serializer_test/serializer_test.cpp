@@ -80,10 +80,10 @@ void SerializerTest::testUsedImages()
     MindMapData outData;
     const auto id1 = outData.imageManager().addImage(Image {});
     const auto id2 = outData.imageManager().addImage(Image {});
-    auto node1 = std::make_shared<NodeBase>();
+    auto node1 = std::make_shared<Node>();
     outData.graph().addNode(node1);
     node1->setImageRef(id1);
-    auto node2 = std::make_shared<NodeBase>();
+    auto node2 = std::make_shared<Node>();
     outData.graph().addNode(node2);
     node2->setImageRef(id2);
 
@@ -106,18 +106,18 @@ void SerializerTest::testNodeDeletion()
 {
     MindMapData outData;
 
-    auto outNode0 = std::make_shared<NodeBase>();
+    auto outNode0 = std::make_shared<Node>();
     outData.graph().addNode(outNode0);
 
-    auto outNode1 = std::make_shared<NodeBase>();
+    auto outNode1 = std::make_shared<Node>();
     outData.graph().addNode(outNode1);
 
-    auto outNode2 = std::make_shared<NodeBase>();
+    auto outNode2 = std::make_shared<Node>();
     outData.graph().addNode(outNode2);
 
-    outData.graph().addEdge(std::make_shared<EdgeBase>(*outNode0, *outNode1));
+    outData.graph().addEdge(std::make_shared<Edge>(*outNode0, *outNode1));
 
-    outData.graph().addEdge(std::make_shared<EdgeBase>(*outNode0, *outNode2));
+    outData.graph().addEdge(std::make_shared<Edge>(*outNode0, *outNode2));
 
     outData.graph().deleteNode(outNode1->index()); // Delete node in between
 
@@ -130,17 +130,17 @@ void SerializerTest::testSingleEdge()
 {
     MindMapData outData;
 
-    const auto outNode0 = std::make_shared<NodeBase>();
+    const auto outNode0 = std::make_shared<Node>();
     outData.graph().addNode(outNode0);
 
-    const auto outNode1 = std::make_shared<NodeBase>();
+    const auto outNode1 = std::make_shared<Node>();
     outData.graph().addNode(outNode1);
 
-    const auto edge = std::make_shared<EdgeBase>(*outNode0, *outNode1);
+    const auto edge = std::make_shared<Edge>(*outNode0, *outNode1);
     const QString text = "Lorem ipsum";
     edge->setText(text);
     edge->setReversed(true);
-    edge->setArrowMode(EdgeBase::ArrowMode::Double);
+    edge->setArrowMode(Edge::ArrowMode::Double);
     outData.graph().addEdge(edge);
 
     const auto inData = Serializer::fromXml(Serializer::toXml(outData));
@@ -155,7 +155,7 @@ void SerializerTest::testSingleNode()
 {
     MindMapData outData;
 
-    const auto outNode = std::make_shared<NodeBase>();
+    const auto outNode = std::make_shared<Node>();
     outNode->setColor(QColor(1, 2, 3));
     outNode->setImageRef(1);
     outNode->setLocation(QPointF(333.333, 666.666));

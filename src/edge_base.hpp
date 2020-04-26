@@ -95,6 +95,4 @@ private:
     ArrowMode m_arrowMode = ArrowMode::Single;
 };
 
-using EdgeBasePtr = std::shared_ptr<EdgeBase>;
-
 #endif // EDGE_BASE_HPP

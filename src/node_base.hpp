@@ -29,8 +29,6 @@
 class NodeBase
 {
 public:
-    using NodeBasePtr = std::shared_ptr<NodeBase>;
-
     NodeBase();
 
     NodeBase(NodeBase & other) = delete;
@@ -102,7 +100,5 @@ private:
 
     size_t m_imageRef = 0;
 };
-
-using NodeBasePtr = std::shared_ptr<NodeBase>;
 
 #endif // NODEBASE_HPP

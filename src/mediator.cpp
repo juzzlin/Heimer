@@ -31,7 +31,6 @@
 #include <cassert>
 
 using juzzlin::L;
-using std::dynamic_pointer_cast;
 
 Mediator::Mediator(MainWindow & mainWindow)
   : m_mainWindow(mainWindow)
@@ -44,29 +43,25 @@ Mediator::Mediator(MainWindow & mainWindow)
 void Mediator::addExistingGraphToScene()
 {
     for (auto && node : m_editorData->mindMapData()->graph().getNodes()) {
-        if (dynamic_pointer_cast<QGraphicsItem>(node)->scene() != m_editorScene.get()) {
-            const auto graphicsNode = dynamic_pointer_cast<Node>(node);
-            addItem(*graphicsNode);
-            graphicsNode->setCornerRadius(m_editorData->mindMapData()->cornerRadius());
-            graphicsNode->setTextSize(m_editorData->mindMapData()->textSize());
+        if (node->scene() != m_editorScene.get()) {
+            addItem(*node);
+            node->setCornerRadius(m_editorData->mindMapData()->cornerRadius());
+            node->setTextSize(m_editorData->mindMapData()->textSize());
             L().debug() << "Added existing node " << node->index() << " to scene";
         }
     }
 
     for (auto && edge : m_editorData->mindMapData()->graph().getEdges()) {
-        const auto node0 = dynamic_pointer_cast<Node>(getNodeByIndex(edge->sourceNodeBase().index()));
-        const auto node1 = dynamic_pointer_cast<Node>(getNodeByIndex(edge->targetNodeBase().index()));
-
+        const auto node0 = getNodeByIndex(edge->sourceNodeBase().index());
+        const auto node1 = getNodeByIndex(edge->targetNodeBase().index());
         if (!m_editorScene->hasEdge(*node0, *node1)) {
-            auto graphicsEdge = dynamic_pointer_cast<Edge>(edge);
-            assert(graphicsEdge);
-            addItem(*graphicsEdge);
-            graphicsEdge->setColor(m_editorData->mindMapData()->edgeColor());
-            graphicsEdge->setWidth(m_editorData->mindMapData()->edgeWidth());
-            graphicsEdge->setTextSize(m_editorData->mindMapData()->textSize());
-            node0->addGraphicsEdge(*graphicsEdge);
-            node1->addGraphicsEdge(*graphicsEdge);
-            graphicsEdge->updateLine();
+            addItem(*edge);
+            edge->setColor(m_editorData->mindMapData()->edgeColor());
+            edge->setWidth(m_editorData->mindMapData()->edgeWidth());
+            edge->setTextSize(m_editorData->mindMapData()->textSize());
+            node0->addGraphicsEdge(*edge);
+            node1->addGraphicsEdge(*edge);
+            edge->updateLine();
             L().debug() << "Added existing edge " << node0->index() << " -> " << node1->index() << " to scene";
         }
     }
@@ -128,28 +123,25 @@ void Mediator::connectNodeToImageManager(NodePtr node)
 void Mediator::connectGraphToUndoMechanism()
 {
     for (auto && node : m_editorData->mindMapData()->graph().getNodes()) {
-        connectNodeToUndoMechanism(std::dynamic_pointer_cast<Node>(node));
+        connectNodeToUndoMechanism(node);
     }
 
     for (auto && edge : m_editorData->mindMapData()->graph().getEdges()) {
-        connectEdgeToUndoMechanism(std::dynamic_pointer_cast<Edge>(edge));
+        connectEdgeToUndoMechanism(edge);
     }
 }
 
 void Mediator::connectGraphToImageManager()
 {
     for (auto && node : m_editorData->mindMapData()->graph().getNodes()) {
-        connectNodeToImageManager(std::dynamic_pointer_cast<Node>(node));
+        connectNodeToImageManager(node);
     }
 }
 
-NodeBasePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
+NodePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 {
-    const auto node0 = dynamic_pointer_cast<Node>(getNodeByIndex(sourceNodeIndex));
-    assert(node0);
-
+    const auto node0 = getNodeByIndex(sourceNodeIndex);
     const auto node1 = m_mainWindow.copyOnDragEnabled() ? m_editorData->copyNodeAt(*node0, pos) : m_editorData->addNodeAt(pos);
-    assert(node1);
     connectNodeToUndoMechanism(node1);
     connectNodeToImageManager(node1);
     L().debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
@@ -162,10 +154,10 @@ NodeBasePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 
     node1->setTextInputActive();
 
-    return std::move(node1); // Fix a static analyzer warning: avoid copy on older compilers
+    return node1;
 }
 
-NodeBasePtr Mediator::createAndAddNode(QPointF pos)
+NodePtr Mediator::createAndAddNode(QPointF pos)
 {
     const auto node1 = m_editorData->addNodeAt(pos);
     assert(node1);
@@ -182,7 +174,7 @@ NodeBasePtr Mediator::createAndAddNode(QPointF pos)
     return std::move(node1); // Fix a static analyzer warning: avoid copy on older compilers
 }
 
-NodeBasePtr Mediator::pasteNodeAt(Node & source, QPointF pos)
+NodePtr Mediator::pasteNodeAt(Node & source, QPointF pos)
 {
     const auto copiedNode = m_editorData->copyNodeAt(source, pos);
     assert(copiedNode);
@@ -242,7 +234,7 @@ QString Mediator::fileName() const
     return m_editorData->fileName();
 }
 
-NodeBasePtr Mediator::getNodeByIndex(int index)
+NodePtr Mediator::getNodeByIndex(int index)
 {
     return m_editorData->getNodeByIndex(index);
 }
@@ -613,15 +605,12 @@ NodePtr Mediator::getBestOverlapNode(const Node & source)
 {
     NodePtr bestNode;
     double bestScore = 0;
-
-    for (auto && nodeBase : m_editorData->mindMapData()->graph().getNodes()) {
-        if (const auto node = std::dynamic_pointer_cast<Node>(nodeBase)) {
-            if (node->index() != source.index() && node->index() != mouseAction().sourceNode()->index() && !areDirectlyConnected(*node, *mouseAction().sourceNode())) {
-                const auto score = calculateNodeOverlapScore(source, *node);
-                if (score > 0.75 && score > bestScore) {
-                    bestNode = node;
-                    bestScore = score;
-                }
+    for (auto && node : m_editorData->mindMapData()->graph().getNodes()) {
+        if (node->index() != source.index() && node->index() != mouseAction().sourceNode()->index() && !areDirectlyConnected(*node, *mouseAction().sourceNode())) {
+            const auto score = calculateNodeOverlapScore(source, *node);
+            if (score > 0.75 && score > bestScore) {
+                bestNode = node;
+                bestScore = score;
             }
         }
     }

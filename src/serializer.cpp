@@ -171,8 +171,8 @@ static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocume
     for (auto && node : mindMapData.graph().getNodes()) {
         for (auto && edge : mindMapData.graph().getEdgesFromNode(node)) {
             auto edgeElement = doc.createElement(Serializer::DataKeywords::Design::Graph::EDGE);
-            edgeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX0, edge->sourceNodeBase().index());
-            edgeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX1, edge->targetNodeBase().index());
+            edgeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX0, edge->sourceNode().index());
+            edgeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::INDEX1, edge->targetNode().index());
             edgeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::ARROW_MODE, static_cast<int>(edge->arrowMode()));
             edgeElement.setAttribute(Serializer::DataKeywords::Design::Graph::Edge::REVERSED, edge->reversed());
             root.appendChild(edgeElement);
@@ -295,18 +295,11 @@ static void readChildren(const QDomElement & root, std::map<QString, std::functi
 }
 
 // The purpose of this #ifdef is to build GUILESS unit tests so that QTEST_GUILESS_MAIN can be used
-#ifdef HEIMER_UNIT_TEST
-static NodeBasePtr readNode(const QDomElement & element)
-#else
 static NodePtr readNode(const QDomElement & element)
-#endif
 {
-#ifdef HEIMER_UNIT_TEST
-    const auto node = make_shared<NodeBase>();
-#else
     // Init a new node. QGraphicsScene will take the ownership eventually.
     const auto node = make_shared<Node>();
-#endif
+
     node->setIndex(element.attribute(Serializer::DataKeywords::Design::Graph::Node::INDEX, "-1").toInt());
     node->setLocation(QPointF(
       element.attribute(Serializer::DataKeywords::Design::Graph::Node::X, "0").toInt() / SCALE,
@@ -336,7 +329,7 @@ static NodePtr readNode(const QDomElement & element)
 
 // The purpose of this #ifdef is to build GUILESS unit tests so that QTEST_GUILESS_MAIN can be used
 #ifdef HEIMER_UNIT_TEST
-static EdgeBasePtr readEdge(const QDomElement & element, MindMapDataPtr data)
+static EdgePtr readEdge(const QDomElement & element, MindMapDataPtr data)
 #else
 static EdgePtr readEdge(const QDomElement & element, MindMapDataPtr data)
 #endif
@@ -351,16 +344,14 @@ static EdgePtr readEdge(const QDomElement & element, MindMapDataPtr data)
     assert(node0);
     const auto node1 = data->graph().getNode(index1);
     assert(node1);
-    const auto edge = make_shared<EdgeBase>(*node0, *node1);
+    const auto edge = make_shared<Edge>(*node0, *node1);
 #else
     // Init a new edge. QGraphicsScene will take the ownership eventually.
-    const auto node0 = std::dynamic_pointer_cast<Node>(data->graph().getNode(index0));
-    assert(node0);
-    const auto node1 = std::dynamic_pointer_cast<Node>(data->graph().getNode(index1));
-    assert(node1);
+    const auto node0 = data->graph().getNode(index0);
+    const auto node1 = data->graph().getNode(index1);
     const auto edge = make_shared<Edge>(*node0, *node1);
 #endif
-    edge->setArrowMode(static_cast<EdgeBase::ArrowMode>(arrowMode));
+    edge->setArrowMode(static_cast<Edge::ArrowMode>(arrowMode));
     edge->setReversed(reversed);
 
     readChildren(element, { { QString(Serializer::DataKeywords::Design::Graph::Node::TEXT), [=](const QDomElement & e) {

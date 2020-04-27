@@ -171,7 +171,7 @@ NodePtr Mediator::createAndAddNode(QPointF pos)
         node1->setTextInputActive();
     });
 
-    return std::move(node1); // Fix a static analyzer warning: avoid copy on older compilers
+    return node1;
 }
 
 NodePtr Mediator::pasteNodeAt(Node & source, QPointF pos)
@@ -188,7 +188,7 @@ NodePtr Mediator::pasteNodeAt(Node & source, QPointF pos)
         copiedNode->setTextInputActive();
     });
 
-    return std::move(copiedNode); // Fix a static analyzer warning: avoid copy on older compilers
+    return copiedNode;
 }
 
 MouseAction & Mediator::mouseAction()

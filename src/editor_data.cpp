@@ -39,11 +39,6 @@ QColor EditorData::backgroundColor() const
     return m_mindMapData ? m_mindMapData->backgroundColor() : Constants::MindMap::DEFAULT_BACKGROUND_COLOR;
 }
 
-void EditorData::clearScene()
-{
-    emit sceneCleared();
-}
-
 MouseAction & EditorData::mouseAction()
 {
     return m_mouseAction;
@@ -92,8 +87,6 @@ void EditorData::undo()
 
         saveRedoPoint();
 
-        clearScene();
-
         m_mindMapData = m_undoStack.undo();
 
         setIsModified(true);
@@ -115,8 +108,6 @@ void EditorData::redo()
         m_dragAndDropNode = nullptr;
 
         saveUndoPoint();
-
-        clearScene();
 
         m_mindMapData = m_undoStack.redo();
 

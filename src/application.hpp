@@ -26,7 +26,6 @@
 #include <memory>
 
 class EditorData;
-class EditorScene;
 class EditorView;
 class ImageManager;
 class MainWindow;
@@ -109,8 +108,6 @@ private:
     std::shared_ptr<Mediator> m_mediator;
 
     std::shared_ptr<EditorData> m_editorData;
-
-    std::shared_ptr<EditorScene> m_editorScene;
 
     EditorView * m_editorView = nullptr;
 

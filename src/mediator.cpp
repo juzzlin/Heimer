@@ -99,11 +99,6 @@ bool Mediator::canBeSaved() const
     return !m_editorData->fileName().isEmpty();
 }
 
-void Mediator::clearScene()
-{
-    m_editorScene->initialize();
-}
-
 void Mediator::connectEdgeToUndoMechanism(EdgePtr edge)
 {
     connect(edge.get(), &Edge::undoPointRequested, this, &Mediator::saveUndoPoint, Qt::UniqueConnection);
@@ -250,10 +245,9 @@ void Mediator::initializeNewMindMap()
 
     assert(m_editorData);
 
+    m_editorScene = std::make_unique<EditorScene>();
     m_editorData->clearImages();
     m_editorData->setMindMapData(std::make_shared<MindMapData>());
-
-    m_editorScene->initialize();
 
     initializeView();
 
@@ -339,8 +333,7 @@ bool Mediator::openMindMap(QString fileName)
     assert(m_editorData);
 
     try {
-        m_editorScene->initialize();
-
+        m_editorScene = std::make_unique<EditorScene>();
         m_editorData->loadMindMapData(fileName);
 
         initializeView();
@@ -456,13 +449,7 @@ void Mediator::setEditorData(std::shared_ptr<EditorData> editorData)
 {
     m_editorData = editorData;
 
-    connect(m_editorData.get(), &EditorData::sceneCleared, this, &Mediator::clearScene);
     connect(m_editorData.get(), &EditorData::undoEnabled, this, &Mediator::enableUndo);
-}
-
-void Mediator::setEditorScene(std::shared_ptr<EditorScene> editorScene)
-{
-    m_editorScene = editorScene;
 }
 
 void Mediator::setEditorView(EditorView & editorView)
@@ -524,8 +511,6 @@ void Mediator::setupMindMapAfterUndoOrRedo()
     const auto oldCenter = m_editorView->mapToScene(m_editorView->viewport()->rect()).boundingRect().center();
 
     m_editorScene = std::make_unique<EditorScene>();
-    m_editorScene->initialize();
-
     m_editorView->setScene(m_editorScene.get());
     m_editorView->setBackgroundBrush(QBrush(m_editorData->backgroundColor()));
 

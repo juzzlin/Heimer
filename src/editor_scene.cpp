@@ -27,13 +27,6 @@
 
 EditorScene::EditorScene()
 {
-    initialize();
-}
-
-void EditorScene::initialize()
-{
-    removeItems();
-
     const auto r = Constants::Scene::RADIUS;
     setSceneRect(-r, -r, r * 2, r * 2);
 

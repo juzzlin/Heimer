@@ -112,15 +112,11 @@ signals:
 
     void isModifiedChanged(bool isModified);
 
-    void sceneCleared();
-
     void undoEnabled(bool enable);
 
 private:
     EditorData(const EditorData & e) = delete;
     EditorData & operator=(const EditorData & e) = delete;
-
-    void clearScene();
 
     void removeNodesFromScene();
 

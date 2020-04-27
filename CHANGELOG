@@ -5,6 +5,8 @@ New features:
 
 Bug fixes:
 
+* Fix GitHub Issue #88: Crash when opening a new file in a certain scenario
+
 Other:
 
 1.16.0

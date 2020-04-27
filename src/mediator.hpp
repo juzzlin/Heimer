@@ -123,8 +123,6 @@ public:
 
     void setEditorData(std::shared_ptr<EditorData> editorData);
 
-    void setEditorScene(std::shared_ptr<EditorScene> editorScene);
-
     void setEditorView(EditorView & editorView);
 
     void setRectagleSelection(QRectF rect);
@@ -140,8 +138,6 @@ public:
     void undo();
 
 public slots:
-
-    void clearScene();
 
     void enableUndo(bool enable);
 
@@ -184,7 +180,7 @@ private:
 
     std::shared_ptr<EditorData> m_editorData;
 
-    std::shared_ptr<EditorScene> m_editorScene;
+    std::unique_ptr<EditorScene> m_editorScene;
 
     EditorView * m_editorView = nullptr;
 

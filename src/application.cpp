@@ -108,7 +108,6 @@ Application::Application(int & argc, char ** argv)
     m_mainWindow = std::make_unique<MainWindow>();
     m_mediator = std::make_unique<Mediator>(*m_mainWindow);
     m_editorData = std::make_unique<EditorData>();
-    m_editorScene = std::make_unique<EditorScene>();
     m_editorView = new EditorView(*m_mediator);
     m_pngExportDialog = std::make_unique<PngExportDialog>(*m_mainWindow);
 
@@ -116,7 +115,6 @@ Application::Application(int & argc, char ** argv)
     m_stateMachine->setMediator(m_mediator);
 
     m_mediator->setEditorData(m_editorData);
-    m_mediator->setEditorScene(m_editorScene);
     m_mediator->setEditorView(*m_editorView);
 
     // Connect views and StateMachine together

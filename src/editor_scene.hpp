@@ -27,8 +27,6 @@ class EditorScene : public QGraphicsScene
 public:
     EditorScene();
 
-    void initialize();
-
     QRectF zoomToFit(bool isForExport = false) const;
 
     //! Checks if the graphics scene already has the given edge item added

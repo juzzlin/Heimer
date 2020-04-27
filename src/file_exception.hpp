@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef FILEEXCEPTION_HPP
-#define FILEEXCEPTION_HPP
+#ifndef FILE_EXCEPTION_HPP
+#define FILE_EXCEPTION_HPP
 
 #include <QString>
 #include <stdexcept>
@@ -37,4 +37,4 @@ private:
     QString m_message;
 };
 
-#endif // FILEEXCEPTION_HPP
+#endif // FILE_EXCEPTION_HPP

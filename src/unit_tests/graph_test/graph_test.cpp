@@ -18,6 +18,9 @@
 #include "graph.hpp"
 #include "node.hpp"
 
+#include <stdexcept>
+#include <string>
+
 using std::make_shared;
 
 GraphTest::GraphTest()
@@ -296,11 +299,17 @@ void GraphTest::testGetNodeByIndex()
 void GraphTest::testGetNodeByIndex_NotFound()
 {
     Graph dut;
-    const auto node = make_shared<Node>();
+    auto node = make_shared<Node>();
 
     dut.addNode(node);
 
-    QVERIFY(dut.getNode(1) == nullptr);
+    std::string message;
+    try {
+        node = dut.getNode(666);
+    } catch (const std::runtime_error & e) {
+        message = e.what();
+    }
+    QVERIFY(message == "Invalid node index: " + std::to_string(666));
 }
 
 QTEST_GUILESS_MAIN(GraphTest)

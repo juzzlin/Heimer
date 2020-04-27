@@ -335,17 +335,16 @@ bool Mediator::openMindMap(QString fileName)
     try {
         m_editorScene = std::make_unique<EditorScene>();
         m_editorData->loadMindMapData(fileName);
-
         initializeView();
-
         addExistingGraphToScene();
-
         connectGraphToUndoMechanism();
         connectGraphToImageManager();
-
         zoomToFit();
     } catch (const FileException & e) {
         m_mainWindow.showErrorDialog(e.message());
+        return false;
+    } catch (const std::runtime_error & e) {
+        m_mainWindow.showErrorDialog(e.what());
         return false;
     }
 

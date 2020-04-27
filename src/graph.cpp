@@ -21,6 +21,8 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#include <stdexcept>
+#include <string>
 
 Graph::Graph()
 {
@@ -157,7 +159,10 @@ NodePtr Graph::getNode(int index)
     auto iter = std::find_if(m_nodes.begin(), m_nodes.end(), [=](const NodePtr & node) {
         return node->index() == index;
     });
-    return iter != m_nodes.end() ? *iter : NodePtr {};
+    if (iter != m_nodes.end()) {
+        return *iter;
+    }
+    throw std::runtime_error("Invalid node index: " + std::to_string(index));
 }
 
 const Graph::NodeVector & Graph::getNodes() const

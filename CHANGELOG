@@ -3,6 +3,10 @@ x.y.z
 
 New features:
 
+* Fix GitHub Issue #50: Autoarrange Nodes
+  - Implements a layout optimizer based on combinatorial optimization
+  - Adds a new menu entry 'Edit => Optimize layout'
+
 Bug fixes:
 
 * Fix GitHub Issue #88: Crash when opening a new file in a certain scenario

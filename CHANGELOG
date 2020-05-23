@@ -10,6 +10,7 @@ New features:
 Bug fixes:
 
 * Fix GitHub Issue #88: Crash when opening a new file in a certain scenario
+* Fix GitHub Issue #89: Default Right-to-Left Text 
 
 Other:
 

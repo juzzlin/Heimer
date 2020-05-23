@@ -61,10 +61,12 @@ QString TextEdit::text() const
 
 void TextEdit::setText(const QString & text)
 {
-    m_text = text;
+    if (m_text != text) {
+        m_text = text;
 #ifndef HEIMER_UNIT_TEST
-    setPlainText(text);
+        setPlainText(text);
 #endif
+    }
 }
 
 void TextEdit::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)

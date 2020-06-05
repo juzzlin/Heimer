@@ -89,7 +89,7 @@ public:
                 if (!nodes.empty()) {
                     m_layout->all.push_back(cell);
                     cell->node = nodes.back();
-                    nodesToCells[cell->node->index()] = cell;
+                    nodesToCells[cell->node.lock()->index()] = cell;
                     nodes.pop_back();
                 }
             }
@@ -333,7 +333,7 @@ private:
             return rect.y + rect.h / 2;
         }
 
-        NodePtr node;
+        std::weak_ptr<Node> node;
 
         CellVector all;
 
@@ -424,7 +424,7 @@ private:
                 }
             }
             for (auto && cell : all) {
-                cell->node->setLocation(
+                cell->node.lock()->setLocation(
                   QPointF(
                     Constants::Node::MIN_WIDTH / 2 + cell->rect.x - maxWidth / 2,
                     Constants::Node::MIN_HEIGHT / 2 + cell->rect.y - maxHeight / 2));
@@ -436,8 +436,8 @@ private:
             double maxX = 0;
             for (auto && row : rows) {
                 const auto cell = row->cells.at(colIndex);
-                if (cell && cell->node) {
-                    maxX = std::max(maxX, cell->x() + cell->node->size().width() / 2);
+                if (cell && cell->node.lock()) {
+                    maxX = std::max(maxX, cell->x() + cell->node.lock()->size().width() / 2);
                 }
             }
             return maxX;
@@ -448,8 +448,8 @@ private:
             std::pair<double, bool> minX { std::numeric_limits<double>::max(), false };
             for (auto && row : rows) {
                 const auto cell = row->cells.at(colIndex);
-                if (cell && cell->node) {
-                    minX = { std::min(minX.first, cell->x() - cell->node->size().width() / 2), true };
+                if (cell && cell->node.lock()) {
+                    minX = { std::min(minX.first, cell->x() - cell->node.lock()->size().width() / 2), true };
                 }
             }
             return minX;
@@ -459,8 +459,8 @@ private:
         {
             double maxY = 0;
             for (auto && cell : rows.at(rowIndex)->cells) {
-                if (cell && cell->node) {
-                    maxY = std::max(maxY, cell->y() + cell->node->size().height() / 2);
+                if (cell && cell->node.lock()) {
+                    maxY = std::max(maxY, cell->y() + cell->node.lock()->size().height() / 2);
                 }
             }
             return maxY;
@@ -470,8 +470,8 @@ private:
         {
             std::pair<double, bool> minY { std::numeric_limits<double>::max(), false };
             for (auto && cell : rows.at(rowIndex)->cells) {
-                if (cell && cell->node) {
-                    minY = { std::min(minY.first, cell->y() - cell->node->size().height() / 2), true };
+                if (cell && cell->node.lock()) {
+                    minY = { std::min(minY.first, cell->y() - cell->node.lock()->size().height() / 2), true };
                 }
             }
             return minY;
@@ -497,7 +497,7 @@ private:
                 const auto minY = getMinRowY(j);
                 if (minY.second && minY.first < prevMaxY) {
                     for (auto && cell : rows.at(j)->cells) {
-                        if (cell && cell->node) {
+                        if (cell) {
                             cell->rect.y += static_cast<int>(prevMaxY - minY.first);
                         }
                     }

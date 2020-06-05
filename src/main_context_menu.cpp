@@ -47,27 +47,27 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     });
     m_mainContextMenuActions[Mode::All].push_back(m_pasteNodeAction);
 
-    auto setBackgroundColorAction(new QAction(tr("Set background color"), this));
+    const auto setBackgroundColorAction(new QAction(tr("Set background color"), this));
     QObject::connect(setBackgroundColorAction, &QAction::triggered, [this] {
         emit actionTriggered(StateMachine::Action::BackgroundColorChangeRequested);
     });
     m_mainContextMenuActions[Mode::Background].push_back(setBackgroundColorAction);
 
-    auto setEdgeColorAction(new QAction(tr("Set edge color"), this));
+    const auto setEdgeColorAction(new QAction(tr("Set edge color"), this));
     QObject::connect(setEdgeColorAction, &QAction::triggered, [this] {
         emit actionTriggered(StateMachine::Action::EdgeColorChangeRequested);
     });
     m_mainContextMenuActions[Mode::Background].push_back(setEdgeColorAction);
 
-    auto createNodeAction(new QAction(tr("Create floating node"), this));
+    const auto createNodeAction(new QAction(tr("Create floating node"), this));
     QObject::connect(createNodeAction, &QAction::triggered, [this, grid] {
         emit newNodeRequested(grid.snapToGrid(m_mediator.mouseAction().clickedScenePos()));
     });
     m_mainContextMenuActions[Mode::Background].push_back(createNodeAction);
 
-    auto setNodeColorAction(new QAction(tr("Set node color"), this));
+    const auto setNodeColorAction(new QAction(tr("Set node color"), this));
     QObject::connect(setNodeColorAction, &QAction::triggered, [this] {
-        auto node = m_mediator.selectedNode();
+        const auto node = m_mediator.selectedNode();
         const auto color = QColorDialog::getColor(Qt::white, this);
         if (color.isValid()) {
             m_mediator.saveUndoPoint();
@@ -76,9 +76,9 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     });
     m_mainContextMenuActions[Mode::Node].push_back(setNodeColorAction);
 
-    auto setNodeTextColorAction(new QAction(tr("Set text color"), this));
+    const auto setNodeTextColorAction(new QAction(tr("Set text color"), this));
     QObject::connect(setNodeTextColorAction, &QAction::triggered, [this] {
-        auto node = m_mediator.selectedNode();
+        const auto node = m_mediator.selectedNode();
         const auto color = QColorDialog::getColor(Qt::white, this);
         if (color.isValid()) {
             m_mediator.saveUndoPoint();
@@ -87,7 +87,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     });
     m_mainContextMenuActions[Mode::Node].push_back(setNodeTextColorAction);
 
-    auto deleteNodeAction(new QAction(tr("Delete node"), this));
+    const auto deleteNodeAction(new QAction(tr("Delete node"), this));
     QObject::connect(deleteNodeAction, &QAction::triggered, [this] {
         m_mediator.setSelectedNode(nullptr);
         m_mediator.saveUndoPoint();
@@ -99,7 +99,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
 
     m_mainContextMenuActions[Mode::Node].push_back(deleteNodeAction);
 
-    auto attachImageAction(new QAction(tr("Attach image..."), this));
+    const auto attachImageAction(new QAction(tr("Attach image..."), this));
     QObject::connect(attachImageAction, &QAction::triggered, [this] {
         emit actionTriggered(StateMachine::Action::ImageAttachmentRequested, m_selectedNode);
     });

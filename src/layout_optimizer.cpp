@@ -27,8 +27,6 @@
 #include <random>
 #include <vector>
 
-#include <QApplication>
-
 class Graph;
 
 namespace {
@@ -46,9 +44,8 @@ inline double dot(double x1, double y1, double x2, double y2)
 class LayoutOptimizer::Impl
 {
 public:
-    Impl(MindMapDataPtr mindMapData, LayoutOptimizer & parent)
+    Impl(MindMapDataPtr mindMapData)
       : m_mindMapData(mindMapData)
-      , m_parent(parent)
     {
     }
 
@@ -186,8 +183,9 @@ public:
 
     void updateProgress(double val)
     {
-        emit m_parent.progress(val);
-        QApplication::instance()->processEvents();
+        if (m_progressCallback) {
+            m_progressCallback(val);
+        }
     }
 
     void extract()
@@ -195,6 +193,11 @@ public:
         m_layout->spread();
 
         m_layout->applyCoordinates();
+    }
+
+    void setProgressCallback(ProgressCallback progressCallback)
+    {
+        m_progressCallback = progressCallback;
     }
 
 private:
@@ -518,13 +521,13 @@ private:
 
     std::mt19937 m_engine;
 
-    LayoutOptimizer & m_parent;
+    ProgressCallback m_progressCallback = nullptr;
 };
 
 size_t LayoutOptimizer::Impl::Cell::globalMoveId = 0;
 
 LayoutOptimizer::LayoutOptimizer(MindMapDataPtr mindMapData)
-  : m_impl(std::make_unique<Impl>(mindMapData, *this))
+  : m_impl(std::make_unique<Impl>(mindMapData))
 {
 }
 
@@ -541,6 +544,11 @@ void LayoutOptimizer::optimize()
 void LayoutOptimizer::extract()
 {
     m_impl->extract();
+}
+
+void LayoutOptimizer::setProgressCallback(ProgressCallback progressCallback)
+{
+    m_impl->setProgressCallback(progressCallback);
 }
 
 LayoutOptimizer::~LayoutOptimizer() = default;

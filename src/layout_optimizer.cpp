@@ -218,7 +218,7 @@ private:
 
     struct Change
     {
-        enum class Type
+        enum class Type : uint64_t
         {
             Move,
             Swap

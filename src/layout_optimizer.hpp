@@ -30,7 +30,16 @@ public:
 
     void initialize(double aspectRatio, double minEdgeLength);
 
-    void optimize();
+    struct OptimizationInfo
+    {
+        double initialCost = 0;
+
+        double finalCost = 0;
+
+        size_t changes = 0;
+    };
+
+    OptimizationInfo optimize();
 
     void extract();
 

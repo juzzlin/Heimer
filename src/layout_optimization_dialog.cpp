@@ -15,6 +15,7 @@
 
 #include "layout_optimization_dialog.hpp"
 #include "constants.hpp"
+#include "contrib/SimpleLogger/src/simple_logger.hpp"
 #include "layout_optimizer.hpp"
 
 #include <QDoubleSpinBox>
@@ -40,8 +41,14 @@ LayoutOptimizationDialog::LayoutOptimizationDialog(QWidget & parent, LayoutOptim
     connect(m_optimizeButton, &QPushButton::clicked, [=] {
         emit undoPointRequested();
         m_layoutOptimizer.initialize(m_aspectRatioSpinBox->value(), m_minEdgeLengthSpinBox->value());
-        m_layoutOptimizer.optimize();
-        m_layoutOptimizer.extract();
+        const auto optimizationInfo = m_layoutOptimizer.optimize();
+        if (optimizationInfo.changes) {
+            const double gain = (optimizationInfo.finalCost - optimizationInfo.initialCost) / optimizationInfo.initialCost;
+            juzzlin::L().info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
+            m_layoutOptimizer.extract();
+        } else {
+            juzzlin::L().info() << "No changes";
+        }
         finishOptimization();
     });
 

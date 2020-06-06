@@ -101,6 +101,10 @@ void Graph::addEdge(EdgePtr newEdge)
 #ifdef HEIMER_UNIT_TEST
 void Graph::addEdge(int node0, int node1)
 {
+    if (node0 == node1) {
+        return;
+    }
+
     // Add if such edge doesn't already exist
     if (std::count_if(
           m_edges.begin(), m_edges.end(), [=](const EdgePtr & edge) {

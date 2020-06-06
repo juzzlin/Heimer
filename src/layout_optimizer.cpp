@@ -105,16 +105,17 @@ public:
         }
     }
 
-    void optimize()
+    OptimizationInfo optimize()
     {
         if (m_layout->all.size() < 2) {
-            return;
+            return {};
         }
 
+        OptimizationInfo oi;
         double cost = calculateCost();
-        const double initialCost = cost;
+        oi.initialCost = cost;
 
-        juzzlin::L().info() << "Initial cost: " << initialCost;
+        juzzlin::L().info() << "Initial cost: " << oi.initialCost;
 
         std::uniform_real_distribution<double> dist { 0, 1 };
 
@@ -138,6 +139,7 @@ public:
                     newCost -= change.targetCell->getCost();
 
                     doChange(change);
+                    oi.changes++;
 
                     LayoutOptimizer::Impl::Cell::globalMoveId++;
 
@@ -174,11 +176,12 @@ public:
 
             t *= 0.7;
 
-            updateProgress(1.0 - std::log(t) / std::log(t0));
+            updateProgress(std::min(1.0, 1.0 - std::log(t) / std::log(t0)));
         }
 
-        const double gain = (cost - initialCost) / initialCost;
-        juzzlin::L().info() << "End cost: " << cost << " (" << gain * 100 << "%)";
+        oi.finalCost = cost;
+
+        return oi;
     }
 
     void updateProgress(double val)
@@ -427,10 +430,7 @@ private:
                 }
             }
             for (auto && cell : all) {
-                cell->node.lock()->setLocation(
-                  QPointF(
-                    Constants::Node::MIN_WIDTH / 2 + cell->rect.x - maxWidth / 2,
-                    Constants::Node::MIN_HEIGHT / 2 + cell->rect.y - maxHeight / 2));
+                cell->node.lock()->setLocation({ cell->rect.x - maxWidth / 2, cell->rect.y - maxHeight / 2 });
             }
         }
 
@@ -536,9 +536,9 @@ void LayoutOptimizer::initialize(double aspectRatio, double minEdgeLength)
     m_impl->initialize(aspectRatio, minEdgeLength);
 }
 
-void LayoutOptimizer::optimize()
+LayoutOptimizer::OptimizationInfo LayoutOptimizer::optimize()
 {
-    m_impl->optimize();
+    return m_impl->optimize();
 }
 
 void LayoutOptimizer::extract()

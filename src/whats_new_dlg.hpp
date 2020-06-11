@@ -25,7 +25,7 @@ class WhatsNewDlg : public QDialog
 
 public:
     //! Constructor.
-    explicit WhatsNewDlg(QWidget * parent = 0);
+    explicit WhatsNewDlg(QWidget * parent = nullptr);
 
 private:
     void initWidgets();

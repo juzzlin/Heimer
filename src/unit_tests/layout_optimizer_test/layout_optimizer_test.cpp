@@ -44,8 +44,8 @@ void LayoutOptimizerTest::testMultipleNodes_ShouldReduceCost()
 {
     auto data = std::make_shared<MindMapData>();
     const size_t nodeCount = 50;
-    std::uniform_real_distribution<float> xDist { -1000, 1000 };
-    std::uniform_real_distribution<float> yDist { -1000, 1000 };
+    std::uniform_real_distribution<double> xDist { -1000, 1000 };
+    std::uniform_real_distribution<double> yDist { -1000, 1000 };
     std::mt19937 engine;
     std::vector<std::shared_ptr<Node>> nodes;
     for (size_t i = 0; i < nodeCount; i++) {
@@ -57,7 +57,7 @@ void LayoutOptimizerTest::testMultipleNodes_ShouldReduceCost()
     std::uniform_int_distribution<size_t> iDist { 0, nodes.size() - 1 };
     for (auto && node : nodes) {
         for (size_t i = 0; i < (i % 2) + 1; i++) {
-            data->graph().addEdge(node->index(), iDist(engine));
+            data->graph().addEdge(node->index(), static_cast<int>(iDist(engine)));
         }
     }
 
@@ -72,7 +72,7 @@ void LayoutOptimizerTest::testMultipleNodes_ShouldReduceCost()
     QVERIFY(optimizationInfo.changes > 100);
     const double gain = (optimizationInfo.finalCost - optimizationInfo.initialCost) / optimizationInfo.initialCost;
     juzzlin::L().info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
-    QVERIFY(gain < -0.32);
+    QVERIFY(gain < -0.3);
 }
 
 QTEST_GUILESS_MAIN(LayoutOptimizerTest)

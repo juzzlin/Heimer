@@ -3,6 +3,15 @@ x.y.z
 
 New features:
 
+Bug fixes:
+
+Other:
+
+1.17.0
+======
+
+New features:
+
 * Fix GitHub Issue #50: Autoarrange Nodes
   - Implements a layout optimizer based on combinatorial optimization
   - Adds a new menu entry 'Edit => Optimize layout'
@@ -11,8 +20,6 @@ Bug fixes:
 
 * Fix GitHub Issue #88: Crash when opening a new file in a certain scenario
 * Fix GitHub Issue #89: Default Right-to-Left Text 
-
-Other:
 
 1.16.0
 ======

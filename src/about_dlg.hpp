@@ -25,7 +25,7 @@ class AboutDlg : public QDialog
 
 public:
     //! Constructor.
-    explicit AboutDlg(QWidget * parent = 0);
+    explicit AboutDlg(QWidget * parent = nullptr);
 
 private:
     void initWidgets();

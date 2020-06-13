@@ -16,15 +16,13 @@
 #ifndef LAYOUT_OPTIMIZER_HPP
 #define LAYOUT_OPTIMIZER_HPP
 
-#include <QObject>
+#include <functional>
 #include <memory>
 
 class MindMapData;
 
-class LayoutOptimizer : public QObject
+class LayoutOptimizer
 {
-    Q_OBJECT
-
 public:
     LayoutOptimizer(std::shared_ptr<MindMapData> mindMapData);
 
@@ -32,13 +30,21 @@ public:
 
     void initialize(double aspectRatio, double minEdgeLength);
 
-    void optimize();
+    struct OptimizationInfo
+    {
+        double initialCost = 0;
+
+        double finalCost = 0;
+
+        size_t changes = 0;
+    };
+
+    OptimizationInfo optimize();
 
     void extract();
 
-signals:
-
-    void progress(double progress);
+    using ProgressCallback = std::function<void(double)>;
+    void setProgressCallback(ProgressCallback progressCallback);
 
 private:
     class Impl;

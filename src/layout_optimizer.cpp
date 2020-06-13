@@ -27,8 +27,6 @@
 #include <random>
 #include <vector>
 
-#include <QApplication>
-
 class Graph;
 
 namespace {
@@ -46,9 +44,8 @@ inline double dot(double x1, double y1, double x2, double y2)
 class LayoutOptimizer::Impl
 {
 public:
-    Impl(MindMapDataPtr mindMapData, LayoutOptimizer & parent)
+    Impl(MindMapDataPtr mindMapData)
       : m_mindMapData(mindMapData)
-      , m_parent(parent)
     {
     }
 
@@ -108,16 +105,17 @@ public:
         }
     }
 
-    void optimize()
+    OptimizationInfo optimize()
     {
         if (m_layout->all.size() < 2) {
-            return;
+            return {};
         }
 
+        OptimizationInfo oi;
         double cost = calculateCost();
-        const double initialCost = cost;
+        oi.initialCost = cost;
 
-        juzzlin::L().info() << "Initial cost: " << initialCost;
+        juzzlin::L().info() << "Initial cost: " << oi.initialCost;
 
         std::uniform_real_distribution<double> dist { 0, 1 };
 
@@ -141,6 +139,7 @@ public:
                     newCost -= change.targetCell->getCost();
 
                     doChange(change);
+                    oi.changes++;
 
                     LayoutOptimizer::Impl::Cell::globalMoveId++;
 
@@ -177,17 +176,19 @@ public:
 
             t *= 0.7;
 
-            updateProgress(1.0 - std::log(t) / std::log(t0));
+            updateProgress(std::min(1.0, 1.0 - std::log(t) / std::log(t0)));
         }
 
-        const double gain = (cost - initialCost) / initialCost;
-        juzzlin::L().info() << "End cost: " << cost << " (" << gain * 100 << "%)";
+        oi.finalCost = cost;
+
+        return oi;
     }
 
     void updateProgress(double val)
     {
-        emit m_parent.progress(val);
-        QApplication::instance()->processEvents();
+        if (m_progressCallback) {
+            m_progressCallback(val);
+        }
     }
 
     void extract()
@@ -195,6 +196,11 @@ public:
         m_layout->spread();
 
         m_layout->applyCoordinates();
+    }
+
+    void setProgressCallback(ProgressCallback progressCallback)
+    {
+        m_progressCallback = progressCallback;
     }
 
 private:
@@ -215,7 +221,7 @@ private:
 
     struct Change
     {
-        enum class Type
+        enum class Type : uint64_t
         {
             Move,
             Swap
@@ -424,10 +430,7 @@ private:
                 }
             }
             for (auto && cell : all) {
-                cell->node.lock()->setLocation(
-                  QPointF(
-                    Constants::Node::MIN_WIDTH / 2 + cell->rect.x - maxWidth / 2,
-                    Constants::Node::MIN_HEIGHT / 2 + cell->rect.y - maxHeight / 2));
+                cell->node.lock()->setLocation({ cell->rect.x - maxWidth / 2, cell->rect.y - maxHeight / 2 });
             }
         }
 
@@ -518,13 +521,13 @@ private:
 
     std::mt19937 m_engine;
 
-    LayoutOptimizer & m_parent;
+    ProgressCallback m_progressCallback = nullptr;
 };
 
 size_t LayoutOptimizer::Impl::Cell::globalMoveId = 0;
 
 LayoutOptimizer::LayoutOptimizer(MindMapDataPtr mindMapData)
-  : m_impl(std::make_unique<Impl>(mindMapData, *this))
+  : m_impl(std::make_unique<Impl>(mindMapData))
 {
 }
 
@@ -533,14 +536,19 @@ void LayoutOptimizer::initialize(double aspectRatio, double minEdgeLength)
     m_impl->initialize(aspectRatio, minEdgeLength);
 }
 
-void LayoutOptimizer::optimize()
+LayoutOptimizer::OptimizationInfo LayoutOptimizer::optimize()
 {
-    m_impl->optimize();
+    return m_impl->optimize();
 }
 
 void LayoutOptimizer::extract()
 {
     m_impl->extract();
+}
+
+void LayoutOptimizer::setProgressCallback(ProgressCallback progressCallback)
+{
+    m_impl->setProgressCallback(progressCallback);
 }
 
 LayoutOptimizer::~LayoutOptimizer() = default;

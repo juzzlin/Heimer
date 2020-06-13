@@ -13,22 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef WHATS_NEW_HPP
-#define WHATS_NEW_HPP
+#include <QTest>
 
-#include <QDialog>
-
-//! The about dialog.
-class WhatsNewDlg : public QDialog
+class LayoutOptimizerTest : public QObject
 {
     Q_OBJECT
 
 public:
-    //! Constructor.
-    explicit WhatsNewDlg(QWidget * parent = nullptr);
+    LayoutOptimizerTest();
 
-private:
-    void initWidgets();
+private slots:
+
+    void testSingleNode_ShouldNotDoAnything();
+
+    void testMultipleNodes_ShouldReduceCost();
 };
-
-#endif // WHATS_NEW_HPP

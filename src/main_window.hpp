@@ -115,6 +115,10 @@ private slots:
 
     void showWhatsNewDlg();
 
+    void edgeWidthSliderChanged(double width);
+
+    void edgeWidthSpinBoxChanged(double width);
+
 private:
     void addRedoAction(QMenu & menu);
 
@@ -154,11 +158,19 @@ private:
 
     QDoubleSpinBox * m_edgeWidthSpinBox = nullptr;
 
+    QSlider * m_edgeWidthSlider = nullptr;
+
     QSpinBox * m_cornerRadiusSpinBox = nullptr;
+
+    QSlider * m_cornerRadiusSlider = nullptr;
 
     QSpinBox * m_gridSizeSpinBox = nullptr;
 
+    QSlider * m_gridSizeSlider = nullptr;
+
     QSpinBox * m_textSizeSpinBox = nullptr;
+
+    QSlider * m_textSizeSlider = nullptr;
 
     QCheckBox * m_copyOnDragCheckBox = nullptr;
 

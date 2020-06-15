@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef MAINWINDOW_HPP
-#define MAINWINDOW_HPP
+#ifndef MAIN_WINDOW_HPP
+#define MAIN_WINDOW_HPP
 
 #include <QCloseEvent>
 #include <QGraphicsScene>
@@ -175,4 +175,4 @@ private:
     static MainWindow * m_instance;
 };
 
-#endif // MAINWINDOW_HPP
+#endif // MAIN_WINDOW_HPP

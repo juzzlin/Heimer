@@ -115,6 +115,8 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     m_mainContextMenuActions[Mode::Node].push_back(m_removeImageAction);
 
     // Populate the menu
+    addAction(createNodeAction);
+    addSeparator();
     addAction(m_copyNodeAction);
     addAction(m_pasteNodeAction);
     addSeparator();
@@ -122,7 +124,6 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     addSeparator();
     addAction(setEdgeColorAction);
     addSeparator();
-    addAction(createNodeAction);
     addAction(setNodeColorAction);
     addSeparator();
     addAction(setNodeTextColorAction);

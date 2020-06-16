@@ -66,6 +66,11 @@ EditorView::EditorView(Mediator & mediator)
     connect(m_mainContextMenu, &MainContextMenu::nodeTextColorActionTriggered, this, &EditorView::openNodeTextColorDialog);
 }
 
+const Grid & EditorView::grid() const
+{
+    return m_grid;
+}
+
 void EditorView::finishRubberBand()
 {
     m_mediator.setRectagleSelection({ mapToScene(m_rubberBand->geometry().topLeft()), mapToScene(m_rubberBand->geometry().bottomRight()) });

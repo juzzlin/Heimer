@@ -51,6 +51,8 @@ public:
 
     ~EditorView() override;
 
+    const Grid & grid() const;
+
     void resetDummyDragItems();
 
     void zoom(int amount);

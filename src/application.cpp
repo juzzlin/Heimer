@@ -385,8 +385,8 @@ void Application::showPngExportDialog()
 
 void Application::showLayoutOptimizationDialog()
 {
-    LayoutOptimizer layoutOptimizer{ m_mediator->mindMapData() };
-    LayoutOptimizationDialog dialog{ *m_mainWindow, layoutOptimizer };
+    LayoutOptimizer layoutOptimizer { m_mediator->mindMapData(), m_editorView->grid() };
+    LayoutOptimizationDialog dialog { *m_mainWindow, layoutOptimizer };
     connect(&dialog, &LayoutOptimizationDialog::undoPointRequested, m_mediator.get(), &Mediator::saveUndoPoint);
 
     if (dialog.exec() == QDialog::Accepted) {

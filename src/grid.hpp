@@ -25,6 +25,8 @@ public:
 
     void setSize(int gridSize);
 
+    int size() const;
+
     QPointF snapToGrid(QPointF in) const;
 
 private:

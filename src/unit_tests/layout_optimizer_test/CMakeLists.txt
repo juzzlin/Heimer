@@ -9,6 +9,7 @@ set(SRC ${NAME}.cpp
     ${EDITOR_DIR}/edge_text_edit.cpp
     ${EDITOR_DIR}/graph.cpp
     ${EDITOR_DIR}/graphics_factory.cpp
+    ${EDITOR_DIR}/grid.cpp
     ${EDITOR_DIR}/image.cpp
     ${EDITOR_DIR}/image_manager.cpp
     ${EDITOR_DIR}/layout_optimizer.cpp

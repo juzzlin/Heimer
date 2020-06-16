@@ -15,6 +15,7 @@
 
 #include "layout_optimizer_test.hpp"
 #include "contrib/SimpleLogger/src/simple_logger.hpp"
+#include "grid.hpp"
 #include "layout_optimizer.hpp"
 #include "mind_map_data.hpp"
 
@@ -31,7 +32,8 @@ void LayoutOptimizerTest::testSingleNode_ShouldNotDoAnything()
     auto node = std::make_shared<Node>();
     data->graph().addNode(node);
 
-    LayoutOptimizer lol { data };
+    Grid grid;
+    LayoutOptimizer lol { data, grid };
     lol.initialize(1.0, 50);
     const auto optimizationInfo = lol.optimize();
 
@@ -61,7 +63,9 @@ void LayoutOptimizerTest::testMultipleNodes_ShouldReduceCost()
         }
     }
 
-    LayoutOptimizer lol { data };
+    Grid grid;
+    grid.setSize(10);
+    LayoutOptimizer lol { data, grid };
     lol.initialize(1.0, 50);
     double progress = 0;
     lol.setProgressCallback([&](double progress_) {
@@ -73,6 +77,12 @@ void LayoutOptimizerTest::testMultipleNodes_ShouldReduceCost()
     const double gain = (optimizationInfo.finalCost - optimizationInfo.initialCost) / optimizationInfo.initialCost;
     juzzlin::L().info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
     QVERIFY(gain < -0.3);
+
+    lol.extract();
+    for (auto && node : nodes) {
+        QCOMPARE(node->pos().x(), static_cast<double>(static_cast<int>(node->pos().x() / grid.size()) * grid.size()));
+        QCOMPARE(node->pos().y(), static_cast<double>(static_cast<int>(node->pos().y() / grid.size()) * grid.size()));
+    }
 }
 
 QTEST_GUILESS_MAIN(LayoutOptimizerTest)

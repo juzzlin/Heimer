@@ -33,13 +33,13 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
   , m_mediator(mediator)
   , m_copyPaste(copyPaste)
 {
-    QObject::connect(m_copyNodeAction, &QAction::triggered, [this] {
+    connect(m_copyNodeAction, &QAction::triggered, [this] {
         juzzlin::L().debug() << "Copy node triggered";
         m_copyPaste.copy(*m_mediator.selectedNode());
     });
     m_mainContextMenuActions[Mode::All].push_back(m_copyNodeAction);
 
-    QObject::connect(m_pasteNodeAction, &QAction::triggered, [this] {
+    connect(m_pasteNodeAction, &QAction::triggered, [this] {
         juzzlin::L().debug() << "Paste node triggered";
         if (!m_copyPaste.isEmpty()) {
             m_mediator.saveUndoPoint();
@@ -49,13 +49,13 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     m_mainContextMenuActions[Mode::All].push_back(m_pasteNodeAction);
 
     const auto setBackgroundColorAction(new QAction(tr("Set background color"), this));
-    QObject::connect(setBackgroundColorAction, &QAction::triggered, [this] {
+    connect(setBackgroundColorAction, &QAction::triggered, [this] {
         emit actionTriggered(StateMachine::Action::BackgroundColorChangeRequested);
     });
     m_mainContextMenuActions[Mode::Background].push_back(setBackgroundColorAction);
 
     const auto setEdgeColorAction(new QAction(tr("Set edge color"), this));
-    QObject::connect(setEdgeColorAction, &QAction::triggered, [this] {
+    connect(setEdgeColorAction, &QAction::triggered, [this] {
         emit actionTriggered(StateMachine::Action::EdgeColorChangeRequested);
     });
     m_mainContextMenuActions[Mode::Background].push_back(setEdgeColorAction);
@@ -66,16 +66,16 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     const auto createNodeKeySequence = Qt::Key_F | Qt::SHIFT | Qt::CTRL;
     createNodeAction->setShortcut(createNodeKeySequence);
     const auto createNodeShortCut = new QShortcut({ createNodeKeySequence }, parent);
-    QObject::connect(createNodeShortCut, &QShortcut::activated, [this, grid] {
+    connect(createNodeShortCut, &QShortcut::activated, [this, grid] {
         emit newNodeRequested(grid.snapToGrid(m_mediator.mouseAction().mappedPos()));
     });
-    QObject::connect(createNodeAction, &QAction::triggered, [this, grid] {
+    connect(createNodeAction, &QAction::triggered, [this, grid] {
         emit newNodeRequested(grid.snapToGrid(m_mediator.mouseAction().clickedScenePos()));
     });
     m_mainContextMenuActions[Mode::Background].push_back(createNodeAction);
 
     const auto setNodeColorAction(new QAction(tr("Set node color"), this));
-    QObject::connect(setNodeColorAction, &QAction::triggered, [this] {
+    connect(setNodeColorAction, &QAction::triggered, [this] {
         const auto node = m_mediator.selectedNode();
         const auto color = QColorDialog::getColor(Qt::white, this);
         if (color.isValid()) {
@@ -86,7 +86,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     m_mainContextMenuActions[Mode::Node].push_back(setNodeColorAction);
 
     const auto setNodeTextColorAction(new QAction(tr("Set text color"), this));
-    QObject::connect(setNodeTextColorAction, &QAction::triggered, [this] {
+    connect(setNodeTextColorAction, &QAction::triggered, [this] {
         const auto node = m_mediator.selectedNode();
         const auto color = QColorDialog::getColor(Qt::white, this);
         if (color.isValid()) {
@@ -97,7 +97,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     m_mainContextMenuActions[Mode::Node].push_back(setNodeTextColorAction);
 
     const auto deleteNodeAction(new QAction(tr("Delete node"), this));
-    QObject::connect(deleteNodeAction, &QAction::triggered, [this] {
+    connect(deleteNodeAction, &QAction::triggered, [this] {
         m_mediator.setSelectedNode(nullptr);
         m_mediator.saveUndoPoint();
         // Use a separate variable and timer here because closing the menu will always nullify the selected edge
@@ -109,14 +109,14 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     m_mainContextMenuActions[Mode::Node].push_back(deleteNodeAction);
 
     const auto attachImageAction(new QAction(tr("Attach image..."), this));
-    QObject::connect(attachImageAction, &QAction::triggered, [this] {
+    connect(attachImageAction, &QAction::triggered, [this] {
         emit actionTriggered(StateMachine::Action::ImageAttachmentRequested, m_selectedNode);
     });
 
     m_mainContextMenuActions[Mode::Node].push_back(attachImageAction);
 
     m_removeImageAction = new QAction(tr("Remove attached image"), this);
-    QObject::connect(m_removeImageAction, &QAction::triggered, [this] {
+    connect(m_removeImageAction, &QAction::triggered, [this] {
         m_mediator.saveUndoPoint();
         m_selectedNode->setImageRef(0);
     });

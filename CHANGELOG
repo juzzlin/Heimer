@@ -11,7 +11,8 @@ Bug fixes:
 
 Other:
 
-* Usability improvement: move create node action to top
+* Usability improvement: Move create node action to top
+* Usability improvement: Set optimize button as the default
 
 1.17.0
 ======

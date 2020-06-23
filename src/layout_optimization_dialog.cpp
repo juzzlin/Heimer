@@ -55,6 +55,8 @@ LayoutOptimizationDialog::LayoutOptimizationDialog(QWidget & parent, LayoutOptim
     m_layoutOptimizer.setProgressCallback([=](double progress) {
         m_progressBar->setValue(static_cast<int>(100.0 * progress));
     });
+
+    m_optimizeButton->setDefault(true);
 }
 
 int LayoutOptimizationDialog::exec()

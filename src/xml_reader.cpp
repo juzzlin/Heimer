@@ -13,17 +13,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef READER_HPP
-#define READER_HPP
+#include "xml_reader.hpp"
 
-#include <QDomDocument>
+#include <QFile>
+#include <QObject>
 
-#include "file_exception.hpp"
+QDomDocument XmlReader::readFromFile(QString filePath)
+{
+    QDomDocument doc;
 
-namespace Reader {
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly)) {
+        throw FileException(QObject::tr("Cannot open file: '") + filePath + "'");
+    }
 
-QDomDocument readFromFile(QString filePath);
+    if (!doc.setContent(&file)) {
+        file.close();
 
+        throw FileException(QObject::tr("Corrupted file: '") + filePath + "'");
+    }
+
+    file.close();
+
+    return doc;
 }
-
-#endif // READER_HPP

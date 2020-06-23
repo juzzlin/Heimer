@@ -52,7 +52,6 @@ HEADERS +=  \
     $$SRC/mouse_action.hpp \
     $$SRC/node.hpp \
     $$SRC/node_handle.hpp \
-    $$SRC/reader.hpp \
     $$SRC/recent_files_manager.hpp \
     $$SRC/recent_files_menu.hpp \
     $$SRC/selection_group.hpp \
@@ -60,6 +59,7 @@ HEADERS +=  \
     $$SRC/text_edit.hpp \
     $$SRC/undo_stack.hpp \
     $$SRC/whats_new_dlg.hpp \
+    $$SRC/xml_reader.hpp \
     $$SRC/xml_writer.hpp \
     $$SRC/contrib/Argengine/src/argengine.hpp \
     $$SRC/contrib/SimpleLogger/src/simple_logger.hpp \
@@ -95,7 +95,6 @@ SOURCES += \
     $$SRC/mouse_action.cpp \
     $$SRC/node.cpp \
     $$SRC/node_handle.cpp \
-    $$SRC/reader.cpp \
     $$SRC/recent_files_manager.cpp \
     $$SRC/recent_files_menu.cpp \
     $$SRC/selection_group.cpp \
@@ -103,6 +102,7 @@ SOURCES += \
     $$SRC/text_edit.cpp \
     $$SRC/undo_stack.cpp \
     $$SRC/whats_new_dlg.cpp \
+    $$SRC/xml_reader.cpp \
     $$SRC/xml_writer.cpp \
     $$SRC/contrib/Argengine/src/argengine.cpp \
     $$SRC/contrib/SimpleLogger/src/simple_logger.cpp \

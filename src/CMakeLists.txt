@@ -51,7 +51,6 @@ set(SRC
     node.cpp
     node_handle.cpp
     png_export_dialog.cpp
-    reader.cpp
     recent_files_manager.cpp
     recent_files_menu.cpp
     selection_group.cpp
@@ -60,6 +59,7 @@ set(SRC
     undo_stack.cpp
     user_exception.hpp
     whats_new_dlg.cpp
+    xml_reader.cpp
     xml_writer.cpp
 )
 

@@ -18,9 +18,9 @@
 #include "alz_serializer.hpp"
 #include "constants.hpp"
 #include "node.hpp"
-#include "reader.hpp"
 #include "recent_files_manager.hpp"
 #include "selection_group.hpp"
+#include "xml_reader.hpp"
 #include "xml_writer.hpp"
 
 #include <cassert>
@@ -57,7 +57,7 @@ void EditorData::loadMindMapData(QString fileName)
     m_selectedEdge = nullptr;
 
 #ifndef HEIMER_UNIT_TEST
-    setMindMapData(AlzSerializer::fromXml(Reader::readFromFile(fileName)));
+    setMindMapData(AlzSerializer::fromXml(XmlReader::readFromFile(fileName)));
 #endif
     m_fileName = fileName;
     setIsModified(false);

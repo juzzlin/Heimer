@@ -19,11 +19,11 @@ set(SRC ${NAME}.cpp
     ${EDITOR_DIR}/mind_map_data_base.cpp
     ${EDITOR_DIR}/node.cpp
     ${EDITOR_DIR}/node_handle.cpp
-    ${EDITOR_DIR}/reader.cpp
     ${EDITOR_DIR}/recent_files_manager.cpp
     ${EDITOR_DIR}/selection_group.cpp
     ${EDITOR_DIR}/text_edit.cpp
     ${EDITOR_DIR}/undo_stack.cpp
+    ${EDITOR_DIR}/xml_reader.cpp
     ${EDITOR_DIR}/xml_writer.cpp
     )
 

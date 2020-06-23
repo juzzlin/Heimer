@@ -7,7 +7,11 @@ New features:
 
 Bug fixes:
 
+* Make layout optimizer honor the active grid setting
+
 Other:
+
+* Usability improvement: move create node action to top
 
 1.17.0
 ======

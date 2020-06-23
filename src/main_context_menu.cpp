@@ -23,6 +23,7 @@
 #include "node.hpp"
 
 #include <QColorDialog>
+#include <QShortcut>
 #include <QTimer>
 
 MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & grid, CopyPaste & copyPaste)
@@ -60,6 +61,14 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     m_mainContextMenuActions[Mode::Background].push_back(setEdgeColorAction);
 
     const auto createNodeAction(new QAction(tr("Create floating node"), this));
+    // Here we add a shortcut to the context menu action. However, the action cannot be triggered unless the context menu
+    // is open. As a "solution" we create another shortcut and add it to the parent widget.
+    const auto createNodeKeySequence = Qt::Key_F | Qt::SHIFT | Qt::CTRL;
+    createNodeAction->setShortcut(createNodeKeySequence);
+    const auto createNodeShortCut = new QShortcut({ createNodeKeySequence }, parent);
+    QObject::connect(createNodeShortCut, &QShortcut::activated, [this, grid] {
+        emit newNodeRequested(grid.snapToGrid(m_mediator.mouseAction().mappedPos()));
+    });
     QObject::connect(createNodeAction, &QAction::triggered, [this, grid] {
         emit newNodeRequested(grid.snapToGrid(m_mediator.mouseAction().clickedScenePos()));
     });

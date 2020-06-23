@@ -60,7 +60,7 @@ set(SRC
     undo_stack.cpp
     user_exception.hpp
     whats_new_dlg.cpp
-    writer.cpp
+    xml_writer.cpp
 )
 
 # Need to copy the QRC file to binary dir where the QM-files will be generated.

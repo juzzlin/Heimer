@@ -21,7 +21,7 @@
 #include "recent_files_manager.hpp"
 #include "selection_group.hpp"
 #include "serializer.hpp"
-#include "writer.hpp"
+#include "xml_writer.hpp"
 
 #include <cassert>
 #include <memory>
@@ -144,7 +144,7 @@ bool EditorData::saveMindMapAs(QString fileName)
 {
     assert(m_mindMapData);
 
-    if (Writer::writeToFile(Serializer::toXml(*m_mindMapData), fileName)) {
+    if (XmlWriter::writeToFile(Serializer::toXml(*m_mindMapData), fileName)) {
         m_fileName = fileName;
         setIsModified(false);
         RecentFilesManager::instance().addRecentFile(fileName);

@@ -60,7 +60,7 @@ HEADERS +=  \
     $$SRC/text_edit.hpp \
     $$SRC/undo_stack.hpp \
     $$SRC/whats_new_dlg.hpp \
-    $$SRC/writer.hpp \
+    $$SRC/xml_writer.hpp \
     $$SRC/contrib/Argengine/src/argengine.hpp \
     $$SRC/contrib/SimpleLogger/src/simple_logger.hpp \
 
@@ -103,7 +103,7 @@ SOURCES += \
     $$SRC/text_edit.cpp \
     $$SRC/undo_stack.cpp \
     $$SRC/whats_new_dlg.cpp \
-    $$SRC/writer.cpp \
+    $$SRC/xml_writer.cpp \
     $$SRC/contrib/Argengine/src/argengine.cpp \
     $$SRC/contrib/SimpleLogger/src/simple_logger.cpp \
 

@@ -13,14 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef WRITER_HPP
-#define WRITER_HPP
+#include "xml_writer.hpp"
 
-#include <QDomDocument>
+#include <QFile>
+#include <QTextStream>
 
-namespace Writer {
+bool XmlWriter::writeToFile(QDomDocument document, QString filePath)
+{
+    QFile file(filePath);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file);
+        out << document;
+        file.close();
+        return true;
+    }
 
-bool writeToFile(QDomDocument document, QString filePath);
+    return false;
 }
-
-#endif // WRITER_HPP

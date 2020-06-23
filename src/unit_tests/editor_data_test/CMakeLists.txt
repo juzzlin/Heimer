@@ -24,7 +24,7 @@ set(SRC ${NAME}.cpp
     ${EDITOR_DIR}/serializer.cpp
     ${EDITOR_DIR}/text_edit.cpp
     ${EDITOR_DIR}/undo_stack.cpp
-    ${EDITOR_DIR}/writer.cpp
+    ${EDITOR_DIR}/xml_writer.cpp
     )
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/unit_tests)

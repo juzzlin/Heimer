@@ -15,8 +15,8 @@
 
 #include "serializer_test.hpp"
 
+#include "alz_serializer.hpp"
 #include "mind_map_data.hpp"
-#include "serializer.hpp"
 
 SerializerTest::SerializerTest()
 {
@@ -25,7 +25,7 @@ SerializerTest::SerializerTest()
 void SerializerTest::testEmptyDesign()
 {
     MindMapData outData;
-    const auto inData = Serializer::fromXml(Serializer::toXml(outData));
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     QCOMPARE(QString(inData->version()), QString(VERSION));
 }
 
@@ -33,7 +33,7 @@ void SerializerTest::testBackgroundColor()
 {
     MindMapData outData;
     outData.setBackgroundColor(QColor(1, 2, 3));
-    const auto inData = Serializer::fromXml(Serializer::toXml(outData));
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     QCOMPARE(inData->backgroundColor(), outData.backgroundColor());
 }
 
@@ -41,7 +41,7 @@ void SerializerTest::testCornerRadius()
 {
     MindMapData outData;
     outData.setCornerRadius(Constants::Node::DEFAULT_CORNER_RADIUS + 1);
-    const auto inData = Serializer::fromXml(Serializer::toXml(outData));
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     QCOMPARE(inData->cornerRadius(), outData.cornerRadius());
 }
 
@@ -49,7 +49,7 @@ void SerializerTest::testEdgeColor()
 {
     MindMapData outData;
     outData.setEdgeColor(QColor(1, 2, 3));
-    const auto inData = Serializer::fromXml(Serializer::toXml(outData));
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     QCOMPARE(inData->edgeColor(), outData.edgeColor());
 }
 
@@ -57,7 +57,7 @@ void SerializerTest::testEdgeWidth()
 {
     MindMapData outData;
     outData.setEdgeWidth(666.42);
-    const auto inData = Serializer::fromXml(Serializer::toXml(outData));
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     QCOMPARE(inData->edgeWidth(), outData.edgeWidth());
 }
 
@@ -66,10 +66,10 @@ void SerializerTest::testNotUsedImages()
     MindMapData outData;
     outData.imageManager().addImage(Image {});
     outData.imageManager().addImage(Image {});
-    const auto outXml = Serializer::toXml(outData);
+    const auto outXml = AlzSerializer::toXml(outData);
     outData.imageManager().clear(); // ImageManager is a static class
     QCOMPARE(outData.imageManager().images().size(), size_t { 0 });
-    const auto inData = Serializer::fromXml(outXml);
+    const auto inData = AlzSerializer::fromXml(outXml);
     // No nodes are using the added images, so nothing should have been serialized
     QCOMPARE(outData.imageManager().images().size(), size_t { 0 });
 }
@@ -86,10 +86,10 @@ void SerializerTest::testUsedImages()
     outData.graph().addNode(node2);
     node2->setImageRef(id2);
 
-    const auto outXml = Serializer::toXml(outData);
+    const auto outXml = AlzSerializer::toXml(outData);
     outData.imageManager().clear(); // ImageManager is a static class
     QCOMPARE(outData.imageManager().images().size(), size_t { 0 });
-    const auto inData = Serializer::fromXml(outXml);
+    const auto inData = AlzSerializer::fromXml(outXml);
     QCOMPARE(outData.imageManager().images().size(), size_t { 2 });
 }
 
@@ -97,7 +97,7 @@ void SerializerTest::testTextSize()
 {
     MindMapData outData;
     outData.setTextSize(42);
-    const auto inData = Serializer::fromXml(Serializer::toXml(outData));
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     QCOMPARE(inData->textSize(), outData.textSize());
 }
 
@@ -120,7 +120,7 @@ void SerializerTest::testNodeDeletion()
 
     outData.graph().deleteNode(outNode1->index()); // Delete node in between
 
-    const auto inData = Serializer::fromXml(Serializer::toXml(outData));
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     const auto edges = inData->graph().getEdgesFromNode(outNode0);
     QCOMPARE(edges.size(), static_cast<size_t>(1));
 }
@@ -142,7 +142,7 @@ void SerializerTest::testSingleEdge()
     edge->setArrowMode(Edge::ArrowMode::Double);
     outData.graph().addEdge(edge);
 
-    const auto inData = Serializer::fromXml(Serializer::toXml(outData));
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     const auto edges = inData->graph().getEdgesFromNode(outNode0);
     QCOMPARE(edges.size(), static_cast<size_t>(1));
     QCOMPARE((*edges.begin())->text(), edge->text());
@@ -163,7 +163,7 @@ void SerializerTest::testSingleNode()
     outNode->setTextColor(QColor(4, 5, 6));
     outData.graph().addNode(outNode);
 
-    const auto inData = Serializer::fromXml(Serializer::toXml(outData));
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     QVERIFY(inData->graph().numNodes() == 1);
 
     const auto node = inData->graph().getNode(0);

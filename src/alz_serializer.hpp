@@ -13,19 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SERIALIZER_HPP
-#define SERIALIZER_HPP
+#ifndef ALZ_SERIALIZER_HPP
+#define ALZ_SERIALIZER_HPP
 
 #include "mind_map_data.hpp"
 
 #include <QDomDocument>
 
-namespace Serializer {
+namespace AlzSerializer {
 
 MindMapDataPtr fromXml(QDomDocument document);
 
 QDomDocument toXml(MindMapData & mindMapData);
 
-} // namespace Serializer
+} // namespace AlzSerializer
 
-#endif // SERIALIZER_HPP
+#endif // ALZ_SERIALIZER_HPP

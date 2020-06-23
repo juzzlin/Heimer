@@ -4,6 +4,7 @@ add_definitions(-DHEIMER_UNIT_TEST)
 
 set(NAME serializer_test)
 set(SRC ${NAME}.cpp
+    ${EDITOR_DIR}/alz_serializer.cpp
     ${EDITOR_DIR}/mouse_action.cpp
     ${EDITOR_DIR}/edge.cpp
     ${EDITOR_DIR}/edge_dot.cpp
@@ -17,7 +18,6 @@ set(SRC ${NAME}.cpp
     ${EDITOR_DIR}/mind_map_data_base.cpp
     ${EDITOR_DIR}/node.cpp
     ${EDITOR_DIR}/node_handle.cpp
-    ${EDITOR_DIR}/serializer.cpp
     ${EDITOR_DIR}/text_edit.cpp
     )
 

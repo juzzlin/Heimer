@@ -22,6 +22,7 @@ INCLUDEPATH += . $$SRC/contrib/SimpleLogger/src $$SRC/contrib/Argengine/src
 # Input
 HEADERS +=  \
     $$SRC/about_dlg.hpp \
+    $$SRC/alz_serializer.hpp \
     $$SRC/application.hpp \
     $$SRC/copy_paste.hpp \
     $$SRC/graph.hpp \
@@ -55,7 +56,6 @@ HEADERS +=  \
     $$SRC/recent_files_manager.hpp \
     $$SRC/recent_files_menu.hpp \
     $$SRC/selection_group.hpp \
-    $$SRC/serializer.hpp \
     $$SRC/state_machine.hpp \
     $$SRC/text_edit.hpp \
     $$SRC/undo_stack.hpp \
@@ -66,6 +66,7 @@ HEADERS +=  \
 
 SOURCES += \
     $$SRC/about_dlg.cpp \
+    $$SRC/alz_serializer.cpp \
     $$SRC/application.cpp \
     $$SRC/copy_paste.cpp \
     $$SRC/graph.cpp \
@@ -98,7 +99,6 @@ SOURCES += \
     $$SRC/recent_files_manager.cpp \
     $$SRC/recent_files_menu.cpp \
     $$SRC/selection_group.cpp \
-    $$SRC/serializer.cpp \
     $$SRC/state_machine.cpp \
     $$SRC/text_edit.cpp \
     $$SRC/undo_stack.cpp \

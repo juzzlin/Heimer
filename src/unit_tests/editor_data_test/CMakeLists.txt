@@ -4,6 +4,7 @@ add_definitions(-DHEIMER_UNIT_TEST)
 
 set(NAME editor_data_test)
 set(SRC ${NAME}.cpp
+    ${EDITOR_DIR}/alz_serializer.cpp
     ${EDITOR_DIR}/mouse_action.cpp
     ${EDITOR_DIR}/edge.cpp
     ${EDITOR_DIR}/edge_dot.cpp
@@ -21,7 +22,6 @@ set(SRC ${NAME}.cpp
     ${EDITOR_DIR}/reader.cpp
     ${EDITOR_DIR}/recent_files_manager.cpp
     ${EDITOR_DIR}/selection_group.cpp
-    ${EDITOR_DIR}/serializer.cpp
     ${EDITOR_DIR}/text_edit.cpp
     ${EDITOR_DIR}/undo_stack.cpp
     ${EDITOR_DIR}/xml_writer.cpp

@@ -15,12 +15,12 @@
 
 #include "editor_data.hpp"
 
+#include "alz_serializer.hpp"
 #include "constants.hpp"
 #include "node.hpp"
 #include "reader.hpp"
 #include "recent_files_manager.hpp"
 #include "selection_group.hpp"
-#include "serializer.hpp"
 #include "xml_writer.hpp"
 
 #include <cassert>
@@ -57,7 +57,7 @@ void EditorData::loadMindMapData(QString fileName)
     m_selectedEdge = nullptr;
 
 #ifndef HEIMER_UNIT_TEST
-    setMindMapData(Serializer::fromXml(Reader::readFromFile(fileName)));
+    setMindMapData(AlzSerializer::fromXml(Reader::readFromFile(fileName)));
 #endif
     m_fileName = fileName;
     setIsModified(false);
@@ -144,7 +144,7 @@ bool EditorData::saveMindMapAs(QString fileName)
 {
     assert(m_mindMapData);
 
-    if (XmlWriter::writeToFile(Serializer::toXml(*m_mindMapData), fileName)) {
+    if (XmlWriter::writeToFile(AlzSerializer::toXml(*m_mindMapData), fileName)) {
         m_fileName = fileName;
         setIsModified(false);
         RecentFilesManager::instance().addRecentFile(fileName);

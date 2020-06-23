@@ -17,6 +17,7 @@ set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_BINAR
 # Set sources
 set(SRC
     about_dlg.cpp
+    alz_serializer.cpp
     application.cpp
     constants.hpp
     copy_paste.cpp
@@ -54,7 +55,6 @@ set(SRC
     recent_files_manager.cpp
     recent_files_menu.cpp
     selection_group.cpp
-    serializer.cpp
     state_machine.cpp
     text_edit.cpp
     undo_stack.cpp

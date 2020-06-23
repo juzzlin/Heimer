@@ -97,6 +97,17 @@ pipeline {
             }
 
         }
+        stage('Build AppImage') {
+            agent any
+            steps {
+                sh "./scripts/build-app-image"
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'build-appimage/*.AppImage', fingerprint: true
+                }
+            }
+        }
     }
 }
 

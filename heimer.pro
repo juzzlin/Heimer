@@ -4,7 +4,7 @@
 TEMPLATE = app
 TARGET = heimer
 
-DEFINES += VERSION=\\\"1.17.0\\\"
+DEFINES += VERSION=\\\"1.18.0\\\"
 CONFIG += c++14 lrelease embed_translations
 
 # Qt version check

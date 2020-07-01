@@ -108,17 +108,6 @@ pipeline {
                 }
             }
         }
-        stage('Build Snap') {
-            agent any
-            steps {
-                sh "./scripts/build-snap"
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: '*.snap', fingerprint: true
-                }
-            }
-        }
     }
 }
 

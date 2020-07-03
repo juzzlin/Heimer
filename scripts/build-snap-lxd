@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Builds Snap package with LXD. Assumes Ubuntu 20.04 LTS.
+
+rm -f *.snap && snapcraft clean --use-lxd && snapcraft --use-lxd
+

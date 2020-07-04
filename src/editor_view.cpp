@@ -123,8 +123,6 @@ void EditorView::handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHand
         return;
     }
 
-    m_mediator.clearSelectionGroup();
-
     if (event.button() == Qt::LeftButton) {
         handleLeftButtonClickOnNodeHandle(nodeHandle);
     }
@@ -150,16 +148,19 @@ void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
 {
     switch (nodeHandle.role()) {
     case NodeHandle::Role::Add:
+        m_mediator.clearSelectionGroup();
         initiateNewNodeDrag(nodeHandle);
         break;
     case NodeHandle::Role::Drag:
         initiateNodeDrag(nodeHandle.parentNode());
         break;
     case NodeHandle::Role::Color:
+        m_mediator.clearSelectionGroup();
         m_mediator.setSelectedNode(&nodeHandle.parentNode());
         openNodeColorDialog();
         break;
     case NodeHandle::Role::TextColor:
+        m_mediator.clearSelectionGroup();
         m_mediator.setSelectedNode(&nodeHandle.parentNode());
         openNodeTextColorDialog();
         break;

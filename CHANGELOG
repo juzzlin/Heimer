@@ -5,6 +5,8 @@ New features:
 
 Bug fixes:
 
+* Fix GitHub Issue #87: Group move doesn't work with the move handle
+
 Other:
 
 1.18.0

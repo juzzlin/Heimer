@@ -336,9 +336,9 @@ void MainWindow::createToolBar()
     toolBar->addSeparator();
     toolBar->addAction(createTextSizeAction());
     toolBar->addSeparator();
-    toolBar->addAction(createGridSizeAction());
-    toolBar->addSeparator();
     toolBar->addAction(createCornerRadiusAction());
+    toolBar->addSeparator();
+    toolBar->addAction(createGridSizeAction());
 
     const auto spacer = new QWidget;
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);

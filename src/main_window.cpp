@@ -550,7 +550,7 @@ void MainWindow::initializeNewMindMap()
 
 void MainWindow::setSaveActionStatesOnNewMindMap()
 {
-    m_saveAction->setEnabled(false);
+    m_saveAction->setEnabled(true);
     m_saveAsAction->setEnabled(true);
 }
 

@@ -3,6 +3,8 @@ x.y.z
 
 New features:
 
+* Fix GitHub Issue #77: Ctrl+S on new map should directly open 'save as' dialog
+
 Bug fixes:
 
 * Fix GitHub Issue #87: Group move doesn't work with the move handle

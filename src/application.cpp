@@ -291,6 +291,7 @@ void Application::saveMindMapAs()
     if (m_mediator->saveMindMapAs(fileName)) {
         const auto msg = QString(tr("File '")) + fileName + tr("' saved.");
         L().debug() << msg.toStdString();
+        m_mainWindow->enableSave(false);
         emit actionTriggered(StateMachine::Action::MindMapSavedAs);
     } else {
         const auto msg = QString(tr("Failed to save file as '") + fileName + "'.");

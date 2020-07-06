@@ -501,11 +501,6 @@ void MainWindow::enableSave(bool enable)
     m_saveAction->setEnabled(enable);
 }
 
-void MainWindow::enableSaveAs(bool enable)
-{
-    m_saveAsAction->setEnabled(enable);
-}
-
 void MainWindow::showAboutDlg()
 {
     m_aboutDlg->exec();

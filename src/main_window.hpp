@@ -74,8 +74,6 @@ public slots:
 
     void enableSave(bool enable);
 
-    void enableSaveAs(bool enable);
-
     void setCornerRadius(int value);
 
     void setEdgeWidth(double value);

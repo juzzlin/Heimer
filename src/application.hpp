@@ -32,6 +32,7 @@ class MainWindow;
 class Mediator;
 class Node;
 class PngExportDialog;
+class SvgExportDialog;
 
 class Application : public QObject
 {
@@ -85,6 +86,8 @@ private:
 
     void showPngExportDialog();
 
+    void showSvgExportDialog();
+
     void showMessageBox(QString message);
 
     int showNotSavedDialog();
@@ -116,6 +119,8 @@ private:
     Node * m_actionNode = nullptr;
 
     std::unique_ptr<PngExportDialog> m_pngExportDialog;
+
+    std::unique_ptr<SvgExportDialog> m_svgExportDialog;
 };
 
 #endif // APPLICATION_HPP

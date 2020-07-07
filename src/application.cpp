@@ -26,6 +26,7 @@
 #include "png_export_dialog.hpp"
 #include "recent_files_manager.hpp"
 #include "state_machine.hpp"
+#include "svg_export_dialog.hpp"
 #include "user_exception.hpp"
 
 #include "argengine.hpp"
@@ -126,6 +127,7 @@ Application::Application(int & argc, char ** argv)
     m_editorData = std::make_unique<EditorData>();
     m_editorView = new EditorView(*m_mediator);
     m_pngExportDialog = std::make_unique<PngExportDialog>(*m_mainWindow);
+    m_svgExportDialog = std::make_unique<SvgExportDialog>(*m_mainWindow);
 
     m_mainWindow->setMediator(m_mediator);
     m_stateMachine->setMediator(m_mediator);
@@ -146,9 +148,12 @@ Application::Application(int & argc, char ** argv)
         m_mainWindow->enableSave(isModified && m_mediator->canBeSaved());
     });
 
-    connect(m_pngExportDialog.get(), &PngExportDialog::pngExportRequested, m_mediator.get(), &Mediator::exportToPNG);
+    connect(m_pngExportDialog.get(), &PngExportDialog::pngExportRequested, m_mediator.get(), &Mediator::exportToPng);
+    connect(m_svgExportDialog.get(), &SvgExportDialog::svgExportRequested, m_mediator.get(), &Mediator::exportToSvg);
 
-    connect(m_mediator.get(), &Mediator::exportFinished, m_pngExportDialog.get(), &PngExportDialog::finishExport);
+    connect(m_mediator.get(), &Mediator::pngExportFinished, m_pngExportDialog.get(), &PngExportDialog::finishExport);
+    connect(m_mediator.get(), &Mediator::svgExportFinished, m_svgExportDialog.get(), &SvgExportDialog::finishExport);
+
     connect(m_mainWindow.get(), &MainWindow::cornerRadiusChanged, m_mediator.get(), &Mediator::setCornerRadius);
     connect(m_mainWindow.get(), &MainWindow::edgeWidthChanged, m_mediator.get(), &Mediator::setEdgeWidth);
     connect(m_mainWindow.get(), &MainWindow::textSizeChanged, m_mediator.get(), &Mediator::setTextSize);
@@ -228,6 +233,9 @@ void Application::runState(StateMachine::State state)
         break;
     case StateMachine::State::ShowSaveAsDialog:
         saveMindMapAs();
+        break;
+    case StateMachine::State::ShowSvgExportDialog:
+        showSvgExportDialog();
         break;
     case StateMachine::State::ShowOpenDialog:
         openMindMap();
@@ -396,6 +404,14 @@ void Application::showPngExportDialog()
 
     // Doesn't matter if canceled or not
     emit actionTriggered(StateMachine::Action::PngExported);
+}
+
+void Application::showSvgExportDialog()
+{
+    m_svgExportDialog->exec();
+
+    // Doesn't matter if canceled or not
+    emit actionTriggered(StateMachine::Action::SvgExported);
 }
 
 void Application::showLayoutOptimizationDialog()

@@ -128,6 +128,8 @@ private:
 
     void createEditMenu();
 
+    void createExportSubMenu(QMenu & fileMenu);
+
     void createFileMenu();
 
     void createHelpMenu();

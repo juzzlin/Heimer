@@ -10,7 +10,7 @@ CONFIG += c++14 lrelease embed_translations
 # Qt version check
 contains(QT_VERSION, ^5\\..*) {
     message("Building for Qt version $${QT_VERSION}.")
-    QT += widgets xml
+    QT += widgets svg xml
 } else {
     error("Qt5 is required!")
 }
@@ -56,6 +56,7 @@ HEADERS +=  \
     $$SRC/recent_files_menu.hpp \
     $$SRC/selection_group.hpp \
     $$SRC/state_machine.hpp \
+    $$SRC/svg_export_dialog.hpp \
     $$SRC/test_mode.hpp \
     $$SRC/text_edit.hpp \
     $$SRC/undo_stack.hpp \
@@ -100,6 +101,7 @@ SOURCES += \
     $$SRC/recent_files_menu.cpp \
     $$SRC/selection_group.cpp \
     $$SRC/state_machine.cpp \
+    $$SRC/svg_export_dialog.cpp \
     $$SRC/test_mode.cpp \
     $$SRC/text_edit.cpp \
     $$SRC/undo_stack.cpp \

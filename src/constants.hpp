@@ -82,11 +82,21 @@ static const double WIDTH_SCALE = 0.5;
 
 namespace Export {
 
+namespace Png {
+
 static const QString FILE_EXTENSION = ".png";
 
 static const int MIN_IMAGE_SIZE = 0;
 
 static const int MAX_IMAGE_SIZE = 99999;
+
+} // namespace Png
+
+namespace Svg {
+
+static const QString FILE_EXTENSION = ".svg";
+
+} // namespace Svg
 
 } // namespace Export
 

@@ -22,7 +22,10 @@
 
 #include "simple_logger.hpp"
 
+#include <QGraphicsEffect>
 #include <QGraphicsLineItem>
+#include <QPainter>
+#include <QtSvg/QSvgGenerator>
 #include <cmath>
 
 EditorScene::EditorScene()
@@ -79,6 +82,49 @@ void EditorScene::removeItems()
 
     // This will destroy own items that also were taken out of the scene
     m_ownItems.clear();
+}
+
+QImage EditorScene::toImage(QSize size, QColor backgroundColor, bool transparentBackground)
+{
+    QImage image(size, QImage::Format_ARGB32);
+    image.fill(transparentBackground ? Qt::transparent : backgroundColor);
+
+    QPainter painter(&image);
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setRenderHint(QPainter::TextAntialiasing);
+    render(&painter);
+
+    return image;
+}
+
+void EditorScene::toSvg(QString filename, QString title)
+{
+    // Need to disable effects in order to get vectorized SVG.
+    // Otherwise all items will be just bitmapped.
+    for (auto && item : items()) {
+        if (item->graphicsEffect()) {
+            item->graphicsEffect()->setEnabled(false);
+        }
+    }
+
+    QSvgGenerator generator {};
+
+    generator.setFileName(filename);
+    generator.setSize(QSize(static_cast<int>(width()), static_cast<int>(height())));
+    generator.setViewBox(QRect(0, 0, static_cast<int>(width()), static_cast<int>(height())));
+    generator.setTitle(title);
+    generator.setDescription(QString("SVG exported from ") + Constants::Application::APPLICATION_NAME + " version " + Constants::Application::APPLICATION_VERSION);
+
+    QPainter painter {};
+    painter.begin(&generator);
+    render(&painter);
+    painter.end();
+
+    for (auto && item : items()) {
+        if (item->graphicsEffect()) {
+            item->graphicsEffect()->setEnabled(true);
+        }
+    }
 }
 
 EditorScene::~EditorScene()

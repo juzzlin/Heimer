@@ -94,6 +94,7 @@ find_package(Qt5Core ${QT_MIN_VER} REQUIRED)
 find_package(Qt5Xml ${QT_MIN_VER} REQUIRED)
 find_package(Qt5Widgets ${QT_MIN_VER} REQUIRED)
 find_package(Qt5LinguistTools ${QT_MIN_VER} REQUIRED)
+find_package(Qt5Svg ${QT_MIN_VER} REQUIRED)
 find_package(Qt5Test ${QT_MIN_VER} REQUIRED)
 
 # Install paths depend on the build type and target platform

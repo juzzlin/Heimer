@@ -53,6 +53,7 @@ set(LIB_SRC
     recent_files_menu.cpp
     selection_group.cpp
     state_machine.cpp
+    svg_export_dialog.cpp
     test_mode.cpp
     text_edit.cpp
     undo_stack.cpp
@@ -112,7 +113,7 @@ endif()
 
 # Add the library
 add_library(${LIBRARY_NAME} STATIC ${LIB_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
-target_link_libraries(${LIBRARY_NAME} Qt5::Widgets Qt5::Xml SimpleLogger_static Argengine_static)
+target_link_libraries(${LIBRARY_NAME} Qt5::Widgets Qt5::Svg Qt5::Xml SimpleLogger_static Argengine_static)
 
 # Add the executable
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})

@@ -86,6 +86,7 @@ void StateMachine::calculateState(StateMachine::Action action)
     case Action::NewMindMapInitialized:
     case Action::NotSavedDialogCanceled:
     case Action::PngExported:
+    case Action::SvgExported:
         m_quitType = QuitType::None;
         m_state = State::Edit;
         break;
@@ -123,6 +124,10 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::SaveAsSelected:
         m_state = State::ShowSaveAsDialog;
+        break;
+
+    case Action::SvgExportSelected:
+        m_state = State::ShowSvgExportDialog;
         break;
 
     case Action::RecentFileSelected:

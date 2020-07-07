@@ -145,7 +145,9 @@ public slots:
 
     void enableUndo(bool enable);
 
-    void exportToPNG(QString filename, QSize size, bool transparentBackground);
+    void exportToPng(QString filename, QSize size, bool transparentBackground);
+
+    void exportToSvg(QString filename);
 
     void saveUndoPoint();
 
@@ -171,7 +173,9 @@ private slots:
 
 signals:
 
-    void exportFinished(bool success);
+    void pngExportFinished(bool success);
+
+    void svgExportFinished(bool success);
 
 private:
     void addExistingGraphToScene();

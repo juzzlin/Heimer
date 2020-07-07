@@ -24,6 +24,7 @@
 
 #include "simple_logger.hpp"
 
+#include <QFileInfo>
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 #include <QSizePolicy>
@@ -207,21 +208,25 @@ void Mediator::enableUndo(bool enable)
     m_mainWindow.enableUndo(enable);
 }
 
-void Mediator::exportToPNG(QString filename, QSize size, bool transparentBackground)
+void Mediator::exportToPng(QString filename, QSize size, bool transparentBackground)
 {
     zoomForExport();
 
     L().info() << "Exporting a PNG image of size (" << size.width() << "x" << size.height() << ") to " << filename.toStdString();
+    const auto image = m_editorScene->toImage(size, m_editorData->backgroundColor(), transparentBackground);
 
-    QImage image(size, QImage::Format_ARGB32);
-    image.fill(transparentBackground ? Qt::transparent : m_editorData->backgroundColor());
+    emit pngExportFinished(image.save(filename));
+}
 
-    QPainter painter(&image);
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.setRenderHint(QPainter::TextAntialiasing);
-    m_editorScene->render(&painter);
+void Mediator::exportToSvg(QString filename)
+{
+    zoomForExport();
 
-    emit exportFinished(image.save(filename));
+    L().info() << "Exporting an SVG image to " << filename.toStdString();
+    const QFileInfo fi(filename);
+    m_editorScene->toSvg(filename, fi.fileName());
+
+    emit svgExportFinished(true);
 }
 
 QString Mediator::fileName() const

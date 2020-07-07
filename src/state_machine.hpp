@@ -43,6 +43,7 @@ public:
         ShowOpenDialog,
         ShowPngExportDialog,
         ShowSaveAsDialog,
+        ShowSvgExportDialog,
         TryCloseWindow
     };
 
@@ -76,6 +77,8 @@ public:
         RedoSelected,
         SaveAsSelected,
         SaveSelected,
+        SvgExported,
+        SvgExportSelected,
         UndoSelected
     };
 

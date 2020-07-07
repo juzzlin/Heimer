@@ -234,6 +234,34 @@ QWidgetAction * MainWindow::createGridSizeAction()
     return action;
 }
 
+void MainWindow::createExportSubMenu(QMenu & fileMenu)
+{
+    const auto exportMenu = new QMenu;
+    const auto exportMenuAction = fileMenu.addMenu(exportMenu);
+    exportMenuAction->setText(tr("&Export"));
+
+    // Add "export to PNG image"-action
+    const auto exportToPngAction = new QAction(tr("&PNG"), this);
+    exportMenu->addAction(exportToPngAction);
+    connect(exportToPngAction, &QAction::triggered, [=]() {
+        emit actionTriggered(StateMachine::Action::PngExportSelected);
+    });
+
+    exportMenu->addSeparator();
+
+    // Add "export to SVG file"-action
+    const auto exportToSvgAction = new QAction(tr("&SVG"), this);
+    exportMenu->addAction(exportToSvgAction);
+    connect(exportToSvgAction, &QAction::triggered, [=]() {
+        emit actionTriggered(StateMachine::Action::SvgExportSelected);
+    });
+
+    connect(&fileMenu, &QMenu::aboutToShow, [=]() {
+        exportToPngAction->setEnabled(m_mediator->hasNodes());
+        exportToSvgAction->setEnabled(m_mediator->hasNodes());
+    });
+}
+
 void MainWindow::createFileMenu()
 {
     const auto fileMenu = menuBar()->addMenu(tr("&File"));
@@ -282,13 +310,7 @@ void MainWindow::createFileMenu()
 
     fileMenu->addSeparator();
 
-    // Add "export to PNG image"-action
-    const auto exportToPNGAction = new QAction(tr("&Export to PNG image") + threeDots, this);
-    exportToPNGAction->setShortcut(QKeySequence("Ctrl+Shift+E"));
-    fileMenu->addAction(exportToPNGAction);
-    connect(exportToPNGAction, &QAction::triggered, [=]() {
-        emit actionTriggered(StateMachine::Action::PngExportSelected);
-    });
+    createExportSubMenu(*fileMenu);
 
     fileMenu->addSeparator();
 
@@ -301,7 +323,6 @@ void MainWindow::createFileMenu()
     });
 
     connect(fileMenu, &QMenu::aboutToShow, [=]() {
-        exportToPNGAction->setEnabled(m_mediator->hasNodes());
         recentFilesMenuAction->setEnabled(RecentFilesManager::instance().hasRecentFiles());
     });
 }

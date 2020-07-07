@@ -10,19 +10,19 @@ Here is a simple mind map of Heimer itself running on Ubuntu 18.04:
 
 ## Features
 
+* Adjustable grid
+* Automatic layout optimization
 * Easy-to-use UI
+* Export to PNG or SVG
+* Forever 100% free
+* Full undo/redo
+* Nice animations
+* Quickly add node text and edge labels
+* Save/load in XML-based .ALZ-files
+* Translations in English, Finnish, French, Italian
 * Very fast
 * Zoom in/out/fit
 * Zoom with mouse wheel
-* Save/load in XML-based .ALZ-files
-* Export to PNG images
-* Quickly add node text and edge labels
-* Nice animations
-* Full undo/redo
-* Adjustable grid
-* Automatic layout optimization
-* Translations in English, Finnish, French, Italian
-* Forever 100% free
 
 ## License
 

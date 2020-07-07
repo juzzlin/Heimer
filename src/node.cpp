@@ -26,7 +26,6 @@
 
 #include "simple_logger.hpp"
 
-#include <QGraphicsDropShadowEffect>
 #include <QGraphicsSceneHoverEvent>
 #include <QImage>
 #include <QPainter>

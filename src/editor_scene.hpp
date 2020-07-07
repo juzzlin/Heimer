@@ -32,6 +32,10 @@ public:
     //! Checks if the graphics scene already has the given edge item added
     bool hasEdge(Node & node0, Node & node1);
 
+    QImage toImage(QSize size, QColor backgroundColor, bool transparentBackground);
+
+    void toSvg(QString fileName, QString title);
+
     virtual ~EditorScene();
 
 private:

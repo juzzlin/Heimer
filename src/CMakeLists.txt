@@ -14,11 +14,10 @@ foreach(TS_FILE ${TS})
 endforeach()
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_BINARY_DIR}/data/translations)
 
-# Set sources
-set(SRC
+# Set sources for the lib
+set(LIB_SRC
     about_dlg.cpp
     alz_serializer.cpp
-    application.cpp
     constants.hpp
     copy_paste.cpp
     edge.cpp
@@ -36,14 +35,12 @@ set(SRC
     hash_seed.cpp
     image.cpp
     image_manager.cpp
-    png_export_dialog.cpp
     layers.hpp
     layout_optimization_dialog.cpp
     layout_optimizer.cpp
-    main.cpp
+    magic_zoom.cpp
     main_context_menu.cpp
     main_window.cpp
-    magic_zoom.cpp
     mediator.cpp
     mind_map_data.cpp
     mind_map_data_base.cpp
@@ -55,12 +52,19 @@ set(SRC
     recent_files_menu.cpp
     selection_group.cpp
     state_machine.cpp
+    test_mode.cpp
     text_edit.cpp
     undo_stack.cpp
     user_exception.hpp
     whats_new_dlg.cpp
     xml_reader.cpp
     xml_writer.cpp
+)
+
+# Set sources for the app
+set(APP_SRC
+    application.cpp
+    main.cpp
 )
 
 # Need to copy the QRC file to binary dir where the QM-files will be generated.
@@ -89,7 +93,7 @@ if(MINGW)
             ${CMAKE_RC_COMPILER}
             -I${CMAKE_SOURCE_DIR} -i${CMAKE_SOURCE_DIR}/data/icons/WindowsHeimer.rc
             -o ${CMAKE_CURRENT_BINARY_DIR}/windowsrc.o)
-    set(SRC ${SRC} ${CMAKE_CURRENT_BINARY_DIR}/windowsrc.o)
+    set(APP_SRC ${APP_SRC} ${CMAKE_CURRENT_BINARY_DIR}/windowsrc.o)
 endif()
 
 # Copy desktop file
@@ -106,8 +110,11 @@ if(UNIX)
     DEPENDS ${BINARY_NAME})
 endif()
 
+# Add the library
+add_library(${LIBRARY_NAME} STATIC ${LIB_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
+target_link_libraries(${LIBRARY_NAME} Qt5::Widgets Qt5::Xml SimpleLogger_static Argengine_static)
+
 # Add the executable
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
-add_executable(${BINARY_NAME} WIN32 ${SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
-
-target_link_libraries(${BINARY_NAME} Qt5::Widgets Qt5::Xml SimpleLogger_static Argengine_static)
+add_executable(${BINARY_NAME} WIN32 ${APP_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
+target_link_libraries(${BINARY_NAME} Qt5::Widgets ${LIBRARY_NAME})

@@ -83,6 +83,7 @@ elseif(MSVC)
 endif()
 
 set(BINARY_NAME "heimer")
+set(LIBRARY_NAME "HeimerLib")
 
 add_definitions(-DVERSION="${VERSION}")
 

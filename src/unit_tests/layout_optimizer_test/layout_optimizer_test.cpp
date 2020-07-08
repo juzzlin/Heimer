@@ -18,12 +18,14 @@
 #include "grid.hpp"
 #include "layout_optimizer.hpp"
 #include "mind_map_data.hpp"
+#include "test_mode.hpp"
 
 #include <iostream>
 #include <random>
 
 LayoutOptimizerTest::LayoutOptimizerTest()
 {
+    TestMode::setEnabled(true);
 }
 
 void LayoutOptimizerTest::testSingleNode_ShouldNotDoAnything()
@@ -59,7 +61,8 @@ void LayoutOptimizerTest::testMultipleNodes_ShouldReduceCost()
     std::uniform_int_distribution<size_t> iDist { 0, nodes.size() - 1 };
     for (auto && node : nodes) {
         for (size_t i = 0; i < (i % 2) + 1; i++) {
-            data->graph().addEdge(node->index(), static_cast<int>(iDist(engine)));
+            const auto otherNode = data->graph().getNode(static_cast<int>(iDist(engine)));
+            data->graph().addEdge(std::make_shared<Edge>(*node, *otherNode));
         }
     }
 

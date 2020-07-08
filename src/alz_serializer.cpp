@@ -19,6 +19,7 @@
 #include "graph.hpp"
 #include "node.hpp"
 #include "simple_logger.hpp"
+#include "test_mode.hpp"
 
 #include <cassert>
 #include <functional>
@@ -188,40 +189,40 @@ static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocume
 
 static QString getBase64Data(std::string path)
 {
-#ifndef HEIMER_UNIT_TEST
-    QFile in(path.c_str());
-    if (!in.open(QIODevice::ReadOnly)) {
-        throw std::runtime_error("Cannot open file: '" + path + "'");
+    if (!TestMode::enabled()) {
+        QFile in(path.c_str());
+        if (!in.open(QIODevice::ReadOnly)) {
+            throw std::runtime_error("Cannot open file: '" + path + "'");
+        }
+        return in.readAll().toBase64(QByteArray::Base64Encoding);
+    } else {
+        TestMode::logDisabledCode("getBase64Data");
+        return {};
     }
-    return in.readAll().toBase64(QByteArray::Base64Encoding);
-#else
-    Q_UNUSED(path)
-    return {};
-#endif
 }
 
 static QImage base64ToQImage(const std::string & base64, size_t imageId, std::string imagePath)
 {
-#ifndef HEIMER_UNIT_TEST
-    QTemporaryDir dir;
-    if (dir.isValid()) {
-        QFileInfo info(imagePath.c_str());
-        const auto extractedFilePath = (dir.path() + QDir::separator() + info.fileName()).toStdString();
-        juzzlin::L().info() << "Extracting embedded image id=" << imageId << " to '" << extractedFilePath << "'";
-        QByteArray bytes = QByteArray::fromBase64(base64.c_str(), QByteArray::Base64Encoding);
-        QFile out(extractedFilePath.c_str());
-        if (!out.open(QIODevice::WriteOnly)) {
-            throw std::runtime_error("Cannot open file: '" + extractedFilePath + "' for write!");
+    if (!TestMode::enabled()) {
+        QTemporaryDir dir;
+        if (dir.isValid()) {
+            QFileInfo info(imagePath.c_str());
+            const auto extractedFilePath = (dir.path() + QDir::separator() + info.fileName()).toStdString();
+            juzzlin::L().info() << "Extracting embedded image id=" << imageId << " to '" << extractedFilePath << "'";
+            QByteArray bytes = QByteArray::fromBase64(base64.c_str(), QByteArray::Base64Encoding);
+            QFile out(extractedFilePath.c_str());
+            if (!out.open(QIODevice::WriteOnly)) {
+                throw std::runtime_error("Cannot open file: '" + extractedFilePath + "' for write!");
+            }
+            auto bytesWritten = out.write(bytes);
+            juzzlin::L().info() << "Bytes written: " << bytesWritten << ", " << (bytesWritten == bytes.length() ? "OK" : "SIZE MISMATCH");
+            return QImage { extractedFilePath.c_str() };
+        } else {
+            throw std::runtime_error("Temp dir not valid: '" + dir.path().toStdString() + "'");
         }
-        auto bytesWritten = out.write(bytes);
-        juzzlin::L().info() << "Bytes written: " << bytesWritten << ", " << (bytesWritten == bytes.length() ? "OK" : "SIZE MISMATCH");
-        return QImage { extractedFilePath.c_str() };
+    } else {
+        TestMode::logDisabledCode("base64ToQImage");
     }
-#else
-    Q_UNUSED(base64)
-    Q_UNUSED(imageId)
-    Q_UNUSED(imagePath)
-#endif
     return {};
 }
 
@@ -327,30 +328,17 @@ static NodePtr readNode(const QDomElement & element)
     return node;
 }
 
-// The purpose of this #ifdef is to build GUILESS unit tests so that QTEST_GUILESS_MAIN can be used
-#ifdef HEIMER_UNIT_TEST
 static EdgePtr readEdge(const QDomElement & element, MindMapDataPtr data)
-#else
-static EdgePtr readEdge(const QDomElement & element, MindMapDataPtr data)
-#endif
 {
     const int index0 = element.attribute(AlzSerializer::DataKeywords::Design::Graph::Edge::INDEX0, "-1").toInt();
     const int index1 = element.attribute(AlzSerializer::DataKeywords::Design::Graph::Edge::INDEX1, "-1").toInt();
     const int reversed = element.attribute(AlzSerializer::DataKeywords::Design::Graph::Edge::REVERSED, "0").toInt();
     const int arrowMode = element.attribute(AlzSerializer::DataKeywords::Design::Graph::Edge::ARROW_MODE, "0").toInt();
 
-#ifdef HEIMER_UNIT_TEST
-    const auto node0 = data->graph().getNode(index0);
-    assert(node0);
-    const auto node1 = data->graph().getNode(index1);
-    assert(node1);
-    const auto edge = make_shared<Edge>(*node0, *node1);
-#else
-    // Init a new edge. QGraphicsScene will take the ownership eventually.
+    // Initialize a new edge. QGraphicsScene will take the ownership eventually.
     const auto node0 = data->graph().getNode(index0);
     const auto node1 = data->graph().getNode(index1);
     const auto edge = make_shared<Edge>(*node0, *node1);
-#endif
     edge->setArrowMode(static_cast<Edge::ArrowMode>(arrowMode));
     edge->setReversed(reversed);
 

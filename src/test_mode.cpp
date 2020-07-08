@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2020 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,38 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include <QTest>
+#include "test_mode.hpp"
+#include "simple_logger.hpp"
 
-class GraphTest : public QObject
+bool TestMode::m_enabled = false;
+
+bool TestMode::enabled()
 {
-    Q_OBJECT
+    return m_enabled;
+}
 
-public:
-    GraphTest();
+void TestMode::setEnabled(bool testModeEnabled)
+{
+    m_enabled = testModeEnabled;
+}
 
-private slots:
-
-    void testAddEdge();
-
-    void testAddNode();
-
-    void testAddTwoNodes();
-
-    void testAreNodesDirectlyConnected();
-
-    void testDeleteEdge();
-
-    void testDeleteNode();
-
-    void testDeleteNodeInvolvingEdge();
-
-    void testGetEdges();
-
-    void testGetNodes();
-
-    void testGetNodesConnectedToNode();
-
-    void testGetNodeByIndex();
-
-    void testGetNodeByIndex_NotFound();
-};
+void TestMode::logDisabledCode(const std::string & message)
+{
+    juzzlin::L().debug() << "TestMode: '" << message << "' disabled";
+}

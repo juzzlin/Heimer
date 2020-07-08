@@ -20,6 +20,7 @@
 #include "node.hpp"
 #include "recent_files_manager.hpp"
 #include "selection_group.hpp"
+#include "test_mode.hpp"
 #include "xml_reader.hpp"
 #include "xml_writer.hpp"
 
@@ -56,9 +57,12 @@ void EditorData::loadMindMapData(QString fileName)
 
     m_selectedEdge = nullptr;
 
-#ifndef HEIMER_UNIT_TEST
-    setMindMapData(AlzSerializer::fromXml(XmlReader::readFromFile(fileName)));
-#endif
+    if (!TestMode::enabled()) {
+        setMindMapData(AlzSerializer::fromXml(XmlReader::readFromFile(fileName)));
+    } else {
+        TestMode::logDisabledCode("setMindMapData");
+    }
+
     m_fileName = fileName;
     setIsModified(false);
     RecentFilesManager::instance().addRecentFile(fileName);

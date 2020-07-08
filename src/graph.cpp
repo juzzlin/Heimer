@@ -15,6 +15,7 @@
 
 #include "graph.hpp"
 #include "node.hpp"
+#include "test_mode.hpp"
 
 #include "simple_logger.hpp"
 
@@ -97,24 +98,6 @@ void Graph::addEdge(EdgePtr newEdge)
         m_edges.push_back(newEdge);
     }
 }
-
-#ifdef HEIMER_UNIT_TEST
-void Graph::addEdge(int node0, int node1)
-{
-    if (node0 == node1) {
-        return;
-    }
-
-    // Add if such edge doesn't already exist
-    if (std::count_if(
-          m_edges.begin(), m_edges.end(), [=](const EdgePtr & edge) {
-              return edge->sourceNode().index() == node0 && edge->targetNode().index() == node1;
-          })
-        == 0) {
-        m_edges.push_back(std::make_shared<Edge>(*getNode(node0), *getNode(node1)));
-    }
-}
-#endif
 
 bool Graph::areDirectlyConnected(NodePtr node0, NodePtr node1)
 {

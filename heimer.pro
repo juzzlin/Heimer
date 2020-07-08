@@ -56,6 +56,7 @@ HEADERS +=  \
     $$SRC/recent_files_menu.hpp \
     $$SRC/selection_group.hpp \
     $$SRC/state_machine.hpp \
+    $$SRC/test_mode.hpp \
     $$SRC/text_edit.hpp \
     $$SRC/undo_stack.hpp \
     $$SRC/whats_new_dlg.hpp \
@@ -99,6 +100,7 @@ SOURCES += \
     $$SRC/recent_files_menu.cpp \
     $$SRC/selection_group.cpp \
     $$SRC/state_machine.cpp \
+    $$SRC/test_mode.cpp \
     $$SRC/text_edit.cpp \
     $$SRC/undo_stack.cpp \
     $$SRC/whats_new_dlg.cpp \

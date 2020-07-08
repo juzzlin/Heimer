@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2020 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,38 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include <QTest>
+#ifndef TEST_MODE_HPP
+#define TEST_MODE_HPP
 
-class GraphTest : public QObject
+#include <string>
+
+class TestMode
 {
-    Q_OBJECT
-
 public:
-    GraphTest();
+    static bool enabled();
 
-private slots:
+    static void setEnabled(bool enabled);
 
-    void testAddEdge();
+    static void logDisabledCode(const std::string & message);
 
-    void testAddNode();
-
-    void testAddTwoNodes();
-
-    void testAreNodesDirectlyConnected();
-
-    void testDeleteEdge();
-
-    void testDeleteNode();
-
-    void testDeleteNodeInvolvingEdge();
-
-    void testGetEdges();
-
-    void testGetNodes();
-
-    void testGetNodesConnectedToNode();
-
-    void testGetNodeByIndex();
-
-    void testGetNodeByIndex_NotFound();
+private:
+    static bool m_enabled;
 };
+
+#endif // TEST_MODE_HPP

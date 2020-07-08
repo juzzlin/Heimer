@@ -17,9 +17,11 @@
 
 #include "alz_serializer.hpp"
 #include "mind_map_data.hpp"
+#include "test_mode.hpp"
 
 SerializerTest::SerializerTest()
 {
+    TestMode::setEnabled(true);
 }
 
 void SerializerTest::testEmptyDesign()

@@ -18,9 +18,11 @@
 #include "alz_serializer.hpp"
 #include "editor_data.hpp"
 #include "mind_map_data.hpp"
+#include "test_mode.hpp"
 
 EditorDataTest::EditorDataTest()
 {
+    TestMode::setEnabled(true);
 }
 
 void EditorDataTest::testGroupMove()

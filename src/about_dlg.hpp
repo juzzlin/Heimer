@@ -21,8 +21,6 @@
 //! The about dialog.
 class AboutDlg : public QDialog
 {
-    Q_OBJECT
-
 public:
     //! Constructor.
     explicit AboutDlg(QWidget * parent = nullptr);

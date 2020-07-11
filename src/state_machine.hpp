@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef STATEMACHINE_HPP
-#define STATEMACHINE_HPP
+#ifndef STATE_MACHINE_HPP
+#define STATE_MACHINE_HPP
 
 #include <QObject>
 
@@ -106,4 +106,4 @@ private:
     std::shared_ptr<Mediator> m_mediator;
 };
 
-#endif // STATEMACHINE_HPP
+#endif // STATE_MACHINE_HPP

@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef USEREXCEPTION_HPP
-#define USEREXCEPTION_HPP
+#ifndef USER_EXCEPTION_HPP
+#define USER_EXCEPTION_HPP
 
 #include <stdexcept>
 #include <string>
@@ -28,4 +28,4 @@ public:
     }
 };
 
-#endif // USEREXCEPTION_HPP
+#endif // USER_EXCEPTION_HPP

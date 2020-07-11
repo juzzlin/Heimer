@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef EDITORSCENE_HPP
-#define EDITORSCENE_HPP
+#ifndef EDITOR_SCENE_HPP
+#define EDITOR_SCENE_HPP
 
 #include <memory>
 
@@ -41,4 +41,4 @@ private:
     std::vector<ItemPtr> m_ownItems;
 };
 
-#endif // EDITORSCENE_HPP
+#endif // EDITOR_SCENE_HPP

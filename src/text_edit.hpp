@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef TEXTEDIT_HPP
-#define TEXTEDIT_HPP
+#ifndef TEXT_EDIT_HPP
+#define TEXT_EDIT_HPP
 
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsTextItem>
@@ -61,4 +61,4 @@ private:
     int m_textSize = 0;
 };
 
-#endif // TEXTEDIT_HPP
+#endif // TEXT_EDIT_HPP

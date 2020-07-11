@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef MINDMAPDATABASE_HPP
-#define MINDMAPDATABASE_HPP
+#ifndef MIND_MAP_DATA_BASE_HPP
+#define MIND_MAP_DATA_BASE_HPP
 
 #include <QString>
 
@@ -103,4 +103,4 @@ private:
     unsigned int m_index;
 };
 
-#endif // MINDMAPDATABASE_HPP
+#endif // MIND_MAP_DATA_BASE_HPP

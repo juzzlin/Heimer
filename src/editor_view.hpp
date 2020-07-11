@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef EDITORVIEW_HPP
-#define EDITORVIEW_HPP
+#ifndef EDITOR_VIEW_HPP
+#define EDITOR_VIEW_HPP
 
 #include "copy_paste.hpp"
 #include "grid.hpp"
@@ -179,4 +179,4 @@ private:
     MainContextMenu * m_mainContextMenu;
 };
 
-#endif // EDITORVIEW_HPP
+#endif // EDITOR_VIEW_HPP

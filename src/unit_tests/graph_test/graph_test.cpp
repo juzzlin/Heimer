@@ -17,6 +17,7 @@
 
 #include "graph.hpp"
 #include "node.hpp"
+#include "test_mode.hpp"
 
 #include <stdexcept>
 #include <string>
@@ -25,6 +26,7 @@ using std::make_shared;
 
 GraphTest::GraphTest()
 {
+    TestMode::setEnabled(true);
 }
 
 void GraphTest::testAddEdge()
@@ -40,32 +42,6 @@ void GraphTest::testAddEdge()
     const auto edge = make_shared<Edge>(*node0, *node1);
     dut.addEdge(edge);
     dut.addEdge(edge); // Check that doubles are ignored
-
-    const auto edgesFrom0 = dut.getEdgesFromNode(node0);
-    QCOMPARE(edgesFrom0.size(), static_cast<size_t>(1));
-    QCOMPARE(edgesFrom0.at(0)->sourceNode().index(), node0->index());
-
-    QCOMPARE(dut.getEdgesToNode(node0).size(), static_cast<size_t>(0));
-
-    const auto edgesTo1 = dut.getEdgesToNode(node1);
-    QCOMPARE(edgesTo1.size(), static_cast<size_t>(1));
-    QCOMPARE(edgesTo1.at(0)->sourceNode().index(), node0->index());
-
-    QCOMPARE(dut.getEdgesToNode(node0).size(), static_cast<size_t>(0));
-}
-
-void GraphTest::testAddEdgeByIndices()
-{
-    Graph dut;
-
-    const auto node0 = make_shared<Node>();
-    dut.addNode(node0);
-
-    const auto node1 = make_shared<Node>();
-    dut.addNode(node1);
-
-    dut.addEdge(node0->index(), node1->index());
-    dut.addEdge(node0->index(), node1->index()); // Check that doubles are ignored
 
     const auto edgesFrom0 = dut.getEdgesFromNode(node0);
     QCOMPARE(edgesFrom0.size(), static_cast<size_t>(1));

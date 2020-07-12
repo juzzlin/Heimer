@@ -166,7 +166,7 @@ static const auto QSETTINGS_ASPECT_RATIO_KEY = "aspectRatio";
 
 static const auto QSETTINGS_MIN_EDGE_LENGTH_KEY = "minEdgeLength";
 
-} // LayoutOptimizer
+} // namespace LayoutOptimizer
 
 namespace Scene {
 

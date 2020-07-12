@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2020 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,17 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef READER_HPP
-#define READER_HPP
+#include <QTest>
 
-#include <QDomDocument>
+class LayoutOptimizerTest : public QObject
+{
+    Q_OBJECT
 
-#include "file_exception.hpp"
+public:
+    LayoutOptimizerTest();
 
-namespace Reader {
+private slots:
 
-QDomDocument readFromFile(QString filePath);
+    void testSingleNode_ShouldNotDoAnything();
 
-}
-
-#endif // READER_HPP
+    void testMultipleNodes_ShouldReduceCost();
+};

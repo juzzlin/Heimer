@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef EDGEDOT_HPP
-#define EDGEDOT_HPP
+#ifndef EDGE_DOT_HPP
+#define EDGE_DOT_HPP
 
 #include <QGraphicsEllipseItem>
 #include <QObject>
@@ -28,4 +28,4 @@ public:
     explicit EdgeDot(QGraphicsItem * parentItem = nullptr);
 };
 
-#endif // EDGEDOT_HPP
+#endif // EDGE_DOT_HPP

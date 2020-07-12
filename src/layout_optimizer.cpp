@@ -17,6 +17,7 @@
 #include "constants.hpp"
 #include "contrib/SimpleLogger/src/simple_logger.hpp"
 #include "graph.hpp"
+#include "grid.hpp"
 #include "mind_map_data.hpp"
 #include "node.hpp"
 
@@ -44,8 +45,9 @@ inline double dot(double x1, double y1, double x2, double y2)
 class LayoutOptimizer::Impl
 {
 public:
-    Impl(MindMapDataPtr mindMapData)
+    Impl(MindMapDataPtr mindMapData, const Grid & grid)
       : m_mindMapData(mindMapData)
+      , m_grid(grid)
     {
     }
 
@@ -105,16 +107,17 @@ public:
         }
     }
 
-    void optimize()
+    OptimizationInfo optimize()
     {
         if (m_layout->all.size() < 2) {
-            return;
+            return {};
         }
 
+        OptimizationInfo oi;
         double cost = calculateCost();
-        const double initialCost = cost;
+        oi.initialCost = cost;
 
-        juzzlin::L().info() << "Initial cost: " << initialCost;
+        juzzlin::L().info() << "Initial cost: " << oi.initialCost;
 
         std::uniform_real_distribution<double> dist { 0, 1 };
 
@@ -138,6 +141,7 @@ public:
                     newCost -= change.targetCell->getCost();
 
                     doChange(change);
+                    oi.changes++;
 
                     LayoutOptimizer::Impl::Cell::globalMoveId++;
 
@@ -174,11 +178,12 @@ public:
 
             t *= 0.7;
 
-            updateProgress(1.0 - std::log(t) / std::log(t0));
+            updateProgress(std::min(1.0, 1.0 - std::log(t) / std::log(t0)));
         }
 
-        const double gain = (cost - initialCost) / initialCost;
-        juzzlin::L().info() << "End cost: " << cost << " (" << gain * 100 << "%)";
+        oi.finalCost = cost;
+
+        return oi;
     }
 
     void updateProgress(double val)
@@ -192,7 +197,7 @@ public:
     {
         m_layout->spread();
 
-        m_layout->applyCoordinates();
+        m_layout->applyCoordinates(m_grid);
     }
 
     void setProgressCallback(ProgressCallback progressCallback)
@@ -294,6 +299,8 @@ private:
 
     MindMapDataPtr m_mindMapData;
 
+    const Grid & m_grid;
+
     struct Rect
     {
         int x = 0;
@@ -345,7 +352,6 @@ private:
         static size_t globalMoveId;
 
     private:
-
         inline double distance(Cell & other)
         {
             const auto dx = x() - other.x();
@@ -416,7 +422,7 @@ private:
 
     struct Layout
     {
-        void applyCoordinates()
+        void applyCoordinates(const Grid & grid)
         {
             double maxWidth = 0;
             double maxHeight = 0;
@@ -427,10 +433,7 @@ private:
                 }
             }
             for (auto && cell : all) {
-                cell->node.lock()->setLocation(
-                  QPointF(
-                    Constants::Node::MIN_WIDTH / 2 + cell->rect.x - maxWidth / 2,
-                    Constants::Node::MIN_HEIGHT / 2 + cell->rect.y - maxHeight / 2));
+                cell->node.lock()->setLocation(grid.snapToGrid({ cell->rect.x - maxWidth / 2, cell->rect.y - maxHeight / 2 }));
             }
         }
 
@@ -526,8 +529,8 @@ private:
 
 size_t LayoutOptimizer::Impl::Cell::globalMoveId = 0;
 
-LayoutOptimizer::LayoutOptimizer(MindMapDataPtr mindMapData)
-  : m_impl(std::make_unique<Impl>(mindMapData))
+LayoutOptimizer::LayoutOptimizer(MindMapDataPtr mindMapData, const Grid & grid)
+  : m_impl(std::make_unique<Impl>(mindMapData, grid))
 {
 }
 
@@ -536,9 +539,9 @@ void LayoutOptimizer::initialize(double aspectRatio, double minEdgeLength)
     m_impl->initialize(aspectRatio, minEdgeLength);
 }
 
-void LayoutOptimizer::optimize()
+LayoutOptimizer::OptimizationInfo LayoutOptimizer::optimize()
 {
-    m_impl->optimize();
+    return m_impl->optimize();
 }
 
 void LayoutOptimizer::extract()

@@ -1,6 +1,6 @@
 set(EDITOR_DIR ${CMAKE_SOURCE_DIR}/src)
 include_directories(${EDITOR_DIR} ${EDITOR_DIR}/contrib ${CMAKE_CURRENT_SOURCE_DIR})
-set(NAME editor_data_test)
+set(NAME layout_optimizer_test)
 set(SRC ${NAME}.cpp)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/unit_tests)
 add_executable(${NAME} ${SRC} ${MOC_SRC})

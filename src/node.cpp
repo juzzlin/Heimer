@@ -21,6 +21,7 @@
 #include "image.hpp"
 #include "layers.hpp"
 #include "node_handle.hpp"
+#include "test_mode.hpp"
 #include "text_edit.hpp"
 
 #include "simple_logger.hpp"
@@ -96,23 +97,23 @@ Node::Node(const Node & other)
 
 void Node::addGraphicsEdge(Edge & edge)
 {
-#ifndef HEIMER_UNIT_TEST
-    m_graphicsEdges.push_back(&edge);
-#else
-    Q_UNUSED(edge)
-#endif
+    if (!TestMode::enabled()) {
+        m_graphicsEdges.push_back(&edge);
+    } else {
+        TestMode::logDisabledCode("addGraphicsEdge");
+    }
 }
 
 void Node::removeGraphicsEdge(Edge & edge)
 {
-#ifndef HEIMER_UNIT_TEST
-    const auto iter = std::find(m_graphicsEdges.begin(), m_graphicsEdges.end(), &edge);
-    if (iter != m_graphicsEdges.end()) {
-        m_graphicsEdges.erase(iter);
+    if (!TestMode::enabled()) {
+        const auto iter = std::find(m_graphicsEdges.begin(), m_graphicsEdges.end(), &edge);
+        if (iter != m_graphicsEdges.end()) {
+            m_graphicsEdges.erase(iter);
+        }
+    } else {
+        TestMode::logDisabledCode("removeGraphicsEdge");
     }
-#else
-    Q_UNUSED(edge)
-#endif
 }
 
 void Node::adjustSize()
@@ -315,10 +316,12 @@ NodeHandle * Node::hitsHandle(QPointF pos)
 
 void Node::initTextField()
 {
-#ifndef HEIMER_UNIT_TEST
-    m_textEdit->setTextWidth(-1);
-    m_textEdit->setPos(-m_size.width() * 0.5 + Constants::Node::MARGIN, -m_size.height() * 0.5 + Constants::Node::MARGIN);
-#endif
+    if (!TestMode::enabled()) {
+        m_textEdit->setTextWidth(-1);
+        m_textEdit->setPos(-m_size.width() * 0.5 + Constants::Node::MARGIN, -m_size.height() * 0.5 + Constants::Node::MARGIN);
+    } else {
+        TestMode::logDisabledCode("initTestField");
+    }
 }
 
 void Node::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
@@ -374,9 +377,11 @@ void Node::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
 void Node::setColor(const QColor & color)
 {
     m_color = color;
-#ifndef HEIMER_UNIT_TEST
-    update();
-#endif
+    if (!TestMode::enabled()) {
+        update();
+    } else {
+        TestMode::logDisabledCode("update() on setColor");
+    }
 }
 
 int Node::cornerRadius() const
@@ -458,11 +463,12 @@ void Node::setTextInputActive()
 
 QString Node::text() const
 {
-#ifndef HEIMER_UNIT_TEST
-    return m_textEdit->text();
-#else
-    return m_text;
-#endif
+    if (!TestMode::enabled()) {
+        return m_textEdit->text();
+    } else {
+        TestMode::logDisabledCode("return widget text");
+        return m_text;
+    }
 }
 
 void Node::setText(const QString & text)
@@ -482,19 +488,23 @@ QColor Node::textColor() const
 void Node::setTextColor(const QColor & color)
 {
     m_textColor = color;
-#ifndef HEIMER_UNIT_TEST
-    m_textEdit->setDefaultTextColor(color);
-    m_textEdit->update();
-#endif
+    if (!TestMode::enabled()) {
+        m_textEdit->setDefaultTextColor(color);
+        m_textEdit->update();
+    } else {
+        TestMode::logDisabledCode("set widget color");
+    }
 }
 
 void Node::setTextSize(int textSize)
 {
     m_textSize = textSize;
-#ifndef HEIMER_UNIT_TEST
-    m_textEdit->setTextSize(textSize);
-    adjustSize();
-#endif
+    if (!TestMode::enabled()) {
+        m_textEdit->setTextSize(textSize);
+        adjustSize();
+    } else {
+        TestMode::logDisabledCode("set widget text size");
+    }
 }
 
 void Node::setImageRef(size_t imageRef)

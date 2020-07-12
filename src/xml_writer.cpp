@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2019 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,24 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef GRID_HPP
-#define GRID_HPP
+#include "xml_writer.hpp"
 
-#include <QPointF>
+#include <QFile>
+#include <QTextStream>
 
-class Grid
+bool XmlWriter::writeToFile(QDomDocument document, QString filePath)
 {
-public:
-    Grid();
+    QFile file(filePath);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file);
+        out << document;
+        file.close();
+        return true;
+    }
 
-    void setSize(int gridSize);
-
-    int size() const;
-
-    QPointF snapToGrid(QPointF in) const;
-
-private:
-    int m_size = 0;
-};
-
-#endif // GRID_HPP
+    return false;
+}

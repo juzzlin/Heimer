@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef HASHSEED_HPP
-#define HASHSEED_HPP
+#ifndef HASH_SEED_HPP
+#define HASH_SEED_HPP
 
 #include <QtCore>
 
@@ -28,4 +28,4 @@ void init();
 
 }
 
-#endif // HASHSEED_HPP
+#endif // HASH_SEED_HPP

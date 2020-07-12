@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef EDITORDATA_HPP
-#define EDITORDATA_HPP
+#ifndef EDITOR_DATA_HPP
+#define EDITOR_DATA_HPP
 
 #include <memory>
 #include <set>
@@ -147,4 +147,4 @@ private:
     QString m_fileName;
 };
 
-#endif // EDITORDATA_HPP
+#endif // EDITOR_DATA_HPP

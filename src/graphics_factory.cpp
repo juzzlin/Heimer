@@ -19,13 +19,13 @@
 
 QGraphicsEffect * GraphicsFactory::createDropShadowEffect(bool selected)
 {
-    QGraphicsDropShadowEffect * shadow = new QGraphicsDropShadowEffect();
+    const auto shadow = new QGraphicsDropShadowEffect;
     if (!selected) {
-        shadow->setOffset(QPointF(3, 3));
+        shadow->setOffset({ 3, 3 });
         shadow->setBlurRadius(5);
     } else {
-        shadow->setOffset(QPointF(0, 0));
-        shadow->setColor(QColor(255, 0, 0));
+        shadow->setOffset({});
+        shadow->setColor({ 255, 0, 0 });
         shadow->setBlurRadius(50);
     }
     return shadow;

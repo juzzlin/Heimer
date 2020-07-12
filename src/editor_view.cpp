@@ -66,6 +66,11 @@ EditorView::EditorView(Mediator & mediator)
     connect(m_mainContextMenu, &MainContextMenu::nodeTextColorActionTriggered, this, &EditorView::openNodeTextColorDialog);
 }
 
+const Grid & EditorView::grid() const
+{
+    return m_grid;
+}
+
 void EditorView::finishRubberBand()
 {
     m_mediator.setRectagleSelection({ mapToScene(m_rubberBand->geometry().topLeft()), mapToScene(m_rubberBand->geometry().bottomRight()) });
@@ -118,8 +123,6 @@ void EditorView::handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHand
         return;
     }
 
-    m_mediator.clearSelectionGroup();
-
     if (event.button() == Qt::LeftButton) {
         handleLeftButtonClickOnNodeHandle(nodeHandle);
     }
@@ -145,16 +148,19 @@ void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
 {
     switch (nodeHandle.role()) {
     case NodeHandle::Role::Add:
+        m_mediator.clearSelectionGroup();
         initiateNewNodeDrag(nodeHandle);
         break;
     case NodeHandle::Role::Drag:
         initiateNodeDrag(nodeHandle.parentNode());
         break;
     case NodeHandle::Role::Color:
+        m_mediator.clearSelectionGroup();
         m_mediator.setSelectedNode(&nodeHandle.parentNode());
         openNodeColorDialog();
         break;
     case NodeHandle::Role::TextColor:
+        m_mediator.clearSelectionGroup();
         m_mediator.setSelectedNode(&nodeHandle.parentNode());
         openNodeTextColorDialog();
         break;
@@ -279,8 +285,7 @@ void EditorView::mousePressEvent(QMouseEvent * event)
     const QRectF clickRect(clickedScenePos.x() - tolerance, clickedScenePos.y() - tolerance, tolerance * 2, tolerance * 2);
 
     // Fetch all items at the location
-    const QList<QGraphicsItem *> items = scene()->items(clickRect, Qt::IntersectsItemShape, Qt::DescendingOrder);
-
+    const auto items = scene()->items(clickRect, Qt::IntersectsItemShape, Qt::DescendingOrder);
     if (items.size()) {
         const auto item = *items.begin();
         if (const auto node = dynamic_cast<Node *>(item)) {
@@ -316,7 +321,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
             m_mediator.mouseAction().clear();
             break;
         case MouseAction::Action::CreateOrConnectNode:
-            if (auto sourceNode = m_mediator.mouseAction().sourceNode()) {
+            if (const auto sourceNode = m_mediator.mouseAction().sourceNode()) {
                 if (m_connectionTargetNode) {
                     m_mediator.addEdge(*sourceNode, *m_connectionTargetNode);
                     m_connectionTargetNode->setSelected(false);
@@ -359,7 +364,7 @@ void EditorView::openMainContextMenu(MainContextMenu::Mode mode)
 
 void EditorView::openNodeColorDialog()
 {
-    auto node = m_mediator.selectedNode();
+    const auto node = m_mediator.selectedNode();
     const auto color = QColorDialog::getColor(Qt::white, this);
     if (color.isValid()) {
         m_mediator.saveUndoPoint();

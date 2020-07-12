@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef UNDOSTACK_HPP
-#define UNDOSTACK_HPP
+#ifndef UNDO_STACK_HPP
+#define UNDO_STACK_HPP
 
 #include "mind_map_data.hpp"
 
@@ -51,4 +51,4 @@ private:
     size_t m_maxHistorySize;
 };
 
-#endif // UNDOSTACK_HPP
+#endif // UNDO_STACK_HPP

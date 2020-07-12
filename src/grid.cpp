@@ -24,6 +24,11 @@ void Grid::setSize(int size)
     m_size = size;
 }
 
+int Grid::size() const
+{
+    return m_size;
+}
+
 QPointF Grid::snapToGrid(QPointF in) const
 {
     if (!m_size) {

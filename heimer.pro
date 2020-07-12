@@ -4,7 +4,7 @@
 TEMPLATE = app
 TARGET = heimer
 
-DEFINES += VERSION=\\\"1.16.0\\\"
+DEFINES += VERSION=\\\"1.18.0\\\"
 CONFIG += c++14 lrelease embed_translations
 
 # Qt version check
@@ -22,6 +22,7 @@ INCLUDEPATH += . $$SRC/contrib/SimpleLogger/src $$SRC/contrib/Argengine/src
 # Input
 HEADERS +=  \
     $$SRC/about_dlg.hpp \
+    $$SRC/alz_serializer.hpp \
     $$SRC/application.hpp \
     $$SRC/copy_paste.hpp \
     $$SRC/graph.hpp \
@@ -51,21 +52,22 @@ HEADERS +=  \
     $$SRC/mouse_action.hpp \
     $$SRC/node.hpp \
     $$SRC/node_handle.hpp \
-    $$SRC/reader.hpp \
     $$SRC/recent_files_manager.hpp \
     $$SRC/recent_files_menu.hpp \
     $$SRC/selection_group.hpp \
-    $$SRC/serializer.hpp \
     $$SRC/state_machine.hpp \
+    $$SRC/test_mode.hpp \
     $$SRC/text_edit.hpp \
     $$SRC/undo_stack.hpp \
     $$SRC/whats_new_dlg.hpp \
-    $$SRC/writer.hpp \
+    $$SRC/xml_reader.hpp \
+    $$SRC/xml_writer.hpp \
     $$SRC/contrib/Argengine/src/argengine.hpp \
     $$SRC/contrib/SimpleLogger/src/simple_logger.hpp \
 
 SOURCES += \
     $$SRC/about_dlg.cpp \
+    $$SRC/alz_serializer.cpp \
     $$SRC/application.cpp \
     $$SRC/copy_paste.cpp \
     $$SRC/graph.cpp \
@@ -94,16 +96,16 @@ SOURCES += \
     $$SRC/mouse_action.cpp \
     $$SRC/node.cpp \
     $$SRC/node_handle.cpp \
-    $$SRC/reader.cpp \
     $$SRC/recent_files_manager.cpp \
     $$SRC/recent_files_menu.cpp \
     $$SRC/selection_group.cpp \
-    $$SRC/serializer.cpp \
     $$SRC/state_machine.cpp \
+    $$SRC/test_mode.cpp \
     $$SRC/text_edit.cpp \
     $$SRC/undo_stack.cpp \
     $$SRC/whats_new_dlg.cpp \
-    $$SRC/writer.cpp \
+    $$SRC/xml_reader.cpp \
+    $$SRC/xml_writer.cpp \
     $$SRC/contrib/Argengine/src/argengine.cpp \
     $$SRC/contrib/SimpleLogger/src/simple_logger.cpp \
 

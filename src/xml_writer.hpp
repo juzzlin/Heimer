@@ -13,19 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SERIALIZER_HPP
-#define SERIALIZER_HPP
-
-#include "mind_map_data.hpp"
+#ifndef XML_WRITER_HPP
+#define XML_WRITER_HPP
 
 #include <QDomDocument>
 
-namespace Serializer {
+namespace XmlWriter {
 
-MindMapDataPtr fromXml(QDomDocument document);
+bool writeToFile(QDomDocument document, QString filePath);
+}
 
-QDomDocument toXml(MindMapData & mindMapData);
-
-} // namespace Serializer
-
-#endif // SERIALIZER_HPP
+#endif // XML_WRITER_HPP

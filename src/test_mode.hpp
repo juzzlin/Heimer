@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2019 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2020 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,24 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef GRID_HPP
-#define GRID_HPP
+#ifndef TEST_MODE_HPP
+#define TEST_MODE_HPP
 
-#include <QPointF>
+#include <string>
 
-class Grid
+class TestMode
 {
 public:
-    Grid();
+    static bool enabled();
 
-    void setSize(int gridSize);
+    static void setEnabled(bool enabled);
 
-    int size() const;
-
-    QPointF snapToGrid(QPointF in) const;
+    static void logDisabledCode(const std::string & message);
 
 private:
-    int m_size = 0;
+    static bool m_enabled;
 };
 
-#endif // GRID_HPP
+#endif // TEST_MODE_HPP

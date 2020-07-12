@@ -14,6 +14,7 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "text_edit.hpp"
+#include "test_mode.hpp"
 
 #include <QKeyEvent>
 #include <QMouseEvent>
@@ -25,10 +26,12 @@
 TextEdit::TextEdit(QGraphicsItem * parentItem)
   : QGraphicsTextItem(parentItem)
 {
-#ifndef HEIMER_UNIT_TEST
-    setTextInteractionFlags(Qt::TextEditorInteraction);
-    setDefaultTextColor({ 0, 0, 0 });
-#endif
+    if (!TestMode::enabled()) {
+        setTextInteractionFlags(Qt::TextEditorInteraction);
+        setDefaultTextColor({ 0, 0, 0 });
+    } else {
+        TestMode::logDisabledCode("TextEdit initialization");
+    }
 }
 
 void TextEdit::keyPressEvent(QKeyEvent * event)
@@ -63,9 +66,11 @@ void TextEdit::setText(const QString & text)
 {
     if (m_text != text) {
         m_text = text;
-#ifndef HEIMER_UNIT_TEST
-        setPlainText(text);
-#endif
+        if (!TestMode::enabled()) {
+            setPlainText(text);
+        } else {
+            TestMode::logDisabledCode("Set TextEdit plain text");
+        }
     }
 }
 
@@ -89,14 +94,14 @@ void TextEdit::setBackgroundColor(const QColor & backgroundColor)
 void TextEdit::setTextSize(int textSize)
 {
     m_textSize = textSize;
-#ifndef HEIMER_UNIT_TEST
-    auto && currentFont = font();
-    currentFont.setPointSize(textSize);
-    setFont(currentFont);
-    update();
-#endif
+    if (!TestMode::enabled()) {
+        auto && currentFont = font();
+        currentFont.setPointSize(textSize);
+        setFont(currentFont);
+        update();
+    } else {
+        TestMode::logDisabledCode("Set TextEdit font");
+    }
 }
 
-TextEdit::~TextEdit()
-{
-}
+TextEdit::~TextEdit() = default;

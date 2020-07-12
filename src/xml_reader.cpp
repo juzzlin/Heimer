@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2019 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,24 +13,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef GRID_HPP
-#define GRID_HPP
+#include "xml_reader.hpp"
 
-#include <QPointF>
+#include <QFile>
+#include <QObject>
 
-class Grid
+QDomDocument XmlReader::readFromFile(QString filePath)
 {
-public:
-    Grid();
+    QDomDocument doc;
 
-    void setSize(int gridSize);
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly)) {
+        throw FileException(QObject::tr("Cannot open file: '") + filePath + "'");
+    }
 
-    int size() const;
+    if (!doc.setContent(&file)) {
+        file.close();
 
-    QPointF snapToGrid(QPointF in) const;
+        throw FileException(QObject::tr("Corrupted file: '") + filePath + "'");
+    }
 
-private:
-    int m_size = 0;
-};
+    file.close();
 
-#endif // GRID_HPP
+    return doc;
+}

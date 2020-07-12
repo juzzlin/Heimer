@@ -19,18 +19,28 @@
 #include <functional>
 #include <memory>
 
+class Grid;
 class MindMapData;
 
 class LayoutOptimizer
 {
 public:
-    LayoutOptimizer(std::shared_ptr<MindMapData> mindMapData);
+    LayoutOptimizer(std::shared_ptr<MindMapData> mindMapData, const Grid & grid);
 
     ~LayoutOptimizer();
 
     void initialize(double aspectRatio, double minEdgeLength);
 
-    void optimize();
+    struct OptimizationInfo
+    {
+        double initialCost = 0;
+
+        double finalCost = 0;
+
+        size_t changes = 0;
+    };
+
+    OptimizationInfo optimize();
 
     void extract();
 

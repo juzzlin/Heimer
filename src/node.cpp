@@ -364,7 +364,9 @@ void Node::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
 
         painter->drawPixmap(rect, scaledPixmap, scaledRect);
     } else {
+        const QPen pen(QColor { 2 * m_color.red() / 3, 2 * m_color.green() / 3, 2 * m_color.blue() / 3 }, 1);
         painter->fillPath(path, QBrush(m_color));
+        painter->strokePath(path, pen);
     }
 
     // Patch for TextEdit

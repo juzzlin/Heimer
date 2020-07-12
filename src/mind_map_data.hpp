@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef MINDMAPDATA_HPP
-#define MINDMAPDATA_HPP
+#ifndef MIND_MAP_DATA_HPP
+#define MIND_MAP_DATA_HPP
 
 #include <QString>
 
@@ -94,4 +94,4 @@ private:
 
 typedef std::shared_ptr<MindMapData> MindMapDataPtr;
 
-#endif // MINDMAPDATA_HPP
+#endif // MIND_MAP_DATA_HPP

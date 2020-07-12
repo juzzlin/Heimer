@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef EDGETEXTEDIT_HPP
-#define EDGETEXTEDIT_HPP
+#ifndef EDGE_TEXT_EDIT_HPP
+#define EDGE_TEXT_EDIT_HPP
 
 #include "text_edit.hpp"
 
@@ -42,4 +42,4 @@ private:
     QTimer m_visibilityTimer;
 };
 
-#endif // EDGETEXTEDIT_HPP
+#endif // EDGE_TEXT_EDIT_HPP

@@ -26,8 +26,6 @@ private slots:
 
     void testAddEdge();
 
-    void testAddEdgeByIndices();
-
     void testAddNode();
 
     void testAddTwoNodes();

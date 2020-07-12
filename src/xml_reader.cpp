@@ -13,19 +13,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SERIALIZER_HPP
-#define SERIALIZER_HPP
+#include "xml_reader.hpp"
 
-#include "mind_map_data.hpp"
+#include <QFile>
+#include <QObject>
 
-#include <QDomDocument>
+QDomDocument XmlReader::readFromFile(QString filePath)
+{
+    QDomDocument doc;
 
-namespace Serializer {
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly)) {
+        throw FileException(QObject::tr("Cannot open file: '") + filePath + "'");
+    }
 
-MindMapDataPtr fromXml(QDomDocument document);
+    if (!doc.setContent(&file)) {
+        file.close();
 
-QDomDocument toXml(MindMapData & mindMapData);
+        throw FileException(QObject::tr("Corrupted file: '") + filePath + "'");
+    }
 
-} // namespace Serializer
+    file.close();
 
-#endif // SERIALIZER_HPP
+    return doc;
+}

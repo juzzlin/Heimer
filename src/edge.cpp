@@ -21,6 +21,7 @@
 #include "graphics_factory.hpp"
 #include "layers.hpp"
 #include "node.hpp"
+#include "test_mode.hpp"
 
 #include "simple_logger.hpp"
 
@@ -155,9 +156,11 @@ void Edge::setWidth(double width)
 void Edge::setArrowMode(ArrowMode arrowMode)
 {
     m_arrowMode = arrowMode;
-#ifndef HEIMER_UNIT_TEST
-    updateLine();
-#endif
+    if (!TestMode::enabled()) {
+        updateLine();
+    } else {
+        TestMode::logDisabledCode("Update line after arrow mode change");
+    }
 }
 
 void Edge::setColor(const QColor & color)
@@ -172,12 +175,14 @@ void Edge::setColor(const QColor & color)
 void Edge::setText(const QString & text)
 {
     m_text = text;
-#ifndef HEIMER_UNIT_TEST
-    if (m_label) {
-        m_label->setText(text);
+    if (!TestMode::enabled()) {
+        if (m_label) {
+            m_label->setText(text);
+        }
+        setLabelVisible(!text.isEmpty());
+    } else {
+        TestMode::logDisabledCode("Set label text");
     }
-    setLabelVisible(!text.isEmpty());
-#endif
 }
 
 void Edge::setTextSize(int textSize)
@@ -354,15 +359,17 @@ void Edge::updateLine()
 
 Edge::~Edge()
 {
-#ifndef HEIMER_UNIT_TEST
-    juzzlin::L().debug() << "Deleting edge " << sourceNode().index() << " -> " << targetNode().index();
+    if (!TestMode::enabled()) {
+        juzzlin::L().debug() << "Deleting edge " << sourceNode().index() << " -> " << targetNode().index();
 
-    if (m_enableAnimations) {
-        m_sourceDotSizeAnimation->stop();
-        m_targetDotSizeAnimation->stop();
+        if (m_enableAnimations) {
+            m_sourceDotSizeAnimation->stop();
+            m_targetDotSizeAnimation->stop();
+        }
+
+        sourceNode().removeGraphicsEdge(*this);
+        targetNode().removeGraphicsEdge(*this);
+    } else {
+        TestMode::logDisabledCode("Edge destructor");
     }
-
-    sourceNode().removeGraphicsEdge(*this);
-    targetNode().removeGraphicsEdge(*this);
-#endif
 }

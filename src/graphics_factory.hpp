@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef GRAPHICSFACTORY_HPP
-#define GRAPHICSFACTORY_HPP
+#ifndef GRAPHICS_FACTORY_HPP
+#define GRAPHICS_FACTORY_HPP
 
 class QGraphicsEffect;
 
@@ -22,4 +22,4 @@ namespace GraphicsFactory {
 QGraphicsEffect * createDropShadowEffect(bool selected = false);
 }
 
-#endif // GRAPHICSFACTORY_HPP
+#endif // GRAPHICS_FACTORY_HPP

@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef WRITER_HPP
-#define WRITER_HPP
+#ifndef XML_WRITER_HPP
+#define XML_WRITER_HPP
 
 #include <QDomDocument>
 
-namespace Writer {
+namespace XmlWriter {
 
 bool writeToFile(QDomDocument document, QString filePath);
 }
 
-#endif // WRITER_HPP
+#endif // XML_WRITER_HPP

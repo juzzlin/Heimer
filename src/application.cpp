@@ -47,26 +47,40 @@ namespace {
 using juzzlin::Argengine;
 using juzzlin::L;
 
+// Forces the language to the given one or chooses the best UI language
 static void initTranslations(QTranslator & appTranslator, QTranslator & qtTranslator, QGuiApplication & app, QString lang = "")
 {
+    // See https://doc.qt.io/qt-5/qtranslator.html#load-1
+    QStringList langs;
     if (lang.isEmpty()) {
-        lang = QLocale::system().name();
+        langs = QLocale().uiLanguages();
+    } else {
+        langs << lang;
+        L().info() << "Language forced to '" << lang.toStdString() << "'";
     }
 
     // Qt's built-in translations
-    if (qtTranslator.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
-        app.installTranslator(&qtTranslator);
-        L().info() << "Loaded Qt translations for " << lang.toStdString();
-    } else {
-        L().warning() << "Failed to load Qt translations for " << lang.toStdString();
+    for (auto && lang : langs) {
+        L().info() << "Trying Qt translations for '" << lang.toStdString() << "'";
+        if (qtTranslator.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
+            app.installTranslator(&qtTranslator);
+            L().info() << "Loaded Qt translations for '" << lang.toStdString() << "'";
+            break;
+        } else {
+            L().warning() << "Failed to load Qt translations for '" << lang.toStdString() << "'";
+        }
     }
 
     // Application's translations
-    if (appTranslator.load(Constants::Application::TRANSLATIONS_RESOURCE_BASE + lang)) {
-        app.installTranslator(&appTranslator);
-        L().info() << "Loaded application translations for " << lang.toStdString();
-    } else {
-        L().warning() << "Failed to load application translations for " << lang.toStdString();
+    for (auto && lang : langs) {
+        L().info() << "Trying application translations for '" << lang.toStdString() << "'";
+        if (appTranslator.load(Constants::Application::TRANSLATIONS_RESOURCE_BASE + lang)) {
+            app.installTranslator(&appTranslator);
+            L().info() << "Loaded application translations for '" << lang.toStdString() << "'";
+            break;
+        } else {
+            L().warning() << "Failed to load application translations for '" << lang.toStdString() << "'";
+        }
     }
 }
 
@@ -291,6 +305,7 @@ void Application::saveMindMapAs()
     if (m_mediator->saveMindMapAs(fileName)) {
         const auto msg = QString(tr("File '")) + fileName + tr("' saved.");
         L().debug() << msg.toStdString();
+        m_mainWindow->enableSave(false);
         emit actionTriggered(StateMachine::Action::MindMapSavedAs);
     } else {
         const auto msg = QString(tr("Failed to save file as '") + fileName + "'.");
@@ -385,8 +400,8 @@ void Application::showPngExportDialog()
 
 void Application::showLayoutOptimizationDialog()
 {
-    LayoutOptimizer layoutOptimizer{ m_mediator->mindMapData() };
-    LayoutOptimizationDialog dialog{ *m_mainWindow, layoutOptimizer };
+    LayoutOptimizer layoutOptimizer { m_mediator->mindMapData(), m_editorView->grid() };
+    LayoutOptimizationDialog dialog { *m_mainWindow, layoutOptimizer };
     connect(&dialog, &LayoutOptimizationDialog::undoPointRequested, m_mediator.get(), &Mediator::saveUndoPoint);
 
     if (dialog.exec() == QDialog::Accepted) {

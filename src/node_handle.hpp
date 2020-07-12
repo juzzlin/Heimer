@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef NODEHANDLE_HPP
-#define NODEHANDLE_HPP
+#ifndef NODE_HANDLE_HPP
+#define NODE_HANDLE_HPP
 
 #include <QGraphicsItem>
 #include <QPropertyAnimation>
@@ -73,4 +73,4 @@ private:
     bool m_visible = false;
 };
 
-#endif // NODEHANDLE_HPP
+#endif // NODE_HANDLE_HPP

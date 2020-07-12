@@ -3,9 +3,29 @@ x.y.z
 
 New features:
 
+* Fix GitHub Issue #77: Ctrl+S on new map should directly open 'save as' dialog
+
 Bug fixes:
 
+* Fix GitHub Issue #87: Group move doesn't work with the move handle
+
 Other:
+
+1.18.0
+======
+
+New features:
+
+* Add a shortcut Ctrl+Shift+F to create new floating nodes
+
+Bug fixes:
+
+* Make layout optimizer honor the active grid setting
+
+Other:
+
+* Usability improvement: Move create node action to top
+* Usability improvement: Set optimize button as the default
 
 1.17.0
 ======

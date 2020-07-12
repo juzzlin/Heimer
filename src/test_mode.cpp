@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2020 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,17 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef READER_HPP
-#define READER_HPP
+#include "test_mode.hpp"
+#include "simple_logger.hpp"
 
-#include <QDomDocument>
+bool TestMode::m_enabled = false;
 
-#include "file_exception.hpp"
-
-namespace Reader {
-
-QDomDocument readFromFile(QString filePath);
-
+bool TestMode::enabled()
+{
+    return m_enabled;
 }
 
-#endif // READER_HPP
+void TestMode::setEnabled(bool testModeEnabled)
+{
+    m_enabled = testModeEnabled;
+}
+
+void TestMode::logDisabledCode(const std::string & message)
+{
+    juzzlin::L().debug() << "TestMode: '" << message << "' disabled";
+}

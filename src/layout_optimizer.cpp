@@ -17,6 +17,7 @@
 #include "constants.hpp"
 #include "contrib/SimpleLogger/src/simple_logger.hpp"
 #include "graph.hpp"
+#include "grid.hpp"
 #include "mind_map_data.hpp"
 #include "node.hpp"
 
@@ -44,8 +45,9 @@ inline double dot(double x1, double y1, double x2, double y2)
 class LayoutOptimizer::Impl
 {
 public:
-    Impl(MindMapDataPtr mindMapData)
+    Impl(MindMapDataPtr mindMapData, const Grid & grid)
       : m_mindMapData(mindMapData)
+      , m_grid(grid)
     {
     }
 
@@ -195,7 +197,7 @@ public:
     {
         m_layout->spread();
 
-        m_layout->applyCoordinates();
+        m_layout->applyCoordinates(m_grid);
     }
 
     void setProgressCallback(ProgressCallback progressCallback)
@@ -297,6 +299,8 @@ private:
 
     MindMapDataPtr m_mindMapData;
 
+    const Grid & m_grid;
+
     struct Rect
     {
         int x = 0;
@@ -348,7 +352,6 @@ private:
         static size_t globalMoveId;
 
     private:
-
         inline double distance(Cell & other)
         {
             const auto dx = x() - other.x();
@@ -419,7 +422,7 @@ private:
 
     struct Layout
     {
-        void applyCoordinates()
+        void applyCoordinates(const Grid & grid)
         {
             double maxWidth = 0;
             double maxHeight = 0;
@@ -430,7 +433,7 @@ private:
                 }
             }
             for (auto && cell : all) {
-                cell->node.lock()->setLocation({ cell->rect.x - maxWidth / 2, cell->rect.y - maxHeight / 2 });
+                cell->node.lock()->setLocation(grid.snapToGrid({ cell->rect.x - maxWidth / 2, cell->rect.y - maxHeight / 2 }));
             }
         }
 
@@ -526,8 +529,8 @@ private:
 
 size_t LayoutOptimizer::Impl::Cell::globalMoveId = 0;
 
-LayoutOptimizer::LayoutOptimizer(MindMapDataPtr mindMapData)
-  : m_impl(std::make_unique<Impl>(mindMapData))
+LayoutOptimizer::LayoutOptimizer(MindMapDataPtr mindMapData, const Grid & grid)
+  : m_impl(std::make_unique<Impl>(mindMapData, grid))
 {
 }
 

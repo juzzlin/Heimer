@@ -15,14 +15,17 @@
 
 #include "layout_optimizer_test.hpp"
 #include "contrib/SimpleLogger/src/simple_logger.hpp"
+#include "grid.hpp"
 #include "layout_optimizer.hpp"
 #include "mind_map_data.hpp"
+#include "test_mode.hpp"
 
 #include <iostream>
 #include <random>
 
 LayoutOptimizerTest::LayoutOptimizerTest()
 {
+    TestMode::setEnabled(true);
 }
 
 void LayoutOptimizerTest::testSingleNode_ShouldNotDoAnything()
@@ -31,7 +34,8 @@ void LayoutOptimizerTest::testSingleNode_ShouldNotDoAnything()
     auto node = std::make_shared<Node>();
     data->graph().addNode(node);
 
-    LayoutOptimizer lol { data };
+    Grid grid;
+    LayoutOptimizer lol { data, grid };
     lol.initialize(1.0, 50);
     const auto optimizationInfo = lol.optimize();
 
@@ -57,11 +61,14 @@ void LayoutOptimizerTest::testMultipleNodes_ShouldReduceCost()
     std::uniform_int_distribution<size_t> iDist { 0, nodes.size() - 1 };
     for (auto && node : nodes) {
         for (size_t i = 0; i < (i % 2) + 1; i++) {
-            data->graph().addEdge(node->index(), static_cast<int>(iDist(engine)));
+            const auto otherNode = data->graph().getNode(static_cast<int>(iDist(engine)));
+            data->graph().addEdge(std::make_shared<Edge>(*node, *otherNode));
         }
     }
 
-    LayoutOptimizer lol { data };
+    Grid grid;
+    grid.setSize(10);
+    LayoutOptimizer lol { data, grid };
     lol.initialize(1.0, 50);
     double progress = 0;
     lol.setProgressCallback([&](double progress_) {
@@ -73,6 +80,12 @@ void LayoutOptimizerTest::testMultipleNodes_ShouldReduceCost()
     const double gain = (optimizationInfo.finalCost - optimizationInfo.initialCost) / optimizationInfo.initialCost;
     juzzlin::L().info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
     QVERIFY(gain < -0.3);
+
+    lol.extract();
+    for (auto && node : nodes) {
+        QCOMPARE(node->pos().x(), static_cast<double>(static_cast<int>(node->pos().x() / grid.size()) * grid.size()));
+        QCOMPARE(node->pos().y(), static_cast<double>(static_cast<int>(node->pos().y() / grid.size()) * grid.size()));
+    }
 }
 
 QTEST_GUILESS_MAIN(LayoutOptimizerTest)

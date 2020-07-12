@@ -13,27 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "reader.hpp"
+#ifndef ALZ_SERIALIZER_HPP
+#define ALZ_SERIALIZER_HPP
 
-#include <QFile>
-#include <QObject>
+#include "mind_map_data.hpp"
 
-QDomDocument Reader::readFromFile(QString filePath)
-{
-    QDomDocument doc;
+#include <QDomDocument>
 
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly)) {
-        throw FileException(QObject::tr("Cannot open file: '") + filePath + "'");
-    }
+namespace AlzSerializer {
 
-    if (!doc.setContent(&file)) {
-        file.close();
+MindMapDataPtr fromXml(QDomDocument document);
 
-        throw FileException(QObject::tr("Corrupted file: '") + filePath + "'");
-    }
+QDomDocument toXml(MindMapData & mindMapData);
 
-    file.close();
+} // namespace AlzSerializer
 
-    return doc;
-}
+#endif // ALZ_SERIALIZER_HPP

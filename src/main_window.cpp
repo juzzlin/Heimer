@@ -381,9 +381,9 @@ void MainWindow::createToolBar()
     toolBar->addSeparator();
     toolBar->addAction(createTextSizeAction());
     toolBar->addSeparator();
-    toolBar->addAction(createGridSizeAction());
-    toolBar->addSeparator();
     toolBar->addAction(createCornerRadiusAction());
+    toolBar->addSeparator();
+    toolBar->addAction(createGridSizeAction());
 
     const auto spacer = new QWidget;
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -549,11 +549,6 @@ void MainWindow::enableSave(bool enable)
     m_saveAction->setEnabled(enable);
 }
 
-void MainWindow::enableSaveAs(bool enable)
-{
-    m_saveAsAction->setEnabled(enable);
-}
-
 void MainWindow::showAboutDlg()
 {
     m_aboutDlg->exec();
@@ -613,7 +608,7 @@ void MainWindow::initializeNewMindMap()
 
 void MainWindow::setSaveActionStatesOnNewMindMap()
 {
-    m_saveAction->setEnabled(false);
+    m_saveAction->setEnabled(true);
     m_saveAsAction->setEnabled(true);
 }
 

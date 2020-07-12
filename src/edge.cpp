@@ -98,7 +98,7 @@ void Edge::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
 
 QPen Edge::getPen() const
 {
-    QPen pen { QBrush { QColor { m_color.red(), m_color.green(), m_color.blue(), 200 } }, m_width };
+    QPen pen { QBrush { QColor { m_color.red(), m_color.green(), m_color.blue() } }, m_width };
     pen.setCapStyle(Qt::PenCapStyle::RoundCap);
     return pen;
 }

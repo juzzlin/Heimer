@@ -18,6 +18,7 @@ set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_BINAR
 set(LIB_SRC
     about_dlg.cpp
     alz_serializer.cpp
+    application.cpp
     constants.hpp
     copy_paste.cpp
     edge.cpp
@@ -63,7 +64,6 @@ set(LIB_SRC
 
 # Set sources for the app
 set(APP_SRC
-    application.cpp
     main.cpp
 )
 

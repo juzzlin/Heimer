@@ -229,7 +229,11 @@ QWidgetAction * MainWindow::createGridSizeAction()
 
     // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
     // In Qt > 5.10 one can use QOverload<double>::of(...)
-    connect(m_gridSizeSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::gridSizeChanged);
+    const auto signal = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
+    connect(m_gridSizeSpinBox, signal, this, &MainWindow::gridSizeChanged);
+    connect(m_gridSizeSpinBox, signal, Settings::saveGridSize);
+
+    m_gridSizeSpinBox->setValue(Settings::loadGridSize());
 
     return action;
 }

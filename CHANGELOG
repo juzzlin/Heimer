@@ -12,6 +12,8 @@ Bug fixes:
 
 Other:
 
+* Fix GitHub Issue #99: Program doesn't remember grid size
+
 1.18.0
 ======
 

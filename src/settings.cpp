@@ -17,14 +17,49 @@
 
 #include <QSettings>
 #include <QStandardPaths>
+#include <QTimer>
+
+#include <memory>
 
 namespace {
 const auto settingsGroupApplication = "Application";
 const auto settingsGroupMainWindow = "MainWindow";
 const auto recentImagePathKey = "recentImagePath";
+const auto gridSizeKey = "gridSize";
 const auto recentPathKey = "recentPath";
 const auto windowSizeKey = "size";
 } // namespace
+
+int Settings::loadGridSize()
+{
+    QSettings settings;
+    settings.beginGroup(settingsGroupMainWindow);
+    const auto gridSize = settings.value(gridSizeKey, 0).toInt();
+    settings.endGroup();
+    return gridSize;
+}
+
+void Settings::saveGridSize(int value)
+{
+    static std::unique_ptr<QTimer> gridSizeTimer;
+    static int sGridSizeValue;
+    sGridSizeValue = value;
+    if (!gridSizeTimer) {
+        gridSizeTimer = std::make_unique<QTimer>();
+        gridSizeTimer->setSingleShot(true);
+        gridSizeTimer->setInterval(500);
+        gridSizeTimer->connect(gridSizeTimer.get(), &QTimer::timeout, [&]() {
+            QSettings settings;
+            settings.beginGroup(settingsGroupMainWindow);
+            settings.setValue(gridSizeKey, sGridSizeValue);
+            settings.endGroup();
+        });
+    }
+    if (gridSizeTimer->isActive()) {
+        gridSizeTimer->stop();
+    }
+    gridSizeTimer->start();
+}
 
 QString Settings::loadRecentPath()
 {

@@ -20,6 +20,10 @@
 
 namespace Settings {
 
+int loadGridSize();
+
+void saveGridSize(int value);
+
 QString loadRecentPath();
 
 void saveRecentPath(QString path);

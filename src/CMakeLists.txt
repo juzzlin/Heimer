@@ -52,6 +52,7 @@ set(LIB_SRC
     recent_files_manager.cpp
     recent_files_menu.cpp
     selection_group.cpp
+    settings.cpp
     state_machine.cpp
     svg_export_dialog.cpp
     test_mode.cpp

@@ -55,6 +55,7 @@ HEADERS +=  \
     $$SRC/recent_files_manager.hpp \
     $$SRC/recent_files_menu.hpp \
     $$SRC/selection_group.hpp \
+    $$SRC/settings.hpp \
     $$SRC/state_machine.hpp \
     $$SRC/svg_export_dialog.hpp \
     $$SRC/test_mode.hpp \
@@ -100,6 +101,7 @@ SOURCES += \
     $$SRC/recent_files_manager.cpp \
     $$SRC/recent_files_menu.cpp \
     $$SRC/selection_group.cpp \
+    $$SRC/settings.cpp \
     $$SRC/state_machine.cpp \
     $$SRC/svg_export_dialog.cpp \
     $$SRC/test_mode.cpp \

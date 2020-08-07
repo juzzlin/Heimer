@@ -166,8 +166,6 @@ private:
 
     std::shared_ptr<Mediator> m_mediator;
 
-    const char * m_settingsGroup = "MainWindow";
-
     bool m_closeNow = false;
 
     QSize m_sizeBeforeFullScreen;

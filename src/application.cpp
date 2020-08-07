@@ -25,6 +25,7 @@
 #include "mediator.hpp"
 #include "png_export_dialog.hpp"
 #include "recent_files_manager.hpp"
+#include "settings.hpp"
 #include "state_machine.hpp"
 #include "svg_export_dialog.hpp"
 #include "user_exception.hpp"
@@ -38,7 +39,6 @@
 #include <QLocale>
 #include <QMessageBox>
 #include <QObject>
-#include <QSettings>
 #include <QStandardPaths>
 
 #include <iostream>
@@ -252,7 +252,7 @@ void Application::openMindMap()
 {
     L().debug() << "Open file";
 
-    const auto path = loadRecentPath();
+    const auto path = Settings::loadRecentPath();
     const auto fileName = QFileDialog::getOpenFileName(m_mainWindow.get(), tr("Open File"), path, getFileDialogFileText());
     if (!fileName.isEmpty()) {
         doOpenMindMap(fileName);
@@ -266,7 +266,7 @@ void Application::doOpenMindMap(QString fileName)
     if (m_mediator->openMindMap(fileName)) {
         m_mainWindow->disableUndoAndRedo();
 
-        saveRecentPath(fileName);
+        Settings::saveRecentPath(fileName);
 
         m_mainWindow->setSaveActionStatesOnOpenedMindMap();
 
@@ -323,40 +323,6 @@ void Application::saveMindMapAs()
     }
 }
 
-QString Application::loadRecentPath() const
-{
-    QSettings settings;
-    settings.beginGroup(m_settingsGroup);
-    const auto path = settings.value("recentPath", QStandardPaths::writableLocation(QStandardPaths::HomeLocation)).toString();
-    settings.endGroup();
-    return path;
-}
-
-void Application::saveRecentPath(QString path)
-{
-    QSettings settings;
-    settings.beginGroup(m_settingsGroup);
-    settings.setValue("recentPath", path);
-    settings.endGroup();
-}
-
-QString Application::loadRecentImagePath() const
-{
-    QSettings settings;
-    settings.beginGroup(m_settingsGroup);
-    const QString path = settings.value("recentImagePath", QStandardPaths::writableLocation(QStandardPaths::HomeLocation)).toString();
-    settings.endGroup();
-    return path;
-}
-
-void Application::saveRecentImagePath(QString path)
-{
-    QSettings settings;
-    settings.beginGroup(m_settingsGroup);
-    settings.setValue("recentImagePath", path);
-    settings.endGroup();
-}
-
 void Application::showBackgroundColorDialog()
 {
     const auto color = QColorDialog::getColor(Qt::white, m_mainWindow.get());
@@ -377,7 +343,7 @@ void Application::showEdgeColorDialog()
 
 void Application::showImageFileDialog()
 {
-    const auto path = loadRecentImagePath();
+    const auto path = Settings::loadRecentImagePath();
     const auto extensions = "(*.jpg *.jpeg *.JPG *.JPEG *.png *.PNG)";
     const auto fileName = QFileDialog::getOpenFileName(
       m_mainWindow.get(), tr("Open an image"), path, tr("Image Files") + " " + extensions);
@@ -391,6 +357,7 @@ void Application::showImageFileDialog()
             m_mediator->saveUndoPoint();
             m_actionNode->setImageRef(id);
             m_actionNode = nullptr;
+            Settings::saveRecentImagePath(fileName);
         }
     } else if (fileName != "") {
         QMessageBox::critical(m_mainWindow.get(), tr("Load image"), tr("Failed to load image '") + fileName + "'");

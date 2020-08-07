@@ -60,10 +60,6 @@ private:
 
     QString getFileDialogFileText() const;
 
-    QString loadRecentImagePath() const;
-
-    QString loadRecentPath() const;
-
     void openArgMindMap();
 
     void openMindMap();
@@ -71,10 +67,6 @@ private:
     void saveMindMap();
 
     void saveMindMapAs();
-
-    void saveRecentImagePath(QString fileName);
-
-    void saveRecentPath(QString fileName);
 
     void showBackgroundColorDialog();
 
@@ -103,8 +95,6 @@ private:
     QString m_mindMapFile;
 
     QString m_lang;
-
-    QString m_settingsGroup = "Application";
 
     std::unique_ptr<StateMachine> m_stateMachine;
 

@@ -20,6 +20,7 @@
 #include "mediator.hpp"
 #include "recent_files_manager.hpp"
 #include "recent_files_menu.hpp"
+#include "settings.hpp"
 #include "simple_logger.hpp"
 #include "whats_new_dlg.hpp"
 
@@ -33,7 +34,6 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QScreen>
-#include <QSettings>
 #include <QSpinBox>
 #include <QToolBar>
 #include <QVBoxLayout>
@@ -422,11 +422,8 @@ void MainWindow::initialize()
     const int width = screenGeometry.width();
 
     // Read dialog size data
-    QSettings settings;
-    settings.beginGroup(m_settingsGroup);
     const double defaultScale = 0.8;
-    resize(settings.value("size", QSize(width, height) * defaultScale).toSize());
-    settings.endGroup();
+    resize(Settings::loadWindowSize(QSize(width, height) * defaultScale));
 
     // Try to center the window.
     move(width / 2 - this->width() / 2, height / 2 - this->height() / 2);
@@ -539,10 +536,7 @@ void MainWindow::showWhatsNewDlg()
 
 void MainWindow::saveWindowSize()
 {
-    QSettings settings;
-    settings.beginGroup(m_settingsGroup);
-    settings.setValue("size", size());
-    settings.endGroup();
+    Settings::saveWindowSize(size());
 }
 
 void MainWindow::setupMindMapAfterUndoOrRedo()

@@ -5,6 +5,7 @@ New features:
 
 * Fix GitHub Issue #77: Ctrl+S on new map should directly open 'save as' dialog
 * Fix GitHub Issue #85: Export SVG
+* Fix GitHub Issue #100: Use a better initial directory when saving a new file
 
 Bug fixes:
 

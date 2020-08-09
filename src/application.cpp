@@ -299,7 +299,7 @@ void Application::saveMindMapAs()
     QString fileName = QFileDialog::getSaveFileName(
       m_mainWindow.get(),
       tr("Save File As"),
-      QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
+      Settings::loadRecentPath(),
       getFileDialogFileText());
 
     if (fileName.isEmpty()) {
@@ -314,6 +314,7 @@ void Application::saveMindMapAs()
         const auto msg = QString(tr("File '")) + fileName + tr("' saved.");
         L().debug() << msg.toStdString();
         m_mainWindow->enableSave(false);
+        Settings::saveRecentPath(fileName);
         emit actionTriggered(StateMachine::Action::MindMapSavedAs);
     } else {
         const auto msg = QString(tr("Failed to save file as '") + fileName + "'.");

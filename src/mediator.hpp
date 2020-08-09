@@ -135,8 +135,6 @@ public:
 
     void setSelectedNode(Node * node);
 
-    void setupMindMapAfterUndoOrRedo();
-
     void toggleNodeInSelectionGroup(Node & node);
 
     void undo();
@@ -144,6 +142,8 @@ public:
 public slots:
 
     void enableUndo(bool enable);
+
+    void enableRedo(bool enable);
 
     void exportToPng(QString filename, QSize size, bool transparentBackground);
 
@@ -185,6 +185,8 @@ private:
     void connectGraphToUndoMechanism();
 
     void connectGraphToImageManager();
+
+    void setupMindMapAfterUndoOrRedo();
 
     std::shared_ptr<EditorData> m_editorData;
 

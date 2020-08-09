@@ -72,6 +72,8 @@ public slots:
 
     void enableUndo(bool enable);
 
+    void enableRedo(bool enable);
+
     void enableSave(bool enable);
 
     void setCornerRadius(int value);
@@ -104,8 +106,6 @@ signals:
     void zoomToFitTriggered();
 
 private slots:
-
-    void setupMindMapAfterUndoOrRedo();
 
     void showAboutDlg();
 

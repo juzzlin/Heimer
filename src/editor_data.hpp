@@ -88,7 +88,7 @@ public:
 
     bool saveMindMapAs(QString fileName);
 
-    void saveUndoPoint();
+    void saveUndoPoint(bool dontClearRedoStack = false);
 
     void saveRedoPoint();
 
@@ -114,11 +114,15 @@ signals:
 
     void undoEnabled(bool enable);
 
+    void redoEnabled(bool enable);
+
 private:
     EditorData(const EditorData & e) = delete;
     EditorData & operator=(const EditorData & e) = delete;
 
     void removeNodesFromScene();
+
+    void sendUndoAndRedoSignals();
 
     void setIsModified(bool isModified);
 

@@ -73,7 +73,6 @@ void MainWindow::addRedoAction(QMenu & menu)
 
     connect(m_redoAction, &QAction::triggered, [this]() {
         m_mediator->redo();
-        setupMindMapAfterUndoOrRedo();
     });
 
     m_redoAction->setEnabled(false);
@@ -87,7 +86,6 @@ void MainWindow::addUndoAction(QMenu & menu)
 
     connect(m_undoAction, &QAction::triggered, [this]() {
         m_mediator->undo();
-        setupMindMapAfterUndoOrRedo();
     });
 
     m_undoAction->setEnabled(false);
@@ -516,6 +514,11 @@ void MainWindow::enableUndo(bool enable)
     m_undoAction->setEnabled(enable);
 }
 
+void MainWindow::enableRedo(bool enable)
+{
+    m_redoAction->setEnabled(enable);
+}
+
 void MainWindow::enableSave(bool enable)
 {
     setTitle();
@@ -541,14 +544,6 @@ void MainWindow::showWhatsNewDlg()
 void MainWindow::saveWindowSize()
 {
     Settings::saveWindowSize(size());
-}
-
-void MainWindow::setupMindMapAfterUndoOrRedo()
-{
-    m_undoAction->setEnabled(m_mediator->isUndoable());
-    m_redoAction->setEnabled(m_mediator->isRedoable());
-
-    m_mediator->setupMindMapAfterUndoOrRedo();
 }
 
 void MainWindow::showErrorDialog(QString message)

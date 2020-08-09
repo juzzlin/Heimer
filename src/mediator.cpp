@@ -208,6 +208,11 @@ void Mediator::enableUndo(bool enable)
     m_mainWindow.enableUndo(enable);
 }
 
+void Mediator::enableRedo(bool enable)
+{
+    m_mainWindow.enableRedo(enable);
+}
+
 void Mediator::exportToPng(QString filename, QSize size, bool transparentBackground)
 {
     zoomForExport();
@@ -367,6 +372,8 @@ void Mediator::redo()
 
     m_editorView->resetDummyDragItems();
     m_editorData->redo();
+
+    setupMindMapAfterUndoOrRedo();
 }
 
 void Mediator::removeItem(QGraphicsItem & item)
@@ -459,6 +466,7 @@ void Mediator::setEditorData(std::shared_ptr<EditorData> editorData)
     m_editorData = editorData;
 
     connect(m_editorData.get(), &EditorData::undoEnabled, this, &Mediator::enableUndo);
+    connect(m_editorData.get(), &EditorData::redoEnabled, this, &Mediator::enableRedo);
 }
 
 void Mediator::setEditorView(EditorView & editorView)
@@ -538,6 +546,8 @@ void Mediator::undo()
 
     m_editorView->resetDummyDragItems();
     m_editorData->undo();
+
+    setupMindMapAfterUndoOrRedo();
 }
 
 static const int zoomSensitivity = 20;

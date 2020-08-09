@@ -84,16 +84,12 @@ void EditorData::undo()
 {
     if (m_undoStack.isUndoable()) {
         clearSelectionGroup();
-
         m_selectedEdge = nullptr;
-
         m_dragAndDropNode = nullptr;
-
         saveRedoPoint();
-
         m_mindMapData = m_undoStack.undo();
-
         setIsModified(true);
+        sendUndoAndRedoSignals();
     }
 }
 
@@ -106,16 +102,12 @@ void EditorData::redo()
 {
     if (m_undoStack.isRedoable()) {
         clearSelectionGroup();
-
         m_selectedEdge = nullptr;
-
         m_dragAndDropNode = nullptr;
-
-        saveUndoPoint();
-
+        saveUndoPoint(true);
         m_mindMapData = m_undoStack.redo();
-
         setIsModified(true);
+        sendUndoAndRedoSignals();
     }
 }
 
@@ -127,21 +119,23 @@ bool EditorData::saveMindMap()
     return saveMindMapAs(m_fileName);
 }
 
-void EditorData::saveUndoPoint()
+void EditorData::saveUndoPoint(bool dontClearRedoStack)
 {
     assert(m_mindMapData);
     m_undoStack.pushUndoPoint(*m_mindMapData);
-    emit undoEnabled(m_undoStack.isUndoable());
-
+    if (!dontClearRedoStack) {
+        m_undoStack.clearRedoStack();
+    }
     setIsModified(true);
+    sendUndoAndRedoSignals();
 }
 
 void EditorData::saveRedoPoint()
 {
     assert(m_mindMapData);
     m_undoStack.pushRedoPoint(*m_mindMapData);
-
     setIsModified(true);
+    sendUndoAndRedoSignals();
 }
 
 bool EditorData::saveMindMapAs(QString fileName)
@@ -271,6 +265,12 @@ Node * EditorData::selectedNode() const
 size_t EditorData::selectionGroupSize() const
 {
     return m_selectionGroup->size();
+}
+
+void EditorData::sendUndoAndRedoSignals()
+{
+    emit undoEnabled(m_undoStack.isUndoable());
+    emit redoEnabled(m_undoStack.isRedoable());
 }
 
 void EditorData::setIsModified(bool isModified)

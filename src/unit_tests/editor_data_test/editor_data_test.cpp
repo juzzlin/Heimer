@@ -654,6 +654,11 @@ void EditorDataTest::testRedoState()
     QCOMPARE(editorData.selectionGroupSize(), size_t(0));
     QCOMPARE(editorData.selectedEdge(), nullptr);
     QCOMPARE(editorData.selectedNode(), nullptr);
+
+    editorData.undo();
+    editorData.saveUndoPoint();
+
+    QCOMPARE(editorData.isRedoable(), false);
 }
 
 void EditorDataTest::testUndoStackResetOnNewDesign()

@@ -82,9 +82,12 @@ void StateMachine::calculateState(StateMachine::Action action)
     case Action::LayoutOptimized:
     case Action::MindMapOpened:
     case Action::MindMapSaveFailed:
+    case Action::MindMapSaveAsCanceled:
     case Action::MindMapSaveAsFailed:
     case Action::NewMindMapInitialized:
     case Action::NotSavedDialogCanceled:
+    case Action::OpeningMindMapCanceled:
+    case Action::OpeningMindMapFailed:
     case Action::PngExported:
     case Action::SvgExported:
         m_quitType = QuitType::None;
@@ -98,10 +101,6 @@ void StateMachine::calculateState(StateMachine::Action action)
         } else {
             m_state = State::ShowOpenDialog;
         }
-        break;
-
-    case Action::OpeningMindMapFailed:
-        m_state = State::InitializeNewMindMap;
         break;
 
     case Action::QuitSelected:

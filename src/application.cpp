@@ -256,6 +256,8 @@ void Application::openMindMap()
     const auto fileName = QFileDialog::getOpenFileName(m_mainWindow.get(), tr("Open File"), path, getFileDialogFileText());
     if (!fileName.isEmpty()) {
         doOpenMindMap(fileName);
+    } else {
+        emit actionTriggered(StateMachine::Action::OpeningMindMapCanceled);
     }
 }
 
@@ -265,11 +267,8 @@ void Application::doOpenMindMap(QString fileName)
 
     if (m_mediator->openMindMap(fileName)) {
         m_mainWindow->disableUndoAndRedo();
-
-        Settings::saveRecentPath(fileName);
-
         m_mainWindow->setSaveActionStatesOnOpenedMindMap();
-
+        Settings::saveRecentPath(fileName);
         emit actionTriggered(StateMachine::Action::MindMapOpened);
     } else {
         emit actionTriggered(StateMachine::Action::OpeningMindMapFailed);
@@ -303,6 +302,7 @@ void Application::saveMindMapAs()
       getFileDialogFileText());
 
     if (fileName.isEmpty()) {
+        emit actionTriggered(StateMachine::Action::MindMapSaveAsCanceled);
         return;
     }
 

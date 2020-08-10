@@ -488,6 +488,14 @@ void MainWindow::disableUndoAndRedo()
     m_redoAction->setEnabled(false);
 }
 
+void MainWindow::enableWidgetSignals(bool enable)
+{
+    m_cornerRadiusSpinBox->blockSignals(!enable);
+    m_edgeWidthSpinBox->blockSignals(!enable);
+    m_textSizeSpinBox->blockSignals(!enable);
+    m_gridSizeSpinBox->blockSignals(!enable);
+}
+
 void MainWindow::setCornerRadius(int value)
 {
     if (m_cornerRadiusSpinBox->value() != value) {

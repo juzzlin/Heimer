@@ -54,6 +54,8 @@ public:
 
     void disableUndoAndRedo();
 
+    void enableWidgetSignals(bool enable);
+
     void initialize();
 
     void initializeNewMindMap();

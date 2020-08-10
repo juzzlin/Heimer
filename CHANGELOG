@@ -12,6 +12,7 @@ Bug fixes:
 
 * Fix GitHub Issue #87: Group move doesn't work with the move handle
 * Fix GitHub Issue #97: Redo does stuff when redo shouldn't be possible
+* Fix GitHub Issue #96: Saving sometimes doesn't work after loading an existing file
 
 Other:
 

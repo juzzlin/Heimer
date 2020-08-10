@@ -67,6 +67,9 @@ void Mediator::addExistingGraphToScene()
         }
     }
 
+    // This is to prevent nasty updated loops like in https://github.com/juzzlin/Heimer/issues/96
+    m_mainWindow.enableWidgetSignals(false);
+
     m_mainWindow.setCornerRadius(m_editorData->mindMapData()->cornerRadius());
     m_mainWindow.setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
     m_mainWindow.setTextSize(m_editorData->mindMapData()->textSize());
@@ -74,6 +77,8 @@ void Mediator::addExistingGraphToScene()
     m_editorView->setCornerRadius(m_editorData->mindMapData()->cornerRadius());
     m_editorView->setEdgeColor(m_editorData->mindMapData()->edgeColor());
     m_editorView->setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
+
+    m_mainWindow.enableWidgetSignals(true);
 }
 
 void Mediator::addEdge(Node & node1, Node & node2)

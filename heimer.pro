@@ -118,7 +118,8 @@ QM_FILES_RESOURCE_PREFIX = /translations
 TRANSLATIONS += \ 
 $$SRC/translations/heimer_fi.ts \ 
 $$SRC/translations/heimer_fr.ts \ 
-$$SRC/translations/heimer_it.ts 
+$$SRC/translations/heimer_it.ts \
+$$SRC/translations/heimer_nl.ts 
 
 RESOURCES += meta.qrc data/icons/icons.qrc data/images/images.qrc
 RC_FILE = data/icons/WindowsHeimer.rc

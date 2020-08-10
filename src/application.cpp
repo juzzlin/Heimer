@@ -101,7 +101,7 @@ void Application::parseArgs(int argc, char ** argv)
       { "--lang" }, [this](std::string value) {
           m_lang = value.c_str();
       },
-      false, "Force language: fi, fr, it.");
+      false, "Force language: fi, fr, it, nl.");
 
     ae.setPositionalArgumentCallback([this](Argengine::ArgumentVector args) {
         m_mindMapFile = args.at(0).c_str();

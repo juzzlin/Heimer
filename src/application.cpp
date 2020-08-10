@@ -91,6 +91,15 @@ void Application::parseArgs(int argc, char ** argv)
 {
     Argengine ae(argc, argv);
 
+    const std::set<std::string> languages = { "fi", "fr", "it", "nl" };
+    std::string languageHelp;
+    for (auto lang : languages) {
+        languageHelp += lang + ", ";
+    }
+    languageHelp.pop_back();
+    languageHelp.pop_back();
+    languageHelp += ".";
+
     ae.addOption(
       { "-d", "--debug" }, [] {
           L::setLoggingLevel(L::Level::Debug);
@@ -98,10 +107,14 @@ void Application::parseArgs(int argc, char ** argv)
       false, "Show debug logging.");
 
     ae.addOption(
-      { "--lang" }, [this](std::string value) {
-          m_lang = value.c_str();
+      { "--lang" }, [this, languages](std::string value) {
+          if (!languages.count(value)) {
+              L().error() << "Unsupported language: " << value;
+          } else {
+              m_lang = value.c_str();
+          }
       },
-      false, "Force language: fi, fr, it, nl.");
+      false, "Force language: " + languageHelp);
 
     ae.setPositionalArgumentCallback([this](Argengine::ArgumentVector args) {
         m_mindMapFile = args.at(0).c_str();

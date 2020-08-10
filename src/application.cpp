@@ -158,7 +158,7 @@ Application::Application(int & argc, char ** argv)
     connect(m_stateMachine.get(), &StateMachine::stateChanged, this, &Application::runState);
 
     connect(m_editorData.get(), &EditorData::isModifiedChanged, [=](bool isModified) {
-        m_mainWindow->enableSave(isModified && m_mediator->canBeSaved());
+        m_mainWindow->enableSave(isModified || m_mediator->canBeSaved());
     });
 
     connect(m_pngExportDialog.get(), &PngExportDialog::pngExportRequested, m_mediator.get(), &Mediator::exportToPng);

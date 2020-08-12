@@ -80,7 +80,7 @@ pipeline {
                 }
             }
         }
-        stage('Build NSIS installer') {
+        stage('Windows NSIS installer') {
             agent {
                 docker {
                     image 'juzzlin/mxe-qt5-18.04:latest'
@@ -88,16 +88,33 @@ pipeline {
                 }
             }
             steps {
-                sh "./scripts/build-windows-installer"
+                sh "./scripts/build-windows-nsis"
             }
             post {
                 always {
-                    archiveArtifacts artifacts: 'build-windows-docker/release/*.exe', fingerprint: true
+                    archiveArtifacts artifacts: 'build-windows-nsis/release/*.exe', fingerprint: true
                 }
             }
 
         }
-        stage('Build AppImage') {
+        stage('Windows ZIP') {
+            agent {
+                docker {
+                    image 'juzzlin/mxe-qt5-18.04:latest'
+                    args '--privileged -t -v $WORKSPACE:/heimer'
+                }
+            }
+            steps {
+                sh "./scripts/build-windows-zip"
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'build-windows-zip/release/zip/*.zip', fingerprint: true
+                }
+            }
+
+        }
+        stage('AppImage') {
             agent any
             steps {
                 sh "./scripts/build-app-image"
@@ -108,7 +125,7 @@ pipeline {
                 }
             }
         }
-        stage('Build Snap') {
+        stage('Snap') {
             agent any
             steps {
                 lock(resource: 'snapLock') {

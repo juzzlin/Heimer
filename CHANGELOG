@@ -17,6 +17,7 @@ Bug fixes:
 Other:
 
 * Fix GitHub Issue #99: Program doesn't remember grid size
+* Fix GitHub Issue #101: Windows portable
 
 1.18.0
 ======

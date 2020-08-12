@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Builds ZIP archive for Windows in Docker
+
+VERSION=1.18.0
+
+QMAKE=/mxe/usr/i686-w64-mingw32.static/qt5/bin/qmake
+
+CMD="export LANG=en_US.UTF-8 && \
+     export LC_ALL=en_US.UTF-8 && \
+     export PATH='$PATH':/mxe/usr/bin && \
+     export PACKAGE_TYPE=ZIP && \
+     cd /heimer && \
+     rm -rf build-windows-zip && mkdir -p build-windows-zip && \
+     cd build-windows-zip && ${QMAKE} .. && \
+     make -j4 && \
+     cd release && mkdir zip && cd zip && \
+     cp -v ../../../AUTHORS . && \
+     cp -v ../../../CHANGELOG . && \
+     cp -v ../../../COPYING . && \
+     cp -v ../../../README.md . && \
+     cp -v ../heimer.exe . && \
+     zip -r heimer-${VERSION}-Win32.zip *"
+
+if [ -f /.dockerenv ]; then
+    echo "Script inside Docker"
+    bash -c "${CMD}"
+else
+    echo "Script outside Docker"
+    docker run --user $(id -u):$(id -g) --privileged -t -v $(pwd):/heimer juzzlin/mxe-qt5-18.04:latest bash -c "${CMD}"
+fi
+

@@ -99,6 +99,8 @@ signals:
 
     void gridSizeChanged(int size);
 
+    void gridVisibleChanged(int state);
+
     void textSizeChanged(int value);
 
     void zoomInTriggered();
@@ -163,6 +165,8 @@ private:
     QSpinBox * m_textSizeSpinBox = nullptr;
 
     QCheckBox * m_copyOnDragCheckBox = nullptr;
+
+    QCheckBox * m_showGridCheckBox = nullptr;
 
     QString m_argMindMapFile;
 

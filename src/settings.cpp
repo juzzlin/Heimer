@@ -26,6 +26,7 @@ const auto settingsGroupApplication = "Application";
 const auto settingsGroupMainWindow = "MainWindow";
 const auto recentImagePathKey = "recentImagePath";
 const auto gridSizeKey = "gridSize";
+const auto gridVisibleStateKey = "gridVisibleState";
 const auto recentPathKey = "recentPath";
 const auto windowSizeKey = "size";
 } // namespace
@@ -59,6 +60,23 @@ void Settings::saveGridSize(int value)
         gridSizeTimer->stop();
     }
     gridSizeTimer->start();
+}
+
+Qt::CheckState Settings::loadGridVisibleState()
+{
+    QSettings settings;
+    settings.beginGroup(settingsGroupMainWindow);
+    const auto gridState = settings.value(gridVisibleStateKey, Qt::Unchecked).toInt();
+    settings.endGroup();
+    return static_cast<Qt::CheckState>(gridState);
+}
+
+void Settings::saveGridVisibleState(int state)
+{
+    QSettings settings;
+    settings.beginGroup(settingsGroupMainWindow);
+    settings.setValue(gridVisibleStateKey, state);
+    settings.endGroup();
 }
 
 QString Settings::loadRecentPath()

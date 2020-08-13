@@ -65,9 +65,13 @@ public slots:
 
     void setEdgeColor(const QColor & edgeColor);
 
+    void setGridColor(const QColor & edgeColor);
+
     void setEdgeWidth(double edgeWidth);
 
     void setGridSize(int size);
+
+    void setGridVisible(bool visible);
 
 protected:
     void mouseMoveEvent(QMouseEvent * event) override;
@@ -133,6 +137,8 @@ private:
 
     void updateRubberBand();
 
+    void drawBackground(QPainter * painter, const QRectF & rect) override;
+
     Grid m_grid;
 
     QPoint m_clickedPos;
@@ -177,6 +183,8 @@ private:
     EdgeContextMenu * m_edgeContextMenu;
 
     MainContextMenu * m_mainContextMenu;
+
+    bool m_gridVisible = false;
 };
 
 #endif // EDITOR_VIEW_HPP

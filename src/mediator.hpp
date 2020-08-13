@@ -157,6 +157,8 @@ public slots:
 
     void setEdgeColor(QColor color);
 
+    void setGridColor(QColor color);
+
     void setEdgeWidth(double value);
 
     void setTextSize(int textSize);

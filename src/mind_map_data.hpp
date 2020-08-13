@@ -46,6 +46,10 @@ public:
 
     void setEdgeColor(const QColor & edgeColor);
 
+    QColor gridColor() const;
+
+    void setGridColor(const QColor & edgeColor);
+
     double edgeWidth() const;
 
     void setEdgeWidth(double width);
@@ -80,6 +84,8 @@ private:
     QColor m_backgroundColor = Constants::MindMap::DEFAULT_BACKGROUND_COLOR;
 
     QColor m_edgeColor = Constants::MindMap::DEFAULT_EDGE_COLOR;
+
+    QColor m_gridColor = Constants::MindMap::DEFAULT_GRID_COLOR;
 
     double m_edgeWidth = Constants::MindMap::DEFAULT_EDGE_WIDTH;
 

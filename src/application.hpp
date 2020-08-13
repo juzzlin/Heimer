@@ -72,6 +72,8 @@ private:
 
     void showEdgeColorDialog();
 
+    void showGridColorDialog();
+
     void showImageFileDialog();
 
     void showLayoutOptimizationDialog();

@@ -171,6 +171,10 @@ Application::Application(int & argc, char ** argv)
     connect(m_mainWindow.get(), &MainWindow::edgeWidthChanged, m_mediator.get(), &Mediator::setEdgeWidth);
     connect(m_mainWindow.get(), &MainWindow::textSizeChanged, m_mediator.get(), &Mediator::setTextSize);
     connect(m_mainWindow.get(), &MainWindow::gridSizeChanged, m_editorView, &EditorView::setGridSize);
+    connect(m_mainWindow.get(), &MainWindow::gridVisibleChanged, [this](int state) {
+        bool visible = state == Qt::Checked;
+        m_editorView->setGridVisible(visible);
+    });
 
     m_mainWindow->initialize();
     m_mediator->initializeView();
@@ -221,6 +225,9 @@ void Application::runState(StateMachine::State state)
         break;
     case StateMachine::State::ShowEdgeColorDialog:
         showEdgeColorDialog();
+        break;
+    case StateMachine::State::ShowGridColorDialog:
+        showGridColorDialog();
         break;
     case StateMachine::State::ShowImageFileDialog:
         showImageFileDialog();
@@ -353,6 +360,15 @@ void Application::showEdgeColorDialog()
         m_mediator->setEdgeColor(color);
     }
     emit actionTriggered(StateMachine::Action::EdgeColorChanged);
+}
+
+void Application::showGridColorDialog()
+{
+    const auto color = QColorDialog::getColor(Qt::white, m_mainWindow.get());
+    if (color.isValid()) {
+        m_mediator->setGridColor(color);
+    }
+    emit actionTriggered(StateMachine::Action::GridColorChanged);
 }
 
 void Application::showImageFileDialog()

@@ -444,11 +444,25 @@ void EditorView::setCornerRadius(int cornerRadius)
 void EditorView::setGridSize(int size)
 {
     m_grid.setSize(size);
+    if (scene())
+        scene()->update();
+}
+
+void EditorView::setGridVisible(bool visible)
+{
+    m_gridVisible = visible;
+    if (scene())
+        scene()->update();
 }
 
 void EditorView::setEdgeColor(const QColor & edgeColor)
 {
     m_edgeColor = edgeColor;
+}
+
+void EditorView::setGridColor(const QColor & gridColor)
+{
+    m_mediator.mindMapData()->setGridColor(gridColor);
 }
 
 void EditorView::setEdgeWidth(double edgeWidth)
@@ -494,6 +508,35 @@ void EditorView::zoomToFit(QRectF nodeBoundingRect)
     centerOn(nodeBoundingRect.center());
 
     m_nodeBoundingRect = nodeBoundingRect;
+}
+
+void EditorView::drawBackground(QPainter *painter, const QRectF &rect)
+{
+    painter->save();
+
+    painter->fillRect(rect, this->backgroundBrush());
+
+    const int gridSize = m_grid.size();
+
+    if (m_gridVisible && gridSize != 0)
+    {
+        const qreal left = int(rect.left()) - (int(rect.left()) % gridSize);
+        const qreal top = int(rect.top()) - (int(rect.top()) % gridSize);
+
+        QVarLengthArray<QLineF, 100> lines;
+
+        for (qreal x = left; x < rect.right(); x += gridSize) {
+            lines.append(QLineF(x, rect.top(), x, rect.bottom()));
+        }
+        for (qreal y = top; y < rect.bottom(); y += gridSize) {
+            lines.append(QLineF(rect.left(), y, rect.right(), y));
+        }
+
+        painter->setPen(m_mediator.mindMapData()->gridColor());
+        painter->drawLines(lines.data(), lines.size());
+    }
+
+    painter->restore();
 }
 
 EditorView::~EditorView() = default;

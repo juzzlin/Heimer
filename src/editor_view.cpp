@@ -24,6 +24,8 @@
 #include <QString>
 #include <QTransform>
 
+#include <QDebug> // TODO remove
+
 #include "editor_view.hpp"
 
 #include "constants.hpp"
@@ -242,7 +244,22 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
             if (m_mediator.selectionGroupSize()) {
                 m_mediator.moveSelectionGroup(*node, m_grid.snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
             } else {
-                node->setLocation(m_grid.snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
+                auto cur_pos = m_mappedPos - m_mediator.mouseAction().sourcePosOnNode();
+
+                qreal node_half_width = node->size().rwidth() / 2.0;
+                qreal node_half_height = node->size().rheight() / 2.0;
+
+                // make point correction to snap top left corner of the node to grid
+                cur_pos.setX(cur_pos.x() - node_half_width);
+                cur_pos.setY(cur_pos.y() - node_half_height);
+
+                auto calculated_loc = m_grid.snapToGrid(cur_pos);
+
+                // calculate the center of the node
+                calculated_loc.setX(calculated_loc.x() + node_half_width);
+                calculated_loc.setY(calculated_loc.y() + node_half_height);
+
+                node->setLocation(calculated_loc);
             }
         }
         break;
@@ -444,11 +461,25 @@ void EditorView::setCornerRadius(int cornerRadius)
 void EditorView::setGridSize(int size)
 {
     m_grid.setSize(size);
+    if (scene())
+        scene()->update();
+}
+
+void EditorView::setGridVisible(int state)
+{
+    m_grid_visible = state == Qt::Checked;
+    if (scene())
+        scene()->update();
 }
 
 void EditorView::setEdgeColor(const QColor & edgeColor)
 {
     m_edgeColor = edgeColor;
+}
+
+void EditorView::setGridColor(const QColor & gridColor)
+{
+    m_mediator.mindMapData()->setGridColor(gridColor);
 }
 
 void EditorView::setEdgeWidth(double edgeWidth)
@@ -494,6 +525,33 @@ void EditorView::zoomToFit(QRectF nodeBoundingRect)
     centerOn(nodeBoundingRect.center());
 
     m_nodeBoundingRect = nodeBoundingRect;
+}
+
+void EditorView::drawBackground(QPainter *painter, const QRectF &rect)
+{
+    painter->save();
+
+    painter->fillRect(rect, this->backgroundBrush());
+
+    if (m_grid_visible)
+    {
+        const int gridSize = m_grid.size();
+
+        qreal left = int(rect.left()) - (int(rect.left()) % gridSize);
+        qreal top = int(rect.top()) - (int(rect.top()) % gridSize);
+
+        QVarLengthArray<QLineF, 100> lines;
+
+        for (qreal x = left; x < rect.right(); x += gridSize)
+            lines.append(QLineF(x, rect.top(), x, rect.bottom()));
+        for (qreal y = top; y < rect.bottom(); y += gridSize)
+            lines.append(QLineF(rect.left(), y, rect.right(), y));
+
+        painter->setPen(m_mediator.mindMapData()->gridColor());
+        painter->drawLines(lines.data(), lines.size());
+    }
+
+    painter->restore();
 }
 
 EditorView::~EditorView() = default;

@@ -33,6 +33,10 @@ void StateMachine::calculateState(StateMachine::Action action)
         m_state = State::ShowEdgeColorDialog;
         break;
 
+    case Action::GridColorChangeRequested:
+        m_state = State::ShowGridColorDialog;
+        break;
+
     case Action::ImageAttachmentRequested:
         m_state = State::ShowImageFileDialog;
         break;
@@ -78,6 +82,7 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::BackgroundColorChanged:
     case Action::EdgeColorChanged:
+    case Action::GridColorChanged:
     case Action::ImageLoadFailed:
     case Action::LayoutOptimized:
     case Action::MindMapOpened:

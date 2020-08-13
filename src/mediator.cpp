@@ -456,6 +456,16 @@ void Mediator::setEdgeColor(QColor color)
     }
 }
 
+void Mediator::setGridColor(QColor color)
+{
+    if (m_editorData->mindMapData()->gridColor() != color) {
+        saveUndoPoint();
+        m_editorData->mindMapData()->setGridColor(color);
+        m_editorView->setGridColor(color);
+        m_editorView->scene()->update();
+    }
+}
+
 void Mediator::setEdgeWidth(double value)
 {
     // Break loop with the spinbox

@@ -24,6 +24,10 @@ int loadGridSize();
 
 void saveGridSize(int value);
 
+Qt::CheckState loadGridVisibleState();
+
+void saveGridVisibleState(int state);
+
 QString loadRecentPath();
 
 void saveRecentPath(QString path);

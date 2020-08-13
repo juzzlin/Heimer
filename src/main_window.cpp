@@ -59,6 +59,7 @@ MainWindow::MainWindow()
   , m_gridSizeSpinBox(new QSpinBox(this))
   , m_textSizeSpinBox(new QSpinBox(this))
   , m_copyOnDragCheckBox(new QCheckBox(tr("Copy on drag"), this))
+  , m_showGridCheckBox(new QCheckBox(tr("Show grid"), this))
 {
     if (!m_instance) {
         m_instance = this;
@@ -366,7 +367,13 @@ void MainWindow::createToolBar()
     const auto spacer = new QWidget;
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     toolBar->addWidget(spacer);
+    toolBar->addWidget(m_showGridCheckBox);
     toolBar->addWidget(m_copyOnDragCheckBox);
+
+    connect(m_showGridCheckBox, &QCheckBox::stateChanged, this, &MainWindow::gridVisibleChanged);
+    connect(m_showGridCheckBox, &QCheckBox::stateChanged, Settings::saveGridVisibleState);
+
+    m_showGridCheckBox->setCheckState(Settings::loadGridVisibleState());
 }
 
 void MainWindow::createViewMenu()

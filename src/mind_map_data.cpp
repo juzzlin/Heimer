@@ -32,6 +32,7 @@ MindMapData::MindMapData(const MindMapData & other)
   , m_version(other.m_version)
   , m_backgroundColor(other.m_backgroundColor)
   , m_edgeColor(other.m_edgeColor)
+  , m_gridColor(other.m_gridColor)
   , m_edgeWidth(other.m_edgeWidth)
   , m_textSize(other.m_textSize)
   , m_cornerRadius(other.m_cornerRadius)
@@ -96,6 +97,16 @@ void MindMapData::setEdgeColor(const QColor & edgeColor)
     for (auto && edge : m_graph.getEdges()) {
         edge->setColor(edgeColor);
     }
+}
+
+QColor MindMapData::gridColor() const
+{
+    return m_gridColor;
+}
+
+void MindMapData::setGridColor(const QColor & gridColor)
+{
+    m_gridColor = gridColor;
 }
 
 double MindMapData::edgeWidth() const

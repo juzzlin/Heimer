@@ -244,22 +244,7 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
             if (m_mediator.selectionGroupSize()) {
                 m_mediator.moveSelectionGroup(*node, m_grid.snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
             } else {
-                auto cur_pos = m_mappedPos - m_mediator.mouseAction().sourcePosOnNode();
-
-                qreal node_half_width = node->size().rwidth() / 2.0;
-                qreal node_half_height = node->size().rheight() / 2.0;
-
-                // make point correction to snap top left corner of the node to grid
-                cur_pos.setX(cur_pos.x() - node_half_width);
-                cur_pos.setY(cur_pos.y() - node_half_height);
-
-                auto calculated_loc = m_grid.snapToGrid(cur_pos);
-
-                // calculate the center of the node
-                calculated_loc.setX(calculated_loc.x() + node_half_width);
-                calculated_loc.setY(calculated_loc.y() + node_half_height);
-
-                node->setLocation(calculated_loc);
+                node->setLocation(m_grid.snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
             }
         }
         break;

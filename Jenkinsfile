@@ -35,7 +35,7 @@ pipeline {
             }
             steps {
                 sh "mkdir -p build-deb-ubuntu-16.04"
-                sh "cd build-deb-ubuntu-16.04 && cmake -D DISTRO_VERSION=Ubuntu-16.04 -D CMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -D PACKAGE_TYPE=Deb .. && cmake --build . --target all -- -j3"
+                sh "cd build-deb-ubuntu-16.04 && cmake -D DISTRO_VERSION=ubuntu-16.04 -D CMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -D PACKAGE_TYPE=Deb .. && cmake --build . --target all -- -j3"
                 sh "cd build-deb-ubuntu-16.04 && cpack -G DEB"
             }
             post {
@@ -53,7 +53,7 @@ pipeline {
             }
             steps {
                 sh "mkdir -p build-deb-ubuntu-18.04"
-                sh "cd build-deb-ubuntu-18.04 && cmake -D DISTRO_VERSION=Ubuntu-18.04  -D CMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -D PACKAGE_TYPE=Deb .. && cmake --build . --target all -- -j3"
+                sh "cd build-deb-ubuntu-18.04 && cmake -D DISTRO_VERSION=ubuntu-18.04  -D CMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -D PACKAGE_TYPE=Deb .. && cmake --build . --target all -- -j3"
                 sh "cd build-deb-ubuntu-18.04 && cpack -G DEB"
             }
             post {
@@ -71,7 +71,7 @@ pipeline {
             }
             steps {
                 sh "mkdir -p build-deb-ubuntu-20.04"
-                sh "cd build-deb-ubuntu-20.04 && cmake -D DISTRO_VERSION=Ubuntu-20.04  -D CMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -D PACKAGE_TYPE=Deb .. && cmake --build . --target all -- -j3"
+                sh "cd build-deb-ubuntu-20.04 && cmake -D DISTRO_VERSION=ubuntu-20.04  -D CMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -D PACKAGE_TYPE=Deb .. && cmake --build . --target all -- -j3"
                 sh "cd build-deb-ubuntu-20.04 && cpack -G DEB"
             }
             post {

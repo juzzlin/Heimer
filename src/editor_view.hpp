@@ -71,7 +71,7 @@ public slots:
 
     void setGridSize(int size);
 
-    void setGridVisible(int state);
+    void setGridVisible(bool visible);
 
 protected:
     void mouseMoveEvent(QMouseEvent * event) override;
@@ -184,7 +184,7 @@ private:
 
     MainContextMenu * m_mainContextMenu;
 
-    bool m_grid_visible = false;
+    bool m_gridVisible = false;
 };
 
 #endif // EDITOR_VIEW_HPP

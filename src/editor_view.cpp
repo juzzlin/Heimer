@@ -24,8 +24,6 @@
 #include <QString>
 #include <QTransform>
 
-#include <QDebug> // TODO remove
-
 #include "editor_view.hpp"
 
 #include "constants.hpp"
@@ -450,9 +448,9 @@ void EditorView::setGridSize(int size)
         scene()->update();
 }
 
-void EditorView::setGridVisible(int state)
+void EditorView::setGridVisible(bool visible)
 {
-    m_grid_visible = state == Qt::Checked;
+    m_gridVisible = visible;
     if (scene())
         scene()->update();
 }
@@ -518,12 +516,12 @@ void EditorView::drawBackground(QPainter *painter, const QRectF &rect)
 
     painter->fillRect(rect, this->backgroundBrush());
 
-    if (m_grid_visible)
-    {
-        const int gridSize = m_grid.size();
+    const int gridSize = m_grid.size();
 
-        qreal left = int(rect.left()) - (int(rect.left()) % gridSize);
-        qreal top = int(rect.top()) - (int(rect.top()) % gridSize);
+    if (m_gridVisible && gridSize != 0)
+    {
+        const qreal left = int(rect.left()) - (int(rect.left()) % gridSize);
+        const qreal top = int(rect.top()) - (int(rect.top()) % gridSize);
 
         QVarLengthArray<QLineF, 100> lines;
 

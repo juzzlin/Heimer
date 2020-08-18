@@ -525,10 +525,12 @@ void EditorView::drawBackground(QPainter *painter, const QRectF &rect)
 
         QVarLengthArray<QLineF, 100> lines;
 
-        for (qreal x = left; x < rect.right(); x += gridSize)
+        for (qreal x = left; x < rect.right(); x += gridSize) {
             lines.append(QLineF(x, rect.top(), x, rect.bottom()));
-        for (qreal y = top; y < rect.bottom(); y += gridSize)
+        }
+        for (qreal y = top; y < rect.bottom(); y += gridSize) {
             lines.append(QLineF(rect.left(), y, rect.right(), y));
+        }
 
         painter->setPen(m_mediator.mindMapData()->gridColor());
         painter->drawLines(lines.data(), lines.size());

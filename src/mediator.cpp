@@ -403,8 +403,6 @@ bool Mediator::saveMindMap()
 
 void Mediator::saveUndoPoint()
 {
-    L().debug() << "Saving undo point..";
-
     m_editorData->saveUndoPoint();
 }
 

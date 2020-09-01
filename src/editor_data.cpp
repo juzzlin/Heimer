@@ -24,6 +24,10 @@
 #include "xml_reader.hpp"
 #include "xml_writer.hpp"
 
+#include "simple_logger.hpp"
+
+using juzzlin::L;
+
 #include <cassert>
 #include <memory>
 
@@ -32,6 +36,8 @@ using std::make_shared;
 EditorData::EditorData()
   : m_selectionGroup(std::make_unique<SelectionGroup>())
 {
+    m_undoTimer.setSingleShot(true);
+    m_undoTimer.setInterval(Constants::View::TOO_QUICK_ACTION_DELAY_MS);
 }
 
 QColor EditorData::backgroundColor() const
@@ -121,6 +127,16 @@ bool EditorData::saveMindMap()
 
 void EditorData::saveUndoPoint(bool dontClearRedoStack)
 {
+    if (!TestMode::enabled()) {
+        if (m_undoTimer.isActive()) {
+            L().debug() << "Saving undo point skipped..";
+            m_undoTimer.start();
+            return;
+        }
+        L().debug() << "Saving undo point..";
+        m_undoTimer.start();
+    }
+
     assert(m_mindMapData);
     m_undoStack.pushUndoPoint(*m_mindMapData);
     if (!dontClearRedoStack) {
@@ -132,6 +148,8 @@ void EditorData::saveUndoPoint(bool dontClearRedoStack)
 
 void EditorData::saveRedoPoint()
 {
+    L().debug() << "Saving redo point..";
+
     assert(m_mindMapData);
     m_undoStack.pushRedoPoint(*m_mindMapData);
     setIsModified(true);

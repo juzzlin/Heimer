@@ -7,6 +7,8 @@ New features:
 
 Bug fixes:
 
+* Fix Github Issue #106: Memory leak when changing Edge width, Text size and corner radius
+
 Other:
 
 1.19.0

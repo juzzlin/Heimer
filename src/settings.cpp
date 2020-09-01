@@ -14,6 +14,7 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "settings.hpp"
+#include "constants.hpp"
 
 #include <QSettings>
 #include <QStandardPaths>
@@ -48,7 +49,7 @@ void Settings::saveGridSize(int value)
     if (!gridSizeTimer) {
         gridSizeTimer = std::make_unique<QTimer>();
         gridSizeTimer->setSingleShot(true);
-        gridSizeTimer->setInterval(500);
+        gridSizeTimer->setInterval(Constants::View::TOO_QUICK_ACTION_DELAY_MS);
         gridSizeTimer->connect(gridSizeTimer.get(), &QTimer::timeout, [&]() {
             QSettings settings;
             settings.beginGroup(settingsGroupMainWindow);

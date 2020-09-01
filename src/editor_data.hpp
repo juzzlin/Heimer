@@ -23,6 +23,7 @@
 #include <QObject>
 #include <QPointF>
 #include <QString>
+#include <QTimer>
 
 #include "edge.hpp"
 #include "file_exception.hpp"
@@ -149,6 +150,8 @@ private:
     bool m_isModified = false;
 
     QString m_fileName;
+
+    QTimer m_undoTimer;
 };
 
 #endif // EDITOR_DATA_HPP

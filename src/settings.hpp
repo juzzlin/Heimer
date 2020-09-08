@@ -40,6 +40,10 @@ QSize loadWindowSize(QSize defaultSize);
 
 void saveWindowSize(QSize size);
 
+bool loadFullScreen();
+
+void saveFullScreen(bool fullScreen);
+
 } // namespace Settings
 
 #endif // SETTINGS_HPP

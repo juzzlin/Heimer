@@ -11,6 +11,8 @@ Bug fixes:
 
 Other:
 
+* Fix GitHub Issue #98: Program doesn't remember the window being maximized
+
 1.19.0
 ======
 

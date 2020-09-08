@@ -381,15 +381,17 @@ void MainWindow::createViewMenu()
     const auto viewMenu = menuBar()->addMenu(tr("&View"));
 
     // Add "fullScreen"-action
-    const auto fullScreen = new QAction(tr("Full Screen"), this);
-    fullScreen->setCheckable(true);
-    fullScreen->setChecked(false);
-    viewMenu->addAction(fullScreen);
-    connect(fullScreen, &QAction::triggered, [=](bool checked) {
+    m_fullScreenAction = new QAction(tr("Full Screen"), this);
+    m_fullScreenAction->setCheckable(true);
+    m_fullScreenAction->setChecked(false);
+    viewMenu->addAction(m_fullScreenAction);
+    connect(m_fullScreenAction, &QAction::triggered, [=](bool checked) {
         if (checked) {
+            Settings::saveFullScreen(true);
             m_sizeBeforeFullScreen = size();
             showFullScreen();
         } else {
+            Settings::saveFullScreen(false);
             showNormal();
             resize(m_sizeBeforeFullScreen);
         }
@@ -482,6 +484,15 @@ void MainWindow::populateMenuBar()
     createViewMenu();
 
     createHelpMenu();
+}
+
+void MainWindow::appear()
+{
+    if (Settings::loadFullScreen()) {
+        m_fullScreenAction->trigger();
+    } else {
+        show();
+    }
 }
 
 bool MainWindow::copyOnDragEnabled() const

@@ -29,6 +29,7 @@ const auto recentImagePathKey = "recentImagePath";
 const auto gridSizeKey = "gridSize";
 const auto gridVisibleStateKey = "gridVisibleState";
 const auto recentPathKey = "recentPath";
+const auto windowFullScreenKey = "fullScreen";
 const auto windowSizeKey = "size";
 } // namespace
 
@@ -128,5 +129,22 @@ void Settings::saveWindowSize(QSize size)
     QSettings settings;
     settings.beginGroup(settingsGroupMainWindow);
     settings.setValue(windowSizeKey, size);
+    settings.endGroup();
+}
+
+bool Settings::loadFullScreen()
+{
+    QSettings settings;
+    settings.beginGroup(settingsGroupMainWindow);
+    const auto fullScreen = settings.value(windowFullScreenKey, false).toBool();
+    settings.endGroup();
+    return fullScreen;
+}
+
+void Settings::saveFullScreen(bool fullScreen)
+{
+    QSettings settings;
+    settings.beginGroup(settingsGroupMainWindow);
+    settings.setValue(windowFullScreenKey, fullScreen);
     settings.endGroup();
 }

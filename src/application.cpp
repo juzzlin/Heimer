@@ -179,7 +179,7 @@ Application::Application(int & argc, char ** argv)
     m_mainWindow->initialize();
     m_mediator->initializeView();
 
-    m_mainWindow->show();
+    m_mainWindow->appear();
 
     if (!m_mindMapFile.isEmpty()) {
         QTimer::singleShot(0, this, &Application::openArgMindMap);

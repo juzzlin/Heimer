@@ -50,6 +50,8 @@ public:
 
     static MainWindow * instance();
 
+    void appear();
+
     bool copyOnDragEnabled() const;
 
     void disableUndoAndRedo();
@@ -147,6 +149,8 @@ private:
     AboutDlg * m_aboutDlg;
 
     WhatsNewDlg * m_whatsNewDlg;
+
+    QAction * m_fullScreenAction = nullptr;
 
     QAction * m_saveAction = nullptr;
 

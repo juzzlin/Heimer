@@ -388,12 +388,11 @@ void MainWindow::createViewMenu()
     connect(m_fullScreenAction, &QAction::triggered, [=](bool checked) {
         if (checked) {
             Settings::saveFullScreen(true);
-            m_sizeBeforeFullScreen = size();
             showFullScreen();
         } else {
             Settings::saveFullScreen(false);
             showNormal();
-            resize(m_sizeBeforeFullScreen);
+            resize(Settings::loadWindowSize(calculateDefaultWindowSize().second));
         }
     });
 
@@ -424,20 +423,25 @@ void MainWindow::createViewMenu()
     });
 }
 
-void MainWindow::initialize()
+std::pair<QSize, QSize> MainWindow::calculateDefaultWindowSize() const
 {
     // Detect screen dimensions
     const auto screen = QGuiApplication::primaryScreen();
     const auto screenGeometry = screen->geometry();
     const int height = screenGeometry.height();
     const int width = screenGeometry.width();
-
-    // Read dialog size data
     const double defaultScale = 0.8;
-    resize(Settings::loadWindowSize(QSize(width, height) * defaultScale));
+    return { QSize(width, height), QSize(width, height) * defaultScale };
+}
+
+void MainWindow::initialize()
+{
+    // Read dialog size data
+    const auto screenAndWindow = calculateDefaultWindowSize();
+    resize(Settings::loadWindowSize(screenAndWindow.second));
 
     // Try to center the window.
-    move(width / 2 - this->width() / 2, height / 2 - this->height() / 2);
+    move(screenAndWindow.first.width() / 2 - this->width() / 2, screenAndWindow.first.height() / 2 - this->height() / 2);
 
     populateMenuBar();
 
@@ -569,7 +573,9 @@ void MainWindow::showWhatsNewDlg()
 
 void MainWindow::saveWindowSize()
 {
-    Settings::saveWindowSize(size());
+    if (!m_fullScreenAction->isChecked()) {
+        Settings::saveWindowSize(size());
+    }
 }
 
 void MainWindow::showErrorDialog(QString message)

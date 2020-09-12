@@ -23,6 +23,7 @@
 
 #include "state_machine.hpp"
 
+#include <map>
 #include <memory>
 
 class AboutDlg;
@@ -132,6 +133,8 @@ private:
 
     QWidgetAction * createTextSizeAction();
 
+    std::pair<QSize, QSize> calculateDefaultWindowSize() const;
+
     void createEditMenu();
 
     void createExportSubMenu(QMenu & fileMenu);
@@ -177,8 +180,6 @@ private:
     std::shared_ptr<Mediator> m_mediator;
 
     bool m_closeNow = false;
-
-    QSize m_sizeBeforeFullScreen;
 
     static MainWindow * m_instance;
 };

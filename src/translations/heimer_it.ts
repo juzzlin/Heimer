@@ -16,7 +16,7 @@
     <message>
         <location filename="../about_dlg.cpp" line="45"/>
         <source>Package type: </source>
-        <translation></translation>
+        <translation>Tipo di pacchetto: </translation>
     </message>
     <message>
         <location filename="../about_dlg.cpp" line="46"/>
@@ -135,17 +135,17 @@
     <message>
         <location filename="../layout_optimization_dialog.cpp" line="35"/>
         <source>Optimize Layout</source>
-        <translation></translation>
+        <translation>Ottimizza Layout</translation>
     </message>
     <message>
         <location filename="../layout_optimization_dialog.cpp" line="90"/>
         <source>Aspect Ratio:</source>
-        <translation></translation>
+        <translation>Proporzioni:</translation>
     </message>
     <message>
         <location filename="../layout_optimization_dialog.cpp" line="101"/>
         <source>Minimum Edge Length:</source>
-        <translation></translation>
+        <translation>Lunghezza Minima Bordo:</translation>
     </message>
     <message>
         <location filename="../layout_optimization_dialog.cpp" line="121"/>
@@ -155,7 +155,7 @@
     <message>
         <location filename="../layout_optimization_dialog.cpp" line="124"/>
         <source>Optimize</source>
-        <translation></translation>
+        <translation>Ottimizza</translation>
     </message>
 </context>
 <context>
@@ -226,7 +226,7 @@
     <message>
         <location filename="../main_window.cpp" line="61"/>
         <source>Copy on drag</source>
-        <translation></translation>
+        <translation>Copia trascinando</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="100"/>
@@ -246,7 +246,7 @@
     <message>
         <location filename="../main_window.cpp" line="130"/>
         <source>Optimize layout</source>
-        <translation></translation>
+        <translation>Ottimizza layout</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="149"/>
@@ -271,17 +271,17 @@
     <message>
         <location filename="../main_window.cpp" line="241"/>
         <source>&amp;Export</source>
-        <translation></translation>
+        <translation>&amp;Esporta</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="244"/>
         <source>&amp;PNG</source>
-        <translation></translation>
+        <translation>&amp;PNG</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="253"/>
         <source>&amp;SVG</source>
-        <translation></translation>
+        <translation>&amp;SVG</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="267"/>
@@ -315,7 +315,7 @@
     </message>
     <message>
         <source>&amp;Export to PNG image</source>
-        <translation type="vanished">&amp;Esporta in immagine PNG</translation>
+        <translation>&amp;Esporta in immagine PNG</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="318"/>
@@ -340,7 +340,7 @@
     <message>
         <location filename="../main_window.cpp" line="347"/>
         <source>What&apos;s New</source>
-        <translation>Cosa c&apos;è di nuovo</translation>
+        <translation>Cosa c'&apos;è di nuovo</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="372"/>
@@ -469,7 +469,7 @@
     <message>
         <location filename="../svg_export_dialog.cpp" line="35"/>
         <source>Export to an SVG File</source>
-        <translation></translation>
+        <translation>Esporta in un file SVG</translation>
     </message>
     <message>
         <location filename="../svg_export_dialog.cpp" line="41"/>
@@ -479,7 +479,7 @@
     <message>
         <location filename="../svg_export_dialog.cpp" line="43"/>
         <source>SVG Files</source>
-        <translation></translation>
+        <translation>File SVG</translation>
     </message>
     <message>
         <location filename="../svg_export_dialog.cpp" line="74"/>
@@ -512,7 +512,7 @@
     <message>
         <location filename="../whats_new_dlg.cpp" line="29"/>
         <source>What&apos;s New</source>
-        <translation>Cosa c&apos;è di nuovo</translation>
+        <translation>Cosa c'&apos;è di nuovo</translation>
     </message>
 </context>
 </TS>

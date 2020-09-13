@@ -126,6 +126,17 @@ void MainWindow::createEditMenu()
 
     editMenu->addSeparator();
 
+    const auto gridColorAction = new QAction(tr("Set grid color") + threeDots, this);
+    gridColorAction->setShortcut(QKeySequence("Ctrl+G"));
+
+    connect(gridColorAction, &QAction::triggered, [this]() {
+        emit actionTriggered(StateMachine::Action::GridColorChangeRequested);
+    });
+
+    editMenu->addAction(gridColorAction);
+
+    editMenu->addSeparator();
+
     auto optimizeLayoutAction = new QAction(tr("Optimize layout") + threeDots, this);
     optimizeLayoutAction->setShortcut(QKeySequence("Ctrl+Shift+O"));
 

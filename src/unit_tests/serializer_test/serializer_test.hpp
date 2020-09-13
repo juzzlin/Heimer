@@ -32,6 +32,8 @@ private slots:
 
     void testEdgeColor();
 
+    void testGridColor();
+
     void testEdgeWidth();
 
     void testNotUsedImages();

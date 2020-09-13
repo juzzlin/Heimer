@@ -55,6 +55,14 @@ void SerializerTest::testEdgeColor()
     QCOMPARE(inData->edgeColor(), outData.edgeColor());
 }
 
+void SerializerTest::testGridColor()
+{
+    MindMapData outData;
+    outData.setGridColor(QColor(1, 2, 3));
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
+    QCOMPARE(inData->gridColor(), outData.gridColor());
+}
+
 void SerializerTest::testEdgeWidth()
 {
     MindMapData outData;

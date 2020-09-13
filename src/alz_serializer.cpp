@@ -48,6 +48,8 @@ static constexpr auto EDGE_THICKNESS = "edge-width";
 
 static constexpr auto GRAPH = "graph";
 
+static constexpr auto GRID_COLOR = "grid-color";
+
 static constexpr auto IMAGE = "image";
 
 static constexpr auto TEXT_SIZE = "text-size";
@@ -376,6 +378,9 @@ MindMapDataPtr fromXml(QDomDocument document)
                            { QString(AlzSerializer::DataKeywords::Design::EDGE_COLOR), [=](const QDomElement & e) {
                                 data->setEdgeColor(readColorElement(e));
                             } },
+                           { QString(AlzSerializer::DataKeywords::Design::GRID_COLOR), [=](const QDomElement & e) {
+                                data->setGridColor(readColorElement(e));
+                            } },
                            { QString(AlzSerializer::DataKeywords::Design::EDGE_THICKNESS), [=](const QDomElement & e) {
                                 data->setEdgeWidth(readFirstTextNodeContent(e).toDouble() / SCALE);
                             } },
@@ -409,6 +414,8 @@ QDomDocument toXml(MindMapData & mindMapData)
     writeColor(design, doc, mindMapData.backgroundColor(), AlzSerializer::DataKeywords::Design::COLOR);
 
     writeColor(design, doc, mindMapData.edgeColor(), AlzSerializer::DataKeywords::Design::EDGE_COLOR);
+
+    writeColor(design, doc, mindMapData.gridColor(), AlzSerializer::DataKeywords::Design::GRID_COLOR);
 
     auto edgeWidthElement = doc.createElement(AlzSerializer::DataKeywords::Design::EDGE_THICKNESS);
     edgeWidthElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData.edgeWidth() * SCALE))));

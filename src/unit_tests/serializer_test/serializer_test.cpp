@@ -71,6 +71,16 @@ void SerializerTest::testEdgeWidth()
     QCOMPARE(inData->edgeWidth(), outData.edgeWidth());
 }
 
+void SerializerTest::testLayoutOptimizer()
+{
+    MindMapData outData;
+    outData.setAspectRatio(3.14);
+    outData.setMinEdgeLength(42.666);
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
+    QCOMPARE(inData->aspectRatio(), outData.aspectRatio());
+    QCOMPARE(inData->minEdgeLength(), outData.minEdgeLength());
+}
+
 void SerializerTest::testNotUsedImages()
 {
     MindMapData outData;

@@ -61,6 +61,16 @@ void MindMapData::copyGraph(const MindMapData & other)
     }
 }
 
+double MindMapData::aspectRatio() const
+{
+    return m_aspectRatio;
+}
+
+void MindMapData::setAspectRatio(double aspectRatio)
+{
+    m_aspectRatio = aspectRatio;
+}
+
 QColor MindMapData::backgroundColor() const
 {
     return m_backgroundColor;
@@ -153,6 +163,16 @@ const ImageManager & MindMapData::imageManager() const
     return m_imageManager;
 }
 
+double MindMapData::minEdgeLength() const
+{
+    return m_minEdgeLength;
+}
+
+void MindMapData::setMinEdgeLength(double minEdgeLength)
+{
+    m_minEdgeLength = minEdgeLength;
+}
+
 int MindMapData::textSize() const
 {
     return m_textSize;
@@ -181,6 +201,4 @@ void MindMapData::setVersion(const QString & version)
     m_version = version;
 }
 
-MindMapData::~MindMapData()
-{
-}
+MindMapData::~MindMapData() = default;

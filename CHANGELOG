@@ -3,6 +3,8 @@ x.y.z
 
 New features:
 
+* Fix GitHub Issue #111: Optimizer: Save optimizer settings to file
+
 Bug fixes:
 
 Other:

@@ -116,6 +116,17 @@ static constexpr auto ID = "id";
 static constexpr auto PATH = "path";
 
 } // namespace Image
+
+namespace LayoutOptimizer {
+
+static constexpr auto ASPECT_RATIO = "aspect-ratio";
+
+static constexpr auto LAYOUT_OPTIMIZER = "layout-optimizer";
+
+static constexpr auto MIN_EDGE_LENGTH = "min-edge-length";
+
+} // namespace LayoutOptimizer
+
 } // namespace Design
 
 } // namespace DataKeywords
@@ -248,6 +259,14 @@ static void writeImages(MindMapData & mindMapData, QDomElement & root, QDomDocum
     }
 }
 
+static void writeLayoutOptimizer(MindMapData & mindMapData, QDomElement & root, QDomDocument & doc)
+{
+    auto layoutOptimizerElement = doc.createElement(AlzSerializer::DataKeywords::Design::LayoutOptimizer::LAYOUT_OPTIMIZER);
+    layoutOptimizerElement.setAttribute(AlzSerializer::DataKeywords::Design::LayoutOptimizer::ASPECT_RATIO, mindMapData.aspectRatio() * SCALE);
+    layoutOptimizerElement.setAttribute(AlzSerializer::DataKeywords::Design::LayoutOptimizer::MIN_EDGE_LENGTH, mindMapData.minEdgeLength() * SCALE);
+    root.appendChild(layoutOptimizerElement);
+}
+
 static QColor readColorElement(const QDomElement & element)
 {
     return {
@@ -351,6 +370,19 @@ static EdgePtr readEdge(const QDomElement & element, MindMapDataPtr data)
     return edge;
 }
 
+static void readLayoutOptimizer(const QDomElement & element, MindMapDataPtr data)
+{
+    double aspectRatio = element.attribute(AlzSerializer::DataKeywords::Design::LayoutOptimizer::ASPECT_RATIO, "-1").toDouble() / SCALE;
+    aspectRatio = std::min(aspectRatio, Constants::LayoutOptimizer::MAX_ASPECT_RATIO);
+    aspectRatio = std::max(aspectRatio, Constants::LayoutOptimizer::MIN_ASPECT_RATIO);
+    data->setAspectRatio(aspectRatio);
+
+    double minEdgeLength = element.attribute(AlzSerializer::DataKeywords::Design::LayoutOptimizer::MIN_EDGE_LENGTH, "-1").toDouble() / SCALE;
+    minEdgeLength = std::min(minEdgeLength, Constants::LayoutOptimizer::MAX_EDGE_LENGTH);
+    minEdgeLength = std::max(minEdgeLength, Constants::LayoutOptimizer::MIN_EDGE_LENGTH);
+    data->setMinEdgeLength(minEdgeLength);
+}
+
 static void readGraph(const QDomElement & graph, MindMapDataPtr data)
 {
     readChildren(graph, {
@@ -396,6 +428,9 @@ MindMapDataPtr fromXml(QDomDocument document)
                             } },
                            { QString(AlzSerializer::DataKeywords::Design::CORNER_RADIUS), [=](const QDomElement & e) {
                                 data->setCornerRadius(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
+                            } },
+                           { QString(AlzSerializer::DataKeywords::Design::LayoutOptimizer::LAYOUT_OPTIMIZER), [=](const QDomElement & e) {
+                                readLayoutOptimizer(e, data);
                             } } });
 
     return data;
@@ -437,6 +472,8 @@ QDomDocument toXml(MindMapData & mindMapData)
     writeEdges(mindMapData, graph, doc);
 
     writeImages(mindMapData, design, doc);
+
+    writeLayoutOptimizer(mindMapData, design, doc);
 
     return doc;
 }

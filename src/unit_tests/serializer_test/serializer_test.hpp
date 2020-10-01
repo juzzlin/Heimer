@@ -36,6 +36,8 @@ private slots:
 
     void testEdgeWidth();
 
+    void testLayoutOptimizer();
+
     void testNotUsedImages();
 
     void testNodeDeletion();

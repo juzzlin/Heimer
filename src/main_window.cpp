@@ -348,19 +348,25 @@ void MainWindow::createHelpMenu()
     // Add "about"-action
     const auto aboutAct = new QAction(tr("&About"), this);
     helpMenu->addAction(aboutAct);
-    connect(aboutAct, &QAction::triggered, this, &MainWindow::showAboutDlg);
+    connect(aboutAct, &QAction::triggered, [=] {
+        m_aboutDlg->exec();
+    });
 
     // Add "about Qt"-action
     const auto aboutQtAct = new QAction(tr("About &Qt"), this);
     helpMenu->addAction(aboutQtAct);
-    connect(aboutQtAct, &QAction::triggered, this, &MainWindow::showAboutQtDlg);
+    connect(aboutQtAct, &QAction::triggered, [=] {
+        QMessageBox::aboutQt(this, tr("About Qt"));
+    });
 
     helpMenu->addSeparator();
 
     // Add "What's new"-action
     const auto whatsNewAct = new QAction(tr("What's New"), this);
     helpMenu->addAction(whatsNewAct);
-    connect(whatsNewAct, &QAction::triggered, this, &MainWindow::showWhatsNewDlg);
+    connect(whatsNewAct, &QAction::triggered, [=] {
+        m_whatsNewDlg->exec();
+    });
 }
 
 void MainWindow::createToolBar()
@@ -565,21 +571,6 @@ void MainWindow::enableSave(bool enable)
     setTitle();
 
     m_saveAction->setEnabled(enable);
-}
-
-void MainWindow::showAboutDlg()
-{
-    m_aboutDlg->exec();
-}
-
-void MainWindow::showAboutQtDlg()
-{
-    QMessageBox::aboutQt(this, tr("About Qt"));
-}
-
-void MainWindow::showWhatsNewDlg()
-{
-    m_whatsNewDlg->exec();
 }
 
 void MainWindow::saveWindowSize()

@@ -112,14 +112,6 @@ signals:
 
     void zoomToFitTriggered();
 
-private slots:
-
-    void showAboutDlg();
-
-    void showAboutQtDlg();
-
-    void showWhatsNewDlg();
-
 private:
     void addRedoAction(QMenu & menu);
 

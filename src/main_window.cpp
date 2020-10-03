@@ -348,19 +348,19 @@ void MainWindow::createHelpMenu()
     // Add "about"-action
     const auto aboutAct = new QAction(tr("&About"), this);
     helpMenu->addAction(aboutAct);
-    connect(aboutAct, SIGNAL(triggered()), this, SLOT(showAboutDlg()));
+    connect(aboutAct, &QAction::triggered, this, &MainWindow::showAboutDlg);
 
     // Add "about Qt"-action
     const auto aboutQtAct = new QAction(tr("About &Qt"), this);
     helpMenu->addAction(aboutQtAct);
-    connect(aboutQtAct, SIGNAL(triggered()), this, SLOT(showAboutQtDlg()));
+    connect(aboutQtAct, &QAction::triggered, this, &MainWindow::showAboutQtDlg);
 
     helpMenu->addSeparator();
 
     // Add "What's new"-action
     const auto whatsNewAct = new QAction(tr("What's New"), this);
     helpMenu->addAction(whatsNewAct);
-    connect(whatsNewAct, SIGNAL(triggered()), this, SLOT(showWhatsNewDlg()));
+    connect(whatsNewAct, &QAction::triggered, this, &MainWindow::showWhatsNewDlg);
 }
 
 void MainWindow::createToolBar()

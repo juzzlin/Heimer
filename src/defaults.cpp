@@ -13,43 +13,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SETTINGS_HPP
-#define SETTINGS_HPP
+#include "defaults.hpp"
+#include "settings.hpp"
 
-#include "edge.hpp"
+std::unique_ptr<Defaults> Defaults::m_instance;
 
-#include <QSize>
+Defaults::Defaults()
+  : m_edgeArrowMode(Settings::loadEdgeArrowMode(Edge::ArrowMode::Single))
+{
+}
 
-namespace Settings {
+Defaults & Defaults::instance()
+{
+    if (!Defaults::m_instance) {
+        Defaults::m_instance = std::make_unique<Defaults>();
+    }
+    return *Defaults::m_instance;
+}
 
-Edge::ArrowMode loadEdgeArrowMode(Edge::ArrowMode defaultMode);
+Edge::ArrowMode Defaults::edgeArrowMode() const
+{
+    return m_edgeArrowMode;
+}
 
-void saveEdgeArrowMode(Edge::ArrowMode mode);
-
-int loadGridSize();
-
-void saveGridSize(int value);
-
-Qt::CheckState loadGridVisibleState();
-
-void saveGridVisibleState(int state);
-
-QString loadRecentPath();
-
-void saveRecentPath(QString path);
-
-QString loadRecentImagePath();
-
-void saveRecentImagePath(QString path);
-
-QSize loadWindowSize(QSize defaultSize);
-
-void saveWindowSize(QSize size);
-
-bool loadFullScreen();
-
-void saveFullScreen(bool fullScreen);
-
-} // namespace Settings
-
-#endif // SETTINGS_HPP
+void Defaults::setEdgeArrowMode(Edge::ArrowMode mode)
+{
+    if (m_edgeArrowMode != mode) {
+        m_edgeArrowMode = mode;
+        Settings::saveEdgeArrowMode(mode);
+    }
+}

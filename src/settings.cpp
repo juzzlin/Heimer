@@ -24,14 +24,33 @@
 
 namespace {
 const auto settingsGroupApplication = "Application";
+const auto settingsGroupDefaults = "Defaults";
 const auto settingsGroupMainWindow = "MainWindow";
 const auto recentImagePathKey = "recentImagePath";
+const auto edgeArrowModeKey = "edgeArrowMode";
 const auto gridSizeKey = "gridSize";
 const auto gridVisibleStateKey = "gridVisibleState";
 const auto recentPathKey = "recentPath";
 const auto windowFullScreenKey = "fullScreen";
 const auto windowSizeKey = "size";
 } // namespace
+
+Edge::ArrowMode Settings::loadEdgeArrowMode(Edge::ArrowMode defaultMode)
+{
+    QSettings settings;
+    settings.beginGroup(settingsGroupDefaults);
+    const auto mode = static_cast<Edge::ArrowMode>(settings.value(edgeArrowModeKey, static_cast<int>(defaultMode)).toInt());
+    settings.endGroup();
+    return mode;
+}
+
+void Settings::saveEdgeArrowMode(Edge::ArrowMode mode)
+{
+    QSettings settings;
+    settings.beginGroup(settingsGroupDefaults);
+    settings.setValue(edgeArrowModeKey, static_cast<int>(mode));
+    settings.endGroup();
+}
 
 int Settings::loadGridSize()
 {

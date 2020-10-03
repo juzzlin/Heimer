@@ -13,43 +13,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SETTINGS_HPP
-#define SETTINGS_HPP
+#ifndef DEFAULTS_HPP
+#define DEFAULTS_HPP
 
 #include "edge.hpp"
 
-#include <QSize>
+#include <memory>
 
-namespace Settings {
+class Defaults
+{
+public:
+    Defaults();
 
-Edge::ArrowMode loadEdgeArrowMode(Edge::ArrowMode defaultMode);
+    static Defaults & instance();
 
-void saveEdgeArrowMode(Edge::ArrowMode mode);
+    Edge::ArrowMode edgeArrowMode() const;
 
-int loadGridSize();
+    void setEdgeArrowMode(Edge::ArrowMode mode);
 
-void saveGridSize(int value);
+private:
+    Edge::ArrowMode m_edgeArrowMode;
 
-Qt::CheckState loadGridVisibleState();
+    static std::unique_ptr<Defaults> m_instance;
+};
 
-void saveGridVisibleState(int state);
-
-QString loadRecentPath();
-
-void saveRecentPath(QString path);
-
-QString loadRecentImagePath();
-
-void saveRecentImagePath(QString path);
-
-QSize loadWindowSize(QSize defaultSize);
-
-void saveWindowSize(QSize size);
-
-bool loadFullScreen();
-
-void saveFullScreen(bool fullScreen);
-
-} // namespace Settings
-
-#endif // SETTINGS_HPP
+#endif // DEFAULTS_HPP

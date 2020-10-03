@@ -13,43 +13,30 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SETTINGS_HPP
-#define SETTINGS_HPP
+#ifndef DEFAULTS_DLG_HPP
+#define DEFAULTS_DLG_HPP
 
-#include "edge.hpp"
+#include "defaults.hpp"
+#include <QDialog>
+#include <map>
 
-#include <QSize>
+class QRadioButton;
 
-namespace Settings {
+class DefaultsDlg : public QDialog
+{
+    Q_OBJECT
 
-Edge::ArrowMode loadEdgeArrowMode(Edge::ArrowMode defaultMode);
+public:
+    explicit DefaultsDlg(QWidget * parent = nullptr);
 
-void saveEdgeArrowMode(Edge::ArrowMode mode);
+private:
+    void accept() override;
 
-int loadGridSize();
+    void initWidgets();
 
-void saveGridSize(int value);
+    void setActiveDefaults();
 
-Qt::CheckState loadGridVisibleState();
+    std::map<Edge::ArrowMode, QRadioButton *> m_edgeArrowStyleRadioMap;
+};
 
-void saveGridVisibleState(int state);
-
-QString loadRecentPath();
-
-void saveRecentPath(QString path);
-
-QString loadRecentImagePath();
-
-void saveRecentImagePath(QString path);
-
-QSize loadWindowSize(QSize defaultSize);
-
-void saveWindowSize(QSize size);
-
-bool loadFullScreen();
-
-void saveFullScreen(bool fullScreen);
-
-} // namespace Settings
-
-#endif // SETTINGS_HPP
+#endif // DEFAULTS_DLG_HPP

@@ -118,7 +118,7 @@ private:
 
     bool m_selected = false;
 
-    ArrowMode m_arrowMode = ArrowMode::Single;
+    ArrowMode m_arrowMode;
 
     bool m_enableAnimations;
 

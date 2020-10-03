@@ -27,6 +27,7 @@
 #include <memory>
 
 class AboutDlg;
+class DefaultsDlg;
 class EditorData;
 class EditorView;
 class QAction;
@@ -135,6 +136,8 @@ private:
 
     void createHelpMenu();
 
+    void createSettingsMenu();
+
     void createToolBar();
 
     void createViewMenu();
@@ -142,6 +145,8 @@ private:
     void populateMenuBar();
 
     AboutDlg * m_aboutDlg;
+
+    DefaultsDlg * m_defaultsDlg;
 
     WhatsNewDlg * m_whatsNewDlg;
 

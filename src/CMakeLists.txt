@@ -21,6 +21,8 @@ set(LIB_SRC
     application.cpp
     constants.hpp
     copy_paste.cpp
+    defaults.cpp
+    defaults_dlg.cpp
     edge.cpp
     edge_context_menu.cpp
     edge_dot.cpp

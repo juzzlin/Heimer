@@ -17,6 +17,7 @@
 
 #include "about_dlg.hpp"
 #include "constants.hpp"
+#include "defaults_dlg.hpp"
 #include "mediator.hpp"
 #include "recent_files_manager.hpp"
 #include "recent_files_menu.hpp"
@@ -49,6 +50,7 @@ static const auto threeDots = "...";
 
 MainWindow::MainWindow()
   : m_aboutDlg(new AboutDlg(this))
+  , m_defaultsDlg(new DefaultsDlg(this))
   , m_whatsNewDlg(new WhatsNewDlg(this))
   , m_saveAction(new QAction(tr("&Save"), this))
   , m_saveAsAction(new QAction(tr("&Save as") + threeDots, this))
@@ -369,6 +371,16 @@ void MainWindow::createHelpMenu()
     });
 }
 
+void MainWindow::createSettingsMenu()
+{
+    const auto settingsMenu = menuBar()->addMenu(tr("&Settings"));
+
+    // Add "defaults"-action
+    const auto defaultsAct = new QAction(tr("&Defaults"), this);
+    connect(defaultsAct, &QAction::triggered, m_defaultsDlg, &DefaultsDlg::exec);
+    settingsMenu->addAction(defaultsAct);
+}
+
 void MainWindow::createToolBar()
 {
     const auto toolBar = new QToolBar(this);
@@ -503,6 +515,8 @@ void MainWindow::populateMenuBar()
     createEditMenu();
 
     createViewMenu();
+
+    createSettingsMenu();
 
     createHelpMenu();
 }

@@ -21,6 +21,8 @@
 //! The about dialog.
 class WhatsNewDlg : public QDialog
 {
+    Q_OBJECT
+
 public:
     //! Constructor.
     explicit WhatsNewDlg(QWidget * parent = nullptr);

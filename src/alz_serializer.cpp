@@ -17,6 +17,7 @@
 
 #include "constants.hpp"
 #include "graph.hpp"
+#include "mind_map_data.hpp"
 #include "node.hpp"
 #include "simple_logger.hpp"
 #include "test_mode.hpp"
@@ -132,8 +133,6 @@ static constexpr auto MIN_EDGE_LENGTH = "min-edge-length";
 } // namespace DataKeywords
 
 static const double SCALE = 1000; // https://bugreports.qt.io/browse/QTBUG-67129
-
-using std::make_shared;
 
 static void writeColor(QDomElement & parent, QDomDocument & doc, QColor color, QString elementName)
 {
@@ -317,10 +316,10 @@ static void readChildren(const QDomElement & root, std::map<QString, std::functi
 }
 
 // The purpose of this #ifdef is to build GUILESS unit tests so that QTEST_GUILESS_MAIN can be used
-static NodePtr readNode(const QDomElement & element)
+static std::unique_ptr<Node> readNode(const QDomElement & element)
 {
     // Init a new node. QGraphicsScene will take the ownership eventually.
-    const auto node = make_shared<Node>();
+    auto node = std::make_unique<Node>();
 
     node->setIndex(element.attribute(DataKeywords::Design::Graph::Node::INDEX, "-1").toInt());
     node->setLocation(QPointF(
@@ -333,23 +332,23 @@ static NodePtr readNode(const QDomElement & element)
           element.attribute(DataKeywords::Design::Graph::Node::H).toInt() / SCALE));
     }
 
-    readChildren(element, { { QString(DataKeywords::Design::Graph::Node::TEXT), [=](const QDomElement & e) {
+    readChildren(element, { { QString(DataKeywords::Design::Graph::Node::TEXT), [&node](const QDomElement & e) {
                                  node->setText(readFirstTextNodeContent(e));
                              } },
-                            { QString(DataKeywords::Design::Graph::Node::COLOR), [=](const QDomElement & e) {
+                            { QString(DataKeywords::Design::Graph::Node::COLOR), [&node](const QDomElement & e) {
                                  node->setColor(readColorElement(e));
                              } },
-                            { QString(DataKeywords::Design::Graph::Node::TEXT_COLOR), [=](const QDomElement & e) {
+                            { QString(DataKeywords::Design::Graph::Node::TEXT_COLOR), [&node](const QDomElement & e) {
                                  node->setTextColor(readColorElement(e));
                              } },
-                            { QString(DataKeywords::Design::Graph::Node::IMAGE), [=](const QDomElement & e) {
+                            { QString(DataKeywords::Design::Graph::Node::IMAGE), [&node](const QDomElement & e) {
                                  node->setImageRef(readImageElement(e));
                              } } });
 
     return node;
 }
 
-static EdgePtr readEdge(const QDomElement & element, MindMapDataPtr data)
+static std::unique_ptr<Edge> readEdge(const QDomElement & element, MindMapData & data)
 {
     const int index0 = element.attribute(DataKeywords::Design::Graph::Edge::INDEX0, "-1").toInt();
     const int index1 = element.attribute(DataKeywords::Design::Graph::Edge::INDEX1, "-1").toInt();
@@ -357,80 +356,81 @@ static EdgePtr readEdge(const QDomElement & element, MindMapDataPtr data)
     const int arrowMode = element.attribute(DataKeywords::Design::Graph::Edge::ARROW_MODE, "0").toInt();
 
     // Initialize a new edge. QGraphicsScene will take the ownership eventually.
-    const auto node0 = data->graph().getNode(index0);
-    const auto node1 = data->graph().getNode(index1);
-    const auto edge = make_shared<Edge>(*node0, *node1);
+    const auto node0 = data.graph().getNode(index0);
+    const auto node1 = data.graph().getNode(index1);
+
+    auto edge = std::make_unique<Edge>(*node0, *node1);
     edge->setArrowMode(static_cast<Edge::ArrowMode>(arrowMode));
     edge->setReversed(reversed);
 
-    readChildren(element, { { QString(DataKeywords::Design::Graph::Node::TEXT), [=](const QDomElement & e) {
+    readChildren(element, { { QString(DataKeywords::Design::Graph::Node::TEXT), [&edge](const QDomElement & e) {
                                  edge->setText(readFirstTextNodeContent(e));
                              } } });
 
     return edge;
 }
 
-static void readLayoutOptimizer(const QDomElement & element, MindMapDataPtr data)
+static void readLayoutOptimizer(const QDomElement & element, MindMapData & data)
 {
     double aspectRatio = element.attribute(DataKeywords::Design::LayoutOptimizer::ASPECT_RATIO, "-1").toDouble() / SCALE;
     aspectRatio = std::min(aspectRatio, Constants::LayoutOptimizer::MAX_ASPECT_RATIO);
     aspectRatio = std::max(aspectRatio, Constants::LayoutOptimizer::MIN_ASPECT_RATIO);
-    data->setAspectRatio(aspectRatio);
+    data.setAspectRatio(aspectRatio);
 
     double minEdgeLength = element.attribute(DataKeywords::Design::LayoutOptimizer::MIN_EDGE_LENGTH, "-1").toDouble() / SCALE;
     minEdgeLength = std::min(minEdgeLength, Constants::LayoutOptimizer::MAX_EDGE_LENGTH);
     minEdgeLength = std::max(minEdgeLength, Constants::LayoutOptimizer::MIN_EDGE_LENGTH);
-    data->setMinEdgeLength(minEdgeLength);
+    data.setMinEdgeLength(minEdgeLength);
 }
 
-static void readGraph(const QDomElement & graph, MindMapDataPtr data)
+static void readGraph(const QDomElement & graph, MindMapData & data)
 {
     readChildren(graph, {
-                          { QString(DataKeywords::Design::Graph::NODE), [=](const QDomElement & e) {
-                               data->graph().addNode(readNode(e));
+                          { QString(DataKeywords::Design::Graph::NODE), [&data](const QDomElement & e) {
+                               data.graph().addNode(readNode(e));
                            } },
-                          { QString(DataKeywords::Design::Graph::EDGE), [=](const QDomElement & e) {
-                               data->graph().addEdge(readEdge(e, data));
+                          { QString(DataKeywords::Design::Graph::EDGE), [&data](const QDomElement & e) {
+                               data.graph().addEdge(readEdge(e, data));
                            } },
                         });
 }
 
-MindMapDataPtr fromXml(QDomDocument document)
+std::unique_ptr<MindMapData> fromXml(QDomDocument document)
 {
     const auto design = document.documentElement();
-    const auto data = make_shared<MindMapData>();
+    auto data = std::make_unique<MindMapData>();
     data->setVersion(design.attribute(DataKeywords::Design::APPLICATION_VERSION, "UNDEFINED"));
 
-    readChildren(design, { { QString(DataKeywords::Design::GRAPH), [=](const QDomElement & e) {
-                                readGraph(e, data);
+    readChildren(design, { { QString(DataKeywords::Design::GRAPH), [&data](const QDomElement & e) {
+                                readGraph(e, *data);
                             } },
-                           { QString(DataKeywords::Design::COLOR), [=](const QDomElement & e) {
+                           { QString(DataKeywords::Design::COLOR), [&data](const QDomElement & e) {
                                 data->setBackgroundColor(readColorElement(e));
                             } },
-                           { QString(DataKeywords::Design::EDGE_COLOR), [=](const QDomElement & e) {
+                           { QString(DataKeywords::Design::EDGE_COLOR), [&data](const QDomElement & e) {
                                 data->setEdgeColor(readColorElement(e));
                             } },
-                           { QString(DataKeywords::Design::GRID_COLOR), [=](const QDomElement & e) {
+                           { QString(DataKeywords::Design::GRID_COLOR), [&data](const QDomElement & e) {
                                 data->setGridColor(readColorElement(e));
                             } },
-                           { QString(DataKeywords::Design::EDGE_THICKNESS), [=](const QDomElement & e) {
+                           { QString(DataKeywords::Design::EDGE_THICKNESS), [&data](const QDomElement & e) {
                                 data->setEdgeWidth(readFirstTextNodeContent(e).toDouble() / SCALE);
                             } },
-                           { QString(DataKeywords::Design::IMAGE), [=](const QDomElement & e) {
+                           { QString(DataKeywords::Design::IMAGE), [&data](const QDomElement & e) {
                                 const auto id = e.attribute(DataKeywords::Design::Image::ID).toUInt();
                                 const auto path = e.attribute(DataKeywords::Design::Image::PATH).toStdString();
                                 Image image(base64ToQImage(readFirstTextNodeContent(e).toStdString(), id, path), path);
                                 image.setId(id);
                                 data->imageManager().setImage(image);
                             } },
-                           { QString(DataKeywords::Design::TEXT_SIZE), [=](const QDomElement & e) {
+                           { QString(DataKeywords::Design::TEXT_SIZE), [&data](const QDomElement & e) {
                                 data->setTextSize(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
                             } },
-                           { QString(DataKeywords::Design::CORNER_RADIUS), [=](const QDomElement & e) {
+                           { QString(DataKeywords::Design::CORNER_RADIUS), [&data](const QDomElement & e) {
                                 data->setCornerRadius(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
                             } },
-                           { QString(DataKeywords::Design::LayoutOptimizer::LAYOUT_OPTIMIZER), [=](const QDomElement & e) {
-                                readLayoutOptimizer(e, data);
+                           { QString(DataKeywords::Design::LayoutOptimizer::LAYOUT_OPTIMIZER), [&data](const QDomElement & e) {
+                                readLayoutOptimizer(e, *data);
                             } } });
 
     return data;

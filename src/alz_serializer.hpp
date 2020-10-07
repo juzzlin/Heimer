@@ -16,13 +16,15 @@
 #ifndef ALZ_SERIALIZER_HPP
 #define ALZ_SERIALIZER_HPP
 
-#include "mind_map_data.hpp"
-
 #include <QDomDocument>
+
+#include <memory>
+
+class MindMapData;
 
 namespace AlzSerializer {
 
-MindMapDataPtr fromXml(QDomDocument document);
+std::unique_ptr<MindMapData> fromXml(QDomDocument document);
 
 QDomDocument toXml(MindMapData & mindMapData);
 

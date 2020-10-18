@@ -3,12 +3,17 @@ x.y.z
 
 New features:
 
-* Fix GitHub Issue #111: Optimizer: Save optimizer settings to file
-* Fix GitHub Issue #109: Make default direction of arrows configurable
-
 Bug fixes:
 
 Other:
+
+1.21.0
+======
+
+New features:
+
+* Fix GitHub Issue #111: Optimizer: Save optimizer settings to file
+* Fix GitHub Issue #109: Make default direction of arrows configurable
 
 1.20.0
 ======

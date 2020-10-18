@@ -4,7 +4,7 @@
 TEMPLATE = app
 TARGET = heimer
 
-DEFINES += VERSION=\\\"1.20.0\\\"
+DEFINES += VERSION=\\\"1.21.0\\\"
 DEFINES += PACKAGE_TYPE=\\\"$$(PACKAGE_TYPE)\\\"
 
 CONFIG += c++14 lrelease embed_translations

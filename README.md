@@ -11,7 +11,7 @@ Here is a simple mind map of Heimer itself running on Ubuntu 18.04:
 ## Features
 
 * Adjustable grid
-* Automatic layout optimization
+* <a href="https://www.youtube.com/watch?feature=player_embedded&v=acQ8CpaCayk">Automatic layout optimization</a>
 * Easy-to-use UI
 * Export to PNG or SVG
 * Forever 100% free

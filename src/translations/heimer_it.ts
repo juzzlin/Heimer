@@ -107,27 +107,27 @@
     <message>
         <location filename="../defaults_dlg.cpp" line="31"/>
         <source>Defaults</source>
-        <translation type="unfinished"></translation>
+        <translation>Predefinito</translation>
     </message>
     <message>
         <location filename="../defaults_dlg.cpp" line="53"/>
         <source>Edge Arrow Style</source>
-        <translation type="unfinished"></translation>
+        <translation>Stile Bordo Freccia</translation>
     </message>
     <message>
         <location filename="../defaults_dlg.cpp" line="57"/>
         <source>No arrow</source>
-        <translation type="unfinished"></translation>
+        <translation>Nessuna freccia</translation>
     </message>
     <message>
         <location filename="../defaults_dlg.cpp" line="58"/>
         <source>Single arrow</source>
-        <translation type="unfinished">Singola freccia</translation>
+        <translation>Singola freccia</translation>
     </message>
     <message>
         <location filename="../defaults_dlg.cpp" line="59"/>
         <source>Double arrow</source>
-        <translation type="unfinished">Doppia freccia</translation>
+        <translation>Doppia freccia</translation>
     </message>
 </context>
 <context>
@@ -140,7 +140,7 @@
     <message>
         <location filename="../edge_context_menu.cpp" line="34"/>
         <source>Hide arrow</source>
-        <translation>Nascondi la freccia</translation>
+        <translation>Nascondi freccia</translation>
     </message>
     <message>
         <location filename="../edge_context_menu.cpp" line="41"/>
@@ -211,7 +211,7 @@
     <message>
         <location filename="../main_context_menu.cpp" line="63"/>
         <source>Set grid color</source>
-        <translation></translation>
+        <translation>Imposta colore griglia</translation>
     </message>
     <message>
         <location filename="../main_context_menu.cpp" line="69"/>
@@ -241,7 +241,7 @@
     <message>
         <location filename="../main_context_menu.cpp" line="124"/>
         <source>Remove attached image</source>
-        <translation>Rimuovi l&apos;immagine allegata</translation>
+        <translation>Rimuovi l'&apos;immagine allegata</translation>
     </message>
 </context>
 <context>
@@ -264,7 +264,7 @@
     <message>
         <location filename="../main_window.cpp" line="64"/>
         <source>Show grid</source>
-        <translation></translation>
+        <translation>Mostra griglia</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="101"/>
@@ -284,7 +284,7 @@
     <message>
         <location filename="../main_window.cpp" line="131"/>
         <source>Set grid color</source>
-        <translation></translation>
+        <translation>Imposta colore griglia</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="142"/>
@@ -294,7 +294,7 @@
     <message>
         <location filename="../main_window.cpp" line="161"/>
         <source>Corner radius:</source>
-        <translation>Raggio dell&apos;angolo:</translation>
+        <translation>Raggio dell'&apos;angolo:</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="186"/>
@@ -358,7 +358,7 @@
     </message>
     <message>
         <source>&amp;Export to PNG image</source>
-        <translation type="vanished">&amp;Esporta in immagine PNG</translation>
+        <translation>&amp;Esporta in immagine PNG</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="334"/>
@@ -383,17 +383,17 @@
     <message>
         <location filename="../main_window.cpp" line="367"/>
         <source>What&apos;s New</source>
-        <translation type="unfinished">Cosa c&apos;è di nuovo</translation>
+        <translation>Cosa c'&apos;è di nuovo</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="376"/>
         <source>&amp;Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Impostazioni</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="379"/>
         <source>&amp;Defaults</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Predefinite</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="410"/>
@@ -565,7 +565,7 @@
     <message>
         <location filename="../whats_new_dlg.cpp" line="29"/>
         <source>What&apos;s New</source>
-        <translation>Cosa c&apos;&apos;è di nuovo</translation>
+        <translation>Cosa c'&apos;&apos;è di nuovo</translation>
     </message>
 </context>
 </TS>

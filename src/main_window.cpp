@@ -413,6 +413,7 @@ void MainWindow::createViewMenu()
     m_fullScreenAction = new QAction(tr("Full Screen"), this);
     m_fullScreenAction->setCheckable(true);
     m_fullScreenAction->setChecked(false);
+    m_fullScreenAction->setShortcut(QKeySequence("F11"));
     viewMenu->addAction(m_fullScreenAction);
     connect(m_fullScreenAction, &QAction::triggered, [=](bool checked) {
         if (checked) {

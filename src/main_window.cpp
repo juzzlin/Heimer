@@ -106,6 +106,10 @@ void MainWindow::createEditMenu()
 
     editMenu->addSeparator();
 
+    const auto colorMenu = new QMenu;
+    const auto colorMenuAction = editMenu->addMenu(colorMenu);
+    colorMenuAction->setText(tr("&Colors"));
+
     const auto backgroundColorAction = new QAction(tr("Set background color") + threeDots, this);
     backgroundColorAction->setShortcut(QKeySequence("Ctrl+B"));
 
@@ -113,9 +117,9 @@ void MainWindow::createEditMenu()
         emit actionTriggered(StateMachine::Action::BackgroundColorChangeRequested);
     });
 
-    editMenu->addAction(backgroundColorAction);
+    colorMenu->addAction(backgroundColorAction);
 
-    editMenu->addSeparator();
+    colorMenu->addSeparator();
 
     const auto edgeColorAction = new QAction(tr("Set edge color") + threeDots, this);
     edgeColorAction->setShortcut(QKeySequence("Ctrl+E"));
@@ -124,9 +128,9 @@ void MainWindow::createEditMenu()
         emit actionTriggered(StateMachine::Action::EdgeColorChangeRequested);
     });
 
-    editMenu->addAction(edgeColorAction);
+    colorMenu->addAction(edgeColorAction);
 
-    editMenu->addSeparator();
+    colorMenu->addSeparator();
 
     const auto gridColorAction = new QAction(tr("Set grid color") + threeDots, this);
     gridColorAction->setShortcut(QKeySequence("Ctrl+G"));
@@ -135,9 +139,9 @@ void MainWindow::createEditMenu()
         emit actionTriggered(StateMachine::Action::GridColorChangeRequested);
     });
 
-    editMenu->addAction(gridColorAction);
+    colorMenu->addAction(gridColorAction);
 
-    editMenu->addSeparator();
+    colorMenu->addSeparator();
 
     auto optimizeLayoutAction = new QAction(tr("Optimize layout") + threeDots, this);
     optimizeLayoutAction->setShortcut(QKeySequence("Ctrl+Shift+O"));

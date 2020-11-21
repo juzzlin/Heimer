@@ -62,6 +62,8 @@ int main(int argc, char ** argv)
 {
     HashSeed::init();
 
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
     QApplication::setOrganizationName(Constants::Application::QSETTINGS_COMPANY_NAME);
     QApplication::setApplicationName(Constants::Application::QSETTINGS_SOFTWARE_NAME);
 #ifdef Q_OS_WIN32

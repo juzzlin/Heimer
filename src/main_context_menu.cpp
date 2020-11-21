@@ -69,9 +69,9 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     const auto createNodeAction(new QAction(tr("Create floating node"), this));
     // Here we add a shortcut to the context menu action. However, the action cannot be triggered unless the context menu
     // is open. As a "solution" we create another shortcut and add it to the parent widget.
-    const auto createNodeKeySequence = Qt::Key_F | Qt::SHIFT | Qt::CTRL;
-    createNodeAction->setShortcut(createNodeKeySequence);
-    const auto createNodeShortCut = new QShortcut({ createNodeKeySequence }, parent);
+    const auto createNodeSequence = QKeySequence("Ctrl+Shift+F");
+    createNodeAction->setShortcut(createNodeSequence);
+    const auto createNodeShortCut = new QShortcut(createNodeSequence, parent);
     connect(createNodeShortCut, &QShortcut::activated, [this, grid] {
         emit newNodeRequested(grid.snapToGrid(m_mediator.mouseAction().mappedPos()));
     });

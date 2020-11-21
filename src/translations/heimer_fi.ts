@@ -349,6 +349,11 @@
         <source>Remove attached image</source>
         <translation>Poista liitetty kuva</translation>
     </message>
+    <message>
+        <location filename="../main_context_menu.cpp" line="141"/>
+        <source>&amp;Colors</source>
+        <translation>&amp;Värit</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>

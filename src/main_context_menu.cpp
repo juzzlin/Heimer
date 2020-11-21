@@ -135,16 +135,21 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     addAction(m_copyNodeAction);
     addAction(m_pasteNodeAction);
     addSeparator();
-    addAction(setBackgroundColorAction);
+
+    const auto colorMenu = new QMenu;
+    const auto colorMenuAction = addMenu(colorMenu);
+    colorMenuAction->setText(tr("&Colors"));
+
+    colorMenu->addAction(setBackgroundColorAction);
     addSeparator();
-    addAction(setEdgeColorAction);
+    colorMenu->addAction(setEdgeColorAction);
     addSeparator();
-    addAction(setGridColorAction);
+    colorMenu->addAction(setGridColorAction);
     addSeparator();
-    addAction(setNodeColorAction);
+    colorMenu->addAction(setNodeColorAction);
     addSeparator();
-    addAction(setNodeTextColorAction);
-    addSeparator();
+    colorMenu->addAction(setNodeTextColorAction);
+
     addAction(deleteNodeAction);
     addSeparator();
     addAction(attachImageAction);

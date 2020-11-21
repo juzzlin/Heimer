@@ -64,7 +64,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     connect(setGridColorAction, &QAction::triggered, [this] {
         emit actionTriggered(StateMachine::Action::GridColorChangeRequested);
     });
-    m_mainContextMenuActions[Mode::Background].push_back(setEdgeColorAction);
+    m_mainContextMenuActions[Mode::Background].push_back(setGridColorAction);
 
     const auto createNodeAction(new QAction(tr("Create floating node"), this));
     // Here we add a shortcut to the context menu action. However, the action cannot be triggered unless the context menu

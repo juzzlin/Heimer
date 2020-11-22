@@ -84,7 +84,7 @@ protected:
 
 signals:
 
-    void actionTriggered(StateMachine::Action action, Node * node = nullptr);
+    void actionTriggered(StateMachine::Action action);
 
     void newNodeRequested(QPointF position);
 

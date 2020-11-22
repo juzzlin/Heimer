@@ -87,7 +87,11 @@ public:
 
     void moveSelectionGroup(Node & reference, QPointF location);
 
+    bool nodeHasImageAttached() const;
+
     void redo();
+
+    void removeImageRefsOfSelectedNodes();
 
     bool saveMindMap();
 
@@ -104,6 +108,8 @@ public:
     void setSelectedEdge(Edge * edge);
 
     void setSelectedNode(Node * node);
+
+    void setImageRefForSelectedNodes(size_t id);
 
     void setTextColorForSelectedNodes(QColor color);
 

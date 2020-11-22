@@ -348,6 +348,11 @@ size_t Mediator::nodeCount() const
     return m_editorData->mindMapData() ? m_editorData->mindMapData()->graph().numNodes() : 0;
 }
 
+bool Mediator::nodeHasImageAttached() const
+{
+    return m_editorData->nodeHasImageAttached();
+}
+
 void Mediator::performNodeAction(const NodeAction & action)
 {
     juzzlin::L().debug() << "Handling NodeAction: " << static_cast<int>(action.type);
@@ -355,9 +360,21 @@ void Mediator::performNodeAction(const NodeAction & action)
     switch (action.type) {
     case NodeAction::Type::None:
         break;
+    case NodeAction::Type::AttachImage: {
+        const Image image { action.image, action.fileName.toStdString() };
+        const auto id = m_editorData->mindMapData()->imageManager().addImage(image);
+        if (m_editorData->selectionGroupSize()) {
+            saveUndoPoint();
+            m_editorData->setImageRefForSelectedNodes(id);
+        }
+    } break;
     case NodeAction::Type::Delete:
         m_editorView->resetDummyDragItems();
         m_editorData->deleteSelectedNodes();
+        break;
+    case NodeAction::Type::RemoveAttachedImage:
+        saveUndoPoint();
+        m_editorData->removeImageRefsOfSelectedNodes();
         break;
     case NodeAction::Type::SetNodeColor:
         m_editorData->setColorForSelectedNodes(action.color);

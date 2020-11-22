@@ -46,7 +46,7 @@ public:
 
 signals:
 
-    void actionTriggered(StateMachine::Action action, Node * node = nullptr);
+    void actionTriggered(StateMachine::Action action);
 
     void nodeColorActionTriggered();
 

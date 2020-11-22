@@ -104,6 +104,8 @@ public:
 
     size_t nodeCount() const;
 
+    bool nodeHasImageAttached() const;
+
     NodePtr pasteNodeAt(Node & source, QPointF pos);
 
     MindMapDataPtr mindMapData() const;

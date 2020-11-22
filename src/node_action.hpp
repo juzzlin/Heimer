@@ -17,15 +17,18 @@
 #define NODE_ACTION_HPP
 
 #include <QColor>
+#include <QImage>
 
 struct NodeAction
 {
     enum class Type
     {
         None,
+        AttachImage,
         Delete,
+        RemoveAttachedImage,
         SetNodeColor,
-        SetTextColor
+        SetTextColor,
     };
 
     NodeAction(Type type)
@@ -39,9 +42,20 @@ struct NodeAction
     {
     }
 
+    NodeAction(Type type, QImage image, QString fileName)
+      : type(type)
+      , image(image)
+      , fileName(fileName)
+    {
+    }
+
     Type type = Type::None;
 
     QColor color = Qt::white;
+
+    QImage image;
+
+    QString fileName;
 };
 
 #endif // NODE_ACTION_HPP

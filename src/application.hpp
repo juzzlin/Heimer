@@ -108,8 +108,6 @@ private:
 
     EditorView * m_editorView = nullptr;
 
-    Node * m_actionNode = nullptr;
-
     std::unique_ptr<PngExportDialog> m_pngExportDialog;
 
     std::unique_ptr<SvgExportDialog> m_svgExportDialog;

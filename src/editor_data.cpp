@@ -122,6 +122,13 @@ void EditorData::redo()
     }
 }
 
+void EditorData::removeImageRefsOfSelectedNodes()
+{
+    for (auto && node : m_selectionGroup->nodes()) {
+        node->setImageRef(0);
+    }
+}
+
 bool EditorData::saveMindMap()
 {
     assert(m_mindMapData);
@@ -179,6 +186,14 @@ void EditorData::setColorForSelectedNodes(QColor color)
 {
     for (auto && node : m_selectionGroup->nodes()) {
         node->setColor(color);
+    }
+}
+
+void EditorData::setImageRefForSelectedNodes(size_t id)
+{
+    for (auto && node : m_selectionGroup->nodes()) {
+        juzzlin::L().info() << "Setting image id=" << id << " to node " << node->index();
+        node->setImageRef(id);
     }
 }
 
@@ -287,6 +302,16 @@ MindMapDataPtr EditorData::mindMapData()
 void EditorData::moveSelectionGroup(Node & reference, QPointF location)
 {
     m_selectionGroup->move(reference, location);
+}
+
+bool EditorData::nodeHasImageAttached() const
+{
+    for (auto && node : m_selectionGroup->nodes()) {
+        if (node->imageRef()) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void EditorData::setSelectedEdge(Edge * edge)

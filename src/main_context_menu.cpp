@@ -111,7 +111,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
 
     const auto attachImageAction(new QAction(tr("Attach image..."), this));
     connect(attachImageAction, &QAction::triggered, [this] {
-        emit actionTriggered(StateMachine::Action::ImageAttachmentRequested, m_selectedNode);
+        emit actionTriggered(StateMachine::Action::ImageAttachmentRequested);
     });
 
     m_mainContextMenuActions[Mode::Node].push_back(attachImageAction);
@@ -119,7 +119,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     m_removeImageAction = new QAction(tr("Remove attached image"), this);
     connect(m_removeImageAction, &QAction::triggered, [this] {
         m_mediator.saveUndoPoint();
-        m_selectedNode->setImageRef(0);
+        m_mediator.performNodeAction({ NodeAction::Type::RemoveAttachedImage });
     });
 
     m_mainContextMenuActions[Mode::Node].push_back(m_removeImageAction);
@@ -151,10 +151,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     addAction(m_removeImageAction);
 
     connect(this, &QMenu::aboutToShow, [=] {
-        m_selectedNode = m_mediator.selectedNode();
-        if (m_selectedNode) {
-            m_removeImageAction->setEnabled(m_selectedNode->imageRef());
-        }
+        m_removeImageAction->setEnabled(m_mediator.nodeHasImageAttached());
     });
 }
 

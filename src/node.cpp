@@ -435,8 +435,6 @@ void Node::setLocation(QPointF newLocation)
     setPos(newLocation);
 
     updateEdgeLines();
-
-    setHandlesVisible(false);
 }
 
 QRectF Node::placementBoundingRect() const

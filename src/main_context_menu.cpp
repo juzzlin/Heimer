@@ -156,12 +156,6 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
             m_removeImageAction->setEnabled(m_selectedNode->imageRef());
         }
     });
-
-    connect(this, &QMenu::aboutToHide, [=] {
-        QTimer::singleShot(0, [=] {
-            m_mediator.setSelectedNode(nullptr);
-        });
-    });
 }
 
 void MainContextMenu::setMode(const Mode & mode)

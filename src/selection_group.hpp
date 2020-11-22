@@ -46,8 +46,6 @@ public:
 
 private:
     std::set<Node *> m_nodes;
-
-    Node * m_selectedNode = nullptr;
 };
 
 #endif // SELECTION_GROUP_HPP

@@ -361,9 +361,15 @@ void Mediator::performNodeAction(const NodeAction & action)
         break;
     case NodeAction::Type::SetNodeColor:
         m_editorData->setColorForSelectedNodes(action.color);
+        if (m_editorData->selectionGroupSize() == 1) {
+            m_editorData->clearSelectionGroup();
+        }
         break;
     case NodeAction::Type::SetTextColor:
         m_editorData->setTextColorForSelectedNodes(action.color);
+        if (m_editorData->selectionGroupSize() == 1) {
+            m_editorData->clearSelectionGroup();
+        }
         break;
     }
 }

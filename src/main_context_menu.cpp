@@ -86,18 +86,17 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
         const auto color = QColorDialog::getColor(Qt::white, this);
         if (color.isValid()) {
             m_mediator.saveUndoPoint();
-            m_mediator.performNodeAction({ color });
+            m_mediator.performNodeAction({ NodeAction::Type::SetNodeColor, color });
         }
     });
     m_mainContextMenuActions[Mode::Node].push_back(setNodeColorAction);
 
     const auto setNodeTextColorAction(new QAction(tr("Set text color"), this));
     connect(setNodeTextColorAction, &QAction::triggered, [this] {
-        const auto node = m_mediator.selectedNode();
         const auto color = QColorDialog::getColor(Qt::white, this);
         if (color.isValid()) {
             m_mediator.saveUndoPoint();
-            node->setTextColor(color);
+            m_mediator.performNodeAction({ NodeAction::Type::SetTextColor, color });
         }
     });
     m_mainContextMenuActions[Mode::Node].push_back(setNodeTextColorAction);

@@ -105,6 +105,8 @@ public:
 
     void setSelectedNode(Node * node);
 
+    void setTextColorForSelectedNodes(QColor color);
+
     Edge * selectedEdge() const;
 
     Node * selectedNode() const;

@@ -359,8 +359,11 @@ void Mediator::performNodeAction(const NodeAction & action)
         m_editorView->resetDummyDragItems();
         m_editorData->deleteSelectedNodes();
         break;
-    case NodeAction::Type::SetColor:
+    case NodeAction::Type::SetNodeColor:
         m_editorData->setColorForSelectedNodes(action.color);
+        break;
+    case NodeAction::Type::SetTextColor:
+        m_editorData->setTextColorForSelectedNodes(action.color);
         break;
     }
 }

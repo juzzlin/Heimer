@@ -182,6 +182,13 @@ void EditorData::setColorForSelectedNodes(QColor color)
     }
 }
 
+void EditorData::setTextColorForSelectedNodes(QColor color)
+{
+    for (auto && node : m_selectionGroup->nodes()) {
+        node->setTextColor(color);
+    }
+}
+
 void EditorData::setMindMapData(MindMapDataPtr mindMapData)
 {
     m_mindMapData = mindMapData;

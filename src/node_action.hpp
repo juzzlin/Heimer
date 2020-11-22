@@ -24,27 +24,24 @@ struct NodeAction
     {
         None,
         Delete,
-        SetColor
+        SetNodeColor,
+        SetTextColor
     };
-
-    NodeAction()
-    {
-    }
 
     NodeAction(Type type)
       : type(type)
     {
     }
 
-    NodeAction(QColor color)
-      : type(Type::SetColor)
+    NodeAction(Type type, QColor color)
+      : type(type)
       , color(color)
     {
     }
 
     Type type = Type::None;
 
-    QColor color;
+    QColor color = Qt::white;
 };
 
 #endif // NODE_ACTION_HPP

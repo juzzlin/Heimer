@@ -21,6 +21,7 @@
 #include "image_manager.hpp"
 #include "main_window.hpp"
 #include "mouse_action.hpp"
+#include "node_action.hpp"
 
 #include "simple_logger.hpp"
 
@@ -93,6 +94,11 @@ void Mediator::addEdge(Node & node1, Node & node2)
 void Mediator::addItem(QGraphicsItem & item)
 {
     m_editorScene->addItem(&item);
+}
+
+void Mediator::addSelectedNode(Node & node)
+{
+    m_editorData->addSelectedNode(node);
 }
 
 void Mediator::clearSelectionGroup()
@@ -200,18 +206,6 @@ MouseAction & Mediator::mouseAction()
 void Mediator::deleteEdge(Edge & edge)
 {
     m_editorData->deleteEdge(edge);
-}
-
-void Mediator::deleteNode(Node & node)
-{
-    m_editorView->resetDummyDragItems();
-    m_editorData->deleteNode(node);
-}
-
-void Mediator::deleteSelectedNodes()
-{
-    m_editorView->resetDummyDragItems();
-    m_editorData->deleteSelectedNodes();
 }
 
 void Mediator::enableUndo(bool enable)
@@ -352,6 +346,23 @@ MindMapDataPtr Mediator::mindMapData() const
 size_t Mediator::nodeCount() const
 {
     return m_editorData->mindMapData() ? m_editorData->mindMapData()->graph().numNodes() : 0;
+}
+
+void Mediator::performNodeAction(const NodeAction & action)
+{
+    juzzlin::L().debug() << "Handling NodeAction: " << static_cast<int>(action.type);
+
+    switch (action.type) {
+    case NodeAction::Type::None:
+        break;
+    case NodeAction::Type::Delete:
+        m_editorView->resetDummyDragItems();
+        m_editorData->deleteSelectedNodes();
+        break;
+    case NodeAction::Type::SetColor:
+        m_editorData->setColorForSelectedNodes(action.color);
+        break;
+    }
 }
 
 bool Mediator::openMindMap(QString fileName)

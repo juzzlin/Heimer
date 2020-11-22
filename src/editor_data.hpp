@@ -49,6 +49,8 @@ public:
 
     EdgePtr addEdge(EdgePtr edge);
 
+    void addSelectedNode(Node & node);
+
     void deleteEdge(Edge & edge);
 
     void deleteNode(Node & node);
@@ -94,6 +96,8 @@ public:
     void saveUndoPoint(bool dontClearRedoStack = false);
 
     void saveRedoPoint();
+
+    void setColorForSelectedNodes(QColor color);
 
     void setMindMapData(MindMapDataPtr newMindMapData);
 

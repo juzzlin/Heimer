@@ -21,6 +21,7 @@
 #include "mediator.hpp"
 #include "mouse_action.hpp"
 #include "node.hpp"
+#include "node_action.hpp"
 
 #include <QColorDialog>
 #include <QShortcut>
@@ -82,11 +83,10 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
 
     const auto setNodeColorAction(new QAction(tr("Set node color"), this));
     connect(setNodeColorAction, &QAction::triggered, [this] {
-        const auto node = m_mediator.selectedNode();
         const auto color = QColorDialog::getColor(Qt::white, this);
         if (color.isValid()) {
             m_mediator.saveUndoPoint();
-            node->setColor(color);
+            m_mediator.performNodeAction({ color });
         }
     });
     m_mainContextMenuActions[Mode::Node].push_back(setNodeColorAction);
@@ -105,10 +105,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     const auto deleteNodeAction(new QAction(tr("Delete node"), this));
     connect(deleteNodeAction, &QAction::triggered, [this] {
         m_mediator.saveUndoPoint();
-        // Use a separate variable and timer here because closing the menu will always nullify the selected node
-        QTimer::singleShot(0, [=] {
-            m_mediator.deleteSelectedNodes();
-        });
+        m_mediator.performNodeAction({ NodeAction::Type::Delete });
     });
 
     m_mainContextMenuActions[Mode::Node].push_back(deleteNodeAction);

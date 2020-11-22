@@ -49,6 +49,7 @@ set(LIB_SRC
     mind_map_data_base.cpp
     mouse_action.cpp
     node.cpp
+    node_action.hpp
     node_handle.cpp
     png_export_dialog.cpp
     recent_files_manager.cpp

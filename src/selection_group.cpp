@@ -19,6 +19,12 @@
 
 #include <map>
 
+void SelectionGroup::addSelectedNode(Node & node)
+{
+    m_nodes.insert(&node);
+    node.setSelected(true);
+}
+
 void SelectionGroup::clear()
 {
     for (auto && node : m_nodes) {

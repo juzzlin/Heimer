@@ -40,6 +40,11 @@ EditorData::EditorData()
     m_undoTimer.setInterval(Constants::View::TOO_QUICK_ACTION_DELAY_MS);
 }
 
+void EditorData::addSelectedNode(Node & node)
+{
+    m_selectionGroup->addSelectedNode(node);
+}
+
 QColor EditorData::backgroundColor() const
 {
     // Background color of "empty" editor is not the same as default color of new design
@@ -168,6 +173,13 @@ bool EditorData::saveMindMapAs(QString fileName)
     }
 
     return false;
+}
+
+void EditorData::setColorForSelectedNodes(QColor color)
+{
+    for (auto && node : m_selectionGroup->nodes()) {
+        node->setColor(color);
+    }
 }
 
 void EditorData::setMindMapData(MindMapDataPtr mindMapData)

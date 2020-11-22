@@ -52,6 +52,14 @@ void SelectionGroup::move(Node & reference, QPointF location)
     }
 }
 
+std::vector<Node *> SelectionGroup::nodes() const
+{
+    std::vector<Node *> nodes;
+    nodes.reserve(m_nodes.size());
+    std::copy(m_nodes.begin(), m_nodes.end(), std::back_inserter(nodes));
+    return nodes;
+}
+
 void SelectionGroup::setSelectedNode(Node * node)
 {
     if (selectedNode()) {

@@ -207,6 +207,16 @@ void EditorData::deleteNode(Node & node)
     m_mindMapData->graph().deleteNode(node.index());
 }
 
+void EditorData::deleteSelectedNodes()
+{
+    assert(m_mindMapData);
+
+    for (auto && node : m_selectionGroup->nodes()) {
+        m_mindMapData->graph().deleteNode(node->index());
+    }
+    m_selectionGroup->clear();
+}
+
 NodePtr EditorData::addNodeAt(QPointF pos)
 {
     assert(m_mindMapData);

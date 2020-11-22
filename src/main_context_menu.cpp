@@ -104,11 +104,10 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
 
     const auto deleteNodeAction(new QAction(tr("Delete node"), this));
     connect(deleteNodeAction, &QAction::triggered, [this] {
-        m_mediator.setSelectedNode(nullptr);
         m_mediator.saveUndoPoint();
-        // Use a separate variable and timer here because closing the menu will always nullify the selected edge
+        // Use a separate variable and timer here because closing the menu will always nullify the selected node
         QTimer::singleShot(0, [=] {
-            m_mediator.deleteNode(*m_selectedNode);
+            m_mediator.deleteSelectedNodes();
         });
     });
 

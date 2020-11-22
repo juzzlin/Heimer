@@ -208,6 +208,12 @@ void Mediator::deleteNode(Node & node)
     m_editorData->deleteNode(node);
 }
 
+void Mediator::deleteSelectedNodes()
+{
+    m_editorView->resetDummyDragItems();
+    m_editorData->deleteSelectedNodes();
+}
+
 void Mediator::enableUndo(bool enable)
 {
     m_mainWindow.enableUndo(enable);

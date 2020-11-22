@@ -53,6 +53,8 @@ public:
 
     void deleteNode(Node & node);
 
+    void deleteSelectedNodes();
+
     NodePtr addNodeAt(QPointF pos);
 
     void clearImages();

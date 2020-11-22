@@ -19,6 +19,7 @@
 #include <QPointF>
 
 #include <set>
+#include <vector>
 
 class Node;
 
@@ -30,6 +31,8 @@ public:
     bool hasNode(Node & node) const;
 
     void move(Node & reference, QPointF location);
+
+    std::vector<Node *> nodes() const;
 
     void setSelectedNode(Node * node);
 

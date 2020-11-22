@@ -75,6 +75,8 @@ public:
 
     void deleteNode(Node & node);
 
+    void deleteSelectedNodes();
+
     QString fileName() const;
 
     NodePtr getBestOverlapNode(const Node & source);

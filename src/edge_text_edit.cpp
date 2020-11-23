@@ -37,13 +37,6 @@ EdgeTextEdit::EdgeTextEdit(Edge * parentItem)
     });
 }
 
-void EdgeTextEdit::contextMenuEvent(QGraphicsSceneContextMenuEvent * event)
-{
-    // Prevents the system context menu from opening.
-
-    event->ignore();
-}
-
 void EdgeTextEdit::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 {
     m_visibilityTimer.stop();

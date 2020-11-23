@@ -35,6 +35,7 @@
 #include "mind_map_data.hpp"
 #include "mouse_action.hpp"
 #include "node.hpp"
+#include "node_action.hpp"
 #include "node_handle.hpp"
 #include "simple_logger.hpp"
 
@@ -155,13 +156,11 @@ void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
         initiateNodeDrag(nodeHandle.parentNode());
         break;
     case NodeHandle::Role::Color:
-        m_mediator.clearSelectionGroup();
-        m_mediator.setSelectedNode(&nodeHandle.parentNode());
+        m_mediator.addSelectedNode(nodeHandle.parentNode());
         openNodeColorDialog();
         break;
     case NodeHandle::Role::TextColor:
-        m_mediator.clearSelectionGroup();
-        m_mediator.setSelectedNode(&nodeHandle.parentNode());
+        m_mediator.addSelectedNode(nodeHandle.parentNode());
         openNodeTextColorDialog();
         break;
     }
@@ -362,21 +361,19 @@ void EditorView::openMainContextMenu(MainContextMenu::Mode mode)
 
 void EditorView::openNodeColorDialog()
 {
-    const auto node = m_mediator.selectedNode();
     const auto color = QColorDialog::getColor(Qt::white, this);
     if (color.isValid()) {
         m_mediator.saveUndoPoint();
-        node->setColor(color);
+        m_mediator.performNodeAction({ NodeAction::Type::SetNodeColor, color });
     }
 }
 
 void EditorView::openNodeTextColorDialog()
 {
-    const auto node = m_mediator.selectedNode();
     const auto color = QColorDialog::getColor(Qt::white, this);
     if (color.isValid()) {
         m_mediator.saveUndoPoint();
-        node->setTextColor(color);
+        m_mediator.performNodeAction({ NodeAction::Type::SetTextColor, color });
     }
 }
 

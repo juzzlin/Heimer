@@ -98,7 +98,7 @@ void Mediator::addItem(QGraphicsItem & item)
 
 void Mediator::addSelectedNode(Node & node)
 {
-    m_editorData->addSelectedNode(node);
+    m_editorData->addNodeToSelectionGroup(node);
 }
 
 void Mediator::clearSelectionGroup()
@@ -544,7 +544,7 @@ void Mediator::setRectagleSelection(QRectF rect)
     const auto items = m_editorScene->items(rect, Qt::ContainsItemShape);
     for (auto && item : items) {
         if (const auto node = dynamic_cast<Node *>(item)) {
-            toggleNodeInSelectionGroup(*node);
+            m_editorData->addNodeToSelectionGroup(*node);
         }
     }
 }

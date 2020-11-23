@@ -40,8 +40,10 @@ EditorData::EditorData()
     m_undoTimer.setInterval(Constants::View::TOO_QUICK_ACTION_DELAY_MS);
 }
 
-void EditorData::addSelectedNode(Node & node)
+void EditorData::addNodeToSelectionGroup(Node & node)
 {
+    L().debug() << "Adding node " << node.index() << " to selection group..";
+
     m_selectionGroup->addSelectedNode(node);
 }
 
@@ -216,6 +218,8 @@ void EditorData::setMindMapData(MindMapDataPtr mindMapData)
 
 void EditorData::toggleNodeInSelectionGroup(Node & node)
 {
+    L().debug() << "Toggling node " << node.index() << " in selection group..";
+
     m_selectionGroup->toggleNode(node);
 }
 
@@ -279,6 +283,8 @@ void EditorData::clearImages()
 
 void EditorData::clearSelectionGroup()
 {
+    L().debug() << "Clearing selection group..";
+
     m_selectionGroup->clear();
 }
 

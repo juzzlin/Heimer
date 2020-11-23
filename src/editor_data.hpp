@@ -49,7 +49,7 @@ public:
 
     EdgePtr addEdge(EdgePtr edge);
 
-    void addSelectedNode(Node & node);
+    void addNodeToSelectionGroup(Node & node);
 
     void deleteEdge(Edge & edge);
 

@@ -78,6 +78,8 @@ private:
 
     void showLayoutOptimizationDialog();
 
+    void showNodeColorDialog();
+
     void showPngExportDialog();
 
     void showSvgExportDialog();

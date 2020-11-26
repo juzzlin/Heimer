@@ -227,6 +227,9 @@ void Application::runState(StateMachine::State state)
     case StateMachine::State::ShowGridColorDialog:
         showGridColorDialog();
         break;
+    case StateMachine::State::ShowNodeColorDialog:
+        showNodeColorDialog();
+        break;
     case StateMachine::State::ShowImageFileDialog:
         showImageFileDialog();
         break;
@@ -367,6 +370,15 @@ void Application::showGridColorDialog()
         m_mediator->setGridColor(color);
     }
     emit actionTriggered(StateMachine::Action::GridColorChanged);
+}
+
+void Application::showNodeColorDialog()
+{
+    const auto color = QColorDialog::getColor(Qt::white, m_mainWindow.get());
+    if (color.isValid()) {
+        m_mediator->performNodeAction({ NodeAction::Type::SetNodeColor, color });
+    }
+    emit actionTriggered(StateMachine::Action::NodeColorChanged);
 }
 
 void Application::showImageFileDialog()

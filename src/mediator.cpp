@@ -369,6 +369,7 @@ void Mediator::performNodeAction(const NodeAction & action)
         }
     } break;
     case NodeAction::Type::Delete:
+        saveUndoPoint();
         m_editorView->resetDummyDragItems();
         m_editorData->deleteSelectedNodes();
         break;
@@ -377,12 +378,14 @@ void Mediator::performNodeAction(const NodeAction & action)
         m_editorData->removeImageRefsOfSelectedNodes();
         break;
     case NodeAction::Type::SetNodeColor:
+        saveUndoPoint();
         m_editorData->setColorForSelectedNodes(action.color);
         if (m_editorData->selectionGroupSize() == 1) {
             m_editorData->clearSelectionGroup();
         }
         break;
     case NodeAction::Type::SetTextColor:
+        saveUndoPoint();
         m_editorData->setTextColorForSelectedNodes(action.color);
         if (m_editorData->selectionGroupSize() == 1) {
             m_editorData->clearSelectionGroup();

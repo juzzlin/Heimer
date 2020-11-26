@@ -41,6 +41,10 @@ void StateMachine::calculateState(StateMachine::Action action)
         m_state = State::ShowImageFileDialog;
         break;
 
+    case Action::NodeColorChangeRequested:
+        m_state = State::ShowNodeColorDialog;
+        break;
+
     case Action::PngExportSelected:
         m_state = State::ShowPngExportDialog;
         break;
@@ -90,6 +94,7 @@ void StateMachine::calculateState(StateMachine::Action action)
     case Action::MindMapSaveAsCanceled:
     case Action::MindMapSaveAsFailed:
     case Action::NewMindMapInitialized:
+    case Action::NodeColorChanged:
     case Action::NotSavedDialogCanceled:
     case Action::OpeningMindMapCanceled:
     case Action::OpeningMindMapFailed:

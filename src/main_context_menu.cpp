@@ -83,11 +83,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
 
     const auto setNodeColorAction(new QAction(tr("Set node color"), this));
     connect(setNodeColorAction, &QAction::triggered, [this] {
-        const auto color = QColorDialog::getColor(Qt::white, this);
-        if (color.isValid()) {
-            m_mediator.saveUndoPoint();
-            m_mediator.performNodeAction({ NodeAction::Type::SetNodeColor, color });
-        }
+        emit actionTriggered(StateMachine::Action::NodeColorChangeRequested);
     });
     m_mainContextMenuActions[Mode::Node].push_back(setNodeColorAction);
 
@@ -95,7 +91,6 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     connect(setNodeTextColorAction, &QAction::triggered, [this] {
         const auto color = QColorDialog::getColor(Qt::white, this);
         if (color.isValid()) {
-            m_mediator.saveUndoPoint();
             m_mediator.performNodeAction({ NodeAction::Type::SetTextColor, color });
         }
     });
@@ -103,7 +98,6 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
 
     const auto deleteNodeAction(new QAction(tr("Delete node"), this));
     connect(deleteNodeAction, &QAction::triggered, [this] {
-        m_mediator.saveUndoPoint();
         m_mediator.performNodeAction({ NodeAction::Type::Delete });
     });
 
@@ -118,7 +112,6 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
 
     m_removeImageAction = new QAction(tr("Remove attached image"), this);
     connect(m_removeImageAction, &QAction::triggered, [this] {
-        m_mediator.saveUndoPoint();
         m_mediator.performNodeAction({ NodeAction::Type::RemoveAttachedImage });
     });
 

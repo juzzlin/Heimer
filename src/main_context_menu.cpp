@@ -89,10 +89,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
 
     const auto setNodeTextColorAction(new QAction(tr("Set text color"), this));
     connect(setNodeTextColorAction, &QAction::triggered, [this] {
-        const auto color = QColorDialog::getColor(Qt::white, this);
-        if (color.isValid()) {
-            m_mediator.performNodeAction({ NodeAction::Type::SetTextColor, color });
-        }
+        emit actionTriggered(StateMachine::Action::TextColorChangeRequested);
     });
     m_mainContextMenuActions[Mode::Node].push_back(setNodeTextColorAction);
 

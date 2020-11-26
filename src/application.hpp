@@ -84,6 +84,8 @@ private:
 
     void showSvgExportDialog();
 
+    void showTextColorDialog();
+
     void showMessageBox(QString message);
 
     int showNotSavedDialog();

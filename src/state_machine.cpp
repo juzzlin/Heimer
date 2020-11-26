@@ -49,6 +49,10 @@ void StateMachine::calculateState(StateMachine::Action action)
         m_state = State::ShowPngExportDialog;
         break;
 
+    case Action::TextColorChangeRequested:
+        m_state = State::ShowTextColorDialog;
+        break;
+
     case Action::NewSelected:
         m_quitType = QuitType::New;
         if (m_mediator->isModified()) {
@@ -100,6 +104,7 @@ void StateMachine::calculateState(StateMachine::Action action)
     case Action::OpeningMindMapFailed:
     case Action::PngExported:
     case Action::SvgExported:
+    case Action::TextColorChanged:
         m_quitType = QuitType::None;
         m_state = State::Edit;
         break;

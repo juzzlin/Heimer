@@ -230,6 +230,9 @@ void Application::runState(StateMachine::State state)
     case StateMachine::State::ShowNodeColorDialog:
         showNodeColorDialog();
         break;
+    case StateMachine::State::ShowTextColorDialog:
+        showTextColorDialog();
+        break;
     case StateMachine::State::ShowImageFileDialog:
         showImageFileDialog();
         break;
@@ -379,6 +382,15 @@ void Application::showNodeColorDialog()
         m_mediator->performNodeAction({ NodeAction::Type::SetNodeColor, color });
     }
     emit actionTriggered(StateMachine::Action::NodeColorChanged);
+}
+
+void Application::showTextColorDialog()
+{
+    const auto color = QColorDialog::getColor(Qt::white, m_mainWindow.get());
+    if (color.isValid()) {
+        m_mediator->performNodeAction({ NodeAction::Type::SetTextColor, color });
+    }
+    emit actionTriggered(StateMachine::Action::TextColorChanged);
 }
 
 void Application::showImageFileDialog()

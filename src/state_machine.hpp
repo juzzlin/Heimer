@@ -46,6 +46,7 @@ public:
         ShowPngExportDialog,
         ShowSaveAsDialog,
         ShowSvgExportDialog,
+        ShowTextColorDialog,
         TryCloseWindow
     };
 
@@ -87,6 +88,8 @@ public:
         SaveSelected,
         SvgExported,
         SvgExportSelected,
+        TextColorChanged,
+        TextColorChangeRequested,
         UndoSelected
     };
 

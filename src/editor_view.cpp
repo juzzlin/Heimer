@@ -63,8 +63,6 @@ EditorView::EditorView(Mediator & mediator)
     // Forward signals from main context menu
     connect(m_mainContextMenu, &MainContextMenu::actionTriggered, this, &EditorView::actionTriggered);
     connect(m_mainContextMenu, &MainContextMenu::newNodeRequested, this, &EditorView::newNodeRequested);
-    connect(m_mainContextMenu, &MainContextMenu::nodeColorActionTriggered, this, &EditorView::openNodeColorDialog);
-    connect(m_mainContextMenu, &MainContextMenu::nodeTextColorActionTriggered, this, &EditorView::openNodeTextColorDialog);
 }
 
 const Grid & EditorView::grid() const
@@ -156,11 +154,11 @@ void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
         break;
     case NodeHandle::Role::Color:
         m_mediator.addSelectedNode(nodeHandle.parentNode());
-        openNodeColorDialog();
+        emit actionTriggered(StateMachine::Action::NodeColorChangeRequested);
         break;
     case NodeHandle::Role::TextColor:
         m_mediator.addSelectedNode(nodeHandle.parentNode());
-        openNodeTextColorDialog();
+        emit actionTriggered(StateMachine::Action::TextColorChangeRequested);
         break;
     }
 }
@@ -358,24 +356,6 @@ void EditorView::openMainContextMenu(MainContextMenu::Mode mode)
 {
     m_mainContextMenu->setMode(mode);
     m_mainContextMenu->exec(mapToGlobal(m_clickedPos));
-}
-
-void EditorView::openNodeColorDialog()
-{
-    const auto color = QColorDialog::getColor(Qt::white, this);
-    if (color.isValid()) {
-        m_mediator.saveUndoPoint();
-        m_mediator.performNodeAction({ NodeAction::Type::SetNodeColor, color });
-    }
-}
-
-void EditorView::openNodeTextColorDialog()
-{
-    const auto color = QColorDialog::getColor(Qt::white, this);
-    if (color.isValid()) {
-        m_mediator.saveUndoPoint();
-        m_mediator.performNodeAction({ NodeAction::Type::SetTextColor, color });
-    }
 }
 
 void EditorView::resetDummyDragItems()

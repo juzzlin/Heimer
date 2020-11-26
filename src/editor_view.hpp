@@ -88,12 +88,6 @@ signals:
 
     void newNodeRequested(QPointF position);
 
-private slots:
-
-    void openNodeColorDialog();
-
-    void openNodeTextColorDialog();
-
 private:
     void finishRubberBand();
 

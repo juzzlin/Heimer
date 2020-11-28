@@ -301,6 +301,17 @@ void EditorView::mousePressEvent(QMouseEvent * event)
                 }
             }
         }
+        // This hack enables node context menu even if user clicks on the node text edit.
+        // Must be the last else-if branch.
+        else if (const auto nodeTextEdit = dynamic_cast<TextEdit *>(item)) {
+            if (event->button() == Qt::RightButton) {
+                const auto node = dynamic_cast<Node *>(nodeTextEdit->parentItem());
+                if (node) {
+                    handleMousePressEventOnNode(*event, *node);
+                    return;
+                }
+            }
+        }
     } else {
         juzzlin::L().debug() << "Background pressed";
         handleMousePressEventOnBackground(*event);

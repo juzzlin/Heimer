@@ -49,9 +49,13 @@ public:
 
     EdgePtr addEdge(EdgePtr edge);
 
+    void addNodeToSelectionGroup(Node & node);
+
     void deleteEdge(Edge & edge);
 
     void deleteNode(Node & node);
+
+    void deleteSelectedNodes();
 
     NodePtr addNodeAt(QPointF pos);
 
@@ -83,7 +87,11 @@ public:
 
     void moveSelectionGroup(Node & reference, QPointF location);
 
+    bool nodeHasImageAttached() const;
+
     void redo();
+
+    void removeImageRefsOfSelectedNodes();
 
     bool saveMindMap();
 
@@ -93,11 +101,17 @@ public:
 
     void saveRedoPoint();
 
+    void setColorForSelectedNodes(QColor color);
+
     void setMindMapData(MindMapDataPtr newMindMapData);
 
     void setSelectedEdge(Edge * edge);
 
     void setSelectedNode(Node * node);
+
+    void setImageRefForSelectedNodes(size_t id);
+
+    void setTextColorForSelectedNodes(QColor color);
 
     Edge * selectedEdge() const;
 
@@ -121,7 +135,9 @@ private:
     EditorData(const EditorData & e) = delete;
     EditorData & operator=(const EditorData & e) = delete;
 
-    void removeNodesFromScene();
+    void removeEdgeFromScene(Edge & edge);
+
+    void removeNodeFromScene(Node & node);
 
     void sendUndoAndRedoSignals();
 

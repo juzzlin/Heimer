@@ -19,17 +19,22 @@
 #include <QPointF>
 
 #include <set>
+#include <vector>
 
 class Node;
 
 class SelectionGroup
 {
 public:
+    void addSelectedNode(Node & node);
+
     void clear();
 
     bool hasNode(Node & node) const;
 
     void move(Node & reference, QPointF location);
+
+    std::vector<Node *> nodes() const;
 
     void setSelectedNode(Node * node);
 
@@ -41,8 +46,6 @@ public:
 
 private:
     std::set<Node *> m_nodes;
-
-    Node * m_selectedNode = nullptr;
 };
 
 #endif // SELECTION_GROUP_HPP

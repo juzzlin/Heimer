@@ -171,8 +171,6 @@ private:
 
     QPointF m_currentMousePos;
 
-    bool m_mouseIn = false;
-
     QPixmap m_pixmap;
 };
 

@@ -21,6 +21,7 @@
 #include "mediator.hpp"
 #include "mouse_action.hpp"
 #include "node.hpp"
+#include "node_action.hpp"
 
 #include <QColorDialog>
 #include <QShortcut>
@@ -82,49 +83,33 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
 
     const auto setNodeColorAction(new QAction(tr("Set node color"), this));
     connect(setNodeColorAction, &QAction::triggered, [this] {
-        const auto node = m_mediator.selectedNode();
-        const auto color = QColorDialog::getColor(Qt::white, this);
-        if (color.isValid()) {
-            m_mediator.saveUndoPoint();
-            node->setColor(color);
-        }
+        emit actionTriggered(StateMachine::Action::NodeColorChangeRequested);
     });
     m_mainContextMenuActions[Mode::Node].push_back(setNodeColorAction);
 
     const auto setNodeTextColorAction(new QAction(tr("Set text color"), this));
     connect(setNodeTextColorAction, &QAction::triggered, [this] {
-        const auto node = m_mediator.selectedNode();
-        const auto color = QColorDialog::getColor(Qt::white, this);
-        if (color.isValid()) {
-            m_mediator.saveUndoPoint();
-            node->setTextColor(color);
-        }
+        emit actionTriggered(StateMachine::Action::TextColorChangeRequested);
     });
     m_mainContextMenuActions[Mode::Node].push_back(setNodeTextColorAction);
 
     const auto deleteNodeAction(new QAction(tr("Delete node"), this));
     connect(deleteNodeAction, &QAction::triggered, [this] {
-        m_mediator.setSelectedNode(nullptr);
-        m_mediator.saveUndoPoint();
-        // Use a separate variable and timer here because closing the menu will always nullify the selected edge
-        QTimer::singleShot(0, [=] {
-            m_mediator.deleteNode(*m_selectedNode);
-        });
+        m_mediator.performNodeAction({ NodeAction::Type::Delete });
     });
 
     m_mainContextMenuActions[Mode::Node].push_back(deleteNodeAction);
 
     const auto attachImageAction(new QAction(tr("Attach image..."), this));
     connect(attachImageAction, &QAction::triggered, [this] {
-        emit actionTriggered(StateMachine::Action::ImageAttachmentRequested, m_selectedNode);
+        emit actionTriggered(StateMachine::Action::ImageAttachmentRequested);
     });
 
     m_mainContextMenuActions[Mode::Node].push_back(attachImageAction);
 
     m_removeImageAction = new QAction(tr("Remove attached image"), this);
     connect(m_removeImageAction, &QAction::triggered, [this] {
-        m_mediator.saveUndoPoint();
-        m_selectedNode->setImageRef(0);
+        m_mediator.performNodeAction({ NodeAction::Type::RemoveAttachedImage });
     });
 
     m_mainContextMenuActions[Mode::Node].push_back(m_removeImageAction);
@@ -156,16 +141,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     addAction(m_removeImageAction);
 
     connect(this, &QMenu::aboutToShow, [=] {
-        m_selectedNode = m_mediator.selectedNode();
-        if (m_selectedNode) {
-            m_removeImageAction->setEnabled(m_selectedNode->imageRef());
-        }
-    });
-
-    connect(this, &QMenu::aboutToHide, [=] {
-        QTimer::singleShot(0, [=] {
-            m_mediator.setSelectedNode(nullptr);
-        });
+        m_removeImageAction->setEnabled(m_mediator.nodeHasImageAttached());
     });
 }
 

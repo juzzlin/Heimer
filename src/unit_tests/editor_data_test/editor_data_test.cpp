@@ -25,6 +25,22 @@ EditorDataTest::EditorDataTest()
     TestMode::setEnabled(true);
 }
 
+void EditorDataTest::testGroupDelete()
+{
+    EditorData editorData;
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+    auto node0 = editorData.addNodeAt(QPointF(0, 0));
+    auto node1 = editorData.addNodeAt(QPointF(1, 1));
+
+    editorData.toggleNodeInSelectionGroup(*node0);
+    editorData.toggleNodeInSelectionGroup(*node1);
+
+    editorData.deleteSelectedNodes();
+
+    QCOMPARE(editorData.selectionGroupSize(), size_t(0));
+    QCOMPARE(editorData.mindMapData()->graph().getNodes().empty(), true);
+}
+
 void EditorDataTest::testGroupMove()
 {
     EditorData editorData;
@@ -66,8 +82,8 @@ void EditorDataTest::testGroupSelection()
     QCOMPARE(node0->selected(), false);
     QCOMPARE(node1->selected(), false);
 
-    editorData.toggleNodeInSelectionGroup(*node0);
-    editorData.toggleNodeInSelectionGroup(*node1);
+    editorData.addNodeToSelectionGroup(*node0);
+    editorData.addNodeToSelectionGroup(*node1);
 
     QCOMPARE(editorData.selectionGroupSize(), size_t(2));
     QCOMPARE(node0->selected(), true);

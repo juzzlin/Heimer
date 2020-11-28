@@ -29,6 +29,7 @@ class EditorScene;
 class EditorView;
 class Graph;
 class MainWindow;
+class NodeAction;
 class QGraphicsItem;
 
 /*! Acts as a communication channel between MainWindow and editor components:
@@ -48,6 +49,8 @@ public:
     void addEdge(Node & node1, Node & node2);
 
     void addItem(QGraphicsItem & item);
+
+    void addSelectedNode(Node & node);
 
     bool areDirectlyConnected(const Node & node1, const Node & node2) const;
 
@@ -72,8 +75,6 @@ public:
     MouseAction & mouseAction();
 
     void deleteEdge(Edge & edge);
-
-    void deleteNode(Node & node);
 
     QString fileName() const;
 
@@ -103,11 +104,15 @@ public:
 
     size_t nodeCount() const;
 
+    bool nodeHasImageAttached() const;
+
     NodePtr pasteNodeAt(Node & source, QPointF pos);
 
     MindMapDataPtr mindMapData() const;
 
     bool openMindMap(QString fileName);
+
+    void performNodeAction(const NodeAction & action);
 
     void redo();
 

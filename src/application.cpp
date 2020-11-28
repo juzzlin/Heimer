@@ -23,6 +23,7 @@
 #include "layout_optimizer.hpp"
 #include "main_window.hpp"
 #include "mediator.hpp"
+#include "node_action.hpp"
 #include "png_export_dialog.hpp"
 #include "recent_files_manager.hpp"
 #include "settings.hpp"
@@ -150,8 +151,7 @@ Application::Application(int & argc, char ** argv)
 
     // Connect views and StateMachine together
     connect(this, &Application::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
-    connect(m_editorView, &EditorView::actionTriggered, [this](StateMachine::Action action, Node * node) {
-        m_actionNode = node;
+    connect(m_editorView, &EditorView::actionTriggered, [this](StateMachine::Action action) {
         m_stateMachine->calculateState(action);
     });
     connect(m_mainWindow.get(), &MainWindow::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
@@ -177,8 +177,6 @@ Application::Application(int & argc, char ** argv)
     });
 
     m_mainWindow->initialize();
-    m_mediator->initializeView();
-
     m_mainWindow->appear();
 
     if (!m_mindMapFile.isEmpty()) {
@@ -228,6 +226,12 @@ void Application::runState(StateMachine::State state)
         break;
     case StateMachine::State::ShowGridColorDialog:
         showGridColorDialog();
+        break;
+    case StateMachine::State::ShowNodeColorDialog:
+        showNodeColorDialog();
+        break;
+    case StateMachine::State::ShowTextColorDialog:
+        showTextColorDialog();
         break;
     case StateMachine::State::ShowImageFileDialog:
         showImageFileDialog();
@@ -371,6 +375,24 @@ void Application::showGridColorDialog()
     emit actionTriggered(StateMachine::Action::GridColorChanged);
 }
 
+void Application::showNodeColorDialog()
+{
+    const auto color = QColorDialog::getColor(Qt::white, m_mainWindow.get());
+    if (color.isValid()) {
+        m_mediator->performNodeAction({ NodeAction::Type::SetNodeColor, color });
+    }
+    emit actionTriggered(StateMachine::Action::NodeColorChanged);
+}
+
+void Application::showTextColorDialog()
+{
+    const auto color = QColorDialog::getColor(Qt::white, m_mainWindow.get());
+    if (color.isValid()) {
+        m_mediator->performNodeAction({ NodeAction::Type::SetTextColor, color });
+    }
+    emit actionTriggered(StateMachine::Action::TextColorChanged);
+}
+
 void Application::showImageFileDialog()
 {
     const auto path = Settings::loadRecentImagePath();
@@ -378,17 +400,10 @@ void Application::showImageFileDialog()
     const auto fileName = QFileDialog::getOpenFileName(
       m_mainWindow.get(), tr("Open an image"), path, tr("Image Files") + " " + extensions);
 
-    QImage qImage;
-    if (qImage.load(fileName)) {
-        const Image image { qImage, fileName.toStdString() };
-        const auto id = m_editorData->mindMapData()->imageManager().addImage(image);
-        if (m_actionNode) {
-            juzzlin::L().info() << "Setting image id=" << id << " to node " << m_actionNode->index();
-            m_mediator->saveUndoPoint();
-            m_actionNode->setImageRef(id);
-            m_actionNode = nullptr;
-            Settings::saveRecentImagePath(fileName);
-        }
+    QImage image;
+    if (image.load(fileName)) {
+        m_mediator->performNodeAction({ NodeAction::Type::AttachImage, image, fileName });
+        Settings::saveRecentImagePath(fileName);
     } else if (fileName != "") {
         QMessageBox::critical(m_mainWindow.get(), tr("Load image"), tr("Failed to load image '") + fileName + "'");
     }

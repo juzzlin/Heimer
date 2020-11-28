@@ -78,9 +78,13 @@ private:
 
     void showLayoutOptimizationDialog();
 
+    void showNodeColorDialog();
+
     void showPngExportDialog();
 
     void showSvgExportDialog();
+
+    void showTextColorDialog();
 
     void showMessageBox(QString message);
 
@@ -107,8 +111,6 @@ private:
     std::shared_ptr<EditorData> m_editorData;
 
     EditorView * m_editorView = nullptr;
-
-    Node * m_actionNode = nullptr;
 
     std::unique_ptr<PngExportDialog> m_pngExportDialog;
 

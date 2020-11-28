@@ -47,8 +47,9 @@ void Graph::addNode(NodePtr node)
     m_nodes.push_back(node);
 }
 
-void Graph::deleteEdge(int index0, int index1)
+EdgePtr Graph::deleteEdge(int index0, int index1)
 {
+    EdgePtr deletedEdge;
     EdgeVector::iterator edgeIter;
     bool edgeErased = false;
     do {
@@ -58,13 +59,19 @@ void Graph::deleteEdge(int index0, int index1)
           });
         edgeErased = edgeIter != m_edges.end();
         if (edgeErased) {
+            deletedEdge = *edgeIter;
+            m_deletedEdges.push_back(*edgeIter);
             m_edges.erase(edgeIter);
         }
     } while (edgeErased);
+
+    return deletedEdge;
 }
 
-void Graph::deleteNode(int index)
+std::pair<NodePtr, Graph::EdgeVector> Graph::deleteNode(int index)
 {
+    NodePtr deletedNode;
+    Graph::EdgeVector deletedEdges;
     const auto iter = std::find_if(m_nodes.begin(), m_nodes.end(), [=](const NodePtr & node) {
         return node->index() == index;
     });
@@ -79,12 +86,18 @@ void Graph::deleteNode(int index)
               });
             edgeErased = edgeIter != m_edges.end();
             if (edgeErased) {
+                deletedEdges.push_back(*edgeIter);
+                m_deletedEdges.push_back(*edgeIter);
                 m_edges.erase(edgeIter);
             }
         } while (edgeErased);
 
+        deletedNode = *iter;
+        m_deletedNodes.push_back(deletedNode);
         m_nodes.erase(iter);
     }
+
+    return { deletedNode, deletedEdges };
 }
 
 void Graph::addEdge(EdgePtr newEdge)

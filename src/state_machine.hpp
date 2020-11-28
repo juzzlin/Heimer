@@ -40,11 +40,13 @@ public:
         ShowGridColorDialog,
         ShowImageFileDialog,
         ShowLayoutOptimizationDialog,
+        ShowNodeColorDialog,
         ShowNotSavedDialog,
         ShowOpenDialog,
         ShowPngExportDialog,
         ShowSaveAsDialog,
         ShowSvgExportDialog,
+        ShowTextColorDialog,
         TryCloseWindow
     };
 
@@ -69,6 +71,8 @@ public:
         MindMapSaveAsFailed,
         NewMindMapInitialized,
         NewSelected,
+        NodeColorChanged,
+        NodeColorChangeRequested,
         NotSavedDialogAccepted,
         NotSavedDialogCanceled,
         NotSavedDialogDiscarded,
@@ -84,6 +88,8 @@ public:
         SaveSelected,
         SvgExported,
         SvgExportSelected,
+        TextColorChanged,
+        TextColorChangeRequested,
         UndoSelected
     };
 

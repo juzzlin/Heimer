@@ -21,6 +21,7 @@
 #include "image_manager.hpp"
 #include "main_window.hpp"
 #include "mouse_action.hpp"
+#include "node_action.hpp"
 
 #include "simple_logger.hpp"
 
@@ -93,6 +94,11 @@ void Mediator::addEdge(Node & node1, Node & node2)
 void Mediator::addItem(QGraphicsItem & item)
 {
     m_editorScene->addItem(&item);
+}
+
+void Mediator::addSelectedNode(Node & node)
+{
+    m_editorData->addNodeToSelectionGroup(node);
 }
 
 void Mediator::clearSelectionGroup()
@@ -200,12 +206,6 @@ MouseAction & Mediator::mouseAction()
 void Mediator::deleteEdge(Edge & edge)
 {
     m_editorData->deleteEdge(edge);
-}
-
-void Mediator::deleteNode(Node & node)
-{
-    m_editorView->resetDummyDragItems();
-    m_editorData->deleteNode(node);
 }
 
 void Mediator::enableUndo(bool enable)
@@ -346,6 +346,52 @@ MindMapDataPtr Mediator::mindMapData() const
 size_t Mediator::nodeCount() const
 {
     return m_editorData->mindMapData() ? m_editorData->mindMapData()->graph().numNodes() : 0;
+}
+
+bool Mediator::nodeHasImageAttached() const
+{
+    return m_editorData->nodeHasImageAttached();
+}
+
+void Mediator::performNodeAction(const NodeAction & action)
+{
+    juzzlin::L().debug() << "Handling NodeAction: " << static_cast<int>(action.type);
+
+    switch (action.type) {
+    case NodeAction::Type::None:
+        break;
+    case NodeAction::Type::AttachImage: {
+        const Image image { action.image, action.fileName.toStdString() };
+        const auto id = m_editorData->mindMapData()->imageManager().addImage(image);
+        if (m_editorData->selectionGroupSize()) {
+            saveUndoPoint();
+            m_editorData->setImageRefForSelectedNodes(id);
+        }
+    } break;
+    case NodeAction::Type::Delete:
+        saveUndoPoint();
+        m_editorView->resetDummyDragItems();
+        m_editorData->deleteSelectedNodes();
+        break;
+    case NodeAction::Type::RemoveAttachedImage:
+        saveUndoPoint();
+        m_editorData->removeImageRefsOfSelectedNodes();
+        break;
+    case NodeAction::Type::SetNodeColor:
+        saveUndoPoint();
+        m_editorData->setColorForSelectedNodes(action.color);
+        if (m_editorData->selectionGroupSize() == 1) {
+            m_editorData->clearSelectionGroup();
+        }
+        break;
+    case NodeAction::Type::SetTextColor:
+        saveUndoPoint();
+        m_editorData->setTextColorForSelectedNodes(action.color);
+        if (m_editorData->selectionGroupSize() == 1) {
+            m_editorData->clearSelectionGroup();
+        }
+        break;
+    }
 }
 
 bool Mediator::openMindMap(QString fileName)
@@ -501,7 +547,7 @@ void Mediator::setRectagleSelection(QRectF rect)
     const auto items = m_editorScene->items(rect, Qt::ContainsItemShape);
     for (auto && item : items) {
         if (const auto node = dynamic_cast<Node *>(item)) {
-            toggleNodeInSelectionGroup(*node);
+            m_editorData->addNodeToSelectionGroup(*node);
         }
     }
 }

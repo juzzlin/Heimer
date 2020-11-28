@@ -35,6 +35,7 @@
 #include "mind_map_data.hpp"
 #include "mouse_action.hpp"
 #include "node.hpp"
+#include "node_action.hpp"
 #include "node_handle.hpp"
 #include "simple_logger.hpp"
 
@@ -62,8 +63,6 @@ EditorView::EditorView(Mediator & mediator)
     // Forward signals from main context menu
     connect(m_mainContextMenu, &MainContextMenu::actionTriggered, this, &EditorView::actionTriggered);
     connect(m_mainContextMenu, &MainContextMenu::newNodeRequested, this, &EditorView::newNodeRequested);
-    connect(m_mainContextMenu, &MainContextMenu::nodeColorActionTriggered, this, &EditorView::openNodeColorDialog);
-    connect(m_mainContextMenu, &MainContextMenu::nodeTextColorActionTriggered, this, &EditorView::openNodeTextColorDialog);
 }
 
 const Grid & EditorView::grid() const
@@ -138,7 +137,6 @@ void EditorView::handleLeftButtonClickOnNode(Node & node)
         if (m_mediator.selectionGroupSize() && !m_mediator.isInSelectionGroup(node)) {
             m_mediator.clearSelectionGroup();
         }
-
         // User is initiating a node move drag
         initiateNodeDrag(node);
     }
@@ -155,18 +153,14 @@ void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
         initiateNodeDrag(nodeHandle.parentNode());
         break;
     case NodeHandle::Role::Color:
-        m_mediator.clearSelectionGroup();
-        m_mediator.setSelectedNode(&nodeHandle.parentNode());
-        openNodeColorDialog();
+        m_mediator.addSelectedNode(nodeHandle.parentNode());
+        emit actionTriggered(StateMachine::Action::NodeColorChangeRequested);
         break;
     case NodeHandle::Role::TextColor:
-        m_mediator.clearSelectionGroup();
-        m_mediator.setSelectedNode(&nodeHandle.parentNode());
-        openNodeTextColorDialog();
+        m_mediator.addSelectedNode(nodeHandle.parentNode());
+        emit actionTriggered(StateMachine::Action::TextColorChangeRequested);
         break;
     }
-
-    m_mediator.setSelectedNode(nullptr);
 }
 
 void EditorView::handleRightButtonClickOnEdge(Edge & edge)
@@ -178,9 +172,7 @@ void EditorView::handleRightButtonClickOnEdge(Edge & edge)
 
 void EditorView::handleRightButtonClickOnNode(Node & node)
 {
-    m_mediator.clearSelectionGroup();
-
-    m_mediator.setSelectedNode(&node);
+    m_mediator.addSelectedNode(node);
 
     openMainContextMenu(MainContextMenu::Mode::Node);
 }
@@ -200,6 +192,8 @@ void EditorView::initiateNewNodeDrag(NodeHandle & nodeHandle)
 
 void EditorView::initiateNodeDrag(Node & node)
 {
+    juzzlin::L().debug() << "Initiating node drag..";
+
     m_mediator.saveUndoPoint();
 
     node.setZValue(node.zValue() + 1);
@@ -213,6 +207,8 @@ void EditorView::initiateNodeDrag(Node & node)
 
 void EditorView::initiateRubberBand()
 {
+    juzzlin::L().debug() << "Initiating rubber band..";
+
     m_mediator.mouseAction().setRubberBandOrigin(m_clickedPos);
     if (!m_rubberBand) {
         m_rubberBand = new QRubberBand { QRubberBand::Rectangle, this };
@@ -235,10 +231,6 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
     switch (m_mediator.mouseAction().action()) {
     case MouseAction::Action::MoveNode:
         if (const auto node = m_mediator.mouseAction().sourceNode()) {
-            if (!m_mediator.isInSelectionGroup(*node)) {
-                m_mediator.clearSelectionGroup();
-            }
-
             if (m_mediator.selectionGroupSize()) {
                 m_mediator.moveSelectionGroup(*node, m_grid.snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
             } else {
@@ -288,12 +280,15 @@ void EditorView::mousePressEvent(QMouseEvent * event)
     const auto items = scene()->items(clickRect, Qt::IntersectsItemShape, Qt::DescendingOrder);
     if (items.size()) {
         const auto item = *items.begin();
-        if (const auto node = dynamic_cast<Node *>(item)) {
-            handleMousePressEventOnNode(*event, *node);
-        } else if (const auto edge = dynamic_cast<Edge *>(item)) {
+        if (const auto edge = dynamic_cast<Edge *>(item)) {
+            juzzlin::L().debug() << "Edge pressed";
             handleMousePressEventOnEdge(*event, *edge);
         } else if (const auto node = dynamic_cast<NodeHandle *>(item)) {
+            juzzlin::L().debug() << "Node handle pressed";
             handleMousePressEventOnNodeHandle(*event, *node);
+        } else if (const auto node = dynamic_cast<Node *>(item)) {
+            juzzlin::L().debug() << "Node pressed";
+            handleMousePressEventOnNode(*event, *node);
         }
         // This hack enables edge context menu even if user clicks on the edge text edit.
         // Must be the last else-if branch.
@@ -306,7 +301,19 @@ void EditorView::mousePressEvent(QMouseEvent * event)
                 }
             }
         }
+        // This hack enables node context menu even if user clicks on the node text edit.
+        // Must be the last else-if branch.
+        else if (const auto nodeTextEdit = dynamic_cast<TextEdit *>(item)) {
+            if (event->button() == Qt::RightButton) {
+                const auto node = dynamic_cast<Node *>(nodeTextEdit->parentItem());
+                if (node) {
+                    handleMousePressEventOnNode(*event, *node);
+                    return;
+                }
+            }
+        }
     } else {
+        juzzlin::L().debug() << "Background pressed";
         handleMousePressEventOnBackground(*event);
     }
 
@@ -360,26 +367,6 @@ void EditorView::openMainContextMenu(MainContextMenu::Mode mode)
 {
     m_mainContextMenu->setMode(mode);
     m_mainContextMenu->exec(mapToGlobal(m_clickedPos));
-}
-
-void EditorView::openNodeColorDialog()
-{
-    const auto node = m_mediator.selectedNode();
-    const auto color = QColorDialog::getColor(Qt::white, this);
-    if (color.isValid()) {
-        m_mediator.saveUndoPoint();
-        node->setColor(color);
-    }
-}
-
-void EditorView::openNodeTextColorDialog()
-{
-    const auto node = m_mediator.selectedNode();
-    const auto color = QColorDialog::getColor(Qt::white, this);
-    if (color.isValid()) {
-        m_mediator.saveUndoPoint();
-        node->setTextColor(color);
-    }
 }
 
 void EditorView::resetDummyDragItems()

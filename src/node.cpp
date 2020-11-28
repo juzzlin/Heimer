@@ -237,52 +237,37 @@ std::pair<EdgePoint, EdgePoint> Node::getNearestEdgePoints(const Node & node1, c
 
 void Node::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 {
-    if (index() != -1) // Prevent right-click on the drag node
-    {
+    if (event && index() != -1) {
         m_currentMousePos = event->pos();
-        m_mouseIn = true;
-
         checkHandleVisibility(event->pos());
-
         QGraphicsItem::hoverEnterEvent(event);
     }
 }
 
 void Node::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
 {
-    if (index() != -1) // Prevent right-click on the drag node
-    {
-        m_mouseIn = false;
-
+    if (event && index() != -1) {
         setHandlesVisible(false);
-
-        if (event) // EditorView may call this with a null event
-        {
-            QGraphicsItem::hoverLeaveEvent(event);
-        }
+        QGraphicsItem::hoverLeaveEvent(event);
     }
 }
 
 void Node::hoverMoveEvent(QGraphicsSceneHoverEvent * event)
 {
-    if (index() != -1) // Prevent right-click on the drag node
-    {
+    if (event && index() != -1) {
         m_currentMousePos = event->pos();
-
         checkHandleVisibility(event->pos());
-
         QGraphicsItem::hoverMoveEvent(event);
     }
 }
 
 void Node::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-    if (index() != -1) // Prevent left-click on the drag node
-    {
+    // Prevent left-click on the drag node
+    if (event && index() != -1) {
         if (expandedTextEditRect().contains(event->pos())) {
             m_textEdit->setFocus();
         }
-
         QGraphicsItem::mousePressEvent(event);
     }
 }
@@ -435,8 +420,6 @@ void Node::setLocation(QPointF newLocation)
     setPos(newLocation);
 
     updateEdgeLines();
-
-    setHandlesVisible(false);
 }
 
 QRectF Node::placementBoundingRect() const

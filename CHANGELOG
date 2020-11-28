@@ -4,10 +4,21 @@ x.y.z
 New features:
 
 * Fix GitHub Issue #115: Missing Hotkey for Fullscreen: F11
+* Fix GitHub Issue #119: Implement group actions
+  - Make it possible to move group by move handle
+  - Make it possible to set text color for a node group
+  - Make it possible to set color for a node group
+  - Make it possible to set attached image for a node group
+  - Allow group action when setting colors via node handle
+  - Allow deletion of multiple nodes
 
 Bug fixes:
 
 Other:
+
+* Prevent the system context menu on node text edit
+* Open node context menu also when right-clicking on text edit
+* Don't immediately hide handles on move because it's annoying
 
 1.21.0
 ======

@@ -24,6 +24,8 @@ public:
 
 private slots:
 
+    void testGroupDelete();
+
     void testGroupMove();
 
     void testGroupSelection();

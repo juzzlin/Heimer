@@ -19,14 +19,18 @@
 
 #include <map>
 
+void SelectionGroup::addSelectedNode(Node & node)
+{
+    m_nodes.insert(&node);
+    node.setSelected(true);
+}
+
 void SelectionGroup::clear()
 {
     for (auto && node : m_nodes) {
         node->setSelected(false);
     }
     m_nodes.clear();
-
-    m_selectedNode = nullptr;
 }
 
 bool SelectionGroup::hasNode(Node & node) const
@@ -52,22 +56,26 @@ void SelectionGroup::move(Node & reference, QPointF location)
     }
 }
 
+std::vector<Node *> SelectionGroup::nodes() const
+{
+    std::vector<Node *> nodes;
+    nodes.reserve(m_nodes.size());
+    std::copy(m_nodes.begin(), m_nodes.end(), std::back_inserter(nodes));
+    return nodes;
+}
+
 void SelectionGroup::setSelectedNode(Node * node)
 {
-    if (selectedNode()) {
-        selectedNode()->setSelected(false);
-    }
+    clear();
 
     if (node) {
-        node->setSelected(true);
+        addSelectedNode(*node);
     }
-
-    m_selectedNode = node;
 }
 
 Node * SelectionGroup::selectedNode() const
 {
-    return m_selectedNode;
+    return !m_nodes.empty() ? *m_nodes.begin() : nullptr;
 }
 
 size_t SelectionGroup::size() const

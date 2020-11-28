@@ -84,15 +84,9 @@ protected:
 
 signals:
 
-    void actionTriggered(StateMachine::Action action, Node * node = nullptr);
+    void actionTriggered(StateMachine::Action action);
 
     void newNodeRequested(QPointF position);
-
-private slots:
-
-    void openNodeColorDialog();
-
-    void openNodeTextColorDialog();
 
 private:
     void finishRubberBand();

@@ -14,6 +14,7 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "editor_data.hpp"
+#include "editor_scene.hpp"
 
 #include "alz_serializer.hpp"
 #include "constants.hpp"
@@ -38,6 +39,13 @@ EditorData::EditorData()
 {
     m_undoTimer.setSingleShot(true);
     m_undoTimer.setInterval(Constants::View::TOO_QUICK_ACTION_DELAY_MS);
+}
+
+void EditorData::addNodeToSelectionGroup(Node & node)
+{
+    L().debug() << "Adding node " << node.index() << " to selection group..";
+
+    m_selectionGroup->addSelectedNode(node);
 }
 
 QColor EditorData::backgroundColor() const
@@ -117,6 +125,13 @@ void EditorData::redo()
     }
 }
 
+void EditorData::removeImageRefsOfSelectedNodes()
+{
+    for (auto && node : m_selectionGroup->nodes()) {
+        node->setImageRef(0);
+    }
+}
+
 bool EditorData::saveMindMap()
 {
     assert(m_mindMapData);
@@ -170,6 +185,28 @@ bool EditorData::saveMindMapAs(QString fileName)
     return false;
 }
 
+void EditorData::setColorForSelectedNodes(QColor color)
+{
+    for (auto && node : m_selectionGroup->nodes()) {
+        node->setColor(color);
+    }
+}
+
+void EditorData::setImageRefForSelectedNodes(size_t id)
+{
+    for (auto && node : m_selectionGroup->nodes()) {
+        juzzlin::L().info() << "Setting image id=" << id << " to node " << node->index();
+        node->setImageRef(id);
+    }
+}
+
+void EditorData::setTextColorForSelectedNodes(QColor color)
+{
+    for (auto && node : m_selectionGroup->nodes()) {
+        node->setTextColor(color);
+    }
+}
+
 void EditorData::setMindMapData(MindMapDataPtr mindMapData)
 {
     m_mindMapData = mindMapData;
@@ -182,6 +219,8 @@ void EditorData::setMindMapData(MindMapDataPtr mindMapData)
 
 void EditorData::toggleNodeInSelectionGroup(Node & node)
 {
+    L().debug() << "Toggling node " << node.index() << " in selection group..";
+
     m_selectionGroup->toggleNode(node);
 }
 
@@ -197,14 +236,37 @@ void EditorData::deleteEdge(Edge & edge)
 {
     assert(m_mindMapData);
 
-    m_mindMapData->graph().deleteEdge(edge.sourceNode().index(), edge.targetNode().index());
+    if (const auto deletedEdge = m_mindMapData->graph().deleteEdge(edge.sourceNode().index(), edge.targetNode().index())) {
+        removeEdgeFromScene(*deletedEdge);
+    }
 }
 
 void EditorData::deleteNode(Node & node)
 {
     assert(m_mindMapData);
 
-    m_mindMapData->graph().deleteNode(node.index());
+    const auto deletionInfo = m_mindMapData->graph().deleteNode(node.index());
+    if (deletionInfo.first) {
+        removeNodeFromScene(*deletionInfo.first);
+    }
+    for (auto && deletedEdge : deletionInfo.second) {
+        if (deletedEdge) {
+            removeEdgeFromScene(*deletedEdge);
+        }
+    }
+}
+
+void EditorData::deleteSelectedNodes()
+{
+    assert(m_mindMapData);
+
+    const auto selectedNodes = m_selectionGroup->nodes();
+
+    m_selectionGroup->clear();
+
+    for (auto && node : selectedNodes) {
+        deleteNode(*node);
+    }
 }
 
 NodePtr EditorData::addNodeAt(QPointF pos)
@@ -235,6 +297,8 @@ void EditorData::clearImages()
 
 void EditorData::clearSelectionGroup()
 {
+    L().debug() << "Clearing selection group..";
+
     m_selectionGroup->clear();
 }
 
@@ -260,6 +324,16 @@ void EditorData::moveSelectionGroup(Node & reference, QPointF location)
     m_selectionGroup->move(reference, location);
 }
 
+bool EditorData::nodeHasImageAttached() const
+{
+    for (auto && node : m_selectionGroup->nodes()) {
+        if (node->imageRef()) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void EditorData::setSelectedEdge(Edge * edge)
 {
     m_selectedEdge = edge;
@@ -283,6 +357,22 @@ Node * EditorData::selectedNode() const
 size_t EditorData::selectionGroupSize() const
 {
     return m_selectionGroup->size();
+}
+
+void EditorData::removeEdgeFromScene(Edge & edge)
+{
+    edge.hide();
+    if (const auto scene = edge.scene()) {
+        scene->removeItem(&edge);
+    }
+}
+
+void EditorData::removeNodeFromScene(Node & node)
+{
+    node.hide();
+    if (const auto scene = node.scene()) {
+        scene->removeItem(&node);
+    }
 }
 
 void EditorData::sendUndoAndRedoSignals()

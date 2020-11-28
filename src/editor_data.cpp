@@ -14,6 +14,7 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "editor_data.hpp"
+#include "editor_scene.hpp"
 
 #include "alz_serializer.hpp"
 #include "constants.hpp"
@@ -235,24 +236,37 @@ void EditorData::deleteEdge(Edge & edge)
 {
     assert(m_mindMapData);
 
-    m_mindMapData->graph().deleteEdge(edge.sourceNode().index(), edge.targetNode().index());
+    if (const auto deletedEdge = m_mindMapData->graph().deleteEdge(edge.sourceNode().index(), edge.targetNode().index())) {
+        removeEdgeFromScene(*deletedEdge);
+    }
 }
 
 void EditorData::deleteNode(Node & node)
 {
     assert(m_mindMapData);
 
-    m_mindMapData->graph().deleteNode(node.index());
+    const auto deletionInfo = m_mindMapData->graph().deleteNode(node.index());
+    if (deletionInfo.first) {
+        removeNodeFromScene(*deletionInfo.first);
+    }
+    for (auto && deletedEdge : deletionInfo.second) {
+        if (deletedEdge) {
+            removeEdgeFromScene(*deletedEdge);
+        }
+    }
 }
 
 void EditorData::deleteSelectedNodes()
 {
     assert(m_mindMapData);
 
-    for (auto && node : m_selectionGroup->nodes()) {
-        m_mindMapData->graph().deleteNode(node->index());
-    }
+    const auto selectedNodes = m_selectionGroup->nodes();
+
     m_selectionGroup->clear();
+
+    for (auto && node : selectedNodes) {
+        deleteNode(*node);
+    }
 }
 
 NodePtr EditorData::addNodeAt(QPointF pos)
@@ -343,6 +357,22 @@ Node * EditorData::selectedNode() const
 size_t EditorData::selectionGroupSize() const
 {
     return m_selectionGroup->size();
+}
+
+void EditorData::removeEdgeFromScene(Edge & edge)
+{
+    edge.hide();
+    if (const auto scene = edge.scene()) {
+        scene->removeItem(&edge);
+    }
+}
+
+void EditorData::removeNodeFromScene(Node & node)
+{
+    node.hide();
+    if (const auto scene = node.scene()) {
+        scene->removeItem(&node);
+    }
 }
 
 void EditorData::sendUndoAndRedoSignals()

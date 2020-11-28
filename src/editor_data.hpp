@@ -135,7 +135,9 @@ private:
     EditorData(const EditorData & e) = delete;
     EditorData & operator=(const EditorData & e) = delete;
 
-    void removeNodesFromScene();
+    void removeEdgeFromScene(Edge & edge);
+
+    void removeNodeFromScene(Node & node);
 
     void sendUndoAndRedoSignals();
 

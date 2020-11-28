@@ -43,11 +43,11 @@ public:
 
     void addNode(NodePtr node);
 
-    void deleteNode(int index);
+    std::pair<NodePtr, EdgeVector> deleteNode(int index);
 
     void addEdge(EdgePtr edge);
 
-    void deleteEdge(int index0, int index1);
+    EdgePtr deleteEdge(int index0, int index1);
 
     bool areDirectlyConnected(NodePtr node0, NodePtr node1);
 
@@ -69,6 +69,10 @@ private:
     NodeVector m_nodes;
 
     EdgeVector m_edges;
+
+    NodeVector m_deletedNodes;
+
+    EdgeVector m_deletedEdges;
 
     int m_count = 0;
 };

@@ -102,7 +102,7 @@ public:
 
     void setSize(const QSizeF & size);
 
-    void setTextInputActive();
+    void setTextInputActive(bool active);
 
     void setText(const QString & text);
 

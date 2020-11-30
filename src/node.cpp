@@ -439,10 +439,14 @@ void Node::setSelected(bool selected)
     update();
 }
 
-void Node::setTextInputActive()
+void Node::setTextInputActive(bool active)
 {
-    m_textEdit->setActive(true);
-    m_textEdit->setFocus();
+    m_textEdit->setActive(active);
+    if (active) {
+        m_textEdit->setFocus();
+    } else {
+        m_textEdit->clearFocus();
+    }
 }
 
 QString Node::text() const

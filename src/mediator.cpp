@@ -159,7 +159,7 @@ NodePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 
     addExistingGraphToScene();
 
-    node1->setTextInputActive();
+    node1->setTextInputActive(true);
 
     return node1;
 }
@@ -175,7 +175,7 @@ NodePtr Mediator::createAndAddNode(QPointF pos)
     addExistingGraphToScene();
 
     QTimer::singleShot(0, [node1]() { // Needed due to the context menu
-        node1->setTextInputActive();
+        node1->setTextInputActive(true);
     });
 
     return node1;
@@ -192,7 +192,7 @@ NodePtr Mediator::pasteNodeAt(Node & source, QPointF pos)
     addExistingGraphToScene();
 
     QTimer::singleShot(0, [copiedNode]() { // Needed due to the context menu
-        copiedNode->setTextInputActive();
+        copiedNode->setTextInputActive(true);
     });
 
     return copiedNode;

@@ -289,25 +289,30 @@ void EditorView::mousePressEvent(QMouseEvent * event)
         } else if (const auto node = dynamic_cast<Node *>(item)) {
             juzzlin::L().debug() << "Node pressed";
             handleMousePressEventOnNode(*event, *node);
+            if (isModifierPressed()) { // User was just selecting
+                node->setTextInputActive(false);
+                return;
+            }
         }
         // This hack enables edge context menu even if user clicks on the edge text edit.
-        // Must be the last else-if branch.
         else if (const auto edgeTextEdit = dynamic_cast<EdgeTextEdit *>(item)) {
             if (event->button() == Qt::RightButton) {
                 const auto edge = dynamic_cast<Edge *>(edgeTextEdit->parentItem());
                 if (edge) {
+                    juzzlin::L().debug() << "Edge text edit pressed";
                     handleMousePressEventOnEdge(*event, *edge);
                     return;
                 }
             }
         }
         // This hack enables node context menu even if user clicks on the node text edit.
-        // Must be the last else-if branch.
         else if (const auto nodeTextEdit = dynamic_cast<TextEdit *>(item)) {
-            if (event->button() == Qt::RightButton) {
+            if (event->button() == Qt::RightButton || (event->button() == Qt::LeftButton && isModifierPressed())) {
                 const auto node = dynamic_cast<Node *>(nodeTextEdit->parentItem());
                 if (node) {
+                    juzzlin::L().debug() << "Node text edit pressed";
                     handleMousePressEventOnNode(*event, *node);
+                    node->setTextInputActive(false);
                     return;
                 }
             }

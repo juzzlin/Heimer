@@ -79,11 +79,10 @@ void EditorView::finishRubberBand()
 
 void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
 {
-    if (m_mediator.selectionGroupSize()) {
+    if (!isModifierPressed()) {
         m_mediator.clearSelectionGroup();
+        m_mediator.setSelectedEdge(nullptr);
     }
-    m_mediator.setSelectedEdge(nullptr);
-    m_mediator.setSelectedNode(nullptr);
 
     if (event.button() == Qt::LeftButton) {
         if (isModifierPressed()) {

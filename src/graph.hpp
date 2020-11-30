@@ -43,10 +43,21 @@ public:
 
     void addNode(NodePtr node);
 
+    //! "Soft deletes" the given node.
+    //! The node gets **really** deleted only when the Graph is deleted.
+    //! This is to help integration with Qt that operates only on raw pointers.
+    //! \param index Index of the node to be deleted.
+    //! \returns The deleted node and connected edges that were also removed.
     std::pair<NodePtr, EdgeVector> deleteNode(int index);
 
     void addEdge(EdgePtr edge);
 
+    //! "Soft deletes" the given edge.
+    //! The edge gets **really** deleted only when the Graph is deleted.
+    //! This is to help integration with Qt that operates only on raw pointers.
+    //! \param index0 Index of the source node.
+    //! \param index1 Index of the target node.
+    //! \returns The deleted edge.
     EdgePtr deleteEdge(int index0, int index1);
 
     bool areDirectlyConnected(NodePtr node0, NodePtr node1);

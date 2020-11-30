@@ -206,7 +206,7 @@ void Edge::setReversed(bool reversed)
 void Edge::setSelected(bool selected)
 {
     m_selected = selected;
-    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(selected));
+    GraphicsFactory::setSelected(graphicsEffect(), selected);
     update();
 }
 

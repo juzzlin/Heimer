@@ -16,6 +16,8 @@ New features:
 
 Bug fixes:
 
+* Fix GitHub Issue #120: Crash when connecting to the initial node
+
 Other:
 
 * Prevent the system context menu on node text edit

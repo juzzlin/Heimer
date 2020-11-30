@@ -26,6 +26,7 @@
 
 #include "simple_logger.hpp"
 
+#include <QGraphicsEffect>
 #include <QGraphicsSceneHoverEvent>
 #include <QImage>
 #include <QPainter>
@@ -39,6 +40,8 @@ Node::Node()
   : m_textEdit(new TextEdit(this))
 {
     setAcceptHoverEvents(true);
+
+    setGraphicsEffect(GraphicsFactory::createDropShadowEffect());
 
     m_size = QSize(Constants::Node::MIN_WIDTH, Constants::Node::MIN_HEIGHT);
 
@@ -435,7 +438,7 @@ bool Node::selected() const
 void Node::setSelected(bool selected)
 {
     m_selected = selected;
-    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(selected));
+    GraphicsFactory::setSelected(graphicsEffect(), selected);
     update();
 }
 

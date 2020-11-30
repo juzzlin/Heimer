@@ -11,6 +11,7 @@ New features:
   - Make it possible to set attached image for a node group
   - Allow group action when setting colors via node handle
   - Allow deletion of multiple nodes
+* Fix GitHub Issue #118: Make it possible to delete nodes with Delete key
 
 Bug fixes:
 

@@ -94,6 +94,14 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     m_mainContextMenuActions[Mode::Node].push_back(setNodeTextColorAction);
 
     const auto deleteNodeAction(new QAction(tr("Delete node"), this));
+    // Here we add a shortcut to the context menu action. However, the action cannot be triggered unless the context menu
+    // is open. As a "solution" we create another shortcut and add it to the parent widget.
+    const auto deleteNodeSequence = QKeySequence("Del");
+    deleteNodeAction->setShortcut(deleteNodeSequence);
+    const auto deleteNodeShortCut = new QShortcut(deleteNodeSequence, parent);
+    connect(deleteNodeShortCut, &QShortcut::activated, [this] {
+        m_mediator.performNodeAction({ NodeAction::Type::Delete });
+    });
     connect(deleteNodeAction, &QAction::triggered, [this] {
         m_mediator.performNodeAction({ NodeAction::Type::Delete });
     });

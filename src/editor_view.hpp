@@ -113,7 +113,7 @@ private:
 
     void initiateRubberBand();
 
-    bool isControlPressed() const;
+    bool isModifierPressed() const;
 
     void openBackgroundContextMenu();
 

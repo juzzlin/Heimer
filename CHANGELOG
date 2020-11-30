@@ -12,6 +12,7 @@ New features:
   - Allow group action when setting colors via node handle
   - Allow deletion of multiple nodes
 * Fix GitHub Issue #118: Make it possible to delete nodes with Delete key
+* Fix GitHub Issue #122: Make it possible to select node groups also with Shift key
 
 Bug fixes:
 

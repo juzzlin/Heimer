@@ -86,7 +86,7 @@ void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
     m_mediator.setSelectedNode(nullptr);
 
     if (event.button() == Qt::LeftButton) {
-        if (isControlPressed()) {
+        if (isModifierPressed()) {
             initiateRubberBand();
         } else {
             m_mediator.mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
@@ -118,7 +118,7 @@ void EditorView::handleMousePressEventOnNode(QMouseEvent & event, Node & node)
 
 void EditorView::handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHandle & nodeHandle)
 {
-    if (isControlPressed()) {
+    if (isModifierPressed()) {
         return;
     }
 
@@ -129,7 +129,7 @@ void EditorView::handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHand
 
 void EditorView::handleLeftButtonClickOnNode(Node & node)
 {
-    if (isControlPressed()) {
+    if (isModifierPressed()) {
         // User is selecting a node
         m_mediator.toggleNodeInSelectionGroup(node);
     } else {
@@ -217,9 +217,9 @@ void EditorView::initiateRubberBand()
     m_rubberBand->show();
 }
 
-bool EditorView::isControlPressed() const
+bool EditorView::isModifierPressed() const
 {
-    return QGuiApplication::queryKeyboardModifiers().testFlag(Qt::ControlModifier);
+    return QGuiApplication::queryKeyboardModifiers().testFlag(Qt::ControlModifier) || QGuiApplication::queryKeyboardModifiers().testFlag(Qt::ShiftModifier);
 }
 
 void EditorView::mouseMoveEvent(QMouseEvent * event)

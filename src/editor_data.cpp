@@ -339,11 +339,6 @@ void EditorData::setSelectedEdge(Edge * edge)
     m_selectedEdge = edge;
 }
 
-void EditorData::setSelectedNode(Node * node)
-{
-    m_selectionGroup->setSelectedNode(node);
-}
-
 Edge * EditorData::selectedEdge() const
 {
     return m_selectedEdge;

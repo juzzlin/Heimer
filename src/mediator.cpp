@@ -567,11 +567,6 @@ void Mediator::setSelectedEdge(Edge * edge)
     m_editorData->setSelectedEdge(edge);
 }
 
-void Mediator::setSelectedNode(Node * node)
-{
-    m_editorData->setSelectedNode(node);
-}
-
 void Mediator::setTextSize(int textSize)
 {
     // Break loop with the spinbox

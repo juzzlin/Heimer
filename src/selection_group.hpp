@@ -36,8 +36,6 @@ public:
 
     std::vector<Node *> nodes() const;
 
-    void setSelectedNode(Node * node);
-
     Node * selectedNode() const;
 
     size_t size() const;

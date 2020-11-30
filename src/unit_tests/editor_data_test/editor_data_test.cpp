@@ -105,7 +105,6 @@ void EditorDataTest::testLoadState()
 
     editorData.toggleNodeInSelectionGroup(*node0);
     editorData.setSelectedEdge(edge01.get());
-    editorData.setSelectedNode(node0.get());
     editorData.mindMapData()->imageManager().addImage({});
     editorData.saveUndoPoint();
 
@@ -629,7 +628,6 @@ void EditorDataTest::testUndoState()
 
     editorData.toggleNodeInSelectionGroup(*node0);
     editorData.setSelectedEdge(edge01.get());
-    editorData.setSelectedNode(node0.get());
     editorData.saveUndoPoint();
 
     QCOMPARE(editorData.isUndoable(), true);
@@ -653,7 +651,6 @@ void EditorDataTest::testRedoState()
 
     editorData.toggleNodeInSelectionGroup(*node0);
     editorData.setSelectedEdge(edge01.get());
-    editorData.setSelectedNode(node0.get());
     editorData.saveUndoPoint();
 
     QCOMPARE(editorData.isUndoable(), true);
@@ -662,7 +659,6 @@ void EditorDataTest::testRedoState()
 
     editorData.toggleNodeInSelectionGroup(*node0);
     editorData.setSelectedEdge(edge01.get());
-    editorData.setSelectedNode(node0.get());
 
     editorData.redo();
 

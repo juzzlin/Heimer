@@ -138,8 +138,6 @@ public:
 
     void setSelectedEdge(Edge * edge);
 
-    void setSelectedNode(Node * node);
-
     void toggleNodeInSelectionGroup(Node & node);
 
     void undo();

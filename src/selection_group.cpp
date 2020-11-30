@@ -64,15 +64,6 @@ std::vector<Node *> SelectionGroup::nodes() const
     return nodes;
 }
 
-void SelectionGroup::setSelectedNode(Node * node)
-{
-    clear();
-
-    if (node) {
-        addSelectedNode(*node);
-    }
-}
-
 Node * SelectionGroup::selectedNode() const
 {
     return !m_nodes.empty() ? *m_nodes.begin() : nullptr;

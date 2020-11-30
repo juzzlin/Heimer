@@ -542,12 +542,10 @@ void Mediator::setEditorView(EditorView & editorView)
 
 void Mediator::setRectagleSelection(QRectF rect)
 {
-    clearSelectionGroup();
-
     const auto items = m_editorScene->items(rect, Qt::ContainsItemShape);
     for (auto && item : items) {
         if (const auto node = dynamic_cast<Node *>(item)) {
-            m_editorData->addNodeToSelectionGroup(*node);
+            m_editorData->toggleNodeInSelectionGroup(*node);
         }
     }
 }

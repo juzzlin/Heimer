@@ -23,7 +23,6 @@
 
 #include "state_machine.hpp"
 
-class CopyPaste;
 class Grid;
 class Node;
 class Mediator;
@@ -40,7 +39,7 @@ public:
         Node
     };
 
-    MainContextMenu(QWidget * parent, Mediator & mediator, Grid & grid, CopyPaste & copyPaste);
+    MainContextMenu(QWidget * parent, Mediator & mediator, Grid & grid);
 
     void setMode(const Mode & mode);
 
@@ -66,8 +65,6 @@ private:
     std::map<Mode, std::vector<QAction *>> m_mainContextMenuActions;
 
     Mediator & m_mediator;
-
-    CopyPaste & m_copyPaste;
 };
 
 #endif // MAIN_CONTEXT_MENU_HPP

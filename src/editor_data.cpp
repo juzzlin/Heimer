@@ -279,6 +279,11 @@ NodePtr EditorData::addNodeAt(QPointF pos)
     return node;
 }
 
+std::vector<std::shared_ptr<Node>> EditorData::copiedNodes() const
+{
+    return m_copiedNodes;
+}
+
 NodePtr EditorData::copyNodeAt(Node & source, QPointF pos)
 {
     assert(m_mindMapData);
@@ -288,6 +293,30 @@ NodePtr EditorData::copyNodeAt(Node & source, QPointF pos)
     node->setLocation(pos);
     m_mindMapData->graph().addNode(node);
     return node;
+}
+
+QPointF EditorData::copyReferencePoint() const
+{
+    return m_copyReferencePoint;
+}
+
+void EditorData::copySelectedNodes()
+{
+    if (m_selectionGroup->size()) {
+        m_copiedNodes.clear();
+        m_copyReferencePoint = {};
+        for (auto && node : m_selectionGroup->nodes()) {
+            m_copiedNodes.push_back(make_shared<Node>(*node));
+            m_copyReferencePoint += node->pos();
+        }
+        m_copyReferencePoint /= static_cast<qreal>(m_selectionGroup->size());
+        L().debug() << m_selectionGroup->size() << " nodes copied. Reference point calculated at (" << m_copyReferencePoint.x() << ", " << m_copyReferencePoint.y() << ")";
+    }
+}
+
+size_t EditorData::copyStackSize() const
+{
+    return m_copiedNodes.size();
 }
 
 void EditorData::clearImages()

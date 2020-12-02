@@ -66,6 +66,8 @@ public:
 
     void connectNodeToImageManager(NodePtr node);
 
+    size_t copyStackSize() const;
+
     // Create a new node and add edge to the source (parent) node
     NodePtr createAndAddNode(int sourceNodeIndex, QPointF pos);
 
@@ -190,6 +192,8 @@ private:
     void connectGraphToUndoMechanism();
 
     void connectGraphToImageManager();
+
+    void paste();
 
     void setupMindMapAfterUndoOrRedo();
 

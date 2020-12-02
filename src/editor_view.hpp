@@ -16,7 +16,6 @@
 #ifndef EDITOR_VIEW_HPP
 #define EDITOR_VIEW_HPP
 
-#include "copy_paste.hpp"
 #include "grid.hpp"
 #include "main_context_menu.hpp"
 #include "state_machine.hpp"
@@ -154,8 +153,6 @@ private:
     int m_scaleValue = 100;
 
     Mediator & m_mediator;
-
-    CopyPaste m_copyPaste;
 
     std::unique_ptr<Node> m_dummyDragNode;
 

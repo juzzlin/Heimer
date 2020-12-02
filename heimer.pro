@@ -26,7 +26,6 @@ HEADERS +=  \
     $$SRC/about_dlg.hpp \
     $$SRC/alz_serializer.hpp \
     $$SRC/application.hpp \
-    $$SRC/copy_paste.hpp \
     $$SRC/defaults.hpp \
     $$SRC/defaults_dlg.hpp \
     $$SRC/graph.hpp \
@@ -75,7 +74,6 @@ SOURCES += \
     $$SRC/about_dlg.cpp \
     $$SRC/alz_serializer.cpp \
     $$SRC/application.cpp \
-    $$SRC/copy_paste.cpp \
     $$SRC/defaults.cpp \
     $$SRC/defaults_dlg.cpp \
     $$SRC/graph.cpp \

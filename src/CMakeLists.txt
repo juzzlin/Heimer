@@ -20,7 +20,6 @@ set(LIB_SRC
     alz_serializer.cpp
     application.cpp
     constants.hpp
-    copy_paste.cpp
     defaults.cpp
     defaults_dlg.cpp
     edge.cpp

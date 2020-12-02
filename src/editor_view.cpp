@@ -48,9 +48,8 @@ using juzzlin::L;
 
 EditorView::EditorView(Mediator & mediator)
   : m_mediator(mediator)
-  , m_copyPaste(mediator, m_grid)
   , m_edgeContextMenu(new EdgeContextMenu(this, m_mediator))
-  , m_mainContextMenu(new MainContextMenu(this, m_mediator, m_grid, m_copyPaste))
+  , m_mainContextMenu(new MainContextMenu(this, m_mediator, m_grid))
 {
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -244,6 +243,7 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
         m_dummyDragEdge->updateLine();
         m_mediator.mouseAction().sourceNode()->setHandlesVisible(false);
 
+        // This is needed to clear implicitly "selected" connection candidate nodes when hovering the dummy drag node on other nodes
         m_mediator.clearSelectedNode();
         m_mediator.clearSelectionGroup();
 

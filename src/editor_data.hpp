@@ -63,7 +63,15 @@ public:
 
     void clearSelectionGroup();
 
+    std::vector<std::shared_ptr<Node>> copiedNodes() const;
+
     NodePtr copyNodeAt(Node & source, QPointF pos);
+
+    QPointF copyReferencePoint() const;
+
+    void copySelectedNodes();
+
+    size_t copyStackSize() const;
 
     QColor backgroundColor() const;
 
@@ -168,6 +176,10 @@ private:
     QString m_fileName;
 
     QTimer m_undoTimer;
+
+    std::vector<std::shared_ptr<Node>> m_copiedNodes;
+
+    QPointF m_copyReferencePoint;
 };
 
 #endif // EDITOR_DATA_HPP

@@ -16,36 +16,41 @@
 #include "main_context_menu.hpp"
 
 #include "contrib/SimpleLogger/src/simple_logger.hpp"
-#include "copy_paste.hpp"
 #include "grid.hpp"
 #include "mediator.hpp"
 #include "mouse_action.hpp"
 #include "node.hpp"
 #include "node_action.hpp"
 
-#include <QColorDialog>
 #include <QShortcut>
-#include <QTimer>
 
-MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & grid, CopyPaste & copyPaste)
+MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & grid)
   : QMenu(parent)
   , m_copyNodeAction(new QAction(tr("Copy node"), this))
   , m_pasteNodeAction(new QAction(tr("Paste node"), this))
   , m_mediator(mediator)
-  , m_copyPaste(copyPaste)
 {
+    // Here we add a shortcut to the context menu action. However, the action cannot be triggered unless the context menu
+    // is open. As a "solution" we create another shortcut and add it to the parent widget.
+    const auto copyNodeSequence = QKeySequence("Ctrl+C");
+    m_copyNodeAction->setShortcut(copyNodeSequence);
+    const auto copyNodeShortCut = new QShortcut(copyNodeSequence, parent);
+    connect(copyNodeShortCut, &QShortcut::activated, m_copyNodeAction, &QAction::trigger);
     connect(m_copyNodeAction, &QAction::triggered, [this] {
         juzzlin::L().debug() << "Copy node triggered";
-        m_copyPaste.copy(*m_mediator.selectedNode());
+        m_mediator.performNodeAction({ NodeAction::Type::Copy });
     });
     m_mainContextMenuActions[Mode::All].push_back(m_copyNodeAction);
 
+    // Here we add a shortcut to the context menu action. However, the action cannot be triggered unless the context menu
+    // is open. As a "solution" we create another shortcut and add it to the parent widget.
+    const auto pasteNodeSequence = QKeySequence("Ctrl+V");
+    m_pasteNodeAction->setShortcut(pasteNodeSequence);
+    const auto pasteNodeShortCut = new QShortcut(pasteNodeSequence, parent);
+    connect(pasteNodeShortCut, &QShortcut::activated, m_pasteNodeAction, &QAction::trigger);
     connect(m_pasteNodeAction, &QAction::triggered, [this] {
         juzzlin::L().debug() << "Paste node triggered";
-        if (!m_copyPaste.isEmpty()) {
-            m_mediator.saveUndoPoint();
-            m_copyPaste.paste();
-        }
+        m_mediator.performNodeAction({ NodeAction::Type::Paste });
     });
     m_mainContextMenuActions[Mode::All].push_back(m_pasteNodeAction);
 
@@ -162,5 +167,5 @@ void MainContextMenu::setMode(const Mode & mode)
     }
 
     m_copyNodeAction->setEnabled(mode == Mode::Node);
-    m_pasteNodeAction->setEnabled(!m_copyPaste.isEmpty());
+    m_pasteNodeAction->setEnabled(m_mediator.copyStackSize());
 }

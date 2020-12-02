@@ -127,6 +127,11 @@ void Mediator::connectNodeToImageManager(NodePtr node)
     node->setImageRef(node->imageRef()); // This effectively results in a fetch from ImageManager
 }
 
+size_t Mediator::copyStackSize() const
+{
+    return m_editorData->copyStackSize();
+}
+
 void Mediator::connectGraphToUndoMechanism()
 {
     for (auto && node : m_editorData->mindMapData()->graph().getNodes()) {
@@ -190,10 +195,6 @@ NodePtr Mediator::pasteNodeAt(Node & source, QPointF pos)
     L().debug() << "Pasted node at (" << pos.x() << "," << pos.y() << ")";
 
     addExistingGraphToScene();
-
-    QTimer::singleShot(0, [copiedNode]() { // Needed due to the context menu
-        copiedNode->setTextInputActive(true);
-    });
 
     return copiedNode;
 }
@@ -353,12 +354,25 @@ bool Mediator::nodeHasImageAttached() const
     return m_editorData->nodeHasImageAttached();
 }
 
+void Mediator::paste()
+{
+    if (m_editorData->copyStackSize()) {
+        saveUndoPoint();
+        for (auto && node : m_editorData->copiedNodes()) {
+            pasteNodeAt(*node, m_editorView->grid().snapToGrid(mouseAction().mappedPos() - m_editorData->copyReferencePoint() + node->pos()));
+        }
+    }
+}
+
 void Mediator::performNodeAction(const NodeAction & action)
 {
     juzzlin::L().debug() << "Handling NodeAction: " << static_cast<int>(action.type);
 
     switch (action.type) {
     case NodeAction::Type::None:
+        break;
+    case NodeAction::Type::Copy:
+        m_editorData->copySelectedNodes();
         break;
     case NodeAction::Type::AttachImage: {
         const Image image { action.image, action.fileName.toStdString() };
@@ -372,6 +386,9 @@ void Mediator::performNodeAction(const NodeAction & action)
         saveUndoPoint();
         m_editorView->resetDummyDragItems();
         m_editorData->deleteSelectedNodes();
+        break;
+    case NodeAction::Type::Paste:
+        paste();
         break;
     case NodeAction::Type::RemoveAttachedImage:
         saveUndoPoint();

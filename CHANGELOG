@@ -18,6 +18,7 @@ New features:
 Bug fixes:
 
 * Fix GitHub Issue #120: Crash when connecting to the initial node
+* Fix corner case issues with layout optimizer
 
 Other:
 

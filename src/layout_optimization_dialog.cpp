@@ -43,14 +43,15 @@ LayoutOptimizationDialog::LayoutOptimizationDialog(QWidget & parent, MindMapData
 
     connect(m_optimizeButton, &QPushButton::clicked, [=] {
         emit undoPointRequested();
-        m_layoutOptimizer.initialize(m_aspectRatioSpinBox->value(), m_minEdgeLengthSpinBox->value());
-        const auto optimizationInfo = m_layoutOptimizer.optimize();
-        if (optimizationInfo.changes) {
-            const double gain = (optimizationInfo.finalCost - optimizationInfo.initialCost) / optimizationInfo.initialCost;
-            juzzlin::L().info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
+        if (m_layoutOptimizer.initialize(m_aspectRatioSpinBox->value(), m_minEdgeLengthSpinBox->value())) {
+            const auto optimizationInfo = m_layoutOptimizer.optimize();
+            if (optimizationInfo.changes) {
+                const double gain = (optimizationInfo.finalCost - optimizationInfo.initialCost) / optimizationInfo.initialCost;
+                juzzlin::L().info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
+            } else {
+                juzzlin::L().info() << "No changes";
+            }
             m_layoutOptimizer.extract();
-        } else {
-            juzzlin::L().info() << "No changes";
         }
         finishOptimization();
     });

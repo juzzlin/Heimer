@@ -53,9 +53,14 @@ public:
 
     ~Impl() = default;
 
-    void initialize(double aspectRatio, double minEdgeLength)
+    bool initialize(double aspectRatio, double minEdgeLength)
     {
         juzzlin::L().info() << "Initializing LayoutOptimizer: aspectRatio=" << aspectRatio << ", minEdgeLength=" << minEdgeLength;
+
+        if (m_mindMapData->graph().numNodes() == 0) {
+            juzzlin::L().info() << "No nodes";
+            return false;
+        }
 
         double area = 0;
         for (auto && node : m_mindMapData->graph().getNodes()) {
@@ -105,6 +110,8 @@ public:
             cell0->all.push_back(cell1);
             cell1->all.push_back(cell0);
         }
+
+        return true;
     }
 
     OptimizationInfo optimize()
@@ -116,7 +123,6 @@ public:
         OptimizationInfo oi;
         double cost = calculateCost();
         oi.initialCost = cost;
-
         juzzlin::L().info() << "Initial cost: " << oi.initialCost;
 
         std::uniform_real_distribution<double> dist { 0, 1 };
@@ -124,7 +130,7 @@ public:
         // TODO: Automatically decide optimal t
         const double t0 = 200;
         double t = t0;
-        while (t > 0.05) {
+        while (t > 0.05 && cost > 0) {
             double acceptRatio = 0;
             int stuck = 0;
             do {
@@ -195,8 +201,11 @@ public:
 
     void extract()
     {
-        m_layout->spread();
+        if (m_layout->all.empty()) {
+            return;
+        }
 
+        m_layout->spread();
         m_layout->applyCoordinates(m_grid);
     }
 
@@ -534,9 +543,9 @@ LayoutOptimizer::LayoutOptimizer(MindMapDataPtr mindMapData, const Grid & grid)
 {
 }
 
-void LayoutOptimizer::initialize(double aspectRatio, double minEdgeLength)
+bool LayoutOptimizer::initialize(double aspectRatio, double minEdgeLength)
 {
-    m_impl->initialize(aspectRatio, minEdgeLength);
+    return m_impl->initialize(aspectRatio, minEdgeLength);
 }
 
 LayoutOptimizer::OptimizationInfo LayoutOptimizer::optimize()

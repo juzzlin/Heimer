@@ -26,6 +26,10 @@ Edge::ArrowMode loadEdgeArrowMode(Edge::ArrowMode defaultMode);
 
 void saveEdgeArrowMode(Edge::ArrowMode mode);
 
+bool loadReversedEdgeDirection(bool defaultDirection);
+
+void saveReversedEdgeDirection(bool reversed);
+
 int loadGridSize();
 
 void saveGridSize(int value);

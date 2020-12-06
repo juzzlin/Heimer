@@ -114,7 +114,7 @@ private:
 
     QColor m_color;
 
-    bool m_reversed = false;
+    bool m_reversed;
 
     bool m_selected = false;
 

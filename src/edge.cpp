@@ -41,6 +41,7 @@
 Edge::Edge(Node & sourceNode, Node & targetNode, bool enableAnimations, bool enableLabel)
   : m_sourceNode(&sourceNode)
   , m_targetNode(&targetNode)
+  , m_reversed(Defaults::instance().reversedEdgeDirection())
   , m_arrowMode(Defaults::instance().edgeArrowMode())
   , m_enableAnimations(enableAnimations)
   , m_enableLabel(enableLabel)

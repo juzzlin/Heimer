@@ -31,8 +31,14 @@ public:
 
     void setEdgeArrowMode(Edge::ArrowMode mode);
 
+    bool reversedEdgeDirection() const;
+
+    void setReversedEdgeDirection(bool reversedEdgeDirection);
+
 private:
     Edge::ArrowMode m_edgeArrowMode;
+
+    bool m_reversedEdgeDirection = false;
 
     static std::unique_ptr<Defaults> m_instance;
 };

@@ -17,6 +17,7 @@
 #include "defaults.hpp"
 
 #include <QButtonGroup>
+#include <QCheckBox>
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QPushButton>
@@ -43,6 +44,8 @@ void DefaultsDlg::accept()
         }
     }
 
+    Defaults::instance().setReversedEdgeDirection(m_edgeDirectionCheckBox->isChecked());
+
     QDialog::accept();
 }
 
@@ -65,6 +68,8 @@ void DefaultsDlg::initWidgets()
         edgeArrowRadioGroup->addButton(iter.second);
         edgeArrowRadioLayout->addWidget(iter.second);
     }
+    m_edgeDirectionCheckBox = new QCheckBox(tr("Reversed direction"));
+    edgeArrowRadioLayout->addWidget(m_edgeDirectionCheckBox);
     edgeGroup->setLayout(edgeArrowRadioLayout);
 
     const auto buttonLayout = new QHBoxLayout();
@@ -89,4 +94,6 @@ void DefaultsDlg::setActiveDefaults()
     } else {
         juzzlin::L().error() << "Invalid arrow style: " << static_cast<int>(defaultArrowStyle);
     }
+
+    m_edgeDirectionCheckBox->setChecked(Defaults::instance().reversedEdgeDirection());
 }

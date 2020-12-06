@@ -37,67 +37,67 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application.cpp" line="191"/>
+        <location filename="../application.cpp" line="189"/>
         <source>Heimer Files</source>
         <translation>Heimer Files</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="276"/>
+        <location filename="../application.cpp" line="280"/>
         <source>Open File</source>
         <translation>Apri file</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="303"/>
+        <location filename="../application.cpp" line="307"/>
         <source>Failed to save file.</source>
         <translation>Impossibile salvare il file.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="320"/>
+        <location filename="../application.cpp" line="324"/>
         <source>Save File As</source>
         <translation>Salva file come</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="334"/>
+        <location filename="../application.cpp" line="338"/>
         <source>File &apos;</source>
         <translation>File &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="334"/>
+        <location filename="../application.cpp" line="338"/>
         <source>&apos; saved.</source>
         <translation>&apos; salvato.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="340"/>
+        <location filename="../application.cpp" line="344"/>
         <source>Failed to save file as &apos;</source>
         <translation>Impossibile salvare il file come &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="379"/>
+        <location filename="../application.cpp" line="401"/>
         <source>Open an image</source>
         <translation>Apri un immagine</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="379"/>
+        <location filename="../application.cpp" line="401"/>
         <source>Image Files</source>
         <translation>File Immagine</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="393"/>
+        <location filename="../application.cpp" line="408"/>
         <source>Load image</source>
         <translation>Carica Immagine</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="393"/>
+        <location filename="../application.cpp" line="408"/>
         <source>Failed to load image &apos;</source>
         <translation>Impossibile caricare imagine &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="437"/>
+        <location filename="../application.cpp" line="452"/>
         <source>The mind map has been modified.</source>
         <translation>La mappa mentale è stata modificata.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="438"/>
+        <location filename="../application.cpp" line="453"/>
         <source>Do you want to save your changes?</source>
         <translation>Vuoi salvare le tue modifiche?</translation>
     </message>
@@ -105,29 +105,34 @@
 <context>
     <name>DefaultsDlg</name>
     <message>
-        <location filename="../defaults_dlg.cpp" line="31"/>
+        <location filename="../defaults_dlg.cpp" line="32"/>
         <source>Defaults</source>
         <translation>Predefinito</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="53"/>
+        <location filename="../defaults_dlg.cpp" line="56"/>
         <source>Edge Arrow Style</source>
         <translation>Stile Bordo Freccia</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="57"/>
+        <location filename="../defaults_dlg.cpp" line="60"/>
         <source>No arrow</source>
         <translation>Nessuna freccia</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="58"/>
+        <location filename="../defaults_dlg.cpp" line="61"/>
         <source>Single arrow</source>
         <translation>Singola freccia</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="59"/>
+        <location filename="../defaults_dlg.cpp" line="62"/>
         <source>Double arrow</source>
         <translation>Doppia freccia</translation>
+    </message>
+    <message>
+        <location filename="../defaults_dlg.cpp" line="71"/>
+        <source>Reversed direction</source>
+        <translation>Direzione invertita</translation>
     </message>
 </context>
 <context>
@@ -166,22 +171,22 @@
         <translation>Ottimizza Layout</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="87"/>
+        <location filename="../layout_optimization_dialog.cpp" line="88"/>
         <source>Aspect Ratio:</source>
         <translation>Proporzioni:</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="98"/>
+        <location filename="../layout_optimization_dialog.cpp" line="99"/>
         <source>Minimum Edge Length:</source>
         <translation>Lunghezza Minima Bordo:</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="118"/>
+        <location filename="../layout_optimization_dialog.cpp" line="119"/>
         <source>Cancel</source>
         <translation>Cancella</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="121"/>
+        <location filename="../layout_optimization_dialog.cpp" line="122"/>
         <source>Optimize</source>
         <translation>Ottimizza</translation>
     </message>
@@ -189,59 +194,64 @@
 <context>
     <name>MainContextMenu</name>
     <message>
-        <location filename="../main_context_menu.cpp" line="31"/>
+        <location filename="../main_context_menu.cpp" line="29"/>
         <source>Copy node</source>
         <translation>Copia nodo</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="32"/>
+        <location filename="../main_context_menu.cpp" line="30"/>
         <source>Paste node</source>
         <translation>Incolla nodo</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="51"/>
+        <location filename="../main_context_menu.cpp" line="57"/>
         <source>Set background color</source>
         <translation>Imposta il colore di sfondo</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="57"/>
+        <location filename="../main_context_menu.cpp" line="63"/>
         <source>Set edge color</source>
         <translation>Imposta il colore del bordo</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="63"/>
+        <location filename="../main_context_menu.cpp" line="69"/>
         <source>Set grid color</source>
         <translation>Imposta colore griglia</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="69"/>
+        <location filename="../main_context_menu.cpp" line="75"/>
         <source>Create floating node</source>
         <translation>Crea un nodo mobile</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="83"/>
+        <location filename="../main_context_menu.cpp" line="89"/>
         <source>Set node color</source>
         <translation>Imposta il colore del nodo</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="94"/>
+        <location filename="../main_context_menu.cpp" line="95"/>
         <source>Set text color</source>
         <translation>Imposta il colore del testo</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="105"/>
+        <location filename="../main_context_menu.cpp" line="101"/>
         <source>Delete node</source>
         <translation>Cancella nodo</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="117"/>
+        <location filename="../main_context_menu.cpp" line="116"/>
         <source>Attach image...</source>
         <translation>Allega immagine...</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="124"/>
+        <location filename="../main_context_menu.cpp" line="123"/>
         <source>Remove attached image</source>
-        <translation>Rimuovi l'&apos;immagine allegata</translation>
+        <translation>Rimuovi l&apos;&apos;immagine allegata</translation>
+    </message>
+    <message>
+        <location filename="../main_context_menu.cpp" line="139"/>
+        <source>&amp;Colors</source>
+        <translation>&amp;Colori</translation>
     </message>
 </context>
 <context>
@@ -272,77 +282,82 @@
         <translation>&amp;Modifica</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="109"/>
+        <location filename="../main_window.cpp" line="111"/>
+        <source>&amp;Colors</source>
+        <translation>&amp;Colori</translation>
+    </message>
+    <message>
+        <location filename="../main_window.cpp" line="113"/>
         <source>Set background color</source>
         <translation>Imposta il colore di sfondo</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="120"/>
+        <location filename="../main_window.cpp" line="124"/>
         <source>Set edge color</source>
         <translation>Imposta il colore del bordo</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="131"/>
+        <location filename="../main_window.cpp" line="135"/>
         <source>Set grid color</source>
         <translation>Imposta colore griglia</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="142"/>
+        <location filename="../main_window.cpp" line="146"/>
         <source>Optimize layout</source>
         <translation>Ottimizza layout</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="161"/>
+        <location filename="../main_window.cpp" line="165"/>
         <source>Corner radius:</source>
-        <translation>Raggio dell'&apos;angolo:</translation>
+        <translation>Raggio dell&apos;&apos;angolo:</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="186"/>
+        <location filename="../main_window.cpp" line="190"/>
         <source>Edge width:</source>
         <translation>Larghezza del bordo:</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="210"/>
+        <location filename="../main_window.cpp" line="214"/>
         <source>Text size:</source>
         <translation>Dimensione del testo:</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="234"/>
+        <location filename="../main_window.cpp" line="238"/>
         <source>Grid size:</source>
         <translation>Dimensione della griglia:</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="257"/>
+        <location filename="../main_window.cpp" line="261"/>
         <source>&amp;Export</source>
         <translation>&amp;Esporta</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="260"/>
+        <location filename="../main_window.cpp" line="264"/>
         <source>&amp;PNG</source>
         <translation>&amp;PNG</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="269"/>
+        <location filename="../main_window.cpp" line="273"/>
         <source>&amp;SVG</source>
         <translation>&amp;SVG</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="283"/>
+        <location filename="../main_window.cpp" line="287"/>
         <source>&amp;File</source>
         <translation>&amp;File</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="286"/>
+        <location filename="../main_window.cpp" line="290"/>
         <source>&amp;New</source>
         <translation>&amp;Nuovo</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="294"/>
+        <location filename="../main_window.cpp" line="298"/>
         <source>&amp;Open</source>
         <translation>&amp;Apri</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="304"/>
+        <location filename="../main_window.cpp" line="308"/>
         <source>Recent &amp;Files</source>
         <translation>&amp;File recenti</translation>
     </message>
@@ -358,80 +373,80 @@
     </message>
     <message>
         <source>&amp;Export to PNG image</source>
-        <translation>&amp;Esporta in immagine PNG</translation>
+        <translation type="vanished">&amp;Esporta in immagine PNG</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="334"/>
+        <location filename="../main_window.cpp" line="338"/>
         <source>&amp;Quit</source>
         <translation>&amp;Abbandona</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="348"/>
+        <location filename="../main_window.cpp" line="352"/>
         <source>&amp;Help</source>
         <translation>&amp;Aiuto</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="351"/>
+        <location filename="../main_window.cpp" line="355"/>
         <source>&amp;About</source>
         <translation>&amp;A proposito di</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="358"/>
+        <location filename="../main_window.cpp" line="362"/>
         <source>About &amp;Qt</source>
         <translation>Informazioni su &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="367"/>
+        <location filename="../main_window.cpp" line="371"/>
         <source>What&apos;s New</source>
-        <translation>Cosa c'&apos;è di nuovo</translation>
+        <translation>Cosa c&apos;&apos;è di nuovo</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="376"/>
+        <location filename="../main_window.cpp" line="380"/>
         <source>&amp;Settings</source>
         <translation>&amp;Impostazioni</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="379"/>
+        <location filename="../main_window.cpp" line="383"/>
         <source>&amp;Defaults</source>
         <translation>&amp;Predefinite</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="410"/>
+        <location filename="../main_window.cpp" line="414"/>
         <source>&amp;View</source>
         <translation>&amp;Vista</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="413"/>
+        <location filename="../main_window.cpp" line="417"/>
         <source>Full Screen</source>
         <translation>Schermo Intero</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="431"/>
+        <location filename="../main_window.cpp" line="436"/>
         <source>Zoom In</source>
         <translation>Zoom Avanti</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="437"/>
+        <location filename="../main_window.cpp" line="442"/>
         <source>Zoom Out</source>
         <translation>Zoom indietro</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="445"/>
+        <location filename="../main_window.cpp" line="450"/>
         <source>&amp;Zoom To Fit</source>
         <translation>&amp;Zoom ottimizzato</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="492"/>
+        <location filename="../main_window.cpp" line="497"/>
         <source>New File</source>
         <translation>Nuovo File</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="494"/>
+        <location filename="../main_window.cpp" line="499"/>
         <source>Not Saved</source>
         <translation>Non salvato</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="361"/>
+        <location filename="../main_window.cpp" line="365"/>
         <source>About Qt</source>
         <translation>Informazioni su QT</translation>
     </message>
@@ -565,7 +580,7 @@
     <message>
         <location filename="../whats_new_dlg.cpp" line="29"/>
         <source>What&apos;s New</source>
-        <translation>Cosa c'&apos;&apos;è di nuovo</translation>
+        <translation>Cosa c&apos;&apos;&apos;è di nuovo</translation>
     </message>
 </context>
 </TS>

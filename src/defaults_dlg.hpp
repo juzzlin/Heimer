@@ -20,6 +20,7 @@
 #include <QDialog>
 #include <map>
 
+class QCheckBox;
 class QRadioButton;
 
 class DefaultsDlg : public QDialog
@@ -37,6 +38,8 @@ private:
     void setActiveDefaults();
 
     std::map<Edge::ArrowMode, QRadioButton *> m_edgeArrowStyleRadioMap;
+
+    QCheckBox * m_edgeDirectionCheckBox = nullptr;
 };
 
 #endif // DEFAULTS_DLG_HPP

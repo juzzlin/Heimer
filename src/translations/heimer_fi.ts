@@ -37,67 +37,67 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application.cpp" line="191"/>
+        <location filename="../application.cpp" line="189"/>
         <source>Heimer Files</source>
         <translation>Heimer -tiedostot</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="276"/>
+        <location filename="../application.cpp" line="280"/>
         <source>Open File</source>
         <translation>Avaa tiedosto</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="303"/>
+        <location filename="../application.cpp" line="307"/>
         <source>Failed to save file.</source>
         <translation>Tiedoston tallentaminen epäonnistui</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="320"/>
+        <location filename="../application.cpp" line="324"/>
         <source>Save File As</source>
         <translation>Tallenna Nimellä</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="334"/>
+        <location filename="../application.cpp" line="338"/>
         <source>File &apos;</source>
         <translation>Tiedosto &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="334"/>
+        <location filename="../application.cpp" line="338"/>
         <source>&apos; saved.</source>
         <translation>&apos; tallennettu.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="340"/>
+        <location filename="../application.cpp" line="344"/>
         <source>Failed to save file as &apos;</source>
         <translation>Tietoston tallentaminen epäonnistui nimellä &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="379"/>
+        <location filename="../application.cpp" line="401"/>
         <source>Open an image</source>
         <translation>Avaa kuvatiedosto</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="379"/>
+        <location filename="../application.cpp" line="401"/>
         <source>Image Files</source>
         <translation>Kuvatiedostot</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="393"/>
+        <location filename="../application.cpp" line="408"/>
         <source>Load image</source>
         <translation>Kuvanlataus</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="393"/>
+        <location filename="../application.cpp" line="408"/>
         <source>Failed to load image &apos;</source>
         <translation>Kuvan lataaminen epäonnistui: &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="437"/>
+        <location filename="../application.cpp" line="452"/>
         <source>The mind map has been modified.</source>
         <translation>Käsitekarttaa on muokattu.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="438"/>
+        <location filename="../application.cpp" line="453"/>
         <source>Do you want to save your changes?</source>
         <translation>Haluatko tallentaa muutokset?</translation>
     </message>
@@ -105,29 +105,34 @@
 <context>
     <name>DefaultsDlg</name>
     <message>
-        <location filename="../defaults_dlg.cpp" line="31"/>
+        <location filename="../defaults_dlg.cpp" line="32"/>
         <source>Defaults</source>
         <translation>Oletusarvot</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="53"/>
+        <location filename="../defaults_dlg.cpp" line="56"/>
         <source>Edge Arrow Style</source>
         <translation>Kaaren Nuolen Tyyli</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="57"/>
+        <location filename="../defaults_dlg.cpp" line="60"/>
         <source>No arrow</source>
         <translation>Ei nuolta</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="58"/>
+        <location filename="../defaults_dlg.cpp" line="61"/>
         <source>Single arrow</source>
         <translation>Yksi nuoli</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="59"/>
+        <location filename="../defaults_dlg.cpp" line="62"/>
         <source>Double arrow</source>
         <translation>Kaksi nuolta</translation>
+    </message>
+    <message>
+        <location filename="../defaults_dlg.cpp" line="71"/>
+        <source>Reversed direction</source>
+        <translation>Käännetty suunta</translation>
     </message>
 </context>
 <context>
@@ -272,22 +277,22 @@
         <translation>Optimoi Sijoittelu</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="87"/>
+        <location filename="../layout_optimization_dialog.cpp" line="88"/>
         <source>Aspect Ratio:</source>
         <translation>Kuvasuhde:</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="98"/>
+        <location filename="../layout_optimization_dialog.cpp" line="99"/>
         <source>Minimum Edge Length:</source>
         <translation>Pienin mahdollinen kaaren pituus:</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="118"/>
+        <location filename="../layout_optimization_dialog.cpp" line="119"/>
         <source>Cancel</source>
         <translation>Kumoa</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="121"/>
+        <location filename="../layout_optimization_dialog.cpp" line="122"/>
         <source>Optimize</source>
         <translation>Optimoi</translation>
     </message>
@@ -295,62 +300,62 @@
 <context>
     <name>MainContextMenu</name>
     <message>
-        <location filename="../main_context_menu.cpp" line="31"/>
+        <location filename="../main_context_menu.cpp" line="29"/>
         <source>Copy node</source>
         <translation>Kopioi solmu</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="32"/>
+        <location filename="../main_context_menu.cpp" line="30"/>
         <source>Paste node</source>
         <translation>Liimaa solmu</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="51"/>
+        <location filename="../main_context_menu.cpp" line="57"/>
         <source>Set background color</source>
         <translation>Aseta taustaväri</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="57"/>
+        <location filename="../main_context_menu.cpp" line="63"/>
         <source>Set edge color</source>
         <translation>Aseta kaaren väri</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="63"/>
+        <location filename="../main_context_menu.cpp" line="69"/>
         <source>Set grid color</source>
         <translation>Aseta ruudukon väri</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="69"/>
+        <location filename="../main_context_menu.cpp" line="75"/>
         <source>Create floating node</source>
         <translation>Luo kelluva solmu</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="83"/>
+        <location filename="../main_context_menu.cpp" line="89"/>
         <source>Set node color</source>
         <translation>Aseta solmun väri</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="94"/>
+        <location filename="../main_context_menu.cpp" line="95"/>
         <source>Set text color</source>
         <translation>Tekstin väri</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="105"/>
+        <location filename="../main_context_menu.cpp" line="101"/>
         <source>Delete node</source>
         <translation>Poista solmu</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="117"/>
+        <location filename="../main_context_menu.cpp" line="116"/>
         <source>Attach image...</source>
         <translation>Liitä kuva...</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="124"/>
+        <location filename="../main_context_menu.cpp" line="123"/>
         <source>Remove attached image</source>
         <translation>Poista liitetty kuva</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="141"/>
+        <location filename="../main_context_menu.cpp" line="139"/>
         <source>&amp;Colors</source>
         <translation>&amp;Värit</translation>
     </message>

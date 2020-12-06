@@ -11,6 +11,7 @@ New features:
   - Make it possible to set attached image for a node group
   - Allow group action when setting colors via node handle
   - Allow deletion of multiple nodes
+* Fix GitHub Issue #117: Make it possible to set default arrow direction
 * Fix GitHub Issue #118: Make it possible to delete nodes with Delete key
 * Fix GitHub Issue #121: Implement group copy and paste 
 * Fix GitHub Issue #122: Make it possible to select node groups also with Shift key

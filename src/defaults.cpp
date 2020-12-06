@@ -20,6 +20,7 @@ std::unique_ptr<Defaults> Defaults::m_instance;
 
 Defaults::Defaults()
   : m_edgeArrowMode(Settings::loadEdgeArrowMode(Edge::ArrowMode::Single))
+  , m_reversedEdgeDirection(Settings::loadReversedEdgeDirection(false))
 {
 }
 
@@ -41,5 +42,18 @@ void Defaults::setEdgeArrowMode(Edge::ArrowMode mode)
     if (m_edgeArrowMode != mode) {
         m_edgeArrowMode = mode;
         Settings::saveEdgeArrowMode(mode);
+    }
+}
+
+bool Defaults::reversedEdgeDirection() const
+{
+    return m_reversedEdgeDirection;
+}
+
+void Defaults::setReversedEdgeDirection(bool reversedEdgeDirection)
+{
+    if (m_reversedEdgeDirection != reversedEdgeDirection) {
+        m_reversedEdgeDirection = reversedEdgeDirection;
+        Settings::saveReversedEdgeDirection(reversedEdgeDirection);
     }
 }

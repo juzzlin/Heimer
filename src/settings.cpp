@@ -31,6 +31,7 @@ const auto edgeArrowModeKey = "edgeArrowMode";
 const auto gridSizeKey = "gridSize";
 const auto gridVisibleStateKey = "gridVisibleState";
 const auto recentPathKey = "recentPath";
+const auto reversedEdgeDirectionKey = "reversedEdgeDirection";
 const auto windowFullScreenKey = "fullScreen";
 const auto windowSizeKey = "size";
 } // namespace
@@ -49,6 +50,23 @@ void Settings::saveEdgeArrowMode(Edge::ArrowMode mode)
     QSettings settings;
     settings.beginGroup(settingsGroupDefaults);
     settings.setValue(edgeArrowModeKey, static_cast<int>(mode));
+    settings.endGroup();
+}
+
+bool Settings::loadReversedEdgeDirection(bool defaultDirection)
+{
+    QSettings settings;
+    settings.beginGroup(settingsGroupDefaults);
+    const auto direction = settings.value(reversedEdgeDirectionKey, defaultDirection).toBool();
+    settings.endGroup();
+    return direction;
+}
+
+void Settings::saveReversedEdgeDirection(bool reversed)
+{
+    QSettings settings;
+    settings.beginGroup(settingsGroupDefaults);
+    settings.setValue(reversedEdgeDirectionKey, reversed);
     settings.endGroup();
 }
 

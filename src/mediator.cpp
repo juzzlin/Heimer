@@ -26,6 +26,7 @@
 
 #include "simple_logger.hpp"
 
+#include <QApplication>
 #include <QFileInfo>
 #include <QGraphicsItem>
 #include <QGraphicsScene>
@@ -290,6 +291,9 @@ void Mediator::initiateNewNodeDrag(NodeHandle & nodeHandle)
     mouseAction().setSourceNode(parentNode, MouseAction::Action::CreateOrConnectNode);
     mouseAction().setSourcePosOnNode(nodeHandle.pos());
     parentNode->hoverLeaveEvent(nullptr);
+
+    // Change cursor to the closed hand cursor.
+    QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
 }
 
 void Mediator::initiateNodeDrag(Node & node)
@@ -301,6 +305,9 @@ void Mediator::initiateNodeDrag(Node & node)
     mouseAction().setSourceNode(&node, MouseAction::Action::MoveNode);
     mouseAction().setSourcePos(mouseAction().mappedPos());
     mouseAction().setSourcePosOnNode(mouseAction().mappedPos() - node.pos());
+
+    // Change cursor to the closed hand cursor.
+    QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
 }
 
 void Mediator::initializeView()

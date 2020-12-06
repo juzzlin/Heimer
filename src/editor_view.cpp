@@ -144,15 +144,10 @@ void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
 {
     switch (nodeHandle.role()) {
     case NodeHandle::Role::Add:
-        // User is initiating a new node drag
         m_mediator.initiateNewNodeDrag(nodeHandle);
-        // Change cursor to the closed hand cursor.
-        QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
         break;
     case NodeHandle::Role::Drag:
         m_mediator.initiateNodeDrag(nodeHandle.parentNode());
-        // Change cursor to the closed hand cursor.
-        QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
         break;
     case NodeHandle::Role::Color:
         m_mediator.addSelectedNode(nodeHandle.parentNode());

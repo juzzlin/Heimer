@@ -106,10 +106,6 @@ private:
 
     void handleRightButtonClickOnNode(Node & node);
 
-    void initiateNewNodeDrag(NodeHandle & nodeHandle);
-
-    void initiateNodeDrag(Node & node);
-
     void initiateRubberBand();
 
     bool isModifierPressed() const;

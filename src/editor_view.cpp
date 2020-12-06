@@ -136,7 +136,7 @@ void EditorView::handleLeftButtonClickOnNode(Node & node)
             m_mediator.clearSelectionGroup();
         }
         // User is initiating a node move drag
-        initiateNodeDrag(node);
+        m_mediator.initiateNodeDrag(node);
     }
 }
 
@@ -144,11 +144,15 @@ void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
 {
     switch (nodeHandle.role()) {
     case NodeHandle::Role::Add:
-        m_mediator.clearSelectionGroup();
-        initiateNewNodeDrag(nodeHandle);
+        // User is initiating a new node drag
+        m_mediator.initiateNewNodeDrag(nodeHandle);
+        // Change cursor to the closed hand cursor.
+        QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
         break;
     case NodeHandle::Role::Drag:
-        initiateNodeDrag(nodeHandle.parentNode());
+        m_mediator.initiateNodeDrag(nodeHandle.parentNode());
+        // Change cursor to the closed hand cursor.
+        QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
         break;
     case NodeHandle::Role::Color:
         m_mediator.addSelectedNode(nodeHandle.parentNode());
@@ -173,34 +177,6 @@ void EditorView::handleRightButtonClickOnNode(Node & node)
     m_mediator.addSelectedNode(node);
 
     openMainContextMenu(MainContextMenu::Mode::Node);
-}
-
-void EditorView::initiateNewNodeDrag(NodeHandle & nodeHandle)
-{
-    // User is initiating a new node drag
-    m_mediator.saveUndoPoint();
-    const auto parentNode = dynamic_cast<Node *>(nodeHandle.parentItem());
-    assert(parentNode);
-    m_mediator.mouseAction().setSourceNode(parentNode, MouseAction::Action::CreateOrConnectNode);
-    m_mediator.mouseAction().setSourcePosOnNode(nodeHandle.pos());
-    parentNode->hoverLeaveEvent(nullptr);
-    // Change cursor to the closed hand cursor.
-    QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
-}
-
-void EditorView::initiateNodeDrag(Node & node)
-{
-    juzzlin::L().debug() << "Initiating node drag..";
-
-    m_mediator.saveUndoPoint();
-
-    node.setZValue(node.zValue() + 1);
-    m_mediator.mouseAction().setSourceNode(&node, MouseAction::Action::MoveNode);
-    m_mediator.mouseAction().setSourcePos(m_mappedPos);
-    m_mediator.mouseAction().setSourcePosOnNode(m_mappedPos - node.pos());
-
-    // Change cursor to the closed hand cursor.
-    QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
 }
 
 void EditorView::initiateRubberBand()

@@ -30,6 +30,7 @@ class EditorView;
 class Graph;
 class MainWindow;
 class NodeAction;
+class NodeHandle;
 class QGraphicsItem;
 
 /*! Acts as a communication channel between MainWindow and editor components:
@@ -87,6 +88,10 @@ public:
     bool hasNodes() const;
 
     void initializeNewMindMap();
+
+    void initiateNewNodeDrag(NodeHandle & nodeHandle);
+
+    void initiateNodeDrag(Node & node);
 
     void initializeView();
 

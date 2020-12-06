@@ -22,6 +22,7 @@
 #include "main_window.hpp"
 #include "mouse_action.hpp"
 #include "node_action.hpp"
+#include "node_handle.hpp"
 
 #include "simple_logger.hpp"
 
@@ -276,6 +277,30 @@ void Mediator::initializeNewMindMap()
     QTimer::singleShot(0, this, &Mediator::zoomToFit);
 
     m_mainWindow.initializeNewMindMap();
+}
+
+void Mediator::initiateNewNodeDrag(NodeHandle & nodeHandle)
+{
+    L().debug() << "Initiating new node drag";
+
+    clearSelectionGroup();
+    saveUndoPoint();
+    const auto parentNode = dynamic_cast<Node *>(nodeHandle.parentItem());
+    assert(parentNode);
+    mouseAction().setSourceNode(parentNode, MouseAction::Action::CreateOrConnectNode);
+    mouseAction().setSourcePosOnNode(nodeHandle.pos());
+    parentNode->hoverLeaveEvent(nullptr);
+}
+
+void Mediator::initiateNodeDrag(Node & node)
+{
+    L().debug() << "Initiating node drag";
+
+    saveUndoPoint();
+    node.setZValue(node.zValue() + 1);
+    mouseAction().setSourceNode(&node, MouseAction::Action::MoveNode);
+    mouseAction().setSourcePos(mouseAction().mappedPos());
+    mouseAction().setSourcePosOnNode(mouseAction().mappedPos() - node.pos());
 }
 
 void Mediator::initializeView()

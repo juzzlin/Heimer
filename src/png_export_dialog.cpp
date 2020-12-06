@@ -58,7 +58,7 @@ PngExportDialog::PngExportDialog(QWidget & parent)
     connect(m_imageWidthSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [&](int value) {
         if (m_enableSpinBoxConnection) {
             m_enableSpinBoxConnection = false;
-            m_imageHeightSpinBox->setValue(value / m_aspectRatio);
+            m_imageHeightSpinBox->setValue(static_cast<int>(static_cast<float>(value) / m_aspectRatio));
             m_enableSpinBoxConnection = true;
         }
     });
@@ -66,7 +66,7 @@ PngExportDialog::PngExportDialog(QWidget & parent)
     connect(m_imageHeightSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [&](int value) {
         if (m_enableSpinBoxConnection) {
             m_enableSpinBoxConnection = false;
-            m_imageWidthSpinBox->setValue(value * m_aspectRatio);
+            m_imageWidthSpinBox->setValue(static_cast<int>(static_cast<float>(value) * m_aspectRatio));
             m_enableSpinBoxConnection = true;
         }
     });
@@ -89,7 +89,7 @@ void PngExportDialog::setImageSize(QSize size)
     m_imageWidthSpinBox->setValue(size.width());
     m_imageHeightSpinBox->setValue(size.height());
 
-    m_aspectRatio = float(size.width()) / size.height();
+    m_aspectRatio = static_cast<float>(size.width()) / static_cast<float>(size.height());
 
     m_enableSpinBoxConnection = true;
 }

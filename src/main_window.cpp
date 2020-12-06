@@ -371,6 +371,7 @@ void MainWindow::createHelpMenu()
     const auto whatsNewAct = new QAction(tr("What's New"), this);
     helpMenu->addAction(whatsNewAct);
     connect(whatsNewAct, &QAction::triggered, [=] {
+        m_whatsNewDlg->resize(3 * width() / 5, 3 * height() / 5);
         m_whatsNewDlg->exec();
     });
 }

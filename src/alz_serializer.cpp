@@ -35,96 +35,96 @@ namespace AlzSerializer {
 namespace DataKeywords {
 namespace MindMap {
 
-static constexpr auto APPLICATION_VERSION = "version";
+const auto APPLICATION_VERSION = "version";
 
-static constexpr auto COLOR = "color";
+const auto COLOR = "color";
 
-static constexpr auto CORNER_RADIUS = "corner-radius";
+const auto CORNER_RADIUS = "corner-radius";
 
-static constexpr auto EDGE_COLOR = "edge-color";
+const auto EDGE_COLOR = "edge-color";
 
-static constexpr auto EDGE_THICKNESS = "edge-width";
+const auto EDGE_THICKNESS = "edge-width";
 
-static constexpr auto GRAPH = "graph";
+const auto GRAPH = "graph";
 
-static constexpr auto GRID_COLOR = "grid-color";
+const auto GRID_COLOR = "grid-color";
 
-static constexpr auto HEIMER_MIND_MAP = "heimer-mind-map";
+const auto HEIMER_MIND_MAP = "heimer-mind-map";
 
-static constexpr auto IMAGE = "image";
+const auto IMAGE = "image";
 
-static constexpr auto TEXT_SIZE = "text-size";
+const auto TEXT_SIZE = "text-size";
 
 // Used for Design and Node
 namespace Color {
 
-static constexpr auto R = "r";
+const auto R = "r";
 
-static constexpr auto G = "g";
+const auto G = "g";
 
-static constexpr auto B = "b";
+const auto B = "b";
 } // namespace Color
 
 namespace Graph {
 
-static constexpr auto NODE = "node";
+const auto NODE = "node";
 
 namespace Node {
 
-static constexpr auto COLOR = "color";
+const auto COLOR = "color";
 
-static constexpr auto IMAGE = "image";
+const auto IMAGE = "image";
 
-static constexpr auto INDEX = "index";
+const auto INDEX = "index";
 
-static constexpr auto TEXT = "text";
+const auto TEXT = "text";
 
-static constexpr auto TEXT_COLOR = "text-color";
+const auto TEXT_COLOR = "text-color";
 
-static constexpr auto X = "x";
+const auto X = "x";
 
-static constexpr auto Y = "y";
+const auto Y = "y";
 
-static constexpr auto W = "w";
+const auto W = "w";
 
-static constexpr auto H = "h";
+const auto H = "h";
 
 namespace Image {
 
-static constexpr auto REF = "ref";
+const auto REF = "ref";
 } // namespace Image
 } // namespace Node
 
-static constexpr auto EDGE = "edge";
+const auto EDGE = "edge";
 
 namespace Edge {
 
-static constexpr auto INDEX0 = "index0";
+const auto INDEX0 = "index0";
 
-static constexpr auto INDEX1 = "index1";
+const auto INDEX1 = "index1";
 
-static constexpr auto ARROW_MODE = "arrow-mode";
+const auto ARROW_MODE = "arrow-mode";
 
-static constexpr auto REVERSED = "reversed";
+const auto REVERSED = "reversed";
 
 } // namespace Edge
 } // namespace Graph
 
 namespace Image {
 
-static constexpr auto ID = "id";
+const auto ID = "id";
 
-static constexpr auto PATH = "path";
+const auto PATH = "path";
 
 } // namespace Image
 
 namespace LayoutOptimizer {
 
-static constexpr auto ASPECT_RATIO = "aspect-ratio";
+const auto ASPECT_RATIO = "aspect-ratio";
 
-static constexpr auto LAYOUT_OPTIMIZER = "layout-optimizer";
+const auto LAYOUT_OPTIMIZER = "layout-optimizer";
 
-static constexpr auto MIN_EDGE_LENGTH = "min-edge-length";
+const auto MIN_EDGE_LENGTH = "min-edge-length";
 
 } // namespace LayoutOptimizer
 

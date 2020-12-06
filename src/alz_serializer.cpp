@@ -33,9 +33,7 @@
 
 namespace AlzSerializer {
 namespace DataKeywords {
-namespace Design {
-
-static constexpr auto DESIGN = "design";
+namespace MindMap {
 
 static constexpr auto APPLICATION_VERSION = "version";
 
@@ -50,6 +48,8 @@ static constexpr auto EDGE_THICKNESS = "edge-width";
 static constexpr auto GRAPH = "graph";
 
 static constexpr auto GRID_COLOR = "grid-color";
+
+static constexpr auto HEIMER_MIND_MAP = "heimer-mind-map";
 
 static constexpr auto IMAGE = "image";
 
@@ -128,7 +128,7 @@ static constexpr auto MIN_EDGE_LENGTH = "min-edge-length";
 
 } // namespace LayoutOptimizer
 
-} // namespace Design
+} // namespace MindMap
 
 } // namespace DataKeywords
 
@@ -137,44 +137,44 @@ static const double SCALE = 1000; // https://bugreports.qt.io/browse/QTBUG-67129
 static void writeColor(QDomElement & parent, QDomDocument & doc, QColor color, QString elementName)
 {
     auto colorElement = doc.createElement(elementName);
-    colorElement.setAttribute(DataKeywords::Design::Color::R, color.red());
-    colorElement.setAttribute(DataKeywords::Design::Color::G, color.green());
-    colorElement.setAttribute(DataKeywords::Design::Color::B, color.blue());
+    colorElement.setAttribute(DataKeywords::MindMap::Color::R, color.red());
+    colorElement.setAttribute(DataKeywords::MindMap::Color::G, color.green());
+    colorElement.setAttribute(DataKeywords::MindMap::Color::B, color.blue());
     parent.appendChild(colorElement);
 }
 
 static void writeImageRef(QDomElement & parent, QDomDocument & doc, size_t imageRef, QString elementName)
 {
     auto colorElement = doc.createElement(elementName);
-    colorElement.setAttribute(DataKeywords::Design::Graph::Node::Image::REF, static_cast<int>(imageRef));
+    colorElement.setAttribute(DataKeywords::MindMap::Graph::Node::Image::REF, static_cast<int>(imageRef));
     parent.appendChild(colorElement);
 }
 
 static void writeNodes(MindMapData & mindMapData, QDomElement & root, QDomDocument & doc)
 {
     for (auto && node : mindMapData.graph().getNodes()) {
-        auto nodeElement = doc.createElement(DataKeywords::Design::Graph::NODE);
-        nodeElement.setAttribute(DataKeywords::Design::Graph::Node::INDEX, node->index());
-        nodeElement.setAttribute(DataKeywords::Design::Graph::Node::X, static_cast<int>(node->location().x() * SCALE));
-        nodeElement.setAttribute(DataKeywords::Design::Graph::Node::Y, static_cast<int>(node->location().y() * SCALE));
-        nodeElement.setAttribute(DataKeywords::Design::Graph::Node::W, static_cast<int>(node->size().width() * SCALE));
-        nodeElement.setAttribute(DataKeywords::Design::Graph::Node::H, static_cast<int>(node->size().height() * SCALE));
+        auto nodeElement = doc.createElement(DataKeywords::MindMap::Graph::NODE);
+        nodeElement.setAttribute(DataKeywords::MindMap::Graph::Node::INDEX, node->index());
+        nodeElement.setAttribute(DataKeywords::MindMap::Graph::Node::X, static_cast<int>(node->location().x() * SCALE));
+        nodeElement.setAttribute(DataKeywords::MindMap::Graph::Node::Y, static_cast<int>(node->location().y() * SCALE));
+        nodeElement.setAttribute(DataKeywords::MindMap::Graph::Node::W, static_cast<int>(node->size().width() * SCALE));
+        nodeElement.setAttribute(DataKeywords::MindMap::Graph::Node::H, static_cast<int>(node->size().height() * SCALE));
         root.appendChild(nodeElement);
 
         // Create a child node for the text content
-        auto textElement = doc.createElement(DataKeywords::Design::Graph::Node::TEXT);
+        auto textElement = doc.createElement(DataKeywords::MindMap::Graph::Node::TEXT);
         textElement.appendChild(doc.createTextNode(node->text()));
         nodeElement.appendChild(textElement);
 
         // Create a child node for color
-        writeColor(nodeElement, doc, node->color(), DataKeywords::Design::Graph::Node::COLOR);
+        writeColor(nodeElement, doc, node->color(), DataKeywords::MindMap::Graph::Node::COLOR);
 
         // Create a child node for text color
-        writeColor(nodeElement, doc, node->textColor(), DataKeywords::Design::Graph::Node::TEXT_COLOR);
+        writeColor(nodeElement, doc, node->textColor(), DataKeywords::MindMap::Graph::Node::TEXT_COLOR);
 
         // Create a child node for image ref
         if (node->imageRef()) {
-            writeImageRef(nodeElement, doc, node->imageRef(), DataKeywords::Design::Graph::Node::IMAGE);
+            writeImageRef(nodeElement, doc, node->imageRef(), DataKeywords::MindMap::Graph::Node::IMAGE);
         }
     }
 }
@@ -183,15 +183,15 @@ static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocume
 {
     for (auto && node : mindMapData.graph().getNodes()) {
         for (auto && edge : mindMapData.graph().getEdgesFromNode(node)) {
-            auto edgeElement = doc.createElement(DataKeywords::Design::Graph::EDGE);
-            edgeElement.setAttribute(DataKeywords::Design::Graph::Edge::INDEX0, edge->sourceNode().index());
-            edgeElement.setAttribute(DataKeywords::Design::Graph::Edge::INDEX1, edge->targetNode().index());
-            edgeElement.setAttribute(DataKeywords::Design::Graph::Edge::ARROW_MODE, static_cast<int>(edge->arrowMode()));
-            edgeElement.setAttribute(DataKeywords::Design::Graph::Edge::REVERSED, edge->reversed());
+            auto edgeElement = doc.createElement(DataKeywords::MindMap::Graph::EDGE);
+            edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::INDEX0, edge->sourceNode().index());
+            edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::INDEX1, edge->targetNode().index());
+            edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::ARROW_MODE, static_cast<int>(edge->arrowMode()));
+            edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::REVERSED, edge->reversed());
             root.appendChild(edgeElement);
 
             // Create a child node for the text content
-            auto textElement = doc.createElement(DataKeywords::Design::Graph::Node::TEXT);
+            auto textElement = doc.createElement(DataKeywords::MindMap::Graph::Node::TEXT);
             edgeElement.appendChild(textElement);
             const auto textNode = doc.createTextNode(edge->text());
             textElement.appendChild(textNode);
@@ -246,9 +246,9 @@ static void writeImages(MindMapData & mindMapData, QDomElement & root, QDomDocum
             bool exists;
             std::tie(image, exists) = mindMapData.imageManager().getImage(node->imageRef());
             if (exists) {
-                auto imageElement = doc.createElement(DataKeywords::Design::IMAGE);
-                imageElement.setAttribute(DataKeywords::Design::Image::ID, static_cast<int>(image.id()));
-                imageElement.setAttribute(DataKeywords::Design::Image::PATH, image.path().c_str());
+                auto imageElement = doc.createElement(DataKeywords::MindMap::IMAGE);
+                imageElement.setAttribute(DataKeywords::MindMap::Image::ID, static_cast<int>(image.id()));
+                imageElement.setAttribute(DataKeywords::MindMap::Image::PATH, image.path().c_str());
                 root.appendChild(imageElement);
 
                 // Create a child node for the image content
@@ -260,24 +260,24 @@ static void writeImages(MindMapData & mindMapData, QDomElement & root, QDomDocum
 
 static void writeLayoutOptimizer(MindMapData & mindMapData, QDomElement & root, QDomDocument & doc)
 {
-    auto layoutOptimizerElement = doc.createElement(DataKeywords::Design::LayoutOptimizer::LAYOUT_OPTIMIZER);
-    layoutOptimizerElement.setAttribute(DataKeywords::Design::LayoutOptimizer::ASPECT_RATIO, mindMapData.aspectRatio() * SCALE);
-    layoutOptimizerElement.setAttribute(DataKeywords::Design::LayoutOptimizer::MIN_EDGE_LENGTH, mindMapData.minEdgeLength() * SCALE);
+    auto layoutOptimizerElement = doc.createElement(DataKeywords::MindMap::LayoutOptimizer::LAYOUT_OPTIMIZER);
+    layoutOptimizerElement.setAttribute(DataKeywords::MindMap::LayoutOptimizer::ASPECT_RATIO, mindMapData.aspectRatio() * SCALE);
+    layoutOptimizerElement.setAttribute(DataKeywords::MindMap::LayoutOptimizer::MIN_EDGE_LENGTH, mindMapData.minEdgeLength() * SCALE);
     root.appendChild(layoutOptimizerElement);
 }
 
 static QColor readColorElement(const QDomElement & element)
 {
     return {
-        element.attribute(DataKeywords::Design::Color::R, "255").toInt(),
-        element.attribute(DataKeywords::Design::Color::G, "255").toInt(),
-        element.attribute(DataKeywords::Design::Color::B, "255").toInt()
+        element.attribute(DataKeywords::MindMap::Color::R, "255").toInt(),
+        element.attribute(DataKeywords::MindMap::Color::G, "255").toInt(),
+        element.attribute(DataKeywords::MindMap::Color::B, "255").toInt()
     };
 }
 
 static size_t readImageElement(const QDomElement & element)
 {
-    return static_cast<size_t>(element.attribute(DataKeywords::Design::Graph::Node::Image::REF, "0").toInt());
+    return static_cast<size_t>(element.attribute(DataKeywords::MindMap::Graph::Node::Image::REF, "0").toInt());
 }
 
 static QString readFirstTextNodeContent(const QDomElement & element)
@@ -321,27 +321,27 @@ static std::unique_ptr<Node> readNode(const QDomElement & element)
     // Init a new node. QGraphicsScene will take the ownership eventually.
     auto node = std::make_unique<Node>();
 
-    node->setIndex(element.attribute(DataKeywords::Design::Graph::Node::INDEX, "-1").toInt());
+    node->setIndex(element.attribute(DataKeywords::MindMap::Graph::Node::INDEX, "-1").toInt());
     node->setLocation(QPointF(
-      element.attribute(DataKeywords::Design::Graph::Node::X, "0").toInt() / SCALE,
-      element.attribute(DataKeywords::Design::Graph::Node::Y, "0").toInt() / SCALE));
+      element.attribute(DataKeywords::MindMap::Graph::Node::X, "0").toInt() / SCALE,
+      element.attribute(DataKeywords::MindMap::Graph::Node::Y, "0").toInt() / SCALE));
 
-    if (element.hasAttribute(DataKeywords::Design::Graph::Node::W) && element.hasAttribute(DataKeywords::Design::Graph::Node::H)) {
+    if (element.hasAttribute(DataKeywords::MindMap::Graph::Node::W) && element.hasAttribute(DataKeywords::MindMap::Graph::Node::H)) {
         node->setSize(QSizeF(
-          element.attribute(DataKeywords::Design::Graph::Node::W).toInt() / SCALE,
-          element.attribute(DataKeywords::Design::Graph::Node::H).toInt() / SCALE));
+          element.attribute(DataKeywords::MindMap::Graph::Node::W).toInt() / SCALE,
+          element.attribute(DataKeywords::MindMap::Graph::Node::H).toInt() / SCALE));
     }
 
-    readChildren(element, { { QString(DataKeywords::Design::Graph::Node::TEXT), [&node](const QDomElement & e) {
+    readChildren(element, { { QString(DataKeywords::MindMap::Graph::Node::TEXT), [&node](const QDomElement & e) {
                                  node->setText(readFirstTextNodeContent(e));
                              } },
-                            { QString(DataKeywords::Design::Graph::Node::COLOR), [&node](const QDomElement & e) {
+                            { QString(DataKeywords::MindMap::Graph::Node::COLOR), [&node](const QDomElement & e) {
                                  node->setColor(readColorElement(e));
                              } },
-                            { QString(DataKeywords::Design::Graph::Node::TEXT_COLOR), [&node](const QDomElement & e) {
+                            { QString(DataKeywords::MindMap::Graph::Node::TEXT_COLOR), [&node](const QDomElement & e) {
                                  node->setTextColor(readColorElement(e));
                              } },
-                            { QString(DataKeywords::Design::Graph::Node::IMAGE), [&node](const QDomElement & e) {
+                            { QString(DataKeywords::MindMap::Graph::Node::IMAGE), [&node](const QDomElement & e) {
                                  node->setImageRef(readImageElement(e));
                              } } });
 
@@ -350,10 +350,10 @@ static std::unique_ptr<Node> readNode(const QDomElement & element)
 
 static std::unique_ptr<Edge> readEdge(const QDomElement & element, MindMapData & data)
 {
-    const int index0 = element.attribute(DataKeywords::Design::Graph::Edge::INDEX0, "-1").toInt();
-    const int index1 = element.attribute(DataKeywords::Design::Graph::Edge::INDEX1, "-1").toInt();
-    const int reversed = element.attribute(DataKeywords::Design::Graph::Edge::REVERSED, "0").toInt();
-    const int arrowMode = element.attribute(DataKeywords::Design::Graph::Edge::ARROW_MODE, "0").toInt();
+    const int index0 = element.attribute(DataKeywords::MindMap::Graph::Edge::INDEX0, "-1").toInt();
+    const int index1 = element.attribute(DataKeywords::MindMap::Graph::Edge::INDEX1, "-1").toInt();
+    const int reversed = element.attribute(DataKeywords::MindMap::Graph::Edge::REVERSED, "0").toInt();
+    const int arrowMode = element.attribute(DataKeywords::MindMap::Graph::Edge::ARROW_MODE, "0").toInt();
 
     // Initialize a new edge. QGraphicsScene will take the ownership eventually.
     const auto node0 = data.graph().getNode(index0);
@@ -363,7 +363,7 @@ static std::unique_ptr<Edge> readEdge(const QDomElement & element, MindMapData &
     edge->setArrowMode(static_cast<Edge::ArrowMode>(arrowMode));
     edge->setReversed(reversed);
 
-    readChildren(element, { { QString(DataKeywords::Design::Graph::Node::TEXT), [&edge](const QDomElement & e) {
+    readChildren(element, { { QString(DataKeywords::MindMap::Graph::Node::TEXT), [&edge](const QDomElement & e) {
                                  edge->setText(readFirstTextNodeContent(e));
                              } } });
 
@@ -372,12 +372,12 @@ static std::unique_ptr<Edge> readEdge(const QDomElement & element, MindMapData &
 
 static void readLayoutOptimizer(const QDomElement & element, MindMapData & data)
 {
-    double aspectRatio = element.attribute(DataKeywords::Design::LayoutOptimizer::ASPECT_RATIO, "-1").toDouble() / SCALE;
+    double aspectRatio = element.attribute(DataKeywords::MindMap::LayoutOptimizer::ASPECT_RATIO, "-1").toDouble() / SCALE;
     aspectRatio = std::min(aspectRatio, Constants::LayoutOptimizer::MAX_ASPECT_RATIO);
     aspectRatio = std::max(aspectRatio, Constants::LayoutOptimizer::MIN_ASPECT_RATIO);
     data.setAspectRatio(aspectRatio);
 
-    double minEdgeLength = element.attribute(DataKeywords::Design::LayoutOptimizer::MIN_EDGE_LENGTH, "-1").toDouble() / SCALE;
+    double minEdgeLength = element.attribute(DataKeywords::MindMap::LayoutOptimizer::MIN_EDGE_LENGTH, "-1").toDouble() / SCALE;
     minEdgeLength = std::min(minEdgeLength, Constants::LayoutOptimizer::MAX_EDGE_LENGTH);
     minEdgeLength = std::max(minEdgeLength, Constants::LayoutOptimizer::MIN_EDGE_LENGTH);
     data.setMinEdgeLength(minEdgeLength);
@@ -386,10 +386,10 @@ static void readLayoutOptimizer(const QDomElement & element, MindMapData & data)
 static void readGraph(const QDomElement & graph, MindMapData & data)
 {
     readChildren(graph, {
-                          { QString(DataKeywords::Design::Graph::NODE), [&data](const QDomElement & e) {
+                          { QString(DataKeywords::MindMap::Graph::NODE), [&data](const QDomElement & e) {
                                data.graph().addNode(readNode(e));
                            } },
-                          { QString(DataKeywords::Design::Graph::EDGE), [&data](const QDomElement & e) {
+                          { QString(DataKeywords::MindMap::Graph::EDGE), [&data](const QDomElement & e) {
                                data.graph().addEdge(readEdge(e, data));
                            } },
                         });
@@ -397,41 +397,41 @@ static void readGraph(const QDomElement & graph, MindMapData & data)
 
 std::unique_ptr<MindMapData> fromXml(QDomDocument document)
 {
-    const auto design = document.documentElement();
+    const auto root = document.documentElement();
     auto data = std::make_unique<MindMapData>();
-    data->setVersion(design.attribute(DataKeywords::Design::APPLICATION_VERSION, "UNDEFINED"));
+    data->setVersion(root.attribute(DataKeywords::MindMap::APPLICATION_VERSION, "UNDEFINED"));
 
-    readChildren(design, { { QString(DataKeywords::Design::GRAPH), [&data](const QDomElement & e) {
-                                readGraph(e, *data);
-                            } },
-                           { QString(DataKeywords::Design::COLOR), [&data](const QDomElement & e) {
-                                data->setBackgroundColor(readColorElement(e));
-                            } },
-                           { QString(DataKeywords::Design::EDGE_COLOR), [&data](const QDomElement & e) {
-                                data->setEdgeColor(readColorElement(e));
-                            } },
-                           { QString(DataKeywords::Design::GRID_COLOR), [&data](const QDomElement & e) {
-                                data->setGridColor(readColorElement(e));
-                            } },
-                           { QString(DataKeywords::Design::EDGE_THICKNESS), [&data](const QDomElement & e) {
-                                data->setEdgeWidth(readFirstTextNodeContent(e).toDouble() / SCALE);
-                            } },
-                           { QString(DataKeywords::Design::IMAGE), [&data](const QDomElement & e) {
-                                const auto id = e.attribute(DataKeywords::Design::Image::ID).toUInt();
-                                const auto path = e.attribute(DataKeywords::Design::Image::PATH).toStdString();
-                                Image image(base64ToQImage(readFirstTextNodeContent(e).toStdString(), id, path), path);
-                                image.setId(id);
-                                data->imageManager().setImage(image);
-                            } },
-                           { QString(DataKeywords::Design::TEXT_SIZE), [&data](const QDomElement & e) {
-                                data->setTextSize(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
-                            } },
-                           { QString(DataKeywords::Design::CORNER_RADIUS), [&data](const QDomElement & e) {
-                                data->setCornerRadius(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
-                            } },
-                           { QString(DataKeywords::Design::LayoutOptimizer::LAYOUT_OPTIMIZER), [&data](const QDomElement & e) {
-                                readLayoutOptimizer(e, *data);
-                            } } });
+    readChildren(root, { { QString(DataKeywords::MindMap::GRAPH), [&data](const QDomElement & e) {
+                              readGraph(e, *data);
+                          } },
+                         { QString(DataKeywords::MindMap::COLOR), [&data](const QDomElement & e) {
+                              data->setBackgroundColor(readColorElement(e));
+                          } },
+                         { QString(DataKeywords::MindMap::EDGE_COLOR), [&data](const QDomElement & e) {
+                              data->setEdgeColor(readColorElement(e));
+                          } },
+                         { QString(DataKeywords::MindMap::GRID_COLOR), [&data](const QDomElement & e) {
+                              data->setGridColor(readColorElement(e));
+                          } },
+                         { QString(DataKeywords::MindMap::EDGE_THICKNESS), [&data](const QDomElement & e) {
+                              data->setEdgeWidth(readFirstTextNodeContent(e).toDouble() / SCALE);
+                          } },
+                         { QString(DataKeywords::MindMap::IMAGE), [&data](const QDomElement & e) {
+                              const auto id = e.attribute(DataKeywords::MindMap::Image::ID).toUInt();
+                              const auto path = e.attribute(DataKeywords::MindMap::Image::PATH).toStdString();
+                              Image image(base64ToQImage(readFirstTextNodeContent(e).toStdString(), id, path), path);
+                              image.setId(id);
+                              data->imageManager().setImage(image);
+                          } },
+                         { QString(DataKeywords::MindMap::TEXT_SIZE), [&data](const QDomElement & e) {
+                              data->setTextSize(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
+                          } },
+                         { QString(DataKeywords::MindMap::CORNER_RADIUS), [&data](const QDomElement & e) {
+                              data->setCornerRadius(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
+                          } },
+                         { QString(DataKeywords::MindMap::LayoutOptimizer::LAYOUT_OPTIMIZER), [&data](const QDomElement & e) {
+                              readLayoutOptimizer(e, *data);
+                          } } });
 
     return data;
 }
@@ -442,38 +442,38 @@ QDomDocument toXml(MindMapData & mindMapData)
 
     doc.appendChild(doc.createProcessingInstruction("xml", "version='1.0' encoding='UTF-8'"));
 
-    auto design = doc.createElement(DataKeywords::Design::DESIGN);
-    design.setAttribute(DataKeywords::Design::APPLICATION_VERSION, Constants::Application::APPLICATION_VERSION);
-    doc.appendChild(design);
+    auto root = doc.createElement(DataKeywords::MindMap::HEIMER_MIND_MAP);
+    root.setAttribute(DataKeywords::MindMap::APPLICATION_VERSION, Constants::Application::APPLICATION_VERSION);
+    doc.appendChild(root);
 
-    writeColor(design, doc, mindMapData.backgroundColor(), DataKeywords::Design::COLOR);
+    writeColor(root, doc, mindMapData.backgroundColor(), DataKeywords::MindMap::COLOR);
 
-    writeColor(design, doc, mindMapData.edgeColor(), DataKeywords::Design::EDGE_COLOR);
+    writeColor(root, doc, mindMapData.edgeColor(), DataKeywords::MindMap::EDGE_COLOR);
 
-    writeColor(design, doc, mindMapData.gridColor(), DataKeywords::Design::GRID_COLOR);
+    writeColor(root, doc, mindMapData.gridColor(), DataKeywords::MindMap::GRID_COLOR);
 
-    auto edgeWidthElement = doc.createElement(DataKeywords::Design::EDGE_THICKNESS);
+    auto edgeWidthElement = doc.createElement(DataKeywords::MindMap::EDGE_THICKNESS);
     edgeWidthElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData.edgeWidth() * SCALE))));
-    design.appendChild(edgeWidthElement);
+    root.appendChild(edgeWidthElement);
 
-    auto textSizeElement = doc.createElement(DataKeywords::Design::TEXT_SIZE);
+    auto textSizeElement = doc.createElement(DataKeywords::MindMap::TEXT_SIZE);
     textSizeElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData.textSize() * SCALE))));
-    design.appendChild(textSizeElement);
+    root.appendChild(textSizeElement);
 
-    auto cornerRadiusElement = doc.createElement(DataKeywords::Design::CORNER_RADIUS);
+    auto cornerRadiusElement = doc.createElement(DataKeywords::MindMap::CORNER_RADIUS);
     cornerRadiusElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData.cornerRadius() * SCALE))));
-    design.appendChild(cornerRadiusElement);
+    root.appendChild(cornerRadiusElement);
 
-    auto graph = doc.createElement(DataKeywords::Design::GRAPH);
-    design.appendChild(graph);
+    auto graph = doc.createElement(DataKeywords::MindMap::GRAPH);
+    root.appendChild(graph);
 
     writeNodes(mindMapData, graph, doc);
 
     writeEdges(mindMapData, graph, doc);
 
-    writeImages(mindMapData, design, doc);
+    writeImages(mindMapData, root, doc);
 
-    writeLayoutOptimizer(mindMapData, design, doc);
+    writeLayoutOptimizer(mindMapData, root, doc);
 
     return doc;
 }

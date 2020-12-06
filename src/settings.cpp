@@ -23,17 +23,29 @@
 #include <memory>
 
 namespace {
+
 const auto settingsGroupApplication = "Application";
+
 const auto settingsGroupDefaults = "Defaults";
+
 const auto settingsGroupMainWindow = "MainWindow";
+
 const auto recentImagePathKey = "recentImagePath";
+
 const auto edgeArrowModeKey = "edgeArrowMode";
+
 const auto gridSizeKey = "gridSize";
+
 const auto gridVisibleStateKey = "gridVisibleState";
+
 const auto recentPathKey = "recentPath";
+
 const auto reversedEdgeDirectionKey = "reversedEdgeDirection";
+
 const auto windowFullScreenKey = "fullScreen";
+
 const auto windowSizeKey = "size";
+
 } // namespace
 
 Edge::ArrowMode Settings::loadEdgeArrowMode(Edge::ArrowMode defaultMode)

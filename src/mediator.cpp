@@ -290,7 +290,7 @@ void Mediator::initiateNewNodeDrag(NodeHandle & nodeHandle)
     assert(parentNode);
     mouseAction().setSourceNode(parentNode, MouseAction::Action::CreateOrConnectNode);
     mouseAction().setSourcePosOnNode(nodeHandle.pos());
-    parentNode->hoverLeaveEvent(nullptr);
+    parentNode->setHandlesVisible(false);
 
     // Change cursor to the closed hand cursor.
     QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));

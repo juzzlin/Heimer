@@ -2,7 +2,7 @@
 
 # Builds ZIP archive for Windows in Docker
 
-VERSION=2.0.0
+VERSION=2.1.0
 
 QMAKE=/mxe/usr/i686-w64-mingw32.static/qt5/bin/qmake
 

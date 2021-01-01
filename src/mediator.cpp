@@ -96,11 +96,17 @@ void Mediator::addEdge(Node & node1, Node & node2)
 void Mediator::addItem(QGraphicsItem & item)
 {
     m_editorScene->addItem(&item);
+    adjustSceneRect();
 }
 
 void Mediator::addSelectedNode(Node & node)
 {
     m_editorData->addNodeToSelectionGroup(node);
+}
+
+void Mediator::adjustSceneRect()
+{
+    m_editorScene->adjustSceneRect();
 }
 
 void Mediator::clearSelectionGroup()

@@ -301,6 +301,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
         switch (m_mediator.mouseAction().action()) {
         case MouseAction::Action::MoveNode:
             m_mediator.mouseAction().clear();
+            m_mediator.adjustSceneRect();
             break;
         case MouseAction::Action::CreateOrConnectNode:
             if (const auto sourceNode = m_mediator.mouseAction().sourceNode()) {

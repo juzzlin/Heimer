@@ -176,11 +176,11 @@ static const double MAX_ASPECT_RATIO = 10;
 
 namespace Scene {
 
+static const double ADJUSTMENT_MARGIN = .25;
+
 static const QColor BARRIER_COLOR { 255, 0, 0, 128 };
 
-static const int BARRIER_WIDTH = 100;
-
-static const int RADIUS = 10000;
+static const int INITIAL_SIZE = 5000;
 
 } // namespace Scene
 

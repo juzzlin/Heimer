@@ -3,6 +3,9 @@ x.y.z
 
 New features:
 
+* Fix GitHub Issue #126: Extending limit of the canvas/background
+  - The drawing area is now unlimited
+
 Bug fixes:
 
 Other:

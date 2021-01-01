@@ -53,6 +53,8 @@ public:
 
     void addSelectedNode(Node & node);
 
+    void adjustSceneRect();
+
     bool areDirectlyConnected(const Node & node1, const Node & node2) const;
 
     bool canBeSaved() const;

@@ -30,30 +30,33 @@
 
 EditorScene::EditorScene()
 {
-    const auto r = Constants::Scene::RADIUS;
+    const auto r = Constants::Scene::INITIAL_SIZE;
     setSceneRect(-r, -r, r * 2, r * 2);
+}
 
-    const auto pen = QPen(QBrush(Constants::Scene::BARRIER_COLOR), Constants::Scene::BARRIER_WIDTH);
+void EditorScene::adjustSceneRect()
+{
+    const auto adjustmentX = sceneRect().width() / 2;
+    const auto adjustmentY = sceneRect().height() / 2;
+    while (!containsAll()) {
+        setSceneRect(sceneRect().adjusted(-adjustmentX, -adjustmentY, adjustmentX, adjustmentY));
+        juzzlin::L().debug() << "New scene rect: " << sceneRect().x() << " " << sceneRect().y() << " " << sceneRect().width() << " " << sceneRect().height();
+    }
+}
 
-    auto leftLine = new QGraphicsLineItem(-r, -r, -r, r);
-    leftLine->setPen(pen);
-    addItem(leftLine);
-    m_ownItems.push_back(ItemPtr(leftLine));
-
-    auto topLine = new QGraphicsLineItem(-r, -r, r, -r);
-    topLine->setPen(pen);
-    addItem(topLine);
-    m_ownItems.push_back(ItemPtr(topLine));
-
-    auto rightLine = new QGraphicsLineItem(r, -r, r, r);
-    rightLine->setPen(pen);
-    addItem(rightLine);
-    m_ownItems.push_back(ItemPtr(rightLine));
-
-    auto bottomLine = new QGraphicsLineItem(-r, r, r, r);
-    bottomLine->setPen(pen);
-    addItem(bottomLine);
-    m_ownItems.push_back(ItemPtr(bottomLine));
+bool EditorScene::containsAll() const
+{
+    const auto testMarginX = sceneRect().width() * Constants::Scene::ADJUSTMENT_MARGIN;
+    const auto testMarginY = sceneRect().height() * Constants::Scene::ADJUSTMENT_MARGIN;
+    const auto testRect = sceneRect().adjusted(testMarginX, testMarginY, -testMarginX, -testMarginY);
+    for (auto && item : items()) {
+        if (dynamic_cast<Node *>(item)) {
+            if (!testRect.contains(item->sceneBoundingRect())) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 QRectF EditorScene::zoomToFit(bool isForExport) const
@@ -79,9 +82,6 @@ void EditorScene::removeItems()
     for (auto item : items()) {
         removeItem(item);
     }
-
-    // This will destroy own items that also were taken out of the scene
-    m_ownItems.clear();
 }
 
 QImage EditorScene::toImage(QSize size, QColor backgroundColor, bool transparentBackground)

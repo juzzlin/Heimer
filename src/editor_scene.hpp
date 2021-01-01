@@ -27,6 +27,8 @@ class EditorScene : public QGraphicsScene
 public:
     EditorScene();
 
+    void adjustSceneRect();
+
     QRectF zoomToFit(bool isForExport = false) const;
 
     //! Checks if the graphics scene already has the given edge item added
@@ -39,6 +41,8 @@ public:
     virtual ~EditorScene();
 
 private:
+    bool containsAll() const;
+
     void removeItems();
 
     using ItemPtr = std::unique_ptr<QGraphicsItem>;

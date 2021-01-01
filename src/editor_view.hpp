@@ -54,7 +54,7 @@ public:
 
     void resetDummyDragItems();
 
-    void zoom(int amount);
+    void zoom(double amount);
 
     void zoomToFit(QRectF nodeBoundingRect);
 
@@ -122,7 +122,7 @@ private:
 
     void showDummyDragNode(bool show);
 
-    void updateScale(int value);
+    void updateScale();
 
     void updateRubberBand();
 
@@ -146,7 +146,7 @@ private:
 
     QPointF m_mappedPos;
 
-    int m_scaleValue = 100;
+    double m_scale = 1.0;
 
     Mediator & m_mediator;
 

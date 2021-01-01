@@ -200,11 +200,11 @@ static const double DRAG_NODE_OPACITY = 0.5;
 
 static const int TOO_QUICK_ACTION_DELAY_MS = 500;
 
-static const int ZOOM_MAX = 200;
+static const double ZOOM_MAX = 2.0;
 
-static const int ZOOM_MIN = 10;
+static const double ZOOM_MIN = .02;
 
-static const int ZOOM_SENSITIVITY = 10;
+static const double ZOOM_SENSITIVITY = 1.1;
 
 } // namespace View
 

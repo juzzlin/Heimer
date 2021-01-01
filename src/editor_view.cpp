@@ -386,11 +386,10 @@ void EditorView::showDummyDragNode(bool show)
     m_dummyDragNode->setVisible(show);
 }
 
-void EditorView::updateScale(int value)
+void EditorView::updateScale()
 {
     QTransform transform;
-    const double scale = static_cast<double>(value) / 100;
-    transform.scale(scale, scale);
+    transform.scale(m_scale, m_scale);
     setTransform(transform);
 }
 
@@ -435,38 +434,38 @@ void EditorView::setEdgeWidth(double edgeWidth)
 
 void EditorView::wheelEvent(QWheelEvent * event)
 {
-    zoom(event->delta() > 0 ? Constants::View::ZOOM_SENSITIVITY : -Constants::View::ZOOM_SENSITIVITY);
+    zoom(event->delta() > 0 ? Constants::View::ZOOM_SENSITIVITY : 1.0 / Constants::View::ZOOM_SENSITIVITY);
 }
 
-void EditorView::zoom(int amount)
+void EditorView::zoom(double amount)
 {
-    m_scaleValue += amount;
-    m_scaleValue = std::min(m_scaleValue, Constants::View::ZOOM_MAX);
-    m_scaleValue = std::max(m_scaleValue, Constants::View::ZOOM_MIN);
+    m_scale *= amount;
+    m_scale = std::min(m_scale, Constants::View::ZOOM_MAX);
+    m_scale = std::max(m_scale, Constants::View::ZOOM_MIN);
 
-    updateScale(m_scaleValue);
+    updateScale();
 }
 
 void EditorView::zoomToFit(QRectF nodeBoundingRect)
 {
-    const double viewAspect = double(rect().height()) / rect().width();
+    const double viewAspect = static_cast<double>(rect().height()) / rect().width();
     const double nodeAspect = nodeBoundingRect.height() / nodeBoundingRect.width();
 
     if (viewAspect < 1.0) {
         if (nodeAspect < viewAspect) {
-            m_scaleValue = static_cast<int>(rect().width() * 100 / nodeBoundingRect.width());
+            m_scale = static_cast<double>(rect().width()) / nodeBoundingRect.width();
         } else {
-            m_scaleValue = static_cast<int>(rect().height() * 100 / nodeBoundingRect.height());
+            m_scale = static_cast<double>(rect().height()) / nodeBoundingRect.height();
         }
     } else {
         if (nodeAspect > viewAspect) {
-            m_scaleValue = static_cast<int>(rect().height() * 100 / nodeBoundingRect.height());
+            m_scale = static_cast<double>(rect().height()) / nodeBoundingRect.height();
         } else {
-            m_scaleValue = static_cast<int>(rect().width() * 100 / nodeBoundingRect.width());
+            m_scale = static_cast<double>(rect().width()) / nodeBoundingRect.width();
         }
     }
 
-    updateScale(m_scaleValue);
+    updateScale();
 
     centerOn(nodeBoundingRect.center());
 

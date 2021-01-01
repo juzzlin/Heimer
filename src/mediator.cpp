@@ -33,6 +33,7 @@
 #include <QSizePolicy>
 
 #include <cassert>
+#include <cmath>
 
 using juzzlin::L;
 
@@ -657,16 +658,14 @@ void Mediator::undo()
     setupMindMapAfterUndoOrRedo();
 }
 
-static const int zoomSensitivity = 20;
-
 void Mediator::zoomIn()
 {
-    m_editorView->zoom(zoomSensitivity);
+    m_editorView->zoom(std::pow(Constants::View::ZOOM_SENSITIVITY, 2));
 }
 
 void Mediator::zoomOut()
 {
-    m_editorView->zoom(-zoomSensitivity);
+    m_editorView->zoom(1.0 / std::pow(Constants::View::ZOOM_SENSITIVITY, 2));
 }
 
 QSize Mediator::zoomForExport()

@@ -202,9 +202,6 @@ NodePtr Mediator::pasteNodeAt(Node & source, QPointF pos)
     connectNodeToUndoMechanism(copiedNode);
     connectNodeToImageManager(copiedNode);
     L().debug() << "Pasted node at (" << pos.x() << "," << pos.y() << ")";
-
-    addExistingGraphToScene();
-
     return copiedNode;
 }
 
@@ -400,6 +397,7 @@ void Mediator::paste()
         for (auto && node : m_editorData->copiedNodes()) {
             pasteNodeAt(*node, m_editorView->grid().snapToGrid(mouseAction().mappedPos() - m_editorData->copyReferencePoint() + node->pos()));
         }
+        addExistingGraphToScene();
     }
 }
 

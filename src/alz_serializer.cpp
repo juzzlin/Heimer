@@ -191,10 +191,12 @@ static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocume
             root.appendChild(edgeElement);
 
             // Create a child node for the text content
-            auto textElement = doc.createElement(DataKeywords::MindMap::Graph::Node::TEXT);
-            edgeElement.appendChild(textElement);
-            const auto textNode = doc.createTextNode(edge->text());
-            textElement.appendChild(textNode);
+            if (!edge->text().isEmpty()) {
+                auto textElement = doc.createElement(DataKeywords::MindMap::Graph::Node::TEXT);
+                edgeElement.appendChild(textElement);
+                const auto textNode = doc.createTextNode(edge->text());
+                textElement.appendChild(textNode);
+            }
         }
     }
 }

@@ -162,9 +162,11 @@ static void writeNodes(MindMapData & mindMapData, QDomElement & root, QDomDocume
         root.appendChild(nodeElement);
 
         // Create a child node for the text content
-        auto textElement = doc.createElement(DataKeywords::MindMap::Graph::Node::TEXT);
-        textElement.appendChild(doc.createTextNode(node->text()));
-        nodeElement.appendChild(textElement);
+        if (!node->text().isEmpty()) {
+            auto textElement = doc.createElement(DataKeywords::MindMap::Graph::Node::TEXT);
+            textElement.appendChild(doc.createTextNode(node->text()));
+            nodeElement.appendChild(textElement);
+        }
 
         // Create a child node for color
         writeColor(nodeElement, doc, node->color(), DataKeywords::MindMap::Graph::Node::COLOR);

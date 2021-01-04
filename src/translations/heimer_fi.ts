@@ -355,9 +355,18 @@
         <translation>Poista liitetty kuva</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="139"/>
+        <location filename="../main_context_menu.cpp" line="170"/>
+        <source>Node &amp;colors</source>
+        <translation>Solmun &amp;värit</translation>
+    </message>
+    <message>
+        <location filename="../main_context_menu.cpp" line="170"/>
+        <source>General &amp;colors</source>
+        <translation>Yleiset &amp;värit</translation>
+    </message>
+    <message>
         <source>&amp;Colors</source>
-        <translation>&amp;Värit</translation>
+        <translation type="vanished">&amp;Värit</translation>
     </message>
 </context>
 <context>
@@ -383,9 +392,13 @@
         <translation>&amp;Muokkaa</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="111"/>
         <source>&amp;Colors</source>
-        <translation>&amp;Värit</translation>
+        <translation type="vanished">&amp;Värit</translation>
+    </message>
+    <message>
+        <location filename="../main_window.cpp" line="111"/>
+        <source>General &amp;colors</source>
+        <translation>Yleiset &amp;värit</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="113"/>
@@ -511,37 +524,37 @@
         <translation>Uutta Tässä Versiossa</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="380"/>
+        <location filename="../main_window.cpp" line="381"/>
         <source>&amp;Settings</source>
         <translation>&amp;Asetukset</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="383"/>
+        <location filename="../main_window.cpp" line="384"/>
         <source>&amp;Defaults</source>
         <translation>&amp;Oletusarvot</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="414"/>
+        <location filename="../main_window.cpp" line="415"/>
         <source>&amp;View</source>
         <translation>&amp;Näkymä</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="417"/>
+        <location filename="../main_window.cpp" line="418"/>
         <source>Full Screen</source>
         <translation>Koko Näyttö</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="436"/>
+        <location filename="../main_window.cpp" line="437"/>
         <source>Zoom In</source>
         <translation>Suurenna</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="442"/>
+        <location filename="../main_window.cpp" line="443"/>
         <source>Zoom Out</source>
         <translation>Loitonna</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="450"/>
+        <location filename="../main_window.cpp" line="451"/>
         <source>&amp;Zoom To Fit</source>
         <translation>&amp;Sovita</translation>
     </message>
@@ -550,12 +563,12 @@
         <translation type="vanished">Heimer -tiedostot</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="497"/>
+        <location filename="../main_window.cpp" line="498"/>
         <source>New File</source>
         <translation>Uusi tiedosto</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="499"/>
+        <location filename="../main_window.cpp" line="500"/>
         <source>Not Saved</source>
         <translation>Ei tallennettu</translation>
     </message>

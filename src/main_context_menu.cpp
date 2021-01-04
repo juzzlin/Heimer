@@ -135,9 +135,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     addSeparator();
 
     const auto colorMenu = new QMenu;
-    const auto colorMenuAction = addMenu(colorMenu);
-    colorMenuAction->setText(tr("&Colors"));
-
+    m_colorMenuAction = addMenu(colorMenu);
     colorMenu->addAction(setBackgroundColorAction);
     addSeparator();
     colorMenu->addAction(setEdgeColorAction);
@@ -168,4 +166,6 @@ void MainContextMenu::setMode(const Mode & mode)
 
     m_copyNodeAction->setEnabled(mode == Mode::Node);
     m_pasteNodeAction->setEnabled(m_mediator.copyStackSize());
+
+    m_colorMenuAction->setText(mode == Mode::Node ? tr("Node &colors") : tr("General &colors"));
 }

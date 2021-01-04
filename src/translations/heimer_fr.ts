@@ -280,9 +280,18 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="139"/>
+        <location filename="../main_context_menu.cpp" line="170"/>
+        <source>Node &amp;colors</source>
+        <translation>&amp;Couleurs des noeuds</translation>
+    </message>
+    <message>
+        <location filename="../main_context_menu.cpp" line="170"/>
+        <source>General &amp;colors</source>
+        <translation>&amp;Couleurs générales</translation>
+    </message>
+    <message>
         <source>&amp;Colors</source>
-        <translation>&amp;Couleurs</translation>
+        <translation type="vanished">&amp;Couleurs</translation>
     </message>
 </context>
 <context>
@@ -313,9 +322,13 @@
         <translation>&amp;Edition</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="111"/>
         <source>&amp;Colors</source>
-        <translation>&amp;Couleurs</translation>
+        <translation type="vanished">&amp;Couleurs</translation>
+    </message>
+    <message>
+        <location filename="../main_window.cpp" line="111"/>
+        <source>General &amp;colors</source>
+        <translation>&amp;Couleurs générales</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="113"/>
@@ -432,47 +445,47 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="380"/>
+        <location filename="../main_window.cpp" line="381"/>
         <source>&amp;Settings</source>
         <translation>&amp;Réglages</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="383"/>
+        <location filename="../main_window.cpp" line="384"/>
         <source>&amp;Defaults</source>
         <translation>&amp;Par défaut</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="414"/>
+        <location filename="../main_window.cpp" line="415"/>
         <source>&amp;View</source>
         <translation>&amp;Vue</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="417"/>
+        <location filename="../main_window.cpp" line="418"/>
         <source>Full Screen</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="436"/>
+        <location filename="../main_window.cpp" line="437"/>
         <source>Zoom In</source>
         <translation>Zoom avant</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="442"/>
+        <location filename="../main_window.cpp" line="443"/>
         <source>Zoom Out</source>
         <translation>Zoom arrière</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="450"/>
+        <location filename="../main_window.cpp" line="451"/>
         <source>&amp;Zoom To Fit</source>
         <translation>&amp;Zoom ajusté à la taille de la fenêtre</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="497"/>
+        <location filename="../main_window.cpp" line="498"/>
         <source>New File</source>
         <translation>Nouveau fichier</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="499"/>
+        <location filename="../main_window.cpp" line="500"/>
         <source>Not Saved</source>
         <translation>Pas enregistré</translation>
     </message>

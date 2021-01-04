@@ -54,11 +54,13 @@ signals:
     void newNodeRequested(QPointF position);
 
 private:
-    QAction * m_copyNodeAction;
+    QAction * m_colorMenuAction = nullptr;
 
-    QAction * m_pasteNodeAction;
+    QAction * m_copyNodeAction = nullptr;
 
-    QAction * m_removeImageAction;
+    QAction * m_pasteNodeAction = nullptr;
+
+    QAction * m_removeImageAction = nullptr;
 
     Node * m_selectedNode = nullptr;
 

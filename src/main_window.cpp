@@ -108,7 +108,7 @@ void MainWindow::createEditMenu()
 
     const auto colorMenu = new QMenu;
     const auto colorMenuAction = editMenu->addMenu(colorMenu);
-    colorMenuAction->setText(tr("&Colors"));
+    colorMenuAction->setText(tr("General &colors"));
 
     const auto backgroundColorAction = new QAction(tr("Set background color") + threeDots, this);
     backgroundColorAction->setShortcut(QKeySequence("Ctrl+B"));

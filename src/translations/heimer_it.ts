@@ -249,9 +249,18 @@
         <translation>Rimuovi l&apos;&apos;immagine allegata</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="139"/>
+        <location filename="../main_context_menu.cpp" line="170"/>
+        <source>Node &amp;colors</source>
+        <translation>&amp;Colori dei nodi</translation>
+    </message>
+    <message>
+        <location filename="../main_context_menu.cpp" line="170"/>
+        <source>General &amp;colors</source>
+        <translation>&amp;Colori generali</translation>
+    </message>
+    <message>
         <source>&amp;Colors</source>
-        <translation>&amp;Colori</translation>
+        <translation type="vanished">&amp;Colori</translation>
     </message>
 </context>
 <context>
@@ -282,9 +291,13 @@
         <translation>&amp;Modifica</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="111"/>
         <source>&amp;Colors</source>
-        <translation>&amp;Colori</translation>
+        <translation type="vanished">&amp;Colori</translation>
+    </message>
+    <message>
+        <location filename="../main_window.cpp" line="111"/>
+        <source>General &amp;colors</source>
+        <translation>&amp;Colori generali</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="113"/>
@@ -401,47 +414,47 @@
         <translation>Cosa c&apos;&apos;è di nuovo</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="380"/>
+        <location filename="../main_window.cpp" line="381"/>
         <source>&amp;Settings</source>
         <translation>&amp;Impostazioni</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="383"/>
+        <location filename="../main_window.cpp" line="384"/>
         <source>&amp;Defaults</source>
         <translation>&amp;Predefinite</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="414"/>
+        <location filename="../main_window.cpp" line="415"/>
         <source>&amp;View</source>
         <translation>&amp;Vista</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="417"/>
+        <location filename="../main_window.cpp" line="418"/>
         <source>Full Screen</source>
         <translation>Schermo Intero</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="436"/>
+        <location filename="../main_window.cpp" line="437"/>
         <source>Zoom In</source>
         <translation>Zoom Avanti</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="442"/>
+        <location filename="../main_window.cpp" line="443"/>
         <source>Zoom Out</source>
         <translation>Zoom indietro</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="450"/>
+        <location filename="../main_window.cpp" line="451"/>
         <source>&amp;Zoom To Fit</source>
         <translation>&amp;Zoom ottimizzato</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="497"/>
+        <location filename="../main_window.cpp" line="498"/>
         <source>New File</source>
         <translation>Nuovo File</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="499"/>
+        <location filename="../main_window.cpp" line="500"/>
         <source>Not Saved</source>
         <translation>Non salvato</translation>
     </message>

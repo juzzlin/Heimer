@@ -249,9 +249,18 @@
         <translation>Bijgevoegde afbeelding verwijderen</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="139"/>
+        <location filename="../main_context_menu.cpp" line="170"/>
+        <source>Node &amp;colors</source>
+        <translation type="unfinished">Knoop &amp;kleuren</translation>
+    </message>
+    <message>
+        <location filename="../main_context_menu.cpp" line="170"/>
+        <source>General &amp;colors</source>
+        <translation>Algemene &amp;kleuren</translation>
+    </message>
+    <message>
         <source>&amp;Colors</source>
-        <translation>&amp;Kleuren</translation>
+        <translation type="vanished">&amp;Kleuren</translation>
     </message>
 </context>
 <context>
@@ -292,9 +301,13 @@
         <translation>&amp;Aanpassen</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="111"/>
         <source>&amp;Colors</source>
-        <translation>&amp;Kleuren</translation>
+        <translation type="vanished">&amp;Kleuren</translation>
+    </message>
+    <message>
+        <location filename="../main_window.cpp" line="111"/>
+        <source>General &amp;colors</source>
+        <translation>Algemene &amp;kleuren</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="113"/>

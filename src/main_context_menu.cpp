@@ -162,9 +162,11 @@ void MainContextMenu::setMode(const Mode & mode)
 
     m_colorMenuAction->setText(mode == Mode::Node ? tr("Node &colors") : tr("General &colors"));
 
-    m_copyNodeAction->setEnabled(mode == Mode::Node);
+    m_copyNodeAction->setEnabled(m_mediator.selectionGroupSize());
+    m_copyNodeAction->setText(m_mediator.selectionGroupSize() > 1 ? tr("Copy nodes") : tr("Copy node"));
 
     m_pasteNodeAction->setEnabled(m_mediator.copyStackSize());
+    m_pasteNodeAction->setText(m_mediator.copyStackSize() > 1 ? tr("Paste nodes") : tr("Paste node"));
 
     m_removeImageAction->setEnabled(m_mediator.nodeHasImageAttached());
 }

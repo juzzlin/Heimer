@@ -195,11 +195,13 @@
     <name>MainContextMenu</name>
     <message>
         <location filename="../main_context_menu.cpp" line="29"/>
+        <location filename="../main_context_menu.cpp" line="166"/>
         <source>Copy node</source>
         <translation>Knoop kopiëren</translation>
     </message>
     <message>
         <location filename="../main_context_menu.cpp" line="30"/>
+        <location filename="../main_context_menu.cpp" line="169"/>
         <source>Paste node</source>
         <translation>Knoop plakken</translation>
     </message>
@@ -249,14 +251,24 @@
         <translation>Bijgevoegde afbeelding verwijderen</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="170"/>
+        <location filename="../main_context_menu.cpp" line="163"/>
         <source>Node &amp;colors</source>
-        <translation type="unfinished">Knoop &amp;kleuren</translation>
+        <translation>Knoop &amp;kleuren</translation>
     </message>
     <message>
-        <location filename="../main_context_menu.cpp" line="170"/>
+        <location filename="../main_context_menu.cpp" line="163"/>
         <source>General &amp;colors</source>
         <translation>Algemene &amp;kleuren</translation>
+    </message>
+    <message>
+        <location filename="../main_context_menu.cpp" line="166"/>
+        <source>Copy nodes</source>
+        <translation>Kopieer knooppunten</translation>
+    </message>
+    <message>
+        <location filename="../main_context_menu.cpp" line="169"/>
+        <source>Paste nodes</source>
+        <translation>Plak knooppunten</translation>
     </message>
     <message>
         <source>&amp;Colors</source>
@@ -266,37 +278,37 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../main_window.cpp" line="55"/>
+        <location filename="../main_window.cpp" line="57"/>
         <source>&amp;Save</source>
         <translation>Op&amp;slaan</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="56"/>
+        <location filename="../main_window.cpp" line="58"/>
         <source>&amp;Save as</source>
         <translation>Op&amp;slaan als</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="57"/>
+        <location filename="../main_window.cpp" line="59"/>
         <source>Undo</source>
         <translation>Ongedaan maken</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="58"/>
+        <location filename="../main_window.cpp" line="60"/>
         <source>Redo</source>
         <translation>Opnieuw uitvoeren</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="63"/>
+        <location filename="../main_window.cpp" line="65"/>
         <source>Copy on drag</source>
         <translation>Kopiëren bij verslepen</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="64"/>
+        <location filename="../main_window.cpp" line="66"/>
         <source>Show grid</source>
         <translation>Rooster tonen</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="101"/>
+        <location filename="../main_window.cpp" line="116"/>
         <source>&amp;Edit</source>
         <translation>&amp;Aanpassen</translation>
     </message>
@@ -305,157 +317,162 @@
         <translation type="vanished">&amp;Kleuren</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="111"/>
+        <location filename="../main_window.cpp" line="56"/>
+        <source>Connect selected nodes</source>
+        <translation>Verbind geselecteerde knooppunten</translation>
+    </message>
+    <message>
+        <location filename="../main_window.cpp" line="130"/>
         <source>General &amp;colors</source>
         <translation>Algemene &amp;kleuren</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="113"/>
+        <location filename="../main_window.cpp" line="132"/>
         <source>Set background color</source>
         <translation>Achtergrondkleur instellen</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="124"/>
+        <location filename="../main_window.cpp" line="143"/>
         <source>Set edge color</source>
         <translation>Randkleur instellen</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="135"/>
+        <location filename="../main_window.cpp" line="154"/>
         <source>Set grid color</source>
         <translation>Roosterkleur instellen</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="146"/>
+        <location filename="../main_window.cpp" line="165"/>
         <source>Optimize layout</source>
         <translation>Indeling optimaliseren</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="165"/>
+        <location filename="../main_window.cpp" line="184"/>
         <source>Corner radius:</source>
         <translation>Hoekstraal:</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="190"/>
+        <location filename="../main_window.cpp" line="209"/>
         <source>Edge width:</source>
         <translation>Randbreedte:</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="214"/>
+        <location filename="../main_window.cpp" line="233"/>
         <source>Text size:</source>
         <translation>Tekstgrootte:</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="238"/>
+        <location filename="../main_window.cpp" line="257"/>
         <source>Grid size:</source>
         <translation>Roostergrootte:</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="261"/>
+        <location filename="../main_window.cpp" line="280"/>
         <source>&amp;Export</source>
         <translation>&amp;Exporteren</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="264"/>
+        <location filename="../main_window.cpp" line="283"/>
         <source>&amp;PNG</source>
         <translation>&amp;PNG</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="273"/>
+        <location filename="../main_window.cpp" line="292"/>
         <source>&amp;SVG</source>
         <translation>&amp;SVG</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="287"/>
+        <location filename="../main_window.cpp" line="306"/>
         <source>&amp;File</source>
         <translation>&amp;Bestand</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="290"/>
+        <location filename="../main_window.cpp" line="309"/>
         <source>&amp;New</source>
         <translation>&amp;Nieuw</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="298"/>
+        <location filename="../main_window.cpp" line="317"/>
         <source>&amp;Open</source>
         <translation>&amp;Openen</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="308"/>
+        <location filename="../main_window.cpp" line="327"/>
         <source>Recent &amp;Files</source>
         <translation>Recente &amp;bestanden</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="338"/>
+        <location filename="../main_window.cpp" line="357"/>
         <source>&amp;Quit</source>
         <translation>&amp;Afsluiten</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="352"/>
+        <location filename="../main_window.cpp" line="371"/>
         <source>&amp;Help</source>
         <translation>&amp;Hulp</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="355"/>
+        <location filename="../main_window.cpp" line="374"/>
         <source>&amp;About</source>
         <translation>&amp;Over</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="362"/>
+        <location filename="../main_window.cpp" line="381"/>
         <source>About &amp;Qt</source>
         <translation>Over &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="371"/>
+        <location filename="../main_window.cpp" line="390"/>
         <source>What&apos;s New</source>
         <translation>Wijzigingslog</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="381"/>
+        <location filename="../main_window.cpp" line="400"/>
         <source>&amp;Settings</source>
         <translation>In&amp;stellingen</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="384"/>
+        <location filename="../main_window.cpp" line="403"/>
         <source>&amp;Defaults</source>
         <translation>Stan&amp;daardwaarden</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="415"/>
+        <location filename="../main_window.cpp" line="434"/>
         <source>&amp;View</source>
         <translation>&amp;Beeld</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="418"/>
+        <location filename="../main_window.cpp" line="437"/>
         <source>Full Screen</source>
         <translation>Beeldvullende modus</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="437"/>
+        <location filename="../main_window.cpp" line="456"/>
         <source>Zoom In</source>
         <translation>Inzoomen</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="443"/>
+        <location filename="../main_window.cpp" line="462"/>
         <source>Zoom Out</source>
         <translation>Uitzoomen</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="451"/>
+        <location filename="../main_window.cpp" line="470"/>
         <source>&amp;Zoom To Fit</source>
         <translation>Automatisch inpa&amp;ssen</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="498"/>
+        <location filename="../main_window.cpp" line="517"/>
         <source>New File</source>
         <translation>Nieuw bestand</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="500"/>
+        <location filename="../main_window.cpp" line="519"/>
         <source>Not Saved</source>
         <translation>Niet opgeslagen</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="365"/>
+        <location filename="../main_window.cpp" line="384"/>
         <source>About Qt</source>
         <translation>Over Qt</translation>
     </message>

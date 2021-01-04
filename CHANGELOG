@@ -8,6 +8,8 @@ New features:
 
 Bug fixes:
 
+* Fix the way a node is selected on right-click
+
 Other:
 
 * Make zooming nonlinear and increase range

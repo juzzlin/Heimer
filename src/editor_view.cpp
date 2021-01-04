@@ -169,6 +169,10 @@ void EditorView::handleRightButtonClickOnEdge(Edge & edge)
 
 void EditorView::handleRightButtonClickOnNode(Node & node)
 {
+    if (!node.selected()) {
+        m_mediator.clearSelectionGroup();
+    }
+
     m_mediator.addSelectedNode(node);
 
     openMainContextMenu(MainContextMenu::Mode::Node);

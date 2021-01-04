@@ -139,6 +139,10 @@ void EditorView::handleLeftButtonClickOnNode(Node & node)
 
 void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
 {
+    if (!nodeHandle.parentNode().selected()) {
+        m_mediator.clearSelectionGroup();
+    }
+
     switch (nodeHandle.role()) {
     case NodeHandle::Role::Add:
         m_mediator.initiateNewNodeDrag(nodeHandle);

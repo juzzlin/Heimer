@@ -17,6 +17,7 @@ Other:
 
 * Make zooming nonlinear and increase range
 * Make pasting of big group of nodes much faster
+* Clear selected nodes when a handle of unselected node is clicked
 
 2.1.0
 =====

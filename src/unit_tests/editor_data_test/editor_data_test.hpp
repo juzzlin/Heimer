@@ -24,6 +24,8 @@ public:
 
 private slots:
 
+    void testGroupConnection();
+
     void testGroupDelete();
 
     void testGroupMove();

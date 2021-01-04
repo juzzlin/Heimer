@@ -25,6 +25,32 @@ EditorDataTest::EditorDataTest()
     TestMode::setEnabled(true);
 }
 
+void EditorDataTest::testGroupConnection()
+{
+    EditorData editorData;
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+    QCOMPARE(editorData.areSelectedNodesConnectable(), false);
+
+    const auto node0 = editorData.addNodeAt(QPointF(0, 0));
+    const auto node1 = editorData.addNodeAt(QPointF(1, 1));
+    const auto node2 = editorData.addNodeAt(QPointF(2, 2));
+
+    QCOMPARE(editorData.selectionGroupSize(), size_t(0));
+    editorData.toggleNodeInSelectionGroup(*node0);
+    QCOMPARE(editorData.areSelectedNodesConnectable(), false);
+    editorData.toggleNodeInSelectionGroup(*node1);
+    QCOMPARE(editorData.areSelectedNodesConnectable(), true);
+    editorData.toggleNodeInSelectionGroup(*node2);
+    QCOMPARE(editorData.areSelectedNodesConnectable(), true);
+
+    const auto edges = editorData.connectSelectedNodes();
+    QCOMPARE(edges.at(0)->sourceNode().index(), node0->index());
+    QCOMPARE(edges.at(0)->targetNode().index(), node1->index());
+    QCOMPARE(edges.at(1)->sourceNode().index(), node1->index());
+    QCOMPARE(edges.at(1)->targetNode().index(), node2->index());
+    QCOMPARE(editorData.areSelectedNodesConnectable(), false);
+}
+
 void EditorDataTest::testGroupDelete()
 {
     EditorData editorData;

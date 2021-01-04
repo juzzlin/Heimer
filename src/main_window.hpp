@@ -58,6 +58,8 @@ public:
 
     void disableUndoAndRedo();
 
+    void enableConnectSelectedNodesAction(bool enable);
+
     void enableWidgetSignals(bool enable);
 
     void initialize();
@@ -114,6 +116,8 @@ signals:
     void zoomToFitTriggered();
 
 private:
+    void addConnectSelectedNodesAction(QMenu & menu);
+
     void addRedoAction(QMenu & menu);
 
     void addUndoAction(QMenu & menu);
@@ -149,6 +153,8 @@ private:
     DefaultsDlg * m_defaultsDlg;
 
     WhatsNewDlg * m_whatsNewDlg;
+
+    QAction * m_connectSelectedNodesAction = nullptr;
 
     QAction * m_fullScreenAction = nullptr;
 

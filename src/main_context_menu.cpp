@@ -150,10 +150,6 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     addSeparator();
     addAction(attachImageAction);
     addAction(m_removeImageAction);
-
-    connect(this, &QMenu::aboutToShow, [=] {
-        m_removeImageAction->setEnabled(m_mediator.nodeHasImageAttached());
-    });
 }
 
 void MainContextMenu::setMode(const Mode & mode)
@@ -164,8 +160,11 @@ void MainContextMenu::setMode(const Mode & mode)
         }
     }
 
+    m_colorMenuAction->setText(mode == Mode::Node ? tr("Node &colors") : tr("General &colors"));
+
     m_copyNodeAction->setEnabled(mode == Mode::Node);
+
     m_pasteNodeAction->setEnabled(m_mediator.copyStackSize());
 
-    m_colorMenuAction->setText(mode == Mode::Node ? tr("Node &colors") : tr("General &colors"));
+    m_removeImageAction->setEnabled(m_mediator.nodeHasImageAttached());
 }

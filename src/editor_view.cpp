@@ -78,15 +78,12 @@ void EditorView::finishRubberBand()
 
 void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
 {
-    if (!isModifierPressed()) {
-        m_mediator.clearSelectionGroup();
-        m_mediator.setSelectedEdge(nullptr);
-    }
-
     if (event.button() == Qt::LeftButton) {
         if (isModifierPressed()) {
             initiateRubberBand();
         } else {
+            m_mediator.setSelectedEdge(nullptr);
+            m_mediator.clearSelectionGroup();
             m_mediator.mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
             setDragMode(ScrollHandDrag);
         }

@@ -18,6 +18,7 @@
 
 #include <memory>
 #include <set>
+#include <utility>
 #include <vector>
 
 #include <QObject>
@@ -51,6 +52,9 @@ public:
 
     void addNodeToSelectionGroup(Node & node);
 
+    //! \return true if at least one selected node pair can be connected.
+    bool areSelectedNodesConnectable() const;
+
     void deleteEdge(Edge & edge);
 
     void deleteNode(Node & node);
@@ -62,6 +66,10 @@ public:
     void clearImages();
 
     void clearSelectionGroup();
+
+    //! Connects selected nodes in the order they were selected.
+    //! \return the new edge objects.
+    std::vector<std::shared_ptr<Edge>> connectSelectedNodes();
 
     std::vector<std::shared_ptr<Node>> copiedNodes() const;
 
@@ -142,6 +150,8 @@ signals:
 private:
     EditorData(const EditorData & e) = delete;
     EditorData & operator=(const EditorData & e) = delete;
+
+    std::vector<std::pair<Node *, Node *>> getConnectableNodes() const;
 
     void removeEdgeFromScene(Edge & edge);
 

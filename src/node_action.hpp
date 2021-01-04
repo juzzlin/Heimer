@@ -24,6 +24,7 @@ struct NodeAction
     enum class Type
     {
         None,
+        ConnectSelected,
         Copy,
         AttachImage,
         Delete,

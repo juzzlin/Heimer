@@ -113,6 +113,7 @@ void Mediator::adjustSceneRect()
 void Mediator::clearSelectionGroup()
 {
     m_editorData->clearSelectionGroup();
+    m_mainWindow.enableConnectSelectedNodesAction(false);
 }
 
 bool Mediator::canBeSaved() const
@@ -156,6 +157,18 @@ void Mediator::connectGraphToImageManager()
 {
     for (auto && node : m_editorData->mindMapData()->graph().getNodes()) {
         connectNodeToImageManager(node);
+    }
+}
+
+void Mediator::connectSelectedNodes()
+{
+    L().debug() << "Connecting selected nodes: " << m_editorData->selectionGroupSize();
+    if (m_editorData->selectionGroupSize() > 1) {
+        saveUndoPoint();
+        for (auto && edge : m_editorData->connectSelectedNodes()) {
+            connectEdgeToUndoMechanism(edge);
+        }
+        addExistingGraphToScene();
     }
 }
 
@@ -338,6 +351,11 @@ bool Mediator::areDirectlyConnected(const Node & node1, const Node & node2) cons
     return graph.areDirectlyConnected(node1Ptr, node2Ptr);
 }
 
+bool Mediator::areSelectedNodesConnectable() const
+{
+    return m_editorData->areSelectedNodesConnectable();
+}
+
 bool Mediator::isLeafNode(Node & node)
 {
     auto && graph = m_editorData->mindMapData()->graph();
@@ -407,6 +425,9 @@ void Mediator::performNodeAction(const NodeAction & action)
 
     switch (action.type) {
     case NodeAction::Type::None:
+        break;
+    case NodeAction::Type::ConnectSelected:
+        connectSelectedNodes();
         break;
     case NodeAction::Type::Copy:
         m_editorData->copySelectedNodes();
@@ -489,6 +510,7 @@ void Mediator::removeItem(QGraphicsItem & item)
 void Mediator::toggleNodeInSelectionGroup(Node & node)
 {
     m_editorData->toggleNodeInSelectionGroup(node);
+    m_mainWindow.enableConnectSelectedNodesAction(areSelectedNodesConnectable());
 }
 
 bool Mediator::saveMindMapAs(QString fileName)
@@ -599,7 +621,7 @@ void Mediator::setRectagleSelection(QRectF rect)
     const auto items = m_editorScene->items(rect, Qt::ContainsItemShape);
     for (auto && item : items) {
         if (const auto node = dynamic_cast<Node *>(item)) {
-            m_editorData->toggleNodeInSelectionGroup(*node);
+            toggleNodeInSelectionGroup(*node);
         }
     }
 }

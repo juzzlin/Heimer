@@ -57,6 +57,8 @@ public:
 
     bool areDirectlyConnected(const Node & node1, const Node & node2) const;
 
+    bool areSelectedNodesConnectable() const;
+
     bool canBeSaved() const;
 
     void clearSelectedNode();
@@ -199,6 +201,8 @@ private:
     void connectGraphToUndoMechanism();
 
     void connectGraphToImageManager();
+
+    void connectSelectedNodes();
 
     void paste();
 

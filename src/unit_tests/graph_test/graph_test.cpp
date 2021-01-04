@@ -118,8 +118,10 @@ void GraphTest::testAreNodesDirectlyConnected()
     dut.addEdge(std::make_shared<Edge>(*node1, *node2));
 
     QVERIFY(dut.areDirectlyConnected(node0, node1));
-
     QVERIFY(!dut.areDirectlyConnected(node0, node2));
+
+    QVERIFY(dut.areDirectlyConnected(node0->index(), node1->index()));
+    QVERIFY(!dut.areDirectlyConnected(node0->index(), node2->index()));
 }
 
 void GraphTest::testDeleteEdge()

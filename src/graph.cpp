@@ -114,8 +114,13 @@ void Graph::addEdge(EdgePtr newEdge)
 
 bool Graph::areDirectlyConnected(NodePtr node0, NodePtr node1)
 {
+    return areDirectlyConnected(node0->index(), node1->index());
+}
+
+bool Graph::areDirectlyConnected(int index0, int index1)
+{
     for (auto && edge : m_edges) {
-        if ((edge->sourceNode().index() == node0->index() && edge->targetNode().index() == node1->index()) || (edge->sourceNode().index() == node1->index() && edge->targetNode().index() == node0->index())) {
+        if ((edge->sourceNode().index() == index0 && edge->targetNode().index() == index1) || (edge->sourceNode().index() == index1 && edge->targetNode().index() == index0)) {
             return true;
         }
     }

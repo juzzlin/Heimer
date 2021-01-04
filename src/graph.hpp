@@ -62,6 +62,8 @@ public:
 
     bool areDirectlyConnected(NodePtr node0, NodePtr node1);
 
+    bool areDirectlyConnected(int index0, int index1);
+
     size_t numNodes() const;
 
     EdgeVector getEdgesFromNode(NodePtr node);

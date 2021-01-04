@@ -279,6 +279,33 @@ NodePtr EditorData::addNodeAt(QPointF pos)
     return node;
 }
 
+std::vector<std::pair<Node *, Node *>> EditorData::getConnectableNodes() const
+{
+    std::vector<std::pair<Node *, Node *>> nodes;
+    for (size_t i = 0; i + 1 < m_selectionGroup->nodes().size(); i++) {
+        const auto c0 = m_selectionGroup->nodes().at(i);
+        const auto c1 = m_selectionGroup->nodes().at(i + 1);
+        if (!m_mindMapData->graph().areDirectlyConnected(c0->index(), c1->index())) {
+            nodes.push_back({ c0, c1 });
+        }
+    }
+    return nodes;
+}
+
+bool EditorData::areSelectedNodesConnectable() const
+{
+    return !getConnectableNodes().empty();
+}
+
+std::vector<std::shared_ptr<Edge>> EditorData::connectSelectedNodes()
+{
+    std::vector<std::shared_ptr<Edge>> edges;
+    for (auto && nodePair : getConnectableNodes()) {
+        edges.push_back(addEdge(std::make_shared<Edge>(*nodePair.first, *nodePair.second)));
+    }
+    return edges;
+}
+
 std::vector<std::shared_ptr<Node>> EditorData::copiedNodes() const
 {
     return m_copiedNodes;

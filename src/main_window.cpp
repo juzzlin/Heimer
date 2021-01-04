@@ -19,6 +19,7 @@
 #include "constants.hpp"
 #include "defaults_dlg.hpp"
 #include "mediator.hpp"
+#include "node_action.hpp"
 #include "recent_files_manager.hpp"
 #include "recent_files_menu.hpp"
 #include "settings.hpp"
@@ -52,6 +53,7 @@ MainWindow::MainWindow()
   : m_aboutDlg(new AboutDlg(this))
   , m_defaultsDlg(new DefaultsDlg(this))
   , m_whatsNewDlg(new WhatsNewDlg(this))
+  , m_connectSelectedNodesAction(new QAction(tr("Connect selected nodes"), this))
   , m_saveAction(new QAction(tr("&Save"), this))
   , m_saveAsAction(new QAction(tr("&Save as") + threeDots, this))
   , m_undoAction(new QAction(tr("Undo"), this))
@@ -68,6 +70,19 @@ MainWindow::MainWindow()
     } else {
         qFatal("MainWindow already instantiated!");
     }
+}
+
+void MainWindow::addConnectSelectedNodesAction(QMenu & menu)
+{
+    m_connectSelectedNodesAction->setShortcut(QKeySequence("Ctrl+Shift+C"));
+    connect(m_connectSelectedNodesAction, &QAction::triggered, [this] {
+        juzzlin::L().debug() << "Connect selected triggered";
+        m_mediator->performNodeAction({ NodeAction::Type::ConnectSelected });
+    });
+    menu.addAction(m_connectSelectedNodesAction);
+    connect(&menu, &QMenu::aboutToShow, [=] {
+        m_connectSelectedNodesAction->setEnabled(m_mediator->areSelectedNodesConnectable());
+    });
 }
 
 void MainWindow::addRedoAction(QMenu & menu)
@@ -106,6 +121,10 @@ void MainWindow::createEditMenu()
 
     editMenu->addSeparator();
 
+    addConnectSelectedNodesAction(*editMenu);
+
+    editMenu->addSeparator();
+
     const auto colorMenu = new QMenu;
     const auto colorMenuAction = editMenu->addMenu(colorMenu);
     colorMenuAction->setText(tr("General &colors"));
@@ -141,7 +160,7 @@ void MainWindow::createEditMenu()
 
     colorMenu->addAction(gridColorAction);
 
-    colorMenu->addSeparator();
+    editMenu->addSeparator();
 
     auto optimizeLayoutAction = new QAction(tr("Optimize layout") + threeDots, this);
     optimizeLayoutAction->setShortcut(QKeySequence("Ctrl+Shift+O"));
@@ -545,6 +564,11 @@ void MainWindow::disableUndoAndRedo()
 {
     m_undoAction->setEnabled(false);
     m_redoAction->setEnabled(false);
+}
+
+void MainWindow::enableConnectSelectedNodesAction(bool enable)
+{
+    m_connectSelectedNodesAction->setEnabled(enable);
 }
 
 void MainWindow::enableWidgetSignals(bool enable)

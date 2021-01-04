@@ -45,12 +45,10 @@ public:
 
 signals:
 
+    //! This is used mainly for actions that require a dialog to be opened.
     void actionTriggered(StateMachine::Action action);
 
-    void nodeColorActionTriggered();
-
-    void nodeTextColorActionTriggered();
-
+    //! Request a new node at given position.
     void newNodeRequested(QPointF position);
 
 private:

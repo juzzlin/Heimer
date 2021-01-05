@@ -9,6 +9,9 @@ New features:
 * Fix GitHub Issue #128: Make it possible to connect selected nodes
   - Nodes can be connected in the selection order via Edit menu
 
+* Fix GitHub Issue #133: Make it possible to disconnect selected nodes
+  - Selected nodes can be disconnected via Edit menu
+
 Bug fixes:
 
 * Fix the way a node is selected on right-click

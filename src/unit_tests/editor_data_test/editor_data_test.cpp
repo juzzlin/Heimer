@@ -25,6 +25,36 @@ EditorDataTest::EditorDataTest()
     TestMode::setEnabled(true);
 }
 
+void EditorDataTest::testAddAndDeleteEdge()
+{
+    const auto data = std::make_shared<MindMapData>();
+    EditorData editorData;
+    editorData.setMindMapData(data);
+
+    const auto node0 = std::make_shared<Node>();
+    data->graph().addNode(node0);
+    const auto node1 = std::make_shared<Node>();
+    data->graph().addNode(node1);
+
+    const auto edge0 = std::make_shared<Edge>(*node0, *node1);
+    editorData.addEdge(edge0);
+
+    QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(node0, node1), true);
+
+    editorData.deleteEdge(*edge0);
+
+    QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(node0, node1), false);
+
+    const auto edge1 = std::make_shared<Edge>(*node0, *node1);
+    editorData.addEdge(edge1);
+
+    QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(node0, node1), true);
+
+    editorData.deleteEdge(node0->index(), node1->index());
+
+    QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(node0, node1), false);
+}
+
 void EditorDataTest::testGroupConnection()
 {
     EditorData editorData;
@@ -38,17 +68,43 @@ void EditorDataTest::testGroupConnection()
     QCOMPARE(editorData.selectionGroupSize(), size_t(0));
     editorData.toggleNodeInSelectionGroup(*node0);
     QCOMPARE(editorData.areSelectedNodesConnectable(), false);
-    editorData.toggleNodeInSelectionGroup(*node1);
-    QCOMPARE(editorData.areSelectedNodesConnectable(), true);
     editorData.toggleNodeInSelectionGroup(*node2);
+    QCOMPARE(editorData.areSelectedNodesConnectable(), true);
+    editorData.toggleNodeInSelectionGroup(*node1);
     QCOMPARE(editorData.areSelectedNodesConnectable(), true);
 
     const auto edges = editorData.connectSelectedNodes();
     QCOMPARE(edges.at(0)->sourceNode().index(), node0->index());
-    QCOMPARE(edges.at(0)->targetNode().index(), node1->index());
-    QCOMPARE(edges.at(1)->sourceNode().index(), node1->index());
-    QCOMPARE(edges.at(1)->targetNode().index(), node2->index());
+    QCOMPARE(edges.at(0)->targetNode().index(), node2->index());
+    QCOMPARE(edges.at(1)->sourceNode().index(), node2->index());
+    QCOMPARE(edges.at(1)->targetNode().index(), node1->index());
     QCOMPARE(editorData.areSelectedNodesConnectable(), false);
+}
+
+void EditorDataTest::testGroupDisconnection()
+{
+    EditorData editorData;
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+    QCOMPARE(editorData.areSelectedNodesDisconnectable(), false);
+
+    const auto node0 = editorData.addNodeAt(QPointF(0, 0));
+    const auto node1 = editorData.addNodeAt(QPointF(1, 1));
+    const auto node2 = editorData.addNodeAt(QPointF(2, 2));
+
+    QCOMPARE(editorData.selectionGroupSize(), size_t(0));
+    editorData.toggleNodeInSelectionGroup(*node0);
+    QCOMPARE(editorData.areSelectedNodesDisconnectable(), false);
+    editorData.toggleNodeInSelectionGroup(*node2);
+    QCOMPARE(editorData.areSelectedNodesDisconnectable(), false);
+    editorData.toggleNodeInSelectionGroup(*node1);
+    QCOMPARE(editorData.areSelectedNodesDisconnectable(), false);
+
+    editorData.connectSelectedNodes();
+    QCOMPARE(editorData.areSelectedNodesDisconnectable(), true);
+    editorData.disconnectSelectedNodes();
+    QCOMPARE(editorData.areSelectedNodesDisconnectable(), false);
+    QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(node0, node2), false);
+    QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(node2, node1), false);
 }
 
 void EditorDataTest::testGroupDelete()
@@ -489,6 +545,72 @@ void EditorDataTest::testUndoEdgeReversed()
     const auto redoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
 
     QCOMPARE(redoneEdge->reversed(), true);
+}
+
+void EditorDataTest::testUndoGroupConnection()
+{
+    EditorData editorData;
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+
+    const auto node0 = editorData.addNodeAt(QPointF(0, 0));
+    const auto node1 = editorData.addNodeAt(QPointF(1, 1));
+    const auto node2 = editorData.addNodeAt(QPointF(2, 2));
+
+    editorData.toggleNodeInSelectionGroup(*node0);
+    editorData.toggleNodeInSelectionGroup(*node2);
+    editorData.toggleNodeInSelectionGroup(*node1);
+
+    editorData.saveUndoPoint();
+
+    const auto edges = editorData.connectSelectedNodes();
+
+    QCOMPARE(editorData.areSelectedNodesConnectable(), false);
+
+    editorData.undo();
+
+    const auto undoneNode0 = editorData.getNodeByIndex(node0->index());
+    const auto undoneNode1 = editorData.getNodeByIndex(node1->index());
+    const auto undoneNode2 = editorData.getNodeByIndex(node2->index());
+
+    editorData.toggleNodeInSelectionGroup(*undoneNode0);
+    editorData.toggleNodeInSelectionGroup(*undoneNode2);
+    editorData.toggleNodeInSelectionGroup(*undoneNode1);
+
+    QCOMPARE(editorData.areSelectedNodesConnectable(), true);
+}
+
+void EditorDataTest::testUndoGroupDisconnection()
+{
+    EditorData editorData;
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+
+    const auto node0 = editorData.addNodeAt(QPointF(0, 0));
+    const auto node1 = editorData.addNodeAt(QPointF(1, 1));
+    const auto node2 = editorData.addNodeAt(QPointF(2, 2));
+
+    editorData.toggleNodeInSelectionGroup(*node0);
+    editorData.toggleNodeInSelectionGroup(*node2);
+    editorData.toggleNodeInSelectionGroup(*node1);
+
+    editorData.connectSelectedNodes();
+
+    editorData.saveUndoPoint();
+
+    editorData.disconnectSelectedNodes();
+
+    QCOMPARE(editorData.areSelectedNodesDisconnectable(), false);
+
+    editorData.undo();
+
+    const auto undoneNode0 = editorData.getNodeByIndex(node0->index());
+    const auto undoneNode1 = editorData.getNodeByIndex(node1->index());
+    const auto undoneNode2 = editorData.getNodeByIndex(node2->index());
+
+    editorData.toggleNodeInSelectionGroup(*undoneNode0);
+    editorData.toggleNodeInSelectionGroup(*undoneNode2);
+    editorData.toggleNodeInSelectionGroup(*undoneNode1);
+
+    QCOMPARE(editorData.areSelectedNodesDisconnectable(), true);
 }
 
 void EditorDataTest::testUndoNodeColor()

@@ -151,11 +151,11 @@ void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
         m_mediator.initiateNodeDrag(nodeHandle.parentNode());
         break;
     case NodeHandle::Role::Color:
-        m_mediator.addSelectedNode(nodeHandle.parentNode());
+        m_mediator.addNodeToSelectionGroup(nodeHandle.parentNode());
         emit actionTriggered(StateMachine::Action::NodeColorChangeRequested);
         break;
     case NodeHandle::Role::TextColor:
-        m_mediator.addSelectedNode(nodeHandle.parentNode());
+        m_mediator.addNodeToSelectionGroup(nodeHandle.parentNode());
         emit actionTriggered(StateMachine::Action::TextColorChangeRequested);
         break;
     }
@@ -174,7 +174,7 @@ void EditorView::handleRightButtonClickOnNode(Node & node)
         m_mediator.clearSelectionGroup();
     }
 
-    m_mediator.addSelectedNode(node);
+    m_mediator.addNodeToSelectionGroup(node);
 
     openMainContextMenu(MainContextMenu::Mode::Node);
 }

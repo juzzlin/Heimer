@@ -55,7 +55,12 @@ public:
     //! \return true if at least one selected node pair can be connected.
     bool areSelectedNodesConnectable() const;
 
+    //! \return true if at least one selected node pair can be disconnected.
+    bool areSelectedNodesDisconnectable() const;
+
     void deleteEdge(Edge & edge);
+
+    void deleteEdge(int index0, int index1);
 
     void deleteNode(Node & node);
 
@@ -70,6 +75,9 @@ public:
     //! Connects selected nodes in the order they were selected.
     //! \return the new edge objects.
     std::vector<std::shared_ptr<Edge>> connectSelectedNodes();
+
+    //! Disconnects (deletes edges) directly connected nodes in the group if possible.
+    void disconnectSelectedNodes();
 
     std::vector<std::shared_ptr<Node>> copiedNodes() const;
 
@@ -151,7 +159,10 @@ private:
     EditorData(const EditorData & e) = delete;
     EditorData & operator=(const EditorData & e) = delete;
 
-    std::vector<std::pair<Node *, Node *>> getConnectableNodes() const;
+    using NodePairVector = std::vector<std::pair<Node *, Node *>>;
+    NodePairVector getConnectableNodes() const;
+
+    NodePairVector getDisconnectableNodes() const;
 
     void removeEdgeFromScene(Edge & edge);
 

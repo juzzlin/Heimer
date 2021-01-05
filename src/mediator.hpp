@@ -51,13 +51,15 @@ public:
 
     void addItem(QGraphicsItem & item);
 
-    void addSelectedNode(Node & node);
+    void addNodeToSelectionGroup(Node & node);
 
     void adjustSceneRect();
 
     bool areDirectlyConnected(const Node & node1, const Node & node2) const;
 
     bool areSelectedNodesConnectable() const;
+
+    bool areSelectedNodesDisconnectable() const;
 
     bool canBeSaved() const;
 
@@ -203,6 +205,8 @@ private:
     void connectGraphToImageManager();
 
     void connectSelectedNodes();
+
+    void disconnectSelectedNodes();
 
     void paste();
 

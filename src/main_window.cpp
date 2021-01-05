@@ -54,6 +54,7 @@ MainWindow::MainWindow()
   , m_defaultsDlg(new DefaultsDlg(this))
   , m_whatsNewDlg(new WhatsNewDlg(this))
   , m_connectSelectedNodesAction(new QAction(tr("Connect selected nodes"), this))
+  , m_disconnectSelectedNodesAction(new QAction(tr("Disconnect selected nodes"), this))
   , m_saveAction(new QAction(tr("&Save"), this))
   , m_saveAsAction(new QAction(tr("&Save as") + threeDots, this))
   , m_undoAction(new QAction(tr("Undo"), this))
@@ -82,6 +83,19 @@ void MainWindow::addConnectSelectedNodesAction(QMenu & menu)
     menu.addAction(m_connectSelectedNodesAction);
     connect(&menu, &QMenu::aboutToShow, [=] {
         m_connectSelectedNodesAction->setEnabled(m_mediator->areSelectedNodesConnectable());
+    });
+}
+
+void MainWindow::addDisconnectSelectedNodesAction(QMenu & menu)
+{
+    m_disconnectSelectedNodesAction->setShortcut(QKeySequence("Ctrl+Shift+D"));
+    connect(m_disconnectSelectedNodesAction, &QAction::triggered, [this] {
+        juzzlin::L().debug() << "Disconnect selected triggered";
+        m_mediator->performNodeAction({ NodeAction::Type::DisconnectSelected });
+    });
+    menu.addAction(m_disconnectSelectedNodesAction);
+    connect(&menu, &QMenu::aboutToShow, [=] {
+        m_disconnectSelectedNodesAction->setEnabled(m_mediator->areSelectedNodesDisconnectable());
     });
 }
 
@@ -122,6 +136,8 @@ void MainWindow::createEditMenu()
     editMenu->addSeparator();
 
     addConnectSelectedNodesAction(*editMenu);
+
+    addDisconnectSelectedNodesAction(*editMenu);
 
     editMenu->addSeparator();
 
@@ -569,6 +585,11 @@ void MainWindow::disableUndoAndRedo()
 void MainWindow::enableConnectSelectedNodesAction(bool enable)
 {
     m_connectSelectedNodesAction->setEnabled(enable);
+}
+
+void MainWindow::enableDisconnectSelectedNodesAction(bool enable)
+{
+    m_disconnectSelectedNodesAction->setEnabled(enable);
 }
 
 void MainWindow::enableWidgetSignals(bool enable)

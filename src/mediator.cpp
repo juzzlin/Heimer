@@ -100,9 +100,11 @@ void Mediator::addItem(QGraphicsItem & item)
     adjustSceneRect();
 }
 
-void Mediator::addSelectedNode(Node & node)
+void Mediator::addNodeToSelectionGroup(Node & node)
 {
     m_editorData->addNodeToSelectionGroup(node);
+    m_mainWindow.enableConnectSelectedNodesAction(areSelectedNodesConnectable());
+    m_mainWindow.enableDisconnectSelectedNodesAction(areSelectedNodesDisconnectable());
 }
 
 void Mediator::adjustSceneRect()
@@ -114,6 +116,7 @@ void Mediator::clearSelectionGroup()
 {
     m_editorData->clearSelectionGroup();
     m_mainWindow.enableConnectSelectedNodesAction(false);
+    m_mainWindow.enableDisconnectSelectedNodesAction(false);
 }
 
 bool Mediator::canBeSaved() const
@@ -163,12 +166,21 @@ void Mediator::connectGraphToImageManager()
 void Mediator::connectSelectedNodes()
 {
     L().debug() << "Connecting selected nodes: " << m_editorData->selectionGroupSize();
-    if (m_editorData->selectionGroupSize() > 1) {
+    if (areSelectedNodesConnectable()) {
         saveUndoPoint();
         for (auto && edge : m_editorData->connectSelectedNodes()) {
             connectEdgeToUndoMechanism(edge);
         }
         addExistingGraphToScene();
+    }
+}
+
+void Mediator::disconnectSelectedNodes()
+{
+    L().debug() << "Disconnecting selected nodes: " << m_editorData->selectionGroupSize();
+    if (areSelectedNodesDisconnectable()) {
+        saveUndoPoint();
+        m_editorData->disconnectSelectedNodes();
     }
 }
 
@@ -356,6 +368,11 @@ bool Mediator::areSelectedNodesConnectable() const
     return m_editorData->areSelectedNodesConnectable();
 }
 
+bool Mediator::areSelectedNodesDisconnectable() const
+{
+    return m_editorData->areSelectedNodesDisconnectable();
+}
+
 bool Mediator::isLeafNode(Node & node)
 {
     auto && graph = m_editorData->mindMapData()->graph();
@@ -426,12 +443,6 @@ void Mediator::performNodeAction(const NodeAction & action)
     switch (action.type) {
     case NodeAction::Type::None:
         break;
-    case NodeAction::Type::ConnectSelected:
-        connectSelectedNodes();
-        break;
-    case NodeAction::Type::Copy:
-        m_editorData->copySelectedNodes();
-        break;
     case NodeAction::Type::AttachImage: {
         const Image image { action.image, action.fileName.toStdString() };
         const auto id = m_editorData->mindMapData()->imageManager().addImage(image);
@@ -440,10 +451,19 @@ void Mediator::performNodeAction(const NodeAction & action)
             m_editorData->setImageRefForSelectedNodes(id);
         }
     } break;
+    case NodeAction::Type::ConnectSelected:
+        connectSelectedNodes();
+        break;
+    case NodeAction::Type::Copy:
+        m_editorData->copySelectedNodes();
+        break;
     case NodeAction::Type::Delete:
         saveUndoPoint();
         m_editorView->resetDummyDragItems();
         m_editorData->deleteSelectedNodes();
+        break;
+    case NodeAction::Type::DisconnectSelected:
+        disconnectSelectedNodes();
         break;
     case NodeAction::Type::Paste:
         paste();
@@ -511,6 +531,7 @@ void Mediator::toggleNodeInSelectionGroup(Node & node)
 {
     m_editorData->toggleNodeInSelectionGroup(node);
     m_mainWindow.enableConnectSelectedNodesAction(areSelectedNodesConnectable());
+    m_mainWindow.enableDisconnectSelectedNodesAction(areSelectedNodesDisconnectable());
 }
 
 bool Mediator::saveMindMapAs(QString fileName)

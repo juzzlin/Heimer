@@ -24,7 +24,11 @@ public:
 
 private slots:
 
+    void testAddAndDeleteEdge();
+
     void testGroupConnection();
+
+    void testGroupDisconnection();
 
     void testGroupDelete();
 
@@ -57,6 +61,10 @@ private slots:
     void testUndoEdgeText();
 
     void testUndoEdgeReversed();
+
+    void testUndoGroupConnection();
+
+    void testUndoGroupDisconnection();
 
     void testUndoNodeColor();
 

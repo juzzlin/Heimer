@@ -24,10 +24,11 @@ struct NodeAction
     enum class Type
     {
         None,
+        AttachImage,
         ConnectSelected,
         Copy,
-        AttachImage,
         Delete,
+        DisconnectSelected,
         Paste,
         RemoveAttachedImage,
         SetNodeColor,

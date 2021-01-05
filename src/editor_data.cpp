@@ -236,7 +236,14 @@ void EditorData::deleteEdge(Edge & edge)
 {
     assert(m_mindMapData);
 
-    if (const auto deletedEdge = m_mindMapData->graph().deleteEdge(edge.sourceNode().index(), edge.targetNode().index())) {
+    deleteEdge(edge.sourceNode().index(), edge.targetNode().index());
+}
+
+void EditorData::deleteEdge(int index0, int index1)
+{
+    assert(m_mindMapData);
+
+    if (const auto deletedEdge = m_mindMapData->graph().deleteEdge(index0, index1)) {
         removeEdgeFromScene(*deletedEdge);
     }
 }
@@ -279,9 +286,9 @@ NodePtr EditorData::addNodeAt(QPointF pos)
     return node;
 }
 
-std::vector<std::pair<Node *, Node *>> EditorData::getConnectableNodes() const
+EditorData::NodePairVector EditorData::getConnectableNodes() const
 {
-    std::vector<std::pair<Node *, Node *>> nodes;
+    NodePairVector nodes;
     for (size_t i = 0; i + 1 < m_selectionGroup->nodes().size(); i++) {
         const auto c0 = m_selectionGroup->nodes().at(i);
         const auto c1 = m_selectionGroup->nodes().at(i + 1);
@@ -297,6 +304,26 @@ bool EditorData::areSelectedNodesConnectable() const
     return !getConnectableNodes().empty();
 }
 
+EditorData::NodePairVector EditorData::getDisconnectableNodes() const
+{
+    NodePairVector nodes;
+    for (size_t i = 0; i < m_selectionGroup->nodes().size(); i++) {
+        for (size_t j = i + 1; j < m_selectionGroup->nodes().size(); j++) {
+            const auto c0 = m_selectionGroup->nodes().at(i);
+            const auto c1 = m_selectionGroup->nodes().at(j);
+            if (m_mindMapData->graph().areDirectlyConnected(c0->index(), c1->index())) {
+                nodes.push_back({ c0, c1 });
+            }
+        }
+    }
+    return nodes;
+}
+
+bool EditorData::areSelectedNodesDisconnectable() const
+{
+    return !getDisconnectableNodes().empty();
+}
+
 std::vector<std::shared_ptr<Edge>> EditorData::connectSelectedNodes()
 {
     std::vector<std::shared_ptr<Edge>> edges;
@@ -304,6 +331,14 @@ std::vector<std::shared_ptr<Edge>> EditorData::connectSelectedNodes()
         edges.push_back(addEdge(std::make_shared<Edge>(*nodePair.first, *nodePair.second)));
     }
     return edges;
+}
+
+void EditorData::disconnectSelectedNodes()
+{
+    for (auto && nodePair : getDisconnectableNodes()) {
+        deleteEdge(nodePair.first->index(), nodePair.second->index());
+        deleteEdge(nodePair.second->index(), nodePair.first->index());
+    }
 }
 
 std::vector<std::shared_ptr<Node>> EditorData::copiedNodes() const

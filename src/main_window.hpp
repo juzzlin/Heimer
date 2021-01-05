@@ -60,6 +60,8 @@ public:
 
     void enableConnectSelectedNodesAction(bool enable);
 
+    void enableDisconnectSelectedNodesAction(bool enable);
+
     void enableWidgetSignals(bool enable);
 
     void initialize();
@@ -118,6 +120,8 @@ signals:
 private:
     void addConnectSelectedNodesAction(QMenu & menu);
 
+    void addDisconnectSelectedNodesAction(QMenu & menu);
+
     void addRedoAction(QMenu & menu);
 
     void addUndoAction(QMenu & menu);
@@ -155,6 +159,8 @@ private:
     WhatsNewDlg * m_whatsNewDlg;
 
     QAction * m_connectSelectedNodesAction = nullptr;
+
+    QAction * m_disconnectSelectedNodesAction = nullptr;
 
     QAction * m_fullScreenAction = nullptr;
 

@@ -118,14 +118,9 @@ void Graph::addEdge(EdgePtr newEdge)
     // Add if such edge doesn't already exist
     const auto c0 = newEdge->sourceNode().index();
     const auto c1 = newEdge->targetNode().index();
-    if (std::count_if(
-          m_edges.begin(), m_edges.end(), [=](const EdgePtr & edge) {
-              return edge->sourceNode().index() == c0 && edge->targetNode().index() == c1;
-          })
-        == 0) {
-        m_edges.push_back(newEdge);
+    if (!m_connectionHash.count(getKey(c0, c1))) {
         m_connectionHash.insert(getKey(c0, c1));
-        m_connectionHash.insert(getKey(c1, c0));
+        m_edges.push_back(newEdge);
     }
 }
 

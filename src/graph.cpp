@@ -25,13 +25,22 @@
 #include <stdexcept>
 #include <string>
 
+namespace {
+int64_t getKey(int c0, int c1)
+{
+    return (int64_t(c0) << 32) + c1;
+}
+} // namespace
+
 Graph::Graph()
 {
 }
 
 void Graph::clear()
 {
+    m_edges.clear();
     m_nodes.clear();
+    m_connectionHash.clear();
 }
 
 void Graph::addNode(NodePtr node)
@@ -60,6 +69,8 @@ EdgePtr Graph::deleteEdge(int index0, int index1)
         edgeErased = edgeIter != m_edges.end();
         if (edgeErased) {
             deletedEdge = *edgeIter;
+            m_connectionHash.erase(getKey(index0, index1));
+            m_connectionHash.erase(getKey(index1, index0));
             m_deletedEdges.push_back(*edgeIter);
             m_edges.erase(edgeIter);
         }
@@ -87,6 +98,8 @@ std::pair<NodePtr, Graph::EdgeVector> Graph::deleteNode(int index)
             edgeErased = edgeIter != m_edges.end();
             if (edgeErased) {
                 deletedEdges.push_back(*edgeIter);
+                m_connectionHash.erase(getKey((*edgeIter)->sourceNode().index(), (*edgeIter)->targetNode().index()));
+                m_connectionHash.erase(getKey((*edgeIter)->targetNode().index(), (*edgeIter)->sourceNode().index()));
                 m_deletedEdges.push_back(*edgeIter);
                 m_edges.erase(edgeIter);
             }
@@ -103,12 +116,16 @@ std::pair<NodePtr, Graph::EdgeVector> Graph::deleteNode(int index)
 void Graph::addEdge(EdgePtr newEdge)
 {
     // Add if such edge doesn't already exist
+    const auto c0 = newEdge->sourceNode().index();
+    const auto c1 = newEdge->targetNode().index();
     if (std::count_if(
           m_edges.begin(), m_edges.end(), [=](const EdgePtr & edge) {
-              return edge->sourceNode().index() == newEdge->sourceNode().index() && edge->targetNode().index() == newEdge->targetNode().index();
+              return edge->sourceNode().index() == c0 && edge->targetNode().index() == c1;
           })
         == 0) {
         m_edges.push_back(newEdge);
+        m_connectionHash.insert(getKey(c0, c1));
+        m_connectionHash.insert(getKey(c1, c0));
     }
 }
 
@@ -119,12 +136,7 @@ bool Graph::areDirectlyConnected(NodePtr node0, NodePtr node1)
 
 bool Graph::areDirectlyConnected(int index0, int index1)
 {
-    for (auto && edge : m_edges) {
-        if ((edge->sourceNode().index() == index0 && edge->targetNode().index() == index1) || (edge->sourceNode().index() == index1 && edge->targetNode().index() == index0)) {
-            return true;
-        }
-    }
-    return false;
+    return m_connectionHash.count(getKey(index0, index1)) || m_connectionHash.count(getKey(index1, index0));
 }
 
 size_t Graph::numNodes() const
@@ -196,8 +208,7 @@ Graph::NodeVector Graph::getNodesConnectedToNode(NodePtr node)
 Graph::~Graph()
 {
     // Ensure that edges are always deleted before nodes
-    m_edges.clear();
-    m_nodes.clear();
+    clear();
 
     juzzlin::L().debug() << "Graph deleted";
 }

@@ -19,8 +19,9 @@
 #include "edge.hpp"
 #include "node.hpp"
 
-#include <map>
+#include <cstdint>
 #include <set>
+#include <unordered_set>
 
 class Node;
 
@@ -86,6 +87,8 @@ private:
     NodeVector m_deletedNodes;
 
     EdgeVector m_deletedEdges;
+
+    std::unordered_set<int64_t> m_connectionHash;
 
     int m_count = 0;
 };

@@ -42,18 +42,22 @@ LayoutOptimizationDialog::LayoutOptimizationDialog(QWidget & parent, MindMapData
     connect(m_cancelButton, &QPushButton::clicked, this, &QDialog::reject);
 
     connect(m_optimizeButton, &QPushButton::clicked, [=] {
-        emit undoPointRequested();
-        if (m_layoutOptimizer.initialize(m_aspectRatioSpinBox->value(), m_minEdgeLengthSpinBox->value())) {
-            const auto optimizationInfo = m_layoutOptimizer.optimize();
-            if (optimizationInfo.changes) {
-                const double gain = (optimizationInfo.finalCost - optimizationInfo.initialCost) / optimizationInfo.initialCost;
-                juzzlin::L().info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
-            } else {
-                juzzlin::L().info() << "No changes";
+        m_cancelButton->setEnabled(false);
+        m_optimizeButton->setEnabled(false);
+        QTimer::singleShot(0, [=] { // Trick to make disabled buttons apply immediately
+            emit undoPointRequested();
+            if (m_layoutOptimizer.initialize(m_aspectRatioSpinBox->value(), m_minEdgeLengthSpinBox->value())) {
+                const auto optimizationInfo = m_layoutOptimizer.optimize();
+                if (optimizationInfo.changes) {
+                    const double gain = (optimizationInfo.finalCost - optimizationInfo.initialCost) / optimizationInfo.initialCost;
+                    juzzlin::L().info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
+                } else {
+                    juzzlin::L().info() << "No changes";
+                }
+                m_layoutOptimizer.extract();
             }
-            m_layoutOptimizer.extract();
-        }
-        finishOptimization();
+            finishOptimization();
+        });
     });
 
     m_layoutOptimizer.setProgressCallback([=](double progress) {

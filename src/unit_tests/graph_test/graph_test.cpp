@@ -141,7 +141,10 @@ void GraphTest::testDeleteEdge()
 
     QCOMPARE(dut.areDirectlyConnected(node0, node1), true);
 
-    dut.deleteEdge(node0->index(), node1->index());
+    const auto deletedEdge = dut.deleteEdge(node0->index(), node1->index());
+
+    QCOMPARE(deletedEdge->sourceNode().index(), node0->index());
+    QCOMPARE(deletedEdge->targetNode().index(), node1->index());
 
     QCOMPARE(dut.getEdges().size(), static_cast<size_t>(0));
 

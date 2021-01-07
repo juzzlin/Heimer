@@ -20,8 +20,8 @@
 #include "node.hpp"
 
 #include <cstdint>
-#include <set>
-#include <unordered_set>
+#include <unordered_map>
+#include <vector>
 
 class Node;
 
@@ -71,7 +71,7 @@ public:
 
     EdgeVector getEdgesToNode(NodePtr node);
 
-    const EdgeVector & getEdges() const;
+    EdgeVector getEdges() const;
 
     NodePtr getNode(int index);
 
@@ -82,13 +82,11 @@ public:
 private:
     NodeVector m_nodes;
 
-    EdgeVector m_edges;
+    std::unordered_map<int64_t, EdgePtr> m_edges;
 
     NodeVector m_deletedNodes;
 
     EdgeVector m_deletedEdges;
-
-    std::unordered_set<int64_t> m_connectionHash;
 
     int m_count = 0;
 };

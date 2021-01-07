@@ -212,6 +212,8 @@ private:
 
     void setupMindMapAfterUndoOrRedo();
 
+    void updateNodeConnectionActions();
+
     std::shared_ptr<EditorData> m_editorData;
 
     std::unique_ptr<EditorScene> m_editorScene;

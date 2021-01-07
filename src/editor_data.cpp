@@ -301,7 +301,14 @@ EditorData::NodePairVector EditorData::getConnectableNodes() const
 
 bool EditorData::areSelectedNodesConnectable() const
 {
-    return !getConnectableNodes().empty();
+    for (size_t i = 0; i + 1 < m_selectionGroup->nodes().size(); i++) {
+        const auto c0 = m_selectionGroup->nodes().at(i);
+        const auto c1 = m_selectionGroup->nodes().at(i + 1);
+        if (!m_mindMapData->graph().areDirectlyConnected(c0->index(), c1->index())) {
+            return true;
+        }
+    }
+    return false;
 }
 
 EditorData::NodePairVector EditorData::getDisconnectableNodes() const
@@ -321,7 +328,16 @@ EditorData::NodePairVector EditorData::getDisconnectableNodes() const
 
 bool EditorData::areSelectedNodesDisconnectable() const
 {
-    return !getDisconnectableNodes().empty();
+    for (size_t i = 0; i < m_selectionGroup->nodes().size(); i++) {
+        for (size_t j = i + 1; j < m_selectionGroup->nodes().size(); j++) {
+            const auto c0 = m_selectionGroup->nodes().at(i);
+            const auto c1 = m_selectionGroup->nodes().at(j);
+            if (m_mindMapData->graph().areDirectlyConnected(c0->index(), c1->index())) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 std::vector<std::shared_ptr<Edge>> EditorData::connectSelectedNodes()

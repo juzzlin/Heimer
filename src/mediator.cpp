@@ -103,8 +103,7 @@ void Mediator::addItem(QGraphicsItem & item)
 void Mediator::addNodeToSelectionGroup(Node & node)
 {
     m_editorData->addNodeToSelectionGroup(node);
-    m_mainWindow.enableConnectSelectedNodesAction(areSelectedNodesConnectable());
-    m_mainWindow.enableDisconnectSelectedNodesAction(areSelectedNodesDisconnectable());
+    updateNodeConnectionActions();
 }
 
 void Mediator::adjustSceneRect()
@@ -115,8 +114,7 @@ void Mediator::adjustSceneRect()
 void Mediator::clearSelectionGroup()
 {
     m_editorData->clearSelectionGroup();
-    m_mainWindow.enableConnectSelectedNodesAction(false);
-    m_mainWindow.enableDisconnectSelectedNodesAction(false);
+    updateNodeConnectionActions();
 }
 
 bool Mediator::canBeSaved() const
@@ -172,6 +170,7 @@ void Mediator::connectSelectedNodes()
             connectEdgeToUndoMechanism(edge);
         }
         addExistingGraphToScene();
+        updateNodeConnectionActions();
     }
 }
 
@@ -181,6 +180,7 @@ void Mediator::disconnectSelectedNodes()
     if (areSelectedNodesDisconnectable()) {
         saveUndoPoint();
         m_editorData->disconnectSelectedNodes();
+        updateNodeConnectionActions();
     }
 }
 
@@ -530,8 +530,7 @@ void Mediator::removeItem(QGraphicsItem & item)
 void Mediator::toggleNodeInSelectionGroup(Node & node)
 {
     m_editorData->toggleNodeInSelectionGroup(node);
-    m_mainWindow.enableConnectSelectedNodesAction(areSelectedNodesConnectable());
-    m_mainWindow.enableDisconnectSelectedNodesAction(areSelectedNodesDisconnectable());
+    updateNodeConnectionActions();
 }
 
 bool Mediator::saveMindMapAs(QString fileName)
@@ -687,6 +686,12 @@ void Mediator::setupMindMapAfterUndoOrRedo()
 
     m_editorScene->setSceneRect(oldSceneRect);
     m_editorView->centerOn(oldCenter);
+}
+
+void Mediator::updateNodeConnectionActions()
+{
+    m_mainWindow.enableConnectSelectedNodesAction(areSelectedNodesConnectable());
+    m_mainWindow.enableDisconnectSelectedNodesAction(areSelectedNodesDisconnectable());
 }
 
 void Mediator::undo()

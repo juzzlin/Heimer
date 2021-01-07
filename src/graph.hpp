@@ -75,12 +75,12 @@ public:
 
     NodePtr getNode(int index);
 
-    const NodeVector & getNodes() const;
+    NodeVector getNodes() const;
 
     NodeVector getNodesConnectedToNode(NodePtr node);
 
 private:
-    NodeVector m_nodes;
+    std::unordered_map<int, NodePtr> m_nodes;
 
     std::unordered_map<int64_t, EdgePtr> m_edges;
 

@@ -52,7 +52,7 @@ void Graph::addNode(NodePtr node)
         }
     }
 
-    m_nodes.push_back(node);
+    m_nodes[node->index()] = node;
 }
 
 EdgePtr Graph::deleteEdge(int index0, int index1)
@@ -71,10 +71,7 @@ std::pair<NodePtr, Graph::EdgeVector> Graph::deleteNode(int index)
 {
     NodePtr deletedNode;
     Graph::EdgeVector deletedEdges;
-    const auto iter = std::find_if(m_nodes.begin(), m_nodes.end(), [=](const NodePtr & node) {
-        return node->index() == index;
-    });
-
+    const auto iter = m_nodes.find(index);
     if (iter != m_nodes.end()) {
         auto edgeIter = m_edges.begin();
         while (edgeIter != m_edges.end()) {
@@ -86,7 +83,7 @@ std::pair<NodePtr, Graph::EdgeVector> Graph::deleteNode(int index)
                 edgeIter++;
             }
         }
-        deletedNode = *iter;
+        deletedNode = iter->second;
         m_deletedNodes.push_back(deletedNode);
         m_nodes.erase(iter);
     }
@@ -153,32 +150,32 @@ Graph::EdgeVector Graph::getEdgesToNode(NodePtr node)
 
 NodePtr Graph::getNode(int index)
 {
-    auto iter = std::find_if(m_nodes.begin(), m_nodes.end(), [=](const NodePtr & node) {
-        return node->index() == index;
-    });
+    const auto iter = m_nodes.find(index);
     if (iter != m_nodes.end()) {
-        return *iter;
+        return iter->second;
     }
     throw std::runtime_error("Invalid node index: " + std::to_string(index));
 }
 
-const Graph::NodeVector & Graph::getNodes() const
+Graph::NodeVector Graph::getNodes() const
 {
-    return m_nodes;
+    NodeVector nodes;
+    nodes.reserve(m_nodes.size());
+    for (auto && node : m_nodes) {
+        nodes.push_back(node.second);
+    }
+    return nodes;
 }
 
 Graph::NodeVector Graph::getNodesConnectedToNode(NodePtr node)
 {
     NodeVector result;
 
-    auto && from = getEdgesFromNode(node);
-    auto && to = getEdgesToNode(node);
-
-    for (auto && edge : to) {
+    for (auto && edge : getEdgesToNode(node)) {
         result.push_back(getNode(edge->sourceNode().index()));
     }
 
-    for (auto && edge : from) {
+    for (auto && edge : getEdgesFromNode(node)) {
         result.push_back(getNode(edge->targetNode().index()));
     }
 

@@ -151,7 +151,7 @@ public:
 
     void setSelectedEdge(Edge * edge);
 
-    void toggleNodeInSelectionGroup(Node & node);
+    void toggleNodeInSelectionGroup(Node & node, bool updateNodeConnectionActions = true);
 
     void undo();
 

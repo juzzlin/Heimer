@@ -527,10 +527,12 @@ void Mediator::removeItem(QGraphicsItem & item)
     m_editorScene->removeItem(&item);
 }
 
-void Mediator::toggleNodeInSelectionGroup(Node & node)
+void Mediator::toggleNodeInSelectionGroup(Node & node, bool updateNodeConnectionActions)
 {
     m_editorData->toggleNodeInSelectionGroup(node);
-    updateNodeConnectionActions();
+    if (updateNodeConnectionActions) {
+        this->updateNodeConnectionActions();
+    }
 }
 
 bool Mediator::saveMindMapAs(QString fileName)
@@ -641,9 +643,10 @@ void Mediator::setRectagleSelection(QRectF rect)
     const auto items = m_editorScene->items(rect, Qt::ContainsItemShape);
     for (auto && item : items) {
         if (const auto node = dynamic_cast<Node *>(item)) {
-            toggleNodeInSelectionGroup(*node);
+            toggleNodeInSelectionGroup(*node, false);
         }
     }
+    updateNodeConnectionActions();
 }
 
 void Mediator::setSelectedEdge(Edge * edge)

@@ -3,6 +3,15 @@ x.y.z
 
 New features:
 
+Bug fixes:
+
+Other:
+
+2.2.0
+=====
+
+New features:
+
 * Fix GitHub Issue #126: Extending limit of the canvas/background
   - The drawing area is now unlimited
 
@@ -16,10 +25,22 @@ Bug fixes:
 
 * Fix the way a node is selected on right-click
 
+* Fix copy paste from background context menu
+
+* Disable optimization buttons when optimization in progress
+
+* Don't create Text element if edge text is empty
+
+* Don't create Text element if node text is empty
+
 Other:
 
+* Make a distinction between general colors and node colors
+
 * Make zooming nonlinear and increase range
+
 * Make pasting of big group of nodes much faster
+
 * Clear selected nodes when a handle of unselected node is clicked
 
 2.1.0

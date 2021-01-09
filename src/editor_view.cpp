@@ -444,11 +444,21 @@ void EditorView::wheelEvent(QWheelEvent * event)
 
 void EditorView::zoom(double amount)
 {
-    m_scale *= amount;
-    m_scale = std::min(m_scale, Constants::View::ZOOM_MAX);
-    m_scale = std::max(m_scale, Constants::View::ZOOM_MIN);
-
-    updateScale();
+    const auto mappedSceneRect = QRectF(
+      mapFromScene(scene()->sceneRect().topLeft()),
+      mapFromScene(scene()->sceneRect().bottomRight()));
+    juzzlin::L().debug() << "Current scale: " << m_scale;
+    juzzlin::L().debug() << "Mapped scene rectangle width: " << mappedSceneRect.width();
+    juzzlin::L().debug() << "View rectangle width: " << rect().width();
+    const auto testScale = amount * amount;
+    if (amount > 1.0 || (mappedSceneRect.width() * testScale > rect().width() && mappedSceneRect.height() * testScale > rect().height())) {
+        m_scale *= amount;
+        m_scale = std::min(m_scale, Constants::View::ZOOM_MAX);
+        m_scale = std::max(m_scale, Constants::View::ZOOM_MIN);
+        updateScale();
+    } else {
+        juzzlin::L().debug() << "Zoom end";
+    }
 }
 
 void EditorView::zoomToFit(QRectF nodeBoundingRect)

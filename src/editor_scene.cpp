@@ -30,14 +30,15 @@
 
 EditorScene::EditorScene()
 {
-    const auto r = Constants::Scene::INITIAL_SIZE;
-    setSceneRect(-r, -r, r * 2, r * 2);
+    const auto rW = Constants::Scene::INITIAL_SIZE;
+    const auto rH = Constants::Scene::INITIAL_SIZE;
+    setSceneRect(-rW, -rH, rW * 2, rH * 2);
 }
 
 void EditorScene::adjustSceneRect()
 {
-    const auto adjustmentX = sceneRect().width() / 2;
-    const auto adjustmentY = sceneRect().height() / 2;
+    const auto adjustmentX = Constants::Scene::INITIAL_SIZE;
+    const auto adjustmentY = Constants::Scene::INITIAL_SIZE;
     while (!containsAll()) {
         setSceneRect(sceneRect().adjusted(-adjustmentX, -adjustmentY, adjustmentX, adjustmentY));
         juzzlin::L().debug() << "New scene rect: " << sceneRect().x() << " " << sceneRect().y() << " " << sceneRect().width() << " " << sceneRect().height();

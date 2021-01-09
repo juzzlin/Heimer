@@ -77,8 +77,9 @@ std::pair<NodePtr, Graph::EdgeVector> Graph::deleteNode(int index)
         while (edgeIter != m_edges.end()) {
             const auto edgePair = *edgeIter;
             if (edgePair.second->sourceNode().index() == index || edgePair.second->targetNode().index() == index) {
-                edgeIter = m_edges.erase(edgeIter);
                 deletedEdges.push_back(edgePair.second);
+                m_deletedEdges.push_back(edgePair.second);
+                edgeIter = m_edges.erase(edgeIter);
             } else {
                 edgeIter++;
             }

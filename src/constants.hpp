@@ -180,7 +180,7 @@ static const double ADJUSTMENT_MARGIN = .25;
 
 static const QColor BARRIER_COLOR { 255, 0, 0, 128 };
 
-static const int INITIAL_SIZE = 5000;
+static const int INITIAL_SIZE = 10000;
 
 } // namespace Scene
 

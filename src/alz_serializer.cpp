@@ -290,7 +290,7 @@ static QString readFirstTextNodeContent(const QDomElement & element)
         const auto child = element.childNodes().at(i);
         if (child.isText()) {
             // See: https://github.com/juzzlin/Heimer/issues/73
-            return child.toText().nodeValue().replace(13, "");
+            return child.toText().nodeValue().replace(QChar(QChar::CarriageReturn), "");
         }
     }
     return {};

@@ -439,7 +439,7 @@ void EditorView::setEdgeWidth(double edgeWidth)
 
 void EditorView::wheelEvent(QWheelEvent * event)
 {
-    zoom(event->delta() > 0 ? Constants::View::ZOOM_SENSITIVITY : 1.0 / Constants::View::ZOOM_SENSITIVITY);
+    zoom(!event->angleDelta().isNull() ? Constants::View::ZOOM_SENSITIVITY : 1.0 / Constants::View::ZOOM_SENSITIVITY);
 }
 
 void EditorView::zoom(double amount)

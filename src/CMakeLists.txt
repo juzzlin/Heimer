@@ -82,9 +82,9 @@ set(RCS
     ${CMAKE_BINARY_DIR}/data/translations/translations.qrc
 )
 
-qt5_add_resources(RC_SRC ${RCS})
-qt5_add_translation(QM ${TS_FILES})
-qt5_wrap_ui(UI_HDRS ${UIS})
+qt6_add_resources(RC_SRC ${RCS})
+qt6_add_translation(QM ${TS_FILES})
+qt6_wrap_ui(UI_HDRS ${UIS})
 
 # We need this to be able to include headers produced by uic in our code
 include_directories(${CMAKE_BINARY_DIR})
@@ -116,9 +116,9 @@ endif()
 
 # Add the library
 add_library(${LIBRARY_NAME} STATIC ${LIB_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
-target_link_libraries(${LIBRARY_NAME} Qt5::Widgets Qt5::Svg Qt5::Xml SimpleLogger_static Argengine_static)
+target_link_libraries(${LIBRARY_NAME} Qt6::Widgets Qt6::Svg Qt6::Xml SimpleLogger_static Argengine_static)
 
 # Add the executable
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 add_executable(${BINARY_NAME} WIN32 ${APP_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
-target_link_libraries(${BINARY_NAME} Qt5::Widgets ${LIBRARY_NAME})
+target_link_libraries(${BINARY_NAME} Qt6::Widgets ${LIBRARY_NAME})

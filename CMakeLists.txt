@@ -91,12 +91,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(QT_MIN_VER 5.5.1) # The version in Ubuntu 16.04
 
-find_package(Qt6Core ${QT_MIN_VER} REQUIRED)
-find_package(Qt6Xml ${QT_MIN_VER} REQUIRED)
-find_package(Qt6Widgets ${QT_MIN_VER} REQUIRED)
-find_package(Qt6LinguistTools ${QT_MIN_VER} REQUIRED)
-find_package(Qt6Svg ${QT_MIN_VER} REQUIRED)
-find_package(Qt6Test ${QT_MIN_VER} REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Xml Widgets LinguistTools Svg Test REQUIRED)
 
 # Install paths depend on the build type and target platform
 setup_install_targets()

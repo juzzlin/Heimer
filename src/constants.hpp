@@ -32,7 +32,7 @@ static constexpr auto APPLICATION_PACKAGE_TYPE = PACKAGE_TYPE;
 
 static constexpr auto APPLICATION_VERSION = VERSION;
 
-static constexpr auto COPYRIGHT = "Copyright (c) 2018-2020 Jussi Lind";
+static constexpr auto COPYRIGHT = "Copyright (c) 2018-2021 Jussi Lind";
 
 static constexpr auto FILE_EXTENSION = ".alz";
 

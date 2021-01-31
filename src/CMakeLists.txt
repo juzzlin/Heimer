@@ -82,9 +82,16 @@ set(RCS
     ${CMAKE_BINARY_DIR}/data/translations/translations.qrc
 )
 
-qt5_add_resources(RC_SRC ${RCS})
-qt5_add_translation(QM ${TS_FILES})
-qt5_wrap_ui(UI_HDRS ${UIS})
+if(${QT_VERSION_MAJOR} STREQUAL "6")
+    qt_add_resources(RC_SRC ${RCS})
+    qt_add_translation(QM ${TS_FILES})
+    qt_wrap_ui(UI_HDRS ${UIS})
+# This is needed for Qt < 5.15
+else()
+    qt5_add_resources(RC_SRC ${RCS})
+    qt5_add_translation(QM ${TS_FILES})
+    qt5_wrap_ui(UI_HDRS ${UIS})
+endif()
 
 # We need this to be able to include headers produced by uic in our code
 include_directories(${CMAKE_BINARY_DIR})

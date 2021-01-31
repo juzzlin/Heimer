@@ -64,7 +64,11 @@ static void initTranslations(QTranslator & appTranslator, QTranslator & qtTransl
     // Qt's built-in translations
     for (auto && lang : langs) {
         L().info() << "Trying Qt translations for '" << lang.toStdString() << "'";
+#if QT_VERSION >= 0x60000
+        if (qtTranslator.load("qt_" + lang, QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
+#else
         if (qtTranslator.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
+#endif
             app.installTranslator(&qtTranslator);
             L().info() << "Loaded Qt translations for '" << lang.toStdString() << "'";
             break;
@@ -94,7 +98,7 @@ void Application::parseArgs(int argc, char ** argv)
 
     const std::set<std::string> languages = { "fi", "fr", "it", "nl" };
     std::string languageHelp;
-    for (auto lang : languages) {
+    for (auto && lang : languages) {
         languageHelp += lang + ", ";
     }
     languageHelp.pop_back();

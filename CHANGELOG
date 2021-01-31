@@ -7,6 +7,8 @@ Bug fixes:
 
 Other:
 
+* Fix GitHub Issue #125: Add support for Qt 6
+
 2.2.0
 =====
 

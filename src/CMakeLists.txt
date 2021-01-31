@@ -116,9 +116,9 @@ endif()
 
 # Add the library
 add_library(${LIBRARY_NAME} STATIC ${LIB_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
-target_link_libraries(${LIBRARY_NAME} Qt5::Widgets Qt5::Svg Qt5::Xml SimpleLogger_static Argengine_static)
+target_link_libraries(${LIBRARY_NAME} Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Svg Qt${QT_VERSION_MAJOR}::Xml SimpleLogger_static Argengine_static)
 
 # Add the executable
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 add_executable(${BINARY_NAME} WIN32 ${APP_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
-target_link_libraries(${BINARY_NAME} Qt5::Widgets ${LIBRARY_NAME})
+target_link_libraries(${BINARY_NAME} Qt${QT_VERSION_MAJOR}::Widgets ${LIBRARY_NAME})

@@ -31,6 +31,10 @@ public:
     bool valueVisible() const;
     void showValue(bool showValue);
 
+    DuQFSlider *slider() const;
+
+    QSpinBox *spinBox() const;
+
 signals:
     void valueChanged(int value);
 
@@ -42,8 +46,8 @@ private:
     void setupUi();
     void connectEvents();
     void updateSliderFormat();
-    DuQFSlider *slider;
-    QSpinBox *spinBox;
+    DuQFSlider *_slider;
+    QSpinBox *_spinBox;
     QPoint _originalMousePos;
     QString _suffix;
     QString _prefix;

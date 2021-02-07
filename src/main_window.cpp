@@ -195,6 +195,7 @@ QWidgetAction * MainWindow::createCornerRadiusAction()
 {
     m_cornerRadiusSpinBox->setMinimum(0);
     m_cornerRadiusSpinBox->setMaximum(Constants::Node::MAX_CORNER_RADIUS);
+    m_cornerRadiusSpinBox->spinBox()->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
     const auto dummyWidget = new QWidget(this);
     const auto layout = new QHBoxLayout(dummyWidget);
@@ -214,7 +215,10 @@ QWidgetAction * MainWindow::createCornerRadiusAction()
 
 QWidgetAction * MainWindow::createEdgeWidthAction()
 {
+    m_edgeWidthSpinBox->spinBox()->setSingleStep(Constants::Edge::STEP);
+    m_edgeWidthSpinBox->setMinimum(Constants::Edge::MIN_SIZE);
     m_edgeWidthSpinBox->setMaximum(Constants::Edge::MAX_SIZE);
+    m_edgeWidthSpinBox->spinBox()->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
     const auto dummyWidget = new QWidget(this);
     const auto layout = new QHBoxLayout(dummyWidget);
@@ -236,6 +240,7 @@ QWidgetAction * MainWindow::createTextSizeAction()
 {
     m_textSizeSpinBox->setMinimum(Constants::Text::MIN_SIZE);
     m_textSizeSpinBox->setMaximum(Constants::Text::MAX_SIZE);
+    m_textSizeSpinBox->spinBox()->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
     const auto dummyWidget = new QWidget(this);
     const auto layout = new QHBoxLayout(dummyWidget);

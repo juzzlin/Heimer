@@ -22,9 +22,9 @@ void DuQFDoubleSpinBox::setupUi()
     horizontalLayout->setSpacing(0);
     horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
-    spinBox = new QDoubleSpinBox(spinBoxPage);
-    spinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
-    horizontalLayout->addWidget(spinBox);
+    _spinBox = new QDoubleSpinBox(spinBoxPage);
+    //_spinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
+    horizontalLayout->addWidget(_spinBox);
 
     this->addWidget(spinBoxPage);
 
@@ -34,95 +34,105 @@ void DuQFDoubleSpinBox::setupUi()
     sliderLayout->setSpacing(0);
     sliderLayout->setContentsMargins(0, 0, 0, 0);
 
-    slider = new DuQFDoubleSlider();
-    sliderLayout->addWidget(slider);
+    _slider = new DuQFDoubleSlider();
+    sliderLayout->addWidget(_slider);
 
     this->addWidget(sliderPage);
 
-    spinBox->installEventFilter(this);
+    _spinBox->installEventFilter(this);
 }
 
 void DuQFDoubleSpinBox::connectEvents()
 {
-    connect(slider,SIGNAL(valueChanged(double)), this, SLOT(slider_valueChanged(double)));
-    connect(spinBox,SIGNAL(editingFinished()), this, SLOT(spinBox_editingFinished()));
-    connect(spinBox,SIGNAL(valueChanged(double)), this, SLOT(spinBox_valueChanged(double)));
+    connect(_slider,SIGNAL(valueChanged(double)), this, SLOT(slider_valueChanged(double)));
+    connect(_spinBox,SIGNAL(editingFinished()), this, SLOT(spinBox_editingFinished()));
+    connect(_spinBox,SIGNAL(valueChanged(double)), this, SLOT(spinBox_valueChanged(double)));
+}
+
+DuQFDoubleSlider *DuQFDoubleSpinBox::slider() const
+{
+    return _slider;
+}
+
+QDoubleSpinBox *DuQFDoubleSpinBox::spinBox() const
+{
+    return _spinBox;
 }
 
 QString DuQFDoubleSpinBox::prefix() const
 {
-    return slider->prefix();
+    return _slider->prefix();
 }
 
 void DuQFDoubleSpinBox::setPrefix(const QString &prefix)
 {
-    slider->setPrefix(prefix);
+    _slider->setPrefix(prefix);
 }
 
 QString DuQFDoubleSpinBox::suffix() const
 {
-    return slider->suffix();
+    return _slider->suffix();
 }
 
 void DuQFDoubleSpinBox::setSuffix(const QString &suffix)
 {
-    slider->setSuffix(suffix);
+    _slider->setSuffix(suffix);
 }
 
 int DuQFDoubleSpinBox::decimals() const
 {
-    return spinBox->decimals();
+    return _spinBox->decimals();
 }
 
 void DuQFDoubleSpinBox::setDecimals(int d)
 {
-    spinBox->setDecimals(d);
-    slider->setDecimals(d);
+    _spinBox->setDecimals(d);
+    _slider->setDecimals(d);
 }
 
 int DuQFDoubleSpinBox::maximum() const
 {
-    return spinBox->maximum();
+    return _spinBox->maximum();
 }
 
 void DuQFDoubleSpinBox::setMaximum(int max)
 {
-    spinBox->setMaximum(max);
-    slider->setMaximum(max);
+    _spinBox->setMaximum(max);
+    _slider->setMaximum(max);
 }
 
 int DuQFDoubleSpinBox::minimum() const
 {
-    return spinBox->minimum();
+    return _spinBox->minimum();
 }
 
 void DuQFDoubleSpinBox::setMinimum(int min)
 {
-    spinBox->setMinimum(min);
-    slider->setMinimum(min);
+    _spinBox->setMinimum(min);
+    _slider->setMinimum(min);
 }
 
 bool DuQFDoubleSpinBox::valueVisible() const
 {
-    return slider->valueVisible();
+    return _slider->valueVisible();
 }
 
 void DuQFDoubleSpinBox::showValue(bool showValue)
 {
-    slider->showValue(showValue);
+    _slider->showValue(showValue);
 }
 
 double DuQFDoubleSpinBox::value() const
 {
-    return spinBox->value();
+    return _spinBox->value();
 }
 
 void DuQFDoubleSpinBox::setValue(double value)
 {
-    QSignalBlocker b1(spinBox);
-    QSignalBlocker b2(slider);
-    spinBox->setValue(value);
-    slider->setValue(value);
+    QSignalBlocker b1(_spinBox);
+    QSignalBlocker b2(_slider);
+    _spinBox->setValue(value);
+    _slider->setValue(value);
 }
 
 void DuQFDoubleSpinBox::spinBox_editingFinished()
@@ -132,15 +142,15 @@ void DuQFDoubleSpinBox::spinBox_editingFinished()
 
 void DuQFDoubleSpinBox::spinBox_valueChanged(double arg1)
 {
-    QSignalBlocker b1(slider);
-    slider->setValue( arg1 );
+    QSignalBlocker b1(_slider);
+    _slider->setValue( arg1 );
     emit valueChanged(arg1);
 }
 
 void DuQFDoubleSpinBox::slider_valueChanged(double arg1)
 {
-    QSignalBlocker b1(spinBox);
-    spinBox->setValue( arg1 );
+    QSignalBlocker b1(_spinBox);
+    _spinBox->setValue( arg1 );
     emit valueChanged(arg1);
 }
 
@@ -162,8 +172,8 @@ void DuQFDoubleSpinBox::mouseReleaseEvent(QMouseEvent *event)
         return;
     }
     this->setCurrentIndex(0);
-    spinBox->selectAll();
-    spinBox->setFocus();
+    _spinBox->selectAll();
+    _spinBox->setFocus();
     event->accept();
 }
 

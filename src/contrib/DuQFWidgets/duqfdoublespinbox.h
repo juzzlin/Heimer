@@ -33,6 +33,11 @@ public:
 
     bool valueVisible() const;
     void showValue(bool showValue);
+
+    QDoubleSpinBox *spinBox() const;
+
+    DuQFDoubleSlider *slider() const;
+
 signals:
     void valueChanged(int value);
 private slots:
@@ -42,8 +47,8 @@ private slots:
 private:
     void setupUi();
     void connectEvents();
-    DuQFDoubleSlider *slider;
-    QDoubleSpinBox *spinBox;
+    DuQFDoubleSlider *_slider;
+    QDoubleSpinBox *_spinBox;
     QPoint _originalMousePos;
 protected:
     void mouseReleaseEvent ( QMouseEvent * event );

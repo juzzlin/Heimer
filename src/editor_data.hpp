@@ -18,11 +18,13 @@
 
 #include <memory>
 #include <set>
+#include <utility>
 #include <vector>
 
 #include <QObject>
 #include <QPointF>
 #include <QString>
+#include <QTimer>
 
 #include "edge.hpp"
 #include "file_exception.hpp"
@@ -48,9 +50,21 @@ public:
 
     EdgePtr addEdge(EdgePtr edge);
 
+    void addNodeToSelectionGroup(Node & node);
+
+    //! \return true if at least one selected node pair can be connected.
+    bool areSelectedNodesConnectable() const;
+
+    //! \return true if at least one selected node pair can be disconnected.
+    bool areSelectedNodesDisconnectable() const;
+
     void deleteEdge(Edge & edge);
 
+    void deleteEdge(int index0, int index1);
+
     void deleteNode(Node & node);
+
+    void deleteSelectedNodes();
 
     NodePtr addNodeAt(QPointF pos);
 
@@ -58,7 +72,22 @@ public:
 
     void clearSelectionGroup();
 
+    //! Connects selected nodes in the order they were selected.
+    //! \return the new edge objects.
+    std::vector<std::shared_ptr<Edge>> connectSelectedNodes();
+
+    //! Disconnects (deletes edges) directly connected nodes in the group if possible.
+    void disconnectSelectedNodes();
+
+    std::vector<std::shared_ptr<Node>> copiedNodes() const;
+
     NodePtr copyNodeAt(Node & source, QPointF pos);
+
+    QPointF copyReferencePoint() const;
+
+    void copySelectedNodes();
+
+    size_t copyStackSize() const;
 
     QColor backgroundColor() const;
 
@@ -82,21 +111,31 @@ public:
 
     void moveSelectionGroup(Node & reference, QPointF location);
 
+    bool nodeHasImageAttached() const;
+
     void redo();
+
+    void removeImageRefsOfSelectedNodes();
 
     bool saveMindMap();
 
     bool saveMindMapAs(QString fileName);
 
-    void saveUndoPoint();
+    void saveUndoPoint(bool dontClearRedoStack = false);
 
     void saveRedoPoint();
+
+    void setColorForSelectedNodes(QColor color);
 
     void setMindMapData(MindMapDataPtr newMindMapData);
 
     void setSelectedEdge(Edge * edge);
 
     void setSelectedNode(Node * node);
+
+    void setImageRefForSelectedNodes(size_t id);
+
+    void setTextColorForSelectedNodes(QColor color);
 
     Edge * selectedEdge() const;
 
@@ -114,11 +153,22 @@ signals:
 
     void undoEnabled(bool enable);
 
+    void redoEnabled(bool enable);
+
 private:
     EditorData(const EditorData & e) = delete;
     EditorData & operator=(const EditorData & e) = delete;
 
-    void removeNodesFromScene();
+    using NodePairVector = std::vector<std::pair<Node *, Node *>>;
+    NodePairVector getConnectableNodes() const;
+
+    NodePairVector getDisconnectableNodes() const;
+
+    void removeEdgeFromScene(Edge & edge);
+
+    void removeNodeFromScene(Node & node);
+
+    void sendUndoAndRedoSignals();
 
     void setIsModified(bool isModified);
 
@@ -145,6 +195,12 @@ private:
     bool m_isModified = false;
 
     QString m_fileName;
+
+    QTimer m_undoTimer;
+
+    std::vector<std::shared_ptr<Node>> m_copiedNodes;
+
+    QPointF m_copyReferencePoint;
 };
 
 #endif // EDITOR_DATA_HPP

@@ -19,6 +19,7 @@
 
 #include <stdexcept>
 
+#include <QFileInfo>
 #include <QSettings>
 
 std::unique_ptr<RecentFilesManager> RecentFilesManager::m_instance;
@@ -50,6 +51,10 @@ RecentFilesManager & RecentFilesManager::instance()
 
 void RecentFilesManager::addRecentFile(QString filePath)
 {
+    const QFileInfo fi(filePath);
+
+    filePath = fi.absoluteFilePath();
+
     m_recentFiles.removeAll(filePath);
     m_recentFiles.push_front(filePath);
 

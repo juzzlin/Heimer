@@ -10,19 +10,19 @@ Here is a simple mind map of Heimer itself running on Ubuntu 18.04:
 
 ## Features
 
+* Adjustable grid
+* <a href="https://www.youtube.com/watch?feature=player_embedded&v=acQ8CpaCayk">Automatic layout optimization</a>
 * Easy-to-use UI
+* Export to PNG or SVG
+* Forever 100% free
+* Full undo/redo
+* Nice animations
+* Quickly add node text and edge labels
+* Save/load in XML-based .ALZ-files
+* Translations in English (default), Finnish, French, Italian, Dutch
 * Very fast
 * Zoom in/out/fit
 * Zoom with mouse wheel
-* Save/load in XML-based .ALZ-files
-* Export to PNG images
-* Quickly add node text and edge labels
-* Nice animations
-* Full undo/redo
-* Adjustable grid
-* Automatic layout optimization
-* Translations in English, Finnish, French, Italian
-* Forever 100% free
 
 ## License
 
@@ -46,7 +46,7 @@ Snap is the recommended way to install Heimer on Linux.
 
 ## Building the project
 
-Currently the build depends on `Qt5` only (`qt5-default`, `qttools5-dev-tools`, `qttools-dev` packages on Ubuntu).
+Currently the build depends on `Qt 5` only (`qt5-default`, `qttools5-dev-tools`, `qttools5-dev`, `libqt5svg5-dev` packages on Ubuntu). Support for `Qt 6` is preliminary and should work with `CMake`.
 
 The "official" build system for Linux is `CMake` although `qmake` project files are also provided.
 

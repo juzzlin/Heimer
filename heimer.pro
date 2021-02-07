@@ -4,13 +4,15 @@
 TEMPLATE = app
 TARGET = heimer
 
-DEFINES += VERSION=\\\"1.18.0\\\"
+DEFINES += VERSION=\\\"2.2.0\\\"
+DEFINES += PACKAGE_TYPE=\\\"$$(PACKAGE_TYPE)\\\"
+
 CONFIG += c++14 lrelease embed_translations
 
 # Qt version check
 contains(QT_VERSION, ^5\\..*) {
     message("Building for Qt version $${QT_VERSION}.")
-    QT += widgets xml
+    QT += widgets svg xml
 } else {
     error("Qt5 is required!")
 }
@@ -24,7 +26,8 @@ HEADERS +=  \
     $$SRC/about_dlg.hpp \
     $$SRC/alz_serializer.hpp \
     $$SRC/application.hpp \
-    $$SRC/copy_paste.hpp \
+    $$SRC/defaults.hpp \
+    $$SRC/defaults_dlg.hpp \
     $$SRC/graph.hpp \
     $$SRC/graphics_factory.hpp \
     $$SRC/grid.hpp \
@@ -55,7 +58,9 @@ HEADERS +=  \
     $$SRC/recent_files_manager.hpp \
     $$SRC/recent_files_menu.hpp \
     $$SRC/selection_group.hpp \
+    $$SRC/settings.hpp \
     $$SRC/state_machine.hpp \
+    $$SRC/svg_export_dialog.hpp \
     $$SRC/test_mode.hpp \
     $$SRC/text_edit.hpp \
     $$SRC/undo_stack.hpp \
@@ -69,7 +74,8 @@ SOURCES += \
     $$SRC/about_dlg.cpp \
     $$SRC/alz_serializer.cpp \
     $$SRC/application.cpp \
-    $$SRC/copy_paste.cpp \
+    $$SRC/defaults.cpp \
+    $$SRC/defaults_dlg.cpp \
     $$SRC/graph.cpp \
     $$SRC/graphics_factory.cpp \
     $$SRC/grid.cpp \
@@ -99,7 +105,9 @@ SOURCES += \
     $$SRC/recent_files_manager.cpp \
     $$SRC/recent_files_menu.cpp \
     $$SRC/selection_group.cpp \
+    $$SRC/settings.cpp \
     $$SRC/state_machine.cpp \
+    $$SRC/svg_export_dialog.cpp \
     $$SRC/test_mode.cpp \
     $$SRC/text_edit.cpp \
     $$SRC/undo_stack.cpp \
@@ -114,7 +122,8 @@ QM_FILES_RESOURCE_PREFIX = /translations
 TRANSLATIONS += \ 
 $$SRC/translations/heimer_fi.ts \ 
 $$SRC/translations/heimer_fr.ts \ 
-$$SRC/translations/heimer_it.ts 
+$$SRC/translations/heimer_it.ts \
+$$SRC/translations/heimer_nl.ts 
 
 RESOURCES += meta.qrc data/icons/icons.qrc data/images/images.qrc
 RC_FILE = data/icons/WindowsHeimer.rc

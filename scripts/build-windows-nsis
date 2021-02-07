@@ -10,11 +10,11 @@ CMD="export LANG=en_US.UTF-8 && \
      export PATH='$PATH':/mxe/usr/bin && \
      export PACKAGE_TYPE=NSIS && \
      cd /heimer && \
-     mkdir -p build-windows-docker && \
-     cd build-windows-docker && ${QMAKE} .. && \
-     make clean && make -j4 && \
+     rm -rf build-windows-nsis && mkdir -p build-windows-nsis && \
+     cd build-windows-nsis && ${QMAKE} .. && \
+     make -j4 && \
      cd release && \
-     cp -rv ../../data . && \
+     cp -rv ../../data . && \     
      cp -v ../../AUTHORS . && \
      cp -v ../../CHANGELOG . && \
      cp -v ../../COPYING . && \

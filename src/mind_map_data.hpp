@@ -34,6 +34,10 @@ public:
 
     virtual ~MindMapData();
 
+    double aspectRatio() const;
+
+    void setAspectRatio(double aspectRatio);
+
     QColor backgroundColor() const;
 
     void setBackgroundColor(const QColor & backgroundColor);
@@ -46,6 +50,10 @@ public:
 
     void setEdgeColor(const QColor & edgeColor);
 
+    QColor gridColor() const;
+
+    void setGridColor(const QColor & edgeColor);
+
     double edgeWidth() const;
 
     void setEdgeWidth(double width);
@@ -57,6 +65,10 @@ public:
     Graph & graph();
 
     const Graph & graph() const;
+
+    double minEdgeLength() const;
+
+    void setMinEdgeLength(double minEdgeLength);
 
     int textSize() const;
 
@@ -81,11 +93,17 @@ private:
 
     QColor m_edgeColor = Constants::MindMap::DEFAULT_EDGE_COLOR;
 
+    QColor m_gridColor = Constants::MindMap::DEFAULT_GRID_COLOR;
+
     double m_edgeWidth = Constants::MindMap::DEFAULT_EDGE_WIDTH;
 
     int m_textSize = Constants::MindMap::DEFAULT_TEXT_SIZE;
 
     int m_cornerRadius = Constants::Node::DEFAULT_CORNER_RADIUS;
+
+    double m_aspectRatio = Constants::LayoutOptimizer::DEFAULT_ASPECT_RATIO;
+
+    double m_minEdgeLength = Constants::LayoutOptimizer::DEFAULT_MIN_EDGE_LENGTH;
 
     Graph m_graph;
 

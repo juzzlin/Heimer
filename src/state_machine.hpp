@@ -37,12 +37,16 @@ public:
         Save,
         ShowBackgroundColorDialog,
         ShowEdgeColorDialog,
+        ShowGridColorDialog,
         ShowImageFileDialog,
         ShowLayoutOptimizationDialog,
+        ShowNodeColorDialog,
         ShowNotSavedDialog,
         ShowOpenDialog,
         ShowPngExportDialog,
         ShowSaveAsDialog,
+        ShowSvgExportDialog,
+        ShowTextColorDialog,
         TryCloseWindow
     };
 
@@ -52,6 +56,8 @@ public:
         BackgroundColorChangeRequested,
         EdgeColorChanged,
         EdgeColorChangeRequested,
+        GridColorChanged,
+        GridColorChangeRequested,
         ImageAttachmentRequested,
         ImageLoadFailed,
         LayoutOptimizationRequested,
@@ -61,12 +67,16 @@ public:
         MindMapSaved,
         MindMapSavedAs,
         MindMapSaveFailed,
+        MindMapSaveAsCanceled,
         MindMapSaveAsFailed,
         NewMindMapInitialized,
         NewSelected,
+        NodeColorChanged,
+        NodeColorChangeRequested,
         NotSavedDialogAccepted,
         NotSavedDialogCanceled,
         NotSavedDialogDiscarded,
+        OpeningMindMapCanceled,
         OpeningMindMapFailed,
         OpenSelected,
         PngExported,
@@ -76,6 +86,10 @@ public:
         RedoSelected,
         SaveAsSelected,
         SaveSelected,
+        SvgExported,
+        SvgExportSelected,
+        TextColorChanged,
+        TextColorChangeRequested,
         UndoSelected
     };
 

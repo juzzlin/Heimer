@@ -117,6 +117,4 @@ void NodeHandle::setVisible(bool visible)
     }
 }
 
-NodeHandle::~NodeHandle()
-{
-}
+NodeHandle::~NodeHandle() = default;

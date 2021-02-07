@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2020 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,21 +13,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef ALZ_SERIALIZER_HPP
-#define ALZ_SERIALIZER_HPP
+#ifndef DEFAULTS_DLG_HPP
+#define DEFAULTS_DLG_HPP
 
-#include <QDomDocument>
+#include "defaults.hpp"
+#include <QDialog>
+#include <map>
 
-#include <memory>
+class QCheckBox;
+class QRadioButton;
 
-class MindMapData;
+class DefaultsDlg : public QDialog
+{
+    Q_OBJECT
 
-namespace AlzSerializer {
+public:
+    explicit DefaultsDlg(QWidget * parent = nullptr);
 
-std::unique_ptr<MindMapData> fromXml(QDomDocument document);
+private:
+    void accept() override;
 
-QDomDocument toXml(MindMapData & mindMapData);
+    void initWidgets();
 
-} // namespace AlzSerializer
+    void setActiveDefaults();
 
-#endif // ALZ_SERIALIZER_HPP
+    std::map<Edge::ArrowMode, QRadioButton *> m_edgeArrowStyleRadioMap;
+
+    QCheckBox * m_edgeDirectionCheckBox = nullptr;
+};
+
+#endif // DEFAULTS_DLG_HPP

@@ -37,10 +37,10 @@ PngExportDialog::PngExportDialog(QWidget & parent)
     initWidgets();
 
     connect(m_filenameButton, &QPushButton::clicked, [=]() {
-        auto filename = QFileDialog::getSaveFileName(this,
-                                                     tr("Export As"),
-                                                     QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
-                                                     tr("PNG Files") + " (*" + Constants::Export::FILE_EXTENSION + ")");
+        const auto filename = QFileDialog::getSaveFileName(this,
+                                                           tr("Export As"),
+                                                           QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
+                                                           tr("PNG Files") + " (*" + Constants::Export::Png::FILE_EXTENSION + ")");
 
         m_filenameLineEdit->setText(filename);
     });
@@ -58,7 +58,7 @@ PngExportDialog::PngExportDialog(QWidget & parent)
     connect(m_imageWidthSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [&](int value) {
         if (m_enableSpinBoxConnection) {
             m_enableSpinBoxConnection = false;
-            m_imageHeightSpinBox->setValue(value / m_aspectRatio);
+            m_imageHeightSpinBox->setValue(static_cast<int>(static_cast<float>(value) / m_aspectRatio));
             m_enableSpinBoxConnection = true;
         }
     });
@@ -66,7 +66,7 @@ PngExportDialog::PngExportDialog(QWidget & parent)
     connect(m_imageHeightSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [&](int value) {
         if (m_enableSpinBoxConnection) {
             m_enableSpinBoxConnection = false;
-            m_imageWidthSpinBox->setValue(value * m_aspectRatio);
+            m_imageWidthSpinBox->setValue(static_cast<int>(static_cast<float>(value) * m_aspectRatio));
             m_enableSpinBoxConnection = true;
         }
     });
@@ -89,7 +89,7 @@ void PngExportDialog::setImageSize(QSize size)
     m_imageWidthSpinBox->setValue(size.width());
     m_imageHeightSpinBox->setValue(size.height());
 
-    m_aspectRatio = float(size.width()) / size.height();
+    m_aspectRatio = static_cast<float>(size.width()) / static_cast<float>(size.height());
 
     m_enableSpinBoxConnection = true;
 }
@@ -118,8 +118,8 @@ void PngExportDialog::validate()
     m_progressBar->setValue(0);
 
     m_exportButton->setEnabled(
-      m_imageHeightSpinBox->value() > Constants::Export::MIN_IMAGE_SIZE && // Intentionally open intervals
-      m_imageHeightSpinBox->value() < Constants::Export::MAX_IMAGE_SIZE && m_imageWidthSpinBox->value() > Constants::Export::MIN_IMAGE_SIZE && m_imageWidthSpinBox->value() < Constants::Export::MAX_IMAGE_SIZE && !m_filenameLineEdit->text().isEmpty());
+      m_imageHeightSpinBox->value() > Constants::Export::Png::MIN_IMAGE_SIZE && // Intentionally open intervals
+      m_imageHeightSpinBox->value() < Constants::Export::Png::MAX_IMAGE_SIZE && m_imageWidthSpinBox->value() > Constants::Export::Png::MIN_IMAGE_SIZE && m_imageWidthSpinBox->value() < Constants::Export::Png::MAX_IMAGE_SIZE && !m_filenameLineEdit->text().isEmpty());
 
     m_filenameWithExtension = m_filenameLineEdit->text();
 
@@ -127,17 +127,17 @@ void PngExportDialog::validate()
         return;
     }
 
-    if (!m_filenameWithExtension.toLower().endsWith(Constants::Export::FILE_EXTENSION)) {
-        m_filenameWithExtension += Constants::Export::FILE_EXTENSION;
+    if (!m_filenameWithExtension.toLower().endsWith(Constants::Export::Png::FILE_EXTENSION)) {
+        m_filenameWithExtension += Constants::Export::Png::FILE_EXTENSION;
     }
 }
 
 void PngExportDialog::initWidgets()
 {
-    auto mainLayout = new QVBoxLayout(this);
+    const auto mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(new QLabel("<b>" + tr("Filename") + "</b>"));
 
-    auto filenameLayout = new QHBoxLayout;
+    const auto filenameLayout = new QHBoxLayout;
     m_filenameLineEdit = new QLineEdit;
     filenameLayout->addWidget(m_filenameLineEdit);
     m_filenameButton = new QPushButton;
@@ -146,29 +146,29 @@ void PngExportDialog::initWidgets()
     mainLayout->addLayout(filenameLayout);
 
     mainLayout->addWidget(new QLabel("<b>" + tr("Image Size") + "</b>"));
-    auto imageSizeLayout = new QHBoxLayout;
+    const auto imageSizeLayout = new QHBoxLayout;
     const auto imageWidthLabel = new QLabel(tr("Width (px):"));
     imageSizeLayout->addWidget(imageWidthLabel);
     m_imageWidthSpinBox = new QSpinBox;
-    m_imageWidthSpinBox->setMinimum(Constants::Export::MIN_IMAGE_SIZE);
-    m_imageWidthSpinBox->setMaximum(Constants::Export::MAX_IMAGE_SIZE);
+    m_imageWidthSpinBox->setMinimum(Constants::Export::Png::MIN_IMAGE_SIZE);
+    m_imageWidthSpinBox->setMaximum(Constants::Export::Png::MAX_IMAGE_SIZE);
     imageSizeLayout->addWidget(m_imageWidthSpinBox);
     const auto imageHeightLabel = new QLabel(tr("Height (px):"));
     imageSizeLayout->addWidget(imageHeightLabel);
     m_imageHeightSpinBox = new QSpinBox;
-    m_imageHeightSpinBox->setMinimum(Constants::Export::MIN_IMAGE_SIZE);
-    m_imageHeightSpinBox->setMaximum(Constants::Export::MAX_IMAGE_SIZE);
+    m_imageHeightSpinBox->setMinimum(Constants::Export::Png::MIN_IMAGE_SIZE);
+    m_imageHeightSpinBox->setMaximum(Constants::Export::Png::MAX_IMAGE_SIZE);
     imageSizeLayout->addWidget(m_imageHeightSpinBox);
     mainLayout->addLayout(imageSizeLayout);
 
     mainLayout->addWidget(new QLabel("<b>" + tr("Background") + "</b>"));
-    auto backgroundLayout = new QHBoxLayout;
+    const auto backgroundLayout = new QHBoxLayout;
     m_transparentBackgroundCheckBox = new QCheckBox;
     m_transparentBackgroundCheckBox->setText(tr("Transparent background"));
     backgroundLayout->addWidget(m_transparentBackgroundCheckBox);
     mainLayout->addLayout(backgroundLayout);
 
-    auto progressBarLayout = new QHBoxLayout;
+    const auto progressBarLayout = new QHBoxLayout;
     m_progressBar = new QProgressBar;
     m_progressBar->setEnabled(false);
     m_progressBar->setMaximum(100);
@@ -176,13 +176,14 @@ void PngExportDialog::initWidgets()
     progressBarLayout->addWidget(m_progressBar);
     mainLayout->addLayout(progressBarLayout);
 
-    auto buttonLayout = new QHBoxLayout;
+    const auto buttonLayout = new QHBoxLayout;
     m_cancelButton = new QPushButton;
     m_cancelButton->setText(tr("Cancel"));
     buttonLayout->addWidget(m_cancelButton);
     m_exportButton = new QPushButton;
     m_exportButton->setText(tr("Export"));
     m_exportButton->setEnabled(false);
+    m_exportButton->setDefault(true);
     buttonLayout->addWidget(m_exportButton);
     mainLayout->addLayout(buttonLayout);
 

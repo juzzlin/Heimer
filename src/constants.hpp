@@ -32,7 +32,7 @@ static constexpr auto APPLICATION_PACKAGE_TYPE = PACKAGE_TYPE;
 
 static constexpr auto APPLICATION_VERSION = VERSION;
 
-static constexpr auto COPYRIGHT = "Copyright (c) 2018-2020 Jussi Lind";
+static constexpr auto COPYRIGHT = "Copyright (c) 2018-2021 Jussi Lind";
 
 static constexpr auto FILE_EXTENSION = ".alz";
 
@@ -82,11 +82,21 @@ static const double WIDTH_SCALE = 0.5;
 
 namespace Export {
 
+namespace Png {
+
 static const QString FILE_EXTENSION = ".png";
 
 static const int MIN_IMAGE_SIZE = 0;
 
 static const int MAX_IMAGE_SIZE = 99999;
+
+} // namespace Png
+
+namespace Svg {
+
+static const QString FILE_EXTENSION = ".svg";
+
+} // namespace Svg
 
 } // namespace Export
 
@@ -103,6 +113,8 @@ namespace MindMap {
 static const QColor DEFAULT_BACKGROUND_COLOR { 0xba, 0xbd, 0xb6 };
 
 static const QColor DEFAULT_EDGE_COLOR { 0, 0, 0, 200 };
+
+static const QColor DEFAULT_GRID_COLOR { Qt::gray };
 
 static const double DEFAULT_EDGE_WIDTH = 2.0;
 
@@ -150,9 +162,9 @@ namespace LayoutOptimizer {
 
 static const int DEFAULT_MIN_EDGE_LENGTH = 100;
 
-static const int MIN_EDGE_LENGTH = 10;
+static const double MIN_EDGE_LENGTH = 10;
 
-static const int MAX_EDGE_LENGTH = 250;
+static const double MAX_EDGE_LENGTH = 250;
 
 static const double DEFAULT_ASPECT_RATIO = 1.0;
 
@@ -160,21 +172,15 @@ static const double MIN_ASPECT_RATIO = 0.1;
 
 static const double MAX_ASPECT_RATIO = 10;
 
-static const auto QSETTINGS_GROUP = "LayoutOptimizer";
-
-static const auto QSETTINGS_ASPECT_RATIO_KEY = "aspectRatio";
-
-static const auto QSETTINGS_MIN_EDGE_LENGTH_KEY = "minEdgeLength";
-
 } // namespace LayoutOptimizer
 
 namespace Scene {
 
+static const double ADJUSTMENT_MARGIN = .25;
+
 static const QColor BARRIER_COLOR { 255, 0, 0, 128 };
 
-static const int BARRIER_WIDTH = 100;
-
-static const int RADIUS = 10000;
+static const int INITIAL_SIZE = 10000;
 
 } // namespace Scene
 
@@ -192,11 +198,13 @@ static const int CLICK_TOLERANCE = 5;
 
 static const double DRAG_NODE_OPACITY = 0.5;
 
-static const int ZOOM_MAX = 200;
+static const int TOO_QUICK_ACTION_DELAY_MS = 500;
 
-static const int ZOOM_MIN = 10;
+static const double ZOOM_MAX = 2.0;
 
-static const int ZOOM_SENSITIVITY = 10;
+static const double ZOOM_MIN = .02;
+
+static const double ZOOM_SENSITIVITY = 1.1;
 
 } // namespace View
 

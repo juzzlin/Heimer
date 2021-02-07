@@ -57,6 +57,13 @@ void TextEdit::mousePressEvent(QGraphicsSceneMouseEvent * event)
     QGraphicsTextItem::mousePressEvent(event);
 }
 
+void TextEdit::contextMenuEvent(QGraphicsSceneContextMenuEvent * event)
+{
+    // Prevents the system context menu from opening.
+
+    event->ignore();
+}
+
 QString TextEdit::text() const
 {
     return m_text;

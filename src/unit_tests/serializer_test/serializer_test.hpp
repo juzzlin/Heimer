@@ -32,7 +32,11 @@ private slots:
 
     void testEdgeColor();
 
+    void testGridColor();
+
     void testEdgeWidth();
+
+    void testLayoutOptimizer();
 
     void testNotUsedImages();
 

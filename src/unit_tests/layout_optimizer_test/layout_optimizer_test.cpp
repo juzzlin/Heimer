@@ -28,6 +28,15 @@ LayoutOptimizerTest::LayoutOptimizerTest()
     TestMode::setEnabled(true);
 }
 
+void LayoutOptimizerTest::testNoNodes_ShouldNotInitialize()
+{
+    auto data = std::make_shared<MindMapData>();
+
+    Grid grid;
+    LayoutOptimizer lol { data, grid };
+    QCOMPARE(lol.initialize(1.0, 50), false);
+}
+
 void LayoutOptimizerTest::testSingleNode_ShouldNotDoAnything()
 {
     auto data = std::make_shared<MindMapData>();
@@ -36,12 +45,49 @@ void LayoutOptimizerTest::testSingleNode_ShouldNotDoAnything()
 
     Grid grid;
     LayoutOptimizer lol { data, grid };
-    lol.initialize(1.0, 50);
-    const auto optimizationInfo = lol.optimize();
+    LayoutOptimizer::OptimizationInfo optimizationInfo;
+    if (lol.initialize(1.0, 50)) {
+        optimizationInfo = lol.optimize();
+        lol.extract();
+    }
 
     QCOMPARE(optimizationInfo.initialCost, 0.0);
     QCOMPARE(optimizationInfo.finalCost, 0.0);
     QCOMPARE(optimizationInfo.changes, static_cast<size_t>(0));
+}
+
+void LayoutOptimizerTest::testMultipleNodes_NoEdges_ShouldSpread()
+{
+    auto data = std::make_shared<MindMapData>();
+    const size_t nodeCount = 50;
+    std::uniform_real_distribution<double> xDist { -1000, 1000 };
+    std::uniform_real_distribution<double> yDist { -1000, 1000 };
+    std::mt19937 engine;
+    std::vector<std::shared_ptr<Node>> nodes;
+    for (size_t i = 0; i < nodeCount; i++) {
+        auto node = std::make_shared<Node>();
+        data->graph().addNode(node);
+        node->setPos({ xDist(engine), yDist(engine) });
+        nodes.push_back(node);
+    }
+
+    Grid grid;
+    grid.setSize(10);
+    LayoutOptimizer lol { data, grid };
+    if (lol.initialize(1.0, 50)) {
+        double progress = 0;
+        lol.setProgressCallback([&](double progress_) {
+            progress = progress_;
+        });
+        const auto optimizationInfo = lol.optimize();
+        QVERIFY(optimizationInfo.changes == 0);
+
+        lol.extract();
+        for (auto && node : nodes) {
+            QCOMPARE(node->pos().x(), static_cast<double>(static_cast<int>(node->pos().x() / grid.size()) * grid.size()));
+            QCOMPARE(node->pos().y(), static_cast<double>(static_cast<int>(node->pos().y() / grid.size()) * grid.size()));
+        }
+    }
 }
 
 void LayoutOptimizerTest::testMultipleNodes_ShouldReduceCost()
@@ -69,22 +115,23 @@ void LayoutOptimizerTest::testMultipleNodes_ShouldReduceCost()
     Grid grid;
     grid.setSize(10);
     LayoutOptimizer lol { data, grid };
-    lol.initialize(1.0, 50);
-    double progress = 0;
-    lol.setProgressCallback([&](double progress_) {
-        progress = progress_;
-    });
-    const auto optimizationInfo = lol.optimize();
-    QCOMPARE(progress, 1.0);
-    QVERIFY(optimizationInfo.changes > 100);
-    const double gain = (optimizationInfo.finalCost - optimizationInfo.initialCost) / optimizationInfo.initialCost;
-    juzzlin::L().info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
-    QVERIFY(gain < -0.3);
+    if (lol.initialize(1.0, 50)) {
+        double progress = 0;
+        lol.setProgressCallback([&](double progress_) {
+            progress = progress_;
+        });
+        const auto optimizationInfo = lol.optimize();
+        QCOMPARE(progress, 1.0);
+        QVERIFY(optimizationInfo.changes > 100);
+        const double gain = (optimizationInfo.finalCost - optimizationInfo.initialCost) / optimizationInfo.initialCost;
+        juzzlin::L().info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
+        QVERIFY(gain < -0.3);
 
-    lol.extract();
-    for (auto && node : nodes) {
-        QCOMPARE(node->pos().x(), static_cast<double>(static_cast<int>(node->pos().x() / grid.size()) * grid.size()));
-        QCOMPARE(node->pos().y(), static_cast<double>(static_cast<int>(node->pos().y() / grid.size()) * grid.size()));
+        lol.extract();
+        for (auto && node : nodes) {
+            QCOMPARE(node->pos().x(), static_cast<double>(static_cast<int>(node->pos().x() / grid.size()) * grid.size()));
+            QCOMPARE(node->pos().y(), static_cast<double>(static_cast<int>(node->pos().y() / grid.size()) * grid.size()));
+        }
     }
 }
 

@@ -33,12 +33,24 @@ void StateMachine::calculateState(StateMachine::Action action)
         m_state = State::ShowEdgeColorDialog;
         break;
 
+    case Action::GridColorChangeRequested:
+        m_state = State::ShowGridColorDialog;
+        break;
+
     case Action::ImageAttachmentRequested:
         m_state = State::ShowImageFileDialog;
         break;
 
+    case Action::NodeColorChangeRequested:
+        m_state = State::ShowNodeColorDialog;
+        break;
+
     case Action::PngExportSelected:
         m_state = State::ShowPngExportDialog;
+        break;
+
+    case Action::TextColorChangeRequested:
+        m_state = State::ShowTextColorDialog;
         break;
 
     case Action::NewSelected:
@@ -78,14 +90,21 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::BackgroundColorChanged:
     case Action::EdgeColorChanged:
+    case Action::GridColorChanged:
     case Action::ImageLoadFailed:
     case Action::LayoutOptimized:
     case Action::MindMapOpened:
     case Action::MindMapSaveFailed:
+    case Action::MindMapSaveAsCanceled:
     case Action::MindMapSaveAsFailed:
     case Action::NewMindMapInitialized:
+    case Action::NodeColorChanged:
     case Action::NotSavedDialogCanceled:
+    case Action::OpeningMindMapCanceled:
+    case Action::OpeningMindMapFailed:
     case Action::PngExported:
+    case Action::SvgExported:
+    case Action::TextColorChanged:
         m_quitType = QuitType::None;
         m_state = State::Edit;
         break;
@@ -97,10 +116,6 @@ void StateMachine::calculateState(StateMachine::Action action)
         } else {
             m_state = State::ShowOpenDialog;
         }
-        break;
-
-    case Action::OpeningMindMapFailed:
-        m_state = State::InitializeNewMindMap;
         break;
 
     case Action::QuitSelected:
@@ -123,6 +138,10 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::SaveAsSelected:
         m_state = State::ShowSaveAsDialog;
+        break;
+
+    case Action::SvgExportSelected:
+        m_state = State::ShowSvgExportDialog;
         break;
 
     case Action::RecentFileSelected:

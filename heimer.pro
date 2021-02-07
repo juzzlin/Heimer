@@ -69,9 +69,6 @@ HEADERS +=  \
     $$SRC/xml_writer.hpp \
     $$SRC/contrib/Argengine/src/argengine.hpp \
     $$SRC/contrib/SimpleLogger/src/simple_logger.hpp \
-    $$SRC/simple_slider.hpp \
-    $$SRC/int_slider.hpp \
-    $$SRC/double_slider.hpp \
 
 SOURCES += \
     $$SRC/about_dlg.cpp \
@@ -119,9 +116,6 @@ SOURCES += \
     $$SRC/xml_writer.cpp \
     $$SRC/contrib/Argengine/src/argengine.cpp \
     $$SRC/contrib/SimpleLogger/src/simple_logger.cpp \
-    $$SRC/simple_slider.cpp \
-    $$SRC/int_slider.cpp \
-    $$SRC/double_slider.cpp \
 
 QM_FILES_RESOURCE_PREFIX = /translations
 

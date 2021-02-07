@@ -22,8 +22,6 @@
 #include <QString>
 
 #include "state_machine.hpp"
-#include "double_slider.hpp"
-#include "int_slider.hpp"
 
 #include <map>
 #include <memory>
@@ -174,21 +172,13 @@ private:
 
     QAction * m_redoAction = nullptr;
 
-    DoubleSlider * m_edgeWidthSlider = nullptr;
-
-    QSlider * m_edgeWidthSlider = nullptr;
+    QDoubleSpinBox * m_edgeWidthSpinBox = nullptr;
 
     QSpinBox * m_cornerRadiusSpinBox = nullptr;
 
-    QSlider * m_cornerRadiusSlider = nullptr;
-
     QSpinBox * m_gridSizeSpinBox = nullptr;
 
-    QSlider * m_gridSizeSlider = nullptr;
-
     QSpinBox * m_textSizeSpinBox = nullptr;
-
-    QSlider * m_textSizeSlider = nullptr;
 
     QCheckBox * m_copyOnDragCheckBox = nullptr;
 

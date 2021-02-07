@@ -19,8 +19,9 @@
 #include "edge.hpp"
 #include "node.hpp"
 
-#include <map>
-#include <set>
+#include <cstdint>
+#include <unordered_map>
+#include <vector>
 
 class Node;
 
@@ -43,13 +44,26 @@ public:
 
     void addNode(NodePtr node);
 
-    void deleteNode(int index);
+    //! "Soft deletes" the given node.
+    //! The node gets **really** deleted only when the Graph is deleted.
+    //! This is to help integration with Qt that operates only on raw pointers.
+    //! \param index Index of the node to be deleted.
+    //! \returns The deleted node and connected edges that were also removed.
+    std::pair<NodePtr, EdgeVector> deleteNode(int index);
 
     void addEdge(EdgePtr edge);
 
-    void deleteEdge(int index0, int index1);
+    //! "Soft deletes" the given edge.
+    //! The edge gets **really** deleted only when the Graph is deleted.
+    //! This is to help integration with Qt that operates only on raw pointers.
+    //! \param index0 Index of the source node.
+    //! \param index1 Index of the target node.
+    //! \returns The deleted edge.
+    EdgePtr deleteEdge(int index0, int index1);
 
     bool areDirectlyConnected(NodePtr node0, NodePtr node1);
+
+    bool areDirectlyConnected(int index0, int index1);
 
     size_t numNodes() const;
 
@@ -57,18 +71,22 @@ public:
 
     EdgeVector getEdgesToNode(NodePtr node);
 
-    const EdgeVector & getEdges() const;
+    EdgeVector getEdges() const;
 
     NodePtr getNode(int index);
 
-    const NodeVector & getNodes() const;
+    NodeVector getNodes() const;
 
     NodeVector getNodesConnectedToNode(NodePtr node);
 
 private:
-    NodeVector m_nodes;
+    std::unordered_map<int, NodePtr> m_nodes;
 
-    EdgeVector m_edges;
+    std::unordered_map<int64_t, EdgePtr> m_edges;
+
+    NodeVector m_deletedNodes;
+
+    EdgeVector m_deletedEdges;
 
     int m_count = 0;
 };

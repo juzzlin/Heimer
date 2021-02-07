@@ -16,7 +16,6 @@
 #ifndef EDITOR_VIEW_HPP
 #define EDITOR_VIEW_HPP
 
-#include "copy_paste.hpp"
 #include "grid.hpp"
 #include "main_context_menu.hpp"
 #include "state_machine.hpp"
@@ -55,7 +54,7 @@ public:
 
     void resetDummyDragItems();
 
-    void zoom(int amount);
+    void zoom(double amount);
 
     void zoomToFit(QRectF nodeBoundingRect);
 
@@ -65,9 +64,13 @@ public slots:
 
     void setEdgeColor(const QColor & edgeColor);
 
+    void setGridColor(const QColor & edgeColor);
+
     void setEdgeWidth(double edgeWidth);
 
     void setGridSize(int size);
+
+    void setGridVisible(bool visible);
 
 protected:
     void mouseMoveEvent(QMouseEvent * event) override;
@@ -80,15 +83,9 @@ protected:
 
 signals:
 
-    void actionTriggered(StateMachine::Action action, Node * node = nullptr);
+    void actionTriggered(StateMachine::Action action);
 
     void newNodeRequested(QPointF position);
-
-private slots:
-
-    void openNodeColorDialog();
-
-    void openNodeTextColorDialog();
 
 private:
     void finishRubberBand();
@@ -109,13 +106,9 @@ private:
 
     void handleRightButtonClickOnNode(Node & node);
 
-    void initiateNewNodeDrag(NodeHandle & nodeHandle);
-
-    void initiateNodeDrag(Node & node);
-
     void initiateRubberBand();
 
-    bool isControlPressed() const;
+    bool isModifierPressed() const;
 
     void openBackgroundContextMenu();
 
@@ -129,9 +122,11 @@ private:
 
     void showDummyDragNode(bool show);
 
-    void updateScale(int value);
+    void updateScale();
 
     void updateRubberBand();
+
+    void drawBackground(QPainter * painter, const QRectF & rect) override;
 
     Grid m_grid;
 
@@ -151,11 +146,9 @@ private:
 
     QPointF m_mappedPos;
 
-    int m_scaleValue = 100;
+    double m_scale = 1.0;
 
     Mediator & m_mediator;
-
-    CopyPaste m_copyPaste;
 
     std::unique_ptr<Node> m_dummyDragNode;
 
@@ -177,6 +170,8 @@ private:
     EdgeContextMenu * m_edgeContextMenu;
 
     MainContextMenu * m_mainContextMenu;
+
+    bool m_gridVisible = false;
 };
 
 #endif // EDITOR_VIEW_HPP

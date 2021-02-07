@@ -49,6 +49,8 @@ protected:
 
     virtual void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
 
+    virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent * event) override;
+
 private:
     double m_maxHeight = 0;
 

@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2019 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2020 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,32 +13,34 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef COPY_PASTE_HPP
-#define COPY_PASTE_HPP
+#ifndef DEFAULTS_HPP
+#define DEFAULTS_HPP
+
+#include "edge.hpp"
 
 #include <memory>
 
-class Grid;
-class Mediator;
-class Node;
-
-class CopyPaste
+class Defaults
 {
 public:
-    CopyPaste(Mediator & mediator, Grid & grid);
+    Defaults();
 
-    void copy(const Node & source);
+    static Defaults & instance();
 
-    void paste();
+    Edge::ArrowMode edgeArrowMode() const;
 
-    bool isEmpty() const;
+    void setEdgeArrowMode(Edge::ArrowMode mode);
+
+    bool reversedEdgeDirection() const;
+
+    void setReversedEdgeDirection(bool reversedEdgeDirection);
 
 private:
-    Mediator & m_mediator;
+    Edge::ArrowMode m_edgeArrowMode;
 
-    Grid & m_grid;
+    bool m_reversedEdgeDirection = false;
 
-    std::shared_ptr<Node> m_copiedNode;
+    static std::unique_ptr<Defaults> m_instance;
 };
 
-#endif // COPY_PASTE_HPP
+#endif // DEFAULTS_HPP

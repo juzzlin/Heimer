@@ -19,6 +19,7 @@
 #include <QDialog>
 
 class LayoutOptimizer;
+class MindMapData;
 class QDoubleSpinBox;
 class QProgressBar;
 class QPushButton;
@@ -29,7 +30,7 @@ class LayoutOptimizationDialog : public QDialog
 
 public:
     //! Constructor.
-    explicit LayoutOptimizationDialog(QWidget & parent, LayoutOptimizer & layoutOptimizer);
+    explicit LayoutOptimizationDialog(QWidget & parent, MindMapData & mindMapData, LayoutOptimizer & layoutOptimizer);
 
     int exec() override;
 
@@ -42,7 +43,9 @@ private slots:
     void finishOptimization();
 
 private:
-    void initWidgets();
+    void initWidgets(const MindMapData & mindMapData);
+
+    MindMapData & m_mindMapData;
 
     LayoutOptimizer & m_layoutOptimizer;
 

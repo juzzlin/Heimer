@@ -33,6 +33,8 @@ public:
 
     void clear();
 
+    void clearRedoStack();
+
     bool isUndoable() const;
 
     std::unique_ptr<MindMapData> undo();

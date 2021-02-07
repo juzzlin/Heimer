@@ -17,6 +17,7 @@
 
 #include "constants.hpp"
 #include "graph.hpp"
+#include "mind_map_data.hpp"
 #include "node.hpp"
 #include "simple_logger.hpp"
 #include "test_mode.hpp"
@@ -32,137 +33,150 @@
 
 namespace AlzSerializer {
 namespace DataKeywords {
-namespace Design {
+namespace MindMap {
 
-static constexpr auto DESIGN = "design";
+const auto APPLICATION_VERSION = "version";
 
-static constexpr auto APPLICATION_VERSION = "version";
+const auto COLOR = "color";
 
-static constexpr auto COLOR = "color";
+const auto CORNER_RADIUS = "corner-radius";
 
-static constexpr auto CORNER_RADIUS = "corner-radius";
+const auto EDGE_COLOR = "edge-color";
 
-static constexpr auto EDGE_COLOR = "edge-color";
+const auto EDGE_THICKNESS = "edge-width";
 
-static constexpr auto EDGE_THICKNESS = "edge-width";
+const auto GRAPH = "graph";
 
-static constexpr auto GRAPH = "graph";
+const auto GRID_COLOR = "grid-color";
 
-static constexpr auto IMAGE = "image";
+const auto HEIMER_MIND_MAP = "heimer-mind-map";
 
-static constexpr auto TEXT_SIZE = "text-size";
+const auto IMAGE = "image";
+
+const auto TEXT_SIZE = "text-size";
 
 // Used for Design and Node
 namespace Color {
 
-static constexpr auto R = "r";
+const auto R = "r";
 
-static constexpr auto G = "g";
+const auto G = "g";
 
-static constexpr auto B = "b";
+const auto B = "b";
 } // namespace Color
 
 namespace Graph {
 
-static constexpr auto NODE = "node";
+const auto NODE = "node";
 
 namespace Node {
 
-static constexpr auto COLOR = "color";
+const auto COLOR = "color";
 
-static constexpr auto IMAGE = "image";
+const auto IMAGE = "image";
 
-static constexpr auto INDEX = "index";
+const auto INDEX = "index";
 
-static constexpr auto TEXT = "text";
+const auto TEXT = "text";
 
-static constexpr auto TEXT_COLOR = "text-color";
+const auto TEXT_COLOR = "text-color";
 
-static constexpr auto X = "x";
+const auto X = "x";
 
-static constexpr auto Y = "y";
+const auto Y = "y";
 
-static constexpr auto W = "w";
+const auto W = "w";
 
-static constexpr auto H = "h";
+const auto H = "h";
 
 namespace Image {
 
-static constexpr auto REF = "ref";
+const auto REF = "ref";
 } // namespace Image
 } // namespace Node
 
-static constexpr auto EDGE = "edge";
+const auto EDGE = "edge";
 
 namespace Edge {
 
-static constexpr auto INDEX0 = "index0";
+const auto INDEX0 = "index0";
 
-static constexpr auto INDEX1 = "index1";
+const auto INDEX1 = "index1";
 
-static constexpr auto ARROW_MODE = "arrow-mode";
+const auto ARROW_MODE = "arrow-mode";
 
-static constexpr auto REVERSED = "reversed";
+const auto REVERSED = "reversed";
 
 } // namespace Edge
 } // namespace Graph
 
 namespace Image {
 
-static constexpr auto ID = "id";
+const auto ID = "id";
 
-static constexpr auto PATH = "path";
+const auto PATH = "path";
 
 } // namespace Image
-} // namespace Design
+
+namespace LayoutOptimizer {
+
+const auto ASPECT_RATIO = "aspect-ratio";
+
+const auto LAYOUT_OPTIMIZER = "layout-optimizer";
+
+const auto MIN_EDGE_LENGTH = "min-edge-length";
+
+} // namespace LayoutOptimizer
+
+} // namespace MindMap
 
 } // namespace DataKeywords
 
 static const double SCALE = 1000; // https://bugreports.qt.io/browse/QTBUG-67129
 
-using std::make_shared;
-
 static void writeColor(QDomElement & parent, QDomDocument & doc, QColor color, QString elementName)
 {
     auto colorElement = doc.createElement(elementName);
-    colorElement.setAttribute(AlzSerializer::DataKeywords::Design::Color::R, color.red());
-    colorElement.setAttribute(AlzSerializer::DataKeywords::Design::Color::G, color.green());
-    colorElement.setAttribute(AlzSerializer::DataKeywords::Design::Color::B, color.blue());
+    colorElement.setAttribute(DataKeywords::MindMap::Color::R, color.red());
+    colorElement.setAttribute(DataKeywords::MindMap::Color::G, color.green());
+    colorElement.setAttribute(DataKeywords::MindMap::Color::B, color.blue());
     parent.appendChild(colorElement);
 }
 
 static void writeImageRef(QDomElement & parent, QDomDocument & doc, size_t imageRef, QString elementName)
 {
     auto colorElement = doc.createElement(elementName);
-    colorElement.setAttribute(AlzSerializer::DataKeywords::Design::Graph::Node::Image::REF, static_cast<int>(imageRef));
+    colorElement.setAttribute(DataKeywords::MindMap::Graph::Node::Image::REF, static_cast<int>(imageRef));
     parent.appendChild(colorElement);
 }
 
 static void writeNodes(MindMapData & mindMapData, QDomElement & root, QDomDocument & doc)
 {
     for (auto && node : mindMapData.graph().getNodes()) {
-        auto nodeElement = doc.createElement(AlzSerializer::DataKeywords::Design::Graph::NODE);
-        nodeElement.setAttribute(AlzSerializer::DataKeywords::Design::Graph::Node::INDEX, node->index());
-        nodeElement.setAttribute(AlzSerializer::DataKeywords::Design::Graph::Node::X, static_cast<int>(node->location().x() * SCALE));
-        nodeElement.setAttribute(AlzSerializer::DataKeywords::Design::Graph::Node::Y, static_cast<int>(node->location().y() * SCALE));
-        nodeElement.setAttribute(AlzSerializer::DataKeywords::Design::Graph::Node::W, static_cast<int>(node->size().width() * SCALE));
-        nodeElement.setAttribute(AlzSerializer::DataKeywords::Design::Graph::Node::H, static_cast<int>(node->size().height() * SCALE));
+        auto nodeElement = doc.createElement(DataKeywords::MindMap::Graph::NODE);
+        nodeElement.setAttribute(DataKeywords::MindMap::Graph::Node::INDEX, node->index());
+        nodeElement.setAttribute(DataKeywords::MindMap::Graph::Node::X, static_cast<int>(node->location().x() * SCALE));
+        nodeElement.setAttribute(DataKeywords::MindMap::Graph::Node::Y, static_cast<int>(node->location().y() * SCALE));
+        nodeElement.setAttribute(DataKeywords::MindMap::Graph::Node::W, static_cast<int>(node->size().width() * SCALE));
+        nodeElement.setAttribute(DataKeywords::MindMap::Graph::Node::H, static_cast<int>(node->size().height() * SCALE));
         root.appendChild(nodeElement);
 
         // Create a child node for the text content
-        auto textElement = doc.createElement(AlzSerializer::DataKeywords::Design::Graph::Node::TEXT);
-        textElement.appendChild(doc.createTextNode(node->text()));
-        nodeElement.appendChild(textElement);
+        if (!node->text().isEmpty()) {
+            auto textElement = doc.createElement(DataKeywords::MindMap::Graph::Node::TEXT);
+            textElement.appendChild(doc.createTextNode(node->text()));
+            nodeElement.appendChild(textElement);
+        }
 
         // Create a child node for color
-        writeColor(nodeElement, doc, node->color(), AlzSerializer::DataKeywords::Design::Graph::Node::COLOR);
+        writeColor(nodeElement, doc, node->color(), DataKeywords::MindMap::Graph::Node::COLOR);
 
         // Create a child node for text color
-        writeColor(nodeElement, doc, node->textColor(), AlzSerializer::DataKeywords::Design::Graph::Node::TEXT_COLOR);
+        writeColor(nodeElement, doc, node->textColor(), DataKeywords::MindMap::Graph::Node::TEXT_COLOR);
 
         // Create a child node for image ref
         if (node->imageRef()) {
-            writeImageRef(nodeElement, doc, node->imageRef(), AlzSerializer::DataKeywords::Design::Graph::Node::IMAGE);
+            writeImageRef(nodeElement, doc, node->imageRef(), DataKeywords::MindMap::Graph::Node::IMAGE);
         }
     }
 }
@@ -171,18 +185,20 @@ static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocume
 {
     for (auto && node : mindMapData.graph().getNodes()) {
         for (auto && edge : mindMapData.graph().getEdgesFromNode(node)) {
-            auto edgeElement = doc.createElement(AlzSerializer::DataKeywords::Design::Graph::EDGE);
-            edgeElement.setAttribute(AlzSerializer::DataKeywords::Design::Graph::Edge::INDEX0, edge->sourceNode().index());
-            edgeElement.setAttribute(AlzSerializer::DataKeywords::Design::Graph::Edge::INDEX1, edge->targetNode().index());
-            edgeElement.setAttribute(AlzSerializer::DataKeywords::Design::Graph::Edge::ARROW_MODE, static_cast<int>(edge->arrowMode()));
-            edgeElement.setAttribute(AlzSerializer::DataKeywords::Design::Graph::Edge::REVERSED, edge->reversed());
+            auto edgeElement = doc.createElement(DataKeywords::MindMap::Graph::EDGE);
+            edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::INDEX0, edge->sourceNode().index());
+            edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::INDEX1, edge->targetNode().index());
+            edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::ARROW_MODE, static_cast<int>(edge->arrowMode()));
+            edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::REVERSED, edge->reversed());
             root.appendChild(edgeElement);
 
             // Create a child node for the text content
-            auto textElement = doc.createElement(AlzSerializer::DataKeywords::Design::Graph::Node::TEXT);
-            edgeElement.appendChild(textElement);
-            const auto textNode = doc.createTextNode(edge->text());
-            textElement.appendChild(textNode);
+            if (!edge->text().isEmpty()) {
+                auto textElement = doc.createElement(DataKeywords::MindMap::Graph::Node::TEXT);
+                edgeElement.appendChild(textElement);
+                const auto textNode = doc.createTextNode(edge->text());
+                textElement.appendChild(textNode);
+            }
         }
     }
 }
@@ -234,9 +250,9 @@ static void writeImages(MindMapData & mindMapData, QDomElement & root, QDomDocum
             bool exists;
             std::tie(image, exists) = mindMapData.imageManager().getImage(node->imageRef());
             if (exists) {
-                auto imageElement = doc.createElement(AlzSerializer::DataKeywords::Design::IMAGE);
-                imageElement.setAttribute(AlzSerializer::DataKeywords::Design::Image::ID, static_cast<int>(image.id()));
-                imageElement.setAttribute(AlzSerializer::DataKeywords::Design::Image::PATH, image.path().c_str());
+                auto imageElement = doc.createElement(DataKeywords::MindMap::IMAGE);
+                imageElement.setAttribute(DataKeywords::MindMap::Image::ID, static_cast<int>(image.id()));
+                imageElement.setAttribute(DataKeywords::MindMap::Image::PATH, image.path().c_str());
                 root.appendChild(imageElement);
 
                 // Create a child node for the image content
@@ -246,18 +262,26 @@ static void writeImages(MindMapData & mindMapData, QDomElement & root, QDomDocum
     }
 }
 
+static void writeLayoutOptimizer(MindMapData & mindMapData, QDomElement & root, QDomDocument & doc)
+{
+    auto layoutOptimizerElement = doc.createElement(DataKeywords::MindMap::LayoutOptimizer::LAYOUT_OPTIMIZER);
+    layoutOptimizerElement.setAttribute(DataKeywords::MindMap::LayoutOptimizer::ASPECT_RATIO, mindMapData.aspectRatio() * SCALE);
+    layoutOptimizerElement.setAttribute(DataKeywords::MindMap::LayoutOptimizer::MIN_EDGE_LENGTH, mindMapData.minEdgeLength() * SCALE);
+    root.appendChild(layoutOptimizerElement);
+}
+
 static QColor readColorElement(const QDomElement & element)
 {
     return {
-        element.attribute(AlzSerializer::DataKeywords::Design::Color::R, "255").toInt(),
-        element.attribute(AlzSerializer::DataKeywords::Design::Color::G, "255").toInt(),
-        element.attribute(AlzSerializer::DataKeywords::Design::Color::B, "255").toInt()
+        element.attribute(DataKeywords::MindMap::Color::R, "255").toInt(),
+        element.attribute(DataKeywords::MindMap::Color::G, "255").toInt(),
+        element.attribute(DataKeywords::MindMap::Color::B, "255").toInt()
     };
 }
 
 static size_t readImageElement(const QDomElement & element)
 {
-    return static_cast<size_t>(element.attribute(AlzSerializer::DataKeywords::Design::Graph::Node::Image::REF, "0").toInt());
+    return static_cast<size_t>(element.attribute(DataKeywords::MindMap::Graph::Node::Image::REF, "0").toInt());
 }
 
 static QString readFirstTextNodeContent(const QDomElement & element)
@@ -266,7 +290,7 @@ static QString readFirstTextNodeContent(const QDomElement & element)
         const auto child = element.childNodes().at(i);
         if (child.isText()) {
             // See: https://github.com/juzzlin/Heimer/issues/73
-            return child.toText().nodeValue().replace(13, "");
+            return child.toText().nodeValue().replace(QChar(QChar::CarriageReturn), "");
         }
     }
     return {};
@@ -296,102 +320,122 @@ static void readChildren(const QDomElement & root, std::map<QString, std::functi
 }
 
 // The purpose of this #ifdef is to build GUILESS unit tests so that QTEST_GUILESS_MAIN can be used
-static NodePtr readNode(const QDomElement & element)
+static std::unique_ptr<Node> readNode(const QDomElement & element)
 {
     // Init a new node. QGraphicsScene will take the ownership eventually.
-    const auto node = make_shared<Node>();
+    auto node = std::make_unique<Node>();
 
-    node->setIndex(element.attribute(AlzSerializer::DataKeywords::Design::Graph::Node::INDEX, "-1").toInt());
+    node->setIndex(element.attribute(DataKeywords::MindMap::Graph::Node::INDEX, "-1").toInt());
     node->setLocation(QPointF(
-      element.attribute(AlzSerializer::DataKeywords::Design::Graph::Node::X, "0").toInt() / SCALE,
-      element.attribute(AlzSerializer::DataKeywords::Design::Graph::Node::Y, "0").toInt() / SCALE));
+      element.attribute(DataKeywords::MindMap::Graph::Node::X, "0").toInt() / SCALE,
+      element.attribute(DataKeywords::MindMap::Graph::Node::Y, "0").toInt() / SCALE));
 
-    if (element.hasAttribute(AlzSerializer::DataKeywords::Design::Graph::Node::W) && element.hasAttribute(AlzSerializer::DataKeywords::Design::Graph::Node::H)) {
+    if (element.hasAttribute(DataKeywords::MindMap::Graph::Node::W) && element.hasAttribute(DataKeywords::MindMap::Graph::Node::H)) {
         node->setSize(QSizeF(
-          element.attribute(AlzSerializer::DataKeywords::Design::Graph::Node::W).toInt() / SCALE,
-          element.attribute(AlzSerializer::DataKeywords::Design::Graph::Node::H).toInt() / SCALE));
+          element.attribute(DataKeywords::MindMap::Graph::Node::W).toInt() / SCALE,
+          element.attribute(DataKeywords::MindMap::Graph::Node::H).toInt() / SCALE));
     }
 
-    readChildren(element, { { QString(AlzSerializer::DataKeywords::Design::Graph::Node::TEXT), [=](const QDomElement & e) {
+    readChildren(element, { { QString(DataKeywords::MindMap::Graph::Node::TEXT), [&node](const QDomElement & e) {
                                  node->setText(readFirstTextNodeContent(e));
                              } },
-                            { QString(AlzSerializer::DataKeywords::Design::Graph::Node::COLOR), [=](const QDomElement & e) {
+                            { QString(DataKeywords::MindMap::Graph::Node::COLOR), [&node](const QDomElement & e) {
                                  node->setColor(readColorElement(e));
                              } },
-                            { QString(AlzSerializer::DataKeywords::Design::Graph::Node::TEXT_COLOR), [=](const QDomElement & e) {
+                            { QString(DataKeywords::MindMap::Graph::Node::TEXT_COLOR), [&node](const QDomElement & e) {
                                  node->setTextColor(readColorElement(e));
                              } },
-                            { QString(AlzSerializer::DataKeywords::Design::Graph::Node::IMAGE), [=](const QDomElement & e) {
+                            { QString(DataKeywords::MindMap::Graph::Node::IMAGE), [&node](const QDomElement & e) {
                                  node->setImageRef(readImageElement(e));
                              } } });
 
     return node;
 }
 
-static EdgePtr readEdge(const QDomElement & element, MindMapDataPtr data)
+static std::unique_ptr<Edge> readEdge(const QDomElement & element, MindMapData & data)
 {
-    const int index0 = element.attribute(AlzSerializer::DataKeywords::Design::Graph::Edge::INDEX0, "-1").toInt();
-    const int index1 = element.attribute(AlzSerializer::DataKeywords::Design::Graph::Edge::INDEX1, "-1").toInt();
-    const int reversed = element.attribute(AlzSerializer::DataKeywords::Design::Graph::Edge::REVERSED, "0").toInt();
-    const int arrowMode = element.attribute(AlzSerializer::DataKeywords::Design::Graph::Edge::ARROW_MODE, "0").toInt();
+    const int index0 = element.attribute(DataKeywords::MindMap::Graph::Edge::INDEX0, "-1").toInt();
+    const int index1 = element.attribute(DataKeywords::MindMap::Graph::Edge::INDEX1, "-1").toInt();
+    const int reversed = element.attribute(DataKeywords::MindMap::Graph::Edge::REVERSED, "0").toInt();
+    const int arrowMode = element.attribute(DataKeywords::MindMap::Graph::Edge::ARROW_MODE, "0").toInt();
 
     // Initialize a new edge. QGraphicsScene will take the ownership eventually.
-    const auto node0 = data->graph().getNode(index0);
-    const auto node1 = data->graph().getNode(index1);
-    const auto edge = make_shared<Edge>(*node0, *node1);
+    const auto node0 = data.graph().getNode(index0);
+    const auto node1 = data.graph().getNode(index1);
+
+    auto edge = std::make_unique<Edge>(*node0, *node1);
     edge->setArrowMode(static_cast<Edge::ArrowMode>(arrowMode));
     edge->setReversed(reversed);
 
-    readChildren(element, { { QString(AlzSerializer::DataKeywords::Design::Graph::Node::TEXT), [=](const QDomElement & e) {
+    readChildren(element, { { QString(DataKeywords::MindMap::Graph::Node::TEXT), [&edge](const QDomElement & e) {
                                  edge->setText(readFirstTextNodeContent(e));
                              } } });
 
     return edge;
 }
 
-static void readGraph(const QDomElement & graph, MindMapDataPtr data)
+static void readLayoutOptimizer(const QDomElement & element, MindMapData & data)
+{
+    double aspectRatio = element.attribute(DataKeywords::MindMap::LayoutOptimizer::ASPECT_RATIO, "-1").toDouble() / SCALE;
+    aspectRatio = std::min(aspectRatio, Constants::LayoutOptimizer::MAX_ASPECT_RATIO);
+    aspectRatio = std::max(aspectRatio, Constants::LayoutOptimizer::MIN_ASPECT_RATIO);
+    data.setAspectRatio(aspectRatio);
+
+    double minEdgeLength = element.attribute(DataKeywords::MindMap::LayoutOptimizer::MIN_EDGE_LENGTH, "-1").toDouble() / SCALE;
+    minEdgeLength = std::min(minEdgeLength, Constants::LayoutOptimizer::MAX_EDGE_LENGTH);
+    minEdgeLength = std::max(minEdgeLength, Constants::LayoutOptimizer::MIN_EDGE_LENGTH);
+    data.setMinEdgeLength(minEdgeLength);
+}
+
+static void readGraph(const QDomElement & graph, MindMapData & data)
 {
     readChildren(graph, {
-                          { QString(AlzSerializer::DataKeywords::Design::Graph::NODE), [=](const QDomElement & e) {
-                               data->graph().addNode(readNode(e));
+                          { QString(DataKeywords::MindMap::Graph::NODE), [&data](const QDomElement & e) {
+                               data.graph().addNode(readNode(e));
                            } },
-                          { QString(AlzSerializer::DataKeywords::Design::Graph::EDGE), [=](const QDomElement & e) {
-                               data->graph().addEdge(readEdge(e, data));
+                          { QString(DataKeywords::MindMap::Graph::EDGE), [&data](const QDomElement & e) {
+                               data.graph().addEdge(readEdge(e, data));
                            } },
                         });
 }
 
-MindMapDataPtr fromXml(QDomDocument document)
+std::unique_ptr<MindMapData> fromXml(QDomDocument document)
 {
-    const auto design = document.documentElement();
-    const auto data = make_shared<MindMapData>();
-    data->setVersion(design.attribute(DataKeywords::Design::APPLICATION_VERSION, "UNDEFINED"));
+    const auto root = document.documentElement();
+    auto data = std::make_unique<MindMapData>();
+    data->setVersion(root.attribute(DataKeywords::MindMap::APPLICATION_VERSION, "UNDEFINED"));
 
-    readChildren(design, { { QString(AlzSerializer::DataKeywords::Design::GRAPH), [=](const QDomElement & e) {
-                                readGraph(e, data);
-                            } },
-                           { QString(AlzSerializer::DataKeywords::Design::COLOR), [=](const QDomElement & e) {
-                                data->setBackgroundColor(readColorElement(e));
-                            } },
-                           { QString(AlzSerializer::DataKeywords::Design::EDGE_COLOR), [=](const QDomElement & e) {
-                                data->setEdgeColor(readColorElement(e));
-                            } },
-                           { QString(AlzSerializer::DataKeywords::Design::EDGE_THICKNESS), [=](const QDomElement & e) {
-                                data->setEdgeWidth(readFirstTextNodeContent(e).toDouble() / SCALE);
-                            } },
-                           { QString(AlzSerializer::DataKeywords::Design::IMAGE), [=](const QDomElement & e) {
-                                const auto id = e.attribute(AlzSerializer::DataKeywords::Design::Image::ID).toUInt();
-                                const auto path = e.attribute(AlzSerializer::DataKeywords::Design::Image::PATH).toStdString();
-                                Image image(base64ToQImage(readFirstTextNodeContent(e).toStdString(), id, path), path);
-                                image.setId(id);
-                                data->imageManager().setImage(image);
-                            } },
-                           { QString(AlzSerializer::DataKeywords::Design::TEXT_SIZE), [=](const QDomElement & e) {
-                                data->setTextSize(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
-                            } },
-                           { QString(AlzSerializer::DataKeywords::Design::CORNER_RADIUS), [=](const QDomElement & e) {
-                                data->setCornerRadius(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
-                            } } });
+    readChildren(root, { { QString(DataKeywords::MindMap::GRAPH), [&data](const QDomElement & e) {
+                              readGraph(e, *data);
+                          } },
+                         { QString(DataKeywords::MindMap::COLOR), [&data](const QDomElement & e) {
+                              data->setBackgroundColor(readColorElement(e));
+                          } },
+                         { QString(DataKeywords::MindMap::EDGE_COLOR), [&data](const QDomElement & e) {
+                              data->setEdgeColor(readColorElement(e));
+                          } },
+                         { QString(DataKeywords::MindMap::GRID_COLOR), [&data](const QDomElement & e) {
+                              data->setGridColor(readColorElement(e));
+                          } },
+                         { QString(DataKeywords::MindMap::EDGE_THICKNESS), [&data](const QDomElement & e) {
+                              data->setEdgeWidth(readFirstTextNodeContent(e).toDouble() / SCALE);
+                          } },
+                         { QString(DataKeywords::MindMap::IMAGE), [&data](const QDomElement & e) {
+                              const auto id = e.attribute(DataKeywords::MindMap::Image::ID).toUInt();
+                              const auto path = e.attribute(DataKeywords::MindMap::Image::PATH).toStdString();
+                              Image image(base64ToQImage(readFirstTextNodeContent(e).toStdString(), id, path), path);
+                              image.setId(id);
+                              data->imageManager().setImage(image);
+                          } },
+                         { QString(DataKeywords::MindMap::TEXT_SIZE), [&data](const QDomElement & e) {
+                              data->setTextSize(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
+                          } },
+                         { QString(DataKeywords::MindMap::CORNER_RADIUS), [&data](const QDomElement & e) {
+                              data->setCornerRadius(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
+                          } },
+                         { QString(DataKeywords::MindMap::LayoutOptimizer::LAYOUT_OPTIMIZER), [&data](const QDomElement & e) {
+                              readLayoutOptimizer(e, *data);
+                          } } });
 
     return data;
 }
@@ -402,34 +446,38 @@ QDomDocument toXml(MindMapData & mindMapData)
 
     doc.appendChild(doc.createProcessingInstruction("xml", "version='1.0' encoding='UTF-8'"));
 
-    auto design = doc.createElement(AlzSerializer::DataKeywords::Design::DESIGN);
-    design.setAttribute(AlzSerializer::DataKeywords::Design::APPLICATION_VERSION, Constants::Application::APPLICATION_VERSION);
-    doc.appendChild(design);
+    auto root = doc.createElement(DataKeywords::MindMap::HEIMER_MIND_MAP);
+    root.setAttribute(DataKeywords::MindMap::APPLICATION_VERSION, Constants::Application::APPLICATION_VERSION);
+    doc.appendChild(root);
 
-    writeColor(design, doc, mindMapData.backgroundColor(), AlzSerializer::DataKeywords::Design::COLOR);
+    writeColor(root, doc, mindMapData.backgroundColor(), DataKeywords::MindMap::COLOR);
 
-    writeColor(design, doc, mindMapData.edgeColor(), AlzSerializer::DataKeywords::Design::EDGE_COLOR);
+    writeColor(root, doc, mindMapData.edgeColor(), DataKeywords::MindMap::EDGE_COLOR);
 
-    auto edgeWidthElement = doc.createElement(AlzSerializer::DataKeywords::Design::EDGE_THICKNESS);
+    writeColor(root, doc, mindMapData.gridColor(), DataKeywords::MindMap::GRID_COLOR);
+
+    auto edgeWidthElement = doc.createElement(DataKeywords::MindMap::EDGE_THICKNESS);
     edgeWidthElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData.edgeWidth() * SCALE))));
-    design.appendChild(edgeWidthElement);
+    root.appendChild(edgeWidthElement);
 
-    auto textSizeElement = doc.createElement(AlzSerializer::DataKeywords::Design::TEXT_SIZE);
+    auto textSizeElement = doc.createElement(DataKeywords::MindMap::TEXT_SIZE);
     textSizeElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData.textSize() * SCALE))));
-    design.appendChild(textSizeElement);
+    root.appendChild(textSizeElement);
 
-    auto cornerRadiusElement = doc.createElement(AlzSerializer::DataKeywords::Design::CORNER_RADIUS);
+    auto cornerRadiusElement = doc.createElement(DataKeywords::MindMap::CORNER_RADIUS);
     cornerRadiusElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData.cornerRadius() * SCALE))));
-    design.appendChild(cornerRadiusElement);
+    root.appendChild(cornerRadiusElement);
 
-    auto graph = doc.createElement(AlzSerializer::DataKeywords::Design::GRAPH);
-    design.appendChild(graph);
+    auto graph = doc.createElement(DataKeywords::MindMap::GRAPH);
+    root.appendChild(graph);
 
     writeNodes(mindMapData, graph, doc);
 
     writeEdges(mindMapData, graph, doc);
 
-    writeImages(mindMapData, design, doc);
+    writeImages(mindMapData, root, doc);
+
+    writeLayoutOptimizer(mindMapData, root, doc);
 
     return doc;
 }

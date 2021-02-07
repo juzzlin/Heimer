@@ -114,11 +114,11 @@ private:
 
     QColor m_color;
 
-    bool m_reversed = false;
+    bool m_reversed;
 
     bool m_selected = false;
 
-    ArrowMode m_arrowMode = ArrowMode::Single;
+    ArrowMode m_arrowMode;
 
     bool m_enableAnimations;
 

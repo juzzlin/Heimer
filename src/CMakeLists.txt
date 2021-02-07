@@ -5,7 +5,7 @@ add_subdirectory(contrib/Argengine EXCLUDE_FROM_ALL)
 include_directories(contrib/Argengine/src)
 
 # Translation files in src/translations (without .ts)
-set(TS heimer_fi heimer_fr heimer_it)
+set(TS heimer_fi heimer_fr heimer_it heimer_nl)
 set(TS_FILES)
 set(QM_FILES)
 foreach(TS_FILE ${TS})
@@ -18,8 +18,10 @@ set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_BINAR
 set(LIB_SRC
     about_dlg.cpp
     alz_serializer.cpp
+    application.cpp
     constants.hpp
-    copy_paste.cpp
+    defaults.cpp
+    defaults_dlg.cpp
     edge.cpp
     edge_context_menu.cpp
     edge_dot.cpp
@@ -46,12 +48,15 @@ set(LIB_SRC
     mind_map_data_base.cpp
     mouse_action.cpp
     node.cpp
+    node_action.hpp
     node_handle.cpp
     png_export_dialog.cpp
     recent_files_manager.cpp
     recent_files_menu.cpp
     selection_group.cpp
+    settings.cpp
     state_machine.cpp
+    svg_export_dialog.cpp
     test_mode.cpp
     text_edit.cpp
     undo_stack.cpp
@@ -63,7 +68,6 @@ set(LIB_SRC
 
 # Set sources for the app
 set(APP_SRC
-    application.cpp
     main.cpp
 )
 
@@ -78,9 +82,16 @@ set(RCS
     ${CMAKE_BINARY_DIR}/data/translations/translations.qrc
 )
 
-qt5_add_resources(RC_SRC ${RCS})
-qt5_add_translation(QM ${TS_FILES})
-qt5_wrap_ui(UI_HDRS ${UIS})
+if(${QT_VERSION_MAJOR} STREQUAL "6")
+    qt_add_resources(RC_SRC ${RCS})
+    qt_add_translation(QM ${TS_FILES})
+    qt_wrap_ui(UI_HDRS ${UIS})
+# This is needed for Qt < 5.15
+else()
+    qt5_add_resources(RC_SRC ${RCS})
+    qt5_add_translation(QM ${TS_FILES})
+    qt5_wrap_ui(UI_HDRS ${UIS})
+endif()
 
 # We need this to be able to include headers produced by uic in our code
 include_directories(${CMAKE_BINARY_DIR})
@@ -112,9 +123,9 @@ endif()
 
 # Add the library
 add_library(${LIBRARY_NAME} STATIC ${LIB_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
-target_link_libraries(${LIBRARY_NAME} Qt5::Widgets Qt5::Xml SimpleLogger_static Argengine_static)
+target_link_libraries(${LIBRARY_NAME} Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Svg Qt${QT_VERSION_MAJOR}::Xml SimpleLogger_static Argengine_static)
 
 # Add the executable
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 add_executable(${BINARY_NAME} WIN32 ${APP_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
-target_link_libraries(${BINARY_NAME} Qt5::Widgets ${LIBRARY_NAME})
+target_link_libraries(${BINARY_NAME} Qt${QT_VERSION_MAJOR}::Widgets ${LIBRARY_NAME})

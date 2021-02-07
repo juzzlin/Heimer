@@ -25,9 +25,11 @@
 #include "double_slider.hpp"
 #include "int_slider.hpp"
 
+#include <map>
 #include <memory>
 
 class AboutDlg;
+class DefaultsDlg;
 class EditorData;
 class EditorView;
 class QAction;
@@ -52,9 +54,17 @@ public:
 
     static MainWindow * instance();
 
+    void appear();
+
     bool copyOnDragEnabled() const;
 
     void disableUndoAndRedo();
+
+    void enableConnectSelectedNodesAction(bool enable);
+
+    void enableDisconnectSelectedNodesAction(bool enable);
+
+    void enableWidgetSignals(bool enable);
 
     void initialize();
 
@@ -73,6 +83,8 @@ public:
 public slots:
 
     void enableUndo(bool enable);
+
+    void enableRedo(bool enable);
 
     void enableSave(bool enable);
 
@@ -97,6 +109,8 @@ signals:
 
     void gridSizeChanged(int size);
 
+    void gridVisibleChanged(int state);
+
     void textSizeChanged(int value);
 
     void zoomInTriggered();
@@ -105,17 +119,11 @@ signals:
 
     void zoomToFitTriggered();
 
-private slots:
-
-    void setupMindMapAfterUndoOrRedo();
-
-    void showAboutDlg();
-
-    void showAboutQtDlg();
-
-    void showWhatsNewDlg();
-
 private:
+    void addConnectSelectedNodesAction(QMenu & menu);
+
+    void addDisconnectSelectedNodesAction(QMenu & menu);
+
     void addRedoAction(QMenu & menu);
 
     void addUndoAction(QMenu & menu);
@@ -128,11 +136,17 @@ private:
 
     QWidgetAction * createTextSizeAction();
 
+    std::pair<QSize, QSize> calculateDefaultWindowSize() const;
+
     void createEditMenu();
+
+    void createExportSubMenu(QMenu & fileMenu);
 
     void createFileMenu();
 
     void createHelpMenu();
+
+    void createSettingsMenu();
 
     void createToolBar();
 
@@ -142,7 +156,15 @@ private:
 
     AboutDlg * m_aboutDlg;
 
+    DefaultsDlg * m_defaultsDlg;
+
     WhatsNewDlg * m_whatsNewDlg;
+
+    QAction * m_connectSelectedNodesAction = nullptr;
+
+    QAction * m_disconnectSelectedNodesAction = nullptr;
+
+    QAction * m_fullScreenAction = nullptr;
 
     QAction * m_saveAction = nullptr;
 
@@ -153,6 +175,8 @@ private:
     QAction * m_redoAction = nullptr;
 
     DoubleSlider * m_edgeWidthSlider = nullptr;
+
+    QSlider * m_edgeWidthSlider = nullptr;
 
     QSpinBox * m_cornerRadiusSpinBox = nullptr;
 
@@ -168,15 +192,13 @@ private:
 
     QCheckBox * m_copyOnDragCheckBox = nullptr;
 
+    QCheckBox * m_showGridCheckBox = nullptr;
+
     QString m_argMindMapFile;
 
     std::shared_ptr<Mediator> m_mediator;
 
-    const char * m_settingsGroup = "MainWindow";
-
     bool m_closeNow = false;
-
-    QSize m_sizeBeforeFullScreen;
 
     static MainWindow * m_instance;
 };

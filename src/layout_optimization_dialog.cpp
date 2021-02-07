@@ -17,6 +17,7 @@
 #include "constants.hpp"
 #include "contrib/SimpleLogger/src/simple_logger.hpp"
 #include "layout_optimizer.hpp"
+#include "mind_map_data.hpp"
 
 #include <QDoubleSpinBox>
 #include <QHBoxLayout>
@@ -24,32 +25,39 @@
 #include <QMessageBox>
 #include <QProgressBar>
 #include <QPushButton>
-#include <QSettings>
 #include <QTimer>
 #include <QVBoxLayout>
 
-LayoutOptimizationDialog::LayoutOptimizationDialog(QWidget & parent, LayoutOptimizer & layoutOptimizer)
+LayoutOptimizationDialog::LayoutOptimizationDialog(QWidget & parent, MindMapData & mindMapData, LayoutOptimizer & layoutOptimizer)
   : QDialog(&parent)
+  , m_mindMapData(mindMapData)
   , m_layoutOptimizer(layoutOptimizer)
 {
     setWindowTitle(tr("Optimize Layout"));
+
     setMinimumWidth(480);
-    initWidgets();
+
+    initWidgets(mindMapData);
 
     connect(m_cancelButton, &QPushButton::clicked, this, &QDialog::reject);
 
     connect(m_optimizeButton, &QPushButton::clicked, [=] {
-        emit undoPointRequested();
-        m_layoutOptimizer.initialize(m_aspectRatioSpinBox->value(), m_minEdgeLengthSpinBox->value());
-        const auto optimizationInfo = m_layoutOptimizer.optimize();
-        if (optimizationInfo.changes) {
-            const double gain = (optimizationInfo.finalCost - optimizationInfo.initialCost) / optimizationInfo.initialCost;
-            juzzlin::L().info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
-            m_layoutOptimizer.extract();
-        } else {
-            juzzlin::L().info() << "No changes";
-        }
-        finishOptimization();
+        m_cancelButton->setEnabled(false);
+        m_optimizeButton->setEnabled(false);
+        QTimer::singleShot(0, [=] { // Trick to make disabled buttons apply immediately
+            emit undoPointRequested();
+            if (m_layoutOptimizer.initialize(m_aspectRatioSpinBox->value(), m_minEdgeLengthSpinBox->value())) {
+                const auto optimizationInfo = m_layoutOptimizer.optimize();
+                if (optimizationInfo.changes) {
+                    const double gain = (optimizationInfo.finalCost - optimizationInfo.initialCost) / optimizationInfo.initialCost;
+                    juzzlin::L().info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
+                } else {
+                    juzzlin::L().info() << "No changes";
+                }
+                m_layoutOptimizer.extract();
+            }
+            finishOptimization();
+        });
     });
 
     m_layoutOptimizer.setProgressCallback([=](double progress) {
@@ -70,21 +78,15 @@ void LayoutOptimizationDialog::finishOptimization()
 {
     m_progressBar->setValue(100);
 
-    QSettings settings;
-    settings.beginGroup(Constants::LayoutOptimizer::QSETTINGS_GROUP);
-    settings.setValue(Constants::LayoutOptimizer::QSETTINGS_ASPECT_RATIO_KEY, m_aspectRatioSpinBox->value());
-    settings.setValue(Constants::LayoutOptimizer::QSETTINGS_MIN_EDGE_LENGTH_KEY, m_minEdgeLengthSpinBox->value());
-    settings.endGroup();
+    m_mindMapData.setAspectRatio(m_aspectRatioSpinBox->value());
+    m_mindMapData.setMinEdgeLength(m_minEdgeLengthSpinBox->value());
 
     QTimer::singleShot(500, this, &QDialog::accept);
 }
 
-void LayoutOptimizationDialog::initWidgets()
+void LayoutOptimizationDialog::initWidgets(const MindMapData & mindMapData)
 {
     const auto mainLayout = new QVBoxLayout(this);
-
-    QSettings settings;
-    settings.beginGroup(Constants::LayoutOptimizer::QSETTINGS_GROUP);
 
     const auto aspectRatioLayout = new QHBoxLayout;
     const auto imageWidthLabel = new QLabel(tr("Aspect Ratio:"));
@@ -93,7 +95,7 @@ void LayoutOptimizationDialog::initWidgets()
     m_aspectRatioSpinBox->setMinimum(Constants::LayoutOptimizer::MIN_ASPECT_RATIO);
     m_aspectRatioSpinBox->setMaximum(Constants::LayoutOptimizer::MAX_ASPECT_RATIO);
     m_aspectRatioSpinBox->setSingleStep(0.1);
-    m_aspectRatioSpinBox->setValue(settings.value(Constants::LayoutOptimizer::QSETTINGS_ASPECT_RATIO_KEY, Constants::LayoutOptimizer::DEFAULT_ASPECT_RATIO).toReal());
+    m_aspectRatioSpinBox->setValue(mindMapData.aspectRatio());
     aspectRatioLayout->addWidget(m_aspectRatioSpinBox);
     mainLayout->addLayout(aspectRatioLayout);
 
@@ -104,7 +106,7 @@ void LayoutOptimizationDialog::initWidgets()
     m_minEdgeLengthSpinBox->setMinimum(Constants::LayoutOptimizer::MIN_EDGE_LENGTH);
     m_minEdgeLengthSpinBox->setMaximum(Constants::LayoutOptimizer::MAX_EDGE_LENGTH);
     m_minEdgeLengthSpinBox->setSingleStep(1);
-    m_minEdgeLengthSpinBox->setValue(settings.value(Constants::LayoutOptimizer::QSETTINGS_MIN_EDGE_LENGTH_KEY, Constants::LayoutOptimizer::DEFAULT_MIN_EDGE_LENGTH).toReal());
+    m_minEdgeLengthSpinBox->setValue(mindMapData.minEdgeLength());
     minEdgeLengthLayout->addWidget(m_minEdgeLengthSpinBox);
     mainLayout->addLayout(minEdgeLengthLayout);
 
@@ -126,6 +128,4 @@ void LayoutOptimizationDialog::initWidgets()
     mainLayout->addLayout(buttonLayout);
 
     setLayout(mainLayout);
-
-    settings.endGroup();
 }

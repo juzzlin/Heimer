@@ -24,7 +24,11 @@ public:
 
 private slots:
 
+    void testNoNodes_ShouldNotInitialize();
+
     void testSingleNode_ShouldNotDoAnything();
 
     void testMultipleNodes_ShouldReduceCost();
+
+    void testMultipleNodes_NoEdges_ShouldSpread();
 };

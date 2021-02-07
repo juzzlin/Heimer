@@ -26,7 +26,7 @@
 
 #include "simple_logger.hpp"
 
-#include <QGraphicsDropShadowEffect>
+#include <QGraphicsEffect>
 #include <QGraphicsSceneHoverEvent>
 #include <QImage>
 #include <QPainter>
@@ -40,6 +40,8 @@ Node::Node()
   : m_textEdit(new TextEdit(this))
 {
     setAcceptHoverEvents(true);
+
+    setGraphicsEffect(GraphicsFactory::createDropShadowEffect());
 
     m_size = QSize(Constants::Node::MIN_WIDTH, Constants::Node::MIN_HEIGHT);
 
@@ -238,52 +240,37 @@ std::pair<EdgePoint, EdgePoint> Node::getNearestEdgePoints(const Node & node1, c
 
 void Node::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 {
-    if (index() != -1) // Prevent right-click on the drag node
-    {
+    if (event && index() != -1) {
         m_currentMousePos = event->pos();
-        m_mouseIn = true;
-
         checkHandleVisibility(event->pos());
-
         QGraphicsItem::hoverEnterEvent(event);
     }
 }
 
 void Node::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
 {
-    if (index() != -1) // Prevent right-click on the drag node
-    {
-        m_mouseIn = false;
-
+    if (event && index() != -1) {
         setHandlesVisible(false);
-
-        if (event) // EditorView may call this with a null event
-        {
-            QGraphicsItem::hoverLeaveEvent(event);
-        }
+        QGraphicsItem::hoverLeaveEvent(event);
     }
 }
 
 void Node::hoverMoveEvent(QGraphicsSceneHoverEvent * event)
 {
-    if (index() != -1) // Prevent right-click on the drag node
-    {
+    if (event && index() != -1) {
         m_currentMousePos = event->pos();
-
         checkHandleVisibility(event->pos());
-
         QGraphicsItem::hoverMoveEvent(event);
     }
 }
 
 void Node::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-    if (index() != -1) // Prevent left-click on the drag node
-    {
+    // Prevent left-click on the drag node
+    if (event && index() != -1) {
         if (expandedTextEditRect().contains(event->pos())) {
             m_textEdit->setFocus();
         }
-
         QGraphicsItem::mousePressEvent(event);
     }
 }
@@ -364,7 +351,9 @@ void Node::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
 
         painter->drawPixmap(rect, scaledPixmap, scaledRect);
     } else {
+        const QPen pen(QColor { 2 * m_color.red() / 3, 2 * m_color.green() / 3, 2 * m_color.blue() / 3 }, 1);
         painter->fillPath(path, QBrush(m_color));
+        painter->strokePath(path, pen);
     }
 
     // Patch for TextEdit
@@ -434,8 +423,6 @@ void Node::setLocation(QPointF newLocation)
     setPos(newLocation);
 
     updateEdgeLines();
-
-    setHandlesVisible(false);
 }
 
 QRectF Node::placementBoundingRect() const
@@ -451,14 +438,18 @@ bool Node::selected() const
 void Node::setSelected(bool selected)
 {
     m_selected = selected;
-    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(selected));
+    GraphicsFactory::setSelected(graphicsEffect(), selected);
     update();
 }
 
-void Node::setTextInputActive()
+void Node::setTextInputActive(bool active)
 {
-    m_textEdit->setActive(true);
-    m_textEdit->setFocus();
+    m_textEdit->setActive(active);
+    if (active) {
+        m_textEdit->setFocus();
+    } else {
+        m_textEdit->clearFocus();
+    }
 }
 
 QString Node::text() const

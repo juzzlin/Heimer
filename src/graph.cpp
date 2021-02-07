@@ -25,12 +25,20 @@
 #include <stdexcept>
 #include <string>
 
+namespace {
+int64_t getKey(int c0, int c1)
+{
+    return (int64_t(c0) << 32) + c1;
+}
+} // namespace
+
 Graph::Graph()
 {
 }
 
 void Graph::clear()
 {
+    m_edges.clear();
     m_nodes.clear();
 }
 
@@ -44,69 +52,64 @@ void Graph::addNode(NodePtr node)
         }
     }
 
-    m_nodes.push_back(node);
+    m_nodes[node->index()] = node;
 }
 
-void Graph::deleteEdge(int index0, int index1)
+EdgePtr Graph::deleteEdge(int index0, int index1)
 {
-    EdgeVector::iterator edgeIter;
-    bool edgeErased = false;
-    do {
-        edgeIter = std::find_if(
-          m_edges.begin(), m_edges.end(), [=](const EdgePtr & edge) {
-              return edge->sourceNode().index() == index0 && edge->targetNode().index() == index1;
-          });
-        edgeErased = edgeIter != m_edges.end();
-        if (edgeErased) {
-            m_edges.erase(edgeIter);
-        }
-    } while (edgeErased);
+    EdgePtr deletedEdge;
+    const auto edgeIter = m_edges.find(getKey(index0, index1));
+    if (edgeIter != m_edges.end()) {
+        deletedEdge = (*edgeIter).second;
+        m_deletedEdges.push_back(deletedEdge);
+        m_edges.erase(edgeIter);
+    }
+    return deletedEdge;
 }
 
-void Graph::deleteNode(int index)
+std::pair<NodePtr, Graph::EdgeVector> Graph::deleteNode(int index)
 {
-    const auto iter = std::find_if(m_nodes.begin(), m_nodes.end(), [=](const NodePtr & node) {
-        return node->index() == index;
-    });
-
+    NodePtr deletedNode;
+    Graph::EdgeVector deletedEdges;
+    const auto iter = m_nodes.find(index);
     if (iter != m_nodes.end()) {
-        EdgeVector::iterator edgeIter;
-        bool edgeErased = false;
-        do {
-            edgeIter = std::find_if(
-              m_edges.begin(), m_edges.end(), [=](const EdgePtr & edge) {
-                  return edge->sourceNode().index() == index || edge->targetNode().index() == index;
-              });
-            edgeErased = edgeIter != m_edges.end();
-            if (edgeErased) {
-                m_edges.erase(edgeIter);
+        auto edgeIter = m_edges.begin();
+        while (edgeIter != m_edges.end()) {
+            const auto edgePair = *edgeIter;
+            if (edgePair.second->sourceNode().index() == index || edgePair.second->targetNode().index() == index) {
+                deletedEdges.push_back(edgePair.second);
+                m_deletedEdges.push_back(edgePair.second);
+                edgeIter = m_edges.erase(edgeIter);
+            } else {
+                edgeIter++;
             }
-        } while (edgeErased);
-
+        }
+        deletedNode = iter->second;
+        m_deletedNodes.push_back(deletedNode);
         m_nodes.erase(iter);
     }
+
+    return { deletedNode, deletedEdges };
 }
 
 void Graph::addEdge(EdgePtr newEdge)
 {
     // Add if such edge doesn't already exist
-    if (std::count_if(
-          m_edges.begin(), m_edges.end(), [=](const EdgePtr & edge) {
-              return edge->sourceNode().index() == newEdge->sourceNode().index() && edge->targetNode().index() == newEdge->targetNode().index();
-          })
-        == 0) {
-        m_edges.push_back(newEdge);
+    const auto c0 = newEdge->sourceNode().index();
+    const auto c1 = newEdge->targetNode().index();
+    if (!m_edges.count(getKey(c0, c1))) {
+        m_edges.insert({ getKey(c0, c1), newEdge });
     }
 }
 
 bool Graph::areDirectlyConnected(NodePtr node0, NodePtr node1)
 {
-    for (auto && edge : m_edges) {
-        if ((edge->sourceNode().index() == node0->index() && edge->targetNode().index() == node1->index()) || (edge->sourceNode().index() == node1->index() && edge->targetNode().index() == node0->index())) {
-            return true;
-        }
-    }
-    return false;
+    return areDirectlyConnected(node0->index(), node1->index());
+}
+
+bool Graph::areDirectlyConnected(int index0, int index1)
+{
+    return m_edges.count(getKey(index0, index1)) || m_edges.count(getKey(index1, index0));
 }
 
 size_t Graph::numNodes() const
@@ -114,17 +117,22 @@ size_t Graph::numNodes() const
     return m_nodes.size();
 }
 
-const Graph::EdgeVector & Graph::getEdges() const
+Graph::EdgeVector Graph::getEdges() const
 {
-    return m_edges;
+    EdgeVector edges;
+    edges.reserve(m_edges.size());
+    for (auto && edge : m_edges) {
+        edges.push_back(edge.second);
+    }
+    return edges;
 }
 
 Graph::EdgeVector Graph::getEdgesFromNode(NodePtr node)
 {
-    Graph::EdgeVector edges;
+    EdgeVector edges;
     for (auto && edge : m_edges) {
-        if (edge->sourceNode().index() == node->index()) {
-            edges.push_back(edge);
+        if (edge.second->sourceNode().index() == node->index()) {
+            edges.push_back(edge.second);
         }
     }
     return edges;
@@ -134,8 +142,8 @@ Graph::EdgeVector Graph::getEdgesToNode(NodePtr node)
 {
     Graph::EdgeVector edges;
     for (auto && edge : m_edges) {
-        if (edge->targetNode().index() == node->index()) {
-            edges.push_back(edge);
+        if (edge.second->targetNode().index() == node->index()) {
+            edges.push_back(edge.second);
         }
     }
     return edges;
@@ -143,32 +151,32 @@ Graph::EdgeVector Graph::getEdgesToNode(NodePtr node)
 
 NodePtr Graph::getNode(int index)
 {
-    auto iter = std::find_if(m_nodes.begin(), m_nodes.end(), [=](const NodePtr & node) {
-        return node->index() == index;
-    });
+    const auto iter = m_nodes.find(index);
     if (iter != m_nodes.end()) {
-        return *iter;
+        return iter->second;
     }
     throw std::runtime_error("Invalid node index: " + std::to_string(index));
 }
 
-const Graph::NodeVector & Graph::getNodes() const
+Graph::NodeVector Graph::getNodes() const
 {
-    return m_nodes;
+    NodeVector nodes;
+    nodes.reserve(m_nodes.size());
+    for (auto && node : m_nodes) {
+        nodes.push_back(node.second);
+    }
+    return nodes;
 }
 
 Graph::NodeVector Graph::getNodesConnectedToNode(NodePtr node)
 {
     NodeVector result;
 
-    auto && from = getEdgesFromNode(node);
-    auto && to = getEdgesToNode(node);
-
-    for (auto && edge : to) {
+    for (auto && edge : getEdgesToNode(node)) {
         result.push_back(getNode(edge->sourceNode().index()));
     }
 
-    for (auto && edge : from) {
+    for (auto && edge : getEdgesFromNode(node)) {
         result.push_back(getNode(edge->targetNode().index()));
     }
 
@@ -178,8 +186,7 @@ Graph::NodeVector Graph::getNodesConnectedToNode(NodePtr node)
 Graph::~Graph()
 {
     // Ensure that edges are always deleted before nodes
-    m_edges.clear();
-    m_nodes.clear();
+    clear();
 
     juzzlin::L().debug() << "Graph deleted";
 }

@@ -20,8 +20,8 @@ if(POLICY CMP0071)
 endif()
 
 # Global version
-set(VERSION_MAJOR 1)
-set(VERSION_MINOR 18)
+set(VERSION_MAJOR 2)
+set(VERSION_MINOR 2)
 set(VERSION_PATCH 0)
 set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
@@ -90,11 +90,9 @@ add_definitions(-DVERSION="${VERSION}")
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(QT_MIN_VER 5.5.1) # The version in Ubuntu 16.04
-find_package(Qt5Core ${QT_MIN_VER} REQUIRED)
-find_package(Qt5Xml ${QT_MIN_VER} REQUIRED)
-find_package(Qt5Widgets ${QT_MIN_VER} REQUIRED)
-find_package(Qt5LinguistTools ${QT_MIN_VER} REQUIRED)
-find_package(Qt5Test ${QT_MIN_VER} REQUIRED)
+# This is what Qt Creator 4.13.2 would generate
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Xml Widgets LinguistTools Svg Test REQUIRED)
 
 # Install paths depend on the build type and target platform
 setup_install_targets()

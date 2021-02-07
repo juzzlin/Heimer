@@ -13,22 +13,55 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef WHATS_NEW_DLG_HPP
-#define WHATS_NEW_DLG_HPP
+#ifndef SVG_EXPORT_DIALOG_HPP
+#define SVG_EXPORT_DIALOG_HPP
 
 #include <QDialog>
 
-//! The about dialog.
-class WhatsNewDlg : public QDialog
+class QCheckBox;
+class QLineEdit;
+class QProgressBar;
+class QPushButton;
+class QSpinBox;
+
+class SvgExportDialog : public QDialog
 {
     Q_OBJECT
 
 public:
     //! Constructor.
-    explicit WhatsNewDlg(QWidget * parent = nullptr);
+    explicit SvgExportDialog(QWidget & parent);
+
+    void setImageSize(QSize size);
+
+    int exec() override;
+
+public slots:
+
+    void finishExport(bool success);
+
+signals:
+
+    void svgExportRequested(QString filename);
+
+private slots:
+
+    void validate();
 
 private:
     void initWidgets();
+
+    QLineEdit * m_filenameLineEdit = nullptr;
+
+    QPushButton * m_filenameButton = nullptr;
+
+    QPushButton * m_cancelButton = nullptr;
+
+    QPushButton * m_exportButton = nullptr;
+
+    QProgressBar * m_progressBar = nullptr;
+
+    QString m_filenameWithExtension;
 };
 
-#endif // WHATS_NEW_DLG_HPP
+#endif // SVG_EXPORT_DIALOG_HPP

@@ -28,8 +28,6 @@ WhatsNewDlg::WhatsNewDlg(QWidget * parent)
 {
     setWindowTitle(tr("What's New"));
     initWidgets();
-
-    resize(640, 400);
 }
 
 QString filterChangeLog(QString data)

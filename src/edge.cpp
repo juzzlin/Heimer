@@ -16,6 +16,7 @@
 #include "edge.hpp"
 
 #include "constants.hpp"
+#include "defaults.hpp"
 #include "edge_dot.hpp"
 #include "edge_text_edit.hpp"
 #include "graphics_factory.hpp"
@@ -40,6 +41,8 @@
 Edge::Edge(Node & sourceNode, Node & targetNode, bool enableAnimations, bool enableLabel)
   : m_sourceNode(&sourceNode)
   , m_targetNode(&targetNode)
+  , m_reversed(Defaults::instance().reversedEdgeDirection())
+  , m_arrowMode(Defaults::instance().edgeArrowMode())
   , m_enableAnimations(enableAnimations)
   , m_enableLabel(enableLabel)
   , m_sourceDot(enableAnimations ? new EdgeDot(this) : nullptr)
@@ -98,7 +101,9 @@ void Edge::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
 
 QPen Edge::getPen() const
 {
-    return QPen { QBrush { QColor { m_color.red(), m_color.green(), m_color.blue(), 200 } }, m_width };
+    QPen pen { QBrush { QColor { m_color.red(), m_color.green(), m_color.blue() } }, m_width };
+    pen.setCapStyle(Qt::PenCapStyle::RoundCap);
+    return pen;
 }
 
 void Edge::initDots()
@@ -202,7 +207,7 @@ void Edge::setReversed(bool reversed)
 void Edge::setSelected(bool selected)
 {
     m_selected = selected;
-    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(selected));
+    GraphicsFactory::setSelected(graphicsEffect(), selected);
     update();
 }
 

@@ -44,6 +44,11 @@ void UndoStack::clear()
     m_redoStack.clear();
 }
 
+void UndoStack::clearRedoStack()
+{
+    m_redoStack.clear();
+}
+
 bool UndoStack::isUndoable() const
 {
     return !m_undoStack.empty();

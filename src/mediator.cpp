@@ -21,14 +21,19 @@
 #include "image_manager.hpp"
 #include "main_window.hpp"
 #include "mouse_action.hpp"
+#include "node_action.hpp"
+#include "node_handle.hpp"
 
 #include "simple_logger.hpp"
 
+#include <QApplication>
+#include <QFileInfo>
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 #include <QSizePolicy>
 
 #include <cassert>
+#include <cmath>
 
 using juzzlin::L;
 
@@ -66,6 +71,9 @@ void Mediator::addExistingGraphToScene()
         }
     }
 
+    // This is to prevent nasty updated loops like in https://github.com/juzzlin/Heimer/issues/96
+    m_mainWindow.enableWidgetSignals(false);
+
     m_mainWindow.setCornerRadius(m_editorData->mindMapData()->cornerRadius());
     m_mainWindow.setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
     m_mainWindow.setTextSize(m_editorData->mindMapData()->textSize());
@@ -73,6 +81,8 @@ void Mediator::addExistingGraphToScene()
     m_editorView->setCornerRadius(m_editorData->mindMapData()->cornerRadius());
     m_editorView->setEdgeColor(m_editorData->mindMapData()->edgeColor());
     m_editorView->setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
+
+    m_mainWindow.enableWidgetSignals(true);
 }
 
 void Mediator::addEdge(Node & node1, Node & node2)
@@ -87,11 +97,24 @@ void Mediator::addEdge(Node & node1, Node & node2)
 void Mediator::addItem(QGraphicsItem & item)
 {
     m_editorScene->addItem(&item);
+    adjustSceneRect();
+}
+
+void Mediator::addNodeToSelectionGroup(Node & node)
+{
+    m_editorData->addNodeToSelectionGroup(node);
+    updateNodeConnectionActions();
+}
+
+void Mediator::adjustSceneRect()
+{
+    m_editorScene->adjustSceneRect();
 }
 
 void Mediator::clearSelectionGroup()
 {
     m_editorData->clearSelectionGroup();
+    updateNodeConnectionActions();
 }
 
 bool Mediator::canBeSaved() const
@@ -115,6 +138,11 @@ void Mediator::connectNodeToImageManager(NodePtr node)
     node->setImageRef(node->imageRef()); // This effectively results in a fetch from ImageManager
 }
 
+size_t Mediator::copyStackSize() const
+{
+    return m_editorData->copyStackSize();
+}
+
 void Mediator::connectGraphToUndoMechanism()
 {
     for (auto && node : m_editorData->mindMapData()->graph().getNodes()) {
@@ -133,6 +161,29 @@ void Mediator::connectGraphToImageManager()
     }
 }
 
+void Mediator::connectSelectedNodes()
+{
+    L().debug() << "Connecting selected nodes: " << m_editorData->selectionGroupSize();
+    if (areSelectedNodesConnectable()) {
+        saveUndoPoint();
+        for (auto && edge : m_editorData->connectSelectedNodes()) {
+            connectEdgeToUndoMechanism(edge);
+        }
+        addExistingGraphToScene();
+        updateNodeConnectionActions();
+    }
+}
+
+void Mediator::disconnectSelectedNodes()
+{
+    L().debug() << "Disconnecting selected nodes: " << m_editorData->selectionGroupSize();
+    if (areSelectedNodesDisconnectable()) {
+        saveUndoPoint();
+        m_editorData->disconnectSelectedNodes();
+        updateNodeConnectionActions();
+    }
+}
+
 NodePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 {
     const auto node0 = getNodeByIndex(sourceNodeIndex);
@@ -147,7 +198,7 @@ NodePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 
     addExistingGraphToScene();
 
-    node1->setTextInputActive();
+    node1->setTextInputActive(true);
 
     return node1;
 }
@@ -163,7 +214,7 @@ NodePtr Mediator::createAndAddNode(QPointF pos)
     addExistingGraphToScene();
 
     QTimer::singleShot(0, [node1]() { // Needed due to the context menu
-        node1->setTextInputActive();
+        node1->setTextInputActive(true);
     });
 
     return node1;
@@ -176,13 +227,6 @@ NodePtr Mediator::pasteNodeAt(Node & source, QPointF pos)
     connectNodeToUndoMechanism(copiedNode);
     connectNodeToImageManager(copiedNode);
     L().debug() << "Pasted node at (" << pos.x() << "," << pos.y() << ")";
-
-    addExistingGraphToScene();
-
-    QTimer::singleShot(0, [copiedNode]() { // Needed due to the context menu
-        copiedNode->setTextInputActive();
-    });
-
     return copiedNode;
 }
 
@@ -196,32 +240,35 @@ void Mediator::deleteEdge(Edge & edge)
     m_editorData->deleteEdge(edge);
 }
 
-void Mediator::deleteNode(Node & node)
-{
-    m_editorView->resetDummyDragItems();
-    m_editorData->deleteNode(node);
-}
-
 void Mediator::enableUndo(bool enable)
 {
     m_mainWindow.enableUndo(enable);
 }
 
-void Mediator::exportToPNG(QString filename, QSize size, bool transparentBackground)
+void Mediator::enableRedo(bool enable)
+{
+    m_mainWindow.enableRedo(enable);
+}
+
+void Mediator::exportToPng(QString filename, QSize size, bool transparentBackground)
 {
     zoomForExport();
 
     L().info() << "Exporting a PNG image of size (" << size.width() << "x" << size.height() << ") to " << filename.toStdString();
+    const auto image = m_editorScene->toImage(size, m_editorData->backgroundColor(), transparentBackground);
 
-    QImage image(size, QImage::Format_ARGB32);
-    image.fill(transparentBackground ? Qt::transparent : m_editorData->backgroundColor());
+    emit pngExportFinished(image.save(filename));
+}
 
-    QPainter painter(&image);
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.setRenderHint(QPainter::TextAntialiasing);
-    m_editorScene->render(&painter);
+void Mediator::exportToSvg(QString filename)
+{
+    zoomForExport();
 
-    emit exportFinished(image.save(filename));
+    L().info() << "Exporting an SVG image to " << filename.toStdString();
+    const QFileInfo fi(filename);
+    m_editorScene->toSvg(filename, fi.fileName());
+
+    emit svgExportFinished(true);
 }
 
 QString Mediator::fileName() const
@@ -262,6 +309,36 @@ void Mediator::initializeNewMindMap()
     m_mainWindow.initializeNewMindMap();
 }
 
+void Mediator::initiateNewNodeDrag(NodeHandle & nodeHandle)
+{
+    L().debug() << "Initiating new node drag";
+
+    clearSelectionGroup();
+    saveUndoPoint();
+    const auto parentNode = dynamic_cast<Node *>(nodeHandle.parentItem());
+    assert(parentNode);
+    mouseAction().setSourceNode(parentNode, MouseAction::Action::CreateOrConnectNode);
+    mouseAction().setSourcePosOnNode(nodeHandle.pos());
+    parentNode->setHandlesVisible(false);
+
+    // Change cursor to the closed hand cursor.
+    QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
+}
+
+void Mediator::initiateNodeDrag(Node & node)
+{
+    L().debug() << "Initiating node drag";
+
+    saveUndoPoint();
+    node.setZValue(node.zValue() + 1);
+    mouseAction().setSourceNode(&node, MouseAction::Action::MoveNode);
+    mouseAction().setSourcePos(mouseAction().mappedPos());
+    mouseAction().setSourcePosOnNode(mouseAction().mappedPos() - node.pos());
+
+    // Change cursor to the closed hand cursor.
+    QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
+}
+
 void Mediator::initializeView()
 {
     L().debug() << "Initializing view";
@@ -284,6 +361,16 @@ bool Mediator::areDirectlyConnected(const Node & node1, const Node & node2) cons
     const auto node1Ptr = graph.getNode(node1.index());
     const auto node2Ptr = graph.getNode(node2.index());
     return graph.areDirectlyConnected(node1Ptr, node2Ptr);
+}
+
+bool Mediator::areSelectedNodesConnectable() const
+{
+    return m_editorData->areSelectedNodesConnectable();
+}
+
+bool Mediator::areSelectedNodesDisconnectable() const
+{
+    return m_editorData->areSelectedNodesDisconnectable();
 }
 
 bool Mediator::isLeafNode(Node & node)
@@ -333,6 +420,75 @@ size_t Mediator::nodeCount() const
     return m_editorData->mindMapData() ? m_editorData->mindMapData()->graph().numNodes() : 0;
 }
 
+bool Mediator::nodeHasImageAttached() const
+{
+    return m_editorData->nodeHasImageAttached();
+}
+
+void Mediator::paste()
+{
+    if (m_editorData->copyStackSize()) {
+        saveUndoPoint();
+        for (auto && node : m_editorData->copiedNodes()) {
+            pasteNodeAt(*node, m_editorView->grid().snapToGrid(mouseAction().mappedPos() - m_editorData->copyReferencePoint() + node->pos()));
+        }
+        addExistingGraphToScene();
+    }
+}
+
+void Mediator::performNodeAction(const NodeAction & action)
+{
+    juzzlin::L().debug() << "Handling NodeAction: " << static_cast<int>(action.type);
+
+    switch (action.type) {
+    case NodeAction::Type::None:
+        break;
+    case NodeAction::Type::AttachImage: {
+        const Image image { action.image, action.fileName.toStdString() };
+        const auto id = m_editorData->mindMapData()->imageManager().addImage(image);
+        if (m_editorData->selectionGroupSize()) {
+            saveUndoPoint();
+            m_editorData->setImageRefForSelectedNodes(id);
+        }
+    } break;
+    case NodeAction::Type::ConnectSelected:
+        connectSelectedNodes();
+        break;
+    case NodeAction::Type::Copy:
+        m_editorData->copySelectedNodes();
+        break;
+    case NodeAction::Type::Delete:
+        saveUndoPoint();
+        m_editorView->resetDummyDragItems();
+        m_editorData->deleteSelectedNodes();
+        break;
+    case NodeAction::Type::DisconnectSelected:
+        disconnectSelectedNodes();
+        break;
+    case NodeAction::Type::Paste:
+        paste();
+        break;
+    case NodeAction::Type::RemoveAttachedImage:
+        saveUndoPoint();
+        m_editorData->removeImageRefsOfSelectedNodes();
+        break;
+    case NodeAction::Type::SetNodeColor:
+        saveUndoPoint();
+        m_editorData->setColorForSelectedNodes(action.color);
+        if (m_editorData->selectionGroupSize() == 1) {
+            m_editorData->clearSelectionGroup();
+        }
+        break;
+    case NodeAction::Type::SetTextColor:
+        saveUndoPoint();
+        m_editorData->setTextColorForSelectedNodes(action.color);
+        if (m_editorData->selectionGroupSize() == 1) {
+            m_editorData->clearSelectionGroup();
+        }
+        break;
+    }
+}
+
 bool Mediator::openMindMap(QString fileName)
 {
     assert(m_editorData);
@@ -362,6 +518,8 @@ void Mediator::redo()
 
     m_editorView->resetDummyDragItems();
     m_editorData->redo();
+
+    setupMindMapAfterUndoOrRedo();
 }
 
 void Mediator::removeItem(QGraphicsItem & item)
@@ -369,9 +527,12 @@ void Mediator::removeItem(QGraphicsItem & item)
     m_editorScene->removeItem(&item);
 }
 
-void Mediator::toggleNodeInSelectionGroup(Node & node)
+void Mediator::toggleNodeInSelectionGroup(Node & node, bool updateNodeConnectionActions)
 {
     m_editorData->toggleNodeInSelectionGroup(node);
+    if (updateNodeConnectionActions) {
+        this->updateNodeConnectionActions();
+    }
 }
 
 bool Mediator::saveMindMapAs(QString fileName)
@@ -386,8 +547,6 @@ bool Mediator::saveMindMap()
 
 void Mediator::saveUndoPoint()
 {
-    L().debug() << "Saving undo point..";
-
     m_editorData->saveUndoPoint();
 }
 
@@ -439,6 +598,16 @@ void Mediator::setEdgeColor(QColor color)
     }
 }
 
+void Mediator::setGridColor(QColor color)
+{
+    if (m_editorData->mindMapData()->gridColor() != color) {
+        saveUndoPoint();
+        m_editorData->mindMapData()->setGridColor(color);
+        m_editorView->setGridColor(color);
+        m_editorView->scene()->update();
+    }
+}
+
 void Mediator::setEdgeWidth(double value)
 {
     // Break loop with the spinbox
@@ -454,6 +623,7 @@ void Mediator::setEditorData(std::shared_ptr<EditorData> editorData)
     m_editorData = editorData;
 
     connect(m_editorData.get(), &EditorData::undoEnabled, this, &Mediator::enableUndo);
+    connect(m_editorData.get(), &EditorData::redoEnabled, this, &Mediator::enableRedo);
 }
 
 void Mediator::setEditorView(EditorView & editorView)
@@ -470,14 +640,13 @@ void Mediator::setEditorView(EditorView & editorView)
 
 void Mediator::setRectagleSelection(QRectF rect)
 {
-    clearSelectionGroup();
-
     const auto items = m_editorScene->items(rect, Qt::ContainsItemShape);
     for (auto && item : items) {
         if (const auto node = dynamic_cast<Node *>(item)) {
-            toggleNodeInSelectionGroup(*node);
+            toggleNodeInSelectionGroup(*node, false);
         }
     }
+    updateNodeConnectionActions();
 }
 
 void Mediator::setSelectedEdge(Edge * edge)
@@ -493,11 +662,6 @@ void Mediator::setSelectedEdge(Edge * edge)
     }
 
     m_editorData->setSelectedEdge(edge);
-}
-
-void Mediator::setSelectedNode(Node * node)
-{
-    m_editorData->setSelectedNode(node);
 }
 
 void Mediator::setTextSize(int textSize)
@@ -527,24 +691,30 @@ void Mediator::setupMindMapAfterUndoOrRedo()
     m_editorView->centerOn(oldCenter);
 }
 
+void Mediator::updateNodeConnectionActions()
+{
+    m_mainWindow.enableConnectSelectedNodesAction(areSelectedNodesConnectable());
+    m_mainWindow.enableDisconnectSelectedNodesAction(areSelectedNodesDisconnectable());
+}
+
 void Mediator::undo()
 {
     L().debug() << "Undo..";
 
     m_editorView->resetDummyDragItems();
     m_editorData->undo();
-}
 
-static const int zoomSensitivity = 20;
+    setupMindMapAfterUndoOrRedo();
+}
 
 void Mediator::zoomIn()
 {
-    m_editorView->zoom(zoomSensitivity);
+    m_editorView->zoom(std::pow(Constants::View::ZOOM_SENSITIVITY, 2));
 }
 
 void Mediator::zoomOut()
 {
-    m_editorView->zoom(-zoomSensitivity);
+    m_editorView->zoom(1.0 / std::pow(Constants::View::ZOOM_SENSITIVITY, 2));
 }
 
 QSize Mediator::zoomForExport()

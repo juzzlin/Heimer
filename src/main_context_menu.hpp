@@ -23,7 +23,6 @@
 
 #include "state_machine.hpp"
 
-class CopyPaste;
 class Grid;
 class Node;
 class Mediator;
@@ -40,34 +39,32 @@ public:
         Node
     };
 
-    MainContextMenu(QWidget * parent, Mediator & mediator, Grid & grid, CopyPaste & copyPaste);
+    MainContextMenu(QWidget * parent, Mediator & mediator, Grid & grid);
 
     void setMode(const Mode & mode);
 
 signals:
 
-    void actionTriggered(StateMachine::Action action, Node * node = nullptr);
+    //! This is used mainly for actions that require a dialog to be opened.
+    void actionTriggered(StateMachine::Action action);
 
-    void nodeColorActionTriggered();
-
-    void nodeTextColorActionTriggered();
-
+    //! Request a new node at given position.
     void newNodeRequested(QPointF position);
 
 private:
-    QAction * m_copyNodeAction;
+    QAction * m_colorMenuAction = nullptr;
 
-    QAction * m_pasteNodeAction;
+    QAction * m_copyNodeAction = nullptr;
 
-    QAction * m_removeImageAction;
+    QAction * m_pasteNodeAction = nullptr;
+
+    QAction * m_removeImageAction = nullptr;
 
     Node * m_selectedNode = nullptr;
 
     std::map<Mode, std::vector<QAction *>> m_mainContextMenuActions;
 
     Mediator & m_mediator;
-
-    CopyPaste & m_copyPaste;
 };
 
 #endif // MAIN_CONTEXT_MENU_HPP

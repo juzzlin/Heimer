@@ -29,7 +29,7 @@ public:
 
     ~LayoutOptimizer();
 
-    void initialize(double aspectRatio, double minEdgeLength);
+    bool initialize(double aspectRatio, double minEdgeLength);
 
     struct OptimizationInfo
     {

@@ -29,6 +29,8 @@ class EditorScene;
 class EditorView;
 class Graph;
 class MainWindow;
+class NodeAction;
+class NodeHandle;
 class QGraphicsItem;
 
 /*! Acts as a communication channel between MainWindow and editor components:
@@ -49,7 +51,15 @@ public:
 
     void addItem(QGraphicsItem & item);
 
+    void addNodeToSelectionGroup(Node & node);
+
+    void adjustSceneRect();
+
     bool areDirectlyConnected(const Node & node1, const Node & node2) const;
+
+    bool areSelectedNodesConnectable() const;
+
+    bool areSelectedNodesDisconnectable() const;
 
     bool canBeSaved() const;
 
@@ -63,6 +73,8 @@ public:
 
     void connectNodeToImageManager(NodePtr node);
 
+    size_t copyStackSize() const;
+
     // Create a new node and add edge to the source (parent) node
     NodePtr createAndAddNode(int sourceNodeIndex, QPointF pos);
 
@@ -73,8 +85,6 @@ public:
 
     void deleteEdge(Edge & edge);
 
-    void deleteNode(Node & node);
-
     QString fileName() const;
 
     NodePtr getBestOverlapNode(const Node & source);
@@ -84,6 +94,10 @@ public:
     bool hasNodes() const;
 
     void initializeNewMindMap();
+
+    void initiateNewNodeDrag(NodeHandle & nodeHandle);
+
+    void initiateNodeDrag(Node & node);
 
     void initializeView();
 
@@ -103,11 +117,15 @@ public:
 
     size_t nodeCount() const;
 
+    bool nodeHasImageAttached() const;
+
     NodePtr pasteNodeAt(Node & source, QPointF pos);
 
     MindMapDataPtr mindMapData() const;
 
     bool openMindMap(QString fileName);
+
+    void performNodeAction(const NodeAction & action);
 
     void redo();
 
@@ -133,11 +151,7 @@ public:
 
     void setSelectedEdge(Edge * edge);
 
-    void setSelectedNode(Node * node);
-
-    void setupMindMapAfterUndoOrRedo();
-
-    void toggleNodeInSelectionGroup(Node & node);
+    void toggleNodeInSelectionGroup(Node & node, bool updateNodeConnectionActions = true);
 
     void undo();
 
@@ -145,7 +159,11 @@ public slots:
 
     void enableUndo(bool enable);
 
-    void exportToPNG(QString filename, QSize size, bool transparentBackground);
+    void enableRedo(bool enable);
+
+    void exportToPng(QString filename, QSize size, bool transparentBackground);
+
+    void exportToSvg(QString filename);
 
     void saveUndoPoint();
 
@@ -154,6 +172,8 @@ public slots:
     void setCornerRadius(int value);
 
     void setEdgeColor(QColor color);
+
+    void setGridColor(QColor color);
 
     void setEdgeWidth(double value);
 
@@ -171,7 +191,9 @@ private slots:
 
 signals:
 
-    void exportFinished(bool success);
+    void pngExportFinished(bool success);
+
+    void svgExportFinished(bool success);
 
 private:
     void addExistingGraphToScene();
@@ -181,6 +203,16 @@ private:
     void connectGraphToUndoMechanism();
 
     void connectGraphToImageManager();
+
+    void connectSelectedNodes();
+
+    void disconnectSelectedNodes();
+
+    void paste();
+
+    void setupMindMapAfterUndoOrRedo();
+
+    void updateNodeConnectionActions();
 
     std::shared_ptr<EditorData> m_editorData;
 

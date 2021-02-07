@@ -102,7 +102,7 @@ public:
 
     void setSize(const QSizeF & size);
 
-    void setTextInputActive();
+    void setTextInputActive(bool active);
 
     void setText(const QString & text);
 
@@ -170,8 +170,6 @@ private:
     QTimer m_handleVisibilityTimer;
 
     QPointF m_currentMousePos;
-
-    bool m_mouseIn = false;
 
     QPixmap m_pixmap;
 };

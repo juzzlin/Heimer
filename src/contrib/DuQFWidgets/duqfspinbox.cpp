@@ -24,9 +24,9 @@ void DuQFSpinBox::setupUi()
     horizontalLayout->setSpacing(0);
     horizontalLayout->setContentsMargins(0, 0, 0, 0);
 
-    spinBox = new QSpinBox(spinBoxPage);
-    spinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
-    horizontalLayout->addWidget(spinBox);
+    _spinBox = new QSpinBox(spinBoxPage);
+    //_spinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
+    horizontalLayout->addWidget(_spinBox);
 
     this->addWidget(spinBoxPage);
 
@@ -36,19 +36,29 @@ void DuQFSpinBox::setupUi()
     sliderLayout->setSpacing(0);
     sliderLayout->setContentsMargins(0, 0, 0, 0);
 
-    slider = new DuQFSlider();
-    sliderLayout->addWidget(slider);
+    _slider = new DuQFSlider();
+    sliderLayout->addWidget(_slider);
 
     this->addWidget(sliderPage);
 
-    spinBox->installEventFilter(this);
+    _spinBox->installEventFilter(this);
 }
 
 void DuQFSpinBox::connectEvents()
 {
-    connect(slider,SIGNAL(valueChanged(int)), this, SLOT(slider_valueChanged(int)));
-    connect(spinBox,SIGNAL(editingFinished()), this, SLOT(spinBox_editingFinished()));
-    connect(spinBox,SIGNAL(valueChanged(int)), this, SLOT(spinBox_valueChanged(int)));
+    connect(_slider,SIGNAL(valueChanged(int)), this, SLOT(slider_valueChanged(int)));
+    connect(_spinBox,SIGNAL(editingFinished()), this, SLOT(spinBox_editingFinished()));
+    connect(_spinBox,SIGNAL(valueChanged(int)), this, SLOT(spinBox_valueChanged(int)));
+}
+
+QSpinBox *DuQFSpinBox::spinBox() const
+{
+    return _spinBox;
+}
+
+DuQFSlider *DuQFSpinBox::slider() const
+{
+    return _slider;
 }
 
 void DuQFSpinBox::spinBox_editingFinished()
@@ -58,78 +68,78 @@ void DuQFSpinBox::spinBox_editingFinished()
 
 void DuQFSpinBox::spinBox_valueChanged(int arg1)
 {
-    slider->setValue(arg1);
+    _slider->setValue(arg1);
     emit valueChanged(arg1);
 }
 
 void DuQFSpinBox::slider_valueChanged(int arg1)
 {
-    spinBox->setValue(arg1);
+    _spinBox->setValue(arg1);
 }
 
 bool DuQFSpinBox::valueVisible() const
 {
-    return slider->valueVisible();
+    return _slider->valueVisible();
 }
 
 void DuQFSpinBox::showValue(bool showValue)
 {
-    slider->showValue(showValue);
+    _slider->showValue(showValue);
 }
 
 int DuQFSpinBox::value() const
 {
-    return spinBox->value();
+    return _spinBox->value();
 }
 
 void DuQFSpinBox::setValue(int value)
 {
-    QSignalBlocker b1(spinBox);
-    QSignalBlocker b2(slider);
-    spinBox->setValue(value);
-    slider->setValue(value);
+    QSignalBlocker b1(_spinBox);
+    QSignalBlocker b2(_slider);
+    _spinBox->setValue(value);
+    _slider->setValue(value);
 }
 
 int DuQFSpinBox::maximum() const
 {
-    return spinBox->maximum();
+    return _spinBox->maximum();
 }
 
 void DuQFSpinBox::setMaximum(int max)
 {
-    spinBox->setMaximum(max);
-    slider->setMaximum(max);
+    _spinBox->setMaximum(max);
+    _slider->setMaximum(max);
 }
 
 int DuQFSpinBox::minimum() const
 {
-    return spinBox->minimum();
+    return _spinBox->minimum();
 }
 
 void DuQFSpinBox::setMinimum(int min)
 {
-    spinBox->setMinimum(min);
-    slider->setMinimum(min);
+    _spinBox->setMinimum(min);
+    _slider->setMinimum(min);
 }
 
 QString DuQFSpinBox::prefix() const
 {
-    return slider->prefix();
+    return _slider->prefix();
 }
 
 void DuQFSpinBox::setPrefix(const QString &prefix)
 {
-    slider->setPrefix(prefix);
+    _slider->setPrefix(prefix);
 }
 
 QString DuQFSpinBox::suffix() const
 {
-    return slider->suffix();
+    return _slider->suffix();
 }
 
 void DuQFSpinBox::setSuffix(const QString &suffix)
 {
-    slider->setSuffix(suffix);
+    _slider->setSuffix(suffix);
 }
 
 void DuQFSpinBox::mouseReleaseEvent(QMouseEvent *event)
@@ -150,8 +160,8 @@ void DuQFSpinBox::mouseReleaseEvent(QMouseEvent *event)
         return;
     }
     this->setCurrentIndex(0);
-    spinBox->selectAll();
-    spinBox->setFocus();
+    _spinBox->selectAll();
+    _spinBox->setFocus();
     event->accept();
 }
 

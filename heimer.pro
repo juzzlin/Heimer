@@ -19,7 +19,8 @@ contains(QT_VERSION, ^5\\..*) {
 
 SRC = src
 
-INCLUDEPATH += . $$SRC/contrib/SimpleLogger/src $$SRC/contrib/Argengine/src
+INCLUDEPATH += . $$SRC/contrib/SimpleLogger/src $$SRC/contrib/Argengine/src \
+    $$SRC/contrib/DuQFWidgets
 
 # Input
 HEADERS +=  \
@@ -69,6 +70,10 @@ HEADERS +=  \
     $$SRC/xml_writer.hpp \
     $$SRC/contrib/Argengine/src/argengine.hpp \
     $$SRC/contrib/SimpleLogger/src/simple_logger.hpp \
+    $$SRC/contrib/DuQFWidgets/duqfdoubleslider.h \
+    $$SRC/contrib/DuQFWidgets/duqfslider.h \
+    $$SRC/contrib/DuQFWidgets/duqfdoublespinbox.h \
+    $$SRC/contrib/DuQFWidgets/duqfspinbox.h \
 
 SOURCES += \
     $$SRC/about_dlg.cpp \
@@ -116,6 +121,10 @@ SOURCES += \
     $$SRC/xml_writer.cpp \
     $$SRC/contrib/Argengine/src/argengine.cpp \
     $$SRC/contrib/SimpleLogger/src/simple_logger.cpp \
+    $$SRC/contrib/DuQFWidgets/duqfdoubleslider.cpp \
+    $$SRC/contrib/DuQFWidgets/duqfslider.cpp \
+    $$SRC/contrib/DuQFWidgets/duqfdoublespinbox.cpp \
+    $$SRC/contrib/DuQFWidgets/duqfspinbox.cpp \
 
 QM_FILES_RESOURCE_PREFIX = /translations
 

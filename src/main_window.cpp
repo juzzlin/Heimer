@@ -25,6 +25,8 @@
 #include "settings.hpp"
 #include "simple_logger.hpp"
 #include "whats_new_dlg.hpp"
+#include "duqfdoublespinbox.h"
+#include "duqfspinbox.h"
 
 #include <QAction>
 #include <QApplication>
@@ -60,14 +62,10 @@ MainWindow::MainWindow()
   , m_saveAsAction(new QAction(tr("&Save as") + threeDots, this))
   , m_undoAction(new QAction(tr("Undo"), this))
   , m_redoAction(new QAction(tr("Redo"), this))
-  , m_edgeWidthSpinBox(new QDoubleSpinBox(this))
-  , m_edgeWidthSlider(new QSlider(Qt::Horizontal, this))
-  , m_cornerRadiusSpinBox(new QSpinBox(this))
-  , m_cornerRadiusSlider(new QSlider(Qt::Horizontal, this))
+  , m_edgeWidthSpinBox(new DuQFDoubleSpinBox(this))
+  , m_cornerRadiusSpinBox(new DuQFSpinBox(this))
   , m_gridSizeSpinBox(new QSpinBox(this))
-  , m_gridSizeSlider(new QSlider(Qt::Horizontal, this))
-  , m_textSizeSpinBox(new QSpinBox(this))
-  , m_textSizeSlider(new QSlider(Qt::Horizontal, this))
+  , m_textSizeSpinBox(new DuQFSpinBox(this))
   , m_copyOnDragCheckBox(new QCheckBox(tr("Copy on drag"), this))
   , m_showGridCheckBox(new QCheckBox(tr("Show grid"), this))
 {
@@ -197,67 +195,39 @@ QWidgetAction * MainWindow::createCornerRadiusAction()
 {
     m_cornerRadiusSpinBox->setMinimum(0);
     m_cornerRadiusSpinBox->setMaximum(Constants::Node::MAX_CORNER_RADIUS);
-    m_cornerRadiusSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-
-    m_cornerRadiusSlider->setMinimum(0);
-    m_cornerRadiusSlider->setMaximum(Constants::Node::MAX_CORNER_RADIUS);
-    m_cornerRadiusSlider->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
 
     const auto dummyWidget = new QWidget(this);
-    const auto layout = new QVBoxLayout(dummyWidget);
+    const auto layout = new QHBoxLayout(dummyWidget);
     dummyWidget->setLayout(layout);
-    const auto innerWidget = new QWidget(this);
-    const auto innerLayout = new QHBoxLayout(innerWidget);
-    layout->addWidget(innerWidget);
     const auto label = new QLabel(tr("Corner radius:"));
-    innerLayout->addWidget(label);
-    innerLayout->addWidget(m_cornerRadiusSpinBox);
-    innerLayout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(m_cornerRadiusSlider);
+    layout->addWidget(label);
+    layout->addWidget(m_cornerRadiusSpinBox);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     const auto action = new QWidgetAction(this);
     action->setDefaultWidget(dummyWidget);
 
-    // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
-    // In Qt > 5.10 one can use QOverload<double>::of(...)
-    connect(m_cornerRadiusSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::cornerRadiusChanged);
-    connect(m_cornerRadiusSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), m_cornerRadiusSlider, &QSlider::setValue);
-    connect(m_cornerRadiusSlider, &QSlider::valueChanged, m_cornerRadiusSpinBox, &QSpinBox::setValue );
+    connect(m_cornerRadiusSpinBox, &DuQFSpinBox::valueChanged, this, &MainWindow::cornerRadiusChanged);
 
     return action;
 }
 
 QWidgetAction * MainWindow::createEdgeWidthAction()
 {
-    m_edgeWidthSpinBox->setSingleStep(Constants::Edge::STEP);
-    m_edgeWidthSpinBox->setMinimum(Constants::Edge::MIN_SIZE);
     m_edgeWidthSpinBox->setMaximum(Constants::Edge::MAX_SIZE);
-    m_edgeWidthSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-
-    m_edgeWidthSlider->setMinimum(Constants::Edge::MIN_SIZE * 100);
-    m_edgeWidthSlider->setMaximum(Constants::Edge::MAX_SIZE * 100);
-    m_edgeWidthSlider->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
 
     const auto dummyWidget = new QWidget(this);
-    const auto layout = new QVBoxLayout(dummyWidget);
+    const auto layout = new QHBoxLayout(dummyWidget);
     dummyWidget->setLayout(layout);
-    const auto innerWidget = new QWidget(this);
-    const auto innerLayout = new QHBoxLayout(innerWidget);
-    layout->addWidget(innerWidget);
     const auto label = new QLabel(tr("Edge width:"));
-    innerLayout->addWidget(label);
-    innerLayout->addWidget(m_edgeWidthSpinBox);
-    innerLayout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(m_edgeWidthSlider);
+    layout->addWidget(label);
+    layout->addWidget(m_edgeWidthSpinBox);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     const auto action = new QWidgetAction(this);
     action->setDefaultWidget(dummyWidget);
 
-    // The ugly cast is needed because there are QDoubleSpinBox::valueChanged(double) and QDoubleSpinBox::valueChanged(QString)
-    // In Qt > 5.10 one can use QOverload<double>::of(...)
-    connect(m_edgeWidthSpinBox, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this, &MainWindow::edgeWidthChanged);
-    connect(m_edgeWidthSpinBox, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this, &MainWindow::edgeWidthSpinBoxChanged);
-    connect(m_edgeWidthSlider, &QSlider::valueChanged, this, &MainWindow::edgeWidthSliderChanged);
+    connect(m_edgeWidthSpinBox, &DuQFDoubleSpinBox::valueChanged, this, &MainWindow::edgeWidthChanged);
 
     return action;
 }
@@ -266,32 +236,19 @@ QWidgetAction * MainWindow::createTextSizeAction()
 {
     m_textSizeSpinBox->setMinimum(Constants::Text::MIN_SIZE);
     m_textSizeSpinBox->setMaximum(Constants::Text::MAX_SIZE);
-    m_textSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-
-    m_textSizeSlider->setMinimum(Constants::Text::MIN_SIZE);
-    m_textSizeSlider->setMaximum(Constants::Text::MAX_SIZE);
-    m_textSizeSlider->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
 
     const auto dummyWidget = new QWidget(this);
-    const auto layout = new QVBoxLayout(dummyWidget);
+    const auto layout = new QHBoxLayout(dummyWidget);
     dummyWidget->setLayout(layout);
-    const auto innerWidget = new QWidget(this);
-    const auto innerLayout = new QHBoxLayout(innerWidget);
-    layout->addWidget(innerWidget);
     const auto label = new QLabel(tr("Text size:"));
-    innerLayout->addWidget(label);
-    innerLayout->addWidget(m_textSizeSpinBox);
-    innerLayout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(m_textSizeSlider);
+    layout->addWidget(label);
+    layout->addWidget(m_textSizeSpinBox);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     const auto action = new QWidgetAction(this);
     action->setDefaultWidget(dummyWidget);
 
-    // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
-    // In Qt > 5.10 one can use QOverload<double>::of(...)
-    connect(m_textSizeSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::textSizeChanged);
-    connect(m_textSizeSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), m_textSizeSlider, &QSlider::setValue);
-    connect(m_textSizeSlider, &QSlider::valueChanged, m_textSizeSpinBox, &QSpinBox::setValue );
+    connect(m_textSizeSpinBox, &DuQFSpinBox::valueChanged, this, &MainWindow::textSizeChanged);
 
     return action;
 }
@@ -302,21 +259,13 @@ QWidgetAction * MainWindow::createGridSizeAction()
     m_gridSizeSpinBox->setMaximum(Constants::Grid::MAX_SIZE);
     m_gridSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
-    m_gridSizeSlider->setMinimum(Constants::Grid::MIN_SIZE);
-    m_gridSizeSlider->setMaximum(Constants::Grid::MAX_SIZE);
-    m_gridSizeSlider->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
-
     const auto dummyWidget = new QWidget(this);
-    const auto layout = new QVBoxLayout(dummyWidget);
+    const auto layout = new QHBoxLayout(dummyWidget);
     dummyWidget->setLayout(layout);
-    const auto innerWidget = new QWidget(this);
-    const auto innerLayout = new QHBoxLayout(innerWidget);
-    layout->addWidget(innerWidget);
     const auto label = new QLabel(tr("Grid size:"));
-    innerLayout->addWidget(label);
-    innerLayout->addWidget(m_gridSizeSpinBox);
-    innerLayout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(m_gridSizeSlider);
+    layout->addWidget(label);
+    layout->addWidget(m_gridSizeSpinBox);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     const auto action = new QWidgetAction(this);
     action->setDefaultWidget(dummyWidget);
@@ -654,9 +603,6 @@ void MainWindow::setEdgeWidth(double value)
 {
     if (!qFuzzyCompare(m_edgeWidthSpinBox->value(), value)) {
         m_edgeWidthSpinBox->setValue(value);
-    }
-    if (!qFuzzyCompare(m_edgeWidthSlider->value(), value*100)) {
-        m_edgeWidthSlider->setValue(value*100);
     }
 }
 

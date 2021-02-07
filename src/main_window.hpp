@@ -35,6 +35,8 @@ class QCheckBox;
 class QDoubleSpinBox;
 class QSlider;
 class QSpinBox;
+class DuQFDoubleSpinBox;
+class DuQFSpinBox;
 class QTextEdit;
 class QWidgetAction;
 class Mediator;
@@ -172,21 +174,13 @@ private:
 
     QAction * m_redoAction = nullptr;
 
-    QDoubleSpinBox * m_edgeWidthSpinBox = nullptr;
+    DuQFDoubleSpinBox * m_edgeWidthSpinBox = nullptr;
 
-    QSlider * m_edgeWidthSlider = nullptr;
-
-    QSpinBox * m_cornerRadiusSpinBox = nullptr;
-
-    QSlider * m_cornerRadiusSlider = nullptr;
+    DuQFSpinBox * m_cornerRadiusSpinBox = nullptr;
 
     QSpinBox * m_gridSizeSpinBox = nullptr;
 
-    QSlider * m_gridSizeSlider = nullptr;
-
-    QSpinBox * m_textSizeSpinBox = nullptr;
-
-    QSlider * m_textSizeSlider = nullptr;
+    DuQFSpinBox * m_textSizeSpinBox = nullptr;
 
     QCheckBox * m_copyOnDragCheckBox = nullptr;
 

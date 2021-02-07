@@ -60,8 +60,7 @@ MainWindow::MainWindow()
   , m_saveAsAction(new QAction(tr("&Save as") + threeDots, this))
   , m_undoAction(new QAction(tr("Undo"), this))
   , m_redoAction(new QAction(tr("Redo"), this))
-  , m_edgeWidthSpinBox(new QDoubleSpinBox(this))
-  , m_edgeWidthSlider(new QSlider(Qt::Horizontal, this))
+  , m_edgeWidthSlider(new DoubleSlider(this))
   , m_cornerRadiusSpinBox(new QSpinBox(this))
   , m_cornerRadiusSlider(new QSlider(Qt::Horizontal, this))
   , m_gridSizeSpinBox(new QSpinBox(this))
@@ -229,10 +228,10 @@ QWidgetAction * MainWindow::createCornerRadiusAction()
 
 QWidgetAction * MainWindow::createEdgeWidthAction()
 {
-    m_edgeWidthSpinBox->setSingleStep(Constants::Edge::STEP);
-    m_edgeWidthSpinBox->setMinimum(Constants::Edge::MIN_SIZE);
-    m_edgeWidthSpinBox->setMaximum(Constants::Edge::MAX_SIZE);
-    m_edgeWidthSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    m_edgeWidthSlider->spinBox()->setSingleStep(Constants::Edge::STEP);
+    m_edgeWidthSlider->setMinimum(Constants::Edge::MIN_SIZE);
+    m_edgeWidthSlider->setMaximum(Constants::Edge::MAX_SIZE);
+    m_edgeWidthSlider->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
 
     m_edgeWidthSlider->setMinimum(Constants::Edge::MIN_SIZE * 100);
     m_edgeWidthSlider->setMaximum(Constants::Edge::MAX_SIZE * 100);
@@ -245,19 +244,14 @@ QWidgetAction * MainWindow::createEdgeWidthAction()
     const auto innerLayout = new QHBoxLayout(innerWidget);
     layout->addWidget(innerWidget);
     const auto label = new QLabel(tr("Edge width:"));
-    innerLayout->addWidget(label);
-    innerLayout->addWidget(m_edgeWidthSpinBox);
-    innerLayout->setContentsMargins(0, 0, 0, 0);
+    layout->addWidget(label);
     layout->addWidget(m_edgeWidthSlider);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     const auto action = new QWidgetAction(this);
     action->setDefaultWidget(dummyWidget);
 
-    // The ugly cast is needed because there are QDoubleSpinBox::valueChanged(double) and QDoubleSpinBox::valueChanged(QString)
-    // In Qt > 5.10 one can use QOverload<double>::of(...)
-    connect(m_edgeWidthSpinBox, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this, &MainWindow::edgeWidthChanged);
-    connect(m_edgeWidthSpinBox, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this, &MainWindow::edgeWidthSpinBoxChanged);
-    connect(m_edgeWidthSlider, &QSlider::valueChanged, this, &MainWindow::edgeWidthSliderChanged);
+    connect(m_edgeWidthSlider, &DoubleSlider::valueChanged, this, &MainWindow::edgeWidthChanged);
 
     return action;
 }
@@ -323,11 +317,9 @@ QWidgetAction * MainWindow::createGridSizeAction()
 
     // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
     // In Qt > 5.10 one can use QOverload<double>::of(...)
-    const auto signal = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
-    connect(m_gridSizeSpinBox, signal, this, &MainWindow::gridSizeChanged);
-    connect(m_gridSizeSpinBox, signal, Settings::saveGridSize);
-
-    m_gridSizeSpinBox->setValue(Settings::loadGridSize());
+    connect(m_gridSizeSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::gridSizeChanged);
+    connect(m_gridSizeSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), m_gridSizeSlider, &QSlider::setValue);
+    connect(m_gridSizeSlider, &QSlider::valueChanged, m_gridSizeSpinBox, &QSpinBox::setValue );
 
     return action;
 }
@@ -652,8 +644,11 @@ void MainWindow::setCornerRadius(int value)
 
 void MainWindow::setEdgeWidth(double value)
 {
-    if (!qFuzzyCompare(m_edgeWidthSpinBox->value(), value)) {
-        m_edgeWidthSpinBox->setValue(value);
+    if (!qFuzzyCompare(m_edgeWidthSlider->value(), value)) {
+        m_edgeWidthSlider->setValue(value);
+    }
+    if (!qFuzzyCompare(m_edgeWidthSlider->value(), value*100)) {
+        m_edgeWidthSlider->setValue(value*100);
     }
     if (!qFuzzyCompare(m_edgeWidthSlider->value(), value*100)) {
         m_edgeWidthSlider->setValue(value*100);

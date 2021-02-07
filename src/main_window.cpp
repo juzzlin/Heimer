@@ -684,16 +684,6 @@ void MainWindow::enableSave(bool enable)
     m_saveAction->setEnabled(enable);
 }
 
-void MainWindow::edgeWidthSliderChanged(double width)
-{
-    m_edgeWidthSpinBox->setValue(width/100);
-}
-
-void MainWindow::edgeWidthSpinBoxChanged(double width)
-{
-    m_edgeWidthSlider->setValue(width*100);
-}
-
 void MainWindow::saveWindowSize()
 {
     if (!m_fullScreenAction->isChecked()) {

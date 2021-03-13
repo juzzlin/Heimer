@@ -293,7 +293,7 @@ void Node::checkHandleVisibility(QPointF pos)
 NodeHandle * Node::hitsHandle(QPointF pos)
 {
     for (auto && handle : m_handles) {
-        if (handle->contains(pos)) {
+        if (handle->containsPoint(pos)) {
             return handle;
         }
     }
@@ -400,11 +400,11 @@ void Node::setHandlesVisible(bool visible, bool all)
     } else {
         for (auto && handle : m_handles) {
             if (!visible) {
-                if (!handle->contains(m_currentMousePos)) {
+                if (!handle->containsPoint(m_currentMousePos)) {
                     handle->setVisible(visible);
                 }
             } else {
-                if (handle->contains(m_currentMousePos)) {
+                if (handle->containsPoint(m_currentMousePos)) {
                     handle->setVisible(visible);
                 }
             }

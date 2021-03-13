@@ -77,7 +77,7 @@ NodeHandle::Role NodeHandle::role() const
     return m_role;
 }
 
-bool NodeHandle::contains(const QPointF & pos)
+bool NodeHandle::containsPoint(const QPointF & pos)
 {
     const auto r = radius();
     const auto d = (pos - this->pos());

@@ -315,11 +315,9 @@ void Mediator::initiateNewNodeDrag(NodeHandle & nodeHandle)
 
     clearSelectionGroup();
     saveUndoPoint();
-    const auto parentNode = dynamic_cast<Node *>(nodeHandle.parentItem());
-    assert(parentNode);
-    mouseAction().setSourceNode(parentNode, MouseAction::Action::CreateOrConnectNode);
-    mouseAction().setSourcePosOnNode(nodeHandle.pos());
-    parentNode->setHandlesVisible(false);
+    mouseAction().setSourceNode(&nodeHandle.parentNode(), MouseAction::Action::CreateOrConnectNode);
+    mouseAction().setSourcePosOnNode(nodeHandle.pos() - nodeHandle.parentNode().pos());
+    nodeHandle.parentNode().setHandlesVisible(false);
 
     // Change cursor to the closed hand cursor.
     QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));

@@ -20,13 +20,13 @@
 #include "graphics_factory.hpp"
 #include "image.hpp"
 #include "layers.hpp"
-#include "node_handle.hpp"
 #include "test_mode.hpp"
 #include "text_edit.hpp"
 
 #include "simple_logger.hpp"
 
 #include <QGraphicsEffect>
+#include <QGraphicsScene>
 #include <QGraphicsSceneHoverEvent>
 #include <QImage>
 #include <QPainter>
@@ -35,6 +35,8 @@
 
 #include <algorithm>
 #include <cmath>
+
+Node * Node::m_lastHoveredNode = nullptr;
 
 Node::Node()
   : m_textEdit(new TextEdit(this))
@@ -61,13 +63,6 @@ Node::Node()
     });
 
     connect(m_textEdit, &TextEdit::undoPointRequested, this, &Node::undoPointRequested);
-
-    m_handleVisibilityTimer.setSingleShot(true);
-    m_handleVisibilityTimer.setInterval(2000);
-
-    connect(&m_handleVisibilityTimer, &QTimer::timeout, [=]() {
-        setHandlesVisible(false, false);
-    });
 
     // Set the background transparent as the TextEdit background will be rendered in Node::paint().
     // The reason for this is that TextEdit's background affects only the area that includes letters
@@ -130,11 +125,11 @@ void Node::adjustSize()
 
     m_size = newSize;
 
-    createHandles();
-
     createEdgePoints();
 
     updateEdgeLines();
+
+    updateHandlePositions();
 
     initTextField();
 
@@ -143,14 +138,7 @@ void Node::adjustSize()
 
 QRectF Node::boundingRect() const
 {
-    // Take children into account
-    QRectF nodeBox { -m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height() };
-    for (auto && handle : m_handles) {
-        auto handleBox = handle->boundingRect();
-        handleBox.translate(handle->pos());
-        nodeBox = nodeBox.united(handleBox);
-    }
-    return nodeBox;
+    return { -m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height() };
 }
 
 EdgePtr Node::createAndAddGraphicsEdge(NodePtr targetNode)
@@ -181,32 +169,15 @@ void Node::createEdgePoints()
 
 void Node::createHandles()
 {
-    // Delete old handles
-    for (auto handle : m_handles) {
-        handle->setParentItem(nullptr);
-        delete handle;
-    }
-    m_handles.clear();
+    m_handles[NodeHandle::Role::Add] = new NodeHandle(*this, NodeHandle::Role::Add, Constants::Node::HANDLE_RADIUS);
 
-    const auto addHandle = new NodeHandle(*this, NodeHandle::Role::Add, Constants::Node::HANDLE_RADIUS);
-    addHandle->setParentItem(this);
-    addHandle->setPos({ 0, m_size.height() * 0.5 });
-    m_handles.push_back(addHandle);
+    m_handles[NodeHandle::Role::Color] = new NodeHandle(*this, NodeHandle::Role::Color, Constants::Node::HANDLE_RADIUS_SMALL);
 
-    const auto colorHandle = new NodeHandle(*this, NodeHandle::Role::Color, Constants::Node::HANDLE_RADIUS_SMALL);
-    colorHandle->setParentItem(this);
-    colorHandle->setPos({ m_size.width() * 0.5, m_size.height() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.5 });
-    m_handles.push_back(colorHandle);
+    m_handles[NodeHandle::Role::TextColor] = new NodeHandle(*this, NodeHandle::Role::TextColor, Constants::Node::HANDLE_RADIUS_SMALL);
 
-    const auto textColorHandle = new NodeHandle(*this, NodeHandle::Role::TextColor, Constants::Node::HANDLE_RADIUS_SMALL);
-    textColorHandle->setParentItem(this);
-    textColorHandle->setPos({ m_size.width() * 0.5, -m_size.height() * 0.5 + Constants::Node::HANDLE_RADIUS_SMALL * 0.5 });
-    m_handles.push_back(textColorHandle);
+    m_handles[NodeHandle::Role::Drag] = new NodeHandle(*this, NodeHandle::Role::Drag, Constants::Node::HANDLE_RADIUS_MEDIUM);
 
-    const auto dragHandle = new NodeHandle(*this, NodeHandle::Role::Drag, Constants::Node::HANDLE_RADIUS_MEDIUM);
-    dragHandle->setParentItem(this);
-    dragHandle->setPos({ -m_size.width() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15, -m_size.height() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15 });
-    m_handles.push_back(dragHandle);
+    updateHandlePositions();
 }
 
 QRectF Node::expandedTextEditRect() const
@@ -240,28 +211,23 @@ std::pair<EdgePoint, EdgePoint> Node::getNearestEdgePoints(const Node & node1, c
 
 void Node::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 {
-    if (event && index() != -1) {
-        m_currentMousePos = event->pos();
-        checkHandleVisibility(event->pos());
-        QGraphicsItem::hoverEnterEvent(event);
+    // This is to more quickly hide the handles of the previous node when
+    // hovering on another node.
+    if (Node::m_lastHoveredNode && Node::m_lastHoveredNode != this) {
+        Node::m_lastHoveredNode->setHandlesVisible(false);
     }
-}
+    Node::m_lastHoveredNode = this;
 
-void Node::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
-{
-    if (event && index() != -1) {
-        setHandlesVisible(false);
-        QGraphicsItem::hoverLeaveEvent(event);
-    }
+    setHandlesVisible(true);
+
+    QGraphicsItem::hoverEnterEvent(event);
 }
 
 void Node::hoverMoveEvent(QGraphicsSceneHoverEvent * event)
 {
-    if (event && index() != -1) {
-        m_currentMousePos = event->pos();
-        checkHandleVisibility(event->pos());
-        QGraphicsItem::hoverMoveEvent(event);
-    }
+    setHandlesVisible(true);
+
+    QGraphicsItem::hoverMoveEvent(event);
 }
 
 void Node::mousePressEvent(QGraphicsSceneMouseEvent * event)
@@ -273,32 +239,6 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent * event)
         }
         QGraphicsItem::mousePressEvent(event);
     }
-}
-
-void Node::checkHandleVisibility(QPointF pos)
-{
-    // Bounding box without children
-    const QRectF bbox { -m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height() };
-    if (bbox.contains(pos)) {
-        if (hitsHandle(pos)) {
-            setHandlesVisible(true, false);
-        } else {
-            setHandlesVisible(true);
-        }
-
-        m_handleVisibilityTimer.start();
-    }
-}
-
-NodeHandle * Node::hitsHandle(QPointF pos)
-{
-    for (auto && handle : m_handles) {
-        if (handle->containsPoint(pos)) {
-            return handle;
-        }
-    }
-
-    return nullptr;
 }
 
 void Node::initTextField()
@@ -315,6 +255,11 @@ void Node::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
 {
     Q_UNUSED(widget)
     Q_UNUSED(option)
+
+    for (auto && handle : m_handles) {
+        if (!handle.second->scene())
+            scene()->addItem(handle.second);
+    }
 
     painter->save();
 
@@ -391,24 +336,10 @@ void Node::setCornerRadius(int value)
     update();
 }
 
-void Node::setHandlesVisible(bool visible, bool all)
+void Node::setHandlesVisible(bool visible)
 {
-    if (all) {
-        for (auto && handle : m_handles) {
-            handle->setVisible(visible);
-        }
-    } else {
-        for (auto && handle : m_handles) {
-            if (!visible) {
-                if (!handle->containsPoint(m_currentMousePos)) {
-                    handle->setVisible(visible);
-                }
-            } else {
-                if (handle->containsPoint(m_currentMousePos)) {
-                    handle->setVisible(visible);
-                }
-            }
-        }
+    for (auto && handle : m_handles) {
+        handle.second->setVisible(visible && index() != -1);
     }
 }
 
@@ -423,6 +354,8 @@ void Node::setLocation(QPointF newLocation)
     setPos(newLocation);
 
     updateEdgeLines();
+
+    updateHandlePositions();
 }
 
 QRectF Node::placementBoundingRect() const
@@ -523,6 +456,17 @@ void Node::updateEdgeLines()
     }
 }
 
+void Node::updateHandlePositions()
+{
+    m_handles[NodeHandle::Role::Add]->setPos(pos() + QPointF { 0, m_size.height() * 0.5 });
+
+    m_handles[NodeHandle::Role::Color]->setPos(pos() + QPointF { m_size.width() * 0.5, m_size.height() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.5 });
+
+    m_handles[NodeHandle::Role::TextColor]->setPos(pos() + QPointF { m_size.width() * 0.5, -m_size.height() * 0.5 + Constants::Node::HANDLE_RADIUS_SMALL * 0.5 });
+
+    m_handles[NodeHandle::Role::Drag]->setPos(pos() + QPointF { -m_size.width() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15, -m_size.height() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15 });
+}
+
 QSizeF Node::size() const
 {
     return m_size;
@@ -555,5 +499,9 @@ void Node::setIndex(int index)
 
 Node::~Node()
 {
+    if (Node::m_lastHoveredNode == this) {
+        Node::m_lastHoveredNode = nullptr;
+    }
+
     juzzlin::L().debug() << "Deleting Node " << index();
 }

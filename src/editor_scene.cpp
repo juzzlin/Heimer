@@ -108,15 +108,14 @@ void EditorScene::toSvg(QString filename, QString title)
         }
     }
 
-    QSvgGenerator generator {};
-
+    QSvgGenerator generator;
     generator.setFileName(filename);
     generator.setSize(QSize(static_cast<int>(width()), static_cast<int>(height())));
     generator.setViewBox(QRect(0, 0, static_cast<int>(width()), static_cast<int>(height())));
     generator.setTitle(title);
     generator.setDescription(QString("SVG exported from ") + Constants::Application::APPLICATION_NAME + " version " + Constants::Application::APPLICATION_VERSION);
 
-    QPainter painter {};
+    QPainter painter;
     painter.begin(&generator);
     render(&painter);
     painter.end();

@@ -18,6 +18,7 @@
 
 #include <QGraphicsItem>
 #include <QPropertyAnimation>
+#include <QTimer>
 
 class Node;
 
@@ -41,12 +42,16 @@ public:
 
     virtual ~NodeHandle();
 
-    virtual QRectF boundingRect() const override;
+    QRectF boundingRect() const override;
 
-    virtual void paint(QPainter * painter,
-                       const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
 
-    bool containsPoint(const QPointF & pos);
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
+
+    void hoverMoveEvent(QGraphicsSceneHoverEvent * event) override;
+
+    void paint(QPainter * painter,
+               const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
 
     void setVisible(bool visible);
 
@@ -68,6 +73,8 @@ private:
     QPropertyAnimation m_opacityAnimation;
 
     QSize m_size;
+
+    QTimer m_visibilityTimer;
 
     // Logical state
     bool m_visible = false;

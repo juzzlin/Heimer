@@ -19,16 +19,15 @@
 #include <QGraphicsItem>
 #include <QImage>
 #include <QObject>
-#include <QTimer>
 
 #include <map>
 #include <vector>
 
 #include "edge.hpp"
 #include "edge_point.hpp"
+#include "node_handle.hpp"
 
 class Image;
-class NodeHandle;
 class QGraphicsTextItem;
 class TextEdit;
 
@@ -68,15 +67,13 @@ public:
 
     void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
 
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
-
     void hoverMoveEvent(QGraphicsSceneHoverEvent * event) override;
 
     void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
 
     static std::pair<EdgePoint, EdgePoint> getNearestEdgePoints(const Node & node1, const Node & node2);
 
-    void setHandlesVisible(bool visible, bool all = true);
+    void setHandlesVisible(bool visible);
 
     int index() const;
 
@@ -125,7 +122,6 @@ signals:
     void imageRequested(size_t imageRef, Node & node);
 
 private:
-    void checkHandleVisibility(QPointF pos);
 
     void createEdgePoints();
 
@@ -133,11 +129,11 @@ private:
 
     QRectF expandedTextEditRect() const;
 
-    NodeHandle * hitsHandle(QPointF pos);
-
     void initTextField();
 
     void updateEdgeLines();
+
+    void updateHandlePositions();
 
     QColor m_color = Qt::white;
 
@@ -159,7 +155,7 @@ private:
 
     size_t m_imageRef = 0;
 
-    std::vector<NodeHandle *> m_handles;
+    std::map<NodeHandle::Role, NodeHandle *> m_handles;
 
     std::vector<Edge *> m_graphicsEdges;
 
@@ -167,11 +163,11 @@ private:
 
     TextEdit * m_textEdit;
 
-    QTimer m_handleVisibilityTimer;
-
     QPointF m_currentMousePos;
 
     QPixmap m_pixmap;
+
+    static Node * m_lastHoveredNode;
 };
 
 using NodePtr = std::shared_ptr<Node>;

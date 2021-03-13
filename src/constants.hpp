@@ -128,7 +128,9 @@ static const int DEFAULT_CORNER_RADIUS = 5;
 
 static const int HANDLE_ANIMATION_DURATION = 150;
 
-static const double HANDLE_OPACITY = 0.8;
+static const int HANDLE_VISIBILITY_DURATION = 2500;
+
+static const double HANDLE_OPACITY = 0.75;
 
 static const int HANDLE_RADIUS = 28;
 

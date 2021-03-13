@@ -9,6 +9,7 @@ Bug fixes:
 
 * Fix GitHub Issue #143: Inexact node selection
   - Make connecting nodes by dragging easier
+  - Render node handles as separate scene objects
 
 Other:
 

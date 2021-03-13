@@ -196,6 +196,11 @@ bool EditorView::isModifierPressed() const
     return QGuiApplication::queryKeyboardModifiers().testFlag(Qt::ControlModifier) || QGuiApplication::queryKeyboardModifiers().testFlag(Qt::ShiftModifier);
 }
 
+void EditorView::mouseDoubleClickEvent(QMouseEvent * event)
+{
+    emit newNodeRequested(mapToScene(event->pos()));
+}
+
 void EditorView::mouseMoveEvent(QMouseEvent * event)
 {
     m_pos = event->pos();

@@ -3,6 +3,8 @@ x.y.z
 
 New features:
 
+* Fix GitHub Issue #140: Double-click to create a new node
+
 Bug fixes:
 
 Other:

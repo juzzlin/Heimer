@@ -7,6 +7,9 @@ New features:
 
 Bug fixes:
 
+* Fix GitHub Issue #143: Inexact node selection
+  - Make connecting nodes by dragging easier
+
 Other:
 
 * Fix GitHub Issue #125: Add support for Qt 6

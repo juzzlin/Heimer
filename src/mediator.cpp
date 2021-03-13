@@ -764,10 +764,11 @@ NodePtr Mediator::getBestOverlapNode(const Node & source)
 {
     NodePtr bestNode;
     double bestScore = 0;
+    const double minThreshold = 0.25;
     for (auto && node : m_editorData->mindMapData()->graph().getNodes()) {
         if (node->index() != source.index() && node->index() != mouseAction().sourceNode()->index() && !areDirectlyConnected(*node, *mouseAction().sourceNode())) {
             const auto score = calculateNodeOverlapScore(source, *node);
-            if (score > 0.75 && score > bestScore) {
+            if (score > minThreshold && score > bestScore) {
                 bestNode = node;
                 bestScore = score;
             }

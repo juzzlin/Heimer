@@ -132,7 +132,6 @@ void EditorView::handleLeftButtonClickOnNode(Node & node)
         if (m_mediator.selectionGroupSize() && !m_mediator.isInSelectionGroup(node)) {
             m_mediator.clearSelectionGroup();
         }
-        m_mediator.addNodeToSelectionGroup(node);
         // User is initiating a node move drag
         m_mediator.initiateNodeDrag(node);
     }

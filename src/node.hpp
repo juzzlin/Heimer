@@ -115,6 +115,8 @@ public:
 
     void applyImage(const Image & image);
 
+    static Node * lastHoveredNode();
+
 signals:
 
     void undoPointRequested();
@@ -122,7 +124,6 @@ signals:
     void imageRequested(size_t imageRef, Node & node);
 
 private:
-
     void createEdgePoints();
 
     void createHandles();

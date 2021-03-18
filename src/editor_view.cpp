@@ -207,6 +207,16 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
     m_mappedPos = mapToScene(event->pos());
     m_mediator.mouseAction().setMappedPos(m_mappedPos);
 
+    if (Node::lastHoveredNode()) {
+        const auto hhd = Constants::Node::HIDE_HANDLES_DISTANCE;
+        if (m_mappedPos.x() > Node::lastHoveredNode()->pos().x() + hhd + Node::lastHoveredNode()->boundingRect().width() / 2 || //
+            m_mappedPos.x() < Node::lastHoveredNode()->pos().x() - hhd - Node::lastHoveredNode()->boundingRect().width() / 2 || //
+            m_mappedPos.y() > Node::lastHoveredNode()->pos().y() + hhd + Node::lastHoveredNode()->boundingRect().height() / 2 || //
+            m_mappedPos.y() < Node::lastHoveredNode()->pos().y() - hhd - Node::lastHoveredNode()->boundingRect().height() / 2) {
+            Node::lastHoveredNode()->setHandlesVisible(false);
+        }
+    }
+
     switch (m_mediator.mouseAction().action()) {
     case MouseAction::Action::MoveNode:
         if (const auto node = m_mediator.mouseAction().sourceNode()) {

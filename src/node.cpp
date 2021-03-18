@@ -467,6 +467,11 @@ void Node::updateHandlePositions()
     m_handles[NodeHandle::Role::Drag]->setPos(pos() + QPointF { -m_size.width() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15, -m_size.height() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15 });
 }
 
+Node * Node::lastHoveredNode()
+{
+    return m_lastHoveredNode;
+}
+
 QSizeF Node::size() const
 {
     return m_size;

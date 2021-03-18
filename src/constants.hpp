@@ -138,6 +138,8 @@ static const int HANDLE_RADIUS_MEDIUM = 24;
 
 static const int HANDLE_RADIUS_SMALL = 20;
 
+static const int HIDE_HANDLES_DISTANCE = 32;
+
 static const int MARGIN = 10;
 
 static const int MAX_CORNER_RADIUS = 20;

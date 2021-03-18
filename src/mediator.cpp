@@ -15,6 +15,7 @@
 
 #include "mediator.hpp"
 
+#include "defaults.hpp"
 #include "editor_data.hpp"
 #include "editor_scene.hpp"
 #include "editor_view.hpp"
@@ -638,7 +639,7 @@ void Mediator::setEditorView(EditorView & editorView)
 
 void Mediator::setRectagleSelection(QRectF rect)
 {
-    const auto items = m_editorScene->items(rect, Qt::IntersectsItemShape);
+    const auto items = m_editorScene->items(rect, Defaults::instance().selectNodeGroupByIntersection() ? Qt::IntersectsItemShape : Qt::ContainsItemShape);
     for (auto && item : items) {
         if (const auto node = dynamic_cast<Node *>(item)) {
             toggleNodeInSelectionGroup(*node, false);

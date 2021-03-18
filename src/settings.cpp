@@ -42,6 +42,8 @@ const auto recentPathKey = "recentPath";
 
 const auto reversedEdgeDirectionKey = "reversedEdgeDirection";
 
+const auto selectNodeGroupByIntersectionKey = "selectNodeGroupByIntersection";
+
 const auto windowFullScreenKey = "fullScreen";
 
 const auto windowSizeKey = "size";
@@ -195,5 +197,22 @@ void Settings::saveFullScreen(bool fullScreen)
     QSettings settings;
     settings.beginGroup(settingsGroupMainWindow);
     settings.setValue(windowFullScreenKey, fullScreen);
+    settings.endGroup();
+}
+
+bool Settings::loadSelectNodeGroupByIntersection()
+{
+    QSettings settings;
+    settings.beginGroup(settingsGroupDefaults);
+    const auto fullScreen = settings.value(selectNodeGroupByIntersectionKey, false).toBool();
+    settings.endGroup();
+    return fullScreen;
+}
+
+void Settings::saveSelectNodeGroupByIntersection(bool selectNodeGroupByIntersection)
+{
+    QSettings settings;
+    settings.beginGroup(settingsGroupDefaults);
+    settings.setValue(selectNodeGroupByIntersectionKey, selectNodeGroupByIntersection);
     settings.endGroup();
 }

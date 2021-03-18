@@ -46,6 +46,10 @@ QString loadRecentImagePath();
 
 void saveRecentImagePath(QString path);
 
+bool loadSelectNodeGroupByIntersection();
+
+void saveSelectNodeGroupByIntersection(bool selectNodeGroupByIntersection);
+
 QSize loadWindowSize(QSize defaultSize);
 
 void saveWindowSize(QSize size);

@@ -35,10 +35,16 @@ public:
 
     void setReversedEdgeDirection(bool reversedEdgeDirection);
 
+    bool selectNodeGroupByIntersection() const;
+
+    void setSelectNodeGroupByIntersection(bool selectNodeGroupByIntersection);
+
 private:
     Edge::ArrowMode m_edgeArrowMode;
 
     bool m_reversedEdgeDirection = false;
+
+    bool m_selectNodeGroupByIntersection = false;
 
     static std::unique_ptr<Defaults> m_instance;
 };

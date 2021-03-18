@@ -40,6 +40,8 @@ private:
     std::map<Edge::ArrowMode, QRadioButton *> m_edgeArrowStyleRadioMap;
 
     QCheckBox * m_edgeDirectionCheckBox = nullptr;
+
+    QCheckBox * m_selectNodeGroupByIntersectionCheckBox = nullptr;
 };
 
 #endif // DEFAULTS_DLG_HPP

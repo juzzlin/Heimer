@@ -21,6 +21,7 @@ std::unique_ptr<Defaults> Defaults::m_instance;
 Defaults::Defaults()
   : m_edgeArrowMode(Settings::loadEdgeArrowMode(Edge::ArrowMode::Single))
   , m_reversedEdgeDirection(Settings::loadReversedEdgeDirection(false))
+  , m_selectNodeGroupByIntersection(Settings::loadSelectNodeGroupByIntersection())
 {
 }
 
@@ -55,5 +56,18 @@ void Defaults::setReversedEdgeDirection(bool reversedEdgeDirection)
     if (m_reversedEdgeDirection != reversedEdgeDirection) {
         m_reversedEdgeDirection = reversedEdgeDirection;
         Settings::saveReversedEdgeDirection(reversedEdgeDirection);
+    }
+}
+
+bool Defaults::selectNodeGroupByIntersection() const
+{
+    return m_selectNodeGroupByIntersection;
+}
+
+void Defaults::setSelectNodeGroupByIntersection(bool selectNodeGroupByIntersection)
+{
+    if (m_selectNodeGroupByIntersection != selectNodeGroupByIntersection) {
+        m_selectNodeGroupByIntersection = selectNodeGroupByIntersection;
+        Settings::saveSelectNodeGroupByIntersection(selectNodeGroupByIntersection);
     }
 }

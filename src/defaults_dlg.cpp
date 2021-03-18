@@ -46,6 +46,8 @@ void DefaultsDlg::accept()
 
     Defaults::instance().setReversedEdgeDirection(m_edgeDirectionCheckBox->isChecked());
 
+    Defaults::instance().setSelectNodeGroupByIntersection(m_selectNodeGroupByIntersectionCheckBox->isChecked());
+
     QDialog::accept();
 }
 
@@ -72,6 +74,15 @@ void DefaultsDlg::initWidgets()
     edgeArrowRadioLayout->addWidget(m_edgeDirectionCheckBox);
     edgeGroup->setLayout(edgeArrowRadioLayout);
 
+    const auto editingGroup = new QGroupBox;
+    editingGroup->setTitle(tr("Editing"));
+    const auto editingLayout = new QVBoxLayout;
+    editingGroup->setLayout(editingLayout);
+    mainLayout->addWidget(editingGroup);
+    m_selectNodeGroupByIntersectionCheckBox = new QCheckBox(tr("Select node group by intersection"));
+    editingLayout->addWidget(m_selectNodeGroupByIntersectionCheckBox);
+    edgeGroup->setLayout(edgeArrowRadioLayout);
+
     const auto buttonLayout = new QHBoxLayout();
     const auto button = new QPushButton("&Ok", this);
     connect(button, &QPushButton::clicked, this, &DefaultsDlg::accept);
@@ -96,4 +107,6 @@ void DefaultsDlg::setActiveDefaults()
     }
 
     m_edgeDirectionCheckBox->setChecked(Defaults::instance().reversedEdgeDirection());
+
+    m_selectNodeGroupByIntersectionCheckBox->setChecked(Defaults::instance().selectNodeGroupByIntersection());
 }

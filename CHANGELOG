@@ -3,6 +3,15 @@ x.y.z
 
 New features:
 
+Bug fixes:
+
+Other:
+
+2.3.0
+=====
+
+New features:
+
 * Fix GitHub Issue #140: Double-click to create a new node
 * Add setting to select node group by intersection
 

@@ -51,6 +51,8 @@ public:
 
     void removeGraphicsEdge(Edge & edge);
 
+    void removeHandles();
+
     void adjustSize();
 
     QRectF boundingRect() const override;

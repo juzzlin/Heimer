@@ -113,6 +113,16 @@ void Node::removeGraphicsEdge(Edge & edge)
     }
 }
 
+void Node::removeHandles()
+{
+    for (auto && handle : m_handles) {
+        if (handle.second->scene()) {
+            handle.second->hide();
+            scene()->removeItem(handle.second);
+        }
+    }
+}
+
 void Node::adjustSize()
 {
     prepareGeometryChange();
@@ -506,6 +516,12 @@ Node::~Node()
 {
     if (Node::m_lastHoveredNode == this) {
         Node::m_lastHoveredNode = nullptr;
+    }
+
+    juzzlin::L().debug() << "Deleting handles of node " << index();
+
+    for (auto && handle : m_handles) {
+        delete handle.second;
     }
 
     juzzlin::L().debug() << "Deleting Node " << index();

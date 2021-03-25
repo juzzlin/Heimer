@@ -472,6 +472,7 @@ void EditorData::removeEdgeFromScene(Edge & edge)
 void EditorData::removeNodeFromScene(Node & node)
 {
     node.hide();
+    node.removeHandles();
     if (const auto scene = node.scene()) {
         scene->removeItem(&node);
     }

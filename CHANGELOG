@@ -5,6 +5,8 @@ New features:
 
 Bug fixes:
 
+* Fix GitHub Issue #150: Ghost handles crash
+
 Other:
 
 2.3.0

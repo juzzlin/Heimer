@@ -37,67 +37,67 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application.cpp" line="189"/>
+        <location filename="../application.cpp" line="193"/>
         <source>Heimer Files</source>
         <translation>Heimer -tiedostot</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="280"/>
+        <location filename="../application.cpp" line="284"/>
         <source>Open File</source>
         <translation>Avaa tiedosto</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="307"/>
+        <location filename="../application.cpp" line="311"/>
         <source>Failed to save file.</source>
         <translation>Tiedoston tallentaminen epäonnistui</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="324"/>
+        <location filename="../application.cpp" line="328"/>
         <source>Save File As</source>
         <translation>Tallenna Nimellä</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="338"/>
+        <location filename="../application.cpp" line="342"/>
         <source>File &apos;</source>
         <translation>Tiedosto &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="338"/>
+        <location filename="../application.cpp" line="342"/>
         <source>&apos; saved.</source>
         <translation>&apos; tallennettu.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="344"/>
+        <location filename="../application.cpp" line="348"/>
         <source>Failed to save file as &apos;</source>
         <translation>Tietoston tallentaminen epäonnistui nimellä &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="401"/>
+        <location filename="../application.cpp" line="405"/>
         <source>Open an image</source>
         <translation>Avaa kuvatiedosto</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="401"/>
+        <location filename="../application.cpp" line="405"/>
         <source>Image Files</source>
         <translation>Kuvatiedostot</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="408"/>
+        <location filename="../application.cpp" line="412"/>
         <source>Load image</source>
         <translation>Kuvanlataus</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="408"/>
+        <location filename="../application.cpp" line="412"/>
         <source>Failed to load image &apos;</source>
         <translation>Kuvan lataaminen epäonnistui: &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="452"/>
+        <location filename="../application.cpp" line="456"/>
         <source>The mind map has been modified.</source>
         <translation>Käsitekarttaa on muokattu.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="453"/>
+        <location filename="../application.cpp" line="457"/>
         <source>Do you want to save your changes?</source>
         <translation>Haluatko tallentaa muutokset?</translation>
     </message>
@@ -110,29 +110,39 @@
         <translation>Oletusarvot</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="56"/>
+        <location filename="../defaults_dlg.cpp" line="58"/>
         <source>Edge Arrow Style</source>
         <translation>Kaaren Nuolen Tyyli</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="60"/>
+        <location filename="../defaults_dlg.cpp" line="62"/>
         <source>No arrow</source>
         <translation>Ei nuolta</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="61"/>
+        <location filename="../defaults_dlg.cpp" line="63"/>
         <source>Single arrow</source>
         <translation>Yksi nuoli</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="62"/>
+        <location filename="../defaults_dlg.cpp" line="64"/>
         <source>Double arrow</source>
         <translation>Kaksi nuolta</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="71"/>
+        <location filename="../defaults_dlg.cpp" line="73"/>
         <source>Reversed direction</source>
         <translation>Käännetty suunta</translation>
+    </message>
+    <message>
+        <location filename="../defaults_dlg.cpp" line="78"/>
+        <source>Editing</source>
+        <translation>Editointi</translation>
+    </message>
+    <message>
+        <location filename="../defaults_dlg.cpp" line="82"/>
+        <source>Select node group by intersection</source>
+        <translation>Valitse joukko solmuja leikaten</translation>
     </message>
 </context>
 <context>
@@ -277,22 +287,22 @@
         <translation>Optimoi Sijoittelu</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="88"/>
+        <location filename="../layout_optimization_dialog.cpp" line="92"/>
         <source>Aspect Ratio:</source>
         <translation>Kuvasuhde:</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="99"/>
+        <location filename="../layout_optimization_dialog.cpp" line="103"/>
         <source>Minimum Edge Length:</source>
         <translation>Pienin mahdollinen kaaren pituus:</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="119"/>
+        <location filename="../layout_optimization_dialog.cpp" line="123"/>
         <source>Cancel</source>
         <translation>Kumoa</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="122"/>
+        <location filename="../layout_optimization_dialog.cpp" line="126"/>
         <source>Optimize</source>
         <translation>Optimoi</translation>
     </message>

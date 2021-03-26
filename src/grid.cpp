@@ -15,6 +15,8 @@
 
 #include "grid.hpp"
 
+#include <cmath>
+
 Grid::Grid()
 {
 }
@@ -36,7 +38,7 @@ QPointF Grid::snapToGrid(QPointF in) const
     }
 
     return {
-        static_cast<double>(static_cast<int>(in.x() / m_size) * m_size),
-        static_cast<double>(static_cast<int>(in.y() / m_size) * m_size)
+        static_cast<double>(std::round(in.x() / m_size) * m_size),
+        static_cast<double>(std::round(in.y() / m_size) * m_size)
     };
 }

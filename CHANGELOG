@@ -6,6 +6,7 @@ New features:
 Bug fixes:
 
 * Fix GitHub Issue #150: Ghost handles crash
+* Fix GitHub Issue #148: Instant node creation not aligned with the grid
 
 Other:
 

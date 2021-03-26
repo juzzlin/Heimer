@@ -206,7 +206,7 @@ NodePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 
 NodePtr Mediator::createAndAddNode(QPointF pos)
 {
-    const auto node1 = m_editorData->addNodeAt(pos);
+    const auto node1 = m_editorData->addNodeAt(m_editorView->grid().snapToGrid(pos));
     assert(node1);
     connectNodeToUndoMechanism(node1);
     connectNodeToImageManager(node1);

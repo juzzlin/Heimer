@@ -125,19 +125,6 @@ pipeline {
                 }
             }
         }
-        stage('Snap') {
-            agent any
-            steps {
-                lock(resource: 'snapLock') {
-                    sh "./scripts/build-snap-lxd"
-                }
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: '*.snap', fingerprint: true
-                }
-            }
-        }
     }
 }
 

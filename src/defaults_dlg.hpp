@@ -16,7 +16,7 @@
 #ifndef DEFAULTS_DLG_HPP
 #define DEFAULTS_DLG_HPP
 
-#include "defaults.hpp"
+#include "settings_proxy.hpp"
 #include <QDialog>
 #include <map>
 

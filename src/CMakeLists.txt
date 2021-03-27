@@ -20,7 +20,6 @@ set(LIB_SRC
     alz_serializer.cpp
     application.cpp
     constants.hpp
-    defaults.cpp
     defaults_dlg.cpp
     edge.cpp
     edge_context_menu.cpp
@@ -55,6 +54,7 @@ set(LIB_SRC
     recent_files_menu.cpp
     selection_group.cpp
     settings.cpp
+    settings_proxy.cpp
     state_machine.cpp
     svg_export_dialog.cpp
     test_mode.cpp

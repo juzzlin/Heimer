@@ -16,12 +16,12 @@
 #include "edge.hpp"
 
 #include "constants.hpp"
-#include "defaults.hpp"
 #include "edge_dot.hpp"
 #include "edge_text_edit.hpp"
 #include "graphics_factory.hpp"
 #include "layers.hpp"
 #include "node.hpp"
+#include "settings_proxy.hpp"
 #include "test_mode.hpp"
 
 #include "simple_logger.hpp"
@@ -41,8 +41,8 @@
 Edge::Edge(Node & sourceNode, Node & targetNode, bool enableAnimations, bool enableLabel)
   : m_sourceNode(&sourceNode)
   , m_targetNode(&targetNode)
-  , m_reversed(Defaults::instance().reversedEdgeDirection())
-  , m_arrowMode(Defaults::instance().edgeArrowMode())
+  , m_reversed(SettingsProxy::instance().reversedEdgeDirection())
+  , m_arrowMode(SettingsProxy::instance().edgeArrowMode())
   , m_enableAnimations(enableAnimations)
   , m_enableLabel(enableLabel)
   , m_sourceDot(enableAnimations ? new EdgeDot(this) : nullptr)

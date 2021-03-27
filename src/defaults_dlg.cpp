@@ -14,7 +14,7 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "defaults_dlg.hpp"
-#include "defaults.hpp"
+#include "settings_proxy.hpp"
 
 #include <QButtonGroup>
 #include <QCheckBox>
@@ -39,14 +39,14 @@ void DefaultsDlg::accept()
 {
     for (auto && iter : m_edgeArrowStyleRadioMap) {
         if (iter.second->isChecked()) {
-            Defaults::instance().setEdgeArrowMode(iter.first);
+            SettingsProxy::instance().setEdgeArrowMode(iter.first);
             juzzlin::L().info() << "'" << iter.second->text().toStdString() << "' set as new default";
         }
     }
 
-    Defaults::instance().setReversedEdgeDirection(m_edgeDirectionCheckBox->isChecked());
+    SettingsProxy::instance().setReversedEdgeDirection(m_edgeDirectionCheckBox->isChecked());
 
-    Defaults::instance().setSelectNodeGroupByIntersection(m_selectNodeGroupByIntersectionCheckBox->isChecked());
+    SettingsProxy::instance().setSelectNodeGroupByIntersection(m_selectNodeGroupByIntersectionCheckBox->isChecked());
 
     QDialog::accept();
 }
@@ -97,7 +97,7 @@ void DefaultsDlg::initWidgets()
 
 void DefaultsDlg::setActiveDefaults()
 {
-    const auto defaultArrowStyle = Defaults::instance().edgeArrowMode();
+    const auto defaultArrowStyle = SettingsProxy::instance().edgeArrowMode();
     if (m_edgeArrowStyleRadioMap.count(defaultArrowStyle)) {
         const auto radio = m_edgeArrowStyleRadioMap[defaultArrowStyle];
         radio->setChecked(true);
@@ -106,7 +106,7 @@ void DefaultsDlg::setActiveDefaults()
         juzzlin::L().error() << "Invalid arrow style: " << static_cast<int>(defaultArrowStyle);
     }
 
-    m_edgeDirectionCheckBox->setChecked(Defaults::instance().reversedEdgeDirection());
+    m_edgeDirectionCheckBox->setChecked(SettingsProxy::instance().reversedEdgeDirection());
 
-    m_selectNodeGroupByIntersectionCheckBox->setChecked(Defaults::instance().selectNodeGroupByIntersection());
+    m_selectNodeGroupByIntersectionCheckBox->setChecked(SettingsProxy::instance().selectNodeGroupByIntersection());
 }

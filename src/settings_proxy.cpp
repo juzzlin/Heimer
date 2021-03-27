@@ -13,32 +13,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "defaults.hpp"
 #include "settings.hpp"
+#include "settings_proxy.hpp"
 
-std::unique_ptr<Defaults> Defaults::m_instance;
+std::unique_ptr<SettingsProxy> SettingsProxy::m_instance;
 
-Defaults::Defaults()
+SettingsProxy::SettingsProxy()
   : m_edgeArrowMode(Settings::loadEdgeArrowMode(Edge::ArrowMode::Single))
   , m_reversedEdgeDirection(Settings::loadReversedEdgeDirection(false))
   , m_selectNodeGroupByIntersection(Settings::loadSelectNodeGroupByIntersection())
 {
 }
 
-Defaults & Defaults::instance()
+SettingsProxy & SettingsProxy::instance()
 {
-    if (!Defaults::m_instance) {
-        Defaults::m_instance = std::make_unique<Defaults>();
+    if (!SettingsProxy::m_instance) {
+        SettingsProxy::m_instance = std::make_unique<SettingsProxy>();
     }
-    return *Defaults::m_instance;
+    return *SettingsProxy::m_instance;
 }
 
-Edge::ArrowMode Defaults::edgeArrowMode() const
+Edge::ArrowMode SettingsProxy::edgeArrowMode() const
 {
     return m_edgeArrowMode;
 }
 
-void Defaults::setEdgeArrowMode(Edge::ArrowMode mode)
+void SettingsProxy::setEdgeArrowMode(Edge::ArrowMode mode)
 {
     if (m_edgeArrowMode != mode) {
         m_edgeArrowMode = mode;
@@ -46,12 +46,12 @@ void Defaults::setEdgeArrowMode(Edge::ArrowMode mode)
     }
 }
 
-bool Defaults::reversedEdgeDirection() const
+bool SettingsProxy::reversedEdgeDirection() const
 {
     return m_reversedEdgeDirection;
 }
 
-void Defaults::setReversedEdgeDirection(bool reversedEdgeDirection)
+void SettingsProxy::setReversedEdgeDirection(bool reversedEdgeDirection)
 {
     if (m_reversedEdgeDirection != reversedEdgeDirection) {
         m_reversedEdgeDirection = reversedEdgeDirection;
@@ -59,12 +59,12 @@ void Defaults::setReversedEdgeDirection(bool reversedEdgeDirection)
     }
 }
 
-bool Defaults::selectNodeGroupByIntersection() const
+bool SettingsProxy::selectNodeGroupByIntersection() const
 {
     return m_selectNodeGroupByIntersection;
 }
 
-void Defaults::setSelectNodeGroupByIntersection(bool selectNodeGroupByIntersection)
+void SettingsProxy::setSelectNodeGroupByIntersection(bool selectNodeGroupByIntersection)
 {
     if (m_selectNodeGroupByIntersection != selectNodeGroupByIntersection) {
         m_selectNodeGroupByIntersection = selectNodeGroupByIntersection;

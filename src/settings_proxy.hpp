@@ -13,19 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef DEFAULTS_HPP
-#define DEFAULTS_HPP
+#ifndef SETTINGS_PROXY_HPP
+#define SETTINGS_PROXY_HPP
 
 #include "edge.hpp"
 
 #include <memory>
 
-class Defaults
+class SettingsProxy
 {
 public:
-    Defaults();
+    SettingsProxy();
 
-    static Defaults & instance();
+    static SettingsProxy & instance();
 
     Edge::ArrowMode edgeArrowMode() const;
 
@@ -46,7 +46,7 @@ private:
 
     bool m_selectNodeGroupByIntersection = false;
 
-    static std::unique_ptr<Defaults> m_instance;
+    static std::unique_ptr<SettingsProxy> m_instance;
 };
 
-#endif // DEFAULTS_HPP
+#endif // SETTINGS_PROXY_HPP

@@ -26,7 +26,6 @@ HEADERS +=  \
     $$SRC/about_dlg.hpp \
     $$SRC/alz_serializer.hpp \
     $$SRC/application.hpp \
-    $$SRC/defaults.hpp \
     $$SRC/defaults_dlg.hpp \
     $$SRC/graph.hpp \
     $$SRC/graphics_factory.hpp \
@@ -59,6 +58,7 @@ HEADERS +=  \
     $$SRC/recent_files_menu.hpp \
     $$SRC/selection_group.hpp \
     $$SRC/settings.hpp \
+    $$SRC/settings_proxy.hpp \
     $$SRC/state_machine.hpp \
     $$SRC/svg_export_dialog.hpp \
     $$SRC/test_mode.hpp \
@@ -74,7 +74,6 @@ SOURCES += \
     $$SRC/about_dlg.cpp \
     $$SRC/alz_serializer.cpp \
     $$SRC/application.cpp \
-    $$SRC/defaults.cpp \
     $$SRC/defaults_dlg.cpp \
     $$SRC/graph.cpp \
     $$SRC/graphics_factory.cpp \
@@ -106,6 +105,7 @@ SOURCES += \
     $$SRC/recent_files_menu.cpp \
     $$SRC/selection_group.cpp \
     $$SRC/settings.cpp \
+    $$SRC/settings_proxy.cpp \
     $$SRC/state_machine.cpp \
     $$SRC/svg_export_dialog.cpp \
     $$SRC/test_mode.cpp \

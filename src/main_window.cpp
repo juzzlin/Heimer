@@ -17,12 +17,12 @@
 
 #include "about_dlg.hpp"
 #include "constants.hpp"
-#include "defaults_dlg.hpp"
 #include "mediator.hpp"
 #include "node_action.hpp"
 #include "recent_files_manager.hpp"
 #include "recent_files_menu.hpp"
 #include "settings.hpp"
+#include "settings_dialog.hpp"
 #include "simple_logger.hpp"
 #include "whats_new_dlg.hpp"
 
@@ -51,7 +51,7 @@ static const auto threeDots = "...";
 
 MainWindow::MainWindow()
   : m_aboutDlg(new AboutDlg(this))
-  , m_defaultsDlg(new DefaultsDlg(this))
+  , m_settingsDlg(new SettingsDialog(this))
   , m_whatsNewDlg(new WhatsNewDlg(this))
   , m_connectSelectedNodesAction(new QAction(tr("Connect selected nodes"), this))
   , m_disconnectSelectedNodesAction(new QAction(tr("Disconnect selected nodes"), this))
@@ -417,7 +417,7 @@ void MainWindow::createSettingsMenu()
 
     // Add "defaults"-action
     const auto defaultsAct = new QAction(tr("&Defaults"), this);
-    connect(defaultsAct, &QAction::triggered, m_defaultsDlg, &DefaultsDlg::exec);
+    connect(defaultsAct, &QAction::triggered, m_settingsDlg, &SettingsDialog::exec);
     settingsMenu->addAction(defaultsAct);
 }
 

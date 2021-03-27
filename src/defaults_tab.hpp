@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2020 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2021 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,25 +13,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef DEFAULTS_DLG_HPP
-#define DEFAULTS_DLG_HPP
+#ifndef DEFAULTS_TAB_HPP
+#define DEFAULTS_TAB_HPP
 
 #include "settings_proxy.hpp"
-#include <QDialog>
+#include <QWidget>
 #include <map>
 
 class QCheckBox;
 class QRadioButton;
 
-class DefaultsDlg : public QDialog
+class DefaultsTab : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit DefaultsDlg(QWidget * parent = nullptr);
+    explicit DefaultsTab(QWidget * parent = nullptr);
+
+    void apply();
 
 private:
-    void accept() override;
 
     void initWidgets();
 
@@ -40,8 +41,6 @@ private:
     std::map<Edge::ArrowMode, QRadioButton *> m_edgeArrowStyleRadioMap;
 
     QCheckBox * m_edgeDirectionCheckBox = nullptr;
-
-    QCheckBox * m_selectNodeGroupByIntersectionCheckBox = nullptr;
 };
 
-#endif // DEFAULTS_DLG_HPP
+#endif // DEFAULTS_TAB_HPP

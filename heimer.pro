@@ -10,11 +10,11 @@ DEFINES += PACKAGE_TYPE=\\\"$$(PACKAGE_TYPE)\\\"
 CONFIG += c++14 lrelease embed_translations
 
 # Qt version check
-contains(QT_VERSION, ^5\\..*) {
+contains(QT_VERSION, ^[5-6]\\..*) {
     message("Building for Qt version $${QT_VERSION}.")
     QT += widgets svg xml
 } else {
-    error("Qt5 is required!")
+    error("Qt5 or Qt6 is required!")
 }
 
 SRC = src
@@ -26,7 +26,7 @@ HEADERS +=  \
     $$SRC/about_dlg.hpp \
     $$SRC/alz_serializer.hpp \
     $$SRC/application.hpp \
-    $$SRC/defaults_dlg.hpp \
+    $$SRC/defaults_tab.hpp \
     $$SRC/graph.hpp \
     $$SRC/graphics_factory.hpp \
     $$SRC/grid.hpp \
@@ -34,6 +34,7 @@ HEADERS +=  \
     $$SRC/edge_context_menu.hpp \
     $$SRC/edge_dot.hpp \
     $$SRC/edge_text_edit.hpp \
+    $$SRC/editing_tab.hpp \
     $$SRC/editor_data.hpp \
     $$SRC/editor_scene.hpp \
     $$SRC/editor_view.hpp \
@@ -58,6 +59,7 @@ HEADERS +=  \
     $$SRC/recent_files_menu.hpp \
     $$SRC/selection_group.hpp \
     $$SRC/settings.hpp \
+    $$SRC/settings_dialog.hpp \
     $$SRC/settings_proxy.hpp \
     $$SRC/state_machine.hpp \
     $$SRC/svg_export_dialog.hpp \
@@ -75,7 +77,7 @@ SOURCES += \
     $$SRC/about_dlg.cpp \
     $$SRC/alz_serializer.cpp \
     $$SRC/application.cpp \
-    $$SRC/defaults_dlg.cpp \
+    $$SRC/defaults_tab.cpp \
     $$SRC/graph.cpp \
     $$SRC/graphics_factory.cpp \
     $$SRC/grid.cpp \
@@ -83,6 +85,7 @@ SOURCES += \
     $$SRC/edge_context_menu.cpp \
     $$SRC/edge_dot.cpp \
     $$SRC/edge_text_edit.cpp \
+    $$SRC/editing_tab.cpp \
     $$SRC/editor_data.cpp \
     $$SRC/editor_scene.cpp \
     $$SRC/editor_view.cpp \
@@ -106,6 +109,7 @@ SOURCES += \
     $$SRC/recent_files_menu.cpp \
     $$SRC/selection_group.cpp \
     $$SRC/settings.cpp \
+    $$SRC/settings_dialog.cpp \
     $$SRC/settings_proxy.cpp \
     $$SRC/state_machine.cpp \
     $$SRC/svg_export_dialog.cpp \

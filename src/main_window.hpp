@@ -27,7 +27,7 @@
 #include <memory>
 
 class AboutDlg;
-class DefaultsDlg;
+class SettingsDialog;
 class EditorData;
 class EditorView;
 class QAction;
@@ -154,7 +154,7 @@ private:
 
     AboutDlg * m_aboutDlg;
 
-    DefaultsDlg * m_defaultsDlg;
+    SettingsDialog * m_settingsDlg;
 
     WhatsNewDlg * m_whatsNewDlg;
 

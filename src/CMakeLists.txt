@@ -20,12 +20,13 @@ set(LIB_SRC
     alz_serializer.cpp
     application.cpp
     constants.hpp
-    defaults_dlg.cpp
+    defaults_tab.cpp
     edge.cpp
     edge_context_menu.cpp
     edge_dot.cpp
     edge_point.hpp
     edge_text_edit.cpp
+    editing_tab.cpp
     editor_data.cpp
     editor_scene.cpp
     editor_view.cpp
@@ -54,6 +55,7 @@ set(LIB_SRC
     recent_files_menu.cpp
     selection_group.cpp
     settings.cpp
+    settings_dialog.cpp
     settings_proxy.cpp
     state_machine.cpp
     svg_export_dialog.cpp

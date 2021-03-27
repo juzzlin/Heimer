@@ -105,44 +105,64 @@
 <context>
     <name>DefaultsDlg</name>
     <message>
-        <location filename="../defaults_dlg.cpp" line="32"/>
         <source>Defaults</source>
-        <translation>Oletusarvot</translation>
+        <translation type="vanished">Oletusarvot</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="58"/>
+        <source>Edge Arrow Style</source>
+        <translation type="vanished">Kaaren Nuolen Tyyli</translation>
+    </message>
+    <message>
+        <source>No arrow</source>
+        <translation type="vanished">Ei nuolta</translation>
+    </message>
+    <message>
+        <source>Single arrow</source>
+        <translation type="vanished">Yksi nuoli</translation>
+    </message>
+    <message>
+        <source>Double arrow</source>
+        <translation type="vanished">Kaksi nuolta</translation>
+    </message>
+    <message>
+        <source>Reversed direction</source>
+        <translation type="vanished">Käännetty suunta</translation>
+    </message>
+    <message>
+        <source>Editing</source>
+        <translation type="vanished">Editointi</translation>
+    </message>
+    <message>
+        <source>Select node group by intersection</source>
+        <translation type="vanished">Valitse joukko solmuja leikaten</translation>
+    </message>
+</context>
+<context>
+    <name>DefaultsTab</name>
+    <message>
+        <location filename="../defaults_tab.cpp" line="50"/>
         <source>Edge Arrow Style</source>
         <translation>Kaaren Nuolen Tyyli</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="62"/>
+        <location filename="../defaults_tab.cpp" line="53"/>
         <source>No arrow</source>
         <translation>Ei nuolta</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="63"/>
+        <location filename="../defaults_tab.cpp" line="54"/>
         <source>Single arrow</source>
         <translation>Yksi nuoli</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="64"/>
+        <location filename="../defaults_tab.cpp" line="55"/>
         <source>Double arrow</source>
         <translation>Kaksi nuolta</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="73"/>
+        <location filename="../defaults_tab.cpp" line="64"/>
         <source>Reversed direction</source>
         <translation>Käännetty suunta</translation>
-    </message>
-    <message>
-        <location filename="../defaults_dlg.cpp" line="78"/>
-        <source>Editing</source>
-        <translation>Editointi</translation>
-    </message>
-    <message>
-        <location filename="../defaults_dlg.cpp" line="82"/>
-        <source>Select node group by intersection</source>
-        <translation>Valitse joukko solmuja leikaten</translation>
     </message>
 </context>
 <context>
@@ -171,6 +191,19 @@
         <location filename="../edge_context_menu.cpp" line="55"/>
         <source>Delete edge</source>
         <translation>Poista kaari</translation>
+    </message>
+</context>
+<context>
+    <name>EditingTab</name>
+    <message>
+        <location filename="../editing_tab.cpp" line="42"/>
+        <source>Selecting Nodes</source>
+        <translation>Solmujen Valitseminen</translation>
+    </message>
+    <message>
+        <location filename="../editing_tab.cpp" line="43"/>
+        <source>Select node group by intersection</source>
+        <translation>Valitse joukko solmuja leikaten</translation>
     </message>
 </context>
 <context>
@@ -726,6 +759,24 @@
         <location filename="../xml_reader.cpp" line="33"/>
         <source>Corrupted file: &apos;</source>
         <translation>Korruptoitunut tiedosto: &apos;</translation>
+    </message>
+</context>
+<context>
+    <name>SettingsDialog</name>
+    <message>
+        <location filename="../settings_dialog.cpp" line="30"/>
+        <source>Settings</source>
+        <translation>Asetukset</translation>
+    </message>
+    <message>
+        <location filename="../settings_dialog.cpp" line="48"/>
+        <source>Defaults</source>
+        <translation>Oletusarvot</translation>
+    </message>
+    <message>
+        <location filename="../settings_dialog.cpp" line="49"/>
+        <source>Editing</source>
+        <translation>Editointi</translation>
     </message>
 </context>
 <context>

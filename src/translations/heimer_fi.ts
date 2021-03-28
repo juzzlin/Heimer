@@ -196,12 +196,12 @@
 <context>
     <name>EditingTab</name>
     <message>
-        <location filename="../editing_tab.cpp" line="42"/>
+        <location filename="../editing_tab.cpp" line="40"/>
         <source>Selecting Nodes</source>
         <translation>Solmujen Valitseminen</translation>
     </message>
     <message>
-        <location filename="../editing_tab.cpp" line="43"/>
+        <location filename="../editing_tab.cpp" line="41"/>
         <source>Select node group by intersection</source>
         <translation>Valitse joukko solmuja leikaten</translation>
     </message>
@@ -544,6 +544,11 @@
         <translation>&amp;Edelliset</translation>
     </message>
     <message>
+        <location filename="../main_window.cpp" line="373"/>
+        <source>Settings</source>
+        <translation>Asetukset</translation>
+    </message>
+    <message>
         <location filename="../main_window.cpp" line="58"/>
         <source>&amp;Save</source>
         <translation>&amp;Tallenna</translation>
@@ -567,62 +572,60 @@
         <translation type="vanished">&amp;Vie PNG-kuvaksi</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="373"/>
+        <location filename="../main_window.cpp" line="380"/>
         <source>&amp;Quit</source>
         <translation>&amp;Poistu</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="387"/>
+        <location filename="../main_window.cpp" line="394"/>
         <source>&amp;Help</source>
         <translation>&amp;Apua</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="390"/>
+        <location filename="../main_window.cpp" line="397"/>
         <source>&amp;About</source>
         <translation>&amp;Tietoa</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="397"/>
+        <location filename="../main_window.cpp" line="404"/>
         <source>About &amp;Qt</source>
         <translation>Tietoa &amp;Qt:sta</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="406"/>
+        <location filename="../main_window.cpp" line="413"/>
         <source>What&apos;s New</source>
         <translation>Uutta Tässä Versiossa</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="416"/>
         <source>&amp;Settings</source>
-        <translation>&amp;Asetukset</translation>
+        <translation type="vanished">&amp;Asetukset</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="419"/>
         <source>&amp;Defaults</source>
-        <translation>&amp;Oletusarvot</translation>
+        <translation type="vanished">&amp;Oletusarvot</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="450"/>
+        <location filename="../main_window.cpp" line="447"/>
         <source>&amp;View</source>
         <translation>&amp;Näkymä</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="453"/>
+        <location filename="../main_window.cpp" line="450"/>
         <source>Full Screen</source>
         <translation>Koko Näyttö</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="472"/>
+        <location filename="../main_window.cpp" line="469"/>
         <source>Zoom In</source>
         <translation>Suurenna</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="478"/>
+        <location filename="../main_window.cpp" line="475"/>
         <source>Zoom Out</source>
         <translation>Loitonna</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="486"/>
+        <location filename="../main_window.cpp" line="483"/>
         <source>&amp;Zoom To Fit</source>
         <translation>&amp;Sovita</translation>
     </message>
@@ -631,12 +634,12 @@
         <translation type="vanished">Heimer -tiedostot</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="533"/>
+        <location filename="../main_window.cpp" line="530"/>
         <source>New File</source>
         <translation>Uusi tiedosto</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="535"/>
+        <location filename="../main_window.cpp" line="532"/>
         <source>Not Saved</source>
         <translation>Ei tallennettu</translation>
     </message>
@@ -657,7 +660,7 @@
         <translation type="vanished">Avaa tiedosto</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="400"/>
+        <location filename="../main_window.cpp" line="407"/>
         <source>About Qt</source>
         <translation>Tietoa Qt:sta</translation>
     </message>

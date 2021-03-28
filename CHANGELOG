@@ -11,6 +11,7 @@ Bug fixes:
 Other:
 
 * Refactor dialogs to use more standard components
+* Move settings menu action to file menu and remove settings menu
 
 2.3.0
 =====

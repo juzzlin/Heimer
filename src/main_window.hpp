@@ -144,8 +144,6 @@ private:
 
     void createHelpMenu();
 
-    void createSettingsMenu();
-
     void createToolBar();
 
     void createViewMenu();

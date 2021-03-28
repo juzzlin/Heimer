@@ -369,6 +369,13 @@ void MainWindow::createFileMenu()
 
     fileMenu->addSeparator();
 
+    // Add "settings"-action
+    const auto settingsAct = new QAction(tr("Settings") + threeDots, this);
+    connect(settingsAct, &QAction::triggered, m_settingsDlg, &SettingsDialog::exec);
+    fileMenu->addAction(settingsAct);
+
+    fileMenu->addSeparator();
+
     // Add "quit"-action
     const auto quitAct = new QAction(tr("&Quit"), this);
     quitAct->setShortcut(QKeySequence("Ctrl+W"));
@@ -409,16 +416,6 @@ void MainWindow::createHelpMenu()
         m_whatsNewDlg->resize(3 * width() / 5, 3 * height() / 5);
         m_whatsNewDlg->exec();
     });
-}
-
-void MainWindow::createSettingsMenu()
-{
-    const auto settingsMenu = menuBar()->addMenu(tr("&Settings"));
-
-    // Add "defaults"-action
-    const auto defaultsAct = new QAction(tr("&Defaults"), this);
-    connect(defaultsAct, &QAction::triggered, m_settingsDlg, &SettingsDialog::exec);
-    settingsMenu->addAction(defaultsAct);
 }
 
 void MainWindow::createToolBar()
@@ -556,8 +553,6 @@ void MainWindow::populateMenuBar()
     createEditMenu();
 
     createViewMenu();
-
-    createSettingsMenu();
 
     createHelpMenu();
 }

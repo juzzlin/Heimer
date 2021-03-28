@@ -268,11 +268,15 @@ void EditorData::deleteSelectedNodes()
     assert(m_mindMapData);
 
     const auto selectedNodes = m_selectionGroup->nodes();
-
-    m_selectionGroup->clear();
-
-    for (auto && node : selectedNodes) {
-        deleteNode(*node);
+    if (selectedNodes.empty()) {
+        if (Node::lastHoveredNode()) {
+            deleteNode(*Node::lastHoveredNode());
+        }
+    } else {
+        m_selectionGroup->clear();
+        for (auto && node : selectedNodes) {
+            deleteNode(*node);
+        }
     }
 }
 

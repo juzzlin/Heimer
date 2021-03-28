@@ -19,6 +19,7 @@
 #include <QDialog>
 
 class QCheckBox;
+class QDialogButtonBox;
 class QLineEdit;
 class QProgressBar;
 class QPushButton;
@@ -55,9 +56,7 @@ private:
 
     QPushButton * m_filenameButton = nullptr;
 
-    QPushButton * m_cancelButton = nullptr;
-
-    QPushButton * m_exportButton = nullptr;
+    QDialogButtonBox * m_buttonBox = nullptr;
 
     QProgressBar * m_progressBar = nullptr;
 

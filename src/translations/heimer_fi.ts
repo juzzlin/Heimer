@@ -4,32 +4,32 @@
 <context>
     <name>AboutDlg</name>
     <message>
-        <location filename="../about_dlg.cpp" line="28"/>
+        <location filename="../about_dlg.cpp" line="27"/>
         <source>About </source>
         <translation>Tietoa sovelluksesta </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="43"/>
+        <location filename="../about_dlg.cpp" line="42"/>
         <source> is licenced under </source>
         <translation> on lisensoitu lisenssillä </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="45"/>
+        <location filename="../about_dlg.cpp" line="44"/>
         <source>Package type: </source>
         <translation>Paketoinnin tyyppi: </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="46"/>
+        <location filename="../about_dlg.cpp" line="45"/>
         <source>Project website: </source>
         <translation>Projektin nettisivu: </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="48"/>
+        <location filename="../about_dlg.cpp" line="47"/>
         <source>Support </source>
         <translation>Tue </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="48"/>
+        <location filename="../about_dlg.cpp" line="47"/>
         <source> on Patreon: </source>
         <translation>ia Patreonissa: </translation>
     </message>
@@ -282,29 +282,32 @@
 <context>
     <name>LayoutOptimizationDialog</name>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="36"/>
+        <location filename="../layout_optimization_dialog.cpp" line="38"/>
         <source>Optimize Layout</source>
         <translation>Optimoi Sijoittelu</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="92"/>
+        <location filename="../layout_optimization_dialog.cpp" line="70"/>
+        <source>Parameters</source>
+        <translation>Parametrit</translation>
+    </message>
+    <message>
+        <location filename="../layout_optimization_dialog.cpp" line="73"/>
         <source>Aspect Ratio:</source>
         <translation>Kuvasuhde:</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="103"/>
+        <location filename="../layout_optimization_dialog.cpp" line="84"/>
         <source>Minimum Edge Length:</source>
         <translation>Pienin mahdollinen kaaren pituus:</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="123"/>
         <source>Cancel</source>
-        <translation>Kumoa</translation>
+        <translation type="vanished">Kumoa</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="126"/>
         <source>Optimize</source>
-        <translation>Optimoi</translation>
+        <translation type="vanished">Optimoi</translation>
     </message>
 </context>
 <context>
@@ -649,69 +652,67 @@
 <context>
     <name>PngExportDialog</name>
     <message>
-        <location filename="../png_export_dialog.cpp" line="35"/>
+        <location filename="../png_export_dialog.cpp" line="38"/>
         <source>Export to PNG Image</source>
         <translation>Vie PNG-kuvaksi</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="41"/>
+        <location filename="../png_export_dialog.cpp" line="45"/>
         <source>Export As</source>
         <translation>Vie nimellä</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="43"/>
+        <location filename="../png_export_dialog.cpp" line="47"/>
         <source>PNG Files</source>
         <translation>PNG-tiedostot</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="112"/>
+        <location filename="../png_export_dialog.cpp" line="115"/>
         <source>Couldn&apos;t write to</source>
         <translation>Vienti epäonnistui kohteeseen</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="138"/>
+        <location filename="../png_export_dialog.cpp" line="142"/>
         <source>Filename</source>
         <translation>Tiedostonimi</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="144"/>
+        <location filename="../png_export_dialog.cpp" line="148"/>
         <source>Export as..</source>
         <translation>Vie nimellä..</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="148"/>
+        <location filename="../png_export_dialog.cpp" line="152"/>
         <source>Image Size</source>
         <translation>Kuvan Koko</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="150"/>
+        <location filename="../png_export_dialog.cpp" line="155"/>
         <source>Width (px):</source>
         <translation>Leveys (px)</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="156"/>
+        <location filename="../png_export_dialog.cpp" line="161"/>
         <source>Height (px):</source>
         <translation>Korkeus (px)</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="164"/>
+        <location filename="../png_export_dialog.cpp" line="169"/>
         <source>Background</source>
         <translation>Tausta</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="167"/>
+        <location filename="../png_export_dialog.cpp" line="173"/>
         <source>Transparent background</source>
         <translation>Läpinäkyvä tausta</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="181"/>
         <source>Cancel</source>
-        <translation>Kumoa</translation>
+        <translation type="vanished">Kumoa</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="184"/>
         <source>Export</source>
-        <translation>Vie</translation>
+        <translation type="vanished">Vie</translation>
     </message>
 </context>
 <context>
@@ -730,50 +731,48 @@
 <context>
     <name>SvgExportDialog</name>
     <message>
-        <location filename="../svg_export_dialog.cpp" line="35"/>
+        <location filename="../svg_export_dialog.cpp" line="37"/>
         <source>Export to an SVG File</source>
         <translation>Vie SVG-tiedostoksi</translation>
     </message>
     <message>
-        <location filename="../svg_export_dialog.cpp" line="41"/>
+        <location filename="../svg_export_dialog.cpp" line="43"/>
         <source>Export As</source>
         <translation>Vie nimellä</translation>
     </message>
     <message>
-        <location filename="../svg_export_dialog.cpp" line="43"/>
+        <location filename="../svg_export_dialog.cpp" line="45"/>
         <source>SVG Files</source>
         <translation>SVG-tiedostot</translation>
     </message>
     <message>
-        <location filename="../svg_export_dialog.cpp" line="74"/>
+        <location filename="../svg_export_dialog.cpp" line="75"/>
         <source>Couldn&apos;t write to</source>
         <translation>Vienti epäonnistui kohteeseen</translation>
     </message>
     <message>
-        <location filename="../svg_export_dialog.cpp" line="98"/>
+        <location filename="../svg_export_dialog.cpp" line="100"/>
         <source>Filename</source>
         <translation>Tiedostonimi</translation>
     </message>
     <message>
-        <location filename="../svg_export_dialog.cpp" line="104"/>
+        <location filename="../svg_export_dialog.cpp" line="106"/>
         <source>Export as..</source>
         <translation>Vie nimellä..</translation>
     </message>
     <message>
-        <location filename="../svg_export_dialog.cpp" line="118"/>
         <source>Cancel</source>
-        <translation>Kumoa</translation>
+        <translation type="vanished">Kumoa</translation>
     </message>
     <message>
-        <location filename="../svg_export_dialog.cpp" line="121"/>
         <source>Export</source>
-        <translation>Vie</translation>
+        <translation type="vanished">Vie</translation>
     </message>
 </context>
 <context>
     <name>WhatsNewDlg</name>
     <message>
-        <location filename="../whats_new_dlg.cpp" line="29"/>
+        <location filename="../whats_new_dlg.cpp" line="28"/>
         <source>What&apos;s New</source>
         <translation>Uutta Tässä Versiossa</translation>
     </message>

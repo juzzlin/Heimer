@@ -65,6 +65,7 @@ HEADERS +=  \
     $$SRC/text_edit.hpp \
     $$SRC/undo_stack.hpp \
     $$SRC/whats_new_dlg.hpp \
+    $$SRC/widget_factory.hpp \
     $$SRC/xml_reader.hpp \
     $$SRC/xml_writer.hpp \
     $$SRC/contrib/Argengine/src/argengine.hpp \
@@ -112,6 +113,7 @@ SOURCES += \
     $$SRC/text_edit.cpp \
     $$SRC/undo_stack.cpp \
     $$SRC/whats_new_dlg.cpp \
+    $$SRC/widget_factory.cpp \
     $$SRC/xml_reader.cpp \
     $$SRC/xml_writer.cpp \
     $$SRC/contrib/Argengine/src/argengine.cpp \

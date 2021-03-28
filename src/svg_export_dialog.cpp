@@ -15,8 +15,10 @@
 
 #include "svg_export_dialog.hpp"
 #include "constants.hpp"
+#include "widget_factory.hpp"
 
 #include <QCheckBox>
+#include <QDialogButtonBox>
 #include <QFileDialog>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -45,10 +47,9 @@ SvgExportDialog::SvgExportDialog(QWidget & parent)
         m_filenameLineEdit->setText(filename);
     });
 
-    connect(m_cancelButton, &QPushButton::clicked, this, &QDialog::close);
-
-    connect(m_exportButton, &QPushButton::clicked, [=]() {
-        m_exportButton->setEnabled(false);
+    connect(m_buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+    connect(m_buttonBox, &QDialogButtonBox::accepted, [=]() {
+        m_buttonBox->setEnabled(false);
         m_progressBar->setValue(50);
         emit svgExportRequested(m_filenameWithExtension);
     });
@@ -79,7 +80,7 @@ void SvgExportDialog::validate()
 {
     m_progressBar->setValue(0);
 
-    m_exportButton->setEnabled(!m_filenameLineEdit->text().isEmpty());
+    m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!m_filenameLineEdit->text().isEmpty());
 
     m_filenameWithExtension = m_filenameLineEdit->text();
 
@@ -95,7 +96,8 @@ void SvgExportDialog::validate()
 void SvgExportDialog::initWidgets()
 {
     const auto mainLayout = new QVBoxLayout(this);
-    mainLayout->addWidget(new QLabel("<b>" + tr("Filename") + "</b>"));
+
+    const auto filenameGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Filename"), *mainLayout);
 
     const auto filenameLayout = new QHBoxLayout;
     m_filenameLineEdit = new QLineEdit;
@@ -103,7 +105,7 @@ void SvgExportDialog::initWidgets()
     m_filenameButton = new QPushButton;
     m_filenameButton->setText(tr("Export as.."));
     filenameLayout->addWidget(m_filenameButton);
-    mainLayout->addLayout(filenameLayout);
+    filenameGroup.second->addLayout(filenameLayout);
 
     const auto progressBarLayout = new QHBoxLayout;
     m_progressBar = new QProgressBar;
@@ -113,16 +115,11 @@ void SvgExportDialog::initWidgets()
     progressBarLayout->addWidget(m_progressBar);
     mainLayout->addLayout(progressBarLayout);
 
-    const auto buttonLayout = new QHBoxLayout;
-    m_cancelButton = new QPushButton;
-    m_cancelButton->setText(tr("Cancel"));
-    buttonLayout->addWidget(m_cancelButton);
-    m_exportButton = new QPushButton;
-    m_exportButton->setText(tr("Export"));
-    m_exportButton->setEnabled(false);
-    m_exportButton->setDefault(true);
-    buttonLayout->addWidget(m_exportButton);
-    mainLayout->addLayout(buttonLayout);
+    m_buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
+                                       | QDialogButtonBox::Cancel);
+    m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+
+    mainLayout->addWidget(m_buttonBox);
 
     setLayout(mainLayout);
 }

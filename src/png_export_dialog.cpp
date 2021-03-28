@@ -15,9 +15,12 @@
 
 #include "png_export_dialog.hpp"
 #include "constants.hpp"
+#include "widget_factory.hpp"
 
 #include <QCheckBox>
+#include <QDialogButtonBox>
 #include <QFileDialog>
+#include <QGroupBox>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
@@ -34,6 +37,7 @@ PngExportDialog::PngExportDialog(QWidget & parent)
 {
     setWindowTitle(tr("Export to PNG Image"));
     setMinimumWidth(480);
+
     initWidgets();
 
     connect(m_filenameButton, &QPushButton::clicked, [=]() {
@@ -43,14 +47,6 @@ PngExportDialog::PngExportDialog(QWidget & parent)
                                                            tr("PNG Files") + " (*" + Constants::Export::Png::FILE_EXTENSION + ")");
 
         m_filenameLineEdit->setText(filename);
-    });
-
-    connect(m_cancelButton, &QPushButton::clicked, this, &QDialog::close);
-
-    connect(m_exportButton, &QPushButton::clicked, [=]() {
-        m_exportButton->setEnabled(false);
-        m_progressBar->setValue(50);
-        emit pngExportRequested(m_filenameWithExtension, QSize(m_imageWidthSpinBox->value(), m_imageHeightSpinBox->value()), m_transparentBackgroundCheckBox->isChecked());
     });
 
     // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
@@ -76,6 +72,13 @@ PngExportDialog::PngExportDialog(QWidget & parent)
     connect(m_imageWidthSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &PngExportDialog::validate);
 
     connect(m_imageHeightSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &PngExportDialog::validate);
+
+    connect(m_buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+    connect(m_buttonBox, &QDialogButtonBox::accepted, [=]() {
+        m_buttonBox->setEnabled(false);
+        m_progressBar->setValue(50);
+        emit pngExportRequested(m_filenameWithExtension, QSize(m_imageWidthSpinBox->value(), m_imageHeightSpinBox->value()), m_transparentBackgroundCheckBox->isChecked());
+    });
 }
 
 void PngExportDialog::setImageSize(QSize size)
@@ -117,7 +120,7 @@ void PngExportDialog::validate()
 {
     m_progressBar->setValue(0);
 
-    m_exportButton->setEnabled(
+    m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled( //
       m_imageHeightSpinBox->value() > Constants::Export::Png::MIN_IMAGE_SIZE && // Intentionally open intervals
       m_imageHeightSpinBox->value() < Constants::Export::Png::MAX_IMAGE_SIZE && m_imageWidthSpinBox->value() > Constants::Export::Png::MIN_IMAGE_SIZE && m_imageWidthSpinBox->value() < Constants::Export::Png::MAX_IMAGE_SIZE && !m_filenameLineEdit->text().isEmpty());
 
@@ -135,7 +138,8 @@ void PngExportDialog::validate()
 void PngExportDialog::initWidgets()
 {
     const auto mainLayout = new QVBoxLayout(this);
-    mainLayout->addWidget(new QLabel("<b>" + tr("Filename") + "</b>"));
+
+    const auto nameGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Filename"), *mainLayout);
 
     const auto filenameLayout = new QHBoxLayout;
     m_filenameLineEdit = new QLineEdit;
@@ -143,9 +147,10 @@ void PngExportDialog::initWidgets()
     m_filenameButton = new QPushButton;
     m_filenameButton->setText(tr("Export as.."));
     filenameLayout->addWidget(m_filenameButton);
-    mainLayout->addLayout(filenameLayout);
+    nameGroup.second->addLayout(filenameLayout);
 
-    mainLayout->addWidget(new QLabel("<b>" + tr("Image Size") + "</b>"));
+    const auto sizeGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Image Size"), *mainLayout);
+
     const auto imageSizeLayout = new QHBoxLayout;
     const auto imageWidthLabel = new QLabel(tr("Width (px):"));
     imageSizeLayout->addWidget(imageWidthLabel);
@@ -159,14 +164,15 @@ void PngExportDialog::initWidgets()
     m_imageHeightSpinBox->setMinimum(Constants::Export::Png::MIN_IMAGE_SIZE);
     m_imageHeightSpinBox->setMaximum(Constants::Export::Png::MAX_IMAGE_SIZE);
     imageSizeLayout->addWidget(m_imageHeightSpinBox);
-    mainLayout->addLayout(imageSizeLayout);
+    sizeGroup.second->addLayout(imageSizeLayout);
 
-    mainLayout->addWidget(new QLabel("<b>" + tr("Background") + "</b>"));
+    const auto bgGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Background"), *mainLayout);
+
     const auto backgroundLayout = new QHBoxLayout;
     m_transparentBackgroundCheckBox = new QCheckBox;
     m_transparentBackgroundCheckBox->setText(tr("Transparent background"));
     backgroundLayout->addWidget(m_transparentBackgroundCheckBox);
-    mainLayout->addLayout(backgroundLayout);
+    bgGroup.second->addLayout(backgroundLayout);
 
     const auto progressBarLayout = new QHBoxLayout;
     m_progressBar = new QProgressBar;
@@ -176,16 +182,11 @@ void PngExportDialog::initWidgets()
     progressBarLayout->addWidget(m_progressBar);
     mainLayout->addLayout(progressBarLayout);
 
-    const auto buttonLayout = new QHBoxLayout;
-    m_cancelButton = new QPushButton;
-    m_cancelButton->setText(tr("Cancel"));
-    buttonLayout->addWidget(m_cancelButton);
-    m_exportButton = new QPushButton;
-    m_exportButton->setText(tr("Export"));
-    m_exportButton->setEnabled(false);
-    m_exportButton->setDefault(true);
-    buttonLayout->addWidget(m_exportButton);
-    mainLayout->addLayout(buttonLayout);
+    m_buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
+                                       | QDialogButtonBox::Cancel);
+    m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+
+    mainLayout->addWidget(m_buttonBox);
 
     setLayout(mainLayout);
 }

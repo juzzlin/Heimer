@@ -16,10 +16,9 @@
 #include "whats_new_dlg.hpp"
 #include "constants.hpp"
 
+#include <QDialogButtonBox>
 #include <QFile>
-#include <QHBoxLayout>
 #include <QPixmap>
-#include <QPushButton>
 #include <QTextEdit>
 #include <QVBoxLayout>
 
@@ -66,13 +65,8 @@ void WhatsNewDlg::initWidgets()
     textEdit->setFont(font);
     vLayout->addWidget(textEdit);
 
-    const auto buttonLayout = new QHBoxLayout();
-    const auto button = new QPushButton("&Ok", this);
+    const auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
 
-    connect(button, &QPushButton::clicked, this, &WhatsNewDlg::accept);
-
-    buttonLayout->addWidget(button);
-    buttonLayout->insertStretch(0);
-
-    vLayout->addLayout(buttonLayout);
+    vLayout->addWidget(buttonBox);
 }

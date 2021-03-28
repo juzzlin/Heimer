@@ -18,13 +18,15 @@
 #include "contrib/SimpleLogger/src/simple_logger.hpp"
 #include "layout_optimizer.hpp"
 #include "mind_map_data.hpp"
+#include "widget_factory.hpp"
 
+#include <QDialogButtonBox>
 #include <QDoubleSpinBox>
+#include <QGroupBox>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QMessageBox>
 #include <QProgressBar>
-#include <QPushButton>
 #include <QTimer>
 #include <QVBoxLayout>
 
@@ -39,32 +41,9 @@ LayoutOptimizationDialog::LayoutOptimizationDialog(QWidget & parent, MindMapData
 
     initWidgets(mindMapData);
 
-    connect(m_cancelButton, &QPushButton::clicked, this, &QDialog::reject);
-
-    connect(m_optimizeButton, &QPushButton::clicked, [=] {
-        m_cancelButton->setEnabled(false);
-        m_optimizeButton->setEnabled(false);
-        QTimer::singleShot(0, [=] { // Trick to make disabled buttons apply immediately
-            emit undoPointRequested();
-            if (m_layoutOptimizer.initialize(m_aspectRatioSpinBox->value(), m_minEdgeLengthSpinBox->value())) {
-                const auto optimizationInfo = m_layoutOptimizer.optimize();
-                if (optimizationInfo.changes) {
-                    const double gain = (optimizationInfo.finalCost - optimizationInfo.initialCost) / optimizationInfo.initialCost;
-                    juzzlin::L().info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
-                } else {
-                    juzzlin::L().info() << "No changes";
-                }
-                m_layoutOptimizer.extract();
-            }
-            finishOptimization();
-        });
-    });
-
     m_layoutOptimizer.setProgressCallback([=](double progress) {
         m_progressBar->setValue(static_cast<int>(100.0 * progress));
     });
-
-    m_optimizeButton->setDefault(true);
 }
 
 int LayoutOptimizationDialog::exec()
@@ -88,6 +67,8 @@ void LayoutOptimizationDialog::initWidgets(const MindMapData & mindMapData)
 {
     const auto mainLayout = new QVBoxLayout(this);
 
+    const auto mainGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Parameters"), *mainLayout);
+
     const auto aspectRatioLayout = new QHBoxLayout;
     const auto imageWidthLabel = new QLabel(tr("Aspect Ratio:"));
     aspectRatioLayout->addWidget(imageWidthLabel);
@@ -97,7 +78,7 @@ void LayoutOptimizationDialog::initWidgets(const MindMapData & mindMapData)
     m_aspectRatioSpinBox->setSingleStep(0.1);
     m_aspectRatioSpinBox->setValue(mindMapData.aspectRatio());
     aspectRatioLayout->addWidget(m_aspectRatioSpinBox);
-    mainLayout->addLayout(aspectRatioLayout);
+    mainGroup.second->addLayout(aspectRatioLayout);
 
     const auto minEdgeLengthLayout = new QHBoxLayout;
     const auto minEdgeLengthLabel = new QLabel(tr("Minimum Edge Length:"));
@@ -108,7 +89,7 @@ void LayoutOptimizationDialog::initWidgets(const MindMapData & mindMapData)
     m_minEdgeLengthSpinBox->setSingleStep(1);
     m_minEdgeLengthSpinBox->setValue(mindMapData.minEdgeLength());
     minEdgeLengthLayout->addWidget(m_minEdgeLengthSpinBox);
-    mainLayout->addLayout(minEdgeLengthLayout);
+    mainGroup.second->addLayout(minEdgeLengthLayout);
 
     const auto progressBarLayout = new QHBoxLayout;
     m_progressBar = new QProgressBar;
@@ -118,14 +99,28 @@ void LayoutOptimizationDialog::initWidgets(const MindMapData & mindMapData)
     progressBarLayout->addWidget(m_progressBar);
     mainLayout->addLayout(progressBarLayout);
 
-    const auto buttonLayout = new QHBoxLayout;
-    m_cancelButton = new QPushButton;
-    m_cancelButton->setText(tr("Cancel"));
-    buttonLayout->addWidget(m_cancelButton);
-    m_optimizeButton = new QPushButton;
-    m_optimizeButton->setText(tr("Optimize"));
-    buttonLayout->addWidget(m_optimizeButton);
-    mainLayout->addLayout(buttonLayout);
+    const auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+
+    connect(buttonBox, &QDialogButtonBox::accepted, [=] {
+        buttonBox->setEnabled(false);
+        QTimer::singleShot(0, [=] { // Trick to make disabled buttons apply immediately
+            emit undoPointRequested();
+            if (m_layoutOptimizer.initialize(m_aspectRatioSpinBox->value(), m_minEdgeLengthSpinBox->value())) {
+                const auto optimizationInfo = m_layoutOptimizer.optimize();
+                if (optimizationInfo.changes) {
+                    const double gain = (optimizationInfo.finalCost - optimizationInfo.initialCost) / optimizationInfo.initialCost;
+                    juzzlin::L().info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
+                } else {
+                    juzzlin::L().info() << "No changes";
+                }
+                m_layoutOptimizer.extract();
+            }
+            finishOptimization();
+        });
+    });
+
+    mainLayout->addWidget(buttonBox);
 
     setLayout(mainLayout);
 }

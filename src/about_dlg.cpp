@@ -16,10 +16,9 @@
 #include "about_dlg.hpp"
 #include "constants.hpp"
 
-#include <QHBoxLayout>
+#include <QDialogButtonBox>
 #include <QLabel>
 #include <QPixmap>
-#include <QPushButton>
 #include <QVBoxLayout>
 
 AboutDlg::AboutDlg(QWidget * parent)
@@ -51,13 +50,8 @@ void AboutDlg::initWidgets()
 
     vLayout->addWidget(infoLabel);
 
-    const auto buttonLayout = new QHBoxLayout();
-    const auto button = new QPushButton("&Ok", this);
+    const auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
 
-    connect(button, &QPushButton::clicked, this, &AboutDlg::accept);
-
-    buttonLayout->addWidget(button);
-    buttonLayout->insertStretch(0);
-
-    vLayout->addLayout(buttonLayout);
+    vLayout->addWidget(buttonBox);
 }

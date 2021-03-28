@@ -62,6 +62,7 @@ set(LIB_SRC
     undo_stack.cpp
     user_exception.hpp
     whats_new_dlg.cpp
+    widget_factory.cpp
     xml_reader.cpp
     xml_writer.cpp
 )

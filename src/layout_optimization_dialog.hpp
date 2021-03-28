@@ -22,7 +22,6 @@ class LayoutOptimizer;
 class MindMapData;
 class QDoubleSpinBox;
 class QProgressBar;
-class QPushButton;
 
 class LayoutOptimizationDialog : public QDialog
 {
@@ -52,10 +51,6 @@ private:
     QDoubleSpinBox * m_aspectRatioSpinBox = nullptr;
 
     QDoubleSpinBox * m_minEdgeLengthSpinBox = nullptr;
-
-    QPushButton * m_cancelButton = nullptr;
-
-    QPushButton * m_optimizeButton = nullptr;
 
     QProgressBar * m_progressBar = nullptr;
 };

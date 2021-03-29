@@ -27,6 +27,10 @@ public:
 
     static SettingsProxy & instance();
 
+    bool autosave() const;
+
+    void setAutosave(bool autosave);
+
     Edge::ArrowMode edgeArrowMode() const;
 
     void setEdgeArrowMode(Edge::ArrowMode mode);
@@ -40,6 +44,8 @@ public:
     void setSelectNodeGroupByIntersection(bool selectNodeGroupByIntersection);
 
 private:
+    bool m_autosave = false;
+
     Edge::ArrowMode m_edgeArrowMode;
 
     bool m_reversedEdgeDirection = false;

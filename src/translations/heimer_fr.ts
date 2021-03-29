@@ -4,32 +4,32 @@
 <context>
     <name>AboutDlg</name>
     <message>
-        <location filename="../about_dlg.cpp" line="28"/>
+        <location filename="../about_dlg.cpp" line="27"/>
         <source>About </source>
         <translation>Aide </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="43"/>
+        <location filename="../about_dlg.cpp" line="42"/>
         <source> is licenced under </source>
         <translation> est sous licence </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="45"/>
+        <location filename="../about_dlg.cpp" line="44"/>
         <source>Package type: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="46"/>
+        <location filename="../about_dlg.cpp" line="45"/>
         <source>Project website: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="48"/>
+        <location filename="../about_dlg.cpp" line="47"/>
         <source>Support </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="48"/>
+        <location filename="../about_dlg.cpp" line="47"/>
         <source> on Patreon: </source>
         <translation></translation>
     </message>
@@ -37,67 +37,67 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application.cpp" line="189"/>
+        <location filename="../application.cpp" line="193"/>
         <source>Heimer Files</source>
         <translation>Heimer Fichiers</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="280"/>
+        <location filename="../application.cpp" line="284"/>
         <source>Open File</source>
         <translation>Ouvrir un fichier</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="307"/>
+        <location filename="../application.cpp" line="311"/>
         <source>Failed to save file.</source>
         <translation>Erreur lors de la sauvegarde.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="324"/>
+        <location filename="../application.cpp" line="328"/>
         <source>Save File As</source>
         <translation>Enregistrer sous</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="338"/>
+        <location filename="../application.cpp" line="342"/>
         <source>File &apos;</source>
         <translation>Fichier.&apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="338"/>
+        <location filename="../application.cpp" line="342"/>
         <source>&apos; saved.</source>
         <translation>&apos;sauvegarder.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="344"/>
+        <location filename="../application.cpp" line="348"/>
         <source>Failed to save file as &apos;</source>
         <translation>Erreur d&apos;enregistrement sous&apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="401"/>
+        <location filename="../application.cpp" line="405"/>
         <source>Open an image</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="401"/>
+        <location filename="../application.cpp" line="405"/>
         <source>Image Files</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="408"/>
+        <location filename="../application.cpp" line="412"/>
         <source>Load image</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="408"/>
+        <location filename="../application.cpp" line="412"/>
         <source>Failed to load image &apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="452"/>
+        <location filename="../application.cpp" line="456"/>
         <source>The mind map has been modified.</source>
         <translation>La carte heuristique a été modifié.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="453"/>
+        <location filename="../application.cpp" line="457"/>
         <source>Do you want to save your changes?</source>
         <translation>Voulez-vous enregistrer vos modifications?</translation>
     </message>
@@ -105,32 +105,54 @@
 <context>
     <name>DefaultsDlg</name>
     <message>
-        <location filename="../defaults_dlg.cpp" line="32"/>
         <source>Defaults</source>
-        <translation>Par défaut</translation>
+        <translation type="vanished">Par défaut</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="56"/>
+        <source>Edge Arrow Style</source>
+        <translation type="vanished">Style de flèche de bord</translation>
+    </message>
+    <message>
+        <source>No arrow</source>
+        <translation type="vanished">Pas de flèche</translation>
+    </message>
+    <message>
+        <source>Single arrow</source>
+        <translation type="vanished">Flèche simple</translation>
+    </message>
+    <message>
+        <source>Double arrow</source>
+        <translation type="vanished">Double flèche</translation>
+    </message>
+    <message>
+        <source>Reversed direction</source>
+        <translation type="vanished">Direction inversée</translation>
+    </message>
+</context>
+<context>
+    <name>DefaultsTab</name>
+    <message>
+        <location filename="../defaults_tab.cpp" line="50"/>
         <source>Edge Arrow Style</source>
         <translation>Style de flèche de bord</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="60"/>
+        <location filename="../defaults_tab.cpp" line="53"/>
         <source>No arrow</source>
         <translation>Pas de flèche</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="61"/>
+        <location filename="../defaults_tab.cpp" line="54"/>
         <source>Single arrow</source>
         <translation>Flèche simple</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="62"/>
+        <location filename="../defaults_tab.cpp" line="55"/>
         <source>Double arrow</source>
         <translation>Double flèche</translation>
     </message>
     <message>
-        <location filename="../defaults_dlg.cpp" line="71"/>
+        <location filename="../defaults_tab.cpp" line="64"/>
         <source>Reversed direction</source>
         <translation>Direction inversée</translation>
     </message>
@@ -161,6 +183,34 @@
         <location filename="../edge_context_menu.cpp" line="55"/>
         <source>Delete edge</source>
         <translation>Supprimer le contour</translation>
+    </message>
+</context>
+<context>
+    <name>EditingTab</name>
+    <message>
+        <location filename="../editing_tab.cpp" line="43"/>
+        <source>Selecting Nodes</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../editing_tab.cpp" line="44"/>
+        <source>Select node group by intersection</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../editing_tab.cpp" line="47"/>
+        <source>Autosave</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../editing_tab.cpp" line="48"/>
+        <source>Autosave feature will automatically save your mind map on every modification after it has been initially saved once.</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../editing_tab.cpp" line="51"/>
+        <source>Enable autosave</source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -197,29 +247,32 @@
 <context>
     <name>LayoutOptimizationDialog</name>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="36"/>
+        <location filename="../layout_optimization_dialog.cpp" line="38"/>
         <source>Optimize Layout</source>
         <translation>Optimiser la mise en page</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="88"/>
+        <location filename="../layout_optimization_dialog.cpp" line="70"/>
+        <source>Parameters</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../layout_optimization_dialog.cpp" line="73"/>
         <source>Aspect Ratio:</source>
         <translation>Ratio d&apos;aspect:</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="99"/>
+        <location filename="../layout_optimization_dialog.cpp" line="84"/>
         <source>Minimum Edge Length:</source>
         <translation>Longueur d&apos;arête minimale:</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="119"/>
         <source>Cancel</source>
-        <translation>Abandonner</translation>
+        <translation type="vanished">Abandonner</translation>
     </message>
     <message>
-        <location filename="../layout_optimization_dialog.cpp" line="122"/>
         <source>Optimize</source>
-        <translation>Optimiser</translation>
+        <translation type="vanished">Optimiser</translation>
     </message>
 </context>
 <context>
@@ -428,6 +481,11 @@
         <translation>&amp;Fichiers récents</translation>
     </message>
     <message>
+        <location filename="../main_window.cpp" line="373"/>
+        <source>Settings</source>
+        <translation></translation>
+    </message>
+    <message>
         <location filename="../main_window.cpp" line="58"/>
         <source>&amp;Save</source>
         <translation>&amp;Enregistrer</translation>
@@ -442,77 +500,75 @@
         <translation type="vanished">&amp;Exporter au format PNG</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="373"/>
+        <location filename="../main_window.cpp" line="380"/>
         <source>&amp;Quit</source>
         <translation>&amp;Quitter</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="387"/>
+        <location filename="../main_window.cpp" line="394"/>
         <source>&amp;Help</source>
         <translation>&amp;Aide</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="390"/>
+        <location filename="../main_window.cpp" line="397"/>
         <source>&amp;About</source>
         <translation>&amp;A propos d&apos; Heimer</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="397"/>
+        <location filename="../main_window.cpp" line="404"/>
         <source>About &amp;Qt</source>
         <translation>A propos de &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="406"/>
+        <location filename="../main_window.cpp" line="413"/>
         <source>What&apos;s New</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="416"/>
         <source>&amp;Settings</source>
-        <translation>&amp;Réglages</translation>
+        <translation type="vanished">&amp;Réglages</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="419"/>
         <source>&amp;Defaults</source>
-        <translation>&amp;Par défaut</translation>
+        <translation type="vanished">&amp;Par défaut</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="450"/>
+        <location filename="../main_window.cpp" line="447"/>
         <source>&amp;View</source>
         <translation>&amp;Vue</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="453"/>
+        <location filename="../main_window.cpp" line="450"/>
         <source>Full Screen</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="472"/>
+        <location filename="../main_window.cpp" line="469"/>
         <source>Zoom In</source>
         <translation>Zoom avant</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="478"/>
+        <location filename="../main_window.cpp" line="475"/>
         <source>Zoom Out</source>
         <translation>Zoom arrière</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="486"/>
+        <location filename="../main_window.cpp" line="483"/>
         <source>&amp;Zoom To Fit</source>
         <translation>&amp;Zoom ajusté à la taille de la fenêtre</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="533"/>
+        <location filename="../main_window.cpp" line="530"/>
         <source>New File</source>
         <translation>Nouveau fichier</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="535"/>
+        <location filename="../main_window.cpp" line="532"/>
         <source>Not Saved</source>
         <translation>Pas enregistré</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="400"/>
+        <location filename="../main_window.cpp" line="407"/>
         <source>About Qt</source>
         <translation>A propos de Qt</translation>
     </message>
@@ -520,70 +576,68 @@
 <context>
     <name>PngExportDialog</name>
     <message>
-        <location filename="../png_export_dialog.cpp" line="35"/>
+        <location filename="../png_export_dialog.cpp" line="38"/>
         <source>Export to PNG Image</source>
         <translation>Exporter au format PNG</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="41"/>
+        <location filename="../png_export_dialog.cpp" line="45"/>
         <source>Export As</source>
         <translation>Exporter vers</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="43"/>
+        <location filename="../png_export_dialog.cpp" line="47"/>
         <source>PNG Files</source>
         <translation>Fichiers PNG</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="112"/>
+        <location filename="../png_export_dialog.cpp" line="115"/>
         <source>Couldn&apos;t write to</source>
         <translation>Impossible d&apos;écrire</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="138"/>
+        <location filename="../png_export_dialog.cpp" line="142"/>
         <source>Filename</source>
         <translation>Nom de fichier</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="144"/>
+        <location filename="../png_export_dialog.cpp" line="148"/>
         <source>Export as..</source>
         <translatorcomment>A voir- exporter en tant que</translatorcomment>
         <translation>Exporter vers..</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="148"/>
+        <location filename="../png_export_dialog.cpp" line="152"/>
         <source>Image Size</source>
         <translation>Taille de l&apos;image</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="150"/>
+        <location filename="../png_export_dialog.cpp" line="155"/>
         <source>Width (px):</source>
         <translation>Largeur (px):</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="156"/>
+        <location filename="../png_export_dialog.cpp" line="161"/>
         <source>Height (px):</source>
         <translation>Hauteur (px):</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="164"/>
+        <location filename="../png_export_dialog.cpp" line="169"/>
         <source>Background</source>
         <translation>Arrière-plan</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="167"/>
+        <location filename="../png_export_dialog.cpp" line="173"/>
         <source>Transparent background</source>
         <translation>Transparence de l&apos;arrière-plan</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="181"/>
         <source>Cancel</source>
-        <translation>Abandonner</translation>
+        <translation type="vanished">Abandonner</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="184"/>
         <source>Export</source>
-        <translation>Exporter</translation>
+        <translation type="vanished">Exporter</translation>
     </message>
 </context>
 <context>
@@ -600,52 +654,68 @@
     </message>
 </context>
 <context>
+    <name>SettingsDialog</name>
+    <message>
+        <location filename="../settings_dialog.cpp" line="30"/>
+        <source>Settings</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../settings_dialog.cpp" line="48"/>
+        <source>Defaults</source>
+        <translation>Par défaut</translation>
+    </message>
+    <message>
+        <location filename="../settings_dialog.cpp" line="49"/>
+        <source>Editing</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
     <name>SvgExportDialog</name>
     <message>
-        <location filename="../svg_export_dialog.cpp" line="35"/>
+        <location filename="../svg_export_dialog.cpp" line="37"/>
         <source>Export to an SVG File</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../svg_export_dialog.cpp" line="41"/>
+        <location filename="../svg_export_dialog.cpp" line="43"/>
         <source>Export As</source>
         <translation>Exporter vers</translation>
     </message>
     <message>
-        <location filename="../svg_export_dialog.cpp" line="43"/>
+        <location filename="../svg_export_dialog.cpp" line="45"/>
         <source>SVG Files</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../svg_export_dialog.cpp" line="74"/>
+        <location filename="../svg_export_dialog.cpp" line="75"/>
         <source>Couldn&apos;t write to</source>
         <translation>Impossible d&apos;écrire</translation>
     </message>
     <message>
-        <location filename="../svg_export_dialog.cpp" line="98"/>
+        <location filename="../svg_export_dialog.cpp" line="100"/>
         <source>Filename</source>
         <translation>Nom de fichier</translation>
     </message>
     <message>
-        <location filename="../svg_export_dialog.cpp" line="104"/>
+        <location filename="../svg_export_dialog.cpp" line="106"/>
         <source>Export as..</source>
         <translation>Exporter vers..</translation>
     </message>
     <message>
-        <location filename="../svg_export_dialog.cpp" line="118"/>
         <source>Cancel</source>
-        <translation>Abandonner</translation>
+        <translation type="vanished">Abandonner</translation>
     </message>
     <message>
-        <location filename="../svg_export_dialog.cpp" line="121"/>
         <source>Export</source>
-        <translation>Exporter</translation>
+        <translation type="vanished">Exporter</translation>
     </message>
 </context>
 <context>
     <name>WhatsNewDlg</name>
     <message>
-        <location filename="../whats_new_dlg.cpp" line="29"/>
+        <location filename="../whats_new_dlg.cpp" line="28"/>
         <source>What&apos;s New</source>
         <translation></translation>
     </message>

@@ -36,9 +36,11 @@ private:
 
     void initWidgets();
 
-    void setActiveDefaults();
+    void setActiveSettings();
 
     QCheckBox * m_selectNodeGroupByIntersectionCheckBox = nullptr;
+
+    QCheckBox * m_autosaveCheckBox = nullptr;
 };
 
 #endif // EDITING_TAB_HPP

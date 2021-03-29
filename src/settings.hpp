@@ -22,6 +22,10 @@
 
 namespace Settings {
 
+bool loadAutosave();
+
+void saveAutosave(bool autosave);
+
 Edge::ArrowMode loadEdgeArrowMode(Edge::ArrowMode defaultMode);
 
 void saveEdgeArrowMode(Edge::ArrowMode mode);

@@ -20,6 +20,7 @@
 #include <QButtonGroup>
 #include <QCheckBox>
 #include <QGroupBox>
+#include <QLabel>
 #include <QVBoxLayout>
 
 EditingTab::EditingTab(QWidget * parent)
@@ -31,6 +32,8 @@ EditingTab::EditingTab(QWidget * parent)
 void EditingTab::apply()
 {
     SettingsProxy::instance().setSelectNodeGroupByIntersection(m_selectNodeGroupByIntersectionCheckBox->isChecked());
+
+    SettingsProxy::instance().setAutosave(m_autosaveCheckBox->isChecked());
 }
 
 void EditingTab::initWidgets()
@@ -41,12 +44,21 @@ void EditingTab::initWidgets()
     m_selectNodeGroupByIntersectionCheckBox = new QCheckBox(tr("Select node group by intersection"));
     editingGroup.second->addWidget(m_selectNodeGroupByIntersectionCheckBox);
 
+    const auto autosaveGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Autosave"), *mainLayout);
+    const auto autosaveHelp = new QLabel(tr("Autosave feature will automatically save your mind map on every modification after it has been initially saved once."));
+    autosaveHelp->setWordWrap(true);
+    autosaveGroup.second->addWidget(autosaveHelp);
+    m_autosaveCheckBox = new QCheckBox(tr("Enable autosave"));
+    autosaveGroup.second->addWidget(m_autosaveCheckBox);
+
     setLayout(mainLayout);
 
-    setActiveDefaults();
+    setActiveSettings();
 }
 
-void EditingTab::setActiveDefaults()
+void EditingTab::setActiveSettings()
 {
     m_selectNodeGroupByIntersectionCheckBox->setChecked(SettingsProxy::instance().selectNodeGroupByIntersection());
+
+    m_autosaveCheckBox->setChecked(SettingsProxy::instance().autosave());
 }

@@ -3,6 +3,8 @@ x.y.z
 
 New features:
 
+* Fix GitHub Issue #78: Add optional autosave
+
 Bug fixes:
 
 * Fix GitHub Issue #150: Ghost handles crash

@@ -28,9 +28,13 @@ const auto settingsGroupApplication = "Application";
 
 const auto settingsGroupDefaults = "Defaults";
 
+const auto settingsGroupEditing = "Editing";
+
 const auto settingsGroupMainWindow = "MainWindow";
 
 const auto recentImagePathKey = "recentImagePath";
+
+const auto autosaveKey = "autosave";
 
 const auto edgeArrowModeKey = "edgeArrowMode";
 
@@ -49,6 +53,23 @@ const auto windowFullScreenKey = "fullScreen";
 const auto windowSizeKey = "size";
 
 } // namespace
+
+bool Settings::loadAutosave()
+{
+    QSettings settings;
+    settings.beginGroup(settingsGroupEditing);
+    const auto autosave = settings.value(autosaveKey, false).toBool();
+    settings.endGroup();
+    return autosave;
+}
+
+void Settings::saveAutosave(bool autosave)
+{
+    QSettings settings;
+    settings.beginGroup(settingsGroupEditing);
+    settings.setValue(autosaveKey, autosave);
+    settings.endGroup();
+}
 
 Edge::ArrowMode Settings::loadEdgeArrowMode(Edge::ArrowMode defaultMode)
 {

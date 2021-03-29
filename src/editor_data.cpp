@@ -21,6 +21,7 @@
 #include "node.hpp"
 #include "recent_files_manager.hpp"
 #include "selection_group.hpp"
+#include "settings_proxy.hpp"
 #include "test_mode.hpp"
 #include "xml_reader.hpp"
 #include "xml_writer.hpp"
@@ -46,6 +47,14 @@ void EditorData::addNodeToSelectionGroup(Node & node)
     L().debug() << "Adding node " << node.index() << " to selection group..";
 
     m_selectionGroup->addSelectedNode(node);
+}
+
+void EditorData::autosave()
+{
+    if (SettingsProxy::instance().autosave() && !m_fileName.isEmpty()) {
+        L().debug() << "Autosaving to '" << m_fileName.toStdString() << "'";
+        saveMindMapAs(m_fileName);
+    }
 }
 
 QColor EditorData::backgroundColor() const
@@ -104,6 +113,7 @@ void EditorData::undo()
         m_mindMapData = m_undoStack.undo();
         setIsModified(true);
         sendUndoAndRedoSignals();
+        autosave();
     }
 }
 
@@ -122,6 +132,7 @@ void EditorData::redo()
         m_mindMapData = m_undoStack.redo();
         setIsModified(true);
         sendUndoAndRedoSignals();
+        autosave();
     }
 }
 
@@ -159,6 +170,7 @@ void EditorData::saveUndoPoint(bool dontClearRedoStack)
     }
     setIsModified(true);
     sendUndoAndRedoSignals();
+    autosave();
 }
 
 void EditorData::saveRedoPoint()
@@ -496,4 +508,7 @@ void EditorData::setIsModified(bool isModified)
     }
 }
 
-EditorData::~EditorData() = default;
+EditorData::~EditorData()
+{
+    autosave();
+}

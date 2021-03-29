@@ -196,14 +196,29 @@
 <context>
     <name>EditingTab</name>
     <message>
-        <location filename="../editing_tab.cpp" line="40"/>
+        <location filename="../editing_tab.cpp" line="43"/>
         <source>Selecting Nodes</source>
         <translation>Solmujen Valitseminen</translation>
     </message>
     <message>
-        <location filename="../editing_tab.cpp" line="41"/>
+        <location filename="../editing_tab.cpp" line="44"/>
         <source>Select node group by intersection</source>
         <translation>Valitse joukko solmuja leikaten</translation>
+    </message>
+    <message>
+        <location filename="../editing_tab.cpp" line="47"/>
+        <source>Autosave</source>
+        <translation>Automaattinen tallennus</translation>
+    </message>
+    <message>
+        <location filename="../editing_tab.cpp" line="48"/>
+        <source>Autosave feature will automatically save your mind map on every modification after it has been initially saved once.</source>
+        <translation>Automaattinen tallennus tallentaa käsitekarttasi jokaisen muutoksen jälkeen siitä lähtien kun käsitekartta on ensimmäisen kerran tallennettu.</translation>
+    </message>
+    <message>
+        <location filename="../editing_tab.cpp" line="51"/>
+        <source>Enable autosave</source>
+        <translation>Aktivoi automaattinen tallennus</translation>
     </message>
 </context>
 <context>

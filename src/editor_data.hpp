@@ -159,6 +159,8 @@ private:
     EditorData(const EditorData & e) = delete;
     EditorData & operator=(const EditorData & e) = delete;
 
+    void autosave();
+
     using NodePairVector = std::vector<std::pair<Node *, Node *>>;
     NodePairVector getConnectableNodes() const;
 

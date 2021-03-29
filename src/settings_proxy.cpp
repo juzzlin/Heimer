@@ -19,7 +19,8 @@
 std::unique_ptr<SettingsProxy> SettingsProxy::m_instance;
 
 SettingsProxy::SettingsProxy()
-  : m_edgeArrowMode(Settings::loadEdgeArrowMode(Edge::ArrowMode::Single))
+  : m_autosave(Settings::loadAutosave())
+  , m_edgeArrowMode(Settings::loadEdgeArrowMode(Edge::ArrowMode::Single))
   , m_reversedEdgeDirection(Settings::loadReversedEdgeDirection(false))
   , m_selectNodeGroupByIntersection(Settings::loadSelectNodeGroupByIntersection())
 {
@@ -31,6 +32,19 @@ SettingsProxy & SettingsProxy::instance()
         SettingsProxy::m_instance = std::make_unique<SettingsProxy>();
     }
     return *SettingsProxy::m_instance;
+}
+
+bool SettingsProxy::autosave() const
+{
+    return m_autosave;
+}
+
+void SettingsProxy::setAutosave(bool autosave)
+{
+    if (m_autosave != autosave) {
+        m_autosave = autosave;
+        Settings::saveAutosave(autosave);
+    }
 }
 
 Edge::ArrowMode SettingsProxy::edgeArrowMode() const

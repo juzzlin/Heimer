@@ -3,7 +3,17 @@ x.y.z
 
 New features:
 
+Bug fixes:
+
+Other:
+
+2.4.0
+=====
+
+New features:
+
 * Fix GitHub Issue #78: Add optional autosave
+  - Autosave can be enabled in the settings menu
 
 Bug fixes:
 

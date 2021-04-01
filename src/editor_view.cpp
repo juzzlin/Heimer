@@ -78,15 +78,18 @@ void EditorView::finishRubberBand()
 
 void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
 {
-    if (event.button() == Qt::LeftButton) {
-        if (isModifierPressed()) {
+    if (event.button() == Qt::MiddleButton) {
             initiateRubberBand();
-        } else {
-            m_mediator.setSelectedEdge(nullptr);
-            m_mediator.clearSelectionGroup();
-            m_mediator.mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
-            setDragMode(ScrollHandDrag);
-        }
+    }
+    else if (event.button() == Qt::LeftButton) {
+      if (isModifierPressed()) {
+          initiateRubberBand();
+      } else {
+          m_mediator.setSelectedEdge(nullptr);
+          m_mediator.clearSelectionGroup();
+          m_mediator.mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
+          setDragMode(ScrollHandDrag);
+          }
     } else if (event.button() == Qt::RightButton) {
         openMainContextMenu(MainContextMenu::Mode::Background);
     }
@@ -132,6 +135,7 @@ void EditorView::handleLeftButtonClickOnNode(Node & node)
         if (m_mediator.selectionGroupSize() && !m_mediator.isInSelectionGroup(node)) {
             m_mediator.clearSelectionGroup();
         }
+        m_mediator.addNodeToSelectionGroup(node);
         // User is initiating a node move drag
         m_mediator.initiateNodeDrag(node);
     }
@@ -319,7 +323,17 @@ void EditorView::mousePressEvent(QMouseEvent * event)
 
 void EditorView::mouseReleaseEvent(QMouseEvent * event)
 {
-    if (event->button() == Qt::LeftButton) {
+    if (event->button() == Qt::MiddleButton) {
+        switch (m_mediator.mouseAction().action()) {
+          case MouseAction::Action::RubberBand:
+              finishRubberBand();
+              m_mediator.mouseAction().clear();
+              break;
+          default:
+              break;
+        }
+    }
+    else if (event->button() == Qt::LeftButton) {
         switch (m_mediator.mouseAction().action()) {
         case MouseAction::Action::MoveNode:
             m_mediator.mouseAction().clear();

@@ -14,7 +14,6 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include <QApplication>
-#include <QColorDialog>
 #include <QGraphicsItem>
 #include <QGraphicsSimpleTextItem>
 #include <QMouseEvent>

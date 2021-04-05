@@ -14,6 +14,7 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "application.hpp"
+#include "color_dialog.hpp"
 #include "constants.hpp"
 #include "editor_data.hpp"
 #include "editor_scene.hpp"
@@ -34,7 +35,6 @@
 #include "argengine.hpp"
 #include "simple_logger.hpp"
 
-#include <QColorDialog>
 #include <QFileDialog>
 #include <QLibraryInfo>
 #include <QLocale>
@@ -354,46 +354,31 @@ void Application::saveMindMapAs()
 
 void Application::showBackgroundColorDialog()
 {
-    const auto color = QColorDialog::getColor(Qt::white, m_mainWindow.get());
-    if (color.isValid()) {
-        m_mediator->setBackgroundColor(color);
-    }
+    ColorDialog(ColorDialog::Role::Background, m_mediator).exec();
     emit actionTriggered(StateMachine::Action::BackgroundColorChanged);
 }
 
 void Application::showEdgeColorDialog()
 {
-    const auto color = QColorDialog::getColor(Qt::white, m_mainWindow.get());
-    if (color.isValid()) {
-        m_mediator->setEdgeColor(color);
-    }
+    ColorDialog(ColorDialog::Role::Edge, m_mediator).exec();
     emit actionTriggered(StateMachine::Action::EdgeColorChanged);
 }
 
 void Application::showGridColorDialog()
 {
-    const auto color = QColorDialog::getColor(Qt::white, m_mainWindow.get());
-    if (color.isValid()) {
-        m_mediator->setGridColor(color);
-    }
+    ColorDialog(ColorDialog::Role::Grid, m_mediator).exec();
     emit actionTriggered(StateMachine::Action::GridColorChanged);
 }
 
 void Application::showNodeColorDialog()
 {
-    const auto color = QColorDialog::getColor(Qt::white, m_mainWindow.get());
-    if (color.isValid()) {
-        m_mediator->performNodeAction({ NodeAction::Type::SetNodeColor, color });
-    }
+    ColorDialog(ColorDialog::Role::Node, m_mediator).exec();
     emit actionTriggered(StateMachine::Action::NodeColorChanged);
 }
 
 void Application::showTextColorDialog()
 {
-    const auto color = QColorDialog::getColor(Qt::white, m_mainWindow.get());
-    if (color.isValid()) {
-        m_mediator->performNodeAction({ NodeAction::Type::SetTextColor, color });
-    }
+    ColorDialog(ColorDialog::Role::Text, m_mediator).exec();
     emit actionTriggered(StateMachine::Action::TextColorChanged);
 }
 

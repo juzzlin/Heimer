@@ -26,6 +26,7 @@ HEADERS +=  \
     $$SRC/about_dlg.hpp \
     $$SRC/alz_serializer.hpp \
     $$SRC/application.hpp \
+    $$SRC/color_dialog.hpp \
     $$SRC/defaults_tab.hpp \
     $$SRC/graph.hpp \
     $$SRC/graphics_factory.hpp \
@@ -77,6 +78,7 @@ SOURCES += \
     $$SRC/about_dlg.cpp \
     $$SRC/alz_serializer.cpp \
     $$SRC/application.cpp \
+    $$SRC/color_dialog.cpp \
     $$SRC/defaults_tab.cpp \
     $$SRC/graph.cpp \
     $$SRC/graphics_factory.cpp \

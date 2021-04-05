@@ -19,6 +19,7 @@ set(LIB_SRC
     about_dlg.cpp
     alz_serializer.cpp
     application.cpp
+    color_dialog.cpp
     constants.hpp
     defaults_tab.cpp
     edge.cpp

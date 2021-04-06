@@ -513,14 +513,12 @@ void EditorView::zoomToFit(QRectF nodeBoundingRect)
     m_nodeBoundingRect = nodeBoundingRect;
 }
 
-void EditorView::drawBackground(QPainter *painter, const QRectF &rect)
+void EditorView::drawBackground(QPainter * painter, const QRectF & rect)
 {
     painter->save();
-
-    painter->fillRect(rect, this->backgroundBrush());
+    painter->fillRect(rect, backgroundBrush());
 
     const int gridSize = m_grid.size();
-
     if (m_gridVisible && gridSize != 0)
     {
         const qreal left = int(rect.left()) - (int(rect.left()) % gridSize);
@@ -528,15 +526,19 @@ void EditorView::drawBackground(QPainter *painter, const QRectF &rect)
 
         QVarLengthArray<QLineF, 100> lines;
 
-        for (qreal x = left; x < rect.right(); x += gridSize) {
-            lines.append(QLineF(x, rect.top(), x, rect.bottom()));
+        auto x = left;
+        while (x < rect.right()) {
+            lines.append({ x, rect.top(), x, rect.bottom() });
+            x += gridSize;
         }
-        for (qreal y = top; y < rect.bottom(); y += gridSize) {
-            lines.append(QLineF(rect.left(), y, rect.right(), y));
+        auto y = top;
+        while (y < rect.bottom()) {
+            lines.append({ rect.left(), y, rect.right(), y });
+            y += gridSize;
         }
 
         painter->setPen(m_mediator.mindMapData()->gridColor());
-        painter->drawLines(lines.data(), lines.size());
+        painter->drawLines(lines.data(), static_cast<int>(lines.size()));
     }
 
     painter->restore();

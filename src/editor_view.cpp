@@ -70,8 +70,10 @@ const Grid & EditorView::grid() const
 
 void EditorView::finishRubberBand()
 {
-    m_mediator.setRectagleSelection({ mapToScene(m_rubberBand->geometry().topLeft()), mapToScene(m_rubberBand->geometry().bottomRight()) });
-
+    if (!m_mediator.setRectagleSelection({ mapToScene(m_rubberBand->geometry().topLeft()), mapToScene(m_rubberBand->geometry().bottomRight()) })) {
+        // No nodes were within the rectangle => clear the whole selection group.
+        m_mediator.clearSelectionGroup();
+    }
     m_rubberBand->hide();
 }
 
@@ -81,7 +83,6 @@ void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
         initiateRubberBand();
     } else if (event.button() == Qt::LeftButton) {
         m_mediator.setSelectedEdge(nullptr);
-        m_mediator.clearSelectionGroup();
         m_mediator.mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
         setDragMode(ScrollHandDrag);
     } else if (event.button() == Qt::RightButton) {

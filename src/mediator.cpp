@@ -637,15 +637,18 @@ void Mediator::setEditorView(EditorView & editorView)
     });
 }
 
-void Mediator::setRectagleSelection(QRectF rect)
+size_t Mediator::setRectagleSelection(QRectF rect)
 {
+    size_t nodesInRectangle = 0;
     const auto items = m_editorScene->items(rect, SettingsProxy::instance().selectNodeGroupByIntersection() ? Qt::IntersectsItemShape : Qt::ContainsItemShape);
     for (auto && item : items) {
         if (const auto node = dynamic_cast<Node *>(item)) {
             toggleNodeInSelectionGroup(*node, false);
+            nodesInRectangle++;
         }
     }
     updateNodeConnectionActions();
+    return nodesInRectangle;
 }
 
 void Mediator::setSelectedEdge(Edge * edge)

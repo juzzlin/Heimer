@@ -12,6 +12,9 @@ Bug fixes:
 
 Other:
 
+* Fix GitHub Issue #154: Do not deselect nodes on screen click
+  - A modifier key (Shift, Ctrl) is now required to clear the selected group
+
 2.4.0
 =====
 

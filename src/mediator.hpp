@@ -147,7 +147,8 @@ public:
 
     void setEditorView(EditorView & editorView);
 
-    void setRectagleSelection(QRectF rect);
+    //! \returns number of nodes in the current rectangle.
+    size_t setRectagleSelection(QRectF rect);
 
     void setSelectedEdge(Edge * edge);
 

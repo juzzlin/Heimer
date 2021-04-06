@@ -77,17 +77,13 @@ void EditorView::finishRubberBand()
 
 void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
 {
-    if (event.button() == Qt::MiddleButton) {
+    if ((event.button() == Qt::LeftButton && isModifierPressed()) || event.button() == Qt::MiddleButton) {
         initiateRubberBand();
     } else if (event.button() == Qt::LeftButton) {
-        if (isModifierPressed()) {
-            initiateRubberBand();
-        } else {
-            m_mediator.setSelectedEdge(nullptr);
-            m_mediator.clearSelectionGroup();
-            m_mediator.mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
-            setDragMode(ScrollHandDrag);
-        }
+        m_mediator.setSelectedEdge(nullptr);
+        m_mediator.clearSelectionGroup();
+        m_mediator.mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
+        setDragMode(ScrollHandDrag);
     } else if (event.button() == Qt::RightButton) {
         openMainContextMenu(MainContextMenu::Mode::Background);
     }
@@ -221,6 +217,8 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
     }
 
     switch (m_mediator.mouseAction().action()) {
+    case MouseAction::Action::None:
+        break;
     case MouseAction::Action::MoveNode:
         if (const auto node = m_mediator.mouseAction().sourceNode()) {
             if (m_mediator.selectionGroupSize()) {
@@ -253,8 +251,6 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
         updateRubberBand();
         break;
     case MouseAction::Action::Scroll:
-        break;
-    default:
         break;
     }
 
@@ -333,6 +329,8 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
     }
     else if (event->button() == Qt::LeftButton) {
         switch (m_mediator.mouseAction().action()) {
+        case MouseAction::Action::None:
+            break;
         case MouseAction::Action::MoveNode:
             m_mediator.mouseAction().clear();
             m_mediator.adjustSceneRect();
@@ -357,8 +355,6 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
             break;
         case MouseAction::Action::Scroll:
             setDragMode(NoDrag);
-            break;
-        default:
             break;
         }
 

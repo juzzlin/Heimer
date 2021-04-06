@@ -78,17 +78,16 @@ void EditorView::finishRubberBand()
 void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
 {
     if (event.button() == Qt::MiddleButton) {
+        initiateRubberBand();
+    } else if (event.button() == Qt::LeftButton) {
+        if (isModifierPressed()) {
             initiateRubberBand();
-    }
-    else if (event.button() == Qt::LeftButton) {
-      if (isModifierPressed()) {
-          initiateRubberBand();
-      } else {
-          m_mediator.setSelectedEdge(nullptr);
-          m_mediator.clearSelectionGroup();
-          m_mediator.mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
-          setDragMode(ScrollHandDrag);
-          }
+        } else {
+            m_mediator.setSelectedEdge(nullptr);
+            m_mediator.clearSelectionGroup();
+            m_mediator.mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
+            setDragMode(ScrollHandDrag);
+        }
     } else if (event.button() == Qt::RightButton) {
         openMainContextMenu(MainContextMenu::Mode::Background);
     }

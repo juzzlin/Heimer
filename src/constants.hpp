@@ -42,7 +42,7 @@ static constexpr auto WEB_SITE_URL = "http://juzzlin.github.io/Heimer";
 
 static constexpr auto QSETTINGS_SOFTWARE_NAME = APPLICATION_NAME;
 
-static constexpr auto SUPPORT_SITE_URL = "https://www.patreon.com/juzzlin";
+static constexpr auto SUPPORT_SITE_URL = "https://paypal.me/pools/c/8yvW5nEMmq";
 
 static constexpr auto TRANSLATIONS_RESOURCE_BASE = ":/translations/heimer_";
 

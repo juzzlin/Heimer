@@ -25,6 +25,16 @@ Here is a simple mind map of Heimer itself running on Ubuntu 18.04:
 * Zoom in/out/fit
 * Zoom with mouse wheel
 
+## Donations
+
+It takes a lot of effort to develop and maintain Heimer, so if you find the application useful it would be very much appreciated to tip the project and help to keep the development active.
+
+It's easy to donate via PayPal:
+
+<a href="https://paypal.me/pools/c/8yvW5nEMmq">paypal.me/pools/c/8yvW5nEMmq</a>
+
+Thanks! :)
+
 ## License
 
 Heimer's source code is licensed under GNU GPLv3. 
@@ -72,8 +82,4 @@ Debian package (`.deb`) can be created like this:
 `$ cpack -G DEB`
 
 See `Jenkinsfile` on how to build other packages in Docker.
-
-## Donations
-
-https://www.patreon.com/juzzlin
 

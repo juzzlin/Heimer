@@ -17,8 +17,10 @@
 #include "constants.hpp"
 
 #include <QDialogButtonBox>
+#include <QFontMetrics>
 #include <QLabel>
 #include <QPixmap>
+#include <QTextBrowser>
 #include <QVBoxLayout>
 
 AboutDlg::AboutDlg(QWidget * parent)
@@ -36,18 +38,26 @@ void AboutDlg::initWidgets()
     pixmapLabel->setPixmap(QPixmap(":/about.png").scaled(512, 512));
     vLayout->addWidget(pixmapLabel);
 
-    const auto infoLabel = new QLabel(this);
-    infoLabel->setText(
+    const auto infoLabel = new QTextBrowser(this);
+    infoLabel->setOpenExternalLinks(true);
+    infoLabel->setHtml(
       QString("<h2>") + Constants::Application::APPLICATION_NAME + " v" + Constants::Application::APPLICATION_VERSION + "</h2>"
       + "<p>" + Constants::Application::APPLICATION_NAME + tr(" is licenced under ") + "GNU GPLv3."
       + " " + Constants::Application::COPYRIGHT + ".</p>"
       + "<p>" + tr("Package type: ") + Constants::Application::APPLICATION_PACKAGE_TYPE + "</p>"
       + tr("Project website: ") + "<a href='" + Constants::Application::WEB_SITE_URL + "'>"
       + Constants::Application::WEB_SITE_URL + "</a>"
-      + "<p>" + tr("Support ") + Constants::Application::APPLICATION_NAME + tr(" on Patreon: ")
+      + "<p>" + tr("Support ") + Constants::Application::APPLICATION_NAME + tr(" via PayPal: ")
       + "<a href='" + Constants::Application::SUPPORT_SITE_URL + "'>"
       + Constants::Application::SUPPORT_SITE_URL + "</a></p>");
 
+    QFontMetrics fm(infoLabel->font());
+    const auto fontHeight = fm.height();
+    const size_t lines = 10;
+    infoLabel->setMinimumHeight(fontHeight * lines);
+    infoLabel->setMaximumHeight(fontHeight * lines);
+    infoLabel->setFrameStyle(QFrame::NoFrame);
+    infoLabel->viewport()->setAutoFillBackground(false);
     vLayout->addWidget(infoLabel);
 
     const auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);

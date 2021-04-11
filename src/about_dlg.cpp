@@ -51,7 +51,7 @@ void AboutDlg::initWidgets()
       + "<a href='" + Constants::Application::SUPPORT_SITE_URL + "'>"
       + Constants::Application::SUPPORT_SITE_URL + "</a></p>");
 
-    QFontMetrics fm(infoLabel->font());
+    const QFontMetrics fm(infoLabel->font());
     const auto fontHeight = fm.height();
     const size_t lines = 10;
     infoLabel->setMinimumHeight(fontHeight * lines);

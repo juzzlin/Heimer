@@ -4,34 +4,38 @@
 <context>
     <name>AboutDlg</name>
     <message>
-        <location filename="../about_dlg.cpp" line="27"/>
+        <location filename="../about_dlg.cpp" line="29"/>
         <source>About </source>
         <translation>Tietoa sovelluksesta </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="42"/>
+        <location filename="../about_dlg.cpp" line="45"/>
         <source> is licenced under </source>
         <translation> on lisensoitu lisenssillä </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="44"/>
+        <location filename="../about_dlg.cpp" line="47"/>
         <source>Package type: </source>
         <translation>Paketoinnin tyyppi: </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="45"/>
+        <location filename="../about_dlg.cpp" line="48"/>
         <source>Project website: </source>
         <translation>Projektin nettisivu: </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="47"/>
+        <location filename="../about_dlg.cpp" line="50"/>
         <source>Support </source>
         <translation>Tue </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="47"/>
+        <location filename="../about_dlg.cpp" line="50"/>
+        <source> via PayPal: </source>
+        <translation>ia PayPalissa: </translation>
+    </message>
+    <message>
         <source> on Patreon: </source>
-        <translation>ia Patreonissa: </translation>
+        <translation type="vanished">ia Patreonissa: </translation>
     </message>
 </context>
 <context>
@@ -72,32 +76,32 @@
         <translation>Tietoston tallentaminen epäonnistui nimellä &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="405"/>
+        <location filename="../application.cpp" line="390"/>
         <source>Open an image</source>
         <translation>Avaa kuvatiedosto</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="405"/>
+        <location filename="../application.cpp" line="390"/>
         <source>Image Files</source>
         <translation>Kuvatiedostot</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="412"/>
+        <location filename="../application.cpp" line="397"/>
         <source>Load image</source>
         <translation>Kuvanlataus</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="412"/>
+        <location filename="../application.cpp" line="397"/>
         <source>Failed to load image &apos;</source>
         <translation>Kuvan lataaminen epäonnistui: &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="456"/>
+        <location filename="../application.cpp" line="441"/>
         <source>The mind map has been modified.</source>
         <translation>Käsitekarttaa on muokattu.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="457"/>
+        <location filename="../application.cpp" line="442"/>
         <source>Do you want to save your changes?</source>
         <translation>Haluatko tallentaa muutokset?</translation>
     </message>

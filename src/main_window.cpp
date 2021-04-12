@@ -25,6 +25,7 @@
 #include "settings_dialog.hpp"
 #include "simple_logger.hpp"
 #include "whats_new_dlg.hpp"
+#include "widget_factory.hpp"
 
 #include <QAction>
 #include <QApplication>
@@ -194,22 +195,11 @@ QWidgetAction * MainWindow::createCornerRadiusAction()
     m_cornerRadiusSpinBox->setMaximum(Constants::Node::MAX_CORNER_RADIUS);
     m_cornerRadiusSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
-    const auto dummyWidget = new QWidget(this);
-    const auto layout = new QHBoxLayout(dummyWidget);
-    dummyWidget->setLayout(layout);
-    const auto label = new QLabel(tr("Corner radius:"));
-    layout->addWidget(label);
-    layout->addWidget(m_cornerRadiusSpinBox);
-    layout->setContentsMargins(0, 0, 0, 0);
-
-    const auto action = new QWidgetAction(this);
-    action->setDefaultWidget(dummyWidget);
-
     // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
     // In Qt > 5.10 one can use QOverload<double>::of(...)
     connect(m_cornerRadiusSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::cornerRadiusChanged);
 
-    return action;
+    return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Corner radius:"), *m_cornerRadiusSpinBox, *this).second;
 }
 
 QWidgetAction * MainWindow::createEdgeWidthAction()
@@ -219,22 +209,11 @@ QWidgetAction * MainWindow::createEdgeWidthAction()
     m_edgeWidthSpinBox->setMaximum(Constants::Edge::MAX_SIZE);
     m_edgeWidthSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
-    const auto dummyWidget = new QWidget(this);
-    const auto layout = new QHBoxLayout(dummyWidget);
-    dummyWidget->setLayout(layout);
-    const auto label = new QLabel(tr("Edge width:"));
-    layout->addWidget(label);
-    layout->addWidget(m_edgeWidthSpinBox);
-    layout->setContentsMargins(0, 0, 0, 0);
-
-    const auto action = new QWidgetAction(this);
-    action->setDefaultWidget(dummyWidget);
-
     // The ugly cast is needed because there are QDoubleSpinBox::valueChanged(double) and QDoubleSpinBox::valueChanged(QString)
     // In Qt > 5.10 one can use QOverload<double>::of(...)
     connect(m_edgeWidthSpinBox, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this, &MainWindow::edgeWidthChanged);
 
-    return action;
+    return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Edge width:"), *m_edgeWidthSpinBox, *this).second;
 }
 
 QWidgetAction * MainWindow::createTextSizeAction()
@@ -243,22 +222,11 @@ QWidgetAction * MainWindow::createTextSizeAction()
     m_textSizeSpinBox->setMaximum(Constants::Text::MAX_SIZE);
     m_textSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
-    const auto dummyWidget = new QWidget(this);
-    const auto layout = new QHBoxLayout(dummyWidget);
-    dummyWidget->setLayout(layout);
-    const auto label = new QLabel(tr("Text size:"));
-    layout->addWidget(label);
-    layout->addWidget(m_textSizeSpinBox);
-    layout->setContentsMargins(0, 0, 0, 0);
-
-    const auto action = new QWidgetAction(this);
-    action->setDefaultWidget(dummyWidget);
-
     // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
     // In Qt > 5.10 one can use QOverload<double>::of(...)
     connect(m_textSizeSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::textSizeChanged);
 
-    return action;
+    return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Text size:"), *m_textSizeSpinBox, *this).second;
 }
 
 QWidgetAction * MainWindow::createGridSizeAction()
@@ -266,17 +234,6 @@ QWidgetAction * MainWindow::createGridSizeAction()
     m_gridSizeSpinBox->setMinimum(Constants::Grid::MIN_SIZE);
     m_gridSizeSpinBox->setMaximum(Constants::Grid::MAX_SIZE);
     m_gridSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-
-    const auto dummyWidget = new QWidget(this);
-    const auto layout = new QHBoxLayout(dummyWidget);
-    dummyWidget->setLayout(layout);
-    const auto label = new QLabel(tr("Grid size:"));
-    layout->addWidget(label);
-    layout->addWidget(m_gridSizeSpinBox);
-    layout->setContentsMargins(0, 0, 0, 0);
-
-    const auto action = new QWidgetAction(this);
-    action->setDefaultWidget(dummyWidget);
 
     // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
     // In Qt > 5.10 one can use QOverload<double>::of(...)
@@ -286,7 +243,7 @@ QWidgetAction * MainWindow::createGridSizeAction()
 
     m_gridSizeSpinBox->setValue(Settings::loadGridSize());
 
-    return action;
+    return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Grid size:"), *m_gridSizeSpinBox, *this).second;
 }
 
 void MainWindow::createExportSubMenu(QMenu & fileMenu)

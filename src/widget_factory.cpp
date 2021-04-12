@@ -16,7 +16,12 @@
 #include "widget_factory.hpp"
 
 #include <QGroupBox>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QObject>
 #include <QVBoxLayout>
+#include <QWidget>
+#include <QWidgetAction>
 
 namespace WidgetFactory {
 std::pair<QGroupBox *, QVBoxLayout *> buildGroupBoxWithVLayout(QString title, QLayout & parentLayout)
@@ -27,5 +32,18 @@ std::pair<QGroupBox *, QVBoxLayout *> buildGroupBoxWithVLayout(QString title, QL
     const auto groupLayout = new QVBoxLayout;
     group->setLayout(groupLayout);
     return { group, groupLayout };
+}
+
+std::pair<QWidget *, QWidgetAction *> buildToolBarWidgetActionWithLabel(QString labelText, QWidget & widget, QWidget & parent)
+{
+    const auto dummyWidget = new QWidget(&parent);
+    const auto layout = new QHBoxLayout(dummyWidget);
+    dummyWidget->setLayout(layout);
+    layout->addWidget(new QLabel(labelText));
+    layout->addWidget(&widget);
+    layout->setContentsMargins(0, 0, 0, 0);
+    const auto action = new QWidgetAction(&parent);
+    action->setDefaultWidget(dummyWidget);
+    return { dummyWidget, action };
 }
 } // namespace WidgetFactory

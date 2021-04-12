@@ -23,11 +23,14 @@
 class QGroupBox;
 class QLayout;
 class QVBoxLayout;
+class QWidget;
+class QWidgetAction;
 
 namespace WidgetFactory {
 
 std::pair<QGroupBox *, QVBoxLayout *> buildGroupBoxWithVLayout(QString title, QLayout & parentLayout);
 
-}
+std::pair<QWidget *, QWidgetAction *> buildToolBarWidgetActionWithLabel(QString label, QWidget & widget, QWidget & parent);
+} // namespace WidgetFactory
 
 #endif // WIDGET_FACTORY_HPP

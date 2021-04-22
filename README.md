@@ -69,7 +69,7 @@ There are Debian packages for Ubuntu/Debian. Use some graphical tool to install,
 
 Make the image executable e.g. like this:
 
-`$ sudo chmod 755 Heimer-2.4.0-x86_64.AppImage`
+`$ chmod 755 Heimer-2.4.0-x86_64.AppImage`
 
 Run:
 

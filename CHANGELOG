@@ -3,12 +3,19 @@ x.y.z
 
 New features:
 
+Bug fixes:
+
+Other:
+
+2.5.0
+=====
+
+New features:
+
 * Middle-button support for selection rects
 
 * Fix GitHub Issue #151: Default custom colors
   - Harmonizes color picker dialog between platforms
-
-Bug fixes:
 
 Other:
 

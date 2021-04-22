@@ -45,7 +45,9 @@ CC BY-SA 3.0: http://creativecommons.org/licenses/by-sa/3.0/
 
 ## Installation
 
-See https://github.com/juzzlin/Heimer/releases for available packages.
+See https://github.com/juzzlin/Heimer/releases for available pre-built packages.
+
+### Linux: Snap
 
 On Linux distributions that support universal Snap packages you can install Heimer like this:
 
@@ -55,9 +57,33 @@ For more information see https://snapcraft.io/heimer and https://docs.snapcraft.
 
 Snap is the recommended way to install Heimer on Linux.
 
+### Linux: Deb
+
+There are Debian packages for Ubuntu/Debian. Use some graphical tool to install, or as an example on `Ubuntu 20.04`:
+
+`$ sudo apt install ./heimer-2.5.0-ubuntu-20.04_amd64.deb`
+
+### Linux: AppImage
+
+`AppImage` is a "universal" package that can (in theory) be run on all Linux platforms:
+
+Make the image executable e.g. like this:
+
+`$ sudo chmod 755 Heimer-2.4.0-x86_64.AppImage`
+
+Run:
+
+`$ ./Heimer-2.4.0-x86_64.AppImage`
+
+### Windows
+
+For Windows there's an installer and alternatively a ZIP-archive that just contains the Heimer executable.
+
 ## Building the project
 
 Currently the build depends on `Qt 5` only (`qt5-default`, `qttools5-dev-tools`, `qttools5-dev`, `libqt5svg5-dev` packages on Ubuntu). Support for `Qt 6` is preliminary and should work with `CMake`.
+
+### Linux / Unix
 
 The "official" build system for Linux is `CMake` although `qmake` project files are also provided.
 
@@ -82,4 +108,14 @@ Debian package (`.deb`) can be created like this:
 `$ cpack -G DEB`
 
 See `Jenkinsfile` on how to build other packages in Docker.
+
+### Windows
+
+The NSIS installer for Windows is currently built in Docker with MXE (http://mxe.cc):
+
+`$ ./scripts/build-windows-nsis`
+
+This is so very cool! A Windowsless Windows build!
+
+Anyway, as the project depends only on Qt SDK you can use your favourite Qt setup to build the project on Windows.
 

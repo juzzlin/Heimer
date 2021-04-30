@@ -39,7 +39,7 @@
     <message>
         <location filename="../application.cpp" line="193"/>
         <source>Heimer Files</source>
-        <translation>Heimer Files</translation>
+        <translation>Heimer File</translation>
     </message>
     <message>
         <location filename="../application.cpp" line="284"/>
@@ -106,27 +106,27 @@
     <name>DefaultsDlg</name>
     <message>
         <source>Defaults</source>
-        <translation type="vanished">Predefinito</translation>
+        <translation>Predefinito</translation>
     </message>
     <message>
         <source>Edge Arrow Style</source>
-        <translation type="vanished">Stile Bordo Freccia</translation>
+        <translation>Stile Bordo Freccia</translation>
     </message>
     <message>
         <source>No arrow</source>
-        <translation type="vanished">Nessuna freccia</translation>
+        <translation>Nessuna freccia</translation>
     </message>
     <message>
         <source>Single arrow</source>
-        <translation type="vanished">Singola freccia</translation>
+        <translation>Singola freccia</translation>
     </message>
     <message>
         <source>Double arrow</source>
-        <translation type="vanished">Doppia freccia</translation>
+        <translation>Doppia freccia</translation>
     </message>
     <message>
         <source>Reversed direction</source>
-        <translation type="vanished">Direzione invertita</translation>
+        <translation>Direzione invertita</translation>
     </message>
 </context>
 <context>
@@ -190,27 +190,27 @@
     <message>
         <location filename="../editing_tab.cpp" line="43"/>
         <source>Selecting Nodes</source>
-        <translation></translation>
+        <translation>Selezione nodi</translation>
     </message>
     <message>
         <location filename="../editing_tab.cpp" line="44"/>
         <source>Select node group by intersection</source>
-        <translation></translation>
+        <translation>Seleziona il gruppo di nodi di intersezione</translation>
     </message>
     <message>
         <location filename="../editing_tab.cpp" line="47"/>
         <source>Autosave</source>
-        <translation></translation>
+        <translation>Salvataggio automatico</translation>
     </message>
     <message>
         <location filename="../editing_tab.cpp" line="48"/>
         <source>Autosave feature will automatically save your mind map on every modification after it has been initially saved once.</source>
-        <translation></translation>
+        <translation>La funzione di salvataggio automatico salverà automaticamente la tua mappa mentale ad ogni modifica dopo che è stata inizialmente salvata una volta.</translation>
     </message>
     <message>
         <location filename="../editing_tab.cpp" line="51"/>
         <source>Enable autosave</source>
-        <translation></translation>
+        <translation>Abilita il salvataggio automatico</translation>
     </message>
 </context>
 <context>
@@ -223,7 +223,7 @@
     <message>
         <location filename="../layout_optimization_dialog.cpp" line="70"/>
         <source>Parameters</source>
-        <translation></translation>
+        <translation>Parametri</translation>
     </message>
     <message>
         <location filename="../layout_optimization_dialog.cpp" line="73"/>
@@ -237,11 +237,11 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="vanished">Cancella</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Optimize</source>
-        <translation type="vanished">Ottimizza</translation>
+        <translation>Ottimizza</translation>
     </message>
 </context>
 <context>
@@ -325,7 +325,7 @@
     </message>
     <message>
         <source>&amp;Colors</source>
-        <translation type="vanished">&amp;Colori</translation>
+        <translation>&amp;Colori</translation>
     </message>
 </context>
 <context>
@@ -367,7 +367,7 @@
     </message>
     <message>
         <source>&amp;Colors</source>
-        <translation type="vanished">&amp;Colori</translation>
+        <translation>&amp;Colori</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="146"/>
@@ -452,7 +452,7 @@
     <message>
         <location filename="../main_window.cpp" line="373"/>
         <source>Settings</source>
-        <translation></translation>
+        <translation>Impostazioni</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="58"/>
@@ -466,7 +466,7 @@
     </message>
     <message>
         <source>&amp;Export to PNG image</source>
-        <translation type="vanished">&amp;Esporta in immagine PNG</translation>
+        <translation>&amp;Esporta in immagine PNG</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="380"/>
@@ -481,7 +481,7 @@
     <message>
         <location filename="../main_window.cpp" line="397"/>
         <source>&amp;About</source>
-        <translation>&amp;A proposito di</translation>
+        <translation>&amp;Informazioni</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="404"/>
@@ -495,11 +495,11 @@
     </message>
     <message>
         <source>&amp;Settings</source>
-        <translation type="vanished">&amp;Impostazioni</translation>
+        <translation>&amp;Impostazioni</translation>
     </message>
     <message>
         <source>&amp;Defaults</source>
-        <translation type="vanished">&amp;Predefinite</translation>
+        <translation>&amp;Predefinite</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="447"/>
@@ -601,11 +601,11 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="vanished">Cancella</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="vanished">Esporta</translation>
+        <translation>Esporta</translation>
     </message>
 </context>
 <context>
@@ -636,7 +636,7 @@
     <message>
         <location filename="../settings_dialog.cpp" line="49"/>
         <source>Editing</source>
-        <translation></translation>
+        <translation>Modifica</translation>
     </message>
 </context>
 <context>
@@ -673,11 +673,11 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="vanished">Cancella</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="vanished">Esporta</translation>
+        <translation>Esporta</translation>
     </message>
 </context>
 <context>

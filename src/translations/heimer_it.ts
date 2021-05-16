@@ -626,7 +626,7 @@
     <message>
         <location filename="../settings_dialog.cpp" line="30"/>
         <source>Settings</source>
-        <translation></translation>
+        <translation>Impostazioni</translation>
     </message>
     <message>
         <location filename="../settings_dialog.cpp" line="48"/>

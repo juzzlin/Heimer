@@ -1,4 +1,4 @@
-// This file is part of Heimer.
+﻿// This file is part of Heimer.
 // Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 #include <QStatusBar>
 #include <QString>
 #include <QTransform>
+#include <QMimeData>
 
 #include "editor_view.hpp"
 
@@ -468,6 +469,25 @@ void EditorView::wheelEvent(QWheelEvent * event)
     zoom(event->angleDelta().y() > 0 ? Constants::View::ZOOM_SENSITIVITY : 1.0 / Constants::View::ZOOM_SENSITIVITY);
 }
 
+void EditorView::dropEvent(QDropEvent *event)
+{
+    QList<QUrl> urls = event->mimeData()->urls();
+    if (urls.isEmpty()) {
+        return;
+    }
+    QString fileName = urls.first().toLocalFile();
+    if (!fileName.isEmpty()) {
+        m_dropFile = fileName;
+        emit stateChanged(StateMachine::State::OpenDrop);
+    }
+}
+
+void EditorView::dragMoveEvent(QDragMoveEvent *event)
+{
+    event->setDropAction(Qt::CopyAction);
+    event->accept();
+}
+
 void EditorView::zoom(double amount)
 {
     const auto mappedSceneRect = QRectF(
@@ -511,6 +531,11 @@ void EditorView::zoomToFit(QRectF nodeBoundingRect)
     centerOn(nodeBoundingRect.center());
 
     m_nodeBoundingRect = nodeBoundingRect;
+}
+
+QString EditorView::dropFile() const
+{
+    return this->m_dropFile;
 }
 
 void EditorView::drawBackground(QPainter * painter, const QRectF & rect)

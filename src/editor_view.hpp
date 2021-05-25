@@ -1,4 +1,4 @@
-// This file is part of Heimer.
+﻿// This file is part of Heimer.
 // Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
@@ -58,6 +58,8 @@ public:
 
     void zoomToFit(QRectF nodeBoundingRect);
 
+    QString dropFile() const;
+
 public slots:
 
     void setCornerRadius(int cornerRadius);
@@ -83,11 +85,16 @@ protected:
 
     void wheelEvent(QWheelEvent * event) override;
 
+    void dropEvent(QDropEvent *event) override;
+
+    void dragMoveEvent(QDragMoveEvent *event) override;
 signals:
 
     void actionTriggered(StateMachine::Action action);
 
     void newNodeRequested(QPointF position);
+
+    void stateChanged(StateMachine::State state);
 
 private:
     void finishRubberBand();
@@ -174,6 +181,8 @@ private:
     MainContextMenu * m_mainContextMenu;
 
     bool m_gridVisible = false;
+
+    QString m_dropFile{};
 };
 
 #endif // EDITOR_VIEW_HPP

@@ -1,4 +1,4 @@
-// This file is part of Heimer.
+﻿// This file is part of Heimer.
 // Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
@@ -158,6 +158,7 @@ Application::Application(int & argc, char ** argv)
     connect(m_editorView, &EditorView::actionTriggered, [this](StateMachine::Action action) {
         m_stateMachine->calculateState(action);
     });
+    connect(m_editorView, &EditorView::stateChanged, this, &Application::runState);
     connect(m_mainWindow.get(), &MainWindow::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
     connect(m_stateMachine.get(), &StateMachine::stateChanged, this, &Application::runState);
 
@@ -218,6 +219,9 @@ void Application::runState(StateMachine::State state)
         break;
     case StateMachine::State::OpenRecent:
         doOpenMindMap(RecentFilesManager::instance().selectedFile());
+        break;
+    case StateMachine::State::OpenDrop:
+        doOpenMindMap(m_editorView->dropFile());
         break;
     case StateMachine::State::Save:
         saveMindMap();

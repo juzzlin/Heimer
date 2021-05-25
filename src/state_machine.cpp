@@ -82,6 +82,9 @@ void StateMachine::calculateState(StateMachine::Action action)
         case QuitType::OpenRecent:
             m_state = State::OpenRecent;
             break;
+        case QuitType::OpenDrop:
+            m_state = State::OpenDrop;
+            break;
         default:
             m_state = State::Edit;
             break;
@@ -150,6 +153,15 @@ void StateMachine::calculateState(StateMachine::Action action)
             m_state = State::ShowNotSavedDialog;
         } else {
             m_state = State::OpenRecent;
+        }
+        break;
+
+    case Action::DropFileSelected:
+        m_quitType = QuitType::OpenDrop;
+        if (m_mediator->isModified()) {
+            m_state = State::ShowNotSavedDialog;
+        } else {
+            m_state = State::OpenDrop;
         }
         break;
 

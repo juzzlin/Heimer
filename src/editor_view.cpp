@@ -16,6 +16,7 @@
 #include <QApplication>
 #include <QGraphicsItem>
 #include <QGraphicsSimpleTextItem>
+#include <QMimeData>
 #include <QMouseEvent>
 #include <QRectF>
 #include <QRubberBand>
@@ -320,15 +321,14 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
 {
     if (event->button() == Qt::MiddleButton) {
         switch (m_mediator.mouseAction().action()) {
-          case MouseAction::Action::RubberBand:
-              finishRubberBand();
-              m_mediator.mouseAction().clear();
-              break;
-          default:
-              break;
+        case MouseAction::Action::RubberBand:
+            finishRubberBand();
+            m_mediator.mouseAction().clear();
+            break;
+        default:
+            break;
         }
-    }
-    else if (event->button() == Qt::LeftButton) {
+    } else if (event->button() == Qt::LeftButton) {
         switch (m_mediator.mouseAction().action()) {
         case MouseAction::Action::None:
             break;
@@ -468,6 +468,25 @@ void EditorView::wheelEvent(QWheelEvent * event)
     zoom(event->angleDelta().y() > 0 ? Constants::View::ZOOM_SENSITIVITY : 1.0 / Constants::View::ZOOM_SENSITIVITY);
 }
 
+void EditorView::dropEvent(QDropEvent * event)
+{
+    QList<QUrl> urls = event->mimeData()->urls();
+    if (urls.isEmpty()) {
+        return;
+    }
+    QString fileName = urls.first().toLocalFile();
+    if (!fileName.isEmpty()) {
+        m_dropFile = fileName;
+        emit actionTriggered(StateMachine::Action::DropFileSelected);
+    }
+}
+
+void EditorView::dragMoveEvent(QDragMoveEvent * event)
+{
+    event->setDropAction(Qt::CopyAction);
+    event->accept();
+}
+
 void EditorView::zoom(double amount)
 {
     const auto mappedSceneRect = QRectF(
@@ -513,14 +532,18 @@ void EditorView::zoomToFit(QRectF nodeBoundingRect)
     m_nodeBoundingRect = nodeBoundingRect;
 }
 
+QString EditorView::dropFile() const
+{
+    return this->m_dropFile;
+}
+
 void EditorView::drawBackground(QPainter * painter, const QRectF & rect)
 {
     painter->save();
     painter->fillRect(rect, backgroundBrush());
 
     const int gridSize = m_grid.size();
-    if (m_gridVisible && gridSize != 0)
-    {
+    if (m_gridVisible && gridSize != 0) {
         const qreal left = int(rect.left()) - (int(rect.left()) % gridSize);
         const qreal top = int(rect.top()) - (int(rect.top()) % gridSize);
 

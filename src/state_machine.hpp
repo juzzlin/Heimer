@@ -34,6 +34,7 @@ public:
         Init,
         InitializeNewMindMap,
         OpenRecent,
+        OpenDrop,
         Save,
         ShowBackgroundColorDialog,
         ShowEdgeColorDialog,
@@ -83,6 +84,7 @@ public:
         PngExportSelected,
         QuitSelected,
         RecentFileSelected,
+        DropFileSelected,
         RedoSelected,
         SaveAsSelected,
         SaveSelected,
@@ -99,6 +101,7 @@ public:
         New,
         Open,
         OpenRecent,
+        OpenDrop,
         Close
     };
 

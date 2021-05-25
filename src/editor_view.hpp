@@ -58,6 +58,8 @@ public:
 
     void zoomToFit(QRectF nodeBoundingRect);
 
+    QString dropFile() const;
+
 public slots:
 
     void setCornerRadius(int cornerRadius);
@@ -83,6 +85,9 @@ protected:
 
     void wheelEvent(QWheelEvent * event) override;
 
+    void dropEvent(QDropEvent * event) override;
+
+    void dragMoveEvent(QDragMoveEvent * event) override;
 signals:
 
     void actionTriggered(StateMachine::Action action);
@@ -174,6 +179,8 @@ private:
     MainContextMenu * m_mainContextMenu;
 
     bool m_gridVisible = false;
+
+    QString m_dropFile {};
 };
 
 #endif // EDITOR_VIEW_HPP

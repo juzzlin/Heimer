@@ -219,6 +219,9 @@ void Application::runState(StateMachine::State state)
     case StateMachine::State::OpenRecent:
         doOpenMindMap(RecentFilesManager::instance().selectedFile());
         break;
+    case StateMachine::State::OpenDrop:
+        doOpenMindMap(m_editorView->dropFile());
+        break;
     case StateMachine::State::Save:
         saveMindMap();
         break;

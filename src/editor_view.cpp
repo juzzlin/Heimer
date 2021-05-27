@@ -470,11 +470,11 @@ void EditorView::wheelEvent(QWheelEvent * event)
 
 void EditorView::dropEvent(QDropEvent * event)
 {
-    QList<QUrl> urls = event->mimeData()->urls();
+    const auto urls = event->mimeData()->urls();
     if (urls.isEmpty()) {
         return;
     }
-    QString fileName = urls.first().toLocalFile();
+    const auto fileName = urls.first().toLocalFile();
     if (!fileName.isEmpty()) {
         m_dropFile = fileName;
         emit actionTriggered(StateMachine::Action::DropFileSelected);

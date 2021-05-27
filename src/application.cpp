@@ -1,4 +1,4 @@
-﻿// This file is part of Heimer.
+// This file is part of Heimer.
 // Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify

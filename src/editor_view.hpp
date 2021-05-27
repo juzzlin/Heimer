@@ -94,8 +94,6 @@ signals:
 
     void newNodeRequested(QPointF position);
 
-    void stateChanged(StateMachine::State state);
-
 private:
     void finishRubberBand();
 

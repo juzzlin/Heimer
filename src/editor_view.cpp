@@ -16,13 +16,13 @@
 #include <QApplication>
 #include <QGraphicsItem>
 #include <QGraphicsSimpleTextItem>
+#include <QMimeData>
 #include <QMouseEvent>
 #include <QRectF>
 #include <QRubberBand>
 #include <QStatusBar>
 #include <QString>
 #include <QTransform>
-#include <QMimeData>
 
 #include "editor_view.hpp"
 
@@ -321,15 +321,14 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
 {
     if (event->button() == Qt::MiddleButton) {
         switch (m_mediator.mouseAction().action()) {
-          case MouseAction::Action::RubberBand:
-              finishRubberBand();
-              m_mediator.mouseAction().clear();
-              break;
-          default:
-              break;
+        case MouseAction::Action::RubberBand:
+            finishRubberBand();
+            m_mediator.mouseAction().clear();
+            break;
+        default:
+            break;
         }
-    }
-    else if (event->button() == Qt::LeftButton) {
+    } else if (event->button() == Qt::LeftButton) {
         switch (m_mediator.mouseAction().action()) {
         case MouseAction::Action::None:
             break;
@@ -469,7 +468,7 @@ void EditorView::wheelEvent(QWheelEvent * event)
     zoom(event->angleDelta().y() > 0 ? Constants::View::ZOOM_SENSITIVITY : 1.0 / Constants::View::ZOOM_SENSITIVITY);
 }
 
-void EditorView::dropEvent(QDropEvent *event)
+void EditorView::dropEvent(QDropEvent * event)
 {
     QList<QUrl> urls = event->mimeData()->urls();
     if (urls.isEmpty()) {
@@ -478,11 +477,11 @@ void EditorView::dropEvent(QDropEvent *event)
     QString fileName = urls.first().toLocalFile();
     if (!fileName.isEmpty()) {
         m_dropFile = fileName;
-        emit stateChanged(StateMachine::State::OpenDrop);
+        emit actionTriggered(StateMachine::Action::DropFileSelected);
     }
 }
 
-void EditorView::dragMoveEvent(QDragMoveEvent *event)
+void EditorView::dragMoveEvent(QDragMoveEvent * event)
 {
     event->setDropAction(Qt::CopyAction);
     event->accept();
@@ -544,8 +543,7 @@ void EditorView::drawBackground(QPainter * painter, const QRectF & rect)
     painter->fillRect(rect, backgroundBrush());
 
     const int gridSize = m_grid.size();
-    if (m_gridVisible && gridSize != 0)
-    {
+    if (m_gridVisible && gridSize != 0) {
         const qreal left = int(rect.left()) - (int(rect.left()) % gridSize);
         const qreal top = int(rect.top()) - (int(rect.top()) % gridSize);
 

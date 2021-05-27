@@ -84,6 +84,7 @@ public:
         PngExportSelected,
         QuitSelected,
         RecentFileSelected,
+        DropFileSelected,
         RedoSelected,
         SaveAsSelected,
         SaveSelected,
@@ -100,6 +101,7 @@ public:
         New,
         Open,
         OpenRecent,
+        OpenDrop,
         Close
     };
 

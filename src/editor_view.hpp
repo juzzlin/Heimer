@@ -85,9 +85,9 @@ protected:
 
     void wheelEvent(QWheelEvent * event) override;
 
-    void dropEvent(QDropEvent *event) override;
+    void dropEvent(QDropEvent * event) override;
 
-    void dragMoveEvent(QDragMoveEvent *event) override;
+    void dragMoveEvent(QDragMoveEvent * event) override;
 signals:
 
     void actionTriggered(StateMachine::Action action);
@@ -182,7 +182,7 @@ private:
 
     bool m_gridVisible = false;
 
-    QString m_dropFile{};
+    QString m_dropFile {};
 };
 
 #endif // EDITOR_VIEW_HPP

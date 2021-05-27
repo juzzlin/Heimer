@@ -158,7 +158,6 @@ Application::Application(int & argc, char ** argv)
     connect(m_editorView, &EditorView::actionTriggered, [this](StateMachine::Action action) {
         m_stateMachine->calculateState(action);
     });
-    connect(m_editorView, &EditorView::stateChanged, this, &Application::runState);
     connect(m_mainWindow.get(), &MainWindow::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
     connect(m_stateMachine.get(), &StateMachine::stateChanged, this, &Application::runState);
 

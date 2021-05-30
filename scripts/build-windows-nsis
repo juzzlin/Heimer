@@ -27,6 +27,6 @@ if [ -f /.dockerenv ]; then
     bash -c "${CMD}"
 else
     echo "Script outside Docker"
-    docker run --user $(id -u):$(id -g) --privileged -t -v $(pwd):/heimer juzzlin/mxe-qt5-18.04:latest bash -c "${CMD}"
+    docker run --user $(id -u):$(id -g) --privileged -t -v $(pwd):/heimer juzzlin/mxe-qt5-20.04:latest bash -c "${CMD}"
 fi
 

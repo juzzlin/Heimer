@@ -20,10 +20,6 @@ function(setup_install_targets)
         COMMAND cmake -E copy_directory ${CMAKE_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}/data
         DEPENDS ${BINARY_NAME})
 
-    # !! Note that currently this creates an installer that doesn't work.
-    # !! A statically linked Qt5 is assumed and that has problems with CMake.
-    # !! Use scripts/build-windows-installer instead.
-
     install(PROGRAMS ${CMAKE_BINARY_DIR}/${BINARY_NAME}.exe DESTINATION ${BIN_PATH})
     install(FILES AUTHORS CHANGELOG COPYING README.md DESTINATION ${DOC_PATH})
 
@@ -33,6 +29,9 @@ function(setup_install_targets)
     set(CPACK_NSIS_MUI_UNIICON ${CMAKE_SOURCE_DIR}/data/icons/heimer.ico)
     set(CPACK_NSIS_DISPLAY_NAME Heimer)
     set(CPACK_NSIS_PACKAGE_NAME Heimer)
+    set(CPACK_NSIS_HELP_LINK http://juzzlin.github.io/Heimer/)
+    set(CPACK_NSIS_URL_INFO_ABOUT http://juzzlin.github.io/Heimer/)
+    set(CPACK_NSIS_BRANDING_TEXT¶ Heimer)
 
     include(CPack)
 

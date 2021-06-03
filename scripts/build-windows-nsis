@@ -2,8 +2,8 @@
 
 # Builds NSIS installer for Windows in Docker
 
-MAKENSIS=/mxe/usr/bin/i686-w64-mingw32.static-makensis
 CMAKE=/mxe/usr/bin/i686-w64-mingw32.static-cmake
+CPACK=/mxe/usr/bin/i686-w64-mingw32.static-cpack
 
 CMD="export LANG=en_US.UTF-8 && \
      export LC_ALL=en_US.UTF-8 && \
@@ -11,9 +11,7 @@ CMD="export LANG=en_US.UTF-8 && \
      cd /heimer && \
      rm -rf build-windows-nsis && mkdir -p build-windows-nsis && \
      cd build-windows-nsis && ${CMAKE} -DPACKAGE_TYPE=NSIS .. && \
-     make -j4 && \
-     cp -v ../packaging/windows/heimer.nsi . && \
-     ${MAKENSIS} heimer.nsi"
+     make -j4 && ${CPACK} -G NSIS"
 
 if [ -f /.dockerenv ]; then
     echo "Script inside Docker"

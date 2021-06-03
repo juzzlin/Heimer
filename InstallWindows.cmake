@@ -8,10 +8,16 @@ function(setup_install_targets)
 
     # Add target to copy files to the binary dir.
     add_custom_target(docs ALL
+        COMMAND cmake -E copy_directory ${CMAKE_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}/data
         COMMAND cmake -E copy ${CMAKE_SOURCE_DIR}/AUTHORS ${CMAKE_BINARY_DIR}/AUTHORS
         COMMAND cmake -E copy ${CMAKE_SOURCE_DIR}/CHANGELOG ${CMAKE_BINARY_DIR}/CHANGELOG
         COMMAND cmake -E copy ${CMAKE_SOURCE_DIR}/COPYING ${CMAKE_BINARY_DIR}/COPYING
         COMMAND cmake -E copy ${CMAKE_SOURCE_DIR}/README.md ${CMAKE_BINARY_DIR}/README.md
+        DEPENDS ${BINARY_NAME})
+
+    # Add target to copy data files to the binary dir.
+    add_custom_target(data ALL
+        COMMAND cmake -E copy_directory ${CMAKE_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}/data
         DEPENDS ${BINARY_NAME})
 
     # !! Note that currently this creates an installer that doesn't work.

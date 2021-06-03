@@ -4,21 +4,20 @@
 
 VERSION=2.5.0
 
-QMAKE=/mxe/usr/i686-w64-mingw32.static/qt5/bin/qmake
+CMAKE=/mxe/usr/bin/i686-w64-mingw32.static-cmake
 
 CMD="export LANG=en_US.UTF-8 && \
      export LC_ALL=en_US.UTF-8 && \
      export PATH='$PATH':/mxe/usr/bin && \
-     export PACKAGE_TYPE=ZIP && \
      cd /heimer && \
      rm -rf build-windows-zip && mkdir -p build-windows-zip && \
-     cd build-windows-zip && ${QMAKE} .. && \
+     cd build-windows-zip && ${CMAKE} -DPACKAGE_TYPE=ZIP .. && \
      make -j4 && \
-     cd release && mkdir zip && cd zip && \
-     cp -v ../../../AUTHORS . && \
-     cp -v ../../../CHANGELOG . && \
-     cp -v ../../../COPYING . && \
-     cp -v ../../../README.md . && \
+     mkdir zip && cd zip && \
+     cp -v ../AUTHORS . && \
+     cp -v ../CHANGELOG . && \
+     cp -v ../COPYING . && \
+     cp -v ../README.md . && \
      cp -v ../heimer.exe . && \
      zip -r heimer-${VERSION}_win32.zip *"
 

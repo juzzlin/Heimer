@@ -2,24 +2,17 @@
 
 # Builds NSIS installer for Windows in Docker
 
-QMAKE=/mxe/usr/i686-w64-mingw32.static/qt5/bin/qmake
 MAKENSIS=/mxe/usr/bin/i686-w64-mingw32.static-makensis
+CMAKE=/mxe/usr/bin/i686-w64-mingw32.static-cmake
 
 CMD="export LANG=en_US.UTF-8 && \
      export LC_ALL=en_US.UTF-8 && \
      export PATH='$PATH':/mxe/usr/bin && \
-     export PACKAGE_TYPE=NSIS && \
      cd /heimer && \
      rm -rf build-windows-nsis && mkdir -p build-windows-nsis && \
-     cd build-windows-nsis && ${QMAKE} .. && \
+     cd build-windows-nsis && ${CMAKE} -DPACKAGE_TYPE=NSIS .. && \
      make -j4 && \
-     cd release && \
-     cp -rv ../../data . && \     
-     cp -v ../../AUTHORS . && \
-     cp -v ../../CHANGELOG . && \
-     cp -v ../../COPYING . && \
-     cp -v ../../README.md . && \
-     cp -v ../../packaging/windows/heimer.nsi . && \
+     cp -v ../packaging/windows/heimer.nsi . && \
      ${MAKENSIS} heimer.nsi"
 
 if [ -f /.dockerenv ]; then
@@ -27,6 +20,6 @@ if [ -f /.dockerenv ]; then
     bash -c "${CMD}"
 else
     echo "Script outside Docker"
-    docker run --user $(id -u):$(id -g) --privileged -t -v $(pwd):/heimer juzzlin/mxe-qt5-20.04:latest bash -c "${CMD}"
+    docker run --user $(id -u):$(id -g) -t -v $(pwd):/heimer juzzlin/mxe-qt5-20.04:latest bash -c "${CMD}"
 fi
 

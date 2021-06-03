@@ -65,8 +65,8 @@ pipeline {
         stage('Windows NSIS installer') {
             agent {
                 docker {
-                    image 'juzzlin/mxe-qt5-18.04:latest'
-                    args '--privileged -t -v $WORKSPACE:/heimer'
+                    image 'juzzlin/mxe-qt5-20.04:latest'
+                    args '-t -v $WORKSPACE:/heimer'
                 }
             }
             steps {
@@ -74,7 +74,7 @@ pipeline {
             }
             post {
                 always {
-                    archiveArtifacts artifacts: 'build-windows-nsis/release/*.exe', fingerprint: true
+                    archiveArtifacts artifacts: 'build-windows-nsis/*.exe', fingerprint: true
                 }
             }
 
@@ -82,8 +82,8 @@ pipeline {
         stage('Windows ZIP') {
             agent {
                 docker {
-                    image 'juzzlin/mxe-qt5-18.04:latest'
-                    args '--privileged -t -v $WORKSPACE:/heimer'
+                    image 'juzzlin/mxe-qt5-20.04:latest'
+                    args '-t -v $WORKSPACE:/heimer'
                 }
             }
             steps {
@@ -91,7 +91,7 @@ pipeline {
             }
             post {
                 always {
-                    archiveArtifacts artifacts: 'build-windows-zip/release/zip/*.zip', fingerprint: true
+                    archiveArtifacts artifacts: 'build-windows-zip/zip/*.zip', fingerprint: true
                 }
             }
 

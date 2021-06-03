@@ -85,7 +85,7 @@ Currently the build depends on `Qt 5` only (`qt5-default`, `qttools5-dev-tools`,
 
 ### Linux / Unix
 
-The "official" build system for Linux is `CMake` although `qmake` project files are also provided.
+The "official" build system for Linux is `CMake`.
 
 Building for Linux in a nutshell:
 
@@ -118,4 +118,8 @@ The NSIS installer for Windows is currently built in Docker with MXE (http://mxe
 This is so very cool! A Windowsless Windows build!
 
 Anyway, as the project depends only on Qt SDK you can use your favourite Qt setup to build the project on Windows.
+
+### Docker environments
+
+Needed Dockerfiles can be found at https://github.com/juzzlin/Dockerfiles
 

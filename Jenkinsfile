@@ -14,18 +14,6 @@ pipeline {
                 sh "cd build-debug && cmake --build . --target all -- -j3 && ctest"
             }
         }
-        stage('QMake build') {
-            agent {
-                docker {
-                    image 'juzzlin/qt5-18.04:latest'
-                    args '--privileged -t -v $WORKSPACE:/heimer'
-                }
-            }
-            steps {
-                sh "mkdir -p build-qmake"
-                sh "cd build-qmake && qmake .. && make -j3"
-            }
-        }
         stage('Debian package / Ubuntu 18.04') {
             agent {
                 docker {

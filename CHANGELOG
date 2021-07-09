@@ -3,11 +3,20 @@ x.y.z
 
 New features:
 
-* Add support for .ALZ drag'n'drop
-
 Bug fixes:
 
 Other:
+
+2.6.0
+=====
+
+New features:
+
+* Add support for .ALZ drag'n'drop
+
+Other:
+
+* Build Windows build with CMake
 
 2.5.0
 =====

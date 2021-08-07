@@ -20,7 +20,7 @@ Here is a simple mind map of Heimer itself running on Ubuntu 18.04:
 * Nice animations
 * Quickly add node text and edge labels
 * Save/load in XML-based .ALZ-files
-* Translations in English (default), Finnish, French, Italian, Dutch
+* Translations in English (default), Finnish, French, Italian, Dutch, Spanish
 * Very fast
 * Zoom in/out/fit
 * Zoom with mouse wheel

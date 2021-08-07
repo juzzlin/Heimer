@@ -195,10 +195,11 @@ QWidgetAction * MainWindow::createCornerRadiusAction()
     m_cornerRadiusSpinBox->setMaximum(Constants::Node::MAX_CORNER_RADIUS);
     m_cornerRadiusSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
-    // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
-    // In Qt > 5.10 one can use QOverload<double>::of(...)
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
+    connect(m_cornerRadiusSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::cornerRadiusChanged);
+#else
     connect(m_cornerRadiusSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::cornerRadiusChanged);
-
+#endif
     return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Corner radius:"), *m_cornerRadiusSpinBox, *this).second;
 }
 
@@ -209,10 +210,11 @@ QWidgetAction * MainWindow::createEdgeWidthAction()
     m_edgeWidthSpinBox->setMaximum(Constants::Edge::MAX_SIZE);
     m_edgeWidthSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
-    // The ugly cast is needed because there are QDoubleSpinBox::valueChanged(double) and QDoubleSpinBox::valueChanged(QString)
-    // In Qt > 5.10 one can use QOverload<double>::of(...)
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
+    connect(m_edgeWidthSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::edgeWidthChanged);
+#else
     connect(m_edgeWidthSpinBox, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this, &MainWindow::edgeWidthChanged);
-
+#endif
     return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Edge width:"), *m_edgeWidthSpinBox, *this).second;
 }
 
@@ -222,10 +224,11 @@ QWidgetAction * MainWindow::createTextSizeAction()
     m_textSizeSpinBox->setMaximum(Constants::Text::MAX_SIZE);
     m_textSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
-    // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
-    // In Qt > 5.10 one can use QOverload<double>::of(...)
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
+    connect(m_textSizeSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::textSizeChanged);
+#else
     connect(m_textSizeSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::textSizeChanged);
-
+#endif
     return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Text size:"), *m_textSizeSpinBox, *this).second;
 }
 
@@ -235,9 +238,11 @@ QWidgetAction * MainWindow::createGridSizeAction()
     m_gridSizeSpinBox->setMaximum(Constants::Grid::MAX_SIZE);
     m_gridSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
-    // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
-    // In Qt > 5.10 one can use QOverload<double>::of(...)
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
+    const auto signal = QOverload<int>::of(&QSpinBox::valueChanged);
+#else
     const auto signal = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
+#endif
     connect(m_gridSizeSpinBox, signal, this, &MainWindow::gridSizeChanged);
     connect(m_gridSizeSpinBox, signal, Settings::saveGridSize);
 

@@ -49,9 +49,13 @@ PngExportDialog::PngExportDialog(QWidget & parent)
         m_filenameLineEdit->setText(filename);
     });
 
-    // The ugly cast is needed because there are QSpinBox::valueChanged(int) and QSpinBox::valueChanged(QString)
-    // In Qt > 5.10 one can use QOverload<int>::of(...)
-    connect(m_imageWidthSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [&](int value) {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
+    const auto spinBoxIntSignal = QOverload<int>::of(&QSpinBox::valueChanged);
+#else
+    const auto spinBoxIntSignal = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
+#endif
+
+    connect(m_imageWidthSpinBox, spinBoxIntSignal, [&](int value) {
         if (m_enableSpinBoxConnection) {
             m_enableSpinBoxConnection = false;
             m_imageHeightSpinBox->setValue(static_cast<int>(static_cast<float>(value) / m_aspectRatio));
@@ -59,7 +63,7 @@ PngExportDialog::PngExportDialog(QWidget & parent)
         }
     });
 
-    connect(m_imageHeightSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [&](int value) {
+    connect(m_imageHeightSpinBox, spinBoxIntSignal, [&](int value) {
         if (m_enableSpinBoxConnection) {
             m_enableSpinBoxConnection = false;
             m_imageWidthSpinBox->setValue(static_cast<int>(static_cast<float>(value) * m_aspectRatio));
@@ -67,11 +71,11 @@ PngExportDialog::PngExportDialog(QWidget & parent)
         }
     });
 
+    connect(m_imageWidthSpinBox, spinBoxIntSignal, this, &PngExportDialog::validate);
+
+    connect(m_imageHeightSpinBox, spinBoxIntSignal, this, &PngExportDialog::validate);
+
     connect(m_filenameLineEdit, &QLineEdit::textChanged, this, &PngExportDialog::validate);
-
-    connect(m_imageWidthSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &PngExportDialog::validate);
-
-    connect(m_imageHeightSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &PngExportDialog::validate);
 
     connect(m_buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     connect(m_buttonBox, &QDialogButtonBox::accepted, [=]() {

@@ -17,6 +17,7 @@
 #define SELECTION_GROUP_HPP
 
 #include <QPointF>
+#include <unordered_set>
 #include <vector>
 
 class Node;
@@ -43,6 +44,7 @@ public:
 private:
     // Use vector because we want to keep the order
     std::vector<Node *> m_nodes;
+    std::unordered_set<Node *> m_nodeSet;
 };
 
 #endif // SELECTION_GROUP_HPP

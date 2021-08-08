@@ -46,7 +46,7 @@ class EditorData : public QObject
 public:
     EditorData();
 
-    ~EditorData();
+    ~EditorData() override;
 
     EdgePtr addEdge(EdgePtr edge);
 
@@ -142,6 +142,8 @@ public:
     Node * selectedNode() const;
 
     size_t selectionGroupSize() const;
+
+    void selectNodesByText(QString text);
 
     void toggleNodeInSelectionGroup(Node & node);
 

@@ -666,6 +666,12 @@ void Mediator::setSelectedEdge(Edge * edge)
     m_editorData->setSelectedEdge(edge);
 }
 
+void Mediator::setSearchText(QString text)
+{
+    m_editorData->selectNodesByText(text);
+    updateNodeConnectionActions();
+}
+
 void Mediator::setTextSize(int textSize)
 {
     // Break loop with the spinbox

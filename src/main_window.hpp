@@ -20,6 +20,7 @@
 #include <QGraphicsScene>
 #include <QMainWindow>
 #include <QString>
+#include <QTimer>
 
 #include "state_machine.hpp"
 
@@ -33,6 +34,7 @@ class EditorView;
 class QAction;
 class QCheckBox;
 class QDoubleSpinBox;
+class QLineEdit;
 class QSlider;
 class QSpinBox;
 class QTextEdit;
@@ -109,6 +111,8 @@ signals:
 
     void gridVisibleChanged(int state);
 
+    void searchTextChanged(QString text);
+
     void textSizeChanged(int value);
 
     void zoomInTriggered();
@@ -131,6 +135,8 @@ private:
     QWidgetAction * createEdgeWidthAction();
 
     QWidgetAction * createGridSizeAction();
+
+    QWidgetAction * createSearchAction();
 
     QWidgetAction * createTextSizeAction();
 
@@ -181,6 +187,10 @@ private:
     QCheckBox * m_copyOnDragCheckBox = nullptr;
 
     QCheckBox * m_showGridCheckBox = nullptr;
+
+    QLineEdit * m_searchLineEdit = nullptr;
+
+    QTimer m_searchTimer;
 
     QString m_argMindMapFile;
 

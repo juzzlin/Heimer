@@ -33,6 +33,7 @@
 #include <QDoubleSpinBox>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QLineEdit>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
@@ -66,6 +67,7 @@ MainWindow::MainWindow()
   , m_textSizeSpinBox(new QSpinBox(this))
   , m_copyOnDragCheckBox(new QCheckBox(tr("Copy on drag"), this))
   , m_showGridCheckBox(new QCheckBox(tr("Show grid"), this))
+  , m_searchLineEdit(new QLineEdit(this))
 {
     if (!m_instance) {
         m_instance = this;
@@ -251,6 +253,28 @@ QWidgetAction * MainWindow::createGridSizeAction()
     return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Grid size:"), *m_gridSizeSpinBox, *this).second;
 }
 
+QWidgetAction * MainWindow::createSearchAction()
+{
+    m_searchTimer.setSingleShot(true);
+    connect(&m_searchTimer, &QTimer::timeout, [this, searchLineEdit = m_searchLineEdit]() {
+        const auto text = searchLineEdit->text();
+        juzzlin::L().debug() << "Search text changed: " << text.toStdString();
+        emit searchTextChanged(text);
+    });
+    connect(m_searchLineEdit, &QLineEdit::textChanged, [searchTimer = &m_searchTimer](const QString & text) {
+        if (text.isEmpty()) {
+            searchTimer->start(0);
+        } else {
+            searchTimer->start(Constants::View::TEXT_SEARCH_DELAY_MS);
+        }
+    });
+    connect(m_searchLineEdit, &QLineEdit::returnPressed, [searchTimer = &m_searchTimer] {
+        searchTimer->start(0);
+    });
+
+    return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Search:"), *m_searchLineEdit, *this).second;
+}
+
 void MainWindow::createExportSubMenu(QMenu & fileMenu)
 {
     const auto exportMenu = new QMenu;
@@ -395,6 +419,8 @@ void MainWindow::createToolBar()
     const auto spacer = new QWidget;
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     toolBar->addWidget(spacer);
+    toolBar->addAction(createSearchAction());
+    toolBar->addSeparator();
     toolBar->addWidget(m_showGridCheckBox);
     toolBar->addWidget(m_copyOnDragCheckBox);
 

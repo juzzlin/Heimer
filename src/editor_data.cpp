@@ -229,6 +229,18 @@ void EditorData::setMindMapData(MindMapDataPtr mindMapData)
     m_undoStack.clear();
 }
 
+void EditorData::selectNodesByText(QString text)
+{
+    clearSelectionGroup();
+    if (!text.isEmpty()) {
+        for (auto && node : m_mindMapData->graph().getNodes()) {
+            if (node->text().toLower().contains(text.toLower())) {
+                addNodeToSelectionGroup(*node);
+            }
+        }
+    }
+}
+
 void EditorData::toggleNodeInSelectionGroup(Node & node)
 {
     L().debug() << "Toggling node " << node.index() << " in selection group..";

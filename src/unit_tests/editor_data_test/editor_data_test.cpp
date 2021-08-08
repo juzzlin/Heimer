@@ -254,6 +254,40 @@ void EditorDataTest::testRedoAddNodes()
     QCOMPARE(editorData.mindMapData()->graph().numNodes(), static_cast<size_t>(2));
 }
 
+void EditorDataTest::testTextSearch()
+{
+    const auto data = std::make_shared<MindMapData>();
+    EditorData editorData;
+    editorData.setMindMapData(data);
+
+    const auto node0 = std::make_shared<Node>();
+    data->graph().addNode(node0);
+    const auto node1 = std::make_shared<Node>();
+    data->graph().addNode(node1);
+    const auto node2 = std::make_shared<Node>();
+    data->graph().addNode(node2);
+
+    QCOMPARE(node0->selected(), false);
+    QCOMPARE(node1->selected(), false);
+    QCOMPARE(node2->selected(), false);
+
+    node0->setText("Foo");
+    node1->setText("Bar");
+    node2->setText("FooBar");
+
+    editorData.selectNodesByText("foo");
+
+    QCOMPARE(node0->selected(), true);
+    QCOMPARE(node1->selected(), false);
+    QCOMPARE(node2->selected(), true);
+
+    editorData.selectNodesByText("");
+
+    QCOMPARE(node0->selected(), false);
+    QCOMPARE(node1->selected(), false);
+    QCOMPARE(node2->selected(), false);
+}
+
 void EditorDataTest::testUndoAddEdge()
 {
     const auto data = std::make_shared<MindMapData>();

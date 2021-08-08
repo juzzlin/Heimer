@@ -45,7 +45,7 @@ class Mediator : public QObject
 public:
     explicit Mediator(MainWindow & mainWindow);
 
-    ~Mediator();
+    ~Mediator() override;
 
     void addEdge(Node & node1, Node & node2);
 
@@ -177,6 +177,8 @@ public slots:
     void setGridColor(QColor color);
 
     void setEdgeWidth(double value);
+
+    void setSearchText(QString text);
 
     void setTextSize(int textSize);
 

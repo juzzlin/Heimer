@@ -21,8 +21,11 @@
 
 void SelectionGroup::addSelectedNode(Node & node)
 {
-    m_nodes.push_back(&node);
-    node.setSelected(true);
+    if (!m_nodeSet.count(&node)) {
+        m_nodeSet.insert(&node);
+        m_nodes.push_back(&node);
+        node.setSelected(true);
+    }
 }
 
 void SelectionGroup::clear()
@@ -30,12 +33,13 @@ void SelectionGroup::clear()
     for (auto && node : m_nodes) {
         node->setSelected(false);
     }
+    m_nodeSet.clear();
     m_nodes.clear();
 }
 
 bool SelectionGroup::hasNode(Node & node) const
 {
-    return std::find(m_nodes.begin(), m_nodes.end(), &node) != m_nodes.end();
+    return m_nodeSet.count(&node);
 }
 
 void SelectionGroup::move(Node & reference, QPointF location)
@@ -76,6 +80,7 @@ void SelectionGroup::toggleNode(Node & node)
     if (node.selected()) {
         m_nodes.erase(std::find(m_nodes.begin(), m_nodes.end(), &node));
         node.setSelected(false);
+        m_nodeSet.erase(&node);
     } else {
         addSelectedNode(node);
     }

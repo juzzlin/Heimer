@@ -44,6 +44,8 @@ private slots:
 
     void testRedoState();
 
+    void testTextSearch();
+
     void testUndoAddEdge();
 
     void testUndoArrowMode();

@@ -202,6 +202,8 @@ static const int CLICK_TOLERANCE = 5;
 
 static const double DRAG_NODE_OPACITY = 0.5;
 
+static const int TEXT_SEARCH_DELAY_MS = 250;
+
 static const int TOO_QUICK_ACTION_DELAY_MS = 500;
 
 static const double ZOOM_MAX = 2.0;

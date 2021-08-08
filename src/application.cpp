@@ -179,6 +179,7 @@ Application::Application(int & argc, char ** argv)
         bool visible = state == Qt::Checked;
         m_editorView->setGridVisible(visible);
     });
+    connect(m_mainWindow.get(), &MainWindow::searchTextChanged, m_mediator.get(), &Mediator::setSearchText);
 
     m_mainWindow->initialize();
     m_mainWindow->appear();

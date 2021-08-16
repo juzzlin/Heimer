@@ -121,7 +121,7 @@ void Application::parseArgs(int argc, char ** argv)
       },
       false, "Force language: " + languageHelp);
 
-    ae.setPositionalArgumentCallback([this](Argengine::ArgumentVector args) {
+    ae.setPositionalArgumentCallback([=](Argengine::ArgumentVector args) {
         m_mindMapFile = args.at(0).c_str();
     });
 

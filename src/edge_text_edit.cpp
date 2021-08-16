@@ -32,7 +32,7 @@ EdgeTextEdit::EdgeTextEdit(Edge * parentItem)
     m_visibilityTimer.setSingleShot(true);
     m_visibilityTimer.setInterval(Constants::Edge::TEXT_EDIT_DURATION);
 
-    connect(&m_visibilityTimer, &QTimer::timeout, [=]() {
+    connect(&m_visibilityTimer, &QTimer::timeout, [=] {
         setVisible(false);
     });
 }

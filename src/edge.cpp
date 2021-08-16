@@ -77,7 +77,7 @@ Edge::Edge(Node & sourceNode, Node & targetNode, bool enableAnimations, bool ena
         m_labelVisibilityTimer.setSingleShot(true);
         m_labelVisibilityTimer.setInterval(Constants::Edge::LABEL_DURATION);
 
-        connect(&m_labelVisibilityTimer, &QTimer::timeout, [=]() {
+        connect(&m_labelVisibilityTimer, &QTimer::timeout, [=] {
             setLabelVisible(false);
         });
     }

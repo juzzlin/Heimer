@@ -40,7 +40,7 @@ PngExportDialog::PngExportDialog(QWidget & parent)
 
     initWidgets();
 
-    connect(m_filenameButton, &QPushButton::clicked, [=]() {
+    connect(m_filenameButton, &QPushButton::clicked, [=] {
         const auto filename = QFileDialog::getSaveFileName(this,
                                                            tr("Export As"),
                                                            QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
@@ -78,7 +78,7 @@ PngExportDialog::PngExportDialog(QWidget & parent)
     connect(m_filenameLineEdit, &QLineEdit::textChanged, this, &PngExportDialog::validate);
 
     connect(m_buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
-    connect(m_buttonBox, &QDialogButtonBox::accepted, [=]() {
+    connect(m_buttonBox, &QDialogButtonBox::accepted, [=] {
         m_buttonBox->setEnabled(false);
         m_progressBar->setValue(50);
         emit pngExportRequested(m_filenameWithExtension, QSize(m_imageWidthSpinBox->value(), m_imageHeightSpinBox->value()), m_transparentBackgroundCheckBox->isChecked());

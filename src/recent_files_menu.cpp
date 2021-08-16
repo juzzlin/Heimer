@@ -21,16 +21,16 @@
 RecentFilesMenu::RecentFilesMenu(QWidget * parent)
   : QMenu(parent)
 {
-    connect(this, &QMenu::aboutToShow, [this]() {
+    connect(this, &QMenu::aboutToShow, [=] {
         for (auto && action : actions()) {
             removeAction(action);
         }
         // clang-format off
         for (auto && filePath : RecentFilesManager::instance().getRecentFiles()) {
             const auto action = addAction(filePath);
-            const auto handler = std::bind([this](QString filePath) {
+            const auto handler = std::bind([=](QString filePath) {
                 RecentFilesManager::instance().setSelectedFile(filePath);
-                this->fileSelected(filePath);
+                fileSelected(filePath);
             }, action->text());
             connect(action, &QAction::triggered, handler);
         }

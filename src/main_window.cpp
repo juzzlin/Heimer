@@ -106,7 +106,7 @@ void MainWindow::addRedoAction(QMenu & menu)
 {
     m_redoAction->setShortcut(QKeySequence("Ctrl+Shift+Z"));
 
-    connect(m_redoAction, &QAction::triggered, [this]() {
+    connect(m_redoAction, &QAction::triggered, [=] {
         m_mediator->redo();
     });
 
@@ -119,7 +119,7 @@ void MainWindow::addUndoAction(QMenu & menu)
 {
     m_undoAction->setShortcut(QKeySequence("Ctrl+Z"));
 
-    connect(m_undoAction, &QAction::triggered, [this]() {
+    connect(m_undoAction, &QAction::triggered, [=] {
         m_mediator->undo();
     });
 
@@ -151,7 +151,7 @@ void MainWindow::createEditMenu()
     const auto backgroundColorAction = new QAction(tr("Set background color") + threeDots, this);
     backgroundColorAction->setShortcut(QKeySequence("Ctrl+B"));
 
-    connect(backgroundColorAction, &QAction::triggered, [this]() {
+    connect(backgroundColorAction, &QAction::triggered, [=] {
         emit actionTriggered(StateMachine::Action::BackgroundColorChangeRequested);
     });
 
@@ -162,7 +162,7 @@ void MainWindow::createEditMenu()
     const auto edgeColorAction = new QAction(tr("Set edge color") + threeDots, this);
     edgeColorAction->setShortcut(QKeySequence("Ctrl+E"));
 
-    connect(edgeColorAction, &QAction::triggered, [this]() {
+    connect(edgeColorAction, &QAction::triggered, [=] {
         emit actionTriggered(StateMachine::Action::EdgeColorChangeRequested);
     });
 
@@ -173,7 +173,7 @@ void MainWindow::createEditMenu()
     const auto gridColorAction = new QAction(tr("Set grid color") + threeDots, this);
     gridColorAction->setShortcut(QKeySequence("Ctrl+G"));
 
-    connect(gridColorAction, &QAction::triggered, [this]() {
+    connect(gridColorAction, &QAction::triggered, [=] {
         emit actionTriggered(StateMachine::Action::GridColorChangeRequested);
     });
 
@@ -284,7 +284,7 @@ void MainWindow::createExportSubMenu(QMenu & fileMenu)
     // Add "export to PNG image"-action
     const auto exportToPngAction = new QAction(tr("&PNG"), this);
     exportMenu->addAction(exportToPngAction);
-    connect(exportToPngAction, &QAction::triggered, [=]() {
+    connect(exportToPngAction, &QAction::triggered, [=] {
         emit actionTriggered(StateMachine::Action::PngExportSelected);
     });
 
@@ -293,11 +293,11 @@ void MainWindow::createExportSubMenu(QMenu & fileMenu)
     // Add "export to SVG file"-action
     const auto exportToSvgAction = new QAction(tr("&SVG"), this);
     exportMenu->addAction(exportToSvgAction);
-    connect(exportToSvgAction, &QAction::triggered, [=]() {
+    connect(exportToSvgAction, &QAction::triggered, [=] {
         emit actionTriggered(StateMachine::Action::SvgExportSelected);
     });
 
-    connect(&fileMenu, &QMenu::aboutToShow, [=]() {
+    connect(&fileMenu, &QMenu::aboutToShow, [=] {
         exportToPngAction->setEnabled(m_mediator->hasNodes());
         exportToSvgAction->setEnabled(m_mediator->hasNodes());
     });
@@ -311,7 +311,7 @@ void MainWindow::createFileMenu()
     const auto newAct = new QAction(tr("&New") + threeDots, this);
     newAct->setShortcut(QKeySequence("Ctrl+N"));
     fileMenu->addAction(newAct);
-    connect(newAct, &QAction::triggered, [=]() {
+    connect(newAct, &QAction::triggered, [=] {
         emit actionTriggered(StateMachine::Action::NewSelected);
     });
 
@@ -319,7 +319,7 @@ void MainWindow::createFileMenu()
     const auto openAct = new QAction(tr("&Open") + threeDots, this);
     openAct->setShortcut(QKeySequence("Ctrl+O"));
     fileMenu->addAction(openAct);
-    connect(openAct, &QAction::triggered, [=]() {
+    connect(openAct, &QAction::triggered, [=] {
         emit actionTriggered(StateMachine::Action::OpenSelected);
     });
 
@@ -327,7 +327,7 @@ void MainWindow::createFileMenu()
     const auto recentFilesMenu = new RecentFilesMenu;
     const auto recentFilesMenuAction = fileMenu->addMenu(recentFilesMenu);
     recentFilesMenuAction->setText(tr("Recent &Files"));
-    connect(recentFilesMenu, &RecentFilesMenu::fileSelected, [=]() {
+    connect(recentFilesMenu, &RecentFilesMenu::fileSelected, [=] {
         emit actionTriggered(StateMachine::Action::RecentFileSelected);
     });
 
@@ -337,7 +337,7 @@ void MainWindow::createFileMenu()
     m_saveAction->setShortcut(QKeySequence("Ctrl+S"));
     m_saveAction->setEnabled(false);
     fileMenu->addAction(m_saveAction);
-    connect(m_saveAction, &QAction::triggered, [=]() {
+    connect(m_saveAction, &QAction::triggered, [=] {
         emit actionTriggered(StateMachine::Action::SaveSelected);
     });
 
@@ -345,7 +345,7 @@ void MainWindow::createFileMenu()
     m_saveAsAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
     m_saveAsAction->setEnabled(false);
     fileMenu->addAction(m_saveAsAction);
-    connect(m_saveAsAction, &QAction::triggered, [=]() {
+    connect(m_saveAsAction, &QAction::triggered, [=] {
         emit actionTriggered(StateMachine::Action::SaveAsSelected);
     });
 
@@ -366,11 +366,11 @@ void MainWindow::createFileMenu()
     const auto quitAct = new QAction(tr("&Quit"), this);
     quitAct->setShortcut(QKeySequence("Ctrl+W"));
     fileMenu->addAction(quitAct);
-    connect(quitAct, &QAction::triggered, [=]() {
+    connect(quitAct, &QAction::triggered, [=] {
         emit actionTriggered(StateMachine::Action::QuitSelected);
     });
 
-    connect(fileMenu, &QMenu::aboutToShow, [=]() {
+    connect(fileMenu, &QMenu::aboutToShow, [=] {
         recentFilesMenuAction->setEnabled(RecentFilesManager::instance().hasRecentFiles());
     });
 }
@@ -473,7 +473,7 @@ void MainWindow::createViewMenu()
     viewMenu->addAction(zoomToFit);
     connect(zoomToFit, &QAction::triggered, this, &MainWindow::zoomToFitTriggered);
 
-    connect(viewMenu, &QMenu::aboutToShow, [=]() {
+    connect(viewMenu, &QMenu::aboutToShow, [=] {
         zoomToFit->setEnabled(m_mediator->hasNodes());
     });
 }

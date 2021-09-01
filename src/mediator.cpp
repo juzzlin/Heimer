@@ -493,8 +493,8 @@ bool Mediator::openMindMap(QString fileName)
     assert(m_editorData);
 
     try {
-        m_editorScene = std::make_unique<EditorScene>();
         m_editorData->loadMindMapData(fileName);
+        m_editorScene = std::make_unique<EditorScene>();
         initializeView();
         addExistingGraphToScene();
         connectGraphToUndoMechanism();

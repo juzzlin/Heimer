@@ -1,4 +1,4 @@
-// This file is part of Heimer.
+﻿// This file is part of Heimer.
 // Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
@@ -493,7 +493,14 @@ void MainWindow::initialize()
 {
     // Read dialog size data
     const auto screenAndWindow = calculateDefaultWindowSize();
-    resize(Settings::loadWindowSize(screenAndWindow.second));
+    const auto lastSize = Settings::loadWindowSize(screenAndWindow.second);
+    if (screenAndWindow.first.width() < lastSize.width()
+        || screenAndWindow.first.height() < lastSize.height()) {
+        resize(screenAndWindow.second);
+        Settings::saveWindowSize(size());
+    } else {
+        resize(lastSize);
+    }
 
     // Try to center the window.
     move(screenAndWindow.first.width() / 2 - this->width() / 2, screenAndWindow.first.height() / 2 - this->height() / 2);

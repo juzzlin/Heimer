@@ -9,6 +9,8 @@ New features:
 
 Bug fixes:
 
+* Fix editor scene getting broken when a file cannot be opened
+
 Other:
 
 2.6.0

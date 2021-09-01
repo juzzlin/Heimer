@@ -1,4 +1,4 @@
-// This file is part of Heimer.
+﻿// This file is part of Heimer.
 // Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
@@ -493,8 +493,8 @@ bool Mediator::openMindMap(QString fileName)
     assert(m_editorData);
 
     try {
-        m_editorScene = std::make_unique<EditorScene>();
         m_editorData->loadMindMapData(fileName);
+        m_editorScene = std::make_unique<EditorScene>();
         initializeView();
         addExistingGraphToScene();
         connectGraphToUndoMechanism();

@@ -9,7 +9,11 @@ New features:
 
 Bug fixes:
 
+* Fix editor scene getting broken when a file cannot be opened
+
 Other:
+
+* Limit application window startup size
 
 2.6.0
 =====

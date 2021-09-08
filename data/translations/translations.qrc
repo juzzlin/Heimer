@@ -6,5 +6,6 @@
         <file>heimer_fr.qm</file>
         <file>heimer_it.qm</file>
         <file>heimer_nl.qm</file>
+        <file>heimer_zh.qm</file>
     </qresource>
 </RCC>

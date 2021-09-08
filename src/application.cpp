@@ -96,7 +96,7 @@ void Application::parseArgs(int argc, char ** argv)
 {
     Argengine ae(argc, argv);
 
-    const std::set<std::string> languages = { "en", "es", "fi", "fr", "it", "nl" };
+    const std::set<std::string> languages = { "en", "es", "fi", "fr", "it", "nl", "zh" };
     std::string languageHelp;
     for (auto && lang : languages) {
         languageHelp += lang + ", ";

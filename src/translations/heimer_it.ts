@@ -6,7 +6,7 @@
     <message>
         <location filename="../about_dlg.cpp" line="27"/>
         <source>About </source>
-        <translation>informazioni su</translation>
+        <translation>informazioni</translation>
     </message>
     <message>
         <location filename="../about_dlg.cpp" line="42"/>
@@ -39,7 +39,7 @@
     <message>
         <location filename="../application.cpp" line="193"/>
         <source>Heimer Files</source>
-        <translation>Heimer File</translation>
+        <translation>File Heimer</translation>
     </message>
     <message>
         <location filename="../application.cpp" line="284"/>
@@ -557,7 +557,7 @@
     <message>
         <location filename="../png_export_dialog.cpp" line="47"/>
         <source>PNG Files</source>
-        <translation>PNG-Files</translation>
+        <translation>File PNG</translation>
     </message>
     <message>
         <location filename="../png_export_dialog.cpp" line="115"/>

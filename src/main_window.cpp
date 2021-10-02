@@ -104,7 +104,7 @@ void MainWindow::addDisconnectSelectedNodesAction(QMenu & menu)
 
 void MainWindow::addRedoAction(QMenu & menu)
 {
-    m_redoAction->setShortcut(QKeySequence("Ctrl+Shift+Z"));
+    m_redoAction->setShortcut(QKeySequence(QKeySequence::Redo));
 
     connect(m_redoAction, &QAction::triggered, [=] {
         m_mediator->redo();
@@ -117,7 +117,7 @@ void MainWindow::addRedoAction(QMenu & menu)
 
 void MainWindow::addUndoAction(QMenu & menu)
 {
-    m_undoAction->setShortcut(QKeySequence("Ctrl+Z"));
+    m_undoAction->setShortcut(QKeySequence(QKeySequence::Undo));
 
     connect(m_undoAction, &QAction::triggered, [=] {
         m_mediator->undo();
@@ -309,7 +309,7 @@ void MainWindow::createFileMenu()
 
     // Add "new"-action
     const auto newAct = new QAction(tr("&New") + threeDots, this);
-    newAct->setShortcut(QKeySequence("Ctrl+N"));
+    newAct->setShortcut(QKeySequence(QKeySequence::New));
     fileMenu->addAction(newAct);
     connect(newAct, &QAction::triggered, [=] {
         emit actionTriggered(StateMachine::Action::NewSelected);
@@ -317,7 +317,7 @@ void MainWindow::createFileMenu()
 
     // Add "open"-action
     const auto openAct = new QAction(tr("&Open") + threeDots, this);
-    openAct->setShortcut(QKeySequence("Ctrl+O"));
+    openAct->setShortcut(QKeySequence(QKeySequence::Open));
     fileMenu->addAction(openAct);
     connect(openAct, &QAction::triggered, [=] {
         emit actionTriggered(StateMachine::Action::OpenSelected);
@@ -334,7 +334,7 @@ void MainWindow::createFileMenu()
     fileMenu->addSeparator();
 
     // Add "save"-action
-    m_saveAction->setShortcut(QKeySequence("Ctrl+S"));
+    m_saveAction->setShortcut(QKeySequence(QKeySequence::Save));
     m_saveAction->setEnabled(false);
     fileMenu->addAction(m_saveAction);
     connect(m_saveAction, &QAction::triggered, [=] {
@@ -342,7 +342,7 @@ void MainWindow::createFileMenu()
     });
 
     // Add "save as"-action
-    m_saveAsAction->setShortcut(QKeySequence("Ctrl+Shift+S"));
+    m_saveAsAction->setShortcut(QKeySequence(QKeySequence::SaveAs));
     m_saveAsAction->setEnabled(false);
     fileMenu->addAction(m_saveAsAction);
     connect(m_saveAsAction, &QAction::triggered, [=] {
@@ -364,7 +364,7 @@ void MainWindow::createFileMenu()
 
     // Add "quit"-action
     const auto quitAct = new QAction(tr("&Quit"), this);
-    quitAct->setShortcut(QKeySequence("Ctrl+W"));
+    quitAct->setShortcut(QKeySequence(QKeySequence::Quit));
     fileMenu->addAction(quitAct);
     connect(quitAct, &QAction::triggered, [=] {
         emit actionTriggered(StateMachine::Action::QuitSelected);
@@ -456,14 +456,14 @@ void MainWindow::createViewMenu()
     // Add "zoom in"-action
     const auto zoomIn = new QAction(tr("Zoom In"), this);
     viewMenu->addAction(zoomIn);
-    zoomIn->setShortcut(QKeySequence("Ctrl++"));
+    zoomIn->setShortcut(QKeySequence(QKeySequence::ZoomIn));
     connect(zoomIn, &QAction::triggered, this, &MainWindow::zoomInTriggered);
 
     // Add "zoom out"-action
     const auto zoomOut = new QAction(tr("Zoom Out"), this);
     viewMenu->addAction(zoomOut);
     connect(zoomOut, &QAction::triggered, this, &MainWindow::zoomOutTriggered);
-    zoomOut->setShortcut(QKeySequence("Ctrl+-"));
+    zoomOut->setShortcut(QKeySequence(QKeySequence::ZoomOut));
 
     viewMenu->addSeparator();
 

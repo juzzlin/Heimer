@@ -68,6 +68,8 @@ public:
 
     NodePtr addNodeAt(QPointF pos);
 
+    void clearCopyStack();
+
     void clearImages();
 
     void clearSelectionGroup();
@@ -202,9 +204,14 @@ private:
 
     QTimer m_undoTimer;
 
-    std::vector<std::shared_ptr<Node>> m_copiedNodes;
+    struct CopyContext
+    {
+        std::vector<std::shared_ptr<Node>> copiedNodes;
 
-    QPointF m_copyReferencePoint;
+        QPointF copyReferencePoint;
+    };
+
+    CopyContext m_copyContext;
 };
 
 #endif // EDITOR_DATA_HPP

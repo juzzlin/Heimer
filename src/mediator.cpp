@@ -28,6 +28,7 @@
 #include "simple_logger.hpp"
 
 #include <QApplication>
+#include <QClipboard>
 #include <QFileInfo>
 #include <QGraphicsItem>
 #include <QGraphicsScene>
@@ -426,12 +427,22 @@ bool Mediator::nodeHasImageAttached() const
 
 void Mediator::paste()
 {
-    if (m_editorData->copyStackSize()) {
+    // Create a new node from OS clipboard if text has been copied
+    const auto text = QApplication::clipboard()->text();
+    if (!text.isEmpty()) {
         saveUndoPoint();
-        for (auto && node : m_editorData->copiedNodes()) {
-            pasteNodeAt(*node, m_editorView->grid().snapToGrid(mouseAction().mappedPos() - m_editorData->copyReferencePoint() + node->pos()));
+        const auto node = createAndAddNode(m_editorView->grid().snapToGrid(mouseAction().mappedPos()));
+        node->setText(text);
+        QApplication::clipboard()->clear();
+        m_editorData->clearCopyStack();
+    } else { // Paste copied nodes
+        if (m_editorData->copyStackSize()) {
+            saveUndoPoint();
+            for (auto && node : m_editorData->copiedNodes()) {
+                pasteNodeAt(*node, m_editorView->grid().snapToGrid(mouseAction().mappedPos() - m_editorData->copyReferencePoint() + node->pos()));
+            }
+            addExistingGraphToScene();
         }
-        addExistingGraphToScene();
     }
 }
 
@@ -454,6 +465,7 @@ void Mediator::performNodeAction(const NodeAction & action)
         connectSelectedNodes();
         break;
     case NodeAction::Type::Copy:
+        QApplication::clipboard()->clear();
         m_editorData->copySelectedNodes();
         break;
     case NodeAction::Type::Delete:

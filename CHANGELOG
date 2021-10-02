@@ -3,6 +3,9 @@ x.y.z
 
 New features:
 
+* Fix GitHub Issue #173: Being able to paste and create a node right-away
+  - Pasting text to Heimer will create a new node with that text
+
 Bug fixes:
 
 Other:

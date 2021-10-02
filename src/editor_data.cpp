@@ -387,7 +387,7 @@ void EditorData::disconnectSelectedNodes()
 
 std::vector<std::shared_ptr<Node>> EditorData::copiedNodes() const
 {
-    return m_copiedNodes;
+    return m_copyContext.copiedNodes;
 }
 
 NodePtr EditorData::copyNodeAt(Node & source, QPointF pos)
@@ -403,26 +403,30 @@ NodePtr EditorData::copyNodeAt(Node & source, QPointF pos)
 
 QPointF EditorData::copyReferencePoint() const
 {
-    return m_copyReferencePoint;
+    return m_copyContext.copyReferencePoint;
 }
 
 void EditorData::copySelectedNodes()
 {
     if (m_selectionGroup->size()) {
-        m_copiedNodes.clear();
-        m_copyReferencePoint = {};
+        clearCopyStack();
         for (auto && node : m_selectionGroup->nodes()) {
-            m_copiedNodes.push_back(make_shared<Node>(*node));
-            m_copyReferencePoint += node->pos();
+            m_copyContext.copiedNodes.push_back(make_shared<Node>(*node));
+            m_copyContext.copyReferencePoint += node->pos();
         }
-        m_copyReferencePoint /= static_cast<qreal>(m_selectionGroup->size());
-        L().debug() << m_selectionGroup->size() << " nodes copied. Reference point calculated at (" << m_copyReferencePoint.x() << ", " << m_copyReferencePoint.y() << ")";
+        m_copyContext.copyReferencePoint /= static_cast<qreal>(m_selectionGroup->size());
+        L().debug() << m_selectionGroup->size() << " nodes copied. Reference point calculated at (" << m_copyContext.copyReferencePoint.x() << ", " << m_copyContext.copyReferencePoint.y() << ")";
     }
 }
 
 size_t EditorData::copyStackSize() const
 {
-    return m_copiedNodes.size();
+    return m_copyContext.copiedNodes.size();
+}
+
+void EditorData::clearCopyStack()
+{
+    m_copyContext = {};
 }
 
 void EditorData::clearImages()

@@ -32,7 +32,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
 {
     // Here we add a shortcut to the context menu action. However, the action cannot be triggered unless the context menu
     // is open. As a "solution" we create another shortcut and add it to the parent widget.
-    const auto copyNodeSequence = QKeySequence("Ctrl+C");
+    const auto copyNodeSequence = QKeySequence(QKeySequence::Copy);
     m_copyNodeAction->setShortcut(copyNodeSequence);
     const auto copyNodeShortCut = new QShortcut(copyNodeSequence, parent);
     connect(copyNodeShortCut, &QShortcut::activated, m_copyNodeAction, &QAction::trigger);
@@ -44,7 +44,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
 
     // Here we add a shortcut to the context menu action. However, the action cannot be triggered unless the context menu
     // is open. As a "solution" we create another shortcut and add it to the parent widget.
-    const auto pasteNodeSequence = QKeySequence("Ctrl+V");
+    const auto pasteNodeSequence = QKeySequence(QKeySequence::Paste);
     m_pasteNodeAction->setShortcut(pasteNodeSequence);
     const auto pasteNodeShortCut = new QShortcut(pasteNodeSequence, parent);
     connect(pasteNodeShortCut, &QShortcut::activated, m_pasteNodeAction, &QAction::trigger);

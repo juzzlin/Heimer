@@ -25,6 +25,7 @@
 #include <cassert>
 #include <functional>
 #include <map>
+#include <set>
 
 #include <QDebug>
 #include <QDomElement>
@@ -244,29 +245,35 @@ static QImage base64ToQImage(const std::string & base64, size_t imageId, std::st
 
 static void writeImages(MindMapData & mindMapData, QDomElement & root, QDomDocument & doc)
 {
+    std::set<size_t> writtenImageRefs;
     for (auto && node : mindMapData.graph().getNodes()) {
         if (node->imageRef()) {
-            Image image;
-            bool exists;
-            std::tie(image, exists) = mindMapData.imageManager().getImage(node->imageRef());
-            if (exists) {
-                auto imageElement = doc.createElement(DataKeywords::MindMap::IMAGE);
-                imageElement.setAttribute(DataKeywords::MindMap::Image::ID, static_cast<int>(image.id()));
-                imageElement.setAttribute(DataKeywords::MindMap::Image::PATH, image.path().c_str());
-                root.appendChild(imageElement);
-
-                // Create a child node for the image content
-                if (!TestMode::enabled()) {
-                    QTemporaryDir dir;
-                    const QFileInfo info(image.path().c_str());
-                    const QString tempImagePath = (dir.path() + QDir::separator() + info.fileName());
-                    image.image().save(tempImagePath);
-                    imageElement.appendChild(doc.createTextNode(getBase64Data(tempImagePath.toStdString())));
-                } else {
-                    TestMode::logDisabledCode("writeImages");
-                }
+            if (writtenImageRefs.count(node->imageRef())) {
+                juzzlin::L().info() << "Image id=" << node->imageRef() << " already written";
             } else {
-                throw std::runtime_error("Image id=" + std::to_string(node->imageRef()) + " doesn't exist!");
+                Image image;
+                bool exists;
+                std::tie(image, exists) = mindMapData.imageManager().getImage(node->imageRef());
+                if (exists) {
+                    auto imageElement = doc.createElement(DataKeywords::MindMap::IMAGE);
+                    imageElement.setAttribute(DataKeywords::MindMap::Image::ID, static_cast<int>(image.id()));
+                    imageElement.setAttribute(DataKeywords::MindMap::Image::PATH, image.path().c_str());
+                    root.appendChild(imageElement);
+
+                    // Create a child node for the image content
+                    if (!TestMode::enabled()) {
+                        QTemporaryDir dir;
+                        const QFileInfo info(image.path().c_str());
+                        const QString tempImagePath = (dir.path() + QDir::separator() + info.fileName());
+                        image.image().save(tempImagePath);
+                        imageElement.appendChild(doc.createTextNode(getBase64Data(tempImagePath.toStdString())));
+                        writtenImageRefs.insert(image.id());
+                    } else {
+                        TestMode::logDisabledCode("writeImages");
+                    }
+                } else {
+                    throw std::runtime_error("Image id=" + std::to_string(node->imageRef()) + " doesn't exist!");
+                }
             }
         }
     }

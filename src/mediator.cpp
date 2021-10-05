@@ -32,9 +32,12 @@
 #include <QFileInfo>
 #include <QGraphicsItem>
 #include <QGraphicsScene>
+#include <QImage>
+#include <QMimeData>
 #include <QSizePolicy>
 
 #include <cassert>
+#include <chrono>
 #include <cmath>
 
 using juzzlin::L;
@@ -428,11 +431,21 @@ bool Mediator::nodeHasImageAttached() const
 void Mediator::paste()
 {
     // Create a new node from OS clipboard if text has been copied
-    const auto text = QApplication::clipboard()->text();
-    if (!text.isEmpty()) {
+    if (!QApplication::clipboard()->text().isEmpty()) {
         saveUndoPoint();
         const auto node = createAndAddNode(m_editorView->grid().snapToGrid(mouseAction().mappedPos()));
-        node->setText(text);
+        node->setText(QApplication::clipboard()->text());
+        QApplication::clipboard()->clear();
+        m_editorData->clearCopyStack();
+    } else if (!QApplication::clipboard()->image().isNull()) {
+        saveUndoPoint();
+        using std::chrono::duration_cast;
+        using std::chrono::system_clock;
+        const auto node = createAndAddNode(m_editorView->grid().snapToGrid(mouseAction().mappedPos()));
+        const auto ts = duration_cast<std::chrono::milliseconds>(system_clock::now().time_since_epoch()).count();
+        const Image image(QApplication::clipboard()->image(), "copy-pasted-image-data-" + std::to_string(ts) + ".png");
+        const auto id = m_editorData->mindMapData()->imageManager().addImage(image);
+        node->setImageRef(id);
         QApplication::clipboard()->clear();
         m_editorData->clearCopyStack();
     } else { // Paste copied nodes

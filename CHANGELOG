@@ -8,6 +8,9 @@ New features:
 
 Bug fixes:
 
+* Fix image save when original image is missing
+* Write images with same id only once
+
 Other:
 
 * Unselect text on all nodes when background is clicked

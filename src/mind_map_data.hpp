@@ -32,7 +32,7 @@ public:
 
     MindMapData(const MindMapData & other);
 
-    virtual ~MindMapData();
+    virtual ~MindMapData() override;
 
     double aspectRatio() const;
 
@@ -58,13 +58,13 @@ public:
 
     void setEdgeWidth(double width);
 
-    QString fileName() const;
+    QString fileName() const override;
 
-    void setFileName(QString fileName);
+    void setFileName(QString fileName) override;
 
-    Graph & graph();
+    Graph & graph() override;
 
-    const Graph & graph() const;
+    const Graph & graph() const override;
 
     double minEdgeLength() const;
 

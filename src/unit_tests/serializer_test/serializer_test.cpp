@@ -176,7 +176,8 @@ void SerializerTest::testSingleNode()
 
     const auto outNode = std::make_shared<Node>();
     outNode->setColor(QColor(1, 2, 3));
-    outNode->setImageRef(1);
+    const auto imageRef = outData.imageManager().addImage(Image {});
+    outNode->setImageRef(imageRef);
     outNode->setLocation(QPointF(333.333, 666.666));
     outNode->setSize(QSize(123, 321));
     outNode->setText("Lorem ipsum");

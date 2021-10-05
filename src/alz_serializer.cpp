@@ -256,7 +256,17 @@ static void writeImages(MindMapData & mindMapData, QDomElement & root, QDomDocum
                 root.appendChild(imageElement);
 
                 // Create a child node for the image content
-                imageElement.appendChild(doc.createTextNode(getBase64Data(image.path())));
+                if (!TestMode::enabled()) {
+                    QTemporaryDir dir;
+                    const QFileInfo info(image.path().c_str());
+                    const QString tempImagePath = (dir.path() + QDir::separator() + info.fileName());
+                    image.image().save(tempImagePath);
+                    imageElement.appendChild(doc.createTextNode(getBase64Data(tempImagePath.toStdString())));
+                } else {
+                    TestMode::logDisabledCode("writeImages");
+                }
+            } else {
+                throw std::runtime_error("Image id=" + std::to_string(node->imageRef()) + " doesn't exist!");
             }
         }
     }

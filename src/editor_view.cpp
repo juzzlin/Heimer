@@ -84,6 +84,7 @@ void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
         initiateRubberBand();
     } else if (event.button() == Qt::LeftButton) {
         m_mediator.setSelectedEdge(nullptr);
+        m_mediator.unselectText();
         m_mediator.mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
         setDragMode(ScrollHandDrag);
     } else if (event.button() == Qt::RightButton) {

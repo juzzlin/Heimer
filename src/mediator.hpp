@@ -156,6 +156,8 @@ public:
 
     void undo();
 
+    void unselectText();
+
 public slots:
 
     void enableUndo(bool enable);

@@ -31,6 +31,7 @@
 #include <QImage>
 #include <QPainter>
 #include <QPen>
+#include <QTextCursor>
 #include <QVector2D>
 
 #include <algorithm>
@@ -510,6 +511,13 @@ int Node::index() const
 void Node::setIndex(int index)
 {
     m_index = index;
+}
+
+void Node::unselectText()
+{
+    auto cursor(m_textEdit->textCursor());
+    cursor.clearSelection();
+    m_textEdit->setTextCursor(cursor);
 }
 
 Node::~Node()

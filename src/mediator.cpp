@@ -727,6 +727,11 @@ void Mediator::undo()
     setupMindMapAfterUndoOrRedo();
 }
 
+void Mediator::unselectText()
+{
+    m_editorData->unselectText();
+}
+
 void Mediator::zoomIn()
 {
     m_editorView->zoom(std::pow(Constants::View::ZOOM_SENSITIVITY, 2));

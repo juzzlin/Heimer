@@ -119,6 +119,8 @@ public:
 
     static Node * lastHoveredNode();
 
+    void unselectText();
+
 signals:
 
     void undoPointRequested();

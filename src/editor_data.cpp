@@ -117,6 +117,13 @@ void EditorData::undo()
     }
 }
 
+void EditorData::unselectText()
+{
+    for (auto && node : mindMapData()->graph().getNodes()) {
+        node->unselectText();
+    }
+}
+
 bool EditorData::isRedoable() const
 {
     return m_undoStack.isRedoable();

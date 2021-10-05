@@ -151,6 +151,8 @@ public:
 
     void undo();
 
+    void unselectText();
+
 signals:
 
     void isModifiedChanged(bool isModified);

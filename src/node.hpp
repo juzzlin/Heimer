@@ -57,6 +57,8 @@ public:
 
     QColor color() const;
 
+    bool containsText(const QString & text) const;
+
     int cornerRadius() const;
 
     using NodePtr = std::shared_ptr<Node>;

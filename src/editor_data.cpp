@@ -241,7 +241,7 @@ void EditorData::selectNodesByText(QString text)
     clearSelectionGroup();
     if (!text.isEmpty()) {
         for (auto && node : m_mindMapData->graph().getNodes()) {
-            if (node->text().toLower().contains(text.toLower())) {
+            if (node->containsText(text)) {
                 addNodeToSelectionGroup(*node);
             }
         }

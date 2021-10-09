@@ -503,6 +503,11 @@ QColor Node::color() const
     return m_color;
 }
 
+bool Node::containsText(const QString & text) const
+{
+    return m_text.toLower().contains(text.toLower());
+}
+
 int Node::index() const
 {
     return m_index;

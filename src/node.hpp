@@ -49,83 +49,82 @@ public:
 
     void addGraphicsEdge(Edge & edge);
 
-    void removeGraphicsEdge(Edge & edge);
-
-    void removeHandles();
-
     void adjustSize();
 
+    void applyImage(const Image & image);
+
     QRectF boundingRect() const override;
+
+    QColor color() const;
+
+    int cornerRadius() const;
 
     using NodePtr = std::shared_ptr<Node>;
     EdgePtr createAndAddGraphicsEdge(NodePtr targetNode);
 
-    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
-
-    //! Sets the Node and QGraphicsItem locations.
-    void setLocation(QPointF newLocation);
-
-    QRectF placementBoundingRect() const;
+    static std::pair<EdgePoint, EdgePoint> getNearestEdgePoints(const Node & node1, const Node & node2);
 
     void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
 
     void hoverMoveEvent(QGraphicsSceneHoverEvent * event) override;
 
-    void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
-
-    static std::pair<EdgePoint, EdgePoint> getNearestEdgePoints(const Node & node1, const Node & node2);
-
-    void setHandlesVisible(bool visible);
+    size_t imageRef() const;
 
     int index() const;
 
-    void setIndex(int index);
-
-    QString text() const;
-
-    QColor color() const;
-
-    void setColor(const QColor & color);
-
-    int cornerRadius() const;
-
-    void setCornerRadius(int value);
+    static Node * lastHoveredNode();
 
     QPointF location() const;
 
+    void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
+
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
+
+    QRectF placementBoundingRect() const;
+
+    void removeGraphicsEdge(Edge & edge);
+
+    void removeHandles();
+
     bool selected() const;
 
-    void setSelected(bool selected);
+    void setColor(const QColor & color);
 
-    QSizeF size() const;
+    void setCornerRadius(int value);
 
-    void setSize(const QSizeF & size);
-
-    void setTextInputActive(bool active);
-
-    void setText(const QString & text);
-
-    QColor textColor() const;
-
-    void setTextColor(const QColor & color);
-
-    void setTextSize(int textSize);
-
-    size_t imageRef() const;
+    void setHandlesVisible(bool visible);
 
     void setImageRef(size_t imageRef);
 
-    void applyImage(const Image & image);
+    void setIndex(int index);
 
-    static Node * lastHoveredNode();
+    void setLocation(QPointF newLocation);
+
+    void setSelected(bool selected);
+
+    void setSize(const QSizeF & size);
+
+    void setText(const QString & text);
+
+    void setTextColor(const QColor & color);
+
+    void setTextInputActive(bool active);
+
+    void setTextSize(int textSize);
+
+    QSizeF size() const;
+
+    QString text() const;
+
+    QColor textColor() const;
 
     void unselectText();
 
 signals:
 
-    void undoPointRequested();
-
     void imageRequested(size_t imageRef, Node & node);
+
+    void undoPointRequested();
 
 private:
     void createEdgePoints();

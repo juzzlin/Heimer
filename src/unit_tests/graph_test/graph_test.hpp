@@ -13,6 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
+#ifndef GRAPH_TEST_HPP
+#define GRAPH_TEST_HPP
+
 #include <QTest>
 
 class GraphTest : public QObject
@@ -48,3 +51,5 @@ private slots:
 
     void testGetNodeByIndex_NotFound();
 };
+
+#endif // GRAPH_TEST_HPP

@@ -13,6 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
+#ifndef LAYOUT_OPTIMIZER_TEST_HPP
+#define LAYOUT_OPTIMIZER_TEST_HPP
+
 #include <QTest>
 
 class LayoutOptimizerTest : public QObject
@@ -32,3 +35,5 @@ private slots:
 
     void testMultipleNodes_NoEdges_ShouldSpread();
 };
+
+#endif // LAYOUT_OPTIMIZER_TEST_HPP

@@ -239,12 +239,11 @@ void EditorData::setMindMapData(MindMapDataPtr mindMapData)
 void EditorData::selectNodesByText(QString text)
 {
     clearSelectionGroup();
-    if (!text.isEmpty()) {
-        for (auto && node : m_mindMapData->graph().getNodes()) {
-            if (node->containsText(text)) {
-                addNodeToSelectionGroup(*node);
-            }
+    for (auto && node : m_mindMapData->graph().getNodes()) {
+        if (!text.isEmpty() && node->containsText(text)) {
+            addNodeToSelectionGroup(*node);
         }
+        node->highlightText(text);
     }
 }
 

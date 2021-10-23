@@ -66,6 +66,8 @@ public:
 
     static std::pair<EdgePoint, EdgePoint> getNearestEdgePoints(const Node & node1, const Node & node2);
 
+    void highlightText(const QString & text);
+
     void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
 
     void hoverMoveEvent(QGraphicsSceneHoverEvent * event) override;

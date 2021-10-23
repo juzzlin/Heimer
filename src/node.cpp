@@ -220,6 +220,24 @@ std::pair<EdgePoint, EdgePoint> Node::getNearestEdgePoints(const Node & node1, c
     return bestPair;
 }
 
+void Node::highlightText(const QString & text)
+{
+    if (!TestMode::enabled()) {
+        auto cursor(m_textEdit->textCursor());
+        cursor.clearSelection();
+        if (!text.isEmpty()) {
+            const auto index = static_cast<int>(m_textEdit->text().toLower().indexOf(text.toLower()));
+            if (index >= 0) {
+                cursor.setPosition(index);
+                cursor.movePosition(QTextCursor::MoveOperation::Right, QTextCursor::MoveMode::KeepAnchor, static_cast<int>(text.length()));
+            }
+        }
+        m_textEdit->setTextCursor(cursor);
+    } else {
+        TestMode::logDisabledCode("highlightText");
+    }
+}
+
 void Node::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 {
     // This is to more quickly hide the handles of the previous node when

@@ -665,8 +665,7 @@ void Mediator::setEditorView(EditorView & editorView)
 size_t Mediator::setRectagleSelection(QRectF rect)
 {
     size_t nodesInRectangle = 0;
-    const auto items = m_editorScene->items(rect, SettingsProxy::instance().selectNodeGroupByIntersection() ? Qt::IntersectsItemShape : Qt::ContainsItemShape);
-    for (auto && item : items) {
+    for (auto && item : m_editorScene->items(rect, SettingsProxy::instance().selectNodeGroupByIntersection() ? Qt::IntersectsItemShape : Qt::ContainsItemShape)) {
         if (const auto node = dynamic_cast<Node *>(item)) {
             toggleNodeInSelectionGroup(*node, false);
             nodesInRectangle++;
@@ -805,8 +804,7 @@ NodePtr Mediator::getBestOverlapNode(const Node & source)
     const double minThreshold = 0.25;
     for (auto && node : m_editorData->mindMapData()->graph().getNodes()) {
         if (node->index() != source.index() && node->index() != mouseAction().sourceNode()->index() && !areDirectlyConnected(*node, *mouseAction().sourceNode())) {
-            const auto score = calculateNodeOverlapScore(source, *node);
-            if (score > minThreshold && score > bestScore) {
+            if (const auto score = calculateNodeOverlapScore(source, *node); score > minThreshold && score > bestScore) {
                 bestNode = node;
                 bestScore = score;
             }

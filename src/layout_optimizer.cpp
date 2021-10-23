@@ -450,8 +450,7 @@ private:
         {
             double maxX = 0;
             for (auto && row : rows) {
-                const auto cell = row->cells.at(colIndex);
-                if (cell && cell->node.lock()) {
+                if (const auto cell = row->cells.at(colIndex); cell && cell->node.lock()) {
                     maxX = std::max(maxX, cell->x() + cell->node.lock()->size().width() / 2);
                 }
             }
@@ -462,8 +461,7 @@ private:
         {
             std::pair<double, bool> minX { std::numeric_limits<double>::max(), false };
             for (auto && row : rows) {
-                const auto cell = row->cells.at(colIndex);
-                if (cell && cell->node.lock()) {
+                if (const auto cell = row->cells.at(colIndex); cell && cell->node.lock()) {
                     minX = { std::min(minX.first, cell->x() - cell->node.lock()->size().width() / 2), true };
                 }
             }
@@ -499,8 +497,7 @@ private:
                 const auto minX = getMinColX(i);
                 if (minX.second && minX.first < prevMaxX) {
                     for (auto && row : rows) {
-                        const auto cell = row->cells.at(i);
-                        if (cell) {
+                        if (const auto cell = row->cells.at(i); cell) {
                             cell->rect.x += static_cast<int>(prevMaxX - minX.first);
                         }
                     }

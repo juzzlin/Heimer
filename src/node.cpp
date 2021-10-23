@@ -105,8 +105,7 @@ void Node::addGraphicsEdge(Edge & edge)
 void Node::removeGraphicsEdge(Edge & edge)
 {
     if (!TestMode::enabled()) {
-        const auto iter = std::find(m_graphicsEdges.begin(), m_graphicsEdges.end(), &edge);
-        if (iter != m_graphicsEdges.end()) {
+        if (const auto iter = std::find(m_graphicsEdges.begin(), m_graphicsEdges.end(), &edge); iter != m_graphicsEdges.end()) {
             m_graphicsEdges.erase(iter);
         }
     } else {
@@ -226,8 +225,7 @@ void Node::highlightText(const QString & text)
         auto cursor(m_textEdit->textCursor());
         cursor.clearSelection();
         if (!text.isEmpty()) {
-            const auto index = static_cast<int>(m_textEdit->text().toLower().indexOf(text.toLower()));
-            if (index >= 0) {
+            if (const auto index = static_cast<int>(m_textEdit->text().toLower().indexOf(text.toLower())); index >= 0) {
                 cursor.setPosition(index);
                 cursor.movePosition(QTextCursor::MoveOperation::Right, QTextCursor::MoveMode::KeepAnchor, static_cast<int>(text.length()));
             }
@@ -306,10 +304,8 @@ void Node::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
         QPainterPath scaledPath;
         const QRectF scaledRect(0, 0, m_size.width(), m_size.height());
         scaledPath.addRoundedRect(scaledRect, m_cornerRadius, m_cornerRadius);
-
         const auto pixmapAspect = static_cast<double>(m_pixmap.width()) / m_pixmap.height();
-        const auto nodeAspect = m_size.width() / m_size.height();
-        if (nodeAspect > 1.0) {
+        if (const auto nodeAspect = m_size.width() / m_size.height(); nodeAspect > 1.0) {
             if (pixmapAspect > nodeAspect) {
                 pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToHeight(static_cast<int>(m_size.height()))));
             } else {

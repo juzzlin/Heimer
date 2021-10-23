@@ -221,8 +221,7 @@ static QString getBase64Data(std::string path)
 static QImage base64ToQImage(const std::string & base64, size_t imageId, std::string imagePath)
 {
     if (!TestMode::enabled()) {
-        QTemporaryDir dir;
-        if (dir.isValid()) {
+        if (QTemporaryDir dir; dir.isValid()) {
             QFileInfo info(imagePath.c_str());
             const auto extractedFilePath = (dir.path() + QDir::separator() + info.fileName()).toStdString();
             juzzlin::L().info() << "Extracting embedded image id=" << imageId << " to '" << extractedFilePath << "'";

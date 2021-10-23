@@ -107,8 +107,7 @@ void LayoutOptimizationDialog::initWidgets(const MindMapData & mindMapData)
         QTimer::singleShot(0, [=] { // Trick to make disabled buttons apply immediately
             emit undoPointRequested();
             if (m_layoutOptimizer.initialize(m_aspectRatioSpinBox->value(), m_minEdgeLengthSpinBox->value())) {
-                const auto optimizationInfo = m_layoutOptimizer.optimize();
-                if (optimizationInfo.changes) {
+                if (const auto optimizationInfo = m_layoutOptimizer.optimize(); optimizationInfo.changes) {
                     const double gain = (optimizationInfo.finalCost - optimizationInfo.initialCost) / optimizationInfo.initialCost;
                     juzzlin::L().info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
                 } else {

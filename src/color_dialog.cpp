@@ -94,7 +94,7 @@ ColorDialog::ColorDialog(Role role, std::shared_ptr<Mediator> mediator)
         "#9b9c82"
     };
 
-    size_t index = 0;
+    int index = 0;
     for (auto && color : standardPalette) {
         setStandardColor(index++, color);
     }

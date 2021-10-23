@@ -58,8 +58,7 @@ void Graph::addNode(NodePtr node)
 EdgePtr Graph::deleteEdge(int index0, int index1)
 {
     EdgePtr deletedEdge;
-    const auto edgeIter = m_edges.find(getKey(index0, index1));
-    if (edgeIter != m_edges.end()) {
+    if (const auto edgeIter = m_edges.find(getKey(index0, index1)); edgeIter != m_edges.end()) {
         deletedEdge = (*edgeIter).second;
         m_deletedEdges.push_back(deletedEdge);
         m_edges.erase(edgeIter);
@@ -71,12 +70,10 @@ std::pair<NodePtr, Graph::EdgeVector> Graph::deleteNode(int index)
 {
     NodePtr deletedNode;
     Graph::EdgeVector deletedEdges;
-    const auto iter = m_nodes.find(index);
-    if (iter != m_nodes.end()) {
+    if (const auto iter = m_nodes.find(index); iter != m_nodes.end()) {
         auto edgeIter = m_edges.begin();
         while (edgeIter != m_edges.end()) {
-            const auto edgePair = *edgeIter;
-            if (edgePair.second->sourceNode().index() == index || edgePair.second->targetNode().index() == index) {
+            if (const auto edgePair = *edgeIter; edgePair.second->sourceNode().index() == index || edgePair.second->targetNode().index() == index) {
                 deletedEdges.push_back(edgePair.second);
                 m_deletedEdges.push_back(edgePair.second);
                 edgeIter = m_edges.erase(edgeIter);
@@ -151,8 +148,7 @@ Graph::EdgeVector Graph::getEdgesToNode(NodePtr node)
 
 NodePtr Graph::getNode(int index)
 {
-    const auto iter = m_nodes.find(index);
-    if (iter != m_nodes.end()) {
+    if (const auto iter = m_nodes.find(index); iter != m_nodes.end()) {
         return iter->second;
     }
     throw std::runtime_error("Invalid node index: " + std::to_string(index));

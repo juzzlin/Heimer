@@ -285,8 +285,7 @@ void Application::openMindMap()
     L().debug() << "Open file";
 
     const auto path = Settings::loadRecentPath();
-    const auto fileName = QFileDialog::getOpenFileName(m_mainWindow.get(), tr("Open File"), path, getFileDialogFileText());
-    if (!fileName.isEmpty()) {
+    if (const auto fileName = QFileDialog::getOpenFileName(m_mainWindow.get(), tr("Open File"), path, getFileDialogFileText()); !fileName.isEmpty()) {
         doOpenMindMap(fileName);
     } else {
         emit actionTriggered(StateMachine::Action::OpeningMindMapCanceled);
@@ -393,8 +392,7 @@ void Application::showImageFileDialog()
     const auto fileName = QFileDialog::getOpenFileName(
       m_mainWindow.get(), tr("Open an image"), path, tr("Image Files") + " " + extensions);
 
-    QImage image;
-    if (image.load(fileName)) {
+    if (QImage image; image.load(fileName)) {
         m_mediator->performNodeAction({ NodeAction::Type::AttachImage, image, fileName });
         Settings::saveRecentImagePath(fileName);
     } else if (fileName != "") {

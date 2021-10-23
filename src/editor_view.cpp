@@ -270,8 +270,7 @@ void EditorView::mousePressEvent(QMouseEvent * event)
     const QRectF clickRect(clickedScenePos.x() - tolerance, clickedScenePos.y() - tolerance, tolerance * 2, tolerance * 2);
 
     // Fetch all items at the location
-    const auto items = scene()->items(clickRect, Qt::IntersectsItemShape, Qt::DescendingOrder);
-    if (items.size()) {
+    if (const auto items = scene()->items(clickRect, Qt::IntersectsItemShape, Qt::DescendingOrder); items.size()) {
         const auto item = *items.begin();
         if (const auto edge = dynamic_cast<Edge *>(item)) {
             juzzlin::L().debug() << "Edge pressed";
@@ -475,8 +474,7 @@ void EditorView::dropEvent(QDropEvent * event)
     if (urls.isEmpty()) {
         return;
     }
-    const auto fileName = urls.first().toLocalFile();
-    if (!fileName.isEmpty()) {
+    if (const auto fileName = urls.first().toLocalFile(); !fileName.isEmpty()) {
         m_dropFile = fileName;
         emit actionTriggered(StateMachine::Action::DropFileSelected);
     }
@@ -509,10 +507,8 @@ void EditorView::zoom(double amount)
 
 void EditorView::zoomToFit(QRectF nodeBoundingRect)
 {
-    const double viewAspect = static_cast<double>(rect().height()) / rect().width();
     const double nodeAspect = nodeBoundingRect.height() / nodeBoundingRect.width();
-
-    if (viewAspect < 1.0) {
+    if (const double viewAspect = static_cast<double>(rect().height()) / rect().width(); viewAspect < 1.0) {
         if (nodeAspect < viewAspect) {
             m_scale = static_cast<double>(rect().width()) / nodeBoundingRect.width();
         } else {
@@ -543,8 +539,7 @@ void EditorView::drawBackground(QPainter * painter, const QRectF & rect)
     painter->save();
     painter->fillRect(rect, backgroundBrush());
 
-    const int gridSize = m_grid.size();
-    if (m_gridVisible && gridSize != 0) {
+    if (const int gridSize = m_grid.size(); m_gridVisible && gridSize != 0) {
         const qreal left = int(rect.left()) - (int(rect.left()) % gridSize);
         const qreal top = int(rect.top()) - (int(rect.top()) % gridSize);
 

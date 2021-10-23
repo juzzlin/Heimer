@@ -146,7 +146,9 @@ void Edge::setArrowHeadPen(const QPen & pen)
 
 void Edge::setLabelVisible(bool visible)
 {
-    m_label->setVisible(visible);
+    if (m_label) {
+        m_label->setVisible(visible);
+    }
 }
 
 void Edge::setWidth(double width)
@@ -353,8 +355,8 @@ void Edge::updateLine()
     direction2.normalize();
 
     setLine(QLineF(
-      p1 + (nearestPoints.first.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction1 * sourceNode().cornerRadius()).toPointF() : QPointF { 0, 0 }),
-      p2 + (nearestPoints.second.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction2 * targetNode().cornerRadius()).toPointF() : QPointF { 0, 0 }) - //
+      p1 + (nearestPoints.first.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction1 * static_cast<float>(sourceNode().cornerRadius())).toPointF() : QPointF { 0, 0 }),
+      p2 + (nearestPoints.second.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction2 * static_cast<float>(targetNode().cornerRadius())).toPointF() : QPointF { 0, 0 }) - //
         (direction2 * static_cast<float>(m_width)).toPointF() * Constants::Edge::WIDTH_SCALE));
 
     updateDots();

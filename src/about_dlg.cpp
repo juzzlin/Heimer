@@ -52,8 +52,8 @@ void AboutDlg::initWidgets()
       + Constants::Application::SUPPORT_SITE_URL + "</a></p>");
 
     const QFontMetrics fm(infoLabel->font());
-    const auto fontHeight = fm.height();
-    const size_t lines = 10;
+    const int fontHeight = fm.height();
+    const int lines = 10;
     infoLabel->setMinimumHeight(fontHeight * lines);
     infoLabel->setMaximumHeight(fontHeight * lines);
     infoLabel->setFrameStyle(QFrame::NoFrame);

@@ -31,7 +31,6 @@ function(setup_install_targets)
     set(CPACK_NSIS_PACKAGE_NAME Heimer)
     set(CPACK_NSIS_HELP_LINK http://juzzlin.github.io/Heimer/)
     set(CPACK_NSIS_URL_INFO_ABOUT http://juzzlin.github.io/Heimer/)
-    set(CPACK_NSIS_BRANDING_TEXT¶ Heimer)
 
     include(CPack)
 

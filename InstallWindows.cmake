@@ -32,6 +32,14 @@ function(setup_install_targets)
     set(CPACK_NSIS_HELP_LINK http://juzzlin.github.io/Heimer/)
     set(CPACK_NSIS_URL_INFO_ABOUT http://juzzlin.github.io/Heimer/)
 
+    set(CPACK_NSIS_CREATE_ICONS_EXTRA
+        "CreateShortCut '$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\${BINARY_NAME}.lnk' '$INSTDIR\\\\${BINARY_NAME}.exe'"
+    )
+
+    set(CPACK_NSIS_DELETE_ICONS_EXTRA
+        "Delete '$SMPROGRAMS\\\\$START_MENU\\\\${BINARY_NAME}.lnk'"
+    )
+
     include(CPack)
 
 endfunction()

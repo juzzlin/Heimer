@@ -9,7 +9,10 @@ New features:
 
 Bug fixes:
 
+* Fix GitHub Issue #175: Windows installer doesn't add shortcuts
+
 * Fix image save when original image is missing
+
 * Write images with same id only once
 
 Other:

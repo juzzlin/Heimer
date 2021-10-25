@@ -3,9 +3,25 @@ x.y.z
 
 New features:
 
+Bug fixes:
+
+Other:
+
+2.8.0
+=====
+
+Release date:
+
+Mon, 25 Oct 2021 21:11:27 +0300
+
+New features:
+
 * Fix GitHub Issue #173: Being able to paste and create a node right-away
   - Pasting text to Heimer will create a new node with that text
   - Pasting image data e.g. from Gimp to Heimer will create a new node with that image
+
+* Highlight text found by search
+  - Not perfect as only the first occurrence is being matched
 
 Bug fixes:
 

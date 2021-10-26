@@ -19,6 +19,11 @@ if(POLICY CMP0071)
     cmake_policy(SET CMP0071 NEW)
 endif()
 
+# Default to GLVND
+if(POLICY CMP0072)
+    cmake_policy(SET CMP0072 NEW)
+endif()
+
 # Global version
 set(VERSION_MAJOR 2)
 set(VERSION_MINOR 8)

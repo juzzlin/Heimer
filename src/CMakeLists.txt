@@ -38,6 +38,7 @@ set(LIB_SRC
     hash_seed.cpp
     image.cpp
     image_manager.cpp
+    item_filter.cpp
     layers.hpp
     layout_optimization_dialog.cpp
     layout_optimizer.cpp

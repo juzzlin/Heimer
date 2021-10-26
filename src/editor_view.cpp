@@ -31,6 +31,7 @@
 #include "edge_context_menu.hpp"
 #include "edge_text_edit.hpp"
 #include "graphics_factory.hpp"
+#include "item_filter.hpp"
 #include "mediator.hpp"
 #include "mind_map_data.hpp"
 #include "mouse_action.hpp"
@@ -199,7 +200,9 @@ bool EditorView::isModifierPressed() const
 
 void EditorView::mouseDoubleClickEvent(QMouseEvent * event)
 {
-    emit newNodeRequested(mapToScene(event->pos()));
+    const auto mappedPos = mapToScene(event->pos());
+
+    emit newNodeRequested(mappedPos);
 }
 
 void EditorView::mouseMoveEvent(QMouseEvent * event)
@@ -266,42 +269,33 @@ void EditorView::mousePressEvent(QMouseEvent * event)
     const auto clickedScenePos = mapToScene(m_clickedPos);
     m_mediator.mouseAction().setClickedScenePos(clickedScenePos);
 
-    const int tolerance = Constants::View::CLICK_TOLERANCE;
-    const QRectF clickRect(clickedScenePos.x() - tolerance, clickedScenePos.y() - tolerance, tolerance * 2, tolerance * 2);
-
-    // Fetch all items at the location
-    if (const auto items = scene()->items(clickRect, Qt::IntersectsItemShape, Qt::DescendingOrder); items.size()) {
-        const auto item = *items.begin();
-        if (const auto edge = dynamic_cast<Edge *>(item)) {
+    if (const auto result = ItemFilter::getFirstItemAtPosition(*scene(), clickedScenePos, Constants::View::CLICK_TOLERANCE); result.success) {
+        if (result.edge) {
             juzzlin::L().debug() << "Edge pressed";
-            handleMousePressEventOnEdge(*event, *edge);
-        } else if (const auto node = dynamic_cast<NodeHandle *>(item)) {
+            handleMousePressEventOnEdge(*event, *result.edge);
+        } else if (result.nodeHandle) {
             juzzlin::L().debug() << "Node handle pressed";
-            handleMousePressEventOnNodeHandle(*event, *node);
-        } else if (const auto node = dynamic_cast<Node *>(item)) {
+            handleMousePressEventOnNodeHandle(*event, *result.nodeHandle);
+        } else if (result.node) {
             juzzlin::L().debug() << "Node pressed";
-            handleMousePressEventOnNode(*event, *node);
+            handleMousePressEventOnNode(*event, *result.node);
             if (isModifierPressed()) { // User was just selecting
-                node->setTextInputActive(false);
+                result.node->setTextInputActive(false);
                 return;
             }
-        }
-        // This hack enables edge context menu even if user clicks on the edge text edit.
-        else if (const auto edgeTextEdit = dynamic_cast<EdgeTextEdit *>(item)) {
+            // This hack enables edge context menu even if user clicks on the edge text edit.
+        } else if (result.edgeTextEdit) {
             if (event->button() == Qt::RightButton) {
-                const auto edge = dynamic_cast<Edge *>(edgeTextEdit->parentItem());
-                if (edge) {
+                if (const auto edge = dynamic_cast<Edge *>(result.edgeTextEdit->parentItem()); edge) {
                     juzzlin::L().debug() << "Edge text edit pressed";
                     handleMousePressEventOnEdge(*event, *edge);
                     return;
                 }
             }
-        }
-        // This hack enables node context menu even if user clicks on the node text edit.
-        else if (const auto nodeTextEdit = dynamic_cast<TextEdit *>(item)) {
+            // This hack enables node context menu even if user clicks on the node text edit.
+        } else if (result.nodeTextEdit) {
             if (event->button() == Qt::RightButton || (event->button() == Qt::LeftButton && isModifierPressed())) {
-                const auto node = dynamic_cast<Node *>(nodeTextEdit->parentItem());
-                if (node) {
+                if (const auto node = dynamic_cast<Node *>(result.nodeTextEdit->parentItem()); node) {
                     juzzlin::L().debug() << "Node text edit pressed";
                     handleMousePressEventOnNode(*event, *node);
                     node->setTextInputActive(false);

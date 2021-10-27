@@ -16,13 +16,16 @@
 #ifndef MAGIC_ZOOM_HPP
 #define MAGIC_ZOOM_HPP
 
+#include <QList>
 #include <QRectF>
 
-class EditorScene;
+class QGraphicsItem;
 
 namespace MagicZoom {
 
-QRectF calculateRectangle(const EditorScene & scene, bool isForExport);
+using ItemList = QList<QGraphicsItem *>;
+
+QRectF calculateRectangle(const ItemList & items, bool isForExport);
 
 } // namespace MagicZoom
 

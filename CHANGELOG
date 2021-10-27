@@ -3,6 +3,8 @@ x.y.z
 
 New features:
 
+* Fix GitHub Issue #36: Double-click to zoom into a node
+
 Bug fixes:
 
 Other:

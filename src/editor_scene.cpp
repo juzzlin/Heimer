@@ -62,7 +62,7 @@ bool EditorScene::containsAll() const
 
 QRectF EditorScene::zoomToFit(bool isForExport) const
 {
-    return MagicZoom::calculateRectangle(*this, isForExport);
+    return MagicZoom::calculateRectangle(items(), isForExport);
 }
 
 bool EditorScene::hasEdge(Node & node0, Node & node1)

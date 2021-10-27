@@ -32,6 +32,7 @@
 #include "edge_text_edit.hpp"
 #include "graphics_factory.hpp"
 #include "item_filter.hpp"
+#include "magic_zoom.hpp"
 #include "mediator.hpp"
 #include "mind_map_data.hpp"
 #include "mouse_action.hpp"
@@ -200,9 +201,20 @@ bool EditorView::isModifierPressed() const
 
 void EditorView::mouseDoubleClickEvent(QMouseEvent * event)
 {
-    const auto mappedPos = mapToScene(event->pos());
-
-    emit newNodeRequested(mappedPos);
+    const auto clickedScenePos = mapToScene(event->pos());
+    if (const auto result = ItemFilter::getFirstItemAtPosition(*scene(), clickedScenePos, Constants::View::CLICK_TOLERANCE); result.success) {
+        if (result.node) {
+            juzzlin::L().debug() << "Node double-clicked";
+            zoomToFit(MagicZoom::calculateRectangle({ result.node }, false));
+        } else if (result.nodeTextEdit) {
+            if (const auto node = dynamic_cast<Node *>(result.nodeTextEdit->parentItem()); node) {
+                juzzlin::L().debug() << "Node text edit double-clicked";
+                zoomToFit(MagicZoom::calculateRectangle({ node }, false));
+            }
+        }
+    } else {
+        emit newNodeRequested(clickedScenePos);
+    }
 }
 
 void EditorView::mouseMoveEvent(QMouseEvent * event)

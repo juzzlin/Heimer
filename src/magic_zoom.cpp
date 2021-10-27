@@ -14,19 +14,17 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "magic_zoom.hpp"
-
-#include "editor_scene.hpp"
 #include "node.hpp"
 
 #include <cmath>
 
-QRectF MagicZoom::calculateRectangle(const EditorScene & scene, bool isForExport)
+QRectF MagicZoom::calculateRectangle(const ItemList & items, bool isForExport)
 {
     double nodeArea = 0;
     QRectF rect;
     int nodes = 0;
-    for (auto && item : scene.items()) {
-        if (auto node = dynamic_cast<Node *>(item)) {
+    for (auto && item : items) {
+        if (const auto node = dynamic_cast<Node *>(item)) {
             const auto nodeRect = node->placementBoundingRect();
             rect = rect.united(nodeRect.translated(node->pos().x(), node->pos().y()));
             nodeArea += nodeRect.width() * nodeRect.height();

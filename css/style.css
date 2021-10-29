@@ -1,8 +1,16 @@
 body {
     padding: 50px;
+    margin: 0;
     font: 14px "Roboto", sans-serif;
     font-weight: 700;
     color: grey;
+}
+
+html {
+    padding: 0;
+    margin: 0;
+    position: relative;
+    min-height: 100%;
 }
 
 a {
@@ -22,4 +30,19 @@ a.visited {
 
 h1 {
       color: orange;
+}
+
+article {
+    min-height: 100%;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    background-color: #45a1ff;
+    color: #fff;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
 }

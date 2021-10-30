@@ -36,6 +36,17 @@ article {
     min-height: 100%;
 }
 
+div.image-container {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+img#animation {
+    width: 100%;
+    height: auto;
+}
+
 footer {
     display: flex;
     justify-content: center;

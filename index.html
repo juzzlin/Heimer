@@ -22,9 +22,19 @@
         </footer>
     </body>
     <script>
-        const main = () => {
+        const updateImage = (imageIndex) => {
+            imageFiles = ["img/heimer-1.png", "img/heimer-2.png", "img/heimer-3.png"];
             const image = document.getElementById("animation");
-            image.setAttribute("src", "img/heimer-1.png");
+            image.setAttribute("src", imageFiles[imageIndex]);
+        };
+        const main = () => {
+            let imageIndex = 0;
+            updateImage(imageIndex);
+            setInterval(() => {
+                imageIndex++;
+                imageIndex = imageIndex%imageFiles.length;
+                updateImage(imageIndex)
+            }, 1000);
         };
     </script>
 </html>

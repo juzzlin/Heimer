@@ -12,8 +12,13 @@
         <h1>Heimer - A simple cross-platform mind map, diagram, and note-taking tool written in Qt</h1>
         <article class="row">
             <div class="col-md-3 col-sm-12"></div>
-            <div class="col-md-6 col-sm-12 image-container">
-                <img id="animation"/>
+            <div class="col-md-6 col-sm-12">
+                <div class="image-container">
+                    <div class="image-stack">
+                        <img id="animation-image-1"/>
+                        <img id="animation-image-2"/>
+                    </div>
+                </div>
             </div>
             <div class="col-md-3 col-sm-12"></div>
         </article>
@@ -22,19 +27,35 @@
         </footer>
     </body>
     <script>
-        const updateImage = (imageIndex) => {
-            imageFiles = ["img/heimer-1.png", "img/heimer-2.png", "img/heimer-3.png"];
-            const image = document.getElementById("animation");
-            image.setAttribute("src", imageFiles[imageIndex]);
+        const imageFiles = ["img/heimer-1.png", "img/heimer-2.png", "img/heimer-3.png"];
+        const updateImage = (image1, image2, imageIndex) => {
+            image1.setAttribute("src", imageFiles.at(imageIndex));
         };
         const main = () => {
+            const image1 = document.getElementById("animation-image-1");
+            const image2 = document.getElementById("animation-image-2");
             let imageIndex = 0;
-            updateImage(imageIndex);
+            let tictoc = 0;
+            updateImage(image1, image2, imageIndex);
+            image1.classList.add("fade-in");
             setInterval(() => {
-                imageIndex++;
-                imageIndex = imageIndex%imageFiles.length;
-                updateImage(imageIndex)
-            }, 1000);
+                if (tictoc % 2 == 0) {
+                    if (image1.hasAttribute("src") && image1.getAttribute("src")) {
+                        image2.setAttribute("src", image1.getAttribute("src"));
+                    }
+                    if (image1.classList.contains("fade-in")) {
+                        image1.classList.remove("fade-in");
+                    }
+                } else {
+                    imageIndex++;
+                    imageIndex = imageIndex % imageFiles.length;
+                    updateImage(image1, image2, imageIndex);
+                    if (!image1.classList.contains("fade-in")) {
+                        image1.classList.add("fade-in");
+                    }
+                }
+                tictoc++;
+            }, 2000);
         };
     </script>
 </html>

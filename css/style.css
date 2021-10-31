@@ -42,9 +42,33 @@ div.image-container {
     justify-content: center;
 }
 
-img#animation {
+div.image-stack {
+    position: relative;
     width: 100%;
     height: auto;
+}
+
+img#animation-image-1, img#animation-image-2  {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+img#animation-image-1 {
+    z-index: 10001;
+    opacity: 0;
+}
+
+img#animation-image-2 {
+    z-index: 10000;
+    opacity: 1;
+}
+
+img.fade-in {
+    opacity: 1 !important;
+    transition: opacity 1000ms;
 }
 
 footer {

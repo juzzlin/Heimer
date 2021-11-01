@@ -3,9 +3,10 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <base href="https://juzzlin.github.io">
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto+Condensed:400,700|Roboto:400,400i&amp;display=swap">
-        <link rel="stylesheet" href="/css/bootstrap-5.0.0-beta1-dist/css/bootstrap-grid.min.css"/>
-        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/Heimer/css/bootstrap-5.0.0-beta1-dist/css/bootstrap-grid.min.css"/>
+        <link rel="stylesheet" href="/Heimer/css/style.css">
         <title>Heimer - A simple cross-platform mind map, diagram, and note-taking tool</title>
     </head>
     <body onload = "main();">
@@ -28,7 +29,7 @@
                             <img id="animation-image-1"/>
                             <img id="animation-image-2"/>
                         </div>
-                        <img id="animation-image-dummy" src="img/heimer-1.png"/>
+                        <img id="animation-image-dummy" src="/Heimer/img/heimer-1.png"/>
                     </div>
                     <div class="col-md-3 col-sm-12"></div>
                 </div>
@@ -67,7 +68,7 @@
         </footer>
     </body>
     <script>
-        const imageFiles = ["img/heimer-1.png", "img/heimer-2.png", "img/heimer-3.png"];
+        const imageFiles = ["/Heimer/img/heimer-1.png", "/Heimer/img/heimer-2.png", "/Heimer/img/heimer-3.png"];
         const updateImage = (image1, image2, imageIndex) => {
             image1.setAttribute("src", imageFiles.at(imageIndex));
         };

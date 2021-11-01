@@ -33,8 +33,17 @@ h1 {
 }
 
 article {
-    margin-top: 50px;
+    margin-top: 10px;
+    margin-bottom: 25px;
     min-height: 100%;
+}
+
+div.header-project-home {
+    background-color: orange;
+}
+
+div.header-downloads {
+    background-color: grey;
 }
 
 div.image-container {
@@ -43,7 +52,11 @@ div.image-container {
     justify-content: center;
     width: 100%;
     height: auto;
-    margin-bottom: 50px;
+    margin-top: 25px;
+}
+
+div.features {
+    margin-top: 25px;
 }
 
 img#animation-image-1, img#animation-image-2  {

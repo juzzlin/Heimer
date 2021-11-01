@@ -33,27 +33,25 @@ h1 {
 }
 
 article {
+    margin-top: 50px;
     min-height: 100%;
 }
 
 div.image-container {
-    margin-top: 50px;
+    position: relative;
     display: flex;
     justify-content: center;
-}
-
-div.image-stack {
-    position: relative;
     width: 100%;
     height: auto;
+    margin-bottom: 50px;
 }
 
 img#animation-image-1, img#animation-image-2  {
-    width: 100%;
-    height: auto;
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
+    height: auto;
 }
 
 img#animation-image-1 {
@@ -64,6 +62,13 @@ img#animation-image-1 {
 img#animation-image-2 {
     z-index: 10000;
     opacity: 1;
+}
+
+img#animation-image-dummy {
+    opacity: 0;
+    display: inline-block;
+    width: 100%;
+    height: auto;
 }
 
 img.fade-in {

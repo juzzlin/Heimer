@@ -67,37 +67,37 @@
         <footer>
             <p>© 2021 Jussi Lind &lt;jussi.lind@iki.fi&gt;</p>
         </footer>
+        <script>
+            const imageFiles = ["/Heimer/img/heimer-1.png", "/Heimer/img/heimer-2.png", "/Heimer/img/heimer-3.png"];
+            const updateImage = (image1, image2, imageIndex) => {
+                image1.setAttribute("src", imageFiles.at(imageIndex));
+            };
+            const main = () => {
+                const image1 = document.getElementById("animation-image-1");
+                const image2 = document.getElementById("animation-image-2");
+                let imageIndex = 0;
+                let tictoc = 0;
+                updateImage(image1, image2, imageIndex);
+                image1.classList.add("fade-in");
+                setInterval(() => {
+                    if (tictoc % 2 == 0) {
+                        if (image1.hasAttribute("src") && image1.getAttribute("src")) {
+                            image2.setAttribute("src", image1.getAttribute("src"));
+                        }
+                        if (image1.classList.contains("fade-in")) {
+                            image1.classList.remove("fade-in");
+                        }
+                    } else {
+                        imageIndex++;
+                        imageIndex = imageIndex % imageFiles.length;
+                        updateImage(image1, image2, imageIndex);
+                        if (!image1.classList.contains("fade-in")) {
+                            image1.classList.add("fade-in");
+                        }
+                    }
+                    tictoc++;
+                }, 2000);
+            };
+        </script>
     </body>
-    <script>
-        const imageFiles = ["/Heimer/img/heimer-1.png", "/Heimer/img/heimer-2.png", "/Heimer/img/heimer-3.png"];
-        const updateImage = (image1, image2, imageIndex) => {
-            image1.setAttribute("src", imageFiles.at(imageIndex));
-        };
-        const main = () => {
-            const image1 = document.getElementById("animation-image-1");
-            const image2 = document.getElementById("animation-image-2");
-            let imageIndex = 0;
-            let tictoc = 0;
-            updateImage(image1, image2, imageIndex);
-            image1.classList.add("fade-in");
-            setInterval(() => {
-                if (tictoc % 2 == 0) {
-                    if (image1.hasAttribute("src") && image1.getAttribute("src")) {
-                        image2.setAttribute("src", image1.getAttribute("src"));
-                    }
-                    if (image1.classList.contains("fade-in")) {
-                        image1.classList.remove("fade-in");
-                    }
-                } else {
-                    imageIndex++;
-                    imageIndex = imageIndex % imageFiles.length;
-                    updateImage(image1, image2, imageIndex);
-                    if (!image1.classList.contains("fade-in")) {
-                        image1.classList.add("fade-in");
-                    }
-                }
-                tictoc++;
-            }, 2000);
-        };
-    </script>
 </html>

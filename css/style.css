@@ -28,6 +28,10 @@ a.visited {
     text-decoration: none;
 }
 
+a:hover {
+    text-decoration: underline;
+}
+
 h1 {
       color: orange;
 }

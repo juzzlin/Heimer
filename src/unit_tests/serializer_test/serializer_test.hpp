@@ -35,9 +35,29 @@ private slots:
 
     void testEdgeColor();
 
-    void testGridColor();
-
     void testEdgeWidth();
+
+    void testFontItalic();
+
+    void testFontNonItalic();
+
+    void testFontBold();
+
+    void testFontNonBold();
+
+    void testFontOverline();
+
+    void testFontNonOverline();
+
+    void testFontStrikeOut();
+
+    void testFontNonStrikeOut();
+
+    void testFontUnderline();
+
+    void testFontNonUnderline();
+
+    void testGridColor();
 
     void testLayoutOptimizer();
 

@@ -581,6 +581,27 @@ void EditorDataTest::testUndoEdgeReversed()
     QCOMPARE(redoneEdge->reversed(), true);
 }
 
+void EditorDataTest::testUndoFontChange()
+{
+    EditorData editorData;
+
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+    const auto font = editorData.mindMapData()->font();
+    editorData.saveUndoPoint();
+    QFont newFont("Foo");
+    editorData.mindMapData()->setFont(newFont);
+
+    QCOMPARE(editorData.mindMapData()->font().family(), newFont.family());
+
+    editorData.undo();
+
+    QCOMPARE(editorData.mindMapData()->font().family(), font.family());
+
+    editorData.redo();
+
+    QCOMPARE(editorData.mindMapData()->font().family(), newFont.family());
+}
+
 void EditorDataTest::testUndoGroupConnection()
 {
     EditorData editorData;

@@ -107,7 +107,7 @@ void TextEdit::setTextSize(int textSize)
         setFont(currentFont);
         update();
     } else {
-        TestMode::logDisabledCode("Set TextEdit font");
+        TestMode::logDisabledCode("TextEdit::setTextSize");
     }
 }
 

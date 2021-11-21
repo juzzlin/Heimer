@@ -27,6 +27,7 @@
 #include "simple_logger.hpp"
 
 #include <QBrush>
+#include <QFont>
 #include <QGraphicsEllipseItem>
 #include <QPen>
 #include <QPropertyAnimation>
@@ -189,6 +190,16 @@ void Edge::setText(const QString & text)
         setLabelVisible(!text.isEmpty());
     } else {
         TestMode::logDisabledCode("Set label text");
+    }
+}
+
+void Edge::setFont(const QFont & font)
+{
+    if (m_label) {
+        // Handle size and family separately to maintain backwards compatibility
+        QFont newFont(font);
+        newFont.setPointSize(m_label->font().pointSize());
+        m_label->setFont(newFont);
     }
 }
 

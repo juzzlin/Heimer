@@ -41,12 +41,12 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application.cpp" line="194"/>
+        <location filename="../application.cpp" line="195"/>
         <source>Heimer Files</source>
         <translation>Heimer -tiedostot</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="288"/>
+        <location filename="../application.cpp" line="289"/>
         <source>Open File</source>
         <translation>Avaa tiedosto</translation>
     </message>
@@ -86,22 +86,22 @@
         <translation>Kuvatiedostot</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="401"/>
+        <location filename="../application.cpp" line="400"/>
         <source>Load image</source>
         <translation>Kuvanlataus</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="401"/>
+        <location filename="../application.cpp" line="400"/>
         <source>Failed to load image &apos;</source>
         <translation>Kuvan lataaminen epäonnistui: &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="445"/>
+        <location filename="../application.cpp" line="444"/>
         <source>The mind map has been modified.</source>
         <translation>Käsitekarttaa on muokattu.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="446"/>
+        <location filename="../application.cpp" line="445"/>
         <source>Do you want to save your changes?</source>
         <translation>Haluatko tallentaa muutokset?</translation>
     </message>
@@ -449,32 +449,32 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../main_window.cpp" line="63"/>
+        <location filename="../main_window.cpp" line="65"/>
         <source>Redo</source>
         <translation>Tee Uudelleen</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="62"/>
+        <location filename="../main_window.cpp" line="64"/>
         <source>Undo</source>
         <translation>Kumoa</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="58"/>
+        <location filename="../main_window.cpp" line="60"/>
         <source>Connect selected nodes</source>
         <translation>Yhdistä valitut solmut</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="59"/>
+        <location filename="../main_window.cpp" line="61"/>
         <source>Disconnect selected nodes</source>
         <translation>Erota valitut solmut</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="69"/>
+        <location filename="../main_window.cpp" line="72"/>
         <source>Show grid</source>
         <translation>Näytä ruudukko</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="133"/>
+        <location filename="../main_window.cpp" line="136"/>
         <source>&amp;Edit</source>
         <translation>&amp;Muokkaa</translation>
     </message>
@@ -483,107 +483,112 @@
         <translation type="vanished">&amp;Värit</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="149"/>
+        <location filename="../main_window.cpp" line="152"/>
         <source>General &amp;colors</source>
         <translation>Yleiset &amp;värit</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="151"/>
+        <location filename="../main_window.cpp" line="154"/>
         <source>Set background color</source>
         <translation>Aseta taustaväri</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="162"/>
+        <location filename="../main_window.cpp" line="165"/>
         <source>Set edge color</source>
         <translation>Aseta kaaren väri</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="173"/>
+        <location filename="../main_window.cpp" line="176"/>
         <source>Set grid color</source>
         <translation>Aseta ruudukon väri</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="184"/>
+        <location filename="../main_window.cpp" line="187"/>
         <source>Optimize layout</source>
         <translation>Optimoi sijoittelu</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="205"/>
+        <location filename="../main_window.cpp" line="208"/>
         <source>Corner radius:</source>
         <translation>Kulman pyöreys:</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="220"/>
+        <location filename="../main_window.cpp" line="223"/>
         <source>Edge width:</source>
         <translation>Kaaren leveys:</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="234"/>
+        <location filename="../main_window.cpp" line="237"/>
         <source>Text size:</source>
         <translation>Tekstin koko:</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="253"/>
+        <location filename="../main_window.cpp" line="242"/>
+        <source>Font</source>
+        <translation>Kirjasintyyppi</translation>
+    </message>
+    <message>
+        <location filename="../main_window.cpp" line="277"/>
         <source>Grid size:</source>
         <translation>Ruudukko:</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="271"/>
+        <location filename="../main_window.cpp" line="299"/>
         <source>Search:</source>
         <translation>Haku:</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="278"/>
+        <location filename="../main_window.cpp" line="306"/>
         <source>&amp;Export</source>
         <translation>&amp;Vie</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="281"/>
+        <location filename="../main_window.cpp" line="309"/>
         <source>&amp;PNG</source>
         <translation>&amp;PNG</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="290"/>
+        <location filename="../main_window.cpp" line="318"/>
         <source>&amp;SVG</source>
         <translation>&amp;SVG</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="304"/>
+        <location filename="../main_window.cpp" line="332"/>
         <source>&amp;File</source>
         <translation>&amp;Tiedosto</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="307"/>
+        <location filename="../main_window.cpp" line="335"/>
         <source>&amp;New</source>
         <translation>&amp;Uusi</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="315"/>
+        <location filename="../main_window.cpp" line="343"/>
         <source>&amp;Open</source>
         <translation>&amp;Avaa</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="325"/>
+        <location filename="../main_window.cpp" line="353"/>
         <source>Recent &amp;Files</source>
         <translation>&amp;Edelliset</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="355"/>
+        <location filename="../main_window.cpp" line="383"/>
         <source>Settings</source>
         <translation>Asetukset</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="60"/>
+        <location filename="../main_window.cpp" line="62"/>
         <source>&amp;Save</source>
         <translation>&amp;Tallenna</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="61"/>
+        <location filename="../main_window.cpp" line="63"/>
         <source>&amp;Save as</source>
         <translation>&amp;Tallenna Nimellä</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="68"/>
+        <location filename="../main_window.cpp" line="71"/>
         <source>Copy on drag</source>
         <translation>Kopioi raahatessa</translation>
     </message>
@@ -596,27 +601,27 @@
         <translation type="vanished">&amp;Vie PNG-kuvaksi</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="362"/>
+        <location filename="../main_window.cpp" line="390"/>
         <source>&amp;Quit</source>
         <translation>&amp;Poistu</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="376"/>
+        <location filename="../main_window.cpp" line="404"/>
         <source>&amp;Help</source>
         <translation>&amp;Apua</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="379"/>
+        <location filename="../main_window.cpp" line="407"/>
         <source>&amp;About</source>
         <translation>&amp;Tietoa</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="386"/>
+        <location filename="../main_window.cpp" line="414"/>
         <source>About &amp;Qt</source>
         <translation>Tietoa &amp;Qt:sta</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="395"/>
+        <location filename="../main_window.cpp" line="423"/>
         <source>What&apos;s New</source>
         <translation>Uutta Tässä Versiossa</translation>
     </message>
@@ -629,27 +634,27 @@
         <translation type="vanished">&amp;Oletusarvot</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="431"/>
+        <location filename="../main_window.cpp" line="461"/>
         <source>&amp;View</source>
         <translation>&amp;Näkymä</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="434"/>
+        <location filename="../main_window.cpp" line="464"/>
         <source>Full Screen</source>
         <translation>Koko Näyttö</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="453"/>
+        <location filename="../main_window.cpp" line="483"/>
         <source>Zoom In</source>
         <translation>Suurenna</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="459"/>
+        <location filename="../main_window.cpp" line="489"/>
         <source>Zoom Out</source>
         <translation>Loitonna</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="467"/>
+        <location filename="../main_window.cpp" line="497"/>
         <source>&amp;Zoom To Fit</source>
         <translation>&amp;Sovita</translation>
     </message>
@@ -658,12 +663,12 @@
         <translation type="vanished">Heimer -tiedostot</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="514"/>
+        <location filename="../main_window.cpp" line="551"/>
         <source>New File</source>
         <translation>Uusi tiedosto</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="516"/>
+        <location filename="../main_window.cpp" line="553"/>
         <source>Not Saved</source>
         <translation>Ei tallennettu</translation>
     </message>
@@ -684,7 +689,7 @@
         <translation type="vanished">Avaa tiedosto</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="389"/>
+        <location filename="../main_window.cpp" line="417"/>
         <source>About Qt</source>
         <translation>Tietoa Qt:sta</translation>
     </message>

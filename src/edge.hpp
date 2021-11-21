@@ -27,6 +27,7 @@
 
 class EdgeDot;
 class Node;
+class QFont;
 class QGraphicsEllipseItem;
 class QPropertyAnimation;
 
@@ -72,6 +73,8 @@ public slots:
     void setArrowMode(ArrowMode arrowMode);
 
     void setColor(const QColor & color);
+
+    void setFont(const QFont & font);
 
     void setWidth(double width);
 

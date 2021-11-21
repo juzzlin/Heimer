@@ -34,6 +34,13 @@ std::pair<QGroupBox *, QVBoxLayout *> buildGroupBoxWithVLayout(QString title, QL
     return { group, groupLayout };
 }
 
+std::pair<QWidget *, QWidgetAction *> buildToolBarWidgetAction(QWidget & widget, QWidget & parent)
+{
+    const auto action = new QWidgetAction(&parent);
+    action->setDefaultWidget(&widget);
+    return { &widget, action };
+}
+
 std::pair<QWidget *, QWidgetAction *> buildToolBarWidgetActionWithLabel(QString labelText, QWidget & widget, QWidget & parent)
 {
     const auto dummyWidget = new QWidget(&parent);

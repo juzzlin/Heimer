@@ -55,20 +55,118 @@ void SerializerTest::testEdgeColor()
     QCOMPARE(inData->edgeColor(), outData.edgeColor());
 }
 
-void SerializerTest::testGridColor()
-{
-    MindMapData outData;
-    outData.setGridColor(QColor(1, 2, 3));
-    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
-    QCOMPARE(inData->gridColor(), outData.gridColor());
-}
-
 void SerializerTest::testEdgeWidth()
 {
     MindMapData outData;
     outData.setEdgeWidth(666.42);
     const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     QCOMPARE(inData->edgeWidth(), outData.edgeWidth());
+}
+
+void SerializerTest::testFontItalic()
+{
+    MindMapData outData;
+    QFont font("Foobar", 42, 666, true);
+    outData.setFont(font);
+    outData.setTextSize(24);
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
+    QCOMPARE(inData->font().family(), outData.font().family());
+    QCOMPARE(inData->font().italic(), true);
+    QCOMPARE(inData->font().weight(), outData.font().weight());
+    QCOMPARE(inData->textSize(), outData.textSize()); // Font shouldn't change text size
+}
+
+void SerializerTest::testFontNonItalic()
+{
+    MindMapData outData;
+    QFont font;
+    outData.setFont(font);
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
+    QCOMPARE(inData->font().italic(), false);
+}
+
+void SerializerTest::testFontBold()
+{
+    MindMapData outData;
+    QFont font;
+    font.setBold(true);
+    outData.setFont(font);
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
+    QCOMPARE(inData->font().bold(), true);
+}
+
+void SerializerTest::testFontNonBold()
+{
+    MindMapData outData;
+    QFont font;
+    outData.setFont(font);
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
+    QCOMPARE(inData->font().bold(), false);
+}
+
+void SerializerTest::testFontOverline()
+{
+    MindMapData outData;
+    QFont font;
+    font.setOverline(true);
+    outData.setFont(font);
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
+    QCOMPARE(inData->font().overline(), true);
+}
+
+void SerializerTest::testFontNonOverline()
+{
+    MindMapData outData;
+    QFont font;
+    outData.setFont(font);
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
+    QCOMPARE(inData->font().overline(), false);
+}
+
+void SerializerTest::testFontStrikeOut()
+{
+    MindMapData outData;
+    QFont font;
+    font.setStrikeOut(true);
+    outData.setFont(font);
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
+    QCOMPARE(inData->font().strikeOut(), true);
+}
+
+void SerializerTest::testFontNonStrikeOut()
+{
+    MindMapData outData;
+    QFont font;
+    outData.setFont(font);
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
+    QCOMPARE(inData->font().strikeOut(), false);
+}
+
+void SerializerTest::testFontUnderline()
+{
+    MindMapData outData;
+    QFont font("Foobar");
+    font.setUnderline(true);
+    outData.setFont(font);
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
+    QCOMPARE(inData->font().underline(), true);
+}
+
+void SerializerTest::testFontNonUnderline()
+{
+    MindMapData outData;
+    QFont font("Foobar");
+    outData.setFont(font);
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
+    QCOMPARE(inData->font().underline(), false);
+}
+
+void SerializerTest::testGridColor()
+{
+    MindMapData outData;
+    outData.setGridColor(QColor(1, 2, 3));
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
+    QCOMPARE(inData->gridColor(), outData.gridColor());
 }
 
 void SerializerTest::testLayoutOptimizer()

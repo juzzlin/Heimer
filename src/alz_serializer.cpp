@@ -46,6 +46,20 @@ const auto EDGE_COLOR = "edge-color";
 
 const auto EDGE_THICKNESS = "edge-width";
 
+const auto FONT_FAMILY = "font-family";
+
+const auto FONT_BOLD = "bold";
+
+const auto FONT_OVERLINE = "overline";
+
+const auto FONT_STRIKE_OUT = "strike-out";
+
+const auto FONT_UNDERLINE = "underline";
+
+const auto FONT_WEIGHT = "weight";
+
+const auto FONT_ITALIC = "italic";
+
 const auto GRAPH = "graph";
 
 const auto GRID_COLOR = "grid-color";
@@ -430,6 +444,17 @@ std::unique_ptr<MindMapData> fromXml(QDomDocument document)
                          { QString(DataKeywords::MindMap::EDGE_COLOR), [&data](const QDomElement & e) {
                               data->setEdgeColor(readColorElement(e));
                           } },
+                         { QString(DataKeywords::MindMap::FONT_FAMILY), [&data](const QDomElement & e) {
+                              QFont font;
+                              font.setFamily(readFirstTextNodeContent(e));
+                              font.setBold(e.attribute(DataKeywords::MindMap::FONT_BOLD).toInt());
+                              font.setItalic(e.attribute(DataKeywords::MindMap::FONT_ITALIC).toUInt());
+                              font.setOverline(e.attribute(DataKeywords::MindMap::FONT_OVERLINE).toInt());
+                              font.setUnderline(e.attribute(DataKeywords::MindMap::FONT_UNDERLINE).toInt());
+                              font.setStrikeOut(e.attribute(DataKeywords::MindMap::FONT_STRIKE_OUT).toInt());
+                              font.setWeight(e.attribute(DataKeywords::MindMap::FONT_WEIGHT).toInt());
+                              data->setFont(font);
+                          } },
                          { QString(DataKeywords::MindMap::GRID_COLOR), [&data](const QDomElement & e) {
                               data->setGridColor(readColorElement(e));
                           } },
@@ -475,6 +500,16 @@ QDomDocument toXml(MindMapData & mindMapData)
     auto edgeWidthElement = doc.createElement(DataKeywords::MindMap::EDGE_THICKNESS);
     edgeWidthElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData.edgeWidth() * SCALE))));
     root.appendChild(edgeWidthElement);
+
+    auto fontFamilyElement = doc.createElement(DataKeywords::MindMap::FONT_FAMILY);
+    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_BOLD, mindMapData.font().bold());
+    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_ITALIC, mindMapData.font().italic());
+    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_OVERLINE, mindMapData.font().overline());
+    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_STRIKE_OUT, mindMapData.font().strikeOut());
+    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_UNDERLINE, mindMapData.font().underline());
+    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_WEIGHT, mindMapData.font().weight());
+    fontFamilyElement.appendChild(doc.createTextNode(mindMapData.font().family()));
+    root.appendChild(fontFamilyElement);
 
     auto textSizeElement = doc.createElement(DataKeywords::MindMap::TEXT_SIZE);
     textSizeElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData.textSize() * SCALE))));

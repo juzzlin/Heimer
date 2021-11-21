@@ -25,6 +25,7 @@
 
 #include "simple_logger.hpp"
 
+#include <QFont>
 #include <QGraphicsEffect>
 #include <QGraphicsScene>
 #include <QGraphicsSceneHoverEvent>
@@ -91,6 +92,8 @@ Node::Node(const Node & other)
     setTextColor(other.m_textColor);
 
     setTextSize(other.m_textSize);
+
+    setFont(other.m_font);
 }
 
 void Node::addGraphicsEdge(Edge & edge)
@@ -450,6 +453,20 @@ void Node::setTextColor(const QColor & color)
     }
 }
 
+void Node::setFont(const QFont & font)
+{
+    m_font = font;
+    if (!TestMode::enabled()) {
+        // Handle size and family separately to maintain backwards compatibility
+        QFont newFont(font);
+        newFont.setPointSize(m_textSize);
+        m_textEdit->setFont(newFont);
+        adjustSize();
+    } else {
+        TestMode::logDisabledCode("set node font");
+    }
+}
+
 void Node::setTextSize(int textSize)
 {
     m_textSize = textSize;
@@ -457,7 +474,7 @@ void Node::setTextSize(int textSize)
         m_textEdit->setTextSize(textSize);
         adjustSize();
     } else {
-        TestMode::logDisabledCode("set widget text size");
+        TestMode::logDisabledCode("set node text size");
     }
 }
 

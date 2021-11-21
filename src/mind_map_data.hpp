@@ -16,6 +16,7 @@
 #ifndef MIND_MAP_DATA_HPP
 #define MIND_MAP_DATA_HPP
 
+#include <QFont>
 #include <QString>
 
 #include "constants.hpp"
@@ -70,6 +71,10 @@ public:
 
     void setMinEdgeLength(double minEdgeLength);
 
+    QFont font() const;
+
+    void setFont(QFont font);
+
     int textSize() const;
 
     void setTextSize(int textSize);
@@ -96,6 +101,8 @@ private:
     QColor m_gridColor = Constants::MindMap::DEFAULT_GRID_COLOR;
 
     double m_edgeWidth = Constants::MindMap::DEFAULT_EDGE_WIDTH;
+
+    QFont m_font;
 
     int m_textSize = Constants::MindMap::DEFAULT_TEXT_SIZE;
 

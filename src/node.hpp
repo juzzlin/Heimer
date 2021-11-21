@@ -16,6 +16,7 @@
 #ifndef NODE_HPP
 #define NODE_HPP
 
+#include <QFont>
 #include <QGraphicsItem>
 #include <QImage>
 #include <QObject>
@@ -96,6 +97,8 @@ public:
 
     void setCornerRadius(int value);
 
+    void setFont(const QFont & font);
+
     void setHandlesVisible(bool visible);
 
     void setImageRef(size_t imageRef);
@@ -150,6 +153,8 @@ private:
     QColor m_textColor = Qt::black;
 
     int m_textSize = 11; // Not sure if we should set yet another default value here..
+
+    QFont m_font;
 
     QPointF m_location;
 

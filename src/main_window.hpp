@@ -35,6 +35,7 @@ class QAction;
 class QCheckBox;
 class QDoubleSpinBox;
 class QLineEdit;
+class QPushButton;
 class QSlider;
 class QSpinBox;
 class QTextEdit;
@@ -92,6 +93,8 @@ public slots:
 
     void setEdgeWidth(double value);
 
+    void setFont(const QFont & font);
+
     void setTextSize(int textSize);
 
     void showErrorDialog(QString message);
@@ -106,6 +109,8 @@ signals:
     void cornerRadiusChanged(int size);
 
     void edgeWidthChanged(double width);
+
+    void fontChanged(QFont font);
 
     void gridSizeChanged(int size);
 
@@ -134,6 +139,8 @@ private:
 
     QWidgetAction * createEdgeWidthAction();
 
+    QWidgetAction * createFontAction();
+
     QWidgetAction * createGridSizeAction();
 
     QWidgetAction * createSearchAction();
@@ -155,6 +162,8 @@ private:
     void createViewMenu();
 
     void populateMenuBar();
+
+    void updateFontButtonFont(const QFont & font);
 
     AboutDlg * m_aboutDlg;
 
@@ -179,6 +188,8 @@ private:
     QDoubleSpinBox * m_edgeWidthSpinBox = nullptr;
 
     QSpinBox * m_cornerRadiusSpinBox = nullptr;
+
+    QPushButton * m_fontButton = nullptr;
 
     QSpinBox * m_gridSizeSpinBox = nullptr;
 

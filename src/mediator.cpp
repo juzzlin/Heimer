@@ -57,6 +57,7 @@ void Mediator::addExistingGraphToScene()
             addItem(*node);
             node->setCornerRadius(m_editorData->mindMapData()->cornerRadius());
             node->setTextSize(m_editorData->mindMapData()->textSize());
+            node->setFont(m_editorData->mindMapData()->font());
             L().debug() << "Added existing node " << node->index() << " to scene";
         }
     }
@@ -69,6 +70,7 @@ void Mediator::addExistingGraphToScene()
             edge->setColor(m_editorData->mindMapData()->edgeColor());
             edge->setWidth(m_editorData->mindMapData()->edgeWidth());
             edge->setTextSize(m_editorData->mindMapData()->textSize());
+            edge->setFont(m_editorData->mindMapData()->font());
             node0->addGraphicsEdge(*edge);
             node1->addGraphicsEdge(*edge);
             edge->updateLine();
@@ -82,6 +84,7 @@ void Mediator::addExistingGraphToScene()
     m_mainWindow.setCornerRadius(m_editorData->mindMapData()->cornerRadius());
     m_mainWindow.setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
     m_mainWindow.setTextSize(m_editorData->mindMapData()->textSize());
+    m_mainWindow.setFont(m_editorData->mindMapData()->font());
 
     m_editorView->setCornerRadius(m_editorData->mindMapData()->cornerRadius());
     m_editorView->setEdgeColor(m_editorData->mindMapData()->edgeColor());
@@ -693,6 +696,12 @@ void Mediator::setSearchText(QString text)
 {
     m_editorData->selectNodesByText(text);
     updateNodeConnectionActions();
+}
+
+void Mediator::setFont(QFont font)
+{
+    saveUndoPoint();
+    m_editorData->mindMapData()->setFont(font);
 }
 
 void Mediator::setTextSize(int textSize)

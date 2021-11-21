@@ -34,6 +34,7 @@ MindMapData::MindMapData(const MindMapData & other)
   , m_edgeColor(other.m_edgeColor)
   , m_gridColor(other.m_gridColor)
   , m_edgeWidth(other.m_edgeWidth)
+  , m_font(other.m_font)
   , m_textSize(other.m_textSize)
   , m_cornerRadius(other.m_cornerRadius)
 {
@@ -171,6 +172,24 @@ double MindMapData::minEdgeLength() const
 void MindMapData::setMinEdgeLength(double minEdgeLength)
 {
     m_minEdgeLength = minEdgeLength;
+}
+
+QFont MindMapData::font() const
+{
+    return m_font;
+}
+
+void MindMapData::setFont(QFont font)
+{
+    m_font = font;
+
+    for (auto && edge : m_graph.getEdges()) {
+        edge->setFont(font);
+    }
+
+    for (auto && node : m_graph.getNodes()) {
+        node->setFont(font);
+    }
 }
 
 int MindMapData::textSize() const

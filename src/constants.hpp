@@ -192,7 +192,7 @@ namespace Text {
 
 static const int MIN_SIZE = 6;
 
-static const int MAX_SIZE = 24;
+static const int MAX_SIZE = 72;
 
 } // namespace Text
 

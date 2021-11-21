@@ -31,12 +31,14 @@
 #include <QApplication>
 #include <QCheckBox>
 #include <QDoubleSpinBox>
+#include <QFontDialog>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
+#include <QPushButton>
 #include <QScreen>
 #include <QSpinBox>
 #include <QToolBar>
@@ -63,6 +65,7 @@ MainWindow::MainWindow()
   , m_redoAction(new QAction(tr("Redo"), this))
   , m_edgeWidthSpinBox(new QDoubleSpinBox(this))
   , m_cornerRadiusSpinBox(new QSpinBox(this))
+  , m_fontButton(new QPushButton(this))
   , m_gridSizeSpinBox(new QSpinBox(this))
   , m_textSizeSpinBox(new QSpinBox(this))
   , m_copyOnDragCheckBox(new QCheckBox(tr("Copy on drag"), this))
@@ -232,6 +235,27 @@ QWidgetAction * MainWindow::createTextSizeAction()
     connect(m_textSizeSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::textSizeChanged);
 #endif
     return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Text size:"), *m_textSizeSpinBox, *this).second;
+}
+
+QWidgetAction * MainWindow::createFontAction()
+{
+    m_fontButton->setText(tr("Font") + threeDots);
+    connect(m_fontButton, &QPushButton::clicked, [=] {
+        bool ok;
+        QFont defaultFont = m_fontButton->font();
+        defaultFont.setPointSize(m_textSizeSpinBox->value());
+        const auto font = QFontDialog::getFont(&ok, defaultFont, this);
+        if (ok) {
+            // Note: Support for multiple families implemented in Qt 5.13 =>
+            juzzlin::L().debug() << "Font family selected: '" << font.family().toStdString() << "'";
+            juzzlin::L().debug() << "Font weight selected: " << font.weight();
+            updateFontButtonFont(font);
+            m_textSizeSpinBox->setValue(font.pointSize());
+            emit textSizeChanged(font.pointSize());
+            emit fontChanged(font);
+        }
+    });
+    return WidgetFactory::buildToolBarWidgetAction(*m_fontButton, *this).second;
 }
 
 QWidgetAction * MainWindow::createGridSizeAction()
@@ -412,6 +436,8 @@ void MainWindow::createToolBar()
     toolBar->addSeparator();
     toolBar->addAction(createTextSizeAction());
     toolBar->addSeparator();
+    toolBar->addAction(createFontAction());
+    toolBar->addSeparator();
     toolBar->addAction(createCornerRadiusAction());
     toolBar->addSeparator();
     toolBar->addAction(createGridSizeAction());
@@ -552,6 +578,13 @@ void MainWindow::populateMenuBar()
     createHelpMenu();
 }
 
+void MainWindow::updateFontButtonFont(const QFont & font)
+{
+    QFont newFont(font);
+    newFont.setPointSize(m_fontButton->font().pointSize());
+    m_fontButton->setFont(newFont);
+}
+
 void MainWindow::appear()
 {
     if (Settings::loadFullScreen()) {
@@ -602,6 +635,11 @@ void MainWindow::setEdgeWidth(double value)
     if (!qFuzzyCompare(m_edgeWidthSpinBox->value(), value)) {
         m_edgeWidthSpinBox->setValue(value);
     }
+}
+
+void MainWindow::setFont(const QFont & font)
+{
+    updateFontButtonFont(font);
 }
 
 void MainWindow::setTextSize(int textSize)

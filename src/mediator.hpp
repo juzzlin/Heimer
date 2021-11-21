@@ -16,6 +16,7 @@
 #ifndef MEDIATOR_HPP
 #define MEDIATOR_HPP
 
+#include <QFont>
 #include <QObject>
 #include <QPointF>
 #include <QString>
@@ -146,6 +147,8 @@ public:
     void setEditorData(std::shared_ptr<EditorData> editorData);
 
     void setEditorView(EditorView & editorView);
+
+    void setFont(QFont font);
 
     //! \returns number of nodes in the current rectangle.
     size_t setRectagleSelection(QRectF rect);

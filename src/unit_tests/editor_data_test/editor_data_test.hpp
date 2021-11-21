@@ -67,6 +67,8 @@ private slots:
 
     void testUndoEdgeReversed();
 
+    void testUndoFontChange();
+
     void testUndoGroupConnection();
 
     void testUndoGroupDisconnection();

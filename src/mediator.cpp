@@ -218,7 +218,7 @@ NodePtr Mediator::createAndAddNode(QPointF pos)
 
     addExistingGraphToScene();
 
-    QTimer::singleShot(0, [node1]() { // Needed due to the context menu
+    QTimer::singleShot(0, this, [node1]() { // Needed due to the context menu
         node1->setTextInputActive(true);
     });
 

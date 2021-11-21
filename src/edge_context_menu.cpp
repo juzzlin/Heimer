@@ -57,7 +57,7 @@ EdgeContextMenu::EdgeContextMenu(QWidget * parent, Mediator & mediator)
         m_mediator.setSelectedEdge(nullptr);
         m_mediator.saveUndoPoint();
         // Use a separate variable and timer here because closing the menu will always nullify the selected edge
-        QTimer::singleShot(0, [=] {
+        QTimer::singleShot(0, this, [=] {
             m_mediator.deleteEdge(*m_selectedEdge);
         });
     });
@@ -83,7 +83,7 @@ EdgeContextMenu::EdgeContextMenu(QWidget * parent, Mediator & mediator)
 
     // Always clear edge selection when the menu closes.
     connect(this, &QMenu::aboutToHide, [=] {
-        QTimer::singleShot(0, [=] {
+        QTimer::singleShot(0, this, [=] {
             m_mediator.setSelectedEdge(nullptr);
         });
     });

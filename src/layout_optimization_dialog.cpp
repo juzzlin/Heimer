@@ -104,7 +104,7 @@ void LayoutOptimizationDialog::initWidgets(const MindMapData & mindMapData)
 
     connect(buttonBox, &QDialogButtonBox::accepted, [=] {
         buttonBox->setEnabled(false);
-        QTimer::singleShot(0, [=] { // Trick to make disabled buttons apply immediately
+        QTimer::singleShot(0, this, [=] { // Trick to make disabled buttons apply immediately
             emit undoPointRequested();
             if (m_layoutOptimizer.initialize(m_aspectRatioSpinBox->value(), m_minEdgeLengthSpinBox->value())) {
                 if (const auto optimizationInfo = m_layoutOptimizer.optimize(); optimizationInfo.changes) {

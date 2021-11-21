@@ -298,8 +298,7 @@ void Mediator::initializeNewMindMap()
     assert(m_editorData);
 
     m_editorScene = std::make_unique<EditorScene>();
-    m_editorData->clearImages();
-    m_editorData->setMindMapData(std::make_shared<MindMapData>());
+    m_editorData->initializeNewMindMap();
 
     initializeView();
 

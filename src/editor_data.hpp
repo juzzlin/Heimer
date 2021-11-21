@@ -70,8 +70,6 @@ public:
 
     void clearCopyStack();
 
-    void clearImages();
-
     void clearSelectionGroup();
 
     //! Connects selected nodes in the order they were selected.
@@ -98,6 +96,8 @@ public:
     QString fileName() const;
 
     NodePtr getNodeByIndex(int index);
+
+    void initializeNewMindMap();
 
     bool isInSelectionGroup(Node & node);
 
@@ -165,7 +165,7 @@ private:
     EditorData(const EditorData & e) = delete;
     EditorData & operator=(const EditorData & e) = delete;
 
-    void autosave();
+    void clearImages();
 
     using NodePairVector = std::vector<std::pair<Node *, Node *>>;
     NodePairVector getConnectableNodes() const;
@@ -175,6 +175,8 @@ private:
     void removeEdgeFromScene(Edge & edge);
 
     void removeNodeFromScene(Node & node);
+
+    void requestAutosave();
 
     void sendUndoAndRedoSignals();
 

@@ -8,6 +8,8 @@ New features:
 
 Bug fixes:
 
+* Fix autosave not triggering immediately on file operations
+
 Other:
 
 2.8.0

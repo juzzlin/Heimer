@@ -49,7 +49,7 @@ void EditorData::addNodeToSelectionGroup(Node & node)
     m_selectionGroup->addSelectedNode(node);
 }
 
-void EditorData::autosave()
+void EditorData::requestAutosave()
 {
     if (SettingsProxy::instance().autosave() && !m_fileName.isEmpty()) {
         L().debug() << "Autosaving to '" << m_fileName.toStdString() << "'";
@@ -75,6 +75,8 @@ QString EditorData::fileName() const
 
 void EditorData::loadMindMapData(QString fileName)
 {
+    requestAutosave();
+
     clearImages();
     clearSelectionGroup();
 
@@ -113,7 +115,7 @@ void EditorData::undo()
         m_mindMapData = m_undoStack.undo();
         setIsModified(true);
         sendUndoAndRedoSignals();
-        autosave();
+        requestAutosave();
     }
 }
 
@@ -139,7 +141,7 @@ void EditorData::redo()
         m_mindMapData = m_undoStack.redo();
         setIsModified(true);
         sendUndoAndRedoSignals();
-        autosave();
+        requestAutosave();
     }
 }
 
@@ -177,7 +179,7 @@ void EditorData::saveUndoPoint(bool dontClearRedoStack)
     }
     setIsModified(true);
     sendUndoAndRedoSignals();
-    autosave();
+    requestAutosave();
 }
 
 void EditorData::saveRedoPoint()
@@ -454,6 +456,14 @@ NodePtr EditorData::getNodeByIndex(int index)
     return m_mindMapData->graph().getNode(index);
 }
 
+void EditorData::initializeNewMindMap()
+{
+    requestAutosave();
+
+    clearImages();
+    setMindMapData(std::make_shared<MindMapData>());
+}
+
 bool EditorData::isInSelectionGroup(Node & node)
 {
     return m_selectionGroup->hasNode(node);
@@ -532,5 +542,7 @@ void EditorData::setIsModified(bool isModified)
 
 EditorData::~EditorData()
 {
-    autosave();
+    requestAutosave();
+
+    L().debug() << "EditorData deleted";
 }

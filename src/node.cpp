@@ -200,6 +200,12 @@ QRectF Node::expandedTextEditRect() const
     return textEditRect;
 }
 
+inline double getDistance(const Node & node1, const EdgePoint & point1, const Node & node2, const EdgePoint & point2)
+{
+    return std::pow(node1.pos().x() + point1.location.x() - node2.pos().x() - point2.location.x(), 2) + //
+      std::pow(node1.pos().y() + point1.location.y() - node2.pos().y() - point2.location.y(), 2);
+}
+
 std::pair<EdgePoint, EdgePoint> Node::getNearestEdgePoints(const Node & node1, const Node & node2)
 {
     double bestDistance = std::numeric_limits<double>::max();
@@ -208,8 +214,7 @@ std::pair<EdgePoint, EdgePoint> Node::getNearestEdgePoints(const Node & node1, c
     // This is O(n^2) but fine as there are not many points
     for (auto && point1 : node1.m_edgePoints) {
         for (auto && point2 : node2.m_edgePoints) {
-            const auto distance = std::pow(node1.pos().x() + point1.location.x() - node2.pos().x() - point2.location.x(), 2) + std::pow(node1.pos().y() + point1.location.y() - node2.pos().y() - point2.location.y(), 2);
-            if (distance < bestDistance) {
+            if (const auto distance = getDistance(node1, point1, node2, point2); distance < bestDistance) {
                 bestDistance = distance;
                 bestPair = { point1, point2 };
             }

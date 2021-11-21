@@ -28,14 +28,22 @@ class EdgeTextEdit : public TextEdit
 public:
     EdgeTextEdit(Edge * parentItem);
 
-    void setVisible(bool visible);
+    enum class VisibilityChangeReason
+    {
+        Default,
+        AvailableSpaceChanged
+    };
+
+    void setVisible(bool visible, VisibilityChangeReason vcr = VisibilityChangeReason::Default);
 
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
 
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
 
 private:
-    QPropertyAnimation m_sizeAnimation;
+    void setAnimationConfig(bool visible);
+
+    QPropertyAnimation m_opacityAnimation;
 
     QTimer m_visibilityTimer;
 };

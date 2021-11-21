@@ -144,10 +144,10 @@ void Edge::setArrowHeadPen(const QPen & pen)
     m_arrowheadR1->update();
 }
 
-void Edge::setLabelVisible(bool visible)
+void Edge::setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason vcr)
 {
     if (m_label) {
-        m_label->setVisible(visible);
+        m_label->setVisible(visible, vcr);
     }
 }
 
@@ -310,10 +310,15 @@ void Edge::updateDots()
     }
 }
 
-void Edge::updateLabel()
+void Edge::updateLabel(LabelUpdateReason lur)
 {
     if (m_label) {
         m_label->setPos((line().p1() + line().p2()) * 0.5 - QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()) * 0.5);
+
+        // Toggle visibility according to space available if geometry changed
+        if (lur == LabelUpdateReason::EdgeGeometryChanged) {
+            setLabelVisible(!m_label->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && !m_label->sceneBoundingRect().intersects(targetNode().sceneBoundingRect()), EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged);
+        }
     }
 }
 
@@ -360,7 +365,7 @@ void Edge::updateLine()
         (direction2 * static_cast<float>(m_width)).toPointF() * Constants::Edge::WIDTH_SCALE));
 
     updateDots();
-    updateLabel();
+    updateLabel(LabelUpdateReason::EdgeGeometryChanged);
     updateArrowhead();
 }
 

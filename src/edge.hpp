@@ -23,9 +23,9 @@
 #include <memory>
 
 #include "edge_point.hpp"
+#include "edge_text_edit.hpp"
 
 class EdgeDot;
-class EdgeTextEdit;
 class Node;
 class QGraphicsEllipseItem;
 class QPropertyAnimation;
@@ -94,13 +94,19 @@ private:
 
     void setArrowHeadPen(const QPen & pen);
 
-    void setLabelVisible(bool visible);
+    void setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason vcr = EdgeTextEdit::VisibilityChangeReason::Default);
 
     void updateArrowhead();
 
     void updateDots();
 
-    void updateLabel();
+    enum class LabelUpdateReason
+    {
+        Default,
+        EdgeGeometryChanged
+    };
+
+    void updateLabel(LabelUpdateReason lur = LabelUpdateReason::Default);
 
     Node * m_sourceNode = nullptr;
 

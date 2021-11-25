@@ -3,6 +3,19 @@ x.y.z
 
 New features:
 
+Bug fixes:
+
+Other:
+
+3.0.0
+=====
+
+Release date:
+
+Sun, 21 Nov 2021 22:43:30 +0200
+
+New features:
+
 * Fix GitHub Issue #36: Double-click to zoom into a node
 * Fix GitHub Issue #138: Make it possible to change the font
 * Fix GitHub Issue #180: Make edge text disappear if it doesn't fit between nodes

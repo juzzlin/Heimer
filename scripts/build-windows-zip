@@ -2,7 +2,7 @@
 
 # Builds ZIP archive for Windows in Docker
 
-VERSION=2.8.0
+VERSION=3.0.0
 
 CMAKE=/mxe/usr/bin/i686-w64-mingw32.static-cmake
 

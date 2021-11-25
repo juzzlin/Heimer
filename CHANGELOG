@@ -22,9 +22,7 @@ New features:
 
 Bug fixes:
 
-* Fix autosave not triggering immediately on file operations
-
-Other:
+* Fix auto save not triggering immediately on file operations
 
 2.8.0
 =====

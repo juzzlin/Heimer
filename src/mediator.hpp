@@ -64,6 +64,8 @@ public:
 
     bool canBeSaved() const;
 
+    void changeFont(const QFont & font);
+
     void clearSelectedNode();
 
     void clearSelectionGroup();
@@ -147,8 +149,6 @@ public:
     void setEditorData(std::shared_ptr<EditorData> editorData);
 
     void setEditorView(EditorView & editorView);
-
-    void setFont(QFont font);
 
     void setGridSize(int size);
 

@@ -67,7 +67,7 @@ void SerializerTest::testFontItalic()
 {
     MindMapData outData;
     QFont font("Foobar", 42, 666, true);
-    outData.setFont(font);
+    outData.changeFont(font);
     outData.setTextSize(24);
     const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     QCOMPARE(inData->font().family(), outData.font().family());
@@ -80,7 +80,7 @@ void SerializerTest::testFontNonItalic()
 {
     MindMapData outData;
     QFont font;
-    outData.setFont(font);
+    outData.changeFont(font);
     const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     QCOMPARE(inData->font().italic(), false);
 }
@@ -90,7 +90,7 @@ void SerializerTest::testFontBold()
     MindMapData outData;
     QFont font;
     font.setBold(true);
-    outData.setFont(font);
+    outData.changeFont(font);
     const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     QCOMPARE(inData->font().bold(), true);
 }
@@ -99,7 +99,7 @@ void SerializerTest::testFontNonBold()
 {
     MindMapData outData;
     QFont font;
-    outData.setFont(font);
+    outData.changeFont(font);
     const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     QCOMPARE(inData->font().bold(), false);
 }
@@ -109,7 +109,7 @@ void SerializerTest::testFontOverline()
     MindMapData outData;
     QFont font;
     font.setOverline(true);
-    outData.setFont(font);
+    outData.changeFont(font);
     const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     QCOMPARE(inData->font().overline(), true);
 }
@@ -118,7 +118,7 @@ void SerializerTest::testFontNonOverline()
 {
     MindMapData outData;
     QFont font;
-    outData.setFont(font);
+    outData.changeFont(font);
     const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     QCOMPARE(inData->font().overline(), false);
 }
@@ -128,7 +128,7 @@ void SerializerTest::testFontStrikeOut()
     MindMapData outData;
     QFont font;
     font.setStrikeOut(true);
-    outData.setFont(font);
+    outData.changeFont(font);
     const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     QCOMPARE(inData->font().strikeOut(), true);
 }
@@ -137,7 +137,7 @@ void SerializerTest::testFontNonStrikeOut()
 {
     MindMapData outData;
     QFont font;
-    outData.setFont(font);
+    outData.changeFont(font);
     const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     QCOMPARE(inData->font().strikeOut(), false);
 }
@@ -147,7 +147,7 @@ void SerializerTest::testFontUnderline()
     MindMapData outData;
     QFont font("Foobar");
     font.setUnderline(true);
-    outData.setFont(font);
+    outData.changeFont(font);
     const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     QCOMPARE(inData->font().underline(), true);
 }
@@ -156,7 +156,7 @@ void SerializerTest::testFontNonUnderline()
 {
     MindMapData outData;
     QFont font("Foobar");
-    outData.setFont(font);
+    outData.changeFont(font);
     const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     QCOMPARE(inData->font().underline(), false);
 }

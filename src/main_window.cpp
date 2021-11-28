@@ -32,14 +32,12 @@
 #include <QApplication>
 #include <QCheckBox>
 #include <QDoubleSpinBox>
-#include <QFontDialog>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
-#include <QPushButton>
 #include <QScreen>
 #include <QSpinBox>
 #include <QVBoxLayout>
@@ -49,10 +47,6 @@
 
 MainWindow * MainWindow::m_instance = nullptr;
 
-namespace {
-static const auto threeDots = "...";
-}
-
 MainWindow::MainWindow()
   : m_aboutDlg(new AboutDlg(this))
   , m_settingsDlg(new SettingsDialog(this))
@@ -61,13 +55,11 @@ MainWindow::MainWindow()
   , m_connectSelectedNodesAction(new QAction(tr("Connect selected nodes"), this))
   , m_disconnectSelectedNodesAction(new QAction(tr("Disconnect selected nodes"), this))
   , m_saveAction(new QAction(tr("&Save"), this))
-  , m_saveAsAction(new QAction(tr("&Save as") + threeDots, this))
+  , m_saveAsAction(new QAction(tr("&Save as") + Constants::Misc::THREE_DOTS, this))
   , m_undoAction(new QAction(tr("Undo"), this))
   , m_redoAction(new QAction(tr("Redo"), this))
   , m_cornerRadiusSpinBox(new QSpinBox(this))
-  , m_fontButton(new QPushButton(this))
   , m_gridSizeSpinBox(new QSpinBox(this))
-  , m_textSizeSpinBox(new QSpinBox(this))
   , m_copyOnDragCheckBox(new QCheckBox(tr("Copy on drag"), this))
   , m_showGridCheckBox(new QCheckBox(tr("Show grid"), this))
   , m_searchLineEdit(new QLineEdit(this))
@@ -133,6 +125,11 @@ void MainWindow::addUndoAction(QMenu & menu)
     menu.addAction(m_undoAction);
 }
 
+void MainWindow::changeFont(const QFont & font)
+{
+    m_toolBar->changeFont(font);
+}
+
 void MainWindow::createEditMenu()
 {
     const auto editMenu = menuBar()->addMenu(tr("&Edit"));
@@ -153,7 +150,7 @@ void MainWindow::createEditMenu()
     const auto colorMenuAction = editMenu->addMenu(colorMenu);
     colorMenuAction->setText(tr("General &colors"));
 
-    const auto backgroundColorAction = new QAction(tr("Set background color") + threeDots, this);
+    const auto backgroundColorAction = new QAction(tr("Set background color") + Constants::Misc::THREE_DOTS, this);
     backgroundColorAction->setShortcut(QKeySequence("Ctrl+B"));
 
     connect(backgroundColorAction, &QAction::triggered, [=] {
@@ -164,7 +161,7 @@ void MainWindow::createEditMenu()
 
     colorMenu->addSeparator();
 
-    const auto edgeColorAction = new QAction(tr("Set edge color") + threeDots, this);
+    const auto edgeColorAction = new QAction(tr("Set edge color") + Constants::Misc::THREE_DOTS, this);
     edgeColorAction->setShortcut(QKeySequence("Ctrl+E"));
 
     connect(edgeColorAction, &QAction::triggered, [=] {
@@ -175,7 +172,7 @@ void MainWindow::createEditMenu()
 
     colorMenu->addSeparator();
 
-    const auto gridColorAction = new QAction(tr("Set grid color") + threeDots, this);
+    const auto gridColorAction = new QAction(tr("Set grid color") + Constants::Misc::THREE_DOTS, this);
     gridColorAction->setShortcut(QKeySequence("Ctrl+G"));
 
     connect(gridColorAction, &QAction::triggered, [=] {
@@ -186,7 +183,7 @@ void MainWindow::createEditMenu()
 
     editMenu->addSeparator();
 
-    auto optimizeLayoutAction = new QAction(tr("Optimize layout") + threeDots, this);
+    auto optimizeLayoutAction = new QAction(tr("Optimize layout") + Constants::Misc::THREE_DOTS, this);
     optimizeLayoutAction->setShortcut(QKeySequence("Ctrl+Shift+O"));
 
     connect(optimizeLayoutAction, &QAction::triggered, [=] {
@@ -208,41 +205,6 @@ QWidgetAction * MainWindow::createCornerRadiusAction()
     connect(m_cornerRadiusSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::cornerRadiusChanged);
 #endif
     return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Corner radius:"), *m_cornerRadiusSpinBox, *this).second;
-}
-
-QWidgetAction * MainWindow::createTextSizeAction()
-{
-    m_textSizeSpinBox->setMinimum(Constants::Text::MIN_SIZE);
-    m_textSizeSpinBox->setMaximum(Constants::Text::MAX_SIZE);
-    m_textSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
-    connect(m_textSizeSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::textSizeChanged);
-#else
-    connect(m_textSizeSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::textSizeChanged);
-#endif
-    return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Text size:"), *m_textSizeSpinBox, *this).second;
-}
-
-QWidgetAction * MainWindow::createFontAction()
-{
-    m_fontButton->setText(tr("Font") + threeDots);
-    connect(m_fontButton, &QPushButton::clicked, [=] {
-        bool ok;
-        QFont defaultFont = m_fontButton->font();
-        defaultFont.setPointSize(m_textSizeSpinBox->value());
-        const auto font = QFontDialog::getFont(&ok, defaultFont, this);
-        if (ok) {
-            // Note: Support for multiple families implemented in Qt 5.13 =>
-            juzzlin::L().debug() << "Font family selected: '" << font.family().toStdString() << "'";
-            juzzlin::L().debug() << "Font weight selected: " << font.weight();
-            updateFontButtonFont(font);
-            m_textSizeSpinBox->setValue(font.pointSize());
-            emit textSizeChanged(font.pointSize());
-            emit fontChanged(font);
-        }
-    });
-    return WidgetFactory::buildToolBarWidgetAction(*m_fontButton, *this).second;
 }
 
 QWidgetAction * MainWindow::createGridSizeAction()
@@ -319,7 +281,7 @@ void MainWindow::createFileMenu()
     const auto fileMenu = menuBar()->addMenu(tr("&File"));
 
     // Add "new"-action
-    const auto newAct = new QAction(tr("&New") + threeDots, this);
+    const auto newAct = new QAction(tr("&New") + Constants::Misc::THREE_DOTS, this);
     newAct->setShortcut(QKeySequence(QKeySequence::New));
     fileMenu->addAction(newAct);
     connect(newAct, &QAction::triggered, [=] {
@@ -327,7 +289,7 @@ void MainWindow::createFileMenu()
     });
 
     // Add "open"-action
-    const auto openAct = new QAction(tr("&Open") + threeDots, this);
+    const auto openAct = new QAction(tr("&Open") + Constants::Misc::THREE_DOTS, this);
     openAct->setShortcut(QKeySequence(QKeySequence::Open));
     fileMenu->addAction(openAct);
     connect(openAct, &QAction::triggered, [=] {
@@ -367,7 +329,7 @@ void MainWindow::createFileMenu()
     fileMenu->addSeparator();
 
     // Add "settings"-action
-    const auto settingsAct = new QAction(tr("Settings") + threeDots, this);
+    const auto settingsAct = new QAction(tr("Settings") + Constants::Misc::THREE_DOTS, this);
     connect(settingsAct, &QAction::triggered, m_settingsDlg, &SettingsDialog::exec);
     fileMenu->addAction(settingsAct);
 
@@ -419,10 +381,10 @@ void MainWindow::createToolBar()
 {
     connect(m_toolBar, &ToolBar::edgeWidthChanged, this, &MainWindow::edgeWidthChanged);
 
-    m_toolBar->addAction(createTextSizeAction());
-    m_toolBar->addSeparator();
-    m_toolBar->addAction(createFontAction());
-    m_toolBar->addSeparator();
+    connect(m_toolBar, &ToolBar::fontChanged, this, &MainWindow::fontChanged);
+
+    connect(m_toolBar, &ToolBar::textSizeChanged, this, &MainWindow::textSizeChanged);
+
     m_toolBar->addAction(createCornerRadiusAction());
     m_toolBar->addSeparator();
     m_toolBar->addAction(createGridSizeAction());
@@ -563,13 +525,6 @@ void MainWindow::populateMenuBar()
     createHelpMenu();
 }
 
-void MainWindow::updateFontButtonFont(const QFont & font)
-{
-    QFont newFont(font);
-    newFont.setPointSize(m_fontButton->font().pointSize());
-    m_fontButton->setFont(newFont);
-}
-
 void MainWindow::appear()
 {
     if (Settings::loadFullScreen()) {
@@ -605,7 +560,6 @@ void MainWindow::enableWidgetSignals(bool enable)
     m_toolBar->enableWidgetSignals(enable);
 
     m_cornerRadiusSpinBox->blockSignals(!enable);
-    m_textSizeSpinBox->blockSignals(!enable);
     m_gridSizeSpinBox->blockSignals(!enable);
 }
 
@@ -621,16 +575,9 @@ void MainWindow::setEdgeWidth(double value)
     m_toolBar->setEdgeWidth(value);
 }
 
-void MainWindow::setFont(const QFont & font)
-{
-    updateFontButtonFont(font);
-}
-
 void MainWindow::setTextSize(int textSize)
 {
-    if (m_textSizeSpinBox->value() != textSize) {
-        m_textSizeSpinBox->setValue(textSize);
-    }
+    m_toolBar->setTextSize(textSize);
 }
 
 void MainWindow::enableUndo(bool enable)

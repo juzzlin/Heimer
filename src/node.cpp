@@ -93,7 +93,7 @@ Node::Node(const Node & other)
 
     setTextSize(other.m_textSize);
 
-    setFont(other.m_font);
+    changeFont(other.m_font);
 }
 
 void Node::addGraphicsEdge(Edge & edge)
@@ -152,6 +152,22 @@ void Node::adjustSize()
 QRectF Node::boundingRect() const
 {
     return { -m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height() };
+}
+
+void Node::changeFont(const QFont & font)
+{
+    m_font = font;
+    if (!TestMode::enabled()) {
+        // Handle size and family separately to maintain backwards compatibility
+        QFont newFont(font);
+        if (m_textSize >= 0) {
+            newFont.setPointSize(m_textSize);
+        }
+        m_textEdit->setFont(newFont);
+        adjustSize();
+    } else {
+        TestMode::logDisabledCode("set node font");
+    }
 }
 
 EdgePtr Node::createAndAddGraphicsEdge(NodePtr targetNode)
@@ -453,22 +469,12 @@ void Node::setTextColor(const QColor & color)
     }
 }
 
-void Node::setFont(const QFont & font)
-{
-    m_font = font;
-    if (!TestMode::enabled()) {
-        // Handle size and family separately to maintain backwards compatibility
-        QFont newFont(font);
-        newFont.setPointSize(m_textSize);
-        m_textEdit->setFont(newFont);
-        adjustSize();
-    } else {
-        TestMode::logDisabledCode("set node font");
-    }
-}
-
 void Node::setTextSize(int textSize)
 {
+    if (textSize <= 0) {
+        return;
+    }
+
     m_textSize = textSize;
     if (!TestMode::enabled()) {
         m_textEdit->setTextSize(textSize);

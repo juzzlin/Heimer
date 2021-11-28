@@ -35,9 +35,8 @@ class Mediator;
 class Node;
 class QAction;
 class QCheckBox;
-class QDoubleSpinBox;
+class QFont;
 class QLineEdit;
-class QPushButton;
 class QSlider;
 class QSpinBox;
 class QTextEdit;
@@ -84,6 +83,8 @@ public:
 
 public slots:
 
+    void changeFont(const QFont & font);
+
     void enableUndo(bool enable);
 
     void enableRedo(bool enable);
@@ -93,8 +94,6 @@ public slots:
     void setCornerRadius(int value);
 
     void setEdgeWidth(double value);
-
-    void setFont(const QFont & font);
 
     void setTextSize(int textSize);
 
@@ -111,7 +110,7 @@ signals:
 
     void edgeWidthChanged(double width);
 
-    void fontChanged(QFont font);
+    void fontChanged(const QFont & font);
 
     void gridSizeChanged(int size);
 
@@ -138,13 +137,9 @@ private:
 
     QWidgetAction * createCornerRadiusAction();
 
-    QWidgetAction * createFontAction();
-
     QWidgetAction * createGridSizeAction();
 
     QWidgetAction * createSearchAction();
-
-    QWidgetAction * createTextSizeAction();
 
     std::pair<QSize, QSize> calculateDefaultWindowSize() const;
 
@@ -161,8 +156,6 @@ private:
     void createViewMenu();
 
     void populateMenuBar();
-
-    void updateFontButtonFont(const QFont & font);
 
     AboutDlg * m_aboutDlg;
 
@@ -188,11 +181,7 @@ private:
 
     QSpinBox * m_cornerRadiusSpinBox = nullptr;
 
-    QPushButton * m_fontButton = nullptr;
-
     QSpinBox * m_gridSizeSpinBox = nullptr;
-
-    QSpinBox * m_textSizeSpinBox = nullptr;
 
     QCheckBox * m_copyOnDragCheckBox = nullptr;
 

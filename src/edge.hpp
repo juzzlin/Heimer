@@ -68,13 +68,13 @@ public:
 
 public slots:
 
+    void changeFont(const QFont & font);
+
     void updateLine();
 
     void setArrowMode(ArrowMode arrowMode);
 
     void setColor(const QColor & color);
-
-    void setFont(const QFont & font);
 
     void setWidth(double width);
 

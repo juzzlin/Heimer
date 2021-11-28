@@ -187,16 +187,16 @@ QFont MindMapData::font() const
     return m_font;
 }
 
-void MindMapData::setFont(QFont font)
+void MindMapData::changeFont(QFont font)
 {
     m_font = font;
 
     for (auto && edge : m_graph.getEdges()) {
-        edge->setFont(font);
+        edge->changeFont(font);
     }
 
     for (auto && node : m_graph.getNodes()) {
-        node->setFont(font);
+        node->changeFont(font);
     }
 }
 

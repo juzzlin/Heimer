@@ -76,7 +76,7 @@ public:
 
     QFont font() const;
 
-    void setFont(QFont font);
+    void changeFont(QFont font);
 
     int textSize() const;
 

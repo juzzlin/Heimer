@@ -100,6 +100,18 @@ void Edge::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
     QGraphicsItem::hoverLeaveEvent(event);
 }
 
+void Edge::changeFont(const QFont & font)
+{
+    if (m_label) {
+        // Handle size and family separately to maintain backwards compatibility
+        QFont newFont(font);
+        if (m_label->font().pointSize() >= 0) {
+            newFont.setPointSize(m_label->font().pointSize());
+        }
+        m_label->setFont(newFont);
+    }
+}
+
 QPen Edge::getPen() const
 {
     QPen pen { QBrush { QColor { m_color.red(), m_color.green(), m_color.blue() } }, m_width };
@@ -193,18 +205,12 @@ void Edge::setText(const QString & text)
     }
 }
 
-void Edge::setFont(const QFont & font)
-{
-    if (m_label) {
-        // Handle size and family separately to maintain backwards compatibility
-        QFont newFont(font);
-        newFont.setPointSize(m_label->font().pointSize());
-        m_label->setFont(newFont);
-    }
-}
-
 void Edge::setTextSize(int textSize)
 {
+    if (textSize <= 0) {
+        return;
+    }
+
     if (m_label) {
         m_label->setTextSize(textSize);
     }

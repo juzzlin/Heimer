@@ -20,6 +20,9 @@
 #include <QObject>
 
 class QDoubleSpinBox;
+class QFont;
+class QPushButton;
+class QSpinBox;
 class QWidgetAction;
 
 class ToolBar : public QToolBar
@@ -29,18 +32,36 @@ class ToolBar : public QToolBar
 public:
     ToolBar(QWidget * parent = nullptr);
 
+    void changeFont(const QFont & font);
+
     void enableWidgetSignals(bool enable);
 
     void setEdgeWidth(double value);
+
+    void setTextSize(int textSize);
 
 signals:
 
     void edgeWidthChanged(double width);
 
+    void fontChanged(const QFont & font);
+
+    void textSizeChanged(int value);
+
 private:
     QWidgetAction * createEdgeWidthAction();
 
+    QWidgetAction * createFontAction();
+
+    QWidgetAction * createTextSizeAction();
+
+    void updateFontButtonFont(const QFont & font);
+
     QDoubleSpinBox * m_edgeWidthSpinBox = nullptr;
+
+    QPushButton * m_fontButton = nullptr;
+
+    QSpinBox * m_textSizeSpinBox = nullptr;
 };
 
 #endif // TOOL_BAR_HPP

@@ -97,7 +97,7 @@ public:
 
     void setCornerRadius(int value);
 
-    void setFont(const QFont & font);
+    void changeFont(const QFont & font);
 
     void setHandlesVisible(bool visible);
 

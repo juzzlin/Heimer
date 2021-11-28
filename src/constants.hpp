@@ -122,6 +122,12 @@ static const int DEFAULT_TEXT_SIZE = 11;
 
 } // namespace MindMap
 
+namespace Misc {
+
+static const auto THREE_DOTS = "...";
+
+} // namespace Misc
+
 namespace Node {
 
 static const int DEFAULT_CORNER_RADIUS = 5;

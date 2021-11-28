@@ -453,7 +453,7 @@ std::unique_ptr<MindMapData> fromXml(QDomDocument document)
                               font.setUnderline(e.attribute(DataKeywords::MindMap::FONT_UNDERLINE).toInt());
                               font.setStrikeOut(e.attribute(DataKeywords::MindMap::FONT_STRIKE_OUT).toInt());
                               font.setWeight(e.attribute(DataKeywords::MindMap::FONT_WEIGHT).toInt());
-                              data->setFont(font);
+                              data->changeFont(font);
                           } },
                          { QString(DataKeywords::MindMap::GRID_COLOR), [&data](const QDomElement & e) {
                               data->setGridColor(readColorElement(e));

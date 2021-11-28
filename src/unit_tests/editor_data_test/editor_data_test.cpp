@@ -589,7 +589,7 @@ void EditorDataTest::testUndoFontChange()
     const auto font = editorData.mindMapData()->font();
     editorData.saveUndoPoint();
     QFont newFont("Foo");
-    editorData.mindMapData()->setFont(newFont);
+    editorData.mindMapData()->changeFont(newFont);
 
     QCOMPARE(editorData.mindMapData()->font().family(), newFont.family());
 

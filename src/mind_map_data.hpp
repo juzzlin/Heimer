@@ -24,6 +24,7 @@
 #include "image_manager.hpp"
 #include "mind_map_data_base.hpp"
 
+class Grid;
 class ObjectModelLoader;
 
 class MindMapData : public MindMapDataBase
@@ -34,6 +35,8 @@ public:
     MindMapData(const MindMapData & other);
 
     virtual ~MindMapData() override;
+
+    void applyGrid(const Grid & grid);
 
     double aspectRatio() const;
 

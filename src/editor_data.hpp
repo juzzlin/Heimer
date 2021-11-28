@@ -28,6 +28,7 @@
 
 #include "edge.hpp"
 #include "file_exception.hpp"
+#include "grid.hpp"
 #include "mind_map_data.hpp"
 #include "mouse_action.hpp"
 #include "node.hpp"
@@ -129,6 +130,8 @@ public:
 
     void setColorForSelectedNodes(QColor color);
 
+    void setGridSize(int size);
+
     void setMindMapData(MindMapDataPtr newMindMapData);
 
     void setSelectedEdge(Edge * edge);
@@ -216,6 +219,8 @@ private:
     };
 
     CopyContext m_copyContext;
+
+    Grid m_grid;
 };
 
 #endif // EDITOR_DATA_HPP

@@ -31,6 +31,8 @@ public:
 
     bool hasNode(Node & node) const;
 
+    bool isEmpty() const;
+
     void move(Node & reference, QPointF location);
 
     const std::vector<Node *> & nodes() const;

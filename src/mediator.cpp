@@ -704,6 +704,12 @@ void Mediator::setFont(QFont font)
     m_editorData->mindMapData()->setFont(font);
 }
 
+void Mediator::setGridSize(int size)
+{
+    m_editorView->setGridSize(size);
+    m_editorData->setGridSize(size);
+}
+
 void Mediator::setTextSize(int textSize)
 {
     // Break loop with the spinbox

@@ -213,6 +213,18 @@ void EditorData::setColorForSelectedNodes(QColor color)
     }
 }
 
+void EditorData::setGridSize(int size)
+{
+    m_grid.setSize(size);
+    if (!m_selectionGroup->isEmpty()) {
+        for (auto && node : m_selectionGroup->nodes()) {
+            node->setLocation(m_grid.snapToGrid(node->location()));
+        }
+    } else if (m_mindMapData) {
+        m_mindMapData->applyGrid(m_grid);
+    }
+}
+
 void EditorData::setImageRefForSelectedNodes(size_t id)
 {
     for (auto && node : m_selectionGroup->nodes()) {

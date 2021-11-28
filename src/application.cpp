@@ -175,7 +175,7 @@ Application::Application(int & argc, char ** argv)
     connect(m_mainWindow.get(), &MainWindow::edgeWidthChanged, m_mediator.get(), &Mediator::setEdgeWidth);
     connect(m_mainWindow.get(), &MainWindow::fontChanged, m_mediator.get(), &Mediator::setFont);
     connect(m_mainWindow.get(), &MainWindow::textSizeChanged, m_mediator.get(), &Mediator::setTextSize);
-    connect(m_mainWindow.get(), &MainWindow::gridSizeChanged, m_editorView, &EditorView::setGridSize);
+    connect(m_mainWindow.get(), &MainWindow::gridSizeChanged, m_mediator.get(), &Mediator::setGridSize);
     connect(m_mainWindow.get(), &MainWindow::gridVisibleChanged, [this](int state) {
         bool visible = state == Qt::Checked;
         m_editorView->setGridVisible(visible);

@@ -42,6 +42,11 @@ bool SelectionGroup::hasNode(Node & node) const
     return m_nodeSet.count(&node);
 }
 
+bool SelectionGroup::isEmpty() const
+{
+    return m_nodeSet.empty();
+}
+
 void SelectionGroup::move(Node & reference, QPointF location)
 {
     std::map<int, QPointF> delta;

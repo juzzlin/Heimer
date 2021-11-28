@@ -15,6 +15,7 @@
 
 #include "mind_map_data.hpp"
 
+#include "grid.hpp"
 #include "node.hpp"
 
 #include <memory>
@@ -59,6 +60,13 @@ void MindMapData::copyGraph(const MindMapData & other)
         edge->setText(otherEdge->text());
         edge->setReversed(otherEdge->reversed());
         m_graph.addEdge(edge);
+    }
+}
+
+void MindMapData::applyGrid(const Grid & grid)
+{
+    for (auto && node : m_graph.getNodes()) {
+        node->setLocation(grid.snapToGrid(node->location()));
     }
 }
 

@@ -63,6 +63,7 @@ set(LIB_SRC
     svg_export_dialog.cpp
     test_mode.cpp
     text_edit.cpp
+    tool_bar.cpp
     undo_stack.cpp
     user_exception.hpp
     whats_new_dlg.cpp

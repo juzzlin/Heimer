@@ -24,6 +24,7 @@
 #include "settings.hpp"
 #include "settings_dialog.hpp"
 #include "simple_logger.hpp"
+#include "tool_bar.hpp"
 #include "whats_new_dlg.hpp"
 #include "widget_factory.hpp"
 
@@ -41,7 +42,6 @@
 #include <QPushButton>
 #include <QScreen>
 #include <QSpinBox>
-#include <QToolBar>
 #include <QVBoxLayout>
 #include <QWidgetAction>
 
@@ -56,6 +56,7 @@ static const auto threeDots = "...";
 MainWindow::MainWindow()
   : m_aboutDlg(new AboutDlg(this))
   , m_settingsDlg(new SettingsDialog(this))
+  , m_toolBar(new ToolBar(this))
   , m_whatsNewDlg(new WhatsNewDlg(this))
   , m_connectSelectedNodesAction(new QAction(tr("Connect selected nodes"), this))
   , m_disconnectSelectedNodesAction(new QAction(tr("Disconnect selected nodes"), this))
@@ -63,7 +64,6 @@ MainWindow::MainWindow()
   , m_saveAsAction(new QAction(tr("&Save as") + threeDots, this))
   , m_undoAction(new QAction(tr("Undo"), this))
   , m_redoAction(new QAction(tr("Redo"), this))
-  , m_edgeWidthSpinBox(new QDoubleSpinBox(this))
   , m_cornerRadiusSpinBox(new QSpinBox(this))
   , m_fontButton(new QPushButton(this))
   , m_gridSizeSpinBox(new QSpinBox(this))
@@ -77,6 +77,8 @@ MainWindow::MainWindow()
     } else {
         qFatal("MainWindow already instantiated!");
     }
+
+    addToolBar(Qt::BottomToolBarArea, m_toolBar);
 }
 
 void MainWindow::addConnectSelectedNodesAction(QMenu & menu)
@@ -206,21 +208,6 @@ QWidgetAction * MainWindow::createCornerRadiusAction()
     connect(m_cornerRadiusSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::cornerRadiusChanged);
 #endif
     return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Corner radius:"), *m_cornerRadiusSpinBox, *this).second;
-}
-
-QWidgetAction * MainWindow::createEdgeWidthAction()
-{
-    m_edgeWidthSpinBox->setSingleStep(Constants::Edge::STEP);
-    m_edgeWidthSpinBox->setMinimum(Constants::Edge::MIN_SIZE);
-    m_edgeWidthSpinBox->setMaximum(Constants::Edge::MAX_SIZE);
-    m_edgeWidthSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
-    connect(m_edgeWidthSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &MainWindow::edgeWidthChanged);
-#else
-    connect(m_edgeWidthSpinBox, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this, &MainWindow::edgeWidthChanged);
-#endif
-    return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Edge width:"), *m_edgeWidthSpinBox, *this).second;
 }
 
 QWidgetAction * MainWindow::createTextSizeAction()
@@ -430,25 +417,23 @@ void MainWindow::createHelpMenu()
 
 void MainWindow::createToolBar()
 {
-    const auto toolBar = new QToolBar(this);
-    addToolBar(Qt::BottomToolBarArea, toolBar);
-    toolBar->addAction(createEdgeWidthAction());
-    toolBar->addSeparator();
-    toolBar->addAction(createTextSizeAction());
-    toolBar->addSeparator();
-    toolBar->addAction(createFontAction());
-    toolBar->addSeparator();
-    toolBar->addAction(createCornerRadiusAction());
-    toolBar->addSeparator();
-    toolBar->addAction(createGridSizeAction());
+    connect(m_toolBar, &ToolBar::edgeWidthChanged, this, &MainWindow::edgeWidthChanged);
+
+    m_toolBar->addAction(createTextSizeAction());
+    m_toolBar->addSeparator();
+    m_toolBar->addAction(createFontAction());
+    m_toolBar->addSeparator();
+    m_toolBar->addAction(createCornerRadiusAction());
+    m_toolBar->addSeparator();
+    m_toolBar->addAction(createGridSizeAction());
 
     const auto spacer = new QWidget;
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    toolBar->addWidget(spacer);
-    toolBar->addAction(createSearchAction());
-    toolBar->addSeparator();
-    toolBar->addWidget(m_showGridCheckBox);
-    toolBar->addWidget(m_copyOnDragCheckBox);
+    m_toolBar->addWidget(spacer);
+    m_toolBar->addAction(createSearchAction());
+    m_toolBar->addSeparator();
+    m_toolBar->addWidget(m_showGridCheckBox);
+    m_toolBar->addWidget(m_copyOnDragCheckBox);
 
     connect(m_showGridCheckBox, &QCheckBox::stateChanged, this, &MainWindow::gridVisibleChanged);
     connect(m_showGridCheckBox, &QCheckBox::stateChanged, Settings::saveGridVisibleState);
@@ -617,8 +602,9 @@ void MainWindow::enableDisconnectSelectedNodesAction(bool enable)
 
 void MainWindow::enableWidgetSignals(bool enable)
 {
+    m_toolBar->enableWidgetSignals(enable);
+
     m_cornerRadiusSpinBox->blockSignals(!enable);
-    m_edgeWidthSpinBox->blockSignals(!enable);
     m_textSizeSpinBox->blockSignals(!enable);
     m_gridSizeSpinBox->blockSignals(!enable);
 }
@@ -632,9 +618,7 @@ void MainWindow::setCornerRadius(int value)
 
 void MainWindow::setEdgeWidth(double value)
 {
-    if (!qFuzzyCompare(m_edgeWidthSpinBox->value(), value)) {
-        m_edgeWidthSpinBox->setValue(value);
-    }
+    m_toolBar->setEdgeWidth(value);
 }
 
 void MainWindow::setFont(const QFont & font)

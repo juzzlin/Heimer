@@ -31,6 +31,8 @@ class AboutDlg;
 class SettingsDialog;
 class EditorData;
 class EditorView;
+class Mediator;
+class Node;
 class QAction;
 class QCheckBox;
 class QDoubleSpinBox;
@@ -40,8 +42,7 @@ class QSlider;
 class QSpinBox;
 class QTextEdit;
 class QWidgetAction;
-class Mediator;
-class Node;
+class ToolBar;
 class WhatsNewDlg;
 
 class MainWindow : public QMainWindow
@@ -137,8 +138,6 @@ private:
 
     QWidgetAction * createCornerRadiusAction();
 
-    QWidgetAction * createEdgeWidthAction();
-
     QWidgetAction * createFontAction();
 
     QWidgetAction * createGridSizeAction();
@@ -169,6 +168,8 @@ private:
 
     SettingsDialog * m_settingsDlg;
 
+    ToolBar * m_toolBar;
+
     WhatsNewDlg * m_whatsNewDlg;
 
     QAction * m_connectSelectedNodesAction = nullptr;
@@ -184,8 +185,6 @@ private:
     QAction * m_undoAction = nullptr;
 
     QAction * m_redoAction = nullptr;
-
-    QDoubleSpinBox * m_edgeWidthSpinBox = nullptr;
 
     QSpinBox * m_cornerRadiusSpinBox = nullptr;
 

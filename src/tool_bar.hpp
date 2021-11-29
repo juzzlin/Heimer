@@ -36,11 +36,14 @@ public:
 
     void enableWidgetSignals(bool enable);
 
+    void setCornerRadius(int value);
+
     void setEdgeWidth(double value);
 
     void setTextSize(int textSize);
 
 signals:
+    void cornerRadiusChanged(int size);
 
     void edgeWidthChanged(double width);
 
@@ -49,6 +52,8 @@ signals:
     void textSizeChanged(int value);
 
 private:
+    QWidgetAction * createCornerRadiusAction();
+
     QWidgetAction * createEdgeWidthAction();
 
     QWidgetAction * createFontAction();
@@ -56,6 +61,8 @@ private:
     QWidgetAction * createTextSizeAction();
 
     void updateFontButtonFont(const QFont & font);
+
+    QSpinBox * m_cornerRadiusSpinBox = nullptr;
 
     QDoubleSpinBox * m_edgeWidthSpinBox = nullptr;
 

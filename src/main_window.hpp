@@ -135,8 +135,6 @@ private:
 
     void addUndoAction(QMenu & menu);
 
-    QWidgetAction * createCornerRadiusAction();
-
     QWidgetAction * createGridSizeAction();
 
     QWidgetAction * createSearchAction();
@@ -178,8 +176,6 @@ private:
     QAction * m_undoAction = nullptr;
 
     QAction * m_redoAction = nullptr;
-
-    QSpinBox * m_cornerRadiusSpinBox = nullptr;
 
     QSpinBox * m_gridSizeSpinBox = nullptr;
 

@@ -28,6 +28,7 @@
 
 ToolBar::ToolBar(QWidget * parent)
   : QToolBar(parent)
+  , m_cornerRadiusSpinBox(new QSpinBox(this))
   , m_edgeWidthSpinBox(new QDoubleSpinBox(this))
   , m_fontButton(new QPushButton(this))
   , m_textSizeSpinBox(new QSpinBox(this))
@@ -43,11 +44,29 @@ ToolBar::ToolBar(QWidget * parent)
     addAction(createFontAction());
 
     addSeparator();
+
+    addAction(createCornerRadiusAction());
+
+    addSeparator();
 }
 
 void ToolBar::changeFont(const QFont & font)
 {
     updateFontButtonFont(font);
+}
+
+QWidgetAction * ToolBar::createCornerRadiusAction()
+{
+    m_cornerRadiusSpinBox->setMinimum(0);
+    m_cornerRadiusSpinBox->setMaximum(Constants::Node::MAX_CORNER_RADIUS);
+    m_cornerRadiusSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
+    connect(m_cornerRadiusSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &ToolBar::cornerRadiusChanged);
+#else
+    connect(m_cornerRadiusSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &ToolBar::cornerRadiusChanged);
+#endif
+    return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Corner radius:"), *m_cornerRadiusSpinBox, *this).second;
 }
 
 QWidgetAction * ToolBar::createEdgeWidthAction()
@@ -102,8 +121,16 @@ QWidgetAction * ToolBar::createTextSizeAction()
 
 void ToolBar::enableWidgetSignals(bool enable)
 {
+    m_cornerRadiusSpinBox->blockSignals(!enable);
     m_edgeWidthSpinBox->blockSignals(!enable);
     m_textSizeSpinBox->blockSignals(!enable);
+}
+
+void ToolBar::setCornerRadius(int value)
+{
+    if (m_cornerRadiusSpinBox->value() != value) {
+        m_cornerRadiusSpinBox->setValue(value);
+    }
 }
 
 void ToolBar::setEdgeWidth(double value)

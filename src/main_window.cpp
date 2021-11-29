@@ -58,7 +58,6 @@ MainWindow::MainWindow()
   , m_saveAsAction(new QAction(tr("&Save as") + Constants::Misc::THREE_DOTS, this))
   , m_undoAction(new QAction(tr("Undo"), this))
   , m_redoAction(new QAction(tr("Redo"), this))
-  , m_cornerRadiusSpinBox(new QSpinBox(this))
   , m_gridSizeSpinBox(new QSpinBox(this))
   , m_copyOnDragCheckBox(new QCheckBox(tr("Copy on drag"), this))
   , m_showGridCheckBox(new QCheckBox(tr("Show grid"), this))
@@ -191,20 +190,6 @@ void MainWindow::createEditMenu()
     });
 
     editMenu->addAction(optimizeLayoutAction);
-}
-
-QWidgetAction * MainWindow::createCornerRadiusAction()
-{
-    m_cornerRadiusSpinBox->setMinimum(0);
-    m_cornerRadiusSpinBox->setMaximum(Constants::Node::MAX_CORNER_RADIUS);
-    m_cornerRadiusSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
-    connect(m_cornerRadiusSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &MainWindow::cornerRadiusChanged);
-#else
-    connect(m_cornerRadiusSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &MainWindow::cornerRadiusChanged);
-#endif
-    return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Corner radius:"), *m_cornerRadiusSpinBox, *this).second;
 }
 
 QWidgetAction * MainWindow::createGridSizeAction()
@@ -379,14 +364,14 @@ void MainWindow::createHelpMenu()
 
 void MainWindow::createToolBar()
 {
+    connect(m_toolBar, &ToolBar::cornerRadiusChanged, this, &MainWindow::cornerRadiusChanged);
+
     connect(m_toolBar, &ToolBar::edgeWidthChanged, this, &MainWindow::edgeWidthChanged);
 
     connect(m_toolBar, &ToolBar::fontChanged, this, &MainWindow::fontChanged);
 
     connect(m_toolBar, &ToolBar::textSizeChanged, this, &MainWindow::textSizeChanged);
 
-    m_toolBar->addAction(createCornerRadiusAction());
-    m_toolBar->addSeparator();
     m_toolBar->addAction(createGridSizeAction());
 
     const auto spacer = new QWidget;
@@ -559,15 +544,12 @@ void MainWindow::enableWidgetSignals(bool enable)
 {
     m_toolBar->enableWidgetSignals(enable);
 
-    m_cornerRadiusSpinBox->blockSignals(!enable);
     m_gridSizeSpinBox->blockSignals(!enable);
 }
 
 void MainWindow::setCornerRadius(int value)
 {
-    if (m_cornerRadiusSpinBox->value() != value) {
-        m_cornerRadiusSpinBox->setValue(value);
-    }
+    m_toolBar->setCornerRadius(value);
 }
 
 void MainWindow::setEdgeWidth(double value)

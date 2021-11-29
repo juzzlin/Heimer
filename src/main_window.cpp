@@ -58,10 +58,6 @@ MainWindow::MainWindow()
   , m_saveAsAction(new QAction(tr("&Save as") + Constants::Misc::THREE_DOTS, this))
   , m_undoAction(new QAction(tr("Undo"), this))
   , m_redoAction(new QAction(tr("Redo"), this))
-  , m_gridSizeSpinBox(new QSpinBox(this))
-  , m_copyOnDragCheckBox(new QCheckBox(tr("Copy on drag"), this))
-  , m_showGridCheckBox(new QCheckBox(tr("Show grid"), this))
-  , m_searchLineEdit(new QLineEdit(this))
 {
     if (!m_instance) {
         m_instance = this;
@@ -70,6 +66,8 @@ MainWindow::MainWindow()
     }
 
     addToolBar(Qt::BottomToolBarArea, m_toolBar);
+
+    connectToolBar();
 }
 
 void MainWindow::addConnectSelectedNodesAction(QMenu & menu)
@@ -127,6 +125,23 @@ void MainWindow::addUndoAction(QMenu & menu)
 void MainWindow::changeFont(const QFont & font)
 {
     m_toolBar->changeFont(font);
+}
+
+void MainWindow::connectToolBar()
+{
+    connect(m_toolBar, &ToolBar::cornerRadiusChanged, this, &MainWindow::cornerRadiusChanged);
+
+    connect(m_toolBar, &ToolBar::edgeWidthChanged, this, &MainWindow::edgeWidthChanged);
+
+    connect(m_toolBar, &ToolBar::fontChanged, this, &MainWindow::fontChanged);
+
+    connect(m_toolBar, &ToolBar::gridSizeChanged, this, &MainWindow::gridSizeChanged);
+
+    connect(m_toolBar, &ToolBar::gridVisibleChanged, this, &MainWindow::gridVisibleChanged);
+
+    connect(m_toolBar, &ToolBar::searchTextChanged, this, &MainWindow::searchTextChanged);
+
+    connect(m_toolBar, &ToolBar::textSizeChanged, this, &MainWindow::textSizeChanged);
 }
 
 void MainWindow::createEditMenu()
@@ -190,47 +205,6 @@ void MainWindow::createEditMenu()
     });
 
     editMenu->addAction(optimizeLayoutAction);
-}
-
-QWidgetAction * MainWindow::createGridSizeAction()
-{
-    m_gridSizeSpinBox->setMinimum(Constants::Grid::MIN_SIZE);
-    m_gridSizeSpinBox->setMaximum(Constants::Grid::MAX_SIZE);
-    m_gridSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
-    const auto signal = QOverload<int>::of(&QSpinBox::valueChanged);
-#else
-    const auto signal = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
-#endif
-    connect(m_gridSizeSpinBox, signal, this, &MainWindow::gridSizeChanged);
-    connect(m_gridSizeSpinBox, signal, Settings::saveGridSize);
-
-    m_gridSizeSpinBox->setValue(Settings::loadGridSize());
-
-    return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Grid size:"), *m_gridSizeSpinBox, *this).second;
-}
-
-QWidgetAction * MainWindow::createSearchAction()
-{
-    m_searchTimer.setSingleShot(true);
-    connect(&m_searchTimer, &QTimer::timeout, [this, searchLineEdit = m_searchLineEdit]() {
-        const auto text = searchLineEdit->text();
-        juzzlin::L().debug() << "Search text changed: " << text.toStdString();
-        emit searchTextChanged(text);
-    });
-    connect(m_searchLineEdit, &QLineEdit::textChanged, [searchTimer = &m_searchTimer](const QString & text) {
-        if (text.isEmpty()) {
-            searchTimer->start(0);
-        } else {
-            searchTimer->start(Constants::View::TEXT_SEARCH_DELAY_MS);
-        }
-    });
-    connect(m_searchLineEdit, &QLineEdit::returnPressed, [searchTimer = &m_searchTimer] {
-        searchTimer->start(0);
-    });
-
-    return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Search:"), *m_searchLineEdit, *this).second;
 }
 
 void MainWindow::createExportSubMenu(QMenu & fileMenu)
@@ -362,32 +336,6 @@ void MainWindow::createHelpMenu()
     });
 }
 
-void MainWindow::createToolBar()
-{
-    connect(m_toolBar, &ToolBar::cornerRadiusChanged, this, &MainWindow::cornerRadiusChanged);
-
-    connect(m_toolBar, &ToolBar::edgeWidthChanged, this, &MainWindow::edgeWidthChanged);
-
-    connect(m_toolBar, &ToolBar::fontChanged, this, &MainWindow::fontChanged);
-
-    connect(m_toolBar, &ToolBar::textSizeChanged, this, &MainWindow::textSizeChanged);
-
-    m_toolBar->addAction(createGridSizeAction());
-
-    const auto spacer = new QWidget;
-    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    m_toolBar->addWidget(spacer);
-    m_toolBar->addAction(createSearchAction());
-    m_toolBar->addSeparator();
-    m_toolBar->addWidget(m_showGridCheckBox);
-    m_toolBar->addWidget(m_copyOnDragCheckBox);
-
-    connect(m_showGridCheckBox, &QCheckBox::stateChanged, this, &MainWindow::gridVisibleChanged);
-    connect(m_showGridCheckBox, &QCheckBox::stateChanged, Settings::saveGridVisibleState);
-
-    m_showGridCheckBox->setCheckState(Settings::loadGridVisibleState());
-}
-
 void MainWindow::createViewMenu()
 {
     const auto viewMenu = menuBar()->addMenu(tr("&View"));
@@ -465,7 +413,7 @@ void MainWindow::initialize()
 
     populateMenuBar();
 
-    createToolBar();
+    m_toolBar->loadSettings();
 
     setWindowIcon(QIcon(":/heimer.png"));
 
@@ -521,7 +469,7 @@ void MainWindow::appear()
 
 bool MainWindow::copyOnDragEnabled() const
 {
-    return m_copyOnDragCheckBox->isChecked();
+    return m_toolBar->copyOnDragEnabled();
 }
 
 void MainWindow::disableUndoAndRedo()
@@ -543,8 +491,6 @@ void MainWindow::enableDisconnectSelectedNodesAction(bool enable)
 void MainWindow::enableWidgetSignals(bool enable)
 {
     m_toolBar->enableWidgetSignals(enable);
-
-    m_gridSizeSpinBox->blockSignals(!enable);
 }
 
 void MainWindow::setCornerRadius(int value)

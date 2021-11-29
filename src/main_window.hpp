@@ -135,10 +135,6 @@ private:
 
     void addUndoAction(QMenu & menu);
 
-    QWidgetAction * createGridSizeAction();
-
-    QWidgetAction * createSearchAction();
-
     std::pair<QSize, QSize> calculateDefaultWindowSize() const;
 
     void createEditMenu();
@@ -149,7 +145,7 @@ private:
 
     void createHelpMenu();
 
-    void createToolBar();
+    void connectToolBar();
 
     void createViewMenu();
 
@@ -176,16 +172,6 @@ private:
     QAction * m_undoAction = nullptr;
 
     QAction * m_redoAction = nullptr;
-
-    QSpinBox * m_gridSizeSpinBox = nullptr;
-
-    QCheckBox * m_copyOnDragCheckBox = nullptr;
-
-    QCheckBox * m_showGridCheckBox = nullptr;
-
-    QLineEdit * m_searchLineEdit = nullptr;
-
-    QTimer m_searchTimer;
 
     QString m_argMindMapFile;
 

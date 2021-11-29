@@ -16,11 +16,14 @@
 #ifndef TOOL_BAR_HPP
 #define TOOL_BAR_HPP
 
-#include <QToolBar>
 #include <QObject>
+#include <QTimer>
+#include <QToolBar>
 
+class QCheckBox;
 class QDoubleSpinBox;
 class QFont;
+class QLineEdit;
 class QPushButton;
 class QSpinBox;
 class QWidgetAction;
@@ -34,7 +37,11 @@ public:
 
     void changeFont(const QFont & font);
 
+    bool copyOnDragEnabled() const;
+
     void enableWidgetSignals(bool enable);
+
+    void loadSettings();
 
     void setCornerRadius(int value);
 
@@ -49,6 +56,12 @@ signals:
 
     void fontChanged(const QFont & font);
 
+    void gridSizeChanged(int size);
+
+    void gridVisibleChanged(int state);
+
+    void searchTextChanged(QString text);
+
     void textSizeChanged(int value);
 
 private:
@@ -58,15 +71,29 @@ private:
 
     QWidgetAction * createFontAction();
 
+    QWidgetAction * createGridSizeAction();
+
+    QWidgetAction * createSearchAction();
+
     QWidgetAction * createTextSizeAction();
 
     void updateFontButtonFont(const QFont & font);
+
+    QCheckBox * m_copyOnDragCheckBox = nullptr;
 
     QSpinBox * m_cornerRadiusSpinBox = nullptr;
 
     QDoubleSpinBox * m_edgeWidthSpinBox = nullptr;
 
     QPushButton * m_fontButton = nullptr;
+
+    QSpinBox * m_gridSizeSpinBox = nullptr;
+
+    QLineEdit * m_searchLineEdit = nullptr;
+
+    QTimer m_searchTimer;
+
+    QCheckBox * m_showGridCheckBox = nullptr;
 
     QSpinBox * m_textSizeSpinBox = nullptr;
 };

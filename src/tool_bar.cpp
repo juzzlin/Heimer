@@ -16,21 +16,28 @@
 #include "tool_bar.hpp"
 
 #include "constants.hpp"
+#include "settings.hpp"
 #include "simple_logger.hpp"
 #include "widget_factory.hpp"
 
+#include <QCheckBox>
 #include <QDoubleSpinBox>
 #include <QFont>
 #include <QFontDialog>
+#include <QLineEdit>
 #include <QPushButton>
 #include <QSpinBox>
 #include <QWidgetAction>
 
 ToolBar::ToolBar(QWidget * parent)
   : QToolBar(parent)
+  , m_copyOnDragCheckBox(new QCheckBox(tr("Copy on drag"), this))
   , m_cornerRadiusSpinBox(new QSpinBox(this))
   , m_edgeWidthSpinBox(new QDoubleSpinBox(this))
   , m_fontButton(new QPushButton(this))
+  , m_gridSizeSpinBox(new QSpinBox(this))
+  , m_searchLineEdit(new QLineEdit(this))
+  , m_showGridCheckBox(new QCheckBox(tr("Show grid"), this))
   , m_textSizeSpinBox(new QSpinBox(this))
 {
     addAction(createEdgeWidthAction());
@@ -48,11 +55,29 @@ ToolBar::ToolBar(QWidget * parent)
     addAction(createCornerRadiusAction());
 
     addSeparator();
+
+    addAction(createGridSizeAction());
+
+    const auto spacer = new QWidget;
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    addWidget(spacer);
+    addAction(createSearchAction());
+    addSeparator();
+    addWidget(m_showGridCheckBox);
+    addWidget(m_copyOnDragCheckBox);
+
+    connect(m_showGridCheckBox, &QCheckBox::stateChanged, this, &ToolBar::gridVisibleChanged);
+    connect(m_showGridCheckBox, &QCheckBox::stateChanged, Settings::saveGridVisibleState);
 }
 
 void ToolBar::changeFont(const QFont & font)
 {
     updateFontButtonFont(font);
+}
+
+bool ToolBar::copyOnDragEnabled() const
+{
+    return m_copyOnDragCheckBox->isChecked();
 }
 
 QWidgetAction * ToolBar::createCornerRadiusAction()
@@ -62,10 +87,12 @@ QWidgetAction * ToolBar::createCornerRadiusAction()
     m_cornerRadiusSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
-    connect(m_cornerRadiusSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &ToolBar::cornerRadiusChanged);
+    const auto signal = QOverload<int>::of(&QSpinBox::valueChanged);
 #else
-    connect(m_cornerRadiusSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &ToolBar::cornerRadiusChanged);
+    const auto signal = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
 #endif
+    connect(m_cornerRadiusSpinBox, signal, this, &ToolBar::cornerRadiusChanged);
+
     return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Corner radius:"), *m_cornerRadiusSpinBox, *this).second;
 }
 
@@ -77,10 +104,12 @@ QWidgetAction * ToolBar::createEdgeWidthAction()
     m_edgeWidthSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
-    connect(m_edgeWidthSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &ToolBar::edgeWidthChanged);
+    const auto signal = QOverload<double>::of(&QDoubleSpinBox::valueChanged);
 #else
-    connect(m_edgeWidthSpinBox, static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged), this, &ToolBar::edgeWidthChanged);
+    const auto signal = static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged);
 #endif
+    connect(m_edgeWidthSpinBox, signal, this, &ToolBar::edgeWidthChanged);
+
     return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Edge width:"), *m_edgeWidthSpinBox, *this).second;
 }
 
@@ -105,6 +134,45 @@ QWidgetAction * ToolBar::createFontAction()
     return WidgetFactory::buildToolBarWidgetAction(*m_fontButton, *this).second;
 }
 
+QWidgetAction * ToolBar::createGridSizeAction()
+{
+    m_gridSizeSpinBox->setMinimum(Constants::Grid::MIN_SIZE);
+    m_gridSizeSpinBox->setMaximum(Constants::Grid::MAX_SIZE);
+    m_gridSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
+    const auto signal = QOverload<int>::of(&QSpinBox::valueChanged);
+#else
+    const auto signal = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
+#endif
+    connect(m_gridSizeSpinBox, signal, this, &ToolBar::gridSizeChanged);
+    connect(m_gridSizeSpinBox, signal, Settings::saveGridSize);
+
+    return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Grid size:"), *m_gridSizeSpinBox, *this).second;
+}
+
+QWidgetAction * ToolBar::createSearchAction()
+{
+    m_searchTimer.setSingleShot(true);
+    connect(&m_searchTimer, &QTimer::timeout, [this, searchLineEdit = m_searchLineEdit]() {
+        const auto text = searchLineEdit->text();
+        juzzlin::L().debug() << "Search text changed: " << text.toStdString();
+        emit searchTextChanged(text);
+    });
+    connect(m_searchLineEdit, &QLineEdit::textChanged, [searchTimer = &m_searchTimer](const QString & text) {
+        if (text.isEmpty()) {
+            searchTimer->start(0);
+        } else {
+            searchTimer->start(Constants::View::TEXT_SEARCH_DELAY_MS);
+        }
+    });
+    connect(m_searchLineEdit, &QLineEdit::returnPressed, [searchTimer = &m_searchTimer] {
+        searchTimer->start(0);
+    });
+
+    return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Search:"), *m_searchLineEdit, *this).second;
+}
+
 QWidgetAction * ToolBar::createTextSizeAction()
 {
     m_textSizeSpinBox->setMinimum(Constants::Text::MIN_SIZE);
@@ -112,10 +180,12 @@ QWidgetAction * ToolBar::createTextSizeAction()
     m_textSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
-    connect(m_textSizeSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &ToolBar::textSizeChanged);
+    const auto signal = QOverload<int>::of(&QSpinBox::valueChanged);
 #else
-    connect(m_textSizeSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &ToolBar::textSizeChanged);
+    const auto signal = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
 #endif
+    connect(m_textSizeSpinBox, signal, this, &ToolBar::textSizeChanged);
+
     return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Text size:"), *m_textSizeSpinBox, *this).second;
 }
 
@@ -123,7 +193,15 @@ void ToolBar::enableWidgetSignals(bool enable)
 {
     m_cornerRadiusSpinBox->blockSignals(!enable);
     m_edgeWidthSpinBox->blockSignals(!enable);
+    m_gridSizeSpinBox->blockSignals(!enable);
     m_textSizeSpinBox->blockSignals(!enable);
+}
+
+void ToolBar::loadSettings()
+{
+    m_showGridCheckBox->setCheckState(Settings::loadGridVisibleState());
+
+    m_gridSizeSpinBox->setValue(Settings::loadGridSize());
 }
 
 void ToolBar::setCornerRadius(int value)

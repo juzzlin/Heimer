@@ -116,11 +116,8 @@ size_t Graph::numNodes() const
 
 Graph::EdgeVector Graph::getEdges() const
 {
-    EdgeVector edges;
-    edges.reserve(m_edges.size());
-    for (auto && edge : m_edges) {
-        edges.push_back(edge.second);
-    }
+    EdgeVector edges(m_edges.size());
+    std::transform(std::begin(m_edges), std::end(m_edges), std::begin(edges), [](auto && edge) { return edge.second; });
     return edges;
 }
 
@@ -156,25 +153,19 @@ NodePtr Graph::getNode(int index)
 
 Graph::NodeVector Graph::getNodes() const
 {
-    NodeVector nodes;
-    nodes.reserve(m_nodes.size());
-    for (auto && node : m_nodes) {
-        nodes.push_back(node.second);
-    }
+    NodeVector nodes(m_nodes.size());
+    std::transform(std::begin(m_nodes), std::end(m_nodes), std::begin(nodes), [](auto && node) { return node.second; });
     return nodes;
 }
 
 Graph::NodeVector Graph::getNodesConnectedToNode(NodePtr node)
 {
     NodeVector result;
+    const auto edgesToNode = getEdgesToNode(node);
+    std::transform(std::begin(edgesToNode), std::end(edgesToNode), std::back_inserter(result), [this](auto && edge) { return getNode(edge->sourceNode().index()); });
 
-    for (auto && edge : getEdgesToNode(node)) {
-        result.push_back(getNode(edge->sourceNode().index()));
-    }
-
-    for (auto && edge : getEdgesFromNode(node)) {
-        result.push_back(getNode(edge->targetNode().index()));
-    }
+    const auto edgesFromNode = getEdgesFromNode(node);
+    std::transform(std::begin(edgesFromNode), std::end(edgesFromNode), std::back_inserter(result), [this](auto && edge) { return getNode(edge->targetNode().index()); });
 
     return result;
 }

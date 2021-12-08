@@ -5,6 +5,8 @@ New features:
 
 Bug fixes:
 
+* Fix GitHub Issue #188: Double-clicking on a large node zooms in incorrectly
+
 Other:
 
 3.0.0

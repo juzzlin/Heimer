@@ -3,6 +3,8 @@ x.y.z
 
 New features:
 
+* Option to automatically snap existing nodes to grid
+
 Bug fixes:
 
 * Fix GitHub Issue #188: Double-clicking on a large node zooms in incorrectly

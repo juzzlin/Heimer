@@ -26,6 +26,10 @@ bool loadAutosave();
 
 void saveAutosave(bool autosave);
 
+Qt::CheckState loadAutoSnapState();
+
+void saveAutoSnapState(int state);
+
 Edge::ArrowMode loadEdgeArrowMode(Edge::ArrowMode defaultMode);
 
 void saveEdgeArrowMode(Edge::ArrowMode mode);

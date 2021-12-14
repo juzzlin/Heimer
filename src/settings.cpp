@@ -36,6 +36,8 @@ const auto recentImagePathKey = "recentImagePath";
 
 const auto autosaveKey = "autosave";
 
+const auto autoSnapStateKey = "autoSnap";
+
 const auto edgeArrowModeKey = "edgeArrowMode";
 
 const auto gridSizeKey = "gridSize";
@@ -68,6 +70,23 @@ void Settings::saveAutosave(bool autosave)
     QSettings settings;
     settings.beginGroup(settingsGroupEditing);
     settings.setValue(autosaveKey, autosave);
+    settings.endGroup();
+}
+
+Qt::CheckState Settings::loadAutoSnapState()
+{
+    QSettings settings;
+    settings.beginGroup(settingsGroupMainWindow);
+    const auto gridState = settings.value(autoSnapStateKey, Qt::Unchecked).toInt();
+    settings.endGroup();
+    return static_cast<Qt::CheckState>(gridState);
+}
+
+void Settings::saveAutoSnapState(int state)
+{
+    QSettings settings;
+    settings.beginGroup(settingsGroupMainWindow);
+    settings.setValue(autoSnapStateKey, state);
     settings.endGroup();
 }
 

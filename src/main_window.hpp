@@ -112,7 +112,7 @@ signals:
 
     void fontChanged(const QFont & font);
 
-    void gridSizeChanged(int size);
+    void gridSizeChanged(int size, bool autoSnap);
 
     void gridVisibleChanged(int state);
 

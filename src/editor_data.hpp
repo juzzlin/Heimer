@@ -130,7 +130,7 @@ public:
 
     void setColorForSelectedNodes(QColor color);
 
-    void setGridSize(int size);
+    void setGridSize(int size, bool autoSnap);
 
     void setMindMapData(MindMapDataPtr newMindMapData);
 

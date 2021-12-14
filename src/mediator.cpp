@@ -704,10 +704,10 @@ void Mediator::setSearchText(QString text)
     updateNodeConnectionActions();
 }
 
-void Mediator::setGridSize(int size)
+void Mediator::setGridSize(int size, bool autoSnap)
 {
     m_editorView->setGridSize(size);
-    m_editorData->setGridSize(size);
+    m_editorData->setGridSize(size, autoSnap);
 }
 
 void Mediator::setTextSize(int textSize)

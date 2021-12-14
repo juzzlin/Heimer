@@ -150,7 +150,7 @@ public:
 
     void setEditorView(EditorView & editorView);
 
-    void setGridSize(int size);
+    void setGridSize(int size, bool autoSnap);
 
     //! \returns number of nodes in the current rectangle.
     size_t setRectagleSelection(QRectF rect);

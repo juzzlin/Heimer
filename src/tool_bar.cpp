@@ -31,6 +31,7 @@
 
 ToolBar::ToolBar(QWidget * parent)
   : QToolBar(parent)
+  , m_autoSnapCheckBox(new QCheckBox(tr("Auto snap"), this))
   , m_copyOnDragCheckBox(new QCheckBox(tr("Copy on drag"), this))
   , m_cornerRadiusSpinBox(new QSpinBox(this))
   , m_edgeWidthSpinBox(new QDoubleSpinBox(this))
@@ -63,11 +64,24 @@ ToolBar::ToolBar(QWidget * parent)
     addWidget(spacer);
     addAction(createSearchAction());
     addSeparator();
-    addWidget(m_showGridCheckBox);
-    addWidget(m_copyOnDragCheckBox);
 
+    addWidget(m_showGridCheckBox);
     connect(m_showGridCheckBox, &QCheckBox::stateChanged, this, &ToolBar::gridVisibleChanged);
     connect(m_showGridCheckBox, &QCheckBox::stateChanged, Settings::saveGridVisibleState);
+    addSeparator();
+
+    addWidget(m_autoSnapCheckBox);
+    connect(m_autoSnapCheckBox, &QCheckBox::stateChanged, Settings::saveAutoSnapState);
+    addSeparator();
+
+    addWidget(m_copyOnDragCheckBox);
+
+    m_autoSnapCheckBox->setToolTip(tr("Automatically snap existing nodes to the grid when grid size changes"));
+}
+
+bool ToolBar::autoSnapEnabled() const
+{
+    return m_autoSnapCheckBox->isChecked();
 }
 
 void ToolBar::changeFont(const QFont & font)
@@ -145,7 +159,9 @@ QWidgetAction * ToolBar::createGridSizeAction()
 #else
     const auto signal = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
 #endif
-    connect(m_gridSizeSpinBox, signal, this, &ToolBar::gridSizeChanged);
+    connect(m_gridSizeSpinBox, signal, [=](int size) {
+        emit gridSizeChanged(size, autoSnapEnabled());
+    });
     connect(m_gridSizeSpinBox, signal, Settings::saveGridSize);
 
     return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Grid size:"), *m_gridSizeSpinBox, *this).second;
@@ -199,9 +215,11 @@ void ToolBar::enableWidgetSignals(bool enable)
 
 void ToolBar::loadSettings()
 {
-    m_showGridCheckBox->setCheckState(Settings::loadGridVisibleState());
+    m_autoSnapCheckBox->setCheckState(Settings::loadAutoSnapState());
 
     m_gridSizeSpinBox->setValue(Settings::loadGridSize());
+
+    m_showGridCheckBox->setCheckState(Settings::loadGridVisibleState());
 }
 
 void ToolBar::setCornerRadius(int value)

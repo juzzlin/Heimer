@@ -35,6 +35,8 @@ class ToolBar : public QToolBar
 public:
     ToolBar(QWidget * parent = nullptr);
 
+    bool autoSnapEnabled() const;
+
     void changeFont(const QFont & font);
 
     bool copyOnDragEnabled() const;
@@ -56,7 +58,7 @@ signals:
 
     void fontChanged(const QFont & font);
 
-    void gridSizeChanged(int size);
+    void gridSizeChanged(int size, bool autoSnap);
 
     void gridVisibleChanged(int state);
 
@@ -65,6 +67,8 @@ signals:
     void textSizeChanged(int value);
 
 private:
+    void updateFontButtonFont(const QFont & font);
+
     QWidgetAction * createCornerRadiusAction();
 
     QWidgetAction * createEdgeWidthAction();
@@ -77,7 +81,7 @@ private:
 
     QWidgetAction * createTextSizeAction();
 
-    void updateFontButtonFont(const QFont & font);
+    QCheckBox * m_autoSnapCheckBox = nullptr;
 
     QCheckBox * m_copyOnDragCheckBox = nullptr;
 

@@ -129,6 +129,8 @@ void MainWindow::changeFont(const QFont & font)
 
 void MainWindow::connectToolBar()
 {
+    connect(m_toolBar, &ToolBar::gridVisibleChanged, this, &MainWindow::gridVisibleChanged);
+
     connect(m_toolBar, &ToolBar::cornerRadiusChanged, this, &MainWindow::cornerRadiusChanged);
 
     connect(m_toolBar, &ToolBar::edgeWidthChanged, this, &MainWindow::edgeWidthChanged);

@@ -9,6 +9,9 @@ Bug fixes:
 
 * Fix GitHub Issue #188: Double-clicking on a large node zooms in incorrectly
 
+* Fix GitHub Issue #190: Export to PNG works only once
+  - Fixes the same issue with SVG export, too
+
 Other:
 
 3.0.0

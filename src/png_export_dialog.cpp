@@ -104,6 +104,7 @@ void PngExportDialog::setImageSize(QSize size)
 int PngExportDialog::exec()
 {
     m_progressBar->setValue(0);
+    m_buttonBox->setEnabled(true);
 
     validate();
 

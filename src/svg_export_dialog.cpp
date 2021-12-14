@@ -60,6 +60,7 @@ SvgExportDialog::SvgExportDialog(QWidget & parent)
 int SvgExportDialog::exec()
 {
     m_progressBar->setValue(0);
+    m_buttonBox->setEnabled(true);
 
     validate();
 

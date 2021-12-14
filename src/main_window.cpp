@@ -417,6 +417,8 @@ void MainWindow::initialize()
 
     m_toolBar->loadSettings();
 
+    setFocus(); // Without this the tool bar has focus when application starts
+
     setWindowIcon(QIcon(":/heimer.png"));
 
     emit actionTriggered(StateMachine::Action::MainWindowInitialized);

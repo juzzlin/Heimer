@@ -126,7 +126,10 @@ void PngExportDialog::validate()
 
     m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled( //
       m_imageHeightSpinBox->value() > Constants::Export::Png::MIN_IMAGE_SIZE && // Intentionally open intervals
-      m_imageHeightSpinBox->value() < Constants::Export::Png::MAX_IMAGE_SIZE && m_imageWidthSpinBox->value() > Constants::Export::Png::MIN_IMAGE_SIZE && m_imageWidthSpinBox->value() < Constants::Export::Png::MAX_IMAGE_SIZE && !m_filenameLineEdit->text().isEmpty());
+      m_imageHeightSpinBox->value() < Constants::Export::Png::MAX_IMAGE_SIZE && //
+      m_imageWidthSpinBox->value() > Constants::Export::Png::MIN_IMAGE_SIZE && //
+      m_imageWidthSpinBox->value() < Constants::Export::Png::MAX_IMAGE_SIZE && //
+      !m_filenameLineEdit->text().isEmpty());
 
     m_filenameWithExtension = m_filenameLineEdit->text();
 

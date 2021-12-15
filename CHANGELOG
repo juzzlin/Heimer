@@ -7,6 +7,8 @@ New features:
 
 Bug fixes:
 
+* Fix GitHub Issue #186: Icon is installed in /usr/share/icons/hicolor/64x64 but actual size is 256x256
+
 * Fix GitHub Issue #188: Double-clicking on a large node zooms in incorrectly
 
 * Fix GitHub Issue #190: Export to PNG works only once

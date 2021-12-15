@@ -19,7 +19,7 @@ function(setup_install_targets)
 
     # Install icons
     install(FILES data/icons/heimer.png DESTINATION share/pixmaps)
-    install(FILES data/icons/heimer.png DESTINATION share/icons/hicolor/64x64/apps)
+    install(FILES data/icons/heimer.png DESTINATION share/icons/hicolor/256x256/apps)
 
     set(CPACK_DEBIAN_PACKAGE_NAME "heimer")
     set(CPACK_DEBIAN_PACKAGE_VERSION ${VERSION})

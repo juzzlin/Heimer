@@ -219,10 +219,12 @@ void EditorData::setGridSize(int size, bool autoSnap)
 
     if (autoSnap) {
         if (!m_selectionGroup->isEmpty()) {
+            saveUndoPoint();
             for (auto && node : m_selectionGroup->nodes()) {
                 node->setLocation(m_grid.snapToGrid(node->location()));
             }
         } else if (m_mindMapData) {
+            saveUndoPoint();
             m_mindMapData->applyGrid(m_grid);
         }
     }

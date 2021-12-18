@@ -177,22 +177,25 @@
         <translation>Vaihda suuntaa</translation>
     </message>
     <message>
-        <location filename="../edge_context_menu.cpp" line="34"/>
         <source>Hide arrow</source>
-        <translation>Piilota nuoli</translation>
+        <translation type="vanished">Piilota nuoli</translation>
     </message>
     <message>
-        <location filename="../edge_context_menu.cpp" line="41"/>
         <source>Single arrow</source>
-        <translation>Yksi nuoli</translation>
+        <translation type="vanished">Yksi nuoli</translation>
     </message>
     <message>
-        <location filename="../edge_context_menu.cpp" line="48"/>
+        <location filename="../edge_context_menu.cpp" line="34"/>
+        <source>Show arrow</source>
+        <translation>Näytä nuoli</translation>
+    </message>
+    <message>
+        <location filename="../edge_context_menu.cpp" line="42"/>
         <source>Double arrow</source>
         <translation>Kaksi nuolta</translation>
     </message>
     <message>
-        <location filename="../edge_context_menu.cpp" line="55"/>
+        <location filename="../edge_context_menu.cpp" line="50"/>
         <source>Delete edge</source>
         <translation>Poista kaari</translation>
     </message>
@@ -655,12 +658,12 @@
         <translation type="vanished">Heimer -tiedostot</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="433"/>
+        <location filename="../main_window.cpp" line="435"/>
         <source>New File</source>
         <translation>Uusi tiedosto</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="435"/>
+        <location filename="../main_window.cpp" line="437"/>
         <source>Not Saved</source>
         <translation>Ei tallennettu</translation>
     </message>
@@ -724,42 +727,42 @@
         <translation>PNG-tiedostot</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="119"/>
+        <location filename="../png_export_dialog.cpp" line="120"/>
         <source>Couldn&apos;t write to</source>
         <translation>Vienti epäonnistui kohteeseen</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="146"/>
+        <location filename="../png_export_dialog.cpp" line="150"/>
         <source>Filename</source>
         <translation>Tiedostonimi</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="152"/>
+        <location filename="../png_export_dialog.cpp" line="156"/>
         <source>Export as..</source>
         <translation>Vie nimellä..</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="156"/>
+        <location filename="../png_export_dialog.cpp" line="160"/>
         <source>Image Size</source>
         <translation>Kuvan Koko</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="159"/>
+        <location filename="../png_export_dialog.cpp" line="163"/>
         <source>Width (px):</source>
         <translation>Leveys (px)</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="165"/>
+        <location filename="../png_export_dialog.cpp" line="169"/>
         <source>Height (px):</source>
         <translation>Korkeus (px)</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="173"/>
+        <location filename="../png_export_dialog.cpp" line="177"/>
         <source>Background</source>
         <translation>Tausta</translation>
     </message>
     <message>
-        <location filename="../png_export_dialog.cpp" line="177"/>
+        <location filename="../png_export_dialog.cpp" line="181"/>
         <source>Transparent background</source>
         <translation>Läpinäkyvä tausta</translation>
     </message>
@@ -821,17 +824,17 @@
         <translation>SVG-tiedostot</translation>
     </message>
     <message>
-        <location filename="../svg_export_dialog.cpp" line="75"/>
+        <location filename="../svg_export_dialog.cpp" line="76"/>
         <source>Couldn&apos;t write to</source>
         <translation>Vienti epäonnistui kohteeseen</translation>
     </message>
     <message>
-        <location filename="../svg_export_dialog.cpp" line="100"/>
+        <location filename="../svg_export_dialog.cpp" line="101"/>
         <source>Filename</source>
         <translation>Tiedostonimi</translation>
     </message>
     <message>
-        <location filename="../svg_export_dialog.cpp" line="106"/>
+        <location filename="../svg_export_dialog.cpp" line="107"/>
         <source>Export as..</source>
         <translation>Vie nimellä..</translation>
     </message>

@@ -114,11 +114,13 @@ const auto EDGE = "edge";
 
 namespace Edge {
 
+const auto ARROW_MODE = "arrow-mode";
+
+const auto DASHED_LINE = "dashed-line";
+
 const auto INDEX0 = "index0";
 
 const auto INDEX1 = "index1";
-
-const auto ARROW_MODE = "arrow-mode";
 
 const auto REVERSED = "reversed";
 
@@ -201,10 +203,15 @@ static void writeEdges(MindMapData & mindMapData, QDomElement & root, QDomDocume
     for (auto && node : mindMapData.graph().getNodes()) {
         for (auto && edge : mindMapData.graph().getEdgesFromNode(node)) {
             auto edgeElement = doc.createElement(DataKeywords::MindMap::Graph::EDGE);
+            edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::ARROW_MODE, static_cast<int>(edge->arrowMode()));
+            if (edge->dashedLine()) {
+                edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::DASHED_LINE, edge->dashedLine());
+            }
             edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::INDEX0, edge->sourceNode().index());
             edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::INDEX1, edge->targetNode().index());
-            edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::ARROW_MODE, static_cast<int>(edge->arrowMode()));
-            edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::REVERSED, edge->reversed());
+            if (edge->reversed()) {
+                edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::REVERSED, edge->reversed());
+            }
             root.appendChild(edgeElement);
 
             // Create a child node for the text content
@@ -384,10 +391,11 @@ static std::unique_ptr<Node> readNode(const QDomElement & element)
 
 static std::unique_ptr<Edge> readEdge(const QDomElement & element, MindMapData & data)
 {
+    const int arrowMode = element.attribute(DataKeywords::MindMap::Graph::Edge::ARROW_MODE, "0").toInt();
+    const bool dashedLine = element.attribute(DataKeywords::MindMap::Graph::Edge::DASHED_LINE, "0").toInt();
     const int index0 = element.attribute(DataKeywords::MindMap::Graph::Edge::INDEX0, "-1").toInt();
     const int index1 = element.attribute(DataKeywords::MindMap::Graph::Edge::INDEX1, "-1").toInt();
-    const int reversed = element.attribute(DataKeywords::MindMap::Graph::Edge::REVERSED, "0").toInt();
-    const int arrowMode = element.attribute(DataKeywords::MindMap::Graph::Edge::ARROW_MODE, "0").toInt();
+    const bool reversed = element.attribute(DataKeywords::MindMap::Graph::Edge::REVERSED, "0").toInt();
 
     // Initialize a new edge. QGraphicsScene will take the ownership eventually.
     const auto node0 = data.graph().getNode(index0);
@@ -395,6 +403,7 @@ static std::unique_ptr<Edge> readEdge(const QDomElement & element, MindMapData &
 
     auto edge = std::make_unique<Edge>(*node0, *node1);
     edge->setArrowMode(static_cast<Edge::ArrowMode>(arrowMode));
+    edge->setDashedLine(dashedLine);
     edge->setReversed(reversed);
 
     readChildren(element, { { QString(DataKeywords::MindMap::Graph::Node::TEXT), [&edge](const QDomElement & e) {

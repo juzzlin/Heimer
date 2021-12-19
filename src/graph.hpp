@@ -73,7 +73,7 @@ public:
 
     EdgeVector getEdges() const;
 
-    NodePtr getNode(int index);
+    NodePtr getNode(int index) const;
 
     NodeVector getNodes() const;
 

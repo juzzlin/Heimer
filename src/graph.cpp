@@ -143,7 +143,7 @@ Graph::EdgeVector Graph::getEdgesToNode(NodePtr node)
     return edges;
 }
 
-NodePtr Graph::getNode(int index)
+NodePtr Graph::getNode(int index) const
 {
     if (const auto iter = m_nodes.find(index); iter != m_nodes.end()) {
         return iter->second;

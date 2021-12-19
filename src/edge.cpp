@@ -18,6 +18,7 @@
 #include "constants.hpp"
 #include "edge_dot.hpp"
 #include "edge_text_edit.hpp"
+#include "graph.hpp"
 #include "graphics_factory.hpp"
 #include "layers.hpp"
 #include "node.hpp"
@@ -84,6 +85,15 @@ Edge::Edge(Node & sourceNode, Node & targetNode, bool enableAnimations, bool ena
     }
 }
 
+Edge::Edge(const Edge & other, const Graph & graph)
+  : Edge(*graph.getNode(other.m_sourceNode->index()), *graph.getNode(other.m_targetNode->index()))
+{
+    setArrowMode(other.m_arrowMode);
+    setDashedLine(other.m_dashedLine);
+    setText(other.m_text);
+    setReversed(other.m_reversed);
+}
+
 void Edge::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 {
     m_labelVisibilityTimer.stop();
@@ -100,6 +110,16 @@ void Edge::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
     QGraphicsItem::hoverLeaveEvent(event);
 }
 
+QPen Edge::buildPen(bool ignoreDashSetting) const
+{
+    QPen pen { QBrush { QColor { m_color.red(), m_color.green(), m_color.blue() } }, m_width };
+    pen.setCapStyle(Qt::PenCapStyle::RoundCap);
+    if (!ignoreDashSetting && m_dashedLine) {
+        pen.setDashPattern(Constants::Edge::DASH_PATTERN);
+    }
+    return pen;
+}
+
 void Edge::changeFont(const QFont & font)
 {
     if (m_label) {
@@ -112,11 +132,9 @@ void Edge::changeFont(const QFont & font)
     }
 }
 
-QPen Edge::getPen() const
+bool Edge::dashedLine() const
 {
-    QPen pen { QBrush { QColor { m_color.red(), m_color.green(), m_color.blue() } }, m_width };
-    pen.setCapStyle(Qt::PenCapStyle::RoundCap);
-    return pen;
+    return m_dashedLine;
 }
 
 void Edge::initDots()
@@ -168,8 +186,6 @@ void Edge::setWidth(double width)
 {
     m_width = width;
 
-    setPen(getPen());
-    setArrowHeadPen(pen());
     updateLine();
 }
 
@@ -187,9 +203,17 @@ void Edge::setColor(const QColor & color)
 {
     m_color = color;
 
-    setPen(getPen());
-    setArrowHeadPen(pen());
     updateLine();
+}
+
+void Edge::setDashedLine(bool enable)
+{
+    m_dashedLine = enable;
+    if (!TestMode::enabled()) {
+        updateLine();
+    } else {
+        TestMode::logDisabledCode("Set dashed line");
+    }
 }
 
 void Edge::setText(const QString & text)
@@ -242,6 +266,8 @@ Node & Edge::targetNode() const
 
 void Edge::updateArrowhead()
 {
+    setArrowHeadPen(buildPen(true));
+
     const auto point0 = m_reversed ? this->line().p1() : this->line().p2();
     const auto angle0 = m_reversed ? -this->line().angle() + 180 : -this->line().angle();
     const auto point1 = m_reversed ? this->line().p2() : this->line().p1();
@@ -366,6 +392,8 @@ QString Edge::text() const
 
 void Edge::updateLine()
 {
+    setPen(buildPen());
+
     const auto nearestPoints = Node::getNearestEdgePoints(sourceNode(), targetNode());
 
     const auto p1 = nearestPoints.first.location + sourceNode().pos();

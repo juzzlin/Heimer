@@ -17,6 +17,7 @@
 #define CONSTANTS_HPP
 
 #include <QColor>
+#include <QVector>
 
 namespace Constants {
 
@@ -55,6 +56,8 @@ static const double ARROW_LENGTH = 10;
 static const double ARROW_OPENING = 150;
 
 static const double CORNER_RADIUS_SCALE = 0.3;
+
+static const QVector DASH_PATTERN { qreal(5), qreal(5) };
 
 static const QColor DOT_COLOR { 255, 0, 0, 192 };
 

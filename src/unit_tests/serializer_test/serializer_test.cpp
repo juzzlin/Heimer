@@ -246,26 +246,26 @@ void SerializerTest::testNodeDeletion()
 void SerializerTest::testSingleEdge()
 {
     MindMapData outData;
-
     const auto outNode0 = std::make_shared<Node>();
     outData.graph().addNode(outNode0);
-
     const auto outNode1 = std::make_shared<Node>();
     outData.graph().addNode(outNode1);
 
     const auto edge = std::make_shared<Edge>(*outNode0, *outNode1);
     const QString text = "Lorem ipsum";
-    edge->setText(text);
-    edge->setReversed(true);
     edge->setArrowMode(Edge::ArrowMode::Double);
+    edge->setDashedLine(true);
+    edge->setReversed(true);
+    edge->setText(text);
     outData.graph().addEdge(edge);
 
     const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     const auto edges = inData->graph().getEdgesFromNode(outNode0);
     QCOMPARE(edges.size(), static_cast<size_t>(1));
-    QCOMPARE((*edges.begin())->text(), edge->text());
-    QCOMPARE((*edges.begin())->reversed(), edge->reversed());
     QCOMPARE((*edges.begin())->arrowMode(), edge->arrowMode());
+    QCOMPARE((*edges.begin())->dashedLine(), edge->dashedLine());
+    QCOMPARE((*edges.begin())->reversed(), edge->reversed());
+    QCOMPARE((*edges.begin())->text(), edge->text());
 }
 
 void SerializerTest::testSingleNode()

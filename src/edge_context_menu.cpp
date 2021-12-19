@@ -44,6 +44,13 @@ EdgeContextMenu::EdgeContextMenu(QWidget * parent, Mediator & mediator)
     });
     doubleArrowAction->setCheckable(true);
 
+    const auto dashedLineAction(new QAction(tr("Dashed line"), this));
+    QObject::connect(dashedLineAction, &QAction::triggered, [=] {
+        m_mediator.saveUndoPoint();
+        m_mediator.selectedEdge()->setDashedLine(dashedLineAction->isChecked());
+    });
+    dashedLineAction->setCheckable(true);
+
     const auto deleteEdgeAction(new QAction(tr("Delete edge"), this));
     QObject::connect(deleteEdgeAction, &QAction::triggered, [=] {
         m_mediator.setSelectedEdge(nullptr);
@@ -61,6 +68,8 @@ EdgeContextMenu::EdgeContextMenu(QWidget * parent, Mediator & mediator)
     addSeparator();
     addAction(doubleArrowAction);
     addSeparator();
+    addAction(dashedLineAction);
+    addSeparator();
     addAction(deleteEdgeAction);
 
     // Set correct edge config when the menu opens.
@@ -68,6 +77,7 @@ EdgeContextMenu::EdgeContextMenu(QWidget * parent, Mediator & mediator)
         m_selectedEdge = m_mediator.selectedEdge();
         assert(m_selectedEdge);
         changeEdgeDirectionAction->setEnabled(m_selectedEdge->arrowMode() != Edge::ArrowMode::Double && m_selectedEdge->arrowMode() != Edge::ArrowMode::Hidden);
+        dashedLineAction->setChecked(m_selectedEdge->dashedLine());
         doubleArrowAction->setChecked(m_selectedEdge->arrowMode() == Edge::ArrowMode::Double);
         showEdgeArrowAction->setChecked(m_selectedEdge->arrowMode() != Edge::ArrowMode::Hidden);
     });

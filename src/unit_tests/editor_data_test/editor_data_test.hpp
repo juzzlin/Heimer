@@ -61,6 +61,8 @@ private slots:
 
     void testUndoEdgeColor();
 
+    void testUndoEdgeDashedLine();
+
     void testUndoEdgeWidth();
 
     void testUndoEdgeText();

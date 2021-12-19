@@ -185,17 +185,22 @@
         <translation type="vanished">Yksi nuoli</translation>
     </message>
     <message>
-        <location filename="../edge_context_menu.cpp" line="34"/>
+        <location filename="../edge_context_menu.cpp" line="33"/>
         <source>Show arrow</source>
         <translation>Näytä nuoli</translation>
     </message>
     <message>
-        <location filename="../edge_context_menu.cpp" line="42"/>
+        <location filename="../edge_context_menu.cpp" line="40"/>
         <source>Double arrow</source>
         <translation>Kaksi nuolta</translation>
     </message>
     <message>
-        <location filename="../edge_context_menu.cpp" line="50"/>
+        <location filename="../edge_context_menu.cpp" line="47"/>
+        <source>Dashed line</source>
+        <translation>Katkoviiva</translation>
+    </message>
+    <message>
+        <location filename="../edge_context_menu.cpp" line="54"/>
         <source>Delete edge</source>
         <translation>Poista kaari</translation>
     </message>

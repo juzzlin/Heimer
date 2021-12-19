@@ -26,6 +26,7 @@
 #include "edge_text_edit.hpp"
 
 class EdgeDot;
+class Graph;
 class Node;
 class QFont;
 class QGraphicsEllipseItem;
@@ -46,7 +47,15 @@ public:
 
     Edge(Node & sourceNode, Node & targetNode, bool enableAnimations = true, bool enableLabel = true);
 
+    Edge(const Edge & other, const Graph & graph);
+
     virtual ~Edge() override;
+
+    ArrowMode arrowMode() const;
+
+    bool dashedLine() const;
+
+    bool reversed() const;
 
     Node & sourceNode() const;
 
@@ -62,10 +71,6 @@ public:
 
     QString text() const;
 
-    ArrowMode arrowMode() const;
-
-    bool reversed() const;
-
 public slots:
 
     void changeFont(const QFont & font);
@@ -75,6 +80,8 @@ public slots:
     void setArrowMode(ArrowMode arrowMode);
 
     void setColor(const QColor & color);
+
+    void setDashedLine(bool enable);
 
     void setWidth(double width);
 
@@ -91,7 +98,7 @@ signals:
     void undoPointRequested();
 
 private:
-    QPen getPen() const;
+    QPen buildPen(bool ignoreDashSetting = false) const;
 
     void initDots();
 
@@ -128,6 +135,8 @@ private:
     bool m_selected = false;
 
     ArrowMode m_arrowMode;
+
+    bool m_dashedLine = false;
 
     bool m_enableAnimations;
 

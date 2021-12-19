@@ -489,6 +489,40 @@ void EditorDataTest::testUndoEdgeColor()
     QCOMPARE(editorData.mindMapData()->edgeColor(), QColor(2, 3, 4));
 }
 
+void EditorDataTest::testUndoEdgeDashedLine()
+{
+    const auto data = std::make_shared<MindMapData>();
+    EditorData editorData;
+    editorData.setMindMapData(data);
+
+    const auto node0 = std::make_shared<Node>();
+    data->graph().addNode(node0);
+    const auto node1 = std::make_shared<Node>();
+    data->graph().addNode(node1);
+
+    const auto edge01 = std::make_shared<Edge>(*node0, *node1);
+
+    editorData.addEdge(edge01);
+
+    edge01->setDashedLine(false);
+
+    editorData.saveUndoPoint();
+
+    edge01->setDashedLine(true);
+
+    editorData.undo();
+
+    const auto undoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
+
+    QCOMPARE(undoneEdge->dashedLine(), false);
+
+    editorData.redo();
+
+    const auto redoneEdge = editorData.mindMapData()->graph().getEdges().at(0);
+
+    QCOMPARE(redoneEdge->dashedLine(), true);
+}
+
 void EditorDataTest::testUndoEdgeWidth()
 {
     EditorData editorData;

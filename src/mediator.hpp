@@ -189,7 +189,7 @@ public slots:
 
     void setTextSize(int textSize);
 
-    QSize zoomForExport();
+    QSize zoomForExport(bool dryRun = false);
 
     void zoomToFit();
 

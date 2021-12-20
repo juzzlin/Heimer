@@ -435,6 +435,24 @@ void EditorView::updateRubberBand()
     m_rubberBand->setGeometry(QRect(m_mediator.mouseAction().rubberBandOrigin().toPoint(), m_pos.toPoint()).normalized());
 }
 
+void EditorView::restoreZoom()
+{
+    if (m_savedZoom.has_value()) {
+        juzzlin::L().debug() << "Restoring zoom";
+        scene()->setSceneRect(m_savedZoom->sceneRect);
+        m_scale = m_savedZoom->scale;
+        updateScale();
+        centerOn(m_savedZoom->viewCenter);
+        m_savedZoom.reset();
+    }
+}
+
+void EditorView::saveZoom()
+{
+    juzzlin::L().debug() << "Saving zoom";
+    m_savedZoom = { scene()->sceneRect(), mapToScene(viewport()->rect().center()), m_scale };
+}
+
 void EditorView::setCornerRadius(int cornerRadius)
 {
     m_cornerRadius = cornerRadius;

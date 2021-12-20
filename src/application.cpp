@@ -403,7 +403,7 @@ void Application::showImageFileDialog()
 
 void Application::showPngExportDialog()
 {
-    m_pngExportDialog->setImageSize(m_mediator->zoomForExport());
+    m_pngExportDialog->setImageSize(m_mediator->zoomForExport(true));
     m_pngExportDialog->exec();
 
     // Doesn't matter if canceled or not

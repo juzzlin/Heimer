@@ -266,21 +266,25 @@ void Mediator::enableRedo(bool enable)
 
 void Mediator::exportToPng(QString filename, QSize size, bool transparentBackground)
 {
+    m_editorView->saveZoom();
     zoomForExport();
 
     L().info() << "Exporting a PNG image of size (" << size.width() << "x" << size.height() << ") to " << filename.toStdString();
     const auto image = m_editorScene->toImage(size, m_editorData->backgroundColor(), transparentBackground);
+    m_editorView->restoreZoom();
 
     emit pngExportFinished(image.save(filename));
 }
 
 void Mediator::exportToSvg(QString filename)
 {
+    m_editorView->saveZoom();
     zoomForExport();
 
     L().info() << "Exporting an SVG image to " << filename.toStdString();
     const QFileInfo fi(filename);
     m_editorScene->toSvg(filename, fi.fileName());
+    m_editorView->restoreZoom();
 
     emit svgExportFinished(true);
 }
@@ -768,18 +772,21 @@ void Mediator::zoomOut()
     m_editorView->zoom(1.0 / std::pow(Constants::View::ZOOM_SENSITIVITY, 2));
 }
 
-QSize Mediator::zoomForExport()
+QSize Mediator::zoomForExport(bool dryRun)
 {
     clearSelectedNode();
     clearSelectionGroup();
-    m_editorScene->setSceneRect(m_editorScene->zoomToFit(true));
-    return m_editorScene->sceneRect().size().toSize();
+    const auto zoomToFitRectangle = m_editorScene->calculateZoomToFitRectangle(true);
+    if (!dryRun) {
+        m_editorScene->setSceneRect(zoomToFitRectangle);
+    }
+    return zoomToFitRectangle.size().toSize();
 }
 
 void Mediator::zoomToFit()
 {
     if (hasNodes()) {
-        m_editorView->zoomToFit(m_editorScene->zoomToFit());
+        m_editorView->zoomToFit(m_editorScene->calculateZoomToFitRectangle());
     }
 }
 

@@ -24,6 +24,7 @@
 #include <QGraphicsView>
 #include <QMenu>
 
+#include <optional>
 #include <set>
 
 class Edge;
@@ -53,6 +54,10 @@ public:
     const Grid & grid() const;
 
     void resetDummyDragItems();
+
+    void restoreZoom();
+
+    void saveZoom();
 
     void zoom(double amount);
 
@@ -123,7 +128,6 @@ private:
 
     void openMainContextMenu(MainContextMenu::Mode mode);
 
-
     void showDummyDragEdge(bool show);
 
     void showDummyDragNode(bool show);
@@ -180,6 +184,17 @@ private:
     bool m_gridVisible = false;
 
     QString m_dropFile {};
+
+    struct ZoomParameters
+    {
+        QRectF sceneRect;
+
+        QPointF viewCenter;
+
+        double scale = 1.0;
+    };
+
+    std::optional<ZoomParameters> m_savedZoom;
 };
 
 #endif // EDITOR_VIEW_HPP

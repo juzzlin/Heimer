@@ -45,6 +45,11 @@ void EditorScene::adjustSceneRect()
     }
 }
 
+QRectF EditorScene::calculateZoomToFitRectangle(bool isForExport) const
+{
+    return MagicZoom::calculateRectangle(items(), isForExport);
+}
+
 bool EditorScene::containsAll() const
 {
     const auto testMarginX = sceneRect().width() * Constants::Scene::ADJUSTMENT_MARGIN;
@@ -58,11 +63,6 @@ bool EditorScene::containsAll() const
         }
     }
     return true;
-}
-
-QRectF EditorScene::zoomToFit(bool isForExport) const
-{
-    return MagicZoom::calculateRectangle(items(), isForExport);
 }
 
 bool EditorScene::hasEdge(Node & node0, Node & node1)

@@ -80,7 +80,7 @@ bool EditorScene::hasEdge(Node & node0, Node & node1)
 void EditorScene::removeItems()
 {
     // We don't want the scene to destroy the items as they are managed elsewhere
-    for (auto item : items()) {
+    for (auto && item : items()) {
         removeItem(item);
     }
 }

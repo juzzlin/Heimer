@@ -461,7 +461,7 @@ void EditorData::clearImages()
 
 void EditorData::clearSelectionGroup()
 {
-    L().debug() << "Clearing selection group..";
+    L().trace() << "Clearing selection group..";
 
     m_selectionGroup->clear();
 }

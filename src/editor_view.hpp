@@ -123,7 +123,6 @@ private:
 
     void openMainContextMenu(MainContextMenu::Mode mode);
 
-    void removeNodeFromSelectionGroup(Node & node);
 
     void showDummyDragEdge(bool show);
 

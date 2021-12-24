@@ -587,7 +587,7 @@
     <message>
         <location filename="../png_export_dialog.cpp" line="161"/>
         <source>Height (px):</source>
-        <translation>Altezza (px):)</translation>
+        <translation>Altezza (px):</translation>
     </message>
     <message>
         <location filename="../png_export_dialog.cpp" line="169"/>

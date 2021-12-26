@@ -170,14 +170,6 @@ void Node::changeFont(const QFont & font)
     }
 }
 
-EdgePtr Node::createAndAddGraphicsEdge(NodePtr targetNode)
-{
-    const auto edge = std::make_shared<Edge>(*this, *targetNode);
-    edge->updateLine();
-    m_graphicsEdges.push_back(edge.get());
-    return edge;
-}
-
 void Node::createEdgePoints()
 {
     const double w2 = m_size.width() * 0.5;

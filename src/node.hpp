@@ -62,9 +62,6 @@ public:
 
     int cornerRadius() const;
 
-    using NodePtr = std::shared_ptr<Node>;
-    EdgePtr createAndAddGraphicsEdge(NodePtr targetNode);
-
     static std::pair<EdgePoint, EdgePoint> getNearestEdgePoints(const Node & node1, const Node & node2);
 
     void highlightText(const QString & text);

@@ -44,8 +44,8 @@ void AboutDlg::initWidgets()
     infoLabel->setOpenExternalLinks(true);
     infoLabel->setHtml(
       QString("<h2>") + Constants::Application::APPLICATION_NAME + " v" + Constants::Application::APPLICATION_VERSION + "</h2>"
-      + "<p>" + Constants::Application::APPLICATION_NAME + tr(" is licenced under ") + "GNU GPLv3."
-      + " " + Constants::Application::COPYRIGHT + ".</p>"
+      + "<p>" + Constants::Application::APPLICATION_NAME + tr(" is licenced under ") + "GNU GPLv3" + ".</p>"
+      + "<p>" + Constants::Application::COPYRIGHT + ".</p>"
       + "<p>" + tr("Package type: ") + Constants::Application::APPLICATION_PACKAGE_TYPE + "</p>"
       + tr("Project website: ") + "<a href='" + Constants::Application::WEB_SITE_URL + "'>"
       + Constants::Application::WEB_SITE_URL + "</a>"

@@ -17,7 +17,7 @@
 #include "constants.hpp"
 
 #include <QDialogButtonBox>
-#include <QFontMetrics>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QPixmap>
 #include <QTextBrowser>
@@ -27,6 +27,7 @@ AboutDlg::AboutDlg(QWidget * parent)
   : QDialog(parent)
 {
     setWindowTitle(tr("About ") + Constants::Application::APPLICATION_NAME);
+    setMinimumWidth(768);
     initWidgets();
 }
 
@@ -35,8 +36,9 @@ void AboutDlg::initWidgets()
     const auto vLayout = new QVBoxLayout(this);
     const auto pixmapLabel = new QLabel(this);
 
-    pixmapLabel->setPixmap(QPixmap(":/about.png").scaled(512, 512));
-    vLayout->addWidget(pixmapLabel);
+    const auto hLayout = new QHBoxLayout;
+    pixmapLabel->setPixmap(QPixmap(":/about.png").scaled(256, 256));
+    hLayout->addWidget(pixmapLabel);
 
     const auto infoLabel = new QTextBrowser(this);
     infoLabel->setOpenExternalLinks(true);
@@ -50,18 +52,12 @@ void AboutDlg::initWidgets()
       + "<p>" + tr("Support ") + Constants::Application::APPLICATION_NAME + tr(" via PayPal: ")
       + "<a href='" + Constants::Application::SUPPORT_SITE_URL + "'>"
       + Constants::Application::SUPPORT_SITE_URL + "</a></p>");
-
-    const QFontMetrics fm(infoLabel->font());
-    const int fontHeight = fm.height();
-    const int lines = 10;
-    infoLabel->setMinimumHeight(fontHeight * lines);
-    infoLabel->setMaximumHeight(fontHeight * lines);
     infoLabel->setFrameStyle(QFrame::NoFrame);
     infoLabel->viewport()->setAutoFillBackground(false);
-    vLayout->addWidget(infoLabel);
+    hLayout->addWidget(infoLabel);
+    vLayout->addLayout(hLayout);
 
     const auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
-
     vLayout->addWidget(buttonBox);
 }

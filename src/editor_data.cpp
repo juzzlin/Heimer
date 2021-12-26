@@ -18,6 +18,7 @@
 
 #include "alz_serializer.hpp"
 #include "constants.hpp"
+#include "copy_context.hpp"
 #include "node.hpp"
 #include "recent_files_manager.hpp"
 #include "selection_group.hpp"
@@ -36,7 +37,8 @@ using juzzlin::L;
 using std::make_shared;
 
 EditorData::EditorData()
-  : m_selectionGroup(std::make_unique<SelectionGroup>())
+  : m_copyContext(std::make_unique<CopyContext>())
+  , m_selectionGroup(std::make_unique<SelectionGroup>())
 {
     m_undoTimer.setSingleShot(true);
     m_undoTimer.setInterval(Constants::View::TOO_QUICK_ACTION_DELAY_MS);
@@ -412,7 +414,7 @@ void EditorData::disconnectSelectedNodes()
 
 std::vector<std::shared_ptr<Node>> EditorData::copiedNodes() const
 {
-    return m_copyContext.copiedNodes;
+    return m_copyContext->copiedNodes();
 }
 
 NodePtr EditorData::copyNodeAt(Node & source, QPointF pos)
@@ -428,7 +430,7 @@ NodePtr EditorData::copyNodeAt(Node & source, QPointF pos)
 
 QPointF EditorData::copyReferencePoint() const
 {
-    return m_copyContext.copyReferencePoint;
+    return m_copyContext->copyReferencePoint();
 }
 
 void EditorData::copySelectedNodes()
@@ -436,22 +438,20 @@ void EditorData::copySelectedNodes()
     if (m_selectionGroup->size()) {
         clearCopyStack();
         for (auto && node : m_selectionGroup->nodes()) {
-            m_copyContext.copiedNodes.push_back(make_shared<Node>(*node));
-            m_copyContext.copyReferencePoint += node->pos();
+            m_copyContext->push(*node);
         }
-        m_copyContext.copyReferencePoint /= static_cast<qreal>(m_selectionGroup->size());
-        L().debug() << m_selectionGroup->size() << " nodes copied. Reference point calculated at (" << m_copyContext.copyReferencePoint.x() << ", " << m_copyContext.copyReferencePoint.y() << ")";
+        L().debug() << m_selectionGroup->size() << " nodes copied. Reference point calculated at (" << m_copyContext->copyReferencePoint().x() << ", " << m_copyContext->copyReferencePoint().y() << ")";
     }
 }
 
 size_t EditorData::copyStackSize() const
 {
-    return m_copyContext.copiedNodes.size();
+    return m_copyContext->copyStackSize();
 }
 
 void EditorData::clearCopyStack()
 {
-    m_copyContext = {};
+    m_copyContext->clear();
 }
 
 void EditorData::clearImages()

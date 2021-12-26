@@ -34,6 +34,7 @@
 #include "node.hpp"
 #include "undo_stack.hpp"
 
+class CopyContext;
 class Node;
 class NodeBase;
 class MindMapTile;
@@ -189,6 +190,8 @@ private:
 
     MindMapDataPtr m_mindMapData;
 
+    std::unique_ptr<CopyContext> m_copyContext;
+
     std::unique_ptr<SelectionGroup> m_selectionGroup;
 
     UndoStack m_undoStack;
@@ -210,15 +213,6 @@ private:
     QString m_fileName;
 
     QTimer m_undoTimer;
-
-    struct CopyContext
-    {
-        std::vector<std::shared_ptr<Node>> copiedNodes;
-
-        QPointF copyReferencePoint;
-    };
-
-    CopyContext m_copyContext;
 
     Grid m_grid;
 };

@@ -21,6 +21,7 @@ set(LIB_SRC
     application.cpp
     color_dialog.cpp
     constants.hpp
+    copy_context.cpp
     defaults_tab.cpp
     edge.cpp
     edge_context_menu.cpp

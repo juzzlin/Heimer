@@ -23,11 +23,15 @@
 #include <QTextBrowser>
 #include <QVBoxLayout>
 
+namespace {
+const int logoSize = 256;
+}
+
 AboutDlg::AboutDlg(QWidget * parent)
   : QDialog(parent)
 {
     setWindowTitle(tr("About ") + Constants::Application::APPLICATION_NAME);
-    setMinimumWidth(768);
+    setMinimumWidth(3 * logoSize); // Note that there should be enough space for all languages
     initWidgets();
 }
 
@@ -35,17 +39,17 @@ void AboutDlg::initWidgets()
 {
     const auto vLayout = new QVBoxLayout(this);
     const auto pixmapLabel = new QLabel(this);
+    pixmapLabel->setPixmap(QPixmap(":/about.png").scaled(logoSize, logoSize));
 
     const auto hLayout = new QHBoxLayout;
-    pixmapLabel->setPixmap(QPixmap(":/about.png").scaled(256, 256));
     hLayout->addWidget(pixmapLabel);
 
     const auto infoLabel = new QTextBrowser(this);
     infoLabel->setOpenExternalLinks(true);
     infoLabel->setHtml(
       QString("<h2>") + Constants::Application::APPLICATION_NAME + " v" + Constants::Application::APPLICATION_VERSION + "</h2>"
-      + "<p>" + Constants::Application::APPLICATION_NAME + tr(" is licenced under ") + "GNU GPLv3."
-      + " " + Constants::Application::COPYRIGHT + ".</p>"
+      + "<p>" + Constants::Application::APPLICATION_NAME + tr(" is licenced under ") + "GNU GPLv3" + ".</p>"
+      + "<p>" + Constants::Application::COPYRIGHT + ".</p>"
       + "<p>" + tr("Package type: ") + Constants::Application::APPLICATION_PACKAGE_TYPE + "</p>"
       + tr("Project website: ") + "<a href='" + Constants::Application::WEB_SITE_URL + "'>"
       + Constants::Application::WEB_SITE_URL + "</a>"
@@ -54,10 +58,13 @@ void AboutDlg::initWidgets()
       + Constants::Application::SUPPORT_SITE_URL + "</a></p>");
     infoLabel->setFrameStyle(QFrame::NoFrame);
     infoLabel->viewport()->setAutoFillBackground(false);
+    infoLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     hLayout->addWidget(infoLabel);
     vLayout->addLayout(hLayout);
 
     const auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     vLayout->addWidget(buttonBox);
+
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }

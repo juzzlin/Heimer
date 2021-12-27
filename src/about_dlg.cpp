@@ -58,13 +58,10 @@ void AboutDlg::initWidgets()
       + Constants::Application::SUPPORT_SITE_URL + "</a></p>");
     infoLabel->setFrameStyle(QFrame::NoFrame);
     infoLabel->viewport()->setAutoFillBackground(false);
-    infoLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     hLayout->addWidget(infoLabel);
     vLayout->addLayout(hLayout);
 
     const auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     vLayout->addWidget(buttonBox);
-
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }

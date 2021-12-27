@@ -35,7 +35,7 @@ public:
 
     void move(Node & reference, QPointF location);
 
-    const std::vector<Node *> & nodes() const;
+    const std::vector<Node *> nodes() const;
 
     Node * selectedNode() const;
 

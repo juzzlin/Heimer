@@ -65,7 +65,7 @@ void SelectionGroup::move(Node & reference, QPointF location)
     }
 }
 
-const std::vector<Node *> & SelectionGroup::nodes() const
+const std::vector<Node *> SelectionGroup::nodes() const
 {
     return m_nodes;
 }

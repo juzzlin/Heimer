@@ -20,6 +20,8 @@
 
 #include <QGraphicsScene>
 
+#include "types.hpp"
+
 class Node;
 
 class EditorScene : public QGraphicsScene
@@ -32,7 +34,7 @@ public:
     QRectF calculateZoomToFitRectangle(bool isForExport = false) const;
 
     //! Checks if the graphics scene already has the given edge item added
-    bool hasEdge(Node & node0, Node & node1);
+    bool hasEdge(NodeR node0, NodeR node1);
 
     QImage toImage(QSize size, QColor backgroundColor, bool transparentBackground);
 

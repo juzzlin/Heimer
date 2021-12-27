@@ -42,7 +42,7 @@ void Graph::clear()
     m_nodes.clear();
 }
 
-void Graph::addNode(NodePtr node)
+void Graph::addNode(NodeS node)
 {
     if (node->index() == -1) {
         node->setIndex(m_count++);
@@ -55,9 +55,9 @@ void Graph::addNode(NodePtr node)
     m_nodes[node->index()] = node;
 }
 
-EdgePtr Graph::deleteEdge(int index0, int index1)
+EdgeS Graph::deleteEdge(int index0, int index1)
 {
-    EdgePtr deletedEdge;
+    EdgeS deletedEdge;
     if (const auto edgeIter = m_edges.find(getKey(index0, index1)); edgeIter != m_edges.end()) {
         deletedEdge = (*edgeIter).second;
         m_deletedEdges.push_back(deletedEdge);
@@ -66,9 +66,9 @@ EdgePtr Graph::deleteEdge(int index0, int index1)
     return deletedEdge;
 }
 
-std::pair<NodePtr, Graph::EdgeVector> Graph::deleteNode(int index)
+std::pair<NodeS, Graph::EdgeVector> Graph::deleteNode(int index)
 {
-    NodePtr deletedNode;
+    NodeS deletedNode;
     Graph::EdgeVector deletedEdges;
     if (const auto iter = m_nodes.find(index); iter != m_nodes.end()) {
         auto edgeIter = m_edges.begin();
@@ -89,7 +89,7 @@ std::pair<NodePtr, Graph::EdgeVector> Graph::deleteNode(int index)
     return { deletedNode, deletedEdges };
 }
 
-void Graph::addEdge(EdgePtr newEdge)
+void Graph::addEdge(EdgeS newEdge)
 {
     // Add if such edge doesn't already exist
     const auto c0 = newEdge->sourceNode().index();
@@ -99,7 +99,7 @@ void Graph::addEdge(EdgePtr newEdge)
     }
 }
 
-bool Graph::areDirectlyConnected(NodePtr node0, NodePtr node1) const
+bool Graph::areDirectlyConnected(NodeS node0, NodeS node1) const
 {
     return areDirectlyConnected(node0->index(), node1->index());
 }
@@ -114,6 +114,12 @@ size_t Graph::numNodes() const
     return m_nodes.size();
 }
 
+EdgeS Graph::getEdge(int index0, int index1) const
+{
+    const auto iter = m_edges.find(getKey(index0, index1));
+    return iter != m_edges.end() ? iter->second : nullptr;
+}
+
 Graph::EdgeVector Graph::getEdges() const
 {
     EdgeVector edges(m_edges.size());
@@ -121,7 +127,7 @@ Graph::EdgeVector Graph::getEdges() const
     return edges;
 }
 
-Graph::EdgeVector Graph::getEdgesFromNode(NodePtr node) const
+Graph::EdgeVector Graph::getEdgesFromNode(NodeS node) const
 {
     EdgeVector edges;
     for (auto && edge : m_edges) {
@@ -132,7 +138,7 @@ Graph::EdgeVector Graph::getEdgesFromNode(NodePtr node) const
     return edges;
 }
 
-Graph::EdgeVector Graph::getEdgesToNode(NodePtr node) const
+Graph::EdgeVector Graph::getEdgesToNode(NodeS node) const
 {
     Graph::EdgeVector edges;
     for (auto && edge : m_edges) {
@@ -143,7 +149,7 @@ Graph::EdgeVector Graph::getEdgesToNode(NodePtr node) const
     return edges;
 }
 
-NodePtr Graph::getNode(int index) const
+NodeS Graph::getNode(int index) const
 {
     if (const auto iter = m_nodes.find(index); iter != m_nodes.end()) {
         return iter->second;
@@ -158,7 +164,7 @@ Graph::NodeVector Graph::getNodes() const
     return nodes;
 }
 
-Graph::NodeVector Graph::getNodesConnectedToNode(NodePtr node) const
+Graph::NodeVector Graph::getNodesConnectedToNode(NodeS node) const
 {
     NodeVector result;
     const auto edgesToNode = getEdgesToNode(node);

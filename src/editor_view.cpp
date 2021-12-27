@@ -94,14 +94,14 @@ void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
     }
 }
 
-void EditorView::handleMousePressEventOnEdge(QMouseEvent & event, Edge & edge)
+void EditorView::handleMousePressEventOnEdge(QMouseEvent & event, EdgeR edge)
 {
     if (event.button() == Qt::RightButton) {
         handleRightButtonClickOnEdge(edge);
     }
 }
 
-void EditorView::handleMousePressEventOnNode(QMouseEvent & event, Node & node)
+void EditorView::handleMousePressEventOnNode(QMouseEvent & event, NodeR node)
 {
     if (node.index() != -1) // Prevent right-click on the drag node
     {
@@ -124,7 +124,7 @@ void EditorView::handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHand
     }
 }
 
-void EditorView::handleLeftButtonClickOnNode(Node & node)
+void EditorView::handleLeftButtonClickOnNode(NodeR node)
 {
     if (isModifierPressed()) {
         // User is selecting a node
@@ -164,14 +164,14 @@ void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
     }
 }
 
-void EditorView::handleRightButtonClickOnEdge(Edge & edge)
+void EditorView::handleRightButtonClickOnEdge(EdgeR edge)
 {
     m_mediator.setSelectedEdge(&edge);
 
     openEdgeContextMenu();
 }
 
-void EditorView::handleRightButtonClickOnNode(Node & node)
+void EditorView::handleRightButtonClickOnNode(NodeR node)
 {
     if (!node.selected()) {
         m_mediator.clearSelectionGroup();
@@ -207,7 +207,7 @@ void EditorView::mouseDoubleClickEvent(QMouseEvent * event)
             juzzlin::L().debug() << "Node double-clicked";
             zoomToFit(MagicZoom::calculateRectangle({ result.node }, false));
         } else if (result.nodeTextEdit) {
-            if (const auto node = dynamic_cast<Node *>(result.nodeTextEdit->parentItem()); node) {
+            if (const auto node = dynamic_cast<NodeP>(result.nodeTextEdit->parentItem()); node) {
                 juzzlin::L().debug() << "Node text edit double-clicked";
                 zoomToFit(MagicZoom::calculateRectangle({ node }, false));
             }
@@ -298,7 +298,7 @@ void EditorView::mousePressEvent(QMouseEvent * event)
             // This hack enables edge context menu even if user clicks on the edge text edit.
         } else if (result.edgeTextEdit) {
             if (event->button() == Qt::RightButton) {
-                if (const auto edge = dynamic_cast<Edge *>(result.edgeTextEdit->parentItem()); edge) {
+                if (const auto edge = dynamic_cast<EdgeP>(result.edgeTextEdit->parentItem()); edge) {
                     juzzlin::L().debug() << "Edge text edit pressed";
                     handleMousePressEventOnEdge(*event, *edge);
                     return;
@@ -307,7 +307,7 @@ void EditorView::mousePressEvent(QMouseEvent * event)
             // This hack enables node context menu even if user clicks on the node text edit.
         } else if (result.nodeTextEdit) {
             if (event->button() == Qt::RightButton || (event->button() == Qt::LeftButton && isModifierPressed())) {
-                if (const auto node = dynamic_cast<Node *>(result.nodeTextEdit->parentItem()); node) {
+                if (const auto node = dynamic_cast<NodeP>(result.nodeTextEdit->parentItem()); node) {
                     juzzlin::L().debug() << "Node text edit pressed";
                     handleMousePressEventOnNode(*event, *node);
                     node->setTextInputActive(false);
@@ -396,7 +396,7 @@ void EditorView::showDummyDragEdge(bool show)
     if (const auto sourceNode = m_mediator.mouseAction().sourceNode()) {
         if (!m_dummyDragEdge) {
             L().debug() << "Creating a new dummy drag edge";
-            m_dummyDragEdge = std::make_unique<Edge>(*sourceNode, *m_dummyDragNode, false, false);
+            m_dummyDragEdge = std::make_unique<Edge>(sourceNode, m_dummyDragNode.get(), false, false);
             m_dummyDragEdge->setOpacity(0.5);
             scene()->addItem(m_dummyDragEdge.get());
         } else {

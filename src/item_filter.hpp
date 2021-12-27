@@ -18,6 +18,8 @@
 
 #include <QPointF>
 
+#include "types.hpp"
+
 class QGraphicsScene;
 
 class Node;
@@ -30,11 +32,11 @@ namespace ItemFilter {
 
 struct Result
 {
-    Edge * edge = nullptr;
+    EdgeP edge = nullptr;
 
     EdgeTextEdit * edgeTextEdit = nullptr;
 
-    Node * node = nullptr;
+    NodeP node = nullptr;
 
     NodeHandle * nodeHandle = nullptr;
 

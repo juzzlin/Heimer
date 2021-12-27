@@ -19,7 +19,7 @@
 
 #include <algorithm>
 
-void SelectionGroup::addSelectedNode(Node & node)
+void SelectionGroup::addSelectedNode(NodeR node)
 {
     if (!m_nodeSet.count(&node)) {
         m_nodeSet.insert(&node);
@@ -37,7 +37,7 @@ void SelectionGroup::clear()
     m_nodes.clear();
 }
 
-bool SelectionGroup::hasNode(Node & node) const
+bool SelectionGroup::hasNode(NodeR node) const
 {
     return m_nodeSet.count(&node);
 }
@@ -47,7 +47,7 @@ bool SelectionGroup::isEmpty() const
     return m_nodeSet.empty();
 }
 
-void SelectionGroup::move(Node & reference, QPointF location)
+void SelectionGroup::move(NodeR reference, QPointF location)
 {
     std::map<int, QPointF> delta;
     for (auto && node : m_nodes) {
@@ -65,12 +65,12 @@ void SelectionGroup::move(Node & reference, QPointF location)
     }
 }
 
-const std::vector<Node *> SelectionGroup::nodes() const
+const std::vector<NodeP> SelectionGroup::nodes() const
 {
     return m_nodes;
 }
 
-Node * SelectionGroup::selectedNode() const
+NodeP SelectionGroup::selectedNode() const
 {
     return !m_nodes.empty() ? *m_nodes.begin() : nullptr;
 }
@@ -80,7 +80,7 @@ size_t SelectionGroup::size() const
     return m_nodes.size();
 }
 
-void SelectionGroup::toggleNode(Node & node)
+void SelectionGroup::toggleNode(NodeR node)
 {
     if (node.selected()) {
         m_nodes.erase(std::find(m_nodes.begin(), m_nodes.end(), &node));

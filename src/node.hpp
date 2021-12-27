@@ -24,6 +24,8 @@
 #include <map>
 #include <vector>
 
+#include "types.hpp"
+
 #include "edge.hpp"
 #include "edge_point.hpp"
 #include "node_handle.hpp"
@@ -44,11 +46,11 @@ public:
     Node();
 
     //! Copy constructor.
-    Node(const Node & other);
+    Node(NodeCR other);
 
     ~Node() override;
 
-    void addGraphicsEdge(Edge & edge);
+    void addGraphicsEdge(EdgeR edge);
 
     void adjustSize();
 
@@ -62,7 +64,7 @@ public:
 
     int cornerRadius() const;
 
-    static std::pair<EdgePoint, EdgePoint> getNearestEdgePoints(const Node & node1, const Node & node2);
+    static std::pair<EdgePoint, EdgePoint> getNearestEdgePoints(NodeCR node1, NodeCR node2);
 
     void highlightText(const QString & text);
 
@@ -74,7 +76,7 @@ public:
 
     int index() const;
 
-    static Node * lastHoveredNode();
+    static NodeP lastHoveredNode();
 
     QPointF location() const;
 
@@ -84,7 +86,7 @@ public:
 
     QRectF placementBoundingRect() const;
 
-    void removeGraphicsEdge(Edge & edge);
+    void removeGraphicsEdge(EdgeR edge);
 
     void removeHandles();
 
@@ -167,7 +169,7 @@ private:
 
     std::map<NodeHandle::Role, NodeHandle *> m_handles;
 
-    std::vector<Edge *> m_graphicsEdges;
+    std::vector<EdgeP> m_graphicsEdges;
 
     std::vector<EdgePoint> m_edgePoints;
 
@@ -177,9 +179,7 @@ private:
 
     QPixmap m_pixmap;
 
-    static Node * m_lastHoveredNode;
+    static NodeP m_lastHoveredNode;
 };
-
-using NodePtr = std::shared_ptr<Node>;
 
 #endif // NODE_HPP

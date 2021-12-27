@@ -97,7 +97,7 @@ void LayoutOptimizerTest::testMultipleNodes_ShouldReduceCost()
     std::uniform_real_distribution<double> xDist { -1000, 1000 };
     std::uniform_real_distribution<double> yDist { -1000, 1000 };
     std::mt19937 engine;
-    std::vector<std::shared_ptr<Node>> nodes;
+    std::vector<NodeS> nodes;
     for (size_t i = 0; i < nodeCount; i++) {
         auto node = std::make_shared<Node>();
         data->graph().addNode(node);
@@ -108,7 +108,7 @@ void LayoutOptimizerTest::testMultipleNodes_ShouldReduceCost()
     for (auto && node : nodes) {
         for (size_t i = 0; i < (i % 2) + 1; i++) {
             const auto otherNode = data->graph().getNode(static_cast<int>(iDist(engine)));
-            data->graph().addEdge(std::make_shared<Edge>(*node, *otherNode));
+            data->graph().addEdge(std::make_shared<Edge>(node, otherNode));
         }
     }
 

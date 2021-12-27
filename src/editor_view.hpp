@@ -19,6 +19,7 @@
 #include "grid.hpp"
 #include "main_context_menu.hpp"
 #include "state_machine.hpp"
+#include "types.hpp"
 
 #include <QColor>
 #include <QGraphicsView>
@@ -104,19 +105,19 @@ private:
 
     void handleMousePressEventOnBackground(QMouseEvent & event);
 
-    void handleMousePressEventOnEdge(QMouseEvent & event, Edge & edge);
+    void handleMousePressEventOnEdge(QMouseEvent & event, EdgeR edge);
 
-    void handleMousePressEventOnNode(QMouseEvent & event, Node & node);
+    void handleMousePressEventOnNode(QMouseEvent & event, NodeR node);
 
     void handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHandle & nodeHandle);
 
-    void handleLeftButtonClickOnNode(Node & node);
+    void handleLeftButtonClickOnNode(NodeR node);
 
     void handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle);
 
-    void handleRightButtonClickOnEdge(Edge & edge);
+    void handleRightButtonClickOnEdge(EdgeR edge);
 
-    void handleRightButtonClickOnNode(Node & node);
+    void handleRightButtonClickOnNode(NodeR node);
 
     void initiateRubberBand();
 
@@ -160,11 +161,11 @@ private:
 
     Mediator & m_mediator;
 
-    std::unique_ptr<Node> m_dummyDragNode;
+    NodeU m_dummyDragNode;
 
-    std::unique_ptr<Edge> m_dummyDragEdge;
+    EdgeU m_dummyDragEdge;
 
-    std::shared_ptr<Node> m_connectionTargetNode;
+    NodeS m_connectionTargetNode;
 
     int m_cornerRadius = 0;
 

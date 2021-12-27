@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2019 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2022 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,42 +13,39 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef IMAGE_MANAGER_HPP
-#define IMAGE_MANAGER_HPP
+#ifndef TYPES_HPP
+#define TYPES_HPP
 
-#include <QObject>
+#include <memory>
 
-#include <map>
+class Edge;
 
-#include "image.hpp"
-#include "types.hpp"
+using EdgeCR = const Edge &;
+
+using EdgeP = Edge *;
+
+using EdgeR = Edge &;
+
+using EdgeS = std::shared_ptr<Edge>;
+
+using EdgeU = std::unique_ptr<Edge>;
+
+class Graph;
+
+using GraphCR = const Graph &;
+
+using GraphR = Graph &;
 
 class Node;
 
-class ImageManager : public QObject
-{
-    Q_OBJECT
+using NodeCR = const Node &;
 
-public:
-    ImageManager();
+using NodeP = Node *;
 
-    void clear();
+using NodeR = Node &;
 
-    size_t addImage(const Image & image);
+using NodeS = std::shared_ptr<Node>;
 
-    void setImage(const Image & image);
+using NodeU = std::unique_ptr<Node>;
 
-    std::pair<Image, bool> getImage(size_t id);
-
-    void handleImageRequest(size_t id, NodeR node);
-
-    using ImageVector = std::vector<Image>;
-    ImageVector images() const;
-
-private:
-    std::map<size_t, Image> m_images;
-
-    size_t m_count = 0;
-};
-
-#endif // IMAGE_MANAGER_HPP
+#endif // TYPES_HPP

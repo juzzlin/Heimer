@@ -36,7 +36,7 @@ void EditorDataTest::testAddAndDeleteEdge()
     const auto node1 = std::make_shared<Node>();
     data->graph().addNode(node1);
 
-    const auto edge0 = std::make_shared<Edge>(*node0, *node1);
+    const auto edge0 = std::make_shared<Edge>(node0, node1);
     editorData.addEdge(edge0);
 
     QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(node0, node1), true);
@@ -45,7 +45,7 @@ void EditorDataTest::testAddAndDeleteEdge()
 
     QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(node0, node1), false);
 
-    const auto edge1 = std::make_shared<Edge>(*node0, *node1);
+    const auto edge1 = std::make_shared<Edge>(node0, node1);
     editorData.addEdge(edge1);
 
     QCOMPARE(editorData.mindMapData()->graph().areDirectlyConnected(node0, node1), true);
@@ -183,7 +183,7 @@ void EditorDataTest::testLoadState()
 
     const auto node0 = editorData.addNodeAt(QPointF(0, 0));
     const auto node1 = editorData.addNodeAt(QPointF(100, 0));
-    const auto edge01 = editorData.addEdge(std::make_shared<Edge>(*node0, *node1));
+    const auto edge01 = editorData.addEdge(std::make_shared<Edge>(node0, node1));
 
     editorData.toggleNodeInSelectionGroup(*node0);
     editorData.setSelectedEdge(edge01.get());
@@ -301,13 +301,13 @@ void EditorDataTest::testUndoAddEdge()
     const auto node2 = std::make_shared<Node>();
     data->graph().addNode(node2);
 
-    const auto edge01 = std::make_shared<Edge>(*node0, *node1);
+    const auto edge01 = std::make_shared<Edge>(node0, node1);
 
     editorData.saveUndoPoint();
 
     editorData.addEdge(edge01);
 
-    const auto edge21 = std::make_shared<Edge>(*node2, *node1);
+    const auto edge21 = std::make_shared<Edge>(node2, node1);
 
     editorData.saveUndoPoint();
 
@@ -355,7 +355,7 @@ void EditorDataTest::testUndoArrowMode()
     const auto node1 = std::make_shared<Node>();
     data->graph().addNode(node1);
 
-    const auto edge01 = std::make_shared<Edge>(*node0, *node1);
+    const auto edge01 = std::make_shared<Edge>(node0, node1);
 
     editorData.addEdge(edge01);
 
@@ -391,7 +391,7 @@ void EditorDataTest::testUndoDeleteEdge()
     const auto node1 = std::make_shared<Node>();
     data->graph().addNode(node1);
 
-    const auto edge01 = std::make_shared<Edge>(*node0, *node1);
+    const auto edge01 = std::make_shared<Edge>(node0, node1);
 
     editorData.saveUndoPoint();
 
@@ -500,7 +500,7 @@ void EditorDataTest::testUndoEdgeDashedLine()
     const auto node1 = std::make_shared<Node>();
     data->graph().addNode(node1);
 
-    const auto edge01 = std::make_shared<Edge>(*node0, *node1);
+    const auto edge01 = std::make_shared<Edge>(node0, node1);
 
     editorData.addEdge(edge01);
 
@@ -557,7 +557,7 @@ void EditorDataTest::testUndoEdgeText()
     const auto node1 = std::make_shared<Node>();
     data->graph().addNode(node1);
 
-    const auto edge01 = std::make_shared<Edge>(*node0, *node1);
+    const auto edge01 = std::make_shared<Edge>(node0, node1);
     editorData.addEdge(edge01);
 
     const auto text0 = "First";
@@ -592,7 +592,7 @@ void EditorDataTest::testUndoEdgeReversed()
     const auto node1 = std::make_shared<Node>();
     data->graph().addNode(node1);
 
-    const auto edge01 = std::make_shared<Edge>(*node0, *node1);
+    const auto edge01 = std::make_shared<Edge>(node0, node1);
 
     editorData.addEdge(edge01);
 
@@ -861,7 +861,7 @@ void EditorDataTest::testUndoState()
 
     const auto node0 = editorData.addNodeAt(QPointF(0, 0));
     const auto node1 = editorData.addNodeAt(QPointF(100, 0));
-    const auto edge01 = editorData.addEdge(std::make_shared<Edge>(*node0, *node1));
+    const auto edge01 = editorData.addEdge(std::make_shared<Edge>(node0, node1));
 
     editorData.toggleNodeInSelectionGroup(*node0);
     editorData.setSelectedEdge(edge01.get());
@@ -884,7 +884,7 @@ void EditorDataTest::testRedoState()
 
     const auto node0 = editorData.addNodeAt(QPointF(0, 0));
     const auto node1 = editorData.addNodeAt(QPointF(100, 0));
-    const auto edge01 = editorData.addEdge(std::make_shared<Edge>(*node0, *node1));
+    const auto edge01 = editorData.addEdge(std::make_shared<Edge>(node0, node1));
 
     editorData.toggleNodeInSelectionGroup(*node0);
     editorData.setSelectedEdge(edge01.get());

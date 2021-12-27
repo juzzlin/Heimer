@@ -20,33 +20,35 @@
 #include <unordered_set>
 #include <vector>
 
+#include "types.hpp"
+
 class Node;
 
 class SelectionGroup
 {
 public:
-    void addSelectedNode(Node & node);
+    void addSelectedNode(NodeR node);
 
     void clear();
 
-    bool hasNode(Node & node) const;
+    bool hasNode(NodeR node) const;
 
     bool isEmpty() const;
 
-    void move(Node & reference, QPointF location);
+    void move(NodeR reference, QPointF location);
 
-    const std::vector<Node *> nodes() const;
+    const std::vector<NodeP> nodes() const;
 
-    Node * selectedNode() const;
+    NodeP selectedNode() const;
 
     size_t size() const;
 
-    void toggleNode(Node & node);
+    void toggleNode(NodeR node);
 
 private:
     // Use vector because we want to keep the order
-    std::vector<Node *> m_nodes;
-    std::unordered_set<Node *> m_nodeSet;
+    std::vector<NodeP> m_nodes;
+    std::unordered_set<NodeP> m_nodeSet;
 };
 
 #endif // SELECTION_GROUP_HPP

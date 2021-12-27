@@ -17,6 +17,7 @@
 #define EDGE_TEXT_EDIT_HPP
 
 #include "text_edit.hpp"
+#include "types.hpp"
 
 #include <QPropertyAnimation>
 #include <QTimer>
@@ -26,7 +27,7 @@ class Edge;
 class EdgeTextEdit : public TextEdit
 {
 public:
-    EdgeTextEdit(Edge * parentItem);
+    EdgeTextEdit(EdgeP parentItem);
 
     enum class VisibilityChangeReason
     {

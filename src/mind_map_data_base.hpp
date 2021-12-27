@@ -18,6 +18,8 @@
 
 #include <QString>
 
+#include "types.hpp"
+
 class Graph;
 
 //! Common base class for track data shared by the editor and the game.
@@ -93,9 +95,9 @@ public:
 
     virtual void setIndex(unsigned int index);
 
-    virtual Graph & graph() = 0;
+    virtual GraphR graph() = 0;
 
-    virtual const Graph & graph() const = 0;
+    virtual GraphCR graph() const = 0;
 
 private:
     QString m_name;

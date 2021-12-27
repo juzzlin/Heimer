@@ -146,12 +146,12 @@ void MindMapData::setFileName(QString newFileName)
     m_fileName = newFileName;
 }
 
-Graph & MindMapData::graph()
+GraphR MindMapData::graph()
 {
     return m_graph;
 }
 
-const Graph & MindMapData::graph() const
+GraphCR MindMapData::graph() const
 {
     return m_graph;
 }

@@ -23,7 +23,7 @@
 #include <QPainter>
 #include <QPen>
 
-NodeHandle::NodeHandle(Node & parentNode, NodeHandle::Role role, int radius)
+NodeHandle::NodeHandle(NodeR parentNode, NodeHandle::Role role, int radius)
   : m_parentNode(parentNode)
   , m_role(role)
   , m_radius(radius)
@@ -98,7 +98,7 @@ void NodeHandle::paint(QPainter * painter,
     }
 }
 
-Node & NodeHandle::parentNode() const
+NodeR NodeHandle::parentNode() const
 {
     return m_parentNode;
 }

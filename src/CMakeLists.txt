@@ -65,6 +65,7 @@ set(LIB_SRC
     test_mode.cpp
     text_edit.cpp
     tool_bar.cpp
+    types.hpp
     undo_stack.cpp
     user_exception.hpp
     whats_new_dlg.cpp

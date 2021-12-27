@@ -18,6 +18,8 @@
 
 #include <QMenu>
 
+#include "types.hpp"
+
 class Edge;
 class Mediator;
 
@@ -31,7 +33,7 @@ public:
 private:
     Mediator & m_mediator;
 
-    Edge * m_selectedEdge = nullptr;
+    EdgeP m_selectedEdge = nullptr;
 };
 
 #endif // EDGE_CONTEXT_MENU_H

@@ -20,6 +20,7 @@
 #include "node.hpp"
 #include "node_handle.hpp"
 #include "text_edit.hpp"
+#include "types.hpp"
 
 #include <QGraphicsScene>
 
@@ -33,13 +34,13 @@ Result getFirstItemAtPosition(QGraphicsScene & scene, QPointF scenePos, double t
     // Fetch all items at the location
     if (const auto items = scene.items(clickRect, Qt::IntersectsItemShape, Qt::DescendingOrder); items.size()) {
         const auto item = *items.begin();
-        if (const auto edge = dynamic_cast<Edge *>(item)) {
+        if (const auto edge = dynamic_cast<EdgeP>(item)) {
             result.edge = edge;
             result.success = true;
         } else if (const auto nodeHandle = dynamic_cast<NodeHandle *>(item)) {
             result.nodeHandle = nodeHandle;
             result.success = true;
-        } else if (const auto node = dynamic_cast<Node *>(item)) {
+        } else if (const auto node = dynamic_cast<NodeP>(item)) {
             result.node = node;
             result.success = true;
         } else if (const auto edgeTextEdit = dynamic_cast<EdgeTextEdit *>(item)) {

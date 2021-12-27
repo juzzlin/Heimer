@@ -18,7 +18,6 @@
 
 #include "alz_serializer.hpp"
 #include "constants.hpp"
-#include "copy_context.hpp"
 #include "node.hpp"
 #include "recent_files_manager.hpp"
 #include "selection_group.hpp"
@@ -45,7 +44,7 @@ EditorData::EditorData()
     m_undoTimer.setInterval(Constants::View::TOO_QUICK_ACTION_DELAY_MS);
 }
 
-void EditorData::addNodeToSelectionGroup(Node & node)
+void EditorData::addNodeToSelectionGroup(NodeR node)
 {
     L().debug() << "Adding node " << node.index() << " to selection group..";
 
@@ -269,14 +268,14 @@ void EditorData::selectNodesByText(QString text)
     }
 }
 
-void EditorData::toggleNodeInSelectionGroup(Node & node)
+void EditorData::toggleNodeInSelectionGroup(NodeR node)
 {
     L().debug() << "Toggling node " << node.index() << " in selection group..";
 
     m_selectionGroup->toggleNode(node);
 }
 
-EdgePtr EditorData::addEdge(EdgePtr edge)
+EdgeS EditorData::addEdge(EdgeS edge)
 {
     assert(m_mindMapData);
 
@@ -300,7 +299,7 @@ void EditorData::deleteEdge(int index0, int index1)
     }
 }
 
-void EditorData::deleteNode(Node & node)
+void EditorData::deleteNode(NodeR node)
 {
     assert(m_mindMapData);
 
@@ -332,7 +331,7 @@ void EditorData::deleteSelectedNodes()
     }
 }
 
-NodePtr EditorData::addNodeAt(QPointF pos)
+NodeS EditorData::addNodeAt(QPointF pos)
 {
     assert(m_mindMapData);
 
@@ -396,12 +395,12 @@ bool EditorData::areSelectedNodesDisconnectable() const
     return false;
 }
 
-std::vector<std::shared_ptr<Edge>> EditorData::connectSelectedNodes()
+std::vector<EdgeS> EditorData::connectSelectedNodes()
 {
     const auto connectableNodes = getConnectableNodes();
-    std::vector<std::shared_ptr<Edge>> edges;
+    std::vector<EdgeS> edges;
     std::transform(std::begin(connectableNodes), std::end(connectableNodes), std::back_inserter(edges),
-                   [this](auto && nodePair) { return addEdge(std::make_shared<Edge>(*nodePair.first, *nodePair.second)); });
+                   [this](auto && nodePair) { return addEdge(std::make_shared<Edge>(nodePair.first, nodePair.second)); });
     return edges;
 }
 
@@ -413,35 +412,28 @@ void EditorData::disconnectSelectedNodes()
     }
 }
 
-std::vector<std::shared_ptr<Node>> EditorData::copiedNodes() const
+CopyContext::CopiedData EditorData::copiedData() const
 {
-    return m_copyContext->copiedNodes();
+    return m_copyContext->copiedData();
 }
 
-NodePtr EditorData::copyNodeAt(Node & source, QPointF pos)
+NodeS EditorData::copyNodeAt(NodeCR source, QPointF pos)
 {
     assert(m_mindMapData);
 
-    const auto node = make_shared<Node>(source);
+    const auto node = std::make_shared<Node>(source);
     node->setIndex(-1); // Results in new index to be assigned
     node->setLocation(pos);
     m_mindMapData->graph().addNode(node);
     return node;
 }
 
-QPointF EditorData::copyReferencePoint() const
-{
-    return m_copyContext->copyReferencePoint();
-}
-
 void EditorData::copySelectedNodes()
 {
     if (m_selectionGroup->size()) {
         clearCopyStack();
-        for (auto && node : m_selectionGroup->nodes()) {
-            m_copyContext->push(*node);
-        }
-        L().debug() << m_selectionGroup->size() << " nodes copied. Reference point calculated at (" << m_copyContext->copyReferencePoint().x() << ", " << m_copyContext->copyReferencePoint().y() << ")";
+        m_copyContext->push(m_selectionGroup->nodes(), m_mindMapData->graph());
+        L().debug() << m_selectionGroup->size() << " nodes copied. Reference point calculated at (" << m_copyContext->copiedData().copyReferencePoint.x() << ", " << m_copyContext->copiedData().copyReferencePoint.y() << ")";
     }
 }
 
@@ -467,7 +459,7 @@ void EditorData::clearSelectionGroup()
     m_selectionGroup->clear();
 }
 
-NodePtr EditorData::getNodeByIndex(int index)
+NodeS EditorData::getNodeByIndex(int index)
 {
     assert(m_mindMapData);
 
@@ -482,7 +474,7 @@ void EditorData::initializeNewMindMap()
     setMindMapData(std::make_shared<MindMapData>());
 }
 
-bool EditorData::isInSelectionGroup(Node & node)
+bool EditorData::isInSelectionGroup(NodeR node)
 {
     return m_selectionGroup->hasNode(node);
 }
@@ -492,7 +484,7 @@ MindMapDataPtr EditorData::mindMapData()
     return m_mindMapData;
 }
 
-void EditorData::moveSelectionGroup(Node & reference, QPointF location)
+void EditorData::moveSelectionGroup(NodeR reference, QPointF location)
 {
     m_selectionGroup->move(reference, location);
 }
@@ -507,17 +499,17 @@ bool EditorData::nodeHasImageAttached() const
     return false;
 }
 
-void EditorData::setSelectedEdge(Edge * edge)
+void EditorData::setSelectedEdge(EdgeP edge)
 {
     m_selectedEdge = edge;
 }
 
-Edge * EditorData::selectedEdge() const
+EdgeP EditorData::selectedEdge() const
 {
     return m_selectedEdge;
 }
 
-Node * EditorData::selectedNode() const
+NodeP EditorData::selectedNode() const
 {
     return m_selectionGroup->selectedNode();
 }
@@ -527,7 +519,7 @@ size_t EditorData::selectionGroupSize() const
     return m_selectionGroup->size();
 }
 
-void EditorData::removeEdgeFromScene(Edge & edge)
+void EditorData::removeEdgeFromScene(EdgeR edge)
 {
     edge.hide();
     if (const auto scene = edge.scene()) {
@@ -535,7 +527,7 @@ void EditorData::removeEdgeFromScene(Edge & edge)
     }
 }
 
-void EditorData::removeNodeFromScene(Node & node)
+void EditorData::removeNodeFromScene(NodeR node)
 {
     node.hide();
     node.removeHandles();

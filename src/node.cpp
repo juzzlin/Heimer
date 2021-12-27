@@ -38,7 +38,7 @@
 #include <algorithm>
 #include <cmath>
 
-Node * Node::m_lastHoveredNode = nullptr;
+NodeP Node::m_lastHoveredNode = nullptr;
 
 Node::Node()
   : m_textEdit(new TextEdit(this))
@@ -72,7 +72,7 @@ Node::Node()
     m_textEdit->setBackgroundColor({ 0, 0, 0, 0 });
 }
 
-Node::Node(const Node & other)
+Node::Node(NodeCR other)
   : Node()
 {
     setColor(other.m_color);
@@ -96,7 +96,7 @@ Node::Node(const Node & other)
     changeFont(other.m_font);
 }
 
-void Node::addGraphicsEdge(Edge & edge)
+void Node::addGraphicsEdge(EdgeR edge)
 {
     if (!TestMode::enabled()) {
         m_graphicsEdges.push_back(&edge);
@@ -105,7 +105,7 @@ void Node::addGraphicsEdge(Edge & edge)
     }
 }
 
-void Node::removeGraphicsEdge(Edge & edge)
+void Node::removeGraphicsEdge(EdgeR edge)
 {
     if (!TestMode::enabled()) {
         if (const auto iter = std::find(m_graphicsEdges.begin(), m_graphicsEdges.end(), &edge); iter != m_graphicsEdges.end()) {
@@ -211,13 +211,13 @@ QRectF Node::expandedTextEditRect() const
     return textEditRect;
 }
 
-inline double getDistance(const Node & node1, const EdgePoint & point1, const Node & node2, const EdgePoint & point2)
+inline double getDistance(NodeCR node1, const EdgePoint & point1, NodeCR node2, const EdgePoint & point2)
 {
     return std::pow(node1.pos().x() + point1.location.x() - node2.pos().x() - point2.location.x(), 2) + //
       std::pow(node1.pos().y() + point1.location.y() - node2.pos().y() - point2.location.y(), 2);
 }
 
-std::pair<EdgePoint, EdgePoint> Node::getNearestEdgePoints(const Node & node1, const Node & node2)
+std::pair<EdgePoint, EdgePoint> Node::getNearestEdgePoints(NodeCR node1, NodeCR node2)
 {
     double bestDistance = std::numeric_limits<double>::max();
     std::pair<EdgePoint, EdgePoint> bestPair = { EdgePoint(), EdgePoint() };
@@ -512,7 +512,7 @@ void Node::updateHandlePositions()
     m_handles[NodeHandle::Role::Drag]->setPos(pos() + QPointF { -m_size.width() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15, -m_size.height() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15 });
 }
 
-Node * Node::lastHoveredNode()
+NodeP Node::lastHoveredNode()
 {
     return m_lastHoveredNode;
 }

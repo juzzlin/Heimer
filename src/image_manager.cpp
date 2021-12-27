@@ -61,7 +61,7 @@ std::pair<Image, bool> ImageManager::getImage(size_t id)
     return {};
 }
 
-void ImageManager::handleImageRequest(size_t id, Node & node)
+void ImageManager::handleImageRequest(size_t id, NodeR node)
 {
     if (const auto && imagePair = getImage(id); imagePair.second) {
         juzzlin::L().debug() << "Applying image id=" << id << " to node " << node.index();

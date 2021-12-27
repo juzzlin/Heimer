@@ -5,6 +5,9 @@ Release date:
 
 New features:
 
+* Fix GitHub Issue #181: Copy should copy also edges within the group
+  - When copying (and pasting) nodes, also the edges within the copy group are now copied
+
 Bug fixes:
 
 * Fix GitHub Issue #195: Decrease size of "About" dialog

@@ -20,6 +20,8 @@
 #include <QPropertyAnimation>
 #include <QTimer>
 
+#include "types.hpp"
+
 class Node;
 
 class NodeHandle : public QObject, public QGraphicsItem
@@ -38,9 +40,9 @@ public:
         TextColor
     };
 
-    NodeHandle(Node & parentNode, Role role, int radius);
+    NodeHandle(NodeR parentNode, Role role, int radius);
 
-    virtual ~NodeHandle();
+    virtual ~NodeHandle() override;
 
     QRectF boundingRect() const override;
 
@@ -57,12 +59,12 @@ public:
 
     Role role() const;
 
-    Node & parentNode() const;
+    NodeR parentNode() const;
 
     int radius() const;
 
 private:
-    Node & m_parentNode;
+    NodeR m_parentNode;
 
     Role m_role;
 

@@ -232,9 +232,9 @@ void SerializerTest::testNodeDeletion()
     auto outNode2 = std::make_shared<Node>();
     outData.graph().addNode(outNode2);
 
-    outData.graph().addEdge(std::make_shared<Edge>(*outNode0, *outNode1));
+    outData.graph().addEdge(std::make_shared<Edge>(outNode0, outNode1));
 
-    outData.graph().addEdge(std::make_shared<Edge>(*outNode0, *outNode2));
+    outData.graph().addEdge(std::make_shared<Edge>(outNode0, outNode2));
 
     outData.graph().deleteNode(outNode1->index()); // Delete node in between
 
@@ -251,7 +251,7 @@ void SerializerTest::testSingleEdge()
     const auto outNode1 = std::make_shared<Node>();
     outData.graph().addNode(outNode1);
 
-    const auto edge = std::make_shared<Edge>(*outNode0, *outNode1);
+    const auto edge = std::make_shared<Edge>(outNode0, outNode1);
     const QString text = "Lorem ipsum";
     edge->setArrowMode(Edge::ArrowMode::Double);
     edge->setDashedLine(true);

@@ -93,10 +93,10 @@ void Mediator::addExistingGraphToScene()
     m_mainWindow.enableWidgetSignals(true);
 }
 
-void Mediator::addEdge(Node & node1, Node & node2)
+void Mediator::addEdge(NodeR node1, NodeR node2)
 {
     // Add edge from node1 to node2
-    connectEdgeToUndoMechanism(m_editorData->addEdge(std::make_shared<Edge>(node1, node2)));
+    connectEdgeToUndoMechanism(m_editorData->addEdge(std::make_shared<Edge>(&node1, &node2)));
     L().debug() << "Created a new edge " << node1.index() << " -> " << node2.index();
 
     addExistingGraphToScene();
@@ -108,7 +108,7 @@ void Mediator::addItem(QGraphicsItem & item)
     adjustSceneRect();
 }
 
-void Mediator::addNodeToSelectionGroup(Node & node)
+void Mediator::addNodeToSelectionGroup(NodeR node)
 {
     m_editorData->addNodeToSelectionGroup(node);
     updateNodeConnectionActions();
@@ -130,17 +130,17 @@ bool Mediator::canBeSaved() const
     return !m_editorData->fileName().isEmpty();
 }
 
-void Mediator::connectEdgeToUndoMechanism(EdgePtr edge)
+void Mediator::connectEdgeToUndoMechanism(EdgeS edge)
 {
     connect(edge.get(), &Edge::undoPointRequested, this, &Mediator::saveUndoPoint, Qt::UniqueConnection);
 }
 
-void Mediator::connectNodeToUndoMechanism(NodePtr node)
+void Mediator::connectNodeToUndoMechanism(NodeS node)
 {
     connect(node.get(), &Node::undoPointRequested, this, &Mediator::saveUndoPoint, Qt::UniqueConnection);
 }
 
-void Mediator::connectNodeToImageManager(NodePtr node)
+void Mediator::connectNodeToImageManager(NodeS node)
 {
     connect(node.get(), &Node::imageRequested, &m_editorData->mindMapData()->imageManager(), &ImageManager::handleImageRequest, Qt::UniqueConnection);
     node->setImageRef(node->imageRef()); // This effectively results in a fetch from ImageManager
@@ -198,7 +198,7 @@ void Mediator::changeFont(const QFont & font)
     m_editorData->mindMapData()->changeFont(font);
 }
 
-NodePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
+NodeS Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 {
     const auto node0 = getNodeByIndex(sourceNodeIndex);
     const auto node1 = m_mainWindow.copyOnDragEnabled() ? m_editorData->copyNodeAt(*node0, pos) : m_editorData->addNodeAt(pos);
@@ -207,7 +207,7 @@ NodePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
     L().debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
 
     // Add edge from the parent node.
-    connectEdgeToUndoMechanism(m_editorData->addEdge(std::make_shared<Edge>(*node0, *node1)));
+    connectEdgeToUndoMechanism(m_editorData->addEdge(std::make_shared<Edge>(node0.get(), node1.get())));
     L().debug() << "Created a new edge " << node0->index() << " -> " << node1->index();
 
     addExistingGraphToScene();
@@ -217,7 +217,7 @@ NodePtr Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
     return node1;
 }
 
-NodePtr Mediator::createAndAddNode(QPointF pos)
+NodeS Mediator::createAndAddNode(QPointF pos)
 {
     const auto node1 = m_editorData->addNodeAt(m_editorView->grid().snapToGrid(pos));
     assert(node1);
@@ -234,7 +234,7 @@ NodePtr Mediator::createAndAddNode(QPointF pos)
     return node1;
 }
 
-NodePtr Mediator::pasteNodeAt(Node & source, QPointF pos)
+NodeS Mediator::pasteNodeAt(NodeR source, QPointF pos)
 {
     const auto copiedNode = m_editorData->copyNodeAt(source, pos);
     assert(copiedNode);
@@ -249,7 +249,7 @@ MouseAction & Mediator::mouseAction()
     return m_editorData->mouseAction();
 }
 
-void Mediator::deleteEdge(Edge & edge)
+void Mediator::deleteEdge(EdgeR edge)
 {
     m_editorData->deleteEdge(edge);
 }
@@ -294,7 +294,7 @@ QString Mediator::fileName() const
     return m_editorData->fileName();
 }
 
-NodePtr Mediator::getNodeByIndex(int index)
+NodeS Mediator::getNodeByIndex(int index)
 {
     return m_editorData->getNodeByIndex(index);
 }
@@ -340,7 +340,7 @@ void Mediator::initiateNewNodeDrag(NodeHandle & nodeHandle)
     QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
 }
 
-void Mediator::initiateNodeDrag(Node & node)
+void Mediator::initiateNodeDrag(NodeR node)
 {
     L().debug() << "Initiating node drag";
 
@@ -370,7 +370,7 @@ void Mediator::initializeView()
     m_mainWindow.setContentsMargins(0, 0, 0, 0);
 }
 
-bool Mediator::areDirectlyConnected(const Node & node1, const Node & node2) const
+bool Mediator::areDirectlyConnected(NodeCR node1, NodeCR node2) const
 {
     auto && graph = m_editorData->mindMapData()->graph();
     const auto node1Ptr = graph.getNode(node1.index());
@@ -388,19 +388,19 @@ bool Mediator::areSelectedNodesDisconnectable() const
     return m_editorData->areSelectedNodesDisconnectable();
 }
 
-bool Mediator::isLeafNode(Node & node)
+bool Mediator::isLeafNode(NodeR node)
 {
     auto && graph = m_editorData->mindMapData()->graph();
     return graph.getEdgesFromNode(graph.getNode(node.index())).size() + graph.getEdgesToNode(graph.getNode(node.index())).size() <= 1;
 }
 
-bool Mediator::isInBetween(Node & node)
+bool Mediator::isInBetween(NodeR node)
 {
     auto && graph = m_editorData->mindMapData()->graph();
     return graph.getEdgesFromNode(graph.getNode(node.index())).size() + graph.getEdgesToNode(graph.getNode(node.index())).size() == 2;
 }
 
-bool Mediator::isInSelectionGroup(Node & node)
+bool Mediator::isInSelectionGroup(NodeR node)
 {
     return m_editorData->isInSelectionGroup(node);
 }
@@ -420,7 +420,7 @@ bool Mediator::isUndoable() const
     return m_editorData->isUndoable();
 }
 
-void Mediator::moveSelectionGroup(Node & reference, QPointF location)
+void Mediator::moveSelectionGroup(NodeR reference, QPointF location)
 {
     m_editorData->moveSelectionGroup(reference, location);
 }
@@ -463,8 +463,18 @@ void Mediator::paste()
     } else { // Paste copied nodes
         if (m_editorData->copyStackSize()) {
             saveUndoPoint();
-            for (auto && node : m_editorData->copiedNodes()) {
-                pasteNodeAt(*node, m_editorView->grid().snapToGrid(mouseAction().mappedPos() - m_editorData->copyReferencePoint() + node->pos()));
+            std::map<int, NodeS> nodeMapping;
+            juzzlin::L().debug() << "Pasting nodes";
+            for (auto && copiedNode : m_editorData->copiedData().nodes) {
+                const auto pastedNode = pasteNodeAt(*copiedNode, m_editorView->grid().snapToGrid(mouseAction().mappedPos() - m_editorData->copiedData().copyReferencePoint + copiedNode->pos()));
+                nodeMapping[copiedNode->index()] = pastedNode;
+            }
+            juzzlin::L().debug() << "Pasting edges";
+            for (auto && copiedEdge : m_editorData->copiedData().edges) {
+                const auto pastedEdge = std::make_shared<Edge>(*copiedEdge.edge);
+                pastedEdge->setSourceNode(*nodeMapping[copiedEdge.sourceNodeIndex]);
+                pastedEdge->setTargetNode(*nodeMapping[copiedEdge.targetNodeIndex]);
+                connectEdgeToUndoMechanism(m_editorData->addEdge(pastedEdge));
             }
             addExistingGraphToScene();
         }
@@ -563,7 +573,7 @@ void Mediator::removeItem(QGraphicsItem & item)
     m_editorScene->removeItem(&item);
 }
 
-void Mediator::toggleNodeInSelectionGroup(Node & node, bool updateNodeConnectionActions)
+void Mediator::toggleNodeInSelectionGroup(NodeR node, bool updateNodeConnectionActions)
 {
     m_editorData->toggleNodeInSelectionGroup(node);
     if (updateNodeConnectionActions) {
@@ -591,12 +601,12 @@ QSize Mediator::sceneRectSize() const
     return m_editorScene->sceneRect().size().toSize();
 }
 
-Edge * Mediator::selectedEdge() const
+EdgeP Mediator::selectedEdge() const
 {
     return m_editorData->selectedEdge();
 }
 
-Node * Mediator::selectedNode() const
+NodeP Mediator::selectedNode() const
 {
     return m_editorData->selectedNode();
 }
@@ -678,7 +688,7 @@ size_t Mediator::setRectagleSelection(QRectF rect)
 {
     size_t nodesInRectangle = 0;
     for (auto && item : m_editorScene->items(rect, SettingsProxy::instance().selectNodeGroupByIntersection() ? Qt::IntersectsItemShape : Qt::ContainsItemShape)) {
-        if (const auto node = dynamic_cast<Node *>(item)) {
+        if (const auto node = dynamic_cast<NodeP>(item)) {
             toggleNodeInSelectionGroup(*node, false);
             nodesInRectangle++;
         }
@@ -687,7 +697,7 @@ size_t Mediator::setRectagleSelection(QRectF rect)
     return nodesInRectangle;
 }
 
-void Mediator::setSelectedEdge(Edge * edge)
+void Mediator::setSelectedEdge(EdgeP edge)
 {
     L().debug() << __func__ << "(): " << reinterpret_cast<uint64_t>(edge);
 
@@ -790,7 +800,7 @@ void Mediator::zoomToFit()
     }
 }
 
-double Mediator::calculateNodeOverlapScore(const Node & node1, const Node & node2) const
+double Mediator::calculateNodeOverlapScore(NodeCR node1, NodeCR node2) const
 {
     if (&node1 == &node2) {
         return 0;
@@ -818,9 +828,9 @@ void Mediator::clearSelectedNode()
     }
 }
 
-NodePtr Mediator::getBestOverlapNode(const Node & source)
+NodeS Mediator::getBestOverlapNode(NodeCR source)
 {
-    NodePtr bestNode;
+    NodeS bestNode;
     double bestScore = 0;
     const double minThreshold = 0.25;
     for (auto && node : m_editorData->mindMapData()->graph().getNodes()) {

@@ -18,7 +18,7 @@
 #include "constants.hpp"
 #include "edge.hpp"
 
-EdgeTextEdit::EdgeTextEdit(Edge * parentItem)
+EdgeTextEdit::EdgeTextEdit(EdgeP parentItem)
   : TextEdit(parentItem)
   , m_opacityAnimation(this, "opacity")
 {

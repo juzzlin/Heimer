@@ -40,9 +40,9 @@
 #include <cassert>
 #include <cmath>
 
-Edge::Edge(Node & sourceNode, Node & targetNode, bool enableAnimations, bool enableLabel)
-  : m_sourceNode(&sourceNode)
-  , m_targetNode(&targetNode)
+Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enableLabel)
+  : m_sourceNode(sourceNode)
+  , m_targetNode(targetNode)
   , m_reversed(SettingsProxy::instance().reversedEdgeDirection())
   , m_arrowMode(SettingsProxy::instance().edgeArrowMode())
   , m_enableAnimations(enableAnimations)
@@ -85,13 +85,21 @@ Edge::Edge(Node & sourceNode, Node & targetNode, bool enableAnimations, bool ena
     }
 }
 
-Edge::Edge(const Edge & other, const Graph & graph)
-  : Edge(*graph.getNode(other.m_sourceNode->index()), *graph.getNode(other.m_targetNode->index()))
+Edge::Edge(NodeS sourceNode, NodeS targetNode, bool enableAnimations, bool enableLabel)
+  : Edge(sourceNode.get(), targetNode.get(), enableAnimations, enableLabel)
 {
-    setArrowMode(other.m_arrowMode);
-    setDashedLine(other.m_dashedLine);
-    setText(other.m_text);
-    setReversed(other.m_reversed);
+}
+
+Edge::Edge(EdgeCR other, GraphCR graph)
+  : Edge(graph.getNode(other.m_sourceNode->index()).get(), graph.getNode(other.m_targetNode->index()).get())
+{
+    copyData(other);
+}
+
+Edge::Edge(EdgeCR other)
+  : Edge(nullptr, nullptr)
+{
+    copyData(other);
 }
 
 void Edge::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
@@ -118,6 +126,15 @@ QPen Edge::buildPen(bool ignoreDashSetting) const
         pen.setDashPattern(Constants::Edge::DASH_PATTERN);
     }
     return pen;
+}
+
+void Edge::copyData(EdgeCR other)
+{
+    m_arrowMode = other.m_arrowMode;
+    m_dashedLine = other.m_dashedLine;
+    m_reversed = other.m_reversed;
+
+    setText(other.m_text); // Update text to the label component
 }
 
 void Edge::changeFont(const QFont & font)
@@ -254,12 +271,12 @@ void Edge::setSelected(bool selected)
     update();
 }
 
-Node & Edge::sourceNode() const
+NodeR Edge::sourceNode() const
 {
     return *m_sourceNode;
 }
 
-Node & Edge::targetNode() const
+NodeR Edge::targetNode() const
 {
     return *m_targetNode;
 }
@@ -365,12 +382,12 @@ void Edge::updateLabel(LabelUpdateReason lur)
     }
 }
 
-void Edge::setTargetNode(Node & targetNode)
+void Edge::setTargetNode(NodeR targetNode)
 {
     m_targetNode = &targetNode;
 }
 
-void Edge::setSourceNode(Node & sourceNode)
+void Edge::setSourceNode(NodeR sourceNode)
 {
     m_sourceNode = &sourceNode;
 }
@@ -416,16 +433,20 @@ void Edge::updateLine()
 
 Edge::~Edge()
 {
-    if (!TestMode::enabled()) {
-        juzzlin::L().debug() << "Deleting edge " << sourceNode().index() << " -> " << targetNode().index();
+    juzzlin::L().debug() << "Deleting edge " << (m_sourceNode ? std::to_string(m_sourceNode->index()) : "nullptr") << " -> " //
+                         << (m_targetNode ? std::to_string(m_targetNode->index()) : "nullptr");
 
+    if (!TestMode::enabled()) {
         if (m_enableAnimations) {
             m_sourceDotSizeAnimation->stop();
             m_targetDotSizeAnimation->stop();
         }
-
-        sourceNode().removeGraphicsEdge(*this);
-        targetNode().removeGraphicsEdge(*this);
+        if (m_sourceNode) {
+            m_sourceNode->removeGraphicsEdge(*this);
+        }
+        if (m_targetNode) {
+            m_targetNode->removeGraphicsEdge(*this);
+        }
     } else {
         TestMode::logDisabledCode("Edge destructor");
     }

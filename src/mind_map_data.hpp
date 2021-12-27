@@ -66,9 +66,9 @@ public:
 
     void setFileName(QString fileName) override;
 
-    Graph & graph() override;
+    GraphR graph() override;
 
-    const Graph & graph() const override;
+    GraphCR graph() const override;
 
     double minEdgeLength() const;
 

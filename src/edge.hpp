@@ -24,6 +24,7 @@
 
 #include "edge_point.hpp"
 #include "edge_text_edit.hpp"
+#include "types.hpp"
 
 class EdgeDot;
 class Graph;
@@ -45,9 +46,19 @@ public:
         Hidden = 2
     };
 
-    Edge(Node & sourceNode, Node & targetNode, bool enableAnimations = true, bool enableLabel = true);
+    //! Constructor.
+    //! Note!!: We are using raw pointers here because the edge only must only refer to the nodes.
+    Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations = true, bool enableLabel = true);
 
-    Edge(const Edge & other, const Graph & graph);
+    //! Constructor.
+    //! Note!!: We are using raw pointers from the shared pointers here because the edge only must only refer to the nodes.
+    Edge(NodeS sourceNode, NodeS targetNode, bool enableAnimations = true, bool enableLabel = true);
+
+    //! Copy edge data and find connected node instances from the given graph.
+    Edge(EdgeCR other, GraphCR graph);
+
+    //! Copy edge data and leave connected nodes as nullptr's.
+    Edge(EdgeCR other);
 
     virtual ~Edge() override;
 
@@ -57,13 +68,13 @@ public:
 
     bool reversed() const;
 
-    Node & sourceNode() const;
+    NodeR sourceNode() const;
 
-    Node & targetNode() const;
+    NodeR targetNode() const;
 
-    void setSourceNode(Node & sourceNode);
+    void setSourceNode(NodeR sourceNode);
 
-    void setTargetNode(Node & targetNode);
+    void setTargetNode(NodeR targetNode);
 
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
 
@@ -100,6 +111,8 @@ signals:
 private:
     QPen buildPen(bool ignoreDashSetting = false) const;
 
+    void copyData(EdgeCR other);
+
     void initDots();
 
     void setArrowHeadPen(const QPen & pen);
@@ -118,9 +131,9 @@ private:
 
     void updateLabel(LabelUpdateReason lur = LabelUpdateReason::Default);
 
-    Node * m_sourceNode = nullptr;
+    NodeP m_sourceNode = nullptr;
 
-    Node * m_targetNode = nullptr;
+    NodeP m_targetNode = nullptr;
 
     QString m_text;
 
@@ -166,7 +179,5 @@ private:
 
     QTimer m_labelVisibilityTimer;
 };
-
-using EdgePtr = std::shared_ptr<Edge>;
 
 #endif // EDGE_HPP

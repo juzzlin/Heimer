@@ -21,7 +21,7 @@
 
 #include <QPointF>
 
-class Node;
+#include "types.hpp"
 
 class CopyContext
 {
@@ -32,16 +32,51 @@ public:
 
     size_t copyStackSize() const;
 
-    void push(Node & node);
+    using NodePVector = std::vector<NodeP>;
+    void push(NodePVector nodes, GraphCR graph);
+    void push(NodeCR node);
 
-    std::vector<std::shared_ptr<Node>> copiedNodes() const;
+    //! Store node indices into a separate metadata structure
+    //! because Edge instances currently need references to
+    //! the actual node instances and we are working with copies
+    //! here..
+    struct EdgeMetadata
+    {
+        EdgeMetadata(EdgeS edge, int sourceNodeIndex, int targetNodeIndex)
+          : edge(edge)
+          , sourceNodeIndex(sourceNodeIndex)
+          , targetNodeIndex(targetNodeIndex)
+        {
+        }
 
-    QPointF copyReferencePoint() const;
+        EdgeS edge;
+
+        int sourceNodeIndex = -1;
+
+        int targetNodeIndex = -1;
+    };
+
+    using EdgeVector = std::vector<EdgeMetadata>;
+    using NodeVector = std::vector<NodeS>;
+
+    struct CopiedData
+    {
+        QPointF copyReferencePoint;
+
+        EdgeVector edges;
+
+        NodeVector nodes;
+    };
+
+    CopiedData copiedData() const;
 
 private:
-    std::vector<std::shared_ptr<Node>> m_copiedNodes;
+    CopyContext(const CopyContext & other) = delete;
+    CopyContext & operator=(const CopyContext & other) = delete;
 
-    QPointF m_copyReferencePoint;
+    void pushEdges(NodePVector nodes, GraphCR graph);
+
+    CopiedData m_copiedData;
 };
 
 #endif // COPY_CONTEXT_HPP

@@ -15,6 +15,8 @@
 
 #include "alz_serializer.hpp"
 
+#include "types.hpp"
+
 #include "constants.hpp"
 #include "graph.hpp"
 #include "mind_map_data.hpp"
@@ -357,7 +359,7 @@ static void readChildren(const QDomElement & root, std::map<QString, std::functi
 }
 
 // The purpose of this #ifdef is to build GUILESS unit tests so that QTEST_GUILESS_MAIN can be used
-static std::unique_ptr<Node> readNode(const QDomElement & element)
+static NodeU readNode(const QDomElement & element)
 {
     // Init a new node. QGraphicsScene will take the ownership eventually.
     auto node = std::make_unique<Node>();
@@ -389,7 +391,7 @@ static std::unique_ptr<Node> readNode(const QDomElement & element)
     return node;
 }
 
-static std::unique_ptr<Edge> readEdge(const QDomElement & element, MindMapData & data)
+static EdgeU readEdge(const QDomElement & element, MindMapData & data)
 {
     const int arrowMode = element.attribute(DataKeywords::MindMap::Graph::Edge::ARROW_MODE, "0").toInt();
     const bool dashedLine = element.attribute(DataKeywords::MindMap::Graph::Edge::DASHED_LINE, "0").toInt();
@@ -398,10 +400,7 @@ static std::unique_ptr<Edge> readEdge(const QDomElement & element, MindMapData &
     const bool reversed = element.attribute(DataKeywords::MindMap::Graph::Edge::REVERSED, "0").toInt();
 
     // Initialize a new edge. QGraphicsScene will take the ownership eventually.
-    const auto node0 = data.graph().getNode(index0);
-    const auto node1 = data.graph().getNode(index1);
-
-    auto edge = std::make_unique<Edge>(*node0, *node1);
+    auto edge = std::make_unique<Edge>(data.graph().getNode(index0), data.graph().getNode(index1));
     edge->setArrowMode(static_cast<Edge::ArrowMode>(arrowMode));
     edge->setDashedLine(dashedLine);
     edge->setReversed(reversed);

@@ -21,6 +21,8 @@
 #include <QPointF>
 #include <QString>
 
+#include "types.hpp"
+
 #include "mind_map_data.hpp"
 #include "node.hpp"
 
@@ -48,15 +50,15 @@ public:
 
     ~Mediator() override;
 
-    void addEdge(Node & node1, Node & node2);
+    void addEdge(NodeR node1, NodeR node2);
 
     void addItem(QGraphicsItem & item);
 
-    void addNodeToSelectionGroup(Node & node);
+    void addNodeToSelectionGroup(NodeR node);
 
     void adjustSceneRect();
 
-    bool areDirectlyConnected(const Node & node1, const Node & node2) const;
+    bool areDirectlyConnected(NodeCR node1, NodeCR node2) const;
 
     bool areSelectedNodesConnectable() const;
 
@@ -70,29 +72,29 @@ public:
 
     void clearSelectionGroup();
 
-    void connectEdgeToUndoMechanism(EdgePtr edge);
+    void connectEdgeToUndoMechanism(EdgeS edge);
 
-    void connectNodeToUndoMechanism(NodePtr node);
+    void connectNodeToUndoMechanism(NodeS node);
 
-    void connectNodeToImageManager(NodePtr node);
+    void connectNodeToImageManager(NodeS node);
 
     size_t copyStackSize() const;
 
     // Create a new node and add edge to the source (parent) node
-    NodePtr createAndAddNode(int sourceNodeIndex, QPointF pos);
+    NodeS createAndAddNode(int sourceNodeIndex, QPointF pos);
 
     // Create a new floating node
-    NodePtr createAndAddNode(QPointF pos);
+    NodeS createAndAddNode(QPointF pos);
 
     MouseAction & mouseAction();
 
-    void deleteEdge(Edge & edge);
+    void deleteEdge(EdgeR edge);
 
     QString fileName() const;
 
-    NodePtr getBestOverlapNode(const Node & source);
+    NodeS getBestOverlapNode(NodeCR source);
 
-    NodePtr getNodeByIndex(int index);
+    NodeS getNodeByIndex(int index);
 
     bool hasNodes() const;
 
@@ -100,15 +102,15 @@ public:
 
     void initiateNewNodeDrag(NodeHandle & nodeHandle);
 
-    void initiateNodeDrag(Node & node);
+    void initiateNodeDrag(NodeR node);
 
     void initializeView();
 
-    bool isInBetween(Node & node);
+    bool isInBetween(NodeR node);
 
-    bool isInSelectionGroup(Node & node);
+    bool isInSelectionGroup(NodeR node);
 
-    bool isLeafNode(Node & node);
+    bool isLeafNode(NodeR node);
 
     bool isUndoable() const;
 
@@ -116,13 +118,13 @@ public:
 
     bool isModified() const;
 
-    void moveSelectionGroup(Node & reference, QPointF location);
+    void moveSelectionGroup(NodeR reference, QPointF location);
 
     size_t nodeCount() const;
 
     bool nodeHasImageAttached() const;
 
-    NodePtr pasteNodeAt(Node & source, QPointF pos);
+    NodeS pasteNodeAt(NodeR source, QPointF pos);
 
     MindMapDataPtr mindMapData() const;
 
@@ -140,9 +142,9 @@ public:
 
     QSize sceneRectSize() const;
 
-    Edge * selectedEdge() const;
+    EdgeP selectedEdge() const;
 
-    Node * selectedNode() const;
+    NodeP selectedNode() const;
 
     size_t selectionGroupSize() const;
 
@@ -155,9 +157,9 @@ public:
     //! \returns number of nodes in the current rectangle.
     size_t setRectagleSelection(QRectF rect);
 
-    void setSelectedEdge(Edge * edge);
+    void setSelectedEdge(EdgeP edge);
 
-    void toggleNodeInSelectionGroup(Node & node, bool updateNodeConnectionActions = true);
+    void toggleNodeInSelectionGroup(NodeR node, bool updateNodeConnectionActions = true);
 
     void undo();
 
@@ -208,7 +210,7 @@ signals:
 private:
     void addExistingGraphToScene();
 
-    double calculateNodeOverlapScore(const Node & node1, const Node & node2) const;
+    double calculateNodeOverlapScore(NodeCR node1, NodeCR node2) const;
 
     void connectGraphToUndoMechanism();
 

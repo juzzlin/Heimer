@@ -22,6 +22,7 @@
 #include <QMenu>
 
 #include "state_machine.hpp"
+#include "types.hpp"
 
 class Grid;
 class Node;
@@ -60,7 +61,7 @@ private:
 
     QAction * m_removeImageAction = nullptr;
 
-    Node * m_selectedNode = nullptr;
+    NodeP m_selectedNode = nullptr;
 
     std::map<Mode, std::vector<QAction *>> m_mainContextMenuActions;
 

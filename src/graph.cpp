@@ -99,12 +99,12 @@ void Graph::addEdge(EdgePtr newEdge)
     }
 }
 
-bool Graph::areDirectlyConnected(NodePtr node0, NodePtr node1)
+bool Graph::areDirectlyConnected(NodePtr node0, NodePtr node1) const
 {
     return areDirectlyConnected(node0->index(), node1->index());
 }
 
-bool Graph::areDirectlyConnected(int index0, int index1)
+bool Graph::areDirectlyConnected(int index0, int index1) const
 {
     return m_edges.count(getKey(index0, index1)) || m_edges.count(getKey(index1, index0));
 }
@@ -121,7 +121,7 @@ Graph::EdgeVector Graph::getEdges() const
     return edges;
 }
 
-Graph::EdgeVector Graph::getEdgesFromNode(NodePtr node)
+Graph::EdgeVector Graph::getEdgesFromNode(NodePtr node) const
 {
     EdgeVector edges;
     for (auto && edge : m_edges) {
@@ -132,7 +132,7 @@ Graph::EdgeVector Graph::getEdgesFromNode(NodePtr node)
     return edges;
 }
 
-Graph::EdgeVector Graph::getEdgesToNode(NodePtr node)
+Graph::EdgeVector Graph::getEdgesToNode(NodePtr node) const
 {
     Graph::EdgeVector edges;
     for (auto && edge : m_edges) {
@@ -158,7 +158,7 @@ Graph::NodeVector Graph::getNodes() const
     return nodes;
 }
 
-Graph::NodeVector Graph::getNodesConnectedToNode(NodePtr node)
+Graph::NodeVector Graph::getNodesConnectedToNode(NodePtr node) const
 {
     NodeVector result;
     const auto edgesToNode = getEdgesToNode(node);

@@ -61,15 +61,15 @@ public:
     //! \returns The deleted edge.
     EdgePtr deleteEdge(int index0, int index1);
 
-    bool areDirectlyConnected(NodePtr node0, NodePtr node1);
+    bool areDirectlyConnected(NodePtr node0, NodePtr node1) const;
 
-    bool areDirectlyConnected(int index0, int index1);
+    bool areDirectlyConnected(int index0, int index1) const;
 
     size_t numNodes() const;
 
-    EdgeVector getEdgesFromNode(NodePtr node);
+    EdgeVector getEdgesFromNode(NodePtr node) const;
 
-    EdgeVector getEdgesToNode(NodePtr node);
+    EdgeVector getEdgesToNode(NodePtr node) const;
 
     EdgeVector getEdges() const;
 
@@ -77,7 +77,7 @@ public:
 
     NodeVector getNodes() const;
 
-    NodeVector getNodesConnectedToNode(NodePtr node);
+    NodeVector getNodesConnectedToNode(NodePtr node) const;
 
 private:
     std::unordered_map<int, NodePtr> m_nodes;

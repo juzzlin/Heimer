@@ -29,7 +29,7 @@ Here are some example mind maps running on Ubuntu:
 * Nice animations
 * Quickly add node text and edge labels
 * Save/load in XML-based .ALZ-files
-* Translations in English (default), Chinese, Dutch, Finnish, French, German, Italian, Spanish
+* Translations in English (default), Basque, Chinese, Dutch, Finnish, French, German, Italian, Spanish
 * Very fast
 * Zoom in/out/fit
 * Zoom with mouse wheel

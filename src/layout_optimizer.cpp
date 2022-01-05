@@ -25,6 +25,7 @@
 #include <cmath>
 #include <cstddef>
 #include <memory>
+#include <numeric>
 #include <random>
 #include <vector>
 
@@ -385,12 +386,10 @@ private:
 
         inline double getConnectionCost()
         {
-            double cost = 0;
-            for (auto && cell : all) {
-                cost += distance(*cell);
-            }
-
-            return cost;
+            return std::accumulate(std::begin(all), std::end(all), double {},
+                                   [this](auto totalCost, auto && cell) {
+                                       return totalCost + distance(*cell);
+                                   });
         }
 
         inline double getOverlapCost()

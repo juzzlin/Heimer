@@ -31,6 +31,7 @@
 
 using juzzlin::L;
 
+#include <algorithm>
 #include <cassert>
 #include <memory>
 
@@ -397,10 +398,10 @@ bool EditorData::areSelectedNodesDisconnectable() const
 
 std::vector<std::shared_ptr<Edge>> EditorData::connectSelectedNodes()
 {
+    const auto connectableNodes = getConnectableNodes();
     std::vector<std::shared_ptr<Edge>> edges;
-    for (auto && nodePair : getConnectableNodes()) {
-        edges.push_back(addEdge(std::make_shared<Edge>(*nodePair.first, *nodePair.second)));
-    }
+    std::transform(std::begin(connectableNodes), std::end(connectableNodes), std::back_inserter(edges),
+                   [this](auto && nodePair) { return addEdge(std::make_shared<Edge>(*nodePair.first, *nodePair.second)); });
     return edges;
 }
 

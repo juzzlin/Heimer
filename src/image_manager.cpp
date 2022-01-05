@@ -16,6 +16,7 @@
 #include "image_manager.hpp"
 #include "contrib/SimpleLogger/src/simple_logger.hpp"
 #include "node.hpp"
+#include <algorithm>
 
 ImageManager::ImageManager()
 {
@@ -73,8 +74,7 @@ void ImageManager::handleImageRequest(size_t id, Node & node)
 ImageManager::ImageVector ImageManager::images() const
 {
     ImageVector images;
-    for (auto && image : m_images) {
-        images.push_back(image.second);
-    }
+    std::transform(std::begin(m_images), std::end(m_images), std::back_inserter(images),
+                   [](auto && image) { return image.second; });
     return images;
 }

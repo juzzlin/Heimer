@@ -218,11 +218,10 @@ public:
 private:
     double calculateCost() const
     {
-        double cost = 0;
-        for (auto cell : m_layout->all) {
-            cost += cell->getCost();
-        }
-        return cost;
+        return std::accumulate(std::begin(m_layout->all), std::end(m_layout->all), double {},
+                               [](auto totalCost, auto && cell) {
+                                   return totalCost + cell->getCost();
+                               });
     }
 
     struct Cell;

@@ -18,12 +18,15 @@
 #include "test_mode.hpp"
 
 #include "simple_logger.hpp"
+#include <range/v3/view.hpp>
 
 #include <algorithm>
 #include <cassert>
 #include <cmath>
 #include <stdexcept>
 #include <string>
+
+namespace rv = ranges::views;
 
 namespace {
 int64_t getKey(int c0, int c1)
@@ -122,31 +125,25 @@ EdgeS Graph::getEdge(int index0, int index1) const
 
 Graph::EdgeVector Graph::getEdges() const
 {
-    EdgeVector edges(m_edges.size());
-    std::transform(std::begin(m_edges), std::end(m_edges), std::begin(edges), [](auto && edge) { return edge.second; });
-    return edges;
+    return m_edges
+      | rv::transform([](auto && edge) { return std::get<EdgeS>(edge); })
+      | ranges::to_vector;
 }
 
 Graph::EdgeVector Graph::getEdgesFromNode(NodeS node) const
 {
-    EdgeVector edges;
-    for (auto && edge : m_edges) {
-        if (edge.second->sourceNode().index() == node->index()) {
-            edges.push_back(edge.second);
-        }
-    }
-    return edges;
+    return m_edges
+      | rv::filter([&](auto && edge) { return std::get<EdgeS>(edge)->sourceNode().index() == node->index(); })
+      | rv::transform([](auto && edge) { return std::get<EdgeS>(edge); })
+      | ranges::to_vector;
 }
 
 Graph::EdgeVector Graph::getEdgesToNode(NodeS node) const
 {
-    Graph::EdgeVector edges;
-    for (auto && edge : m_edges) {
-        if (edge.second->targetNode().index() == node->index()) {
-            edges.push_back(edge.second);
-        }
-    }
-    return edges;
+    return m_edges
+      | rv::filter([&](auto && edge) { return std::get<EdgeS>(edge)->targetNode().index() == node->index(); })
+      | rv::transform([](auto && edge) { return std::get<EdgeS>(edge); })
+      | ranges::to_vector;
 }
 
 NodeS Graph::getNode(int index) const
@@ -159,21 +156,18 @@ NodeS Graph::getNode(int index) const
 
 Graph::NodeVector Graph::getNodes() const
 {
-    NodeVector nodes(m_nodes.size());
-    std::transform(std::begin(m_nodes), std::end(m_nodes), std::begin(nodes), [](auto && node) { return node.second; });
-    return nodes;
+    return m_nodes
+      | rv::transform([](auto && node) { return std::get<NodeS>(node); })
+      | ranges::to_vector;
 }
 
 Graph::NodeVector Graph::getNodesConnectedToNode(NodeS node) const
 {
-    NodeVector result;
     const auto edgesToNode = getEdgesToNode(node);
-    std::transform(std::begin(edgesToNode), std::end(edgesToNode), std::back_inserter(result), [this](auto && edge) { return getNode(edge->sourceNode().index()); });
-
     const auto edgesFromNode = getEdgesFromNode(node);
-    std::transform(std::begin(edgesFromNode), std::end(edgesFromNode), std::back_inserter(result), [this](auto && edge) { return getNode(edge->targetNode().index()); });
-
-    return result;
+    const auto a = edgesToNode | rv::transform([this](auto && edge) { return getNode(edge->sourceNode().index()); });
+    const auto b = edgesFromNode | rv::transform([this](auto && edge) { return getNode(edge->targetNode().index()); });
+    return rv::concat(a, b) | ranges::to_vector;
 }
 
 Graph::~Graph()

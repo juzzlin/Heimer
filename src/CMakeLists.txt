@@ -4,6 +4,9 @@ include_directories(contrib/SimpleLogger/src)
 add_subdirectory(contrib/Argengine EXCLUDE_FROM_ALL)
 include_directories(contrib/Argengine/src)
 
+add_subdirectory(contrib/range-v3-0.11.0 EXCLUDE_FROM_ALL)
+include_directories(contrib/range-v3-0.11.0/include)
+
 # Translation files in src/translations (without .ts)
 set(TS heimer_en heimer_es heimer_fi heimer_fr heimer_it heimer_nl heimer_zh)
 set(TS_FILES)

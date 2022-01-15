@@ -5,6 +5,19 @@ Release date:
 
 New features:
 
+Bug fixes:
+
+Other:
+
+3.2.0
+=====
+
+Release date:
+
+Sat, 15 Jan 2022 20:42:13 +0200
+
+New features:
+
 * Fix GitHub Issue #181: Copy should copy also edges within the group
   - When copying (and pasting) nodes, also the edges within the copy group are now copied
 
@@ -13,6 +26,8 @@ Bug fixes:
 * Fix GitHub Issue #195: Decrease size of "About" dialog
 
 Other:
+
+* Updated Dutch & Italian translations
 
 3.1.0
 =====

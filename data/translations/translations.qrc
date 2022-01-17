@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/translations">
+        <file>heimer_de.qm</file>
         <file>heimer_en.qm</file>
         <file>heimer_es.qm</file>
         <file>heimer_fi.qm</file>

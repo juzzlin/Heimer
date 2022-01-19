@@ -34,6 +34,10 @@ class Image;
 class QGraphicsTextItem;
 class TextEdit;
 
+namespace GraphicsFactory {
+struct ShadowEffectParams;
+}
+
 //! Freely placeable target node.
 class Node : public QObject, public QGraphicsItem
 {
@@ -107,6 +111,8 @@ public:
     void setLocation(QPointF newLocation);
 
     void setSelected(bool selected);
+
+    void setShadowEffect(const GraphicsFactory::ShadowEffectParams & params);
 
     void setSize(const QSizeF & size);
 

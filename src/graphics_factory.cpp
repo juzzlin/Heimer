@@ -17,14 +17,14 @@
 
 #include <QGraphicsDropShadowEffect>
 
-QGraphicsEffect * GraphicsFactory::createDropShadowEffect(bool selected)
+QGraphicsEffect * GraphicsFactory::createDropShadowEffect(bool selected, const ShadowEffectParams & params)
 {
     const auto effect = new QGraphicsDropShadowEffect;
-    setSelected(effect, selected);
+    updateDropShadowEffect(effect, selected, params);
     return effect;
 }
 
-void GraphicsFactory::setSelected(QGraphicsEffect * effect, bool selected)
+void GraphicsFactory::updateDropShadowEffect(QGraphicsEffect * effect, bool selected, const ShadowEffectParams & params)
 {
     if (!effect) {
         return;
@@ -32,13 +32,13 @@ void GraphicsFactory::setSelected(QGraphicsEffect * effect, bool selected)
 
     if (const auto shadow = qobject_cast<QGraphicsDropShadowEffect *>(effect)) {
         if (!selected) {
-            shadow->setOffset({ 3, 3 });
+            shadow->setOffset(params.offset, params.offset);
             shadow->setColor({ 96, 96, 96 });
-            shadow->setBlurRadius(5);
+            shadow->setBlurRadius(params.blurRadiusNormal);
         } else {
             shadow->setOffset({});
             shadow->setColor({ 255, 0, 0 });
-            shadow->setBlurRadius(50);
+            shadow->setBlurRadius(params.blurRadiusSelected);
         }
     }
 }

@@ -56,7 +56,11 @@ const auto windowSizeKey = "size";
 
 } // namespace
 
-bool Settings::loadAutosave()
+namespace Settings {
+
+namespace V1 {
+
+bool loadAutosave()
 {
     QSettings settings;
     settings.beginGroup(settingsGroupEditing);
@@ -65,7 +69,7 @@ bool Settings::loadAutosave()
     return autosave;
 }
 
-void Settings::saveAutosave(bool autosave)
+void saveAutosave(bool autosave)
 {
     QSettings settings;
     settings.beginGroup(settingsGroupEditing);
@@ -73,7 +77,7 @@ void Settings::saveAutosave(bool autosave)
     settings.endGroup();
 }
 
-Qt::CheckState Settings::loadAutoSnapState()
+Qt::CheckState loadAutoSnapState()
 {
     QSettings settings;
     settings.beginGroup(settingsGroupMainWindow);
@@ -82,7 +86,7 @@ Qt::CheckState Settings::loadAutoSnapState()
     return static_cast<Qt::CheckState>(gridState);
 }
 
-void Settings::saveAutoSnapState(int state)
+void saveAutoSnapState(int state)
 {
     QSettings settings;
     settings.beginGroup(settingsGroupMainWindow);
@@ -90,7 +94,7 @@ void Settings::saveAutoSnapState(int state)
     settings.endGroup();
 }
 
-Edge::ArrowMode Settings::loadEdgeArrowMode(Edge::ArrowMode defaultMode)
+Edge::ArrowMode loadEdgeArrowMode(Edge::ArrowMode defaultMode)
 {
     QSettings settings;
     settings.beginGroup(settingsGroupDefaults);
@@ -99,7 +103,7 @@ Edge::ArrowMode Settings::loadEdgeArrowMode(Edge::ArrowMode defaultMode)
     return mode;
 }
 
-void Settings::saveEdgeArrowMode(Edge::ArrowMode mode)
+void saveEdgeArrowMode(Edge::ArrowMode mode)
 {
     QSettings settings;
     settings.beginGroup(settingsGroupDefaults);
@@ -107,7 +111,7 @@ void Settings::saveEdgeArrowMode(Edge::ArrowMode mode)
     settings.endGroup();
 }
 
-bool Settings::loadReversedEdgeDirection(bool defaultDirection)
+bool loadReversedEdgeDirection(bool defaultDirection)
 {
     QSettings settings;
     settings.beginGroup(settingsGroupDefaults);
@@ -116,7 +120,7 @@ bool Settings::loadReversedEdgeDirection(bool defaultDirection)
     return direction;
 }
 
-void Settings::saveReversedEdgeDirection(bool reversed)
+void saveReversedEdgeDirection(bool reversed)
 {
     QSettings settings;
     settings.beginGroup(settingsGroupDefaults);
@@ -124,7 +128,7 @@ void Settings::saveReversedEdgeDirection(bool reversed)
     settings.endGroup();
 }
 
-int Settings::loadGridSize()
+int loadGridSize()
 {
     QSettings settings;
     settings.beginGroup(settingsGroupMainWindow);
@@ -133,7 +137,7 @@ int Settings::loadGridSize()
     return gridSize;
 }
 
-void Settings::saveGridSize(int value)
+void saveGridSize(int value)
 {
     static std::unique_ptr<QTimer> gridSizeTimer;
     static int sGridSizeValue;
@@ -155,7 +159,7 @@ void Settings::saveGridSize(int value)
     gridSizeTimer->start();
 }
 
-Qt::CheckState Settings::loadGridVisibleState()
+Qt::CheckState loadGridVisibleState()
 {
     QSettings settings;
     settings.beginGroup(settingsGroupMainWindow);
@@ -164,7 +168,7 @@ Qt::CheckState Settings::loadGridVisibleState()
     return static_cast<Qt::CheckState>(gridState);
 }
 
-void Settings::saveGridVisibleState(int state)
+void saveGridVisibleState(int state)
 {
     QSettings settings;
     settings.beginGroup(settingsGroupMainWindow);
@@ -172,7 +176,7 @@ void Settings::saveGridVisibleState(int state)
     settings.endGroup();
 }
 
-QString Settings::loadRecentPath()
+QString loadRecentPath()
 {
     QSettings settings;
     settings.beginGroup(settingsGroupApplication);
@@ -181,7 +185,7 @@ QString Settings::loadRecentPath()
     return path;
 }
 
-void Settings::saveRecentPath(QString path)
+void saveRecentPath(QString path)
 {
     QSettings settings;
     settings.beginGroup(settingsGroupApplication);
@@ -189,7 +193,7 @@ void Settings::saveRecentPath(QString path)
     settings.endGroup();
 }
 
-QString Settings::loadRecentImagePath()
+QString loadRecentImagePath()
 {
     QSettings settings;
     settings.beginGroup(settingsGroupApplication);
@@ -198,7 +202,7 @@ QString Settings::loadRecentImagePath()
     return path;
 }
 
-void Settings::saveRecentImagePath(QString path)
+void saveRecentImagePath(QString path)
 {
     QSettings settings;
     settings.beginGroup(settingsGroupApplication);
@@ -206,7 +210,7 @@ void Settings::saveRecentImagePath(QString path)
     settings.endGroup();
 }
 
-QSize Settings::loadWindowSize(QSize defaultSize)
+QSize loadWindowSize(QSize defaultSize)
 {
     QSettings settings;
     settings.beginGroup(settingsGroupMainWindow);
@@ -215,7 +219,7 @@ QSize Settings::loadWindowSize(QSize defaultSize)
     return size;
 }
 
-void Settings::saveWindowSize(QSize size)
+void saveWindowSize(QSize size)
 {
     QSettings settings;
     settings.beginGroup(settingsGroupMainWindow);
@@ -223,7 +227,7 @@ void Settings::saveWindowSize(QSize size)
     settings.endGroup();
 }
 
-bool Settings::loadFullScreen()
+bool loadFullScreen()
 {
     QSettings settings;
     settings.beginGroup(settingsGroupMainWindow);
@@ -232,7 +236,7 @@ bool Settings::loadFullScreen()
     return fullScreen;
 }
 
-void Settings::saveFullScreen(bool fullScreen)
+void saveFullScreen(bool fullScreen)
 {
     QSettings settings;
     settings.beginGroup(settingsGroupMainWindow);
@@ -240,7 +244,7 @@ void Settings::saveFullScreen(bool fullScreen)
     settings.endGroup();
 }
 
-bool Settings::loadSelectNodeGroupByIntersection()
+bool loadSelectNodeGroupByIntersection()
 {
     QSettings settings;
     settings.beginGroup(settingsGroupDefaults);
@@ -249,10 +253,52 @@ bool Settings::loadSelectNodeGroupByIntersection()
     return fullScreen;
 }
 
-void Settings::saveSelectNodeGroupByIntersection(bool selectNodeGroupByIntersection)
+void saveSelectNodeGroupByIntersection(bool selectNodeGroupByIntersection)
 {
     QSettings settings;
     settings.beginGroup(settingsGroupDefaults);
     settings.setValue(selectNodeGroupByIntersectionKey, selectNodeGroupByIntersection);
     settings.endGroup();
 }
+
+} // namespace V1
+
+namespace V2 {
+
+bool getBoolean(QString group, QString key, bool defaultValue)
+{
+    QSettings settings;
+    settings.beginGroup(group);
+    const auto val = settings.value(key, defaultValue).toBool();
+    settings.endGroup();
+    return val;
+}
+
+void setBoolean(QString group, QString key, bool value)
+{
+    QSettings settings;
+    settings.beginGroup(group);
+    settings.setValue(key, value);
+    settings.endGroup();
+}
+
+double getNumber(QString group, QString key, double defaultValue)
+{
+    QSettings settings;
+    settings.beginGroup(group);
+    const auto val = settings.value(key, defaultValue).toDouble();
+    settings.endGroup();
+    return val;
+}
+
+void setNumber(QString group, QString key, double value)
+{
+    QSettings settings;
+    settings.beginGroup(group);
+    settings.setValue(key, value);
+    settings.endGroup();
+}
+
+} // namespace V2
+
+} // namespace Settings

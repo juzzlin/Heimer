@@ -20,6 +20,7 @@
 #include "graphics_factory.hpp"
 #include "image.hpp"
 #include "layers.hpp"
+#include "settings_proxy.hpp"
 #include "test_mode.hpp"
 #include "text_edit.hpp"
 
@@ -45,7 +46,7 @@ Node::Node()
 {
     setAcceptHoverEvents(true);
 
-    setGraphicsEffect(GraphicsFactory::createDropShadowEffect());
+    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(false, SettingsProxy::instance().shadowEffect()));
 
     m_size = QSize(Constants::Node::MIN_WIDTH, Constants::Node::MIN_HEIGHT);
 
@@ -412,7 +413,13 @@ bool Node::selected() const
 void Node::setSelected(bool selected)
 {
     m_selected = selected;
-    GraphicsFactory::setSelected(graphicsEffect(), selected);
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), selected, SettingsProxy::instance().shadowEffect());
+    update();
+}
+
+void Node::setShadowEffect(const GraphicsFactory::ShadowEffectParams & params)
+{
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_selected, params);
     update();
 }
 

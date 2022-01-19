@@ -45,6 +45,10 @@ class QWidgetAction;
 class ToolBar;
 class WhatsNewDlg;
 
+namespace GraphicsFactory {
+struct ShadowEffectParams;
+}
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -124,6 +128,8 @@ signals:
     void gridVisibleChanged(int state);
 
     void searchTextChanged(QString text);
+
+    void shadowEffectChanged(const GraphicsFactory::ShadowEffectParams & params);
 
     void textSizeChanged(int value);
 

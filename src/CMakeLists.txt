@@ -36,6 +36,7 @@ set(LIB_SRC
     editor_data.cpp
     editor_scene.cpp
     editor_view.cpp
+    effects_tab.cpp
     file_exception.hpp
     graph.cpp
     graphics_factory.cpp

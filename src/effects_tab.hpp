@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2021 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2022 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,39 +13,40 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SETTINGS_DIALOG_HPP
-#define SETTINGS_DIALOG_HPP
+#ifndef EFFECTS_TAB_HPP
+#define EFFECTS_TAB_HPP
 
-#include <QDialog>
+#include <QWidget>
+#include <map>
 
-class DefaultsTab;
-class EditingTab;
-class EffectsTab;
+class QSpinBox;
 
 namespace GraphicsFactory {
 struct ShadowEffectParams;
 }
 
-class SettingsDialog : public QDialog
+class EffectsTab : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit SettingsDialog(QWidget * parent = nullptr);
+    explicit EffectsTab(QWidget * parent = nullptr);
+
+    void apply();
 
 signals:
     void shadowEffectChanged(const GraphicsFactory::ShadowEffectParams & params);
 
 private:
-    void accept() override;
+    void apply(const GraphicsFactory::ShadowEffectParams & params);
 
     void initWidgets();
 
-    DefaultsTab * m_defaultsTab;
+    QSpinBox * m_shadowOffsetSpinBox = nullptr;
 
-    EditingTab * m_editingTab;
+    QSpinBox * m_shadowNormalBlurRadiusSpinBox = nullptr;
 
-    EffectsTab * m_effectsTab;
+    QSpinBox * m_shadowSelectedBlurRadiusSpinBox = nullptr;
 };
 
-#endif // SETTINGS_DIALOG_HPP
+#endif // EFFECTS_TAB_HPP

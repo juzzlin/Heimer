@@ -55,7 +55,9 @@ void DefaultsTab::initWidgets()
         { Edge::ArrowMode::Double, new QRadioButton(tr("Double arrow")) }
     };
 
-    const auto edgeArrowRadioGroup = new QButtonGroup(this);
+    const auto edgeArrowRadioGroup = new QButtonGroup;
+    edgeArrowRadioGroup->setParent(this); // Set parent explicitly instead of a constructor arg to silence analyzer warning
+
     const auto edgeArrowRadioLayout = new QVBoxLayout;
     for (auto && iter : m_edgeArrowStyleRadioMap) {
         edgeArrowRadioGroup->addButton(iter.second);

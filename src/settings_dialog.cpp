@@ -17,6 +17,8 @@
 
 #include "defaults_tab.hpp"
 #include "editing_tab.hpp"
+#include "effects_tab.hpp"
+#include "graphics_factory.hpp"
 
 #include <QDialogButtonBox>
 #include <QTabWidget>
@@ -26,17 +28,21 @@ SettingsDialog::SettingsDialog(QWidget * parent)
   : QDialog(parent)
   , m_defaultsTab(new DefaultsTab(this))
   , m_editingTab(new EditingTab(this))
+  , m_effectsTab(new EffectsTab(this))
 {
     setWindowTitle(tr("Settings"));
     setMinimumWidth(640);
 
     initWidgets();
+
+    connect(m_effectsTab, &EffectsTab::shadowEffectChanged, this, &SettingsDialog::shadowEffectChanged);
 }
 
 void SettingsDialog::accept()
 {
     m_defaultsTab->apply();
     m_editingTab->apply();
+    m_effectsTab->apply();
 
     QDialog::accept();
 }
@@ -47,6 +53,7 @@ void SettingsDialog::initWidgets()
 
     tabWidget->addTab(m_defaultsTab, tr("Defaults"));
     tabWidget->addTab(m_editingTab, tr("Editing"));
+    tabWidget->addTab(m_effectsTab, tr("Effects"));
 
     const auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
                                                 | QDialogButtonBox::Cancel);

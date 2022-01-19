@@ -36,6 +36,10 @@ class NodeAction;
 class NodeHandle;
 class QGraphicsItem;
 
+namespace GraphicsFactory {
+struct ShadowEffectParams;
+}
+
 /*! Acts as a communication channel between MainWindow and editor components:
  *
  *  - MainWindow <-> Mediator <-> QGraphicsScene / EditorView / EditorData
@@ -190,6 +194,8 @@ public slots:
     void setGridColor(QColor color);
 
     void setSearchText(QString text);
+
+    void setShadowEffect(const GraphicsFactory::ShadowEffectParams & params);
 
     void setTextSize(int textSize);
 

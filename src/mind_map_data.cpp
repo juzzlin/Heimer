@@ -15,6 +15,7 @@
 
 #include "mind_map_data.hpp"
 
+#include "graphics_factory.hpp"
 #include "grid.hpp"
 #include "node.hpp"
 
@@ -206,6 +207,17 @@ void MindMapData::changeFont(QFont font)
 
     for (auto && node : m_graph.getNodes()) {
         node->changeFont(font);
+    }
+}
+
+void MindMapData::setShadowEffect(const GraphicsFactory::ShadowEffectParams & params)
+{
+    for (auto && node : m_graph.getNodes()) {
+        node->setShadowEffect(params);
+    }
+
+    for (auto && edge : m_graph.getEdges()) {
+        edge->setShadowEffect(params);
     }
 }
 

@@ -7,6 +7,10 @@ New features:
 
 * Fetch the newest version and show in status bar if newer version available
 
+* Fix GitHub Issue #210: Option to set shadow offset and disable shadows
+  - Adds effects tab to the settings dialog
+  - Shadow offset and blur radius can now be set
+
 Bug fixes:
 
 Other:

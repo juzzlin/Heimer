@@ -18,6 +18,7 @@
 #include "editor_data.hpp"
 #include "editor_scene.hpp"
 #include "editor_view.hpp"
+#include "graphics_factory.hpp"
 #include "image_manager.hpp"
 #include "main_window.hpp"
 #include "mouse_action.hpp"
@@ -737,6 +738,11 @@ void Mediator::setSearchText(QString text)
 {
     m_editorData->selectNodesByText(text);
     updateNodeConnectionActions();
+}
+
+void Mediator::setShadowEffect(const GraphicsFactory::ShadowEffectParams & params)
+{
+    m_editorData->mindMapData()->setShadowEffect(params);
 }
 
 void Mediator::setGridSize(int size, bool autoSnap)

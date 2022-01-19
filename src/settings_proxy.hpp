@@ -16,7 +16,9 @@
 #ifndef SETTINGS_PROXY_HPP
 #define SETTINGS_PROXY_HPP
 
+#include "constants.hpp"
 #include "edge.hpp"
+#include "graphics_factory.hpp"
 
 #include <memory>
 
@@ -43,6 +45,10 @@ public:
 
     void setSelectNodeGroupByIntersection(bool selectNodeGroupByIntersection);
 
+    const GraphicsFactory::ShadowEffectParams shadowEffect() const;
+
+    void setShadowEffect(const GraphicsFactory::ShadowEffectParams & params);
+
 private:
     bool m_autosave = false;
 
@@ -51,6 +57,8 @@ private:
     bool m_reversedEdgeDirection = false;
 
     bool m_selectNodeGroupByIntersection = false;
+
+    GraphicsFactory::ShadowEffectParams m_shadowEffectParams;
 
     static std::unique_ptr<SettingsProxy> m_instance;
 };

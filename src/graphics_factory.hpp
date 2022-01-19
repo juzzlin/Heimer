@@ -16,12 +16,65 @@
 #ifndef GRAPHICS_FACTORY_HPP
 #define GRAPHICS_FACTORY_HPP
 
+#include "constants.hpp"
+
+#include <QColor>
+
 class QGraphicsEffect;
 
 namespace GraphicsFactory {
-QGraphicsEffect * createDropShadowEffect(bool selected = false);
 
-void setSelected(QGraphicsEffect * effect, bool selected);
-}
+struct ShadowEffectParams
+{
+    ShadowEffectParams()
+    {
+    }
+
+    ShadowEffectParams(int offset)
+      : offset(offset)
+    {
+    }
+
+    ShadowEffectParams(int offset, int blurRadiusNormal, int blurRadiusSelected)
+      : offset(offset)
+      , blurRadiusNormal(blurRadiusNormal)
+      , blurRadiusSelected(blurRadiusSelected)
+    {
+    }
+
+    ShadowEffectParams(int offset, int blurRadiusNormal, int blurRadiusSelected, QColor colorNormal, QColor colorSelected)
+      : offset(offset)
+      , blurRadiusNormal(blurRadiusNormal)
+      , blurRadiusSelected(blurRadiusSelected)
+      , colorNormal(colorNormal)
+      , colorSelected(colorSelected)
+    {
+    }
+
+    bool operator==(const ShadowEffectParams & other) const
+    {
+        return offset == other.offset && blurRadiusNormal == other.blurRadiusNormal && blurRadiusSelected == other.blurRadiusSelected && colorNormal == other.colorNormal && colorSelected == other.colorSelected;
+    }
+
+    bool operator!=(const ShadowEffectParams & other) const
+    {
+        return !(*this == other);
+    }
+
+    int offset = Constants::Effects::DEFAULT_SHADOW_EFFECT_OFFSET;
+
+    int blurRadiusNormal = Constants::Effects::DEFAULT_SHADOW_EFFECT_NORMAL_BLUR_RADIUS;
+
+    int blurRadiusSelected = Constants::Effects::DEFAULT_SHADOW_EFFECT_SELECTED_BLUR_RADIUS;
+
+    QColor colorNormal = { 96, 96, 96 };
+
+    QColor colorSelected = { 255, 0, 0 };
+};
+
+QGraphicsEffect * createDropShadowEffect(bool selected, const ShadowEffectParams & params);
+
+void updateDropShadowEffect(QGraphicsEffect * effect, bool selected, const ShadowEffectParams & params);
+} // namespace GraphicsFactory
 
 #endif // GRAPHICS_FACTORY_HPP

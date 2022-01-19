@@ -27,6 +27,10 @@
 class Grid;
 class ObjectModelLoader;
 
+namespace GraphicsFactory {
+struct ShadowEffectParams;
+}
+
 class MindMapData : public MindMapDataBase
 {
 public:
@@ -81,6 +85,8 @@ public:
     QFont font() const;
 
     void changeFont(QFont font);
+
+    void setShadowEffect(const GraphicsFactory::ShadowEffectParams & params);
 
     int textSize() const;
 

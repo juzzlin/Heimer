@@ -53,4 +53,5 @@ std::pair<QWidget *, QWidgetAction *> buildToolBarWidgetActionWithLabel(QString 
     action->setDefaultWidget(dummyWidget);
     return { dummyWidget, action };
 }
+
 } // namespace WidgetFactory

@@ -59,7 +59,7 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
 {
     setAcceptHoverEvents(true && enableAnimations);
 
-    setGraphicsEffect(GraphicsFactory::createDropShadowEffect());
+    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(false, SettingsProxy::instance().shadowEffect()));
 
     setZValue(static_cast<int>(Layers::Edge));
 
@@ -274,7 +274,13 @@ void Edge::setReversed(bool reversed)
 void Edge::setSelected(bool selected)
 {
     m_selected = selected;
-    GraphicsFactory::setSelected(graphicsEffect(), selected);
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), selected, SettingsProxy::instance().shadowEffect());
+    update();
+}
+
+void Edge::setShadowEffect(const GraphicsFactory::ShadowEffectParams & params)
+{
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_selected, params);
     update();
 }
 

@@ -71,6 +71,8 @@ MainWindow::MainWindow()
 
     connectToolBar();
 
+    connect(m_settingsDlg, &SettingsDialog::shadowEffectChanged, this, &MainWindow::shadowEffectChanged);
+
     m_statusText->setOpenExternalLinks(true);
 }
 
@@ -350,12 +352,12 @@ void MainWindow::createViewMenu()
     viewMenu->addAction(m_fullScreenAction);
     connect(m_fullScreenAction, &QAction::triggered, this, [=](bool checked) {
         if (checked) {
-            Settings::saveFullScreen(true);
+            Settings::V1::saveFullScreen(true);
             showFullScreen();
         } else {
-            Settings::saveFullScreen(false);
+            Settings::V1::saveFullScreen(false);
             showNormal();
-            resize(Settings::loadWindowSize(calculateDefaultWindowSize().second));
+            resize(Settings::V1::loadWindowSize(calculateDefaultWindowSize().second));
         }
     });
 
@@ -401,11 +403,11 @@ void MainWindow::initialize()
 {
     // Read dialog size data
     const auto screenAndWindow = calculateDefaultWindowSize();
-    const auto lastSize = Settings::loadWindowSize(screenAndWindow.second);
+    const auto lastSize = Settings::V1::loadWindowSize(screenAndWindow.second);
     if (screenAndWindow.first.width() < lastSize.width()
         || screenAndWindow.first.height() < lastSize.height()) {
         resize(screenAndWindow.second);
-        Settings::saveWindowSize(size());
+        Settings::V1::saveWindowSize(size());
     } else {
         resize(lastSize);
     }
@@ -464,7 +466,7 @@ void MainWindow::populateMenuBar()
 
 void MainWindow::appear()
 {
-    if (Settings::loadFullScreen()) {
+    if (Settings::V1::loadFullScreen()) {
         m_fullScreenAction->trigger();
     } else {
         show();
@@ -537,7 +539,7 @@ void MainWindow::enableSave(bool enable)
 void MainWindow::saveWindowSize()
 {
     if (!m_fullScreenAction->isChecked()) {
-        Settings::saveWindowSize(size());
+        Settings::V1::saveWindowSize(size());
     }
 }
 

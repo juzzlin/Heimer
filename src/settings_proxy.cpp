@@ -16,13 +16,19 @@
 #include "settings.hpp"
 #include "settings_proxy.hpp"
 
+#include "graphics_factory.hpp"
+
 std::unique_ptr<SettingsProxy> SettingsProxy::m_instance;
 
 SettingsProxy::SettingsProxy()
-  : m_autosave(Settings::loadAutosave())
-  , m_edgeArrowMode(Settings::loadEdgeArrowMode(Edge::ArrowMode::Single))
-  , m_reversedEdgeDirection(Settings::loadReversedEdgeDirection(false))
-  , m_selectNodeGroupByIntersection(Settings::loadSelectNodeGroupByIntersection())
+  : m_autosave(Settings::V1::loadAutosave())
+  , m_edgeArrowMode(Settings::V1::loadEdgeArrowMode(Edge::ArrowMode::Single))
+  , m_reversedEdgeDirection(Settings::V1::loadReversedEdgeDirection(false))
+  , m_selectNodeGroupByIntersection(Settings::V1::loadSelectNodeGroupByIntersection())
+  , m_shadowEffectParams(
+      static_cast<int>(Settings::V2::getNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_OFFSET_SETTINGS_KEY, Constants::Effects::DEFAULT_SHADOW_EFFECT_OFFSET)),
+      static_cast<int>(Settings::V2::getNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_NORMAL_BLUR_RADIUS_SETTINGS_KEY, Constants::Effects::DEFAULT_SHADOW_EFFECT_NORMAL_BLUR_RADIUS)),
+      static_cast<int>(Settings::V2::getNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_SELECTED_BLUR_RADIUS_SETTINGS_KEY, Constants::Effects::DEFAULT_SHADOW_EFFECT_SELECTED_BLUR_RADIUS)))
 {
 }
 
@@ -43,7 +49,7 @@ void SettingsProxy::setAutosave(bool autosave)
 {
     if (m_autosave != autosave) {
         m_autosave = autosave;
-        Settings::saveAutosave(autosave);
+        Settings::V1::saveAutosave(autosave);
     }
 }
 
@@ -56,7 +62,7 @@ void SettingsProxy::setEdgeArrowMode(Edge::ArrowMode mode)
 {
     if (m_edgeArrowMode != mode) {
         m_edgeArrowMode = mode;
-        Settings::saveEdgeArrowMode(mode);
+        Settings::V1::saveEdgeArrowMode(mode);
     }
 }
 
@@ -69,7 +75,7 @@ void SettingsProxy::setReversedEdgeDirection(bool reversedEdgeDirection)
 {
     if (m_reversedEdgeDirection != reversedEdgeDirection) {
         m_reversedEdgeDirection = reversedEdgeDirection;
-        Settings::saveReversedEdgeDirection(reversedEdgeDirection);
+        Settings::V1::saveReversedEdgeDirection(reversedEdgeDirection);
     }
 }
 
@@ -82,6 +88,21 @@ void SettingsProxy::setSelectNodeGroupByIntersection(bool selectNodeGroupByInter
 {
     if (m_selectNodeGroupByIntersection != selectNodeGroupByIntersection) {
         m_selectNodeGroupByIntersection = selectNodeGroupByIntersection;
-        Settings::saveSelectNodeGroupByIntersection(selectNodeGroupByIntersection);
+        Settings::V1::saveSelectNodeGroupByIntersection(selectNodeGroupByIntersection);
+    }
+}
+
+const GraphicsFactory::ShadowEffectParams SettingsProxy::shadowEffect() const
+{
+    return m_shadowEffectParams;
+}
+
+void SettingsProxy::setShadowEffect(const GraphicsFactory::ShadowEffectParams & params)
+{
+    if (m_shadowEffectParams != params) {
+        m_shadowEffectParams = params;
+        Settings::V2::setNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_OFFSET_SETTINGS_KEY, params.offset);
+        Settings::V2::setNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_NORMAL_BLUR_RADIUS_SETTINGS_KEY, params.blurRadiusNormal);
+        Settings::V2::setNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_SELECTED_BLUR_RADIUS_SETTINGS_KEY, params.blurRadiusSelected);
     }
 }

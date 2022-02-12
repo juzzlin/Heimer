@@ -40,7 +40,7 @@ and then make a patch and send it via e-mail:
 
 This script automates the steps above (Finnish in the example):
 
-`$ ./scripts/update-translation-files fi`
+`$ ./scripts/update-single-translation fi`
 
 ### Adding a new language
 

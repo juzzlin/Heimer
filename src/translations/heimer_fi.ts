@@ -4,32 +4,32 @@
 <context>
     <name>AboutDlg</name>
     <message>
-        <location filename="../about_dlg.cpp" line="29"/>
+        <location filename="../about_dlg.cpp" line="33"/>
         <source>About </source>
         <translation>Tietoa sovelluksesta </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="45"/>
+        <location filename="../about_dlg.cpp" line="51"/>
         <source> is licenced under </source>
         <translation> on lisensoitu lisenssillä </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="47"/>
+        <location filename="../about_dlg.cpp" line="53"/>
         <source>Package type: </source>
         <translation>Paketoinnin tyyppi: </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="48"/>
+        <location filename="../about_dlg.cpp" line="54"/>
         <source>Project website: </source>
         <translation>Projektin nettisivu: </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="50"/>
+        <location filename="../about_dlg.cpp" line="56"/>
         <source>Support </source>
         <translation>Tue </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="50"/>
+        <location filename="../about_dlg.cpp" line="56"/>
         <source> via PayPal: </source>
         <translation>ia PayPalissa: </translation>
     </message>

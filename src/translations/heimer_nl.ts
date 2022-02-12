@@ -4,32 +4,32 @@
 <context>
     <name>AboutDlg</name>
     <message>
-        <location filename="../about_dlg.cpp" line="29"/>
+        <location filename="../about_dlg.cpp" line="33"/>
         <source>About </source>
         <translation>Over </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="45"/>
+        <location filename="../about_dlg.cpp" line="51"/>
         <source> is licenced under </source>
         <translation> is uitgebracht onder de </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="47"/>
+        <location filename="../about_dlg.cpp" line="53"/>
         <source>Package type: </source>
         <translation>Soort pakket: </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="48"/>
+        <location filename="../about_dlg.cpp" line="54"/>
         <source>Project website: </source>
         <translation>Projectwebsite: </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="50"/>
+        <location filename="../about_dlg.cpp" line="56"/>
         <source>Support </source>
         <translation>Ondersteunen </translation>
     </message>
     <message>
-        <location filename="../about_dlg.cpp" line="50"/>
+        <location filename="../about_dlg.cpp" line="56"/>
         <source> via PayPal: </source>
         <translation> via PayPal: </translation>
     </message>

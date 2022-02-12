@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Updates all translation source files.
+
+LUPDATE=lupdate
+if ! which ${LUPDATE}; then
+    echo "${LUPDATE} not found."
+    exit 1
+fi
+
+for TS_FILE in src/translations/*.ts; do
+    echo "Updating translation source ${TS_FILE}"
+    ${LUPDATE} src/*.cpp -ts ${TS_FILE}
+done
+
+echo "Done."
+

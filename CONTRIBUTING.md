@@ -24,13 +24,15 @@ and then make a patch and send it via e-mail:
 
 ## Adding/updating translations
 
+Translations rely on Qt's localization flow and tools.
+
 ### Old update flow
 
 1) Generate source strings
 
     `$ lupdate src/*.cpp -ts src/translations/heimer_fr.ts`
 
-2) Edit translations in Linguist
+2) Edit translations in `Linguist`
 
     `$ linguist src/translations/heimer_fr.ts`
 
@@ -38,9 +40,15 @@ and then make a patch and send it via e-mail:
 
 ### New update flow
 
-This script automates the steps above (Finnish in the example):
+This script automates the steps above (Finnish as the example):
 
 `$ ./scripts/update-single-translation fi`
+
+The script will update the translation source (`.ts`) of the given language and open `Linguist`.
+
+All translation source files can be updated at once like this:
+
+`$ ./scripts/update-translation-sources`
 
 ### Adding a new language
 

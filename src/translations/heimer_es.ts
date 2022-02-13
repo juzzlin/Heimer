@@ -148,7 +148,7 @@
     <message>
         <location filename="../edge_context_menu.cpp" line="33"/>
         <source>Show arrow</source>
-        <translation></translation>
+        <translation>Mostrar flecha</translation>
     </message>
     <message>
         <location filename="../edge_context_menu.cpp" line="40"/>
@@ -158,7 +158,7 @@
     <message>
         <location filename="../edge_context_menu.cpp" line="47"/>
         <source>Dashed line</source>
-        <translation></translation>
+        <translation>Línea discontinua</translation>
     </message>
     <message>
         <location filename="../edge_context_menu.cpp" line="54"/>
@@ -620,7 +620,7 @@
     <message>
         <location filename="../tool_bar.cpp" line="34"/>
         <source>Auto snap</source>
-        <translation></translation>
+        <translation>Ajuste automático</translation>
     </message>
     <message>
         <location filename="../tool_bar.cpp" line="35"/>
@@ -635,7 +635,7 @@
     <message>
         <location filename="../tool_bar.cpp" line="79"/>
         <source>Automatically snap existing nodes to the grid when grid size changes</source>
-        <translation></translation>
+        <translation>Ajustar los nodos automáticamente a la cuadrícula cuando cambie el tamaño de esta. </translation>
     </message>
     <message>
         <location filename="../tool_bar.cpp" line="110"/>
@@ -650,7 +650,7 @@
     <message>
         <location filename="../tool_bar.cpp" line="132"/>
         <source>Font</source>
-        <translation></translation>
+        <translation>Fuente</translation>
     </message>
     <message>
         <location filename="../tool_bar.cpp" line="167"/>

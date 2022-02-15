@@ -39,7 +39,7 @@
     <message>
         <location filename="../application.cpp" line="195"/>
         <source>Heimer Files</source>
-        <translation>Archivos Heimer</translation>
+        <translation>Archivos heimer</translation>
     </message>
     <message>
         <location filename="../application.cpp" line="289"/>
@@ -635,7 +635,7 @@
     <message>
         <location filename="../tool_bar.cpp" line="79"/>
         <source>Automatically snap existing nodes to the grid when grid size changes</source>
-        <translation>Ajustar los nodos automáticamente a la cuadrícula cuando cambie el tamaño de esta. </translation>
+        <translation>Ajustar automáticamente los nodos a la cuadrícula cuando cambie el tamaño de esta. </translation>
     </message>
     <message>
         <location filename="../tool_bar.cpp" line="110"/>

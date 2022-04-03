@@ -36,7 +36,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     m_copyNodeAction->setShortcut(copyNodeSequence);
     const auto copyNodeShortCut = new QShortcut(copyNodeSequence, parent);
     connect(copyNodeShortCut, &QShortcut::activated, m_copyNodeAction, &QAction::trigger);
-    connect(m_copyNodeAction, &QAction::triggered, [this] {
+    connect(m_copyNodeAction, &QAction::triggered, this, [this] {
         juzzlin::L().debug() << "Copy node triggered";
         m_mediator.performNodeAction({ NodeAction::Type::Copy });
     });
@@ -48,26 +48,26 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     m_pasteNodeAction->setShortcut(pasteNodeSequence);
     const auto pasteNodeShortCut = new QShortcut(pasteNodeSequence, parent);
     connect(pasteNodeShortCut, &QShortcut::activated, m_pasteNodeAction, &QAction::trigger);
-    connect(m_pasteNodeAction, &QAction::triggered, [this] {
+    connect(m_pasteNodeAction, &QAction::triggered, this, [this] {
         juzzlin::L().debug() << "Paste node triggered";
         m_mediator.performNodeAction({ NodeAction::Type::Paste });
     });
     m_mainContextMenuActions[Mode::All].push_back(m_pasteNodeAction);
 
     const auto setBackgroundColorAction(new QAction(tr("Set background color"), this));
-    connect(setBackgroundColorAction, &QAction::triggered, [this] {
+    connect(setBackgroundColorAction, &QAction::triggered, this, [this] {
         emit actionTriggered(StateMachine::Action::BackgroundColorChangeRequested);
     });
     m_mainContextMenuActions[Mode::Background].push_back(setBackgroundColorAction);
 
     const auto setEdgeColorAction(new QAction(tr("Set edge color"), this));
-    connect(setEdgeColorAction, &QAction::triggered, [this] {
+    connect(setEdgeColorAction, &QAction::triggered, this, [this] {
         emit actionTriggered(StateMachine::Action::EdgeColorChangeRequested);
     });
     m_mainContextMenuActions[Mode::Background].push_back(setEdgeColorAction);
 
     const auto setGridColorAction(new QAction(tr("Set grid color"), this));
-    connect(setGridColorAction, &QAction::triggered, [this] {
+    connect(setGridColorAction, &QAction::triggered, this, [this] {
         emit actionTriggered(StateMachine::Action::GridColorChangeRequested);
     });
     m_mainContextMenuActions[Mode::Background].push_back(setGridColorAction);
@@ -78,22 +78,22 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     const auto createNodeSequence = QKeySequence("Ctrl+Shift+F");
     createNodeAction->setShortcut(createNodeSequence);
     const auto createNodeShortCut = new QShortcut(createNodeSequence, parent);
-    connect(createNodeShortCut, &QShortcut::activated, [this, grid] {
+    connect(createNodeShortCut, &QShortcut::activated, this, [this, grid] {
         emit newNodeRequested(grid.snapToGrid(m_mediator.mouseAction().mappedPos()));
     });
-    connect(createNodeAction, &QAction::triggered, [this, grid] {
+    connect(createNodeAction, &QAction::triggered, this, [this, grid] {
         emit newNodeRequested(grid.snapToGrid(m_mediator.mouseAction().clickedScenePos()));
     });
     m_mainContextMenuActions[Mode::Background].push_back(createNodeAction);
 
     const auto setNodeColorAction(new QAction(tr("Set node color"), this));
-    connect(setNodeColorAction, &QAction::triggered, [this] {
+    connect(setNodeColorAction, &QAction::triggered, this, [this] {
         emit actionTriggered(StateMachine::Action::NodeColorChangeRequested);
     });
     m_mainContextMenuActions[Mode::Node].push_back(setNodeColorAction);
 
     const auto setNodeTextColorAction(new QAction(tr("Set text color"), this));
-    connect(setNodeTextColorAction, &QAction::triggered, [this] {
+    connect(setNodeTextColorAction, &QAction::triggered, this, [this] {
         emit actionTriggered(StateMachine::Action::TextColorChangeRequested);
     });
     m_mainContextMenuActions[Mode::Node].push_back(setNodeTextColorAction);
@@ -104,24 +104,24 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     const auto deleteNodeSequence = QKeySequence("Del");
     deleteNodeAction->setShortcut(deleteNodeSequence);
     const auto deleteNodeShortCut = new QShortcut(deleteNodeSequence, parent);
-    connect(deleteNodeShortCut, &QShortcut::activated, [this] {
+    connect(deleteNodeShortCut, &QShortcut::activated, this, [this] {
         m_mediator.performNodeAction({ NodeAction::Type::Delete });
     });
-    connect(deleteNodeAction, &QAction::triggered, [this] {
+    connect(deleteNodeAction, &QAction::triggered, this, [this] {
         m_mediator.performNodeAction({ NodeAction::Type::Delete });
     });
 
     m_mainContextMenuActions[Mode::Node].push_back(deleteNodeAction);
 
     const auto attachImageAction(new QAction(tr("Attach image..."), this));
-    connect(attachImageAction, &QAction::triggered, [this] {
+    connect(attachImageAction, &QAction::triggered, this, [this] {
         emit actionTriggered(StateMachine::Action::ImageAttachmentRequested);
     });
 
     m_mainContextMenuActions[Mode::Node].push_back(attachImageAction);
 
     m_removeImageAction = new QAction(tr("Remove attached image"), this);
-    connect(m_removeImageAction, &QAction::triggered, [this] {
+    connect(m_removeImageAction, &QAction::triggered, this, [this] {
         m_mediator.performNodeAction({ NodeAction::Type::RemoveAttachedImage });
     });
 

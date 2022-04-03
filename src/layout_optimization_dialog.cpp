@@ -102,7 +102,7 @@ void LayoutOptimizationDialog::initWidgets(const MindMapData & mindMapData)
     const auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
-    connect(buttonBox, &QDialogButtonBox::accepted, [=] {
+    connect(buttonBox, &QDialogButtonBox::accepted, this, [=] {
         buttonBox->setEnabled(false);
         QTimer::singleShot(0, this, [=] { // Trick to make disabled buttons apply immediately
             emit undoPointRequested();

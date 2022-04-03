@@ -39,7 +39,7 @@ NodeHandle::NodeHandle(NodeR parentNode, NodeHandle::Role role, int radius)
     m_visibilityTimer.setSingleShot(true);
     m_visibilityTimer.setInterval(Constants::Node::HANDLE_VISIBILITY_DURATION);
 
-    connect(&m_visibilityTimer, &QTimer::timeout, [=] {
+    connect(&m_visibilityTimer, &QTimer::timeout, this, [=] {
         setVisible(false);
     });
 

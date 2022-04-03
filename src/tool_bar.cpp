@@ -130,7 +130,7 @@ QWidgetAction * ToolBar::createEdgeWidthAction()
 QWidgetAction * ToolBar::createFontAction()
 {
     m_fontButton->setText(tr("Font") + Constants::Misc::THREE_DOTS);
-    connect(m_fontButton, &QPushButton::clicked, [=] {
+    connect(m_fontButton, &QPushButton::clicked, this, [=] {
         bool ok;
         QFont defaultFont = m_fontButton->font();
         defaultFont.setPointSize(m_textSizeSpinBox->value());
@@ -159,7 +159,7 @@ QWidgetAction * ToolBar::createGridSizeAction()
 #else
     const auto signal = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
 #endif
-    connect(m_gridSizeSpinBox, signal, [=](int size) {
+    connect(m_gridSizeSpinBox, signal, this, [=](int size) {
         emit gridSizeChanged(size, autoSnapEnabled());
     });
     connect(m_gridSizeSpinBox, signal, Settings::saveGridSize);
@@ -170,19 +170,19 @@ QWidgetAction * ToolBar::createGridSizeAction()
 QWidgetAction * ToolBar::createSearchAction()
 {
     m_searchTimer.setSingleShot(true);
-    connect(&m_searchTimer, &QTimer::timeout, [this, searchLineEdit = m_searchLineEdit]() {
+    connect(&m_searchTimer, &QTimer::timeout, this, [this, searchLineEdit = m_searchLineEdit]() {
         const auto text = searchLineEdit->text();
         juzzlin::L().debug() << "Search text changed: " << text.toStdString();
         emit searchTextChanged(text);
     });
-    connect(m_searchLineEdit, &QLineEdit::textChanged, [searchTimer = &m_searchTimer](const QString & text) {
+    connect(m_searchLineEdit, &QLineEdit::textChanged, this, [searchTimer = &m_searchTimer](const QString & text) {
         if (text.isEmpty()) {
             searchTimer->start(0);
         } else {
             searchTimer->start(Constants::View::TEXT_SEARCH_DELAY_MS);
         }
     });
-    connect(m_searchLineEdit, &QLineEdit::returnPressed, [searchTimer = &m_searchTimer] {
+    connect(m_searchLineEdit, &QLineEdit::returnPressed, this, [searchTimer = &m_searchTimer] {
         searchTimer->start(0);
     });
 

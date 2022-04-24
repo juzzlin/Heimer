@@ -329,7 +329,6 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
         switch (m_mediator.mouseAction().action()) {
         case MouseAction::Action::RubberBand:
             finishRubberBand();
-            m_mediator.mouseAction().clear();
             break;
         default:
             break;
@@ -339,7 +338,6 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
         case MouseAction::Action::None:
             break;
         case MouseAction::Action::MoveNode:
-            m_mediator.mouseAction().clear();
             m_mediator.adjustSceneRect();
             break;
         case MouseAction::Action::CreateOrConnectNode:
@@ -351,14 +349,11 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
                 } else {
                     m_mediator.createAndAddNode(sourceNode->index(), m_grid.snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
                 }
-
                 resetDummyDragItems();
-                m_mediator.mouseAction().clear();
             }
             break;
         case MouseAction::Action::RubberBand:
             finishRubberBand();
-            m_mediator.mouseAction().clear();
             break;
         case MouseAction::Action::Scroll:
             setDragMode(NoDrag);
@@ -367,6 +362,8 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
 
         QApplication::restoreOverrideCursor();
     }
+
+    m_mediator.mouseAction().clear();
 
     QGraphicsView::mouseReleaseEvent(event);
 }

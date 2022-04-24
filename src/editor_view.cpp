@@ -336,6 +336,12 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
     } else if (event->button() == Qt::LeftButton) {
         switch (m_mediator.mouseAction().action()) {
         case MouseAction::Action::None:
+            // This can happen if the user deletes the drag node while connecting nodes or creating a new node.
+            // In this case the action is just aborted.
+            if (m_connectionTargetNode) {
+                m_connectionTargetNode->setSelected(false);
+                m_connectionTargetNode = nullptr;
+            }
             break;
         case MouseAction::Action::MoveNode:
             m_mediator.adjustSceneRect();

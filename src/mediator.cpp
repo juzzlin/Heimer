@@ -504,9 +504,17 @@ void Mediator::performNodeAction(const NodeAction & action)
         m_editorData->copySelectedNodes();
         break;
     case NodeAction::Type::Delete:
-        saveUndoPoint();
-        m_editorView->resetDummyDragItems();
-        m_editorData->deleteSelectedNodes();
+        if (mouseAction().action() == MouseAction::Action::CreateOrConnectNode) {
+            m_editorView->resetDummyDragItems();
+            mouseAction().clear();
+            QApplication::restoreOverrideCursor();
+        } else if (mouseAction().action() == MouseAction::Action::None) {
+            saveUndoPoint();
+            m_editorView->resetDummyDragItems();
+            m_editorData->deleteSelectedNodes();
+        } else {
+            juzzlin::L().warning() << "Cannot delete node due to incompleted MouseAction: " << static_cast<int>(mouseAction().action());
+        }
         break;
     case NodeAction::Type::DisconnectSelected:
         disconnectSelectedNodes();

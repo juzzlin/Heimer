@@ -9,6 +9,9 @@ New features:
 
 Bug fixes:
 
+* Fix GitHub Issue #205: Click dragging from an existing node, 
+  then pressing delete before dropping the node, crashes the program
+
 Other:
 
 3.2.0

@@ -37,67 +37,67 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application.cpp" line="195"/>
+        <location filename="../application.cpp" line="196"/>
         <source>Heimer Files</source>
         <translation>Heimer 文件</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="289"/>
+        <location filename="../application.cpp" line="290"/>
         <source>Open File</source>
         <translation>打开文件</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="315"/>
+        <location filename="../application.cpp" line="316"/>
         <source>Failed to save file.</source>
         <translation>保存失败。</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="332"/>
+        <location filename="../application.cpp" line="333"/>
         <source>Save File As</source>
         <translation>另存为</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="346"/>
+        <location filename="../application.cpp" line="347"/>
         <source>File &apos;</source>
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="346"/>
+        <location filename="../application.cpp" line="347"/>
         <source>&apos; saved.</source>
         <translation>保存。</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="352"/>
+        <location filename="../application.cpp" line="353"/>
         <source>Failed to save file as &apos;</source>
         <translation>另存为失败</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="394"/>
+        <location filename="../application.cpp" line="395"/>
         <source>Open an image</source>
         <translation>打开图片</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="394"/>
+        <location filename="../application.cpp" line="395"/>
         <source>Image Files</source>
         <translation>图片路径</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="400"/>
+        <location filename="../application.cpp" line="401"/>
         <source>Load image</source>
         <translation>加载图片</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="400"/>
+        <location filename="../application.cpp" line="401"/>
         <source>Failed to load image &apos;</source>
         <translation>加载图片失败</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="444"/>
+        <location filename="../application.cpp" line="445"/>
         <source>The mind map has been modified.</source>
         <translation>思维导图已被修改。</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="445"/>
+        <location filename="../application.cpp" line="446"/>
         <source>Do you want to save your changes?</source>
         <translation>是否要保存更改？</translation>
     </message>
@@ -338,32 +338,32 @@
         <translation type="vanished">显示网格</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="151"/>
+        <location filename="../main_window.cpp" line="149"/>
         <source>&amp;Edit</source>
         <translation>&amp;编辑</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="167"/>
+        <location filename="../main_window.cpp" line="165"/>
         <source>General &amp;colors</source>
         <translation>通用&amp;颜色</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="169"/>
+        <location filename="../main_window.cpp" line="167"/>
         <source>Set background color</source>
         <translation>设置背景色</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="180"/>
+        <location filename="../main_window.cpp" line="178"/>
         <source>Set edge color</source>
         <translation>设置边缘颜色</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="191"/>
+        <location filename="../main_window.cpp" line="189"/>
         <source>Set grid color</source>
         <translation>设置网格颜色</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="202"/>
+        <location filename="../main_window.cpp" line="200"/>
         <source>Optimize layout</source>
         <translation>优化布局</translation>
     </message>
@@ -388,107 +388,107 @@
         <translation type="vanished">搜索：</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="216"/>
+        <location filename="../main_window.cpp" line="214"/>
         <source>&amp;Export</source>
         <translation>&amp;导出</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="219"/>
+        <location filename="../main_window.cpp" line="217"/>
         <source>&amp;PNG</source>
         <translation>&amp;PNG</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="228"/>
+        <location filename="../main_window.cpp" line="226"/>
         <source>&amp;SVG</source>
         <translation>&amp;SVG</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="242"/>
+        <location filename="../main_window.cpp" line="240"/>
         <source>&amp;File</source>
         <translation>&amp;文件</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="245"/>
+        <location filename="../main_window.cpp" line="243"/>
         <source>&amp;New</source>
         <translation>&amp;新建</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="253"/>
+        <location filename="../main_window.cpp" line="251"/>
         <source>&amp;Open</source>
         <translation>&amp;打开</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="263"/>
+        <location filename="../main_window.cpp" line="261"/>
         <source>Recent &amp;Files</source>
         <translation>最近使用的文件（&amp;F）</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="293"/>
+        <location filename="../main_window.cpp" line="291"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="300"/>
+        <location filename="../main_window.cpp" line="298"/>
         <source>&amp;Quit</source>
         <translation>&amp;退出</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="314"/>
+        <location filename="../main_window.cpp" line="312"/>
         <source>&amp;Help</source>
         <translation>&amp;帮助</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="317"/>
+        <location filename="../main_window.cpp" line="315"/>
         <source>&amp;About</source>
         <translation>&amp;关于</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="324"/>
+        <location filename="../main_window.cpp" line="320"/>
         <source>About &amp;Qt</source>
         <translation>关于&amp;Qt</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="327"/>
+        <location filename="../main_window.cpp" line="323"/>
         <source>About Qt</source>
         <translation>关于Qt</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="333"/>
+        <location filename="../main_window.cpp" line="329"/>
         <source>What&apos;s New</source>
         <translation>更新日志</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="343"/>
+        <location filename="../main_window.cpp" line="339"/>
         <source>&amp;View</source>
         <translation>&amp;视图</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="346"/>
+        <location filename="../main_window.cpp" line="342"/>
         <source>Full Screen</source>
         <translation>全屏</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="365"/>
+        <location filename="../main_window.cpp" line="361"/>
         <source>Zoom In</source>
         <translation>放大</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="371"/>
+        <location filename="../main_window.cpp" line="367"/>
         <source>Zoom Out</source>
         <translation>缩小</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="379"/>
+        <location filename="../main_window.cpp" line="375"/>
         <source>&amp;Zoom To Fit</source>
         <translation>&amp;缩放以适应</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="435"/>
+        <location filename="../main_window.cpp" line="431"/>
         <source>New File</source>
         <translation>新文件</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="437"/>
+        <location filename="../main_window.cpp" line="433"/>
         <source>Not Saved</source>
         <translation>未保存</translation>
     </message>
@@ -628,42 +628,47 @@
         <translation>拖动复制</translation>
     </message>
     <message>
-        <location filename="../tool_bar.cpp" line="41"/>
+        <location filename="../tool_bar.cpp" line="42"/>
         <source>Show grid</source>
         <translation>显示网格</translation>
     </message>
     <message>
-        <location filename="../tool_bar.cpp" line="79"/>
+        <location filename="../tool_bar.cpp" line="84"/>
         <source>Automatically snap existing nodes to the grid when grid size changes</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../tool_bar.cpp" line="110"/>
+        <location filename="../tool_bar.cpp" line="115"/>
         <source>Corner radius:</source>
         <translation>圆角：</translation>
     </message>
     <message>
-        <location filename="../tool_bar.cpp" line="127"/>
+        <location filename="../tool_bar.cpp" line="132"/>
+        <source>Arrow size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../tool_bar.cpp" line="149"/>
         <source>Edge width:</source>
         <translation>边缘宽度：</translation>
     </message>
     <message>
-        <location filename="../tool_bar.cpp" line="132"/>
+        <location filename="../tool_bar.cpp" line="154"/>
         <source>Font</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../tool_bar.cpp" line="167"/>
+        <location filename="../tool_bar.cpp" line="189"/>
         <source>Grid size:</source>
         <translation>网格大小：</translation>
     </message>
     <message>
-        <location filename="../tool_bar.cpp" line="189"/>
+        <location filename="../tool_bar.cpp" line="211"/>
         <source>Search:</source>
         <translation>搜索：</translation>
     </message>
     <message>
-        <location filename="../tool_bar.cpp" line="205"/>
+        <location filename="../tool_bar.cpp" line="227"/>
         <source>Text size:</source>
         <translation>文本大小：</translation>
     </message>

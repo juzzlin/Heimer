@@ -716,7 +716,7 @@
     <message>
         <location filename="../tool_bar.cpp" line="132"/>
         <source>Arrow size:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dimensione della freccia:</translation>
     </message>
     <message>
         <location filename="../tool_bar.cpp" line="149"/>

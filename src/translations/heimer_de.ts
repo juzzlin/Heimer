@@ -641,7 +641,7 @@
     <message>
         <location filename="../tool_bar.cpp" line="132"/>
         <source>Arrow size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Pfeilgröße:</translation>
     </message>
     <message>
         <location filename="../tool_bar.cpp" line="149"/>

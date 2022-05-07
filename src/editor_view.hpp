@@ -16,6 +16,7 @@
 #ifndef EDITOR_VIEW_HPP
 #define EDITOR_VIEW_HPP
 
+#include "constants.hpp"
 #include "grid.hpp"
 #include "main_context_menu.hpp"
 #include "state_machine.hpp"
@@ -67,14 +68,15 @@ public:
     QString dropFile() const;
 
 public slots:
+    void setArrowSize(double arrowSize);
 
     void setCornerRadius(int cornerRadius);
 
     void setEdgeColor(const QColor & edgeColor);
 
-    void setGridColor(const QColor & edgeColor);
-
     void setEdgeWidth(double edgeWidth);
+
+    void setGridColor(const QColor & edgeColor);
 
     void setGridSize(int size);
 
@@ -169,8 +171,11 @@ private:
 
     int m_cornerRadius = 0;
 
+    // Arrow size for the dummy drag edge
+    double m_arrowSize = Constants::Edge::DEFAULT_ARROW_SIZE;
+
     // Width for the dummy drag edge
-    double m_edgeWidth = 1.5;
+    double m_edgeWidth = Constants::MindMap::DEFAULT_EDGE_WIDTH;
 
     QColor m_edgeColor;
 

@@ -408,8 +408,9 @@ void EditorView::showDummyDragEdge(bool show)
         }
     }
 
+    m_dummyDragEdge->setArrowSize(m_arrowSize);
     m_dummyDragEdge->setColor(m_edgeColor);
-    m_dummyDragEdge->setWidth(m_edgeWidth);
+    m_dummyDragEdge->setEdgeWidth(m_edgeWidth);
     m_dummyDragEdge->setVisible(show);
 }
 
@@ -456,9 +457,24 @@ void EditorView::saveZoom()
     m_savedZoom = { scene()->sceneRect(), mapToScene(viewport()->rect().center()), m_scale };
 }
 
+void EditorView::setArrowSize(double arrowSize)
+{
+    m_arrowSize = arrowSize;
+}
+
 void EditorView::setCornerRadius(int cornerRadius)
 {
     m_cornerRadius = cornerRadius;
+}
+
+void EditorView::setEdgeColor(const QColor & edgeColor)
+{
+    m_edgeColor = edgeColor;
+}
+
+void EditorView::setEdgeWidth(double edgeWidth)
+{
+    m_edgeWidth = edgeWidth;
 }
 
 void EditorView::setGridSize(int size)
@@ -468,26 +484,16 @@ void EditorView::setGridSize(int size)
         scene()->update();
 }
 
-void EditorView::setGridVisible(bool visible)
-{
-    m_gridVisible = visible;
-    if (scene())
-        scene()->update();
-}
-
-void EditorView::setEdgeColor(const QColor & edgeColor)
-{
-    m_edgeColor = edgeColor;
-}
-
 void EditorView::setGridColor(const QColor & gridColor)
 {
     m_mediator.mindMapData()->setGridColor(gridColor);
 }
 
-void EditorView::setEdgeWidth(double edgeWidth)
+void EditorView::setGridVisible(bool visible)
 {
-    m_edgeWidth = edgeWidth;
+    m_gridVisible = visible;
+    if (scene())
+        scene()->update();
 }
 
 void EditorView::wheelEvent(QWheelEvent * event)

@@ -69,7 +69,7 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
         m_label->setZValue(static_cast<int>(Layers::EdgeLabel));
         m_label->setBackgroundColor(Constants::Edge::LABEL_COLOR);
 
-        connect(m_label, &TextEdit::textChanged, [=](const QString & text) {
+        connect(m_label, &TextEdit::textChanged, this, [=](const QString & text) {
             updateLabel();
             m_text = text;
         });
@@ -79,7 +79,7 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
         m_labelVisibilityTimer.setSingleShot(true);
         m_labelVisibilityTimer.setInterval(Constants::Edge::LABEL_DURATION);
 
-        connect(&m_labelVisibilityTimer, &QTimer::timeout, [=] {
+        connect(&m_labelVisibilityTimer, &QTimer::timeout, this, [=] {
             setLabelVisible(false);
         });
     }
@@ -120,7 +120,7 @@ void Edge::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
 
 QPen Edge::buildPen(bool ignoreDashSetting) const
 {
-    QPen pen { QBrush { QColor { m_color.red(), m_color.green(), m_color.blue() } }, m_width };
+    QPen pen { QBrush { QColor { m_color.red(), m_color.green(), m_color.blue() } }, m_edgeWidth };
     pen.setCapStyle(Qt::PenCapStyle::RoundCap);
     if (!ignoreDashSetting && m_dashedLine) {
         pen.setDashPattern(Constants::Edge::DASH_PATTERN);
@@ -199,9 +199,9 @@ void Edge::setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason vc
     }
 }
 
-void Edge::setWidth(double width)
+void Edge::setEdgeWidth(double edgeWidth)
 {
-    m_width = width;
+    m_edgeWidth = edgeWidth;
 
     updateLine();
 }
@@ -214,6 +214,13 @@ void Edge::setArrowMode(ArrowMode arrowMode)
     } else {
         TestMode::logDisabledCode("Update line after arrow mode change");
     }
+}
+
+void Edge::setArrowSize(double arrowSize)
+{
+    m_arrowSize = arrowSize;
+
+    updateLine();
 }
 
 void Edge::setColor(const QColor & color)
@@ -299,10 +306,10 @@ void Edge::updateArrowhead()
     case ArrowMode::Single: {
         lineL0.setP1(point0);
         const auto angleL = qDegreesToRadians(angle0 + Constants::Edge::ARROW_OPENING);
-        lineL0.setP2(point0 + QPointF(std::cos(angleL), std::sin(angleL)) * Constants::Edge::ARROW_LENGTH);
+        lineL0.setP2(point0 + QPointF(std::cos(angleL), std::sin(angleL)) * m_arrowSize);
         lineR0.setP1(point0);
         const auto angleR = qDegreesToRadians(angle0 - Constants::Edge::ARROW_OPENING);
-        lineR0.setP2(point0 + QPointF(std::cos(angleR), std::sin(angleR)) * Constants::Edge::ARROW_LENGTH);
+        lineR0.setP2(point0 + QPointF(std::cos(angleR), std::sin(angleR)) * m_arrowSize);
         m_arrowheadL0->setLine(lineL0);
         m_arrowheadR0->setLine(lineR0);
         m_arrowheadL0->show();
@@ -314,20 +321,20 @@ void Edge::updateArrowhead()
     case ArrowMode::Double: {
         lineL0.setP1(point0);
         const auto angleL0 = qDegreesToRadians(angle0 + Constants::Edge::ARROW_OPENING);
-        lineL0.setP2(point0 + QPointF(std::cos(angleL0), std::sin(angleL0)) * Constants::Edge::ARROW_LENGTH);
+        lineL0.setP2(point0 + QPointF(std::cos(angleL0), std::sin(angleL0)) * m_arrowSize);
         lineR0.setP1(point0);
         const auto angleR0 = qDegreesToRadians(angle0 - Constants::Edge::ARROW_OPENING);
-        lineR0.setP2(point0 + QPointF(std::cos(angleR0), std::sin(angleR0)) * Constants::Edge::ARROW_LENGTH);
+        lineR0.setP2(point0 + QPointF(std::cos(angleR0), std::sin(angleR0)) * m_arrowSize);
         lineL1.setP1(point1);
         m_arrowheadL0->setLine(lineL0);
         m_arrowheadR0->setLine(lineR0);
         m_arrowheadL0->show();
         m_arrowheadR0->show();
         const auto angleL1 = qDegreesToRadians(angle1 + Constants::Edge::ARROW_OPENING);
-        lineL1.setP2(point1 + QPointF(std::cos(angleL1), std::sin(angleL1)) * Constants::Edge::ARROW_LENGTH);
+        lineL1.setP2(point1 + QPointF(std::cos(angleL1), std::sin(angleL1)) * m_arrowSize);
         lineR1.setP1(point1);
         const auto angleR1 = qDegreesToRadians(angle1 - Constants::Edge::ARROW_OPENING);
-        lineR1.setP2(point1 + QPointF(std::cos(angleR1), std::sin(angleR1)) * Constants::Edge::ARROW_LENGTH);
+        lineR1.setP2(point1 + QPointF(std::cos(angleR1), std::sin(angleR1)) * m_arrowSize);
         m_arrowheadL1->setLine(lineL1);
         m_arrowheadR1->setLine(lineR1);
         m_arrowheadL1->show();
@@ -424,7 +431,7 @@ void Edge::updateLine()
     setLine(QLineF(
       p1 + (nearestPoints.first.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction1 * static_cast<float>(sourceNode().cornerRadius())).toPointF() : QPointF { 0, 0 }),
       p2 + (nearestPoints.second.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction2 * static_cast<float>(targetNode().cornerRadius())).toPointF() : QPointF { 0, 0 }) - //
-        (direction2 * static_cast<float>(m_width)).toPointF() * Constants::Edge::WIDTH_SCALE));
+        (direction2 * static_cast<float>(m_edgeWidth)).toPointF() * Constants::Edge::WIDTH_SCALE));
 
     updateDots();
     updateLabel(LabelUpdateReason::EdgeGeometryChanged);

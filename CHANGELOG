@@ -7,6 +7,9 @@ New features:
 
 * Add German translations
 
+* Fix GitHub Issue #206: An option to change the size of the arrows
+  - Toolbar now includes a spinner widget to set the arrow size
+
 Bug fixes:
 
 * Fix GitHub Issue #205: Click dragging from an existing node, 

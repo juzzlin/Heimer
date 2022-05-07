@@ -40,6 +40,8 @@ namespace MindMap {
 
 const auto APPLICATION_VERSION = "version";
 
+const auto ARROW_SIZE = "arrow-size";
+
 const auto COLOR = "color";
 
 const auto CORNER_RADIUS = "corner-radius";
@@ -446,6 +448,9 @@ std::unique_ptr<MindMapData> fromXml(QDomDocument document)
     readChildren(root, { { QString(DataKeywords::MindMap::GRAPH), [&data](const QDomElement & e) {
                               readGraph(e, *data);
                           } },
+                         { QString(DataKeywords::MindMap::ARROW_SIZE), [&data](const QDomElement & e) {
+                              data->setArrowSize(readFirstTextNodeContent(e).toDouble() / SCALE);
+                          } },
                          { QString(DataKeywords::MindMap::COLOR), [&data](const QDomElement & e) {
                               data->setBackgroundColor(readColorElement(e));
                           } },
@@ -504,6 +509,10 @@ QDomDocument toXml(MindMapData & mindMapData)
     writeColor(root, doc, mindMapData.edgeColor(), DataKeywords::MindMap::EDGE_COLOR);
 
     writeColor(root, doc, mindMapData.gridColor(), DataKeywords::MindMap::GRID_COLOR);
+
+    auto arrowSizeElement = doc.createElement(DataKeywords::MindMap::ARROW_SIZE);
+    arrowSizeElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData.arrowSize() * SCALE))));
+    root.appendChild(arrowSizeElement);
 
     auto edgeWidthElement = doc.createElement(DataKeywords::MindMap::EDGE_THICKNESS);
     edgeWidthElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData.edgeWidth() * SCALE))));

@@ -38,6 +38,10 @@ public:
 
     void applyGrid(const Grid & grid);
 
+    double arrowSize() const;
+
+    void setArrowSize(double arrowSize);
+
     double aspectRatio() const;
 
     void setAspectRatio(double aspectRatio);
@@ -98,6 +102,8 @@ private:
     QString m_version;
 
     QColor m_backgroundColor = Constants::MindMap::DEFAULT_BACKGROUND_COLOR;
+
+    double m_arrowSize = Constants::Edge::DEFAULT_ARROW_SIZE;
 
     QColor m_edgeColor = Constants::MindMap::DEFAULT_EDGE_COLOR;
 

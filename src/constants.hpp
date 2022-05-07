@@ -51,13 +51,15 @@ static constexpr auto TRANSLATIONS_RESOURCE_BASE = ":/translations/heimer_";
 
 namespace Edge {
 
-static const double ARROW_LENGTH = 10;
+static const double ARROW_SIZE_STEP = 5;
 
 static const double ARROW_OPENING = 150;
 
 static const double CORNER_RADIUS_SCALE = 0.3;
 
 static const QVector DASH_PATTERN { qreal(5), qreal(5) };
+
+static const double DEFAULT_ARROW_SIZE = 10;
 
 static const QColor DOT_COLOR { 255, 0, 0, 192 };
 
@@ -69,11 +71,15 @@ static const QColor LABEL_COLOR { 0xff, 0xee, 0xaa };
 
 static const int LABEL_DURATION = 2000;
 
-static const double MIN_SIZE = 0.1;
+static const double MIN_ARROW_SIZE = 5;
 
-static const double MAX_SIZE = 5.0;
+static const double MAX_ARROW_SIZE = 99;
 
-static const double STEP = 0.1;
+static const double MIN_EDGE_WIDTH = 0.1;
+
+static const double MAX_EDGE_WIDTH = 5.0;
+
+static const double EDGE_WIDTH_STEP = 0.1;
 
 static const int TEXT_EDIT_ANIMATION_DURATION = 150;
 

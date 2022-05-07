@@ -32,6 +32,7 @@ MindMapData::MindMapData(const MindMapData & other)
   , m_fileName(other.m_fileName)
   , m_version(other.m_version)
   , m_backgroundColor(other.m_backgroundColor)
+  , m_arrowSize(other.m_arrowSize)
   , m_edgeColor(other.m_edgeColor)
   , m_gridColor(other.m_gridColor)
   , m_edgeWidth(other.m_edgeWidth)
@@ -122,17 +123,31 @@ void MindMapData::setGridColor(const QColor & gridColor)
     m_gridColor = gridColor;
 }
 
+double MindMapData::arrowSize() const
+{
+    return m_arrowSize;
+}
+
+void MindMapData::setArrowSize(double arrowSize)
+{
+    m_arrowSize = arrowSize;
+
+    for (auto && edge : m_graph.getEdges()) {
+        edge->setArrowSize(arrowSize);
+    }
+}
+
 double MindMapData::edgeWidth() const
 {
     return m_edgeWidth;
 }
 
-void MindMapData::setEdgeWidth(double width)
+void MindMapData::setEdgeWidth(double edgeWidth)
 {
-    m_edgeWidth = width;
+    m_edgeWidth = edgeWidth;
 
     for (auto && edge : m_graph.getEdges()) {
-        edge->setWidth(width);
+        edge->setEdgeWidth(edgeWidth);
     }
 }
 

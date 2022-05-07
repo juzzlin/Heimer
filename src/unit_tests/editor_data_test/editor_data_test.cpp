@@ -380,6 +380,29 @@ void EditorDataTest::testUndoArrowMode()
     QCOMPARE(redoneEdge->arrowMode(), Edge::ArrowMode::Hidden);
 }
 
+void EditorDataTest::testUndoArrowSize()
+{
+    EditorData editorData;
+
+    editorData.setMindMapData(std::make_shared<MindMapData>());
+    editorData.mindMapData()->setArrowSize(11.0);
+
+    editorData.saveUndoPoint();
+    editorData.mindMapData()->setArrowSize(12.5);
+
+    editorData.saveUndoPoint();
+    editorData.mindMapData()->setArrowSize(13.0);
+
+    editorData.undo();
+    QCOMPARE(editorData.mindMapData()->arrowSize(), 12.5);
+
+    editorData.undo();
+    QCOMPARE(editorData.mindMapData()->arrowSize(), 11.0);
+
+    editorData.redo();
+    QCOMPARE(editorData.mindMapData()->arrowSize(), 12.5);
+}
+
 void EditorDataTest::testUndoDeleteEdge()
 {
     const auto data = std::make_shared<MindMapData>();

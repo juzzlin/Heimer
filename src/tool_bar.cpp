@@ -34,6 +34,7 @@ ToolBar::ToolBar(QWidget * parent)
   , m_autoSnapCheckBox(new QCheckBox(tr("Auto snap"), this))
   , m_copyOnDragCheckBox(new QCheckBox(tr("Copy on drag"), this))
   , m_cornerRadiusSpinBox(new QSpinBox(this))
+  , m_arrowSizeSpinBox(new QDoubleSpinBox(this))
   , m_edgeWidthSpinBox(new QDoubleSpinBox(this))
   , m_fontButton(new QPushButton(this))
   , m_gridSizeSpinBox(new QSpinBox(this))
@@ -41,6 +42,10 @@ ToolBar::ToolBar(QWidget * parent)
   , m_showGridCheckBox(new QCheckBox(tr("Show grid"), this))
   , m_textSizeSpinBox(new QSpinBox(this))
 {
+    addAction(createArrowSizeAction());
+
+    addSeparator();
+
     addAction(createEdgeWidthAction());
 
     addSeparator();
@@ -110,11 +115,28 @@ QWidgetAction * ToolBar::createCornerRadiusAction()
     return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Corner radius:"), *m_cornerRadiusSpinBox, *this).second;
 }
 
+QWidgetAction * ToolBar::createArrowSizeAction()
+{
+    m_arrowSizeSpinBox->setSingleStep(Constants::Edge::ARROW_SIZE_STEP);
+    m_arrowSizeSpinBox->setMinimum(Constants::Edge::MIN_ARROW_SIZE);
+    m_arrowSizeSpinBox->setMaximum(Constants::Edge::MAX_ARROW_SIZE);
+    m_arrowSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
+    const auto signal = QOverload<double>::of(&QDoubleSpinBox::valueChanged);
+#else
+    const auto signal = static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged);
+#endif
+    connect(m_arrowSizeSpinBox, signal, this, &ToolBar::arrowSizeChanged);
+
+    return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Arrow size:"), *m_arrowSizeSpinBox, *this).second;
+}
+
 QWidgetAction * ToolBar::createEdgeWidthAction()
 {
-    m_edgeWidthSpinBox->setSingleStep(Constants::Edge::STEP);
-    m_edgeWidthSpinBox->setMinimum(Constants::Edge::MIN_SIZE);
-    m_edgeWidthSpinBox->setMaximum(Constants::Edge::MAX_SIZE);
+    m_edgeWidthSpinBox->setSingleStep(Constants::Edge::EDGE_WIDTH_STEP);
+    m_edgeWidthSpinBox->setMinimum(Constants::Edge::MIN_EDGE_WIDTH);
+    m_edgeWidthSpinBox->setMaximum(Constants::Edge::MAX_EDGE_WIDTH);
     m_edgeWidthSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
@@ -207,6 +229,7 @@ QWidgetAction * ToolBar::createTextSizeAction()
 
 void ToolBar::enableWidgetSignals(bool enable)
 {
+    m_arrowSizeSpinBox->blockSignals(!enable);
     m_cornerRadiusSpinBox->blockSignals(!enable);
     m_edgeWidthSpinBox->blockSignals(!enable);
     m_gridSizeSpinBox->blockSignals(!enable);
@@ -220,6 +243,13 @@ void ToolBar::loadSettings()
     m_gridSizeSpinBox->setValue(Settings::loadGridSize());
 
     m_showGridCheckBox->setCheckState(Settings::loadGridVisibleState());
+}
+
+void ToolBar::setArrowSize(double value)
+{
+    if (!qFuzzyCompare(m_arrowSizeSpinBox->value(), value)) {
+        m_arrowSizeSpinBox->setValue(value);
+    }
 }
 
 void ToolBar::setCornerRadius(int value)

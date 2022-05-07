@@ -91,6 +91,8 @@ public slots:
 
     void enableSave(bool enable);
 
+    void setArrowSize(double value);
+
     void setCornerRadius(int value);
 
     void setEdgeWidth(double value);
@@ -105,6 +107,8 @@ protected:
 signals:
 
     void actionTriggered(StateMachine::Action action);
+
+    void arrowSizeChanged(double arrowSize);
 
     void cornerRadiusChanged(int size);
 

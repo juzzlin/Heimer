@@ -127,6 +127,8 @@ void MainWindow::connectToolBar()
 {
     connect(m_toolBar, &ToolBar::gridVisibleChanged, this, &MainWindow::gridVisibleChanged);
 
+    connect(m_toolBar, &ToolBar::arrowSizeChanged, this, &MainWindow::arrowSizeChanged);
+
     connect(m_toolBar, &ToolBar::cornerRadiusChanged, this, &MainWindow::cornerRadiusChanged);
 
     connect(m_toolBar, &ToolBar::edgeWidthChanged, this, &MainWindow::edgeWidthChanged);
@@ -489,6 +491,11 @@ void MainWindow::enableDisconnectSelectedNodesAction(bool enable)
 void MainWindow::enableWidgetSignals(bool enable)
 {
     m_toolBar->enableWidgetSignals(enable);
+}
+
+void MainWindow::setArrowSize(double value)
+{
+    m_toolBar->setArrowSize(value);
 }
 
 void MainWindow::setCornerRadius(int value)

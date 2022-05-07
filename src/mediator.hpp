@@ -177,15 +177,17 @@ public slots:
 
     void saveUndoPoint();
 
+    void setArrowSize(double arrowSize);
+
     void setBackgroundColor(QColor color);
 
     void setCornerRadius(int value);
 
     void setEdgeColor(QColor color);
 
-    void setGridColor(QColor color);
-
     void setEdgeWidth(double value);
+
+    void setGridColor(QColor color);
 
     void setSearchText(QString text);
 

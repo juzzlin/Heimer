@@ -22,6 +22,7 @@
 #include <map>
 #include <memory>
 
+#include "constants.hpp"
 #include "edge_point.hpp"
 #include "edge_text_edit.hpp"
 #include "types.hpp"
@@ -90,11 +91,13 @@ public slots:
 
     void setArrowMode(ArrowMode arrowMode);
 
+    void setArrowSize(double arrowSize);
+
     void setColor(const QColor & color);
 
     void setDashedLine(bool enable);
 
-    void setWidth(double width);
+    void setEdgeWidth(double edgeWidth);
 
     void setText(const QString & text);
 
@@ -137,7 +140,9 @@ private:
 
     QString m_text;
 
-    double m_width = 2;
+    double m_arrowSize = Constants::Edge::DEFAULT_ARROW_SIZE;
+
+    double m_edgeWidth = Constants::MindMap::DEFAULT_EDGE_WIDTH;
 
     int m_textSize = 11; // Not sure if we should set yet another default value here..
 

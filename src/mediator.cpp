@@ -67,8 +67,9 @@ void Mediator::addExistingGraphToScene()
         const auto node1 = getNodeByIndex(edge->targetNode().index());
         if (!m_editorScene->hasEdge(*node0, *node1)) {
             addItem(*edge);
+            edge->setArrowSize(m_editorData->mindMapData()->arrowSize());
             edge->setColor(m_editorData->mindMapData()->edgeColor());
-            edge->setWidth(m_editorData->mindMapData()->edgeWidth());
+            edge->setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
             edge->setTextSize(m_editorData->mindMapData()->textSize());
             edge->changeFont(m_editorData->mindMapData()->font());
             node0->addGraphicsEdge(*edge);
@@ -81,11 +82,13 @@ void Mediator::addExistingGraphToScene()
     // This is to prevent nasty updated loops like in https://github.com/juzzlin/Heimer/issues/96
     m_mainWindow.enableWidgetSignals(false);
 
+    m_mainWindow.setArrowSize(m_editorData->mindMapData()->arrowSize());
     m_mainWindow.setCornerRadius(m_editorData->mindMapData()->cornerRadius());
     m_mainWindow.setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
     m_mainWindow.setTextSize(m_editorData->mindMapData()->textSize());
     m_mainWindow.changeFont(m_editorData->mindMapData()->font());
 
+    m_editorView->setArrowSize(m_editorData->mindMapData()->arrowSize());
     m_editorView->setCornerRadius(m_editorData->mindMapData()->cornerRadius());
     m_editorView->setEdgeColor(m_editorData->mindMapData()->edgeColor());
     m_editorView->setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
@@ -624,6 +627,16 @@ size_t Mediator::selectionGroupSize() const
     return m_editorData->selectionGroupSize();
 }
 
+void Mediator::setArrowSize(double arrowSize)
+{
+    // Break loop with the spinbox
+    if (!qFuzzyCompare(m_editorData->mindMapData()->arrowSize(), arrowSize)) {
+        saveUndoPoint();
+        m_editorData->mindMapData()->setArrowSize(arrowSize);
+        m_editorView->setArrowSize(m_editorData->mindMapData()->arrowSize());
+    }
+}
+
 void Mediator::setBackgroundColor(QColor color)
 {
     if (m_editorData->mindMapData()->backgroundColor() != color) {
@@ -652,16 +665,6 @@ void Mediator::setEdgeColor(QColor color)
     }
 }
 
-void Mediator::setGridColor(QColor color)
-{
-    if (m_editorData->mindMapData()->gridColor() != color) {
-        saveUndoPoint();
-        m_editorData->mindMapData()->setGridColor(color);
-        m_editorView->setGridColor(color);
-        m_editorView->scene()->update();
-    }
-}
-
 void Mediator::setEdgeWidth(double value)
 {
     // Break loop with the spinbox
@@ -669,6 +672,16 @@ void Mediator::setEdgeWidth(double value)
         saveUndoPoint();
         m_editorData->mindMapData()->setEdgeWidth(value);
         m_editorView->setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
+    }
+}
+
+void Mediator::setGridColor(QColor color)
+{
+    if (m_editorData->mindMapData()->gridColor() != color) {
+        saveUndoPoint();
+        m_editorData->mindMapData()->setGridColor(color);
+        m_editorView->setGridColor(color);
+        m_editorView->scene()->update();
     }
 }
 

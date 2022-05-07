@@ -45,6 +45,8 @@ public:
 
     void loadSettings();
 
+    void setArrowSize(double value);
+
     void setCornerRadius(int value);
 
     void setEdgeWidth(double value);
@@ -52,9 +54,11 @@ public:
     void setTextSize(int textSize);
 
 signals:
-    void cornerRadiusChanged(int size);
+    void arrowSizeChanged(double width);
 
     void edgeWidthChanged(double width);
+
+    void cornerRadiusChanged(int size);
 
     void fontChanged(const QFont & font);
 
@@ -71,6 +75,8 @@ private:
 
     QWidgetAction * createCornerRadiusAction();
 
+    QWidgetAction * createArrowSizeAction();
+
     QWidgetAction * createEdgeWidthAction();
 
     QWidgetAction * createFontAction();
@@ -86,6 +92,8 @@ private:
     QCheckBox * m_copyOnDragCheckBox = nullptr;
 
     QSpinBox * m_cornerRadiusSpinBox = nullptr;
+
+    QDoubleSpinBox * m_arrowSizeSpinBox = nullptr;
 
     QDoubleSpinBox * m_edgeWidthSpinBox = nullptr;
 

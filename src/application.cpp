@@ -155,13 +155,13 @@ Application::Application(int & argc, char ** argv)
 
     // Connect views and StateMachine together
     connect(this, &Application::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
-    connect(m_editorView, &EditorView::actionTriggered, [this](StateMachine::Action action) {
+    connect(m_editorView, &EditorView::actionTriggered, m_stateMachine.get(), [this](StateMachine::Action action) {
         m_stateMachine->calculateState(action);
     });
     connect(m_mainWindow.get(), &MainWindow::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
     connect(m_stateMachine.get(), &StateMachine::stateChanged, this, &Application::runState);
 
-    connect(m_editorData.get(), &EditorData::isModifiedChanged, [=](bool isModified) {
+    connect(m_editorData.get(), &EditorData::isModifiedChanged, m_mainWindow.get(), [=](bool isModified) {
         m_mainWindow->enableSave(isModified || m_mediator->canBeSaved());
     });
 
@@ -171,12 +171,13 @@ Application::Application(int & argc, char ** argv)
     connect(m_mediator.get(), &Mediator::pngExportFinished, m_pngExportDialog.get(), &PngExportDialog::finishExport);
     connect(m_mediator.get(), &Mediator::svgExportFinished, m_svgExportDialog.get(), &SvgExportDialog::finishExport);
 
+    connect(m_mainWindow.get(), &MainWindow::arrowSizeChanged, m_mediator.get(), &Mediator::setArrowSize);
     connect(m_mainWindow.get(), &MainWindow::cornerRadiusChanged, m_mediator.get(), &Mediator::setCornerRadius);
     connect(m_mainWindow.get(), &MainWindow::edgeWidthChanged, m_mediator.get(), &Mediator::setEdgeWidth);
     connect(m_mainWindow.get(), &MainWindow::fontChanged, m_mediator.get(), &Mediator::changeFont);
     connect(m_mainWindow.get(), &MainWindow::textSizeChanged, m_mediator.get(), &Mediator::setTextSize);
     connect(m_mainWindow.get(), &MainWindow::gridSizeChanged, m_mediator.get(), &Mediator::setGridSize);
-    connect(m_mainWindow.get(), &MainWindow::gridVisibleChanged, [this](int state) {
+    connect(m_mainWindow.get(), &MainWindow::gridVisibleChanged, m_editorView, [this](int state) {
         bool visible = state == Qt::Checked;
         m_editorView->setGridVisible(visible);
     });

@@ -29,6 +29,8 @@ private slots:
 
     void testEmptyDesign();
 
+    void testArrowSize();
+
     void testBackgroundColor();
 
     void testCornerRadius();

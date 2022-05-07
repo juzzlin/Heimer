@@ -880,7 +880,12 @@
         <translation>Kulman pyöreys:</translation>
     </message>
     <message>
-        <location filename="../tool_bar.cpp" line="127"/>
+        <location filename="../tool_bar.cpp" line="132"/>
+        <source>Arrow size:</source>
+        <translation>Nuolen koko:</translation>
+    </message>
+    <message>
+        <location filename="../tool_bar.cpp" line="149"/>
         <source>Edge width:</source>
         <translation>Kaaren leveys:</translation>
     </message>

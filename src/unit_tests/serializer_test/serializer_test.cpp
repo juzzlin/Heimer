@@ -31,6 +31,14 @@ void SerializerTest::testEmptyDesign()
     QCOMPARE(QString(inData->version()), QString(VERSION));
 }
 
+void SerializerTest::testArrowSize()
+{
+    MindMapData outData;
+    outData.setArrowSize(42.42);
+    const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
+    QCOMPARE(inData->arrowSize(), outData.arrowSize());
+}
+
 void SerializerTest::testBackgroundColor()
 {
     MindMapData outData;

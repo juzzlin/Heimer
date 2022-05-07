@@ -165,9 +165,9 @@ namespace RecentFiles {
 
 static const int MAX_FILES = 8;
 
-static const QString QSETTINGS_ARRAY_KEY = "recentFilesArray";
+static const auto QSETTINGS_ARRAY_KEY = "recentFilesArray";
 
-static const QString QSETTINGS_FILE_PATH_KEY = "filePath";
+static const auto QSETTINGS_FILE_PATH_KEY = "filePath";
 
 } // namespace RecentFiles
 

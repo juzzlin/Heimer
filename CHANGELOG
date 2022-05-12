@@ -5,6 +5,19 @@ Release date:
 
 New features:
 
+Bug fixes:
+
+Other:
+
+3.3.0
+=====
+
+Release date:
+
+Thu, 12 May 2022 21:09:29 +0300
+
+New features:
+
 * Add German translations
 
 * Fix GitHub Issue #206: An option to change the size of the arrows
@@ -14,8 +27,6 @@ Bug fixes:
 
 * Fix GitHub Issue #205: Click dragging from an existing node, 
   then pressing delete before dropping the node, crashes the program
-
-Other:
 
 3.2.0
 =====

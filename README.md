@@ -31,7 +31,7 @@ It takes a lot of effort to develop and maintain Heimer, so if you find the appl
 
 It's easy to donate via PayPal:
 
-<a href="https://paypal.me/pools/c/8yvW5nEMmq">paypal.me/pools/c/8yvW5nEMmq</a>
+<a href=" https://paypal.me/juzzlin">paypal.me/juzzlin</a>
 
 Thanks! :)
 

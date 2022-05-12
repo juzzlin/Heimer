@@ -35,7 +35,7 @@
     </message>
     <message>
         <source> on Patreon: </source>
-        <translation type="vanished">su Patreon: </translation>
+        <translation>su Patreon: </translation>
     </message>
 </context>
 <context>
@@ -110,27 +110,27 @@
     <name>DefaultsDlg</name>
     <message>
         <source>Defaults</source>
-        <translation type="vanished">Predefinito</translation>
+        <translation>Predefinito</translation>
     </message>
     <message>
         <source>Edge Arrow Style</source>
-        <translation type="vanished">Stile Bordo Freccia</translation>
+        <translation>Stile Bordo Freccia</translation>
     </message>
     <message>
         <source>No arrow</source>
-        <translation type="vanished">Nessuna freccia</translation>
+        <translation>Nessuna freccia</translation>
     </message>
     <message>
         <source>Single arrow</source>
-        <translation type="vanished">Singola freccia</translation>
+        <translation>Singola freccia</translation>
     </message>
     <message>
         <source>Double arrow</source>
-        <translation type="vanished">Doppia freccia</translation>
+        <translation>Doppia freccia</translation>
     </message>
     <message>
         <source>Reversed direction</source>
-        <translation type="vanished">Direzione invertita</translation>
+        <translation>Direzione invertita</translation>
     </message>
 </context>
 <context>
@@ -170,16 +170,16 @@
     </message>
     <message>
         <source>Hide arrow</source>
-        <translation type="vanished">Nascondi freccia</translation>
+        <translation>Nascondi freccia</translation>
     </message>
     <message>
         <source>Single arrow</source>
-        <translation type="vanished">Singola freccia</translation>
+        <translation>Singola freccia</translation>
     </message>
     <message>
         <location filename="../edge_context_menu.cpp" line="33"/>
         <source>Show arrow</source>
-        <translation></translation>
+        <translation>Mostra freccia</translation>
     </message>
     <message>
         <location filename="../edge_context_menu.cpp" line="40"/>
@@ -189,7 +189,7 @@
     <message>
         <location filename="../edge_context_menu.cpp" line="47"/>
         <source>Dashed line</source>
-        <translation></translation>
+        <translation>Linea tratteggiata</translation>
     </message>
     <message>
         <location filename="../edge_context_menu.cpp" line="54"/>
@@ -249,11 +249,11 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="vanished">Cancella</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Optimize</source>
-        <translation type="vanished">Ottimizza</translation>
+        <translation>Ottimizza</translation>
     </message>
 </context>
 <context>
@@ -333,11 +333,11 @@
     <message>
         <location filename="../main_context_menu.cpp" line="169"/>
         <source>Paste nodes</source>
-        <translation>Incolla i nodi</translation>
+        <translation>Incolla nodi</translation>
     </message>
     <message>
         <source>&amp;Colors</source>
-        <translation type="vanished">&amp;Colori</translation>
+        <translation>&amp;Colori</translation>
     </message>
 </context>
 <context>
@@ -368,7 +368,7 @@
     </message>
     <message>
         <source>Show grid</source>
-        <translation type="vanished">Mostra griglia</translation>
+        <translation>Mostra griglia</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="149"/>
@@ -377,7 +377,7 @@
     </message>
     <message>
         <source>&amp;Colors</source>
-        <translation type="vanished">&amp;Colori</translation>
+        <translation>&amp;Colori</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="165"/>
@@ -406,19 +406,19 @@
     </message>
     <message>
         <source>Corner radius:</source>
-        <translation type="vanished">Raggio dell&apos;&apos;angolo:</translation>
+        <translation>Raggio dell&apos;&apos;angolo:</translation>
     </message>
     <message>
         <source>Edge width:</source>
-        <translation type="vanished">Larghezza del bordo:</translation>
+        <translation>Larghezza del bordo:</translation>
     </message>
     <message>
         <source>Text size:</source>
-        <translation type="vanished">Dimensione del testo:</translation>
+        <translation>Dimensione del testo:</translation>
     </message>
     <message>
         <source>Grid size:</source>
-        <translation type="vanished">Dimensione della griglia:</translation>
+        <translation>Dimensione della griglia:</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="214"/>
@@ -472,7 +472,7 @@
     </message>
     <message>
         <source>&amp;Export to PNG image</source>
-        <translation type="vanished">&amp;Esporta in immagine PNG</translation>
+        <translation>&amp;Esporta in immagine PNG</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="298"/>
@@ -501,11 +501,11 @@
     </message>
     <message>
         <source>&amp;Settings</source>
-        <translation type="vanished">&amp;Impostazioni</translation>
+        <translation>&amp;Impostazioni</translation>
     </message>
     <message>
         <source>&amp;Defaults</source>
-        <translation type="vanished">&amp;Predefinite</translation>
+        <translation>&amp;Predefiniti</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="339"/>
@@ -607,11 +607,11 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="vanished">Cancella</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="vanished">Esporta</translation>
+        <translation>Esporta</translation>
     </message>
 </context>
 <context>
@@ -683,7 +683,7 @@
     </message>
     <message>
         <source>Export</source>
-        <translation type="vanished">Esporta</translation>
+        <translation>Esporta</translation>
     </message>
 </context>
 <context>
@@ -691,7 +691,7 @@
     <message>
         <location filename="../tool_bar.cpp" line="34"/>
         <source>Auto snap</source>
-        <translation></translation>
+        <translation>Snap automatico</translation>
     </message>
     <message>
         <location filename="../tool_bar.cpp" line="35"/>
@@ -706,7 +706,7 @@
     <message>
         <location filename="../tool_bar.cpp" line="84"/>
         <source>Automatically snap existing nodes to the grid when grid size changes</source>
-        <translation></translation>
+        <translation>Aggancia automaticamente i nodi esistenti alla griglia quando le dimensioni della griglia cambiano</translation>
     </message>
     <message>
         <location filename="../tool_bar.cpp" line="115"/>
@@ -716,7 +716,7 @@
     <message>
         <location filename="../tool_bar.cpp" line="132"/>
         <source>Arrow size:</source>
-        <translation type="unfinished">Dimensione della freccia:</translation>
+        <translation>Dimensione della freccia:</translation>
     </message>
     <message>
         <location filename="../tool_bar.cpp" line="149"/>
@@ -726,7 +726,7 @@
     <message>
         <location filename="../tool_bar.cpp" line="154"/>
         <source>Font</source>
-        <translation></translation>
+        <translation>Font</translation>
     </message>
     <message>
         <location filename="../tool_bar.cpp" line="189"/>
@@ -736,7 +736,7 @@
     <message>
         <location filename="../tool_bar.cpp" line="211"/>
         <source>Search:</source>
-        <translation></translation>
+        <translation>Cerca:</translation>
     </message>
     <message>
         <location filename="../tool_bar.cpp" line="227"/>

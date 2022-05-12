@@ -53,6 +53,10 @@ On Linux distributions that support universal Snap packages you can install Heim
 
 `$ snap install heimer`
 
+Run:
+
+`$ heimer`
+
 For more information see https://snapcraft.io/heimer and https://docs.snapcraft.io/core/install
 
 Snap is the recommended way to install Heimer on Linux.
@@ -62,6 +66,10 @@ Snap is the recommended way to install Heimer on Linux.
 There are Debian packages for Ubuntu/Debian. Use some graphical tool to install, or as an example on `Ubuntu 20.04`:
 
 `$ sudo apt install ./heimer-2.5.0-ubuntu-20.04_amd64.deb`
+
+Run:
+
+`$ heimer`
 
 ### Linux: AppImage
 
@@ -78,6 +86,16 @@ Run:
 ### Windows
 
 For Windows there's an installer and alternatively a ZIP-archive that just contains the Heimer executable.
+
+## Setting the language
+
+You can set the language manually with `--lang` option. For example, Finnish:
+
+`$ heimer --lang fi`
+
+Show all available options:
+
+`$ heimer -h`
 
 ## Building the project
 

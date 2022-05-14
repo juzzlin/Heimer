@@ -101,6 +101,12 @@ Show all available options:
 
 Currently the build depends on `Qt 5` only (`qt5-default`, `qttools5-dev-tools`, `qttools5-dev`, `libqt5svg5-dev` packages on Ubuntu). Support for `Qt 6` is preliminary and should work with `CMake`.
 
+In the case of missing `qt5-default`, install these packages manually: `qtbase5-dev`, `qtchooser`, `qt5-qmake`, `qtbase5-dev-tools`.
+
+Command to install all (at least most) needed dev packages on Ubuntu:
+
+`$ sudo apt install build-essential cmake qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools qttools5-dev-tools qttools5-dev libqt5svg5-dev`
+
 ### Linux / Unix
 
 The "official" build system for Linux is `CMake`.
@@ -137,7 +143,7 @@ This is so very cool! A Windowsless Windows build!
 
 Anyway, as the project depends only on Qt SDK you can use your favourite Qt setup to build the project on Windows.
 
-### Docker environments
+### Docker environment files
 
 Needed Dockerfiles can be found at https://github.com/juzzlin/Dockerfiles
 

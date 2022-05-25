@@ -1,0 +1,8 @@
+set(EDITOR_DIR ${CMAKE_SOURCE_DIR}/src)
+include_directories(${EDITOR_DIR} ${EDITOR_DIR}/contrib ${CMAKE_CURRENT_SOURCE_DIR})
+set(NAME version_test)
+set(SRC ${NAME}.cpp)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/unit_tests)
+add_executable(${NAME} ${SRC} ${MOC_SRC})
+add_test(${NAME} ${CMAKE_BINARY_DIR}/unit_tests/${NAME})
+target_link_libraries(${NAME} ${LIBRARY_NAME} Qt${QT_VERSION_MAJOR}::Test)

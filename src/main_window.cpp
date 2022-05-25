@@ -40,6 +40,7 @@
 #include <QMessageBox>
 #include <QScreen>
 #include <QSpinBox>
+#include <QStatusBar>
 #include <QVBoxLayout>
 #include <QWidgetAction>
 
@@ -58,6 +59,7 @@ MainWindow::MainWindow()
   , m_saveAsAction(new QAction(tr("&Save as") + Constants::Misc::THREE_DOTS, this))
   , m_undoAction(new QAction(tr("Undo"), this))
   , m_redoAction(new QAction(tr("Redo"), this))
+  , m_statusText(new QLabel(this))
 {
     if (!m_instance) {
         m_instance = this;
@@ -68,6 +70,8 @@ MainWindow::MainWindow()
     addToolBar(Qt::BottomToolBarArea, m_toolBar);
 
     connectToolBar();
+
+    m_statusText->setOpenExternalLinks(true);
 }
 
 void MainWindow::addConnectSelectedNodesAction(QMenu & menu)
@@ -78,7 +82,7 @@ void MainWindow::addConnectSelectedNodesAction(QMenu & menu)
         m_mediator->performNodeAction({ NodeAction::Type::ConnectSelected });
     });
     menu.addAction(m_connectSelectedNodesAction);
-    connect(&menu, &QMenu::aboutToShow, [=] {
+    connect(&menu, &QMenu::aboutToShow, this, [=] {
         m_connectSelectedNodesAction->setEnabled(m_mediator->areSelectedNodesConnectable());
     });
 }
@@ -543,6 +547,13 @@ void MainWindow::showErrorDialog(QString message)
                           Constants::Application::APPLICATION_NAME,
                           message,
                           "");
+}
+
+void MainWindow::showStatusText(QString message)
+{
+    statusBar()->addPermanentWidget(m_statusText, 1);
+    m_statusText->setAlignment(Qt::AlignRight);
+    m_statusText->setText(message);
 }
 
 void MainWindow::initializeNewMindMap()

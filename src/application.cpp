@@ -31,6 +31,7 @@
 #include "state_machine.hpp"
 #include "svg_export_dialog.hpp"
 #include "user_exception.hpp"
+#include "version_checker.hpp"
 
 #include "argengine.hpp"
 #include "simple_logger.hpp"
@@ -133,6 +134,7 @@ void Application::parseArgs(int argc, char ** argv)
 Application::Application(int & argc, char ** argv)
   : m_app(argc, argv)
   , m_stateMachine(std::make_unique<StateMachine>())
+  , m_versionChecker(std::make_unique<VersionChecker>())
 {
     parseArgs(argc, argv);
 
@@ -189,6 +191,11 @@ Application::Application(int & argc, char ** argv)
     if (!m_mindMapFile.isEmpty()) {
         QTimer::singleShot(0, this, &Application::openArgMindMap);
     }
+
+    connect(m_versionChecker.get(), &VersionChecker::newVersionFound, this, [this](Version version, QString downloadUrl) {
+        m_mainWindow->showStatusText(QString(tr("A new version %1 available at <a href='%2'>%2</a>")).arg(version.toString(), downloadUrl));
+    });
+    m_versionChecker->checkForNewReleases();
 }
 
 QString Application::getFileDialogFileText() const

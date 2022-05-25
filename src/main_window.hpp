@@ -36,6 +36,7 @@ class Node;
 class QAction;
 class QCheckBox;
 class QFont;
+class QLabel;
 class QLineEdit;
 class QSlider;
 class QSpinBox;
@@ -100,6 +101,8 @@ public slots:
     void setTextSize(int textSize);
 
     void showErrorDialog(QString message);
+
+    void showStatusText(QString text);
 
 protected:
     void closeEvent(QCloseEvent * event) override;
@@ -182,6 +185,8 @@ private:
     std::shared_ptr<Mediator> m_mediator;
 
     bool m_closeNow = false;
+
+    QLabel * m_statusText;
 
     static MainWindow * m_instance;
 };

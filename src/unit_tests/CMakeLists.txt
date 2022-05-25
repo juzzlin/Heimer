@@ -5,4 +5,4 @@ add_subdirectory(graph_test)
 add_subdirectory(layout_optimizer_test)
 add_subdirectory(node_test)
 add_subdirectory(serializer_test)
-
+add_subdirectory(version_test)

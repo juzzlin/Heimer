@@ -33,6 +33,7 @@ class Mediator;
 class Node;
 class PngExportDialog;
 class SvgExportDialog;
+class VersionChecker;
 
 class Application : public QObject
 {
@@ -41,7 +42,7 @@ class Application : public QObject
 public:
     Application(int & argc, char ** argv);
 
-    ~Application();
+    ~Application() override;
 
     int run();
 
@@ -115,6 +116,8 @@ private:
     std::unique_ptr<PngExportDialog> m_pngExportDialog;
 
     std::unique_ptr<SvgExportDialog> m_svgExportDialog;
+
+    std::unique_ptr<VersionChecker> m_versionChecker;
 };
 
 #endif // APPLICATION_HPP

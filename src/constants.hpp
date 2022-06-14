@@ -95,7 +95,7 @@ namespace Export {
 
 namespace Png {
 
-static const QString FILE_EXTENSION = ".png";
+static const auto FILE_EXTENSION = ".png";
 
 static const int MIN_IMAGE_SIZE = 0;
 
@@ -105,7 +105,7 @@ static const int MAX_IMAGE_SIZE = 99999;
 
 namespace Svg {
 
-static const QString FILE_EXTENSION = ".svg";
+static const auto FILE_EXTENSION = ".svg";
 
 } // namespace Svg
 

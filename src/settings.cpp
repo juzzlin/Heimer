@@ -142,7 +142,7 @@ void Settings::saveGridSize(int value)
         gridSizeTimer = std::make_unique<QTimer>();
         gridSizeTimer->setSingleShot(true);
         gridSizeTimer->setInterval(Constants::View::TOO_QUICK_ACTION_DELAY_MS);
-        gridSizeTimer->connect(gridSizeTimer.get(), &QTimer::timeout, [&]() {
+        gridSizeTimer->connect(gridSizeTimer.get(), &QTimer::timeout, gridSizeTimer.get(), [&]() {
             QSettings settings;
             settings.beginGroup(settingsGroupMainWindow);
             settings.setValue(gridSizeKey, sGridSizeValue);

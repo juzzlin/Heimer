@@ -59,7 +59,7 @@ Node::Node()
 
     setSelected(false);
 
-    connect(m_textEdit, &TextEdit::textChanged, [=](const QString & text) {
+    connect(m_textEdit, &TextEdit::textChanged, this, [=](const QString & text) {
         setText(text);
         adjustSize();
     });

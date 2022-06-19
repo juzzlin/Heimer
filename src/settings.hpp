@@ -76,6 +76,10 @@ bool getBoolean(QString group, QString key, bool defaultValue);
 
 void setBoolean(QString group, QString key, bool value);
 
+QColor getColor(QString group, QString key, QColor defaultValue);
+
+void setColor(QString group, QString key, QColor value);
+
 double getNumber(QString group, QString key, double defaultValue);
 
 void setNumber(QString group, QString key, double value);

@@ -14,7 +14,6 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "application.hpp"
-#include "color_dialog.hpp"
 #include "constants.hpp"
 #include "editor_data.hpp"
 #include "editor_scene.hpp"
@@ -27,6 +26,7 @@
 #include "node_action.hpp"
 #include "png_export_dialog.hpp"
 #include "recent_files_manager.hpp"
+#include "scene_color_dialog.hpp"
 #include "settings.hpp"
 #include "state_machine.hpp"
 #include "svg_export_dialog.hpp"
@@ -367,31 +367,31 @@ void Application::saveMindMapAs()
 
 void Application::showBackgroundColorDialog()
 {
-    ColorDialog(ColorDialog::Role::Background, m_mediator).exec();
+    SceneColorDialog(ColorDialog::Role::Background, m_mediator).exec();
     emit actionTriggered(StateMachine::Action::BackgroundColorChanged);
 }
 
 void Application::showEdgeColorDialog()
 {
-    ColorDialog(ColorDialog::Role::Edge, m_mediator).exec();
+    SceneColorDialog(ColorDialog::Role::Edge, m_mediator).exec();
     emit actionTriggered(StateMachine::Action::EdgeColorChanged);
 }
 
 void Application::showGridColorDialog()
 {
-    ColorDialog(ColorDialog::Role::Grid, m_mediator).exec();
+    SceneColorDialog(ColorDialog::Role::Grid, m_mediator).exec();
     emit actionTriggered(StateMachine::Action::GridColorChanged);
 }
 
 void Application::showNodeColorDialog()
 {
-    ColorDialog(ColorDialog::Role::Node, m_mediator).exec();
+    SceneColorDialog(ColorDialog::Role::Node, m_mediator).exec();
     emit actionTriggered(StateMachine::Action::NodeColorChanged);
 }
 
 void Application::showTextColorDialog()
 {
-    ColorDialog(ColorDialog::Role::Text, m_mediator).exec();
+    SceneColorDialog(ColorDialog::Role::Text, m_mediator).exec();
     emit actionTriggered(StateMachine::Action::TextColorChanged);
 }
 

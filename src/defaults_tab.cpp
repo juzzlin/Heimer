@@ -14,6 +14,8 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "defaults_tab.hpp"
+
+#include "color_setting_button.hpp"
 #include "settings_proxy.hpp"
 #include "widget_factory.hpp"
 
@@ -21,6 +23,7 @@
 #include <QCheckBox>
 #include <QGroupBox>
 #include <QHBoxLayout>
+#include <QPushButton>
 #include <QRadioButton>
 #include <QVBoxLayout>
 
@@ -28,6 +31,12 @@
 
 DefaultsTab::DefaultsTab(QWidget * parent)
   : QWidget(parent)
+  , m_edgeDirectionCheckBox(new QCheckBox(tr("Reversed direction"), this))
+  , m_backgroundColorButton(new ColorSettingButton(tr("Background"), ColorDialog::Role::Background, this))
+  , m_edgeColorButton(new ColorSettingButton(tr("Edge color"), ColorDialog::Role::Edge, this))
+  , m_gridColorButton(new ColorSettingButton(tr("Grid color"), ColorDialog::Role::Grid, this))
+  , m_nodeColorButton(new ColorSettingButton(tr("Node color"), ColorDialog::Role::Node, this))
+  , m_nodeTextColorButton(new ColorSettingButton(tr("Node text color"), ColorDialog::Role::Text, this))
 {
     initWidgets();
 }
@@ -47,7 +56,19 @@ void DefaultsTab::apply()
 void DefaultsTab::initWidgets()
 {
     const auto mainLayout = new QVBoxLayout;
-    const auto edgeGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Edge Arrow Style"), *mainLayout);
+
+    createEdgeWidgets(*mainLayout);
+
+    createColorWidgets(*mainLayout);
+
+    setLayout(mainLayout);
+
+    setActiveDefaults();
+}
+
+void DefaultsTab::createEdgeWidgets(QVBoxLayout & mainLayout)
+{
+    const auto edgeGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Edge Arrow Style"), mainLayout);
 
     m_edgeArrowStyleRadioMap = {
         { Edge::ArrowMode::Hidden, new QRadioButton(tr("No arrow")) },
@@ -57,19 +78,38 @@ void DefaultsTab::initWidgets()
 
     const auto edgeArrowRadioGroup = new QButtonGroup;
     edgeArrowRadioGroup->setParent(this); // Set parent explicitly instead of a constructor arg to silence analyzer warning
-
     const auto edgeArrowRadioLayout = new QVBoxLayout;
     for (auto && iter : m_edgeArrowStyleRadioMap) {
         edgeArrowRadioGroup->addButton(iter.second);
         edgeArrowRadioLayout->addWidget(iter.second);
     }
-    m_edgeDirectionCheckBox = new QCheckBox(tr("Reversed direction"));
     edgeArrowRadioLayout->addWidget(m_edgeDirectionCheckBox);
     edgeGroup.second->addLayout(edgeArrowRadioLayout);
+}
 
-    setLayout(mainLayout);
+void DefaultsTab::createColorWidgets(QVBoxLayout & mainLayout)
+{
+    const auto colorsGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Colors"), mainLayout);
+    const auto colorButtonLayout = new QVBoxLayout;
+    colorButtonLayout->addWidget(m_backgroundColorButton);
+    m_colorSettingButtons.push_back(m_backgroundColorButton);
+    colorButtonLayout->addWidget(m_edgeColorButton);
+    m_colorSettingButtons.push_back(m_edgeColorButton);
+    colorButtonLayout->addWidget(m_gridColorButton);
+    m_colorSettingButtons.push_back(m_gridColorButton);
+    colorButtonLayout->addWidget(m_nodeColorButton);
+    m_colorSettingButtons.push_back(m_nodeColorButton);
+    colorButtonLayout->addWidget(m_nodeTextColorButton);
+    m_colorSettingButtons.push_back(m_nodeTextColorButton);
+    colorsGroup.second->addLayout(colorButtonLayout);
 
-    setActiveDefaults();
+    const auto resetToDefaultsButton = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
+    colorsGroup.second->addLayout(resetToDefaultsButton.second);
+    connect(resetToDefaultsButton.first, &QPushButton::clicked, this, [=] {
+        for (auto && colorSettingButton : m_colorSettingButtons) {
+            colorSettingButton->resetToDefault();
+        }
+    });
 }
 
 void DefaultsTab::setActiveDefaults()

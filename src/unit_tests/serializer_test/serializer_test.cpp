@@ -50,7 +50,7 @@ void SerializerTest::testBackgroundColor()
 void SerializerTest::testCornerRadius()
 {
     MindMapData outData;
-    outData.setCornerRadius(Constants::Node::DEFAULT_CORNER_RADIUS + 1);
+    outData.setCornerRadius(Constants::Node::Defaults::CORNER_RADIUS + 1);
     const auto inData = AlzSerializer::fromXml(AlzSerializer::toXml(outData));
     QCOMPARE(inData->cornerRadius(), outData.cornerRadius());
 }

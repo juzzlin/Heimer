@@ -146,9 +146,9 @@ private:
 
     QString m_text;
 
-    double m_arrowSize = Constants::Edge::DEFAULT_ARROW_SIZE;
+    double m_arrowSize = Constants::Edge::Defaults::ARROW_SIZE;
 
-    double m_edgeWidth = Constants::MindMap::DEFAULT_EDGE_WIDTH;
+    double m_edgeWidth = Constants::MindMap::Defaults::EDGE_WIDTH;
 
     int m_textSize = 11; // Not sure if we should set yet another default value here..
 

@@ -151,11 +151,11 @@ private:
 
     void updateHandlePositions();
 
-    QColor m_color = Qt::white;
+    QColor m_color;
 
     int m_cornerRadius = 0;
 
-    QColor m_textColor = Qt::black;
+    QColor m_textColor;
 
     int m_textSize = 11; // Not sure if we should set yet another default value here..
 

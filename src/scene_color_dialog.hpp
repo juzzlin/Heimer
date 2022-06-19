@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2021 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2022 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,33 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef COLOR_DIALOG_HPP
-#define COLOR_DIALOG_HPP
+#ifndef SCENE_COLOR_DIALOG_HPP
+#define SCENE_COLOR_DIALOG_HPP
 
-#include <QColorDialog>
+#include "color_dialog.hpp"
 
-class ColorDialog : public QColorDialog
+#include <memory>
+
+class Mediator;
+
+class SceneColorDialog : public ColorDialog
 {
 public:
-    enum class Role
-    {
-        Node,
-        Edge,
-        Grid,
-        Text,
-        Background
-    };
-
-    ColorDialog(Role role);
-
-    virtual ~ColorDialog() override;
-
-    const QColor & color() const;
-
-private:
-    Role m_role;
-
-    QColor m_color;
+    SceneColorDialog(Role role, std::shared_ptr<Mediator> mediator);
 };
 
-#endif // COLOR_DIALOG_HPP
+#endif // SCENE_COLOR_DIALOG_HPP

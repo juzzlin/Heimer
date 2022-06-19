@@ -18,6 +18,7 @@
 #include "graphics_factory.hpp"
 #include "grid.hpp"
 #include "node.hpp"
+#include "settings_proxy.hpp"
 
 #include <memory>
 
@@ -25,6 +26,9 @@ ImageManager MindMapData::m_imageManager {};
 
 MindMapData::MindMapData(QString name)
   : MindMapDataBase(name)
+  , m_backgroundColor(SettingsProxy::instance().backgroundColor())
+  , m_edgeColor(SettingsProxy::instance().edgeColor())
+  , m_gridColor(SettingsProxy::instance().gridColor())
 {
 }
 

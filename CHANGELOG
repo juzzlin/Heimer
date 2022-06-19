@@ -11,6 +11,9 @@ New features:
   - Adds effects tab to the settings dialog
   - Shadow offset and blur radius can now be set
 
+* Fix GitHub Issue #211: Color defaults
+  - Default colors can now be set via the default settings tab
+
 Bug fixes:
 
 Other:

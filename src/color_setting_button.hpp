@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2021 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2022 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,33 +13,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef COLOR_DIALOG_HPP
-#define COLOR_DIALOG_HPP
+#ifndef COLOR_SETTING_BUTTON_HPP
+#define COLOR_SETTING_BUTTON_HPP
 
-#include <QColorDialog>
+#include "color_dialog.hpp"
+#include <QColor>
+#include <QPushButton>
 
-class ColorDialog : public QColorDialog
+class ColorSettingButton : public QPushButton
 {
 public:
-    enum class Role
-    {
-        Node,
-        Edge,
-        Grid,
-        Text,
-        Background
-    };
+    explicit ColorSettingButton(QString text, ColorDialog::Role role, QWidget * parent = nullptr);
 
-    ColorDialog(Role role);
+    void resetToDefault();
 
-    virtual ~ColorDialog() override;
-
-    const QColor & color() const;
+    void setColor(QColor color);
 
 private:
-    Role m_role;
+    void apply(QColor color);
 
-    QColor m_color;
+    ColorDialog::Role m_role;
 };
 
-#endif // COLOR_DIALOG_HPP
+#endif // COLOR_SETTING_BUTTON_HPP

@@ -15,10 +15,11 @@
 
 #include "color_dialog.hpp"
 #include "constants.hpp"
-#include "mediator.hpp"
-#include "node_action.hpp"
 
-ColorDialog::ColorDialog(Role role, std::shared_ptr<Mediator> mediator)
+#include <vector>
+
+ColorDialog::ColorDialog(Role role)
+  : m_role(role)
 {
     setOption(QColorDialog::DontUseNativeDialog, true);
 
@@ -57,7 +58,7 @@ ColorDialog::ColorDialog(Role role, std::shared_ptr<Mediator> mediator)
         "#AD7FA8", // Purple
         "#75507B",
         "#5C3566",
-        Constants::MindMap::DEFAULT_BACKGROUND_COLOR,
+        Constants::MindMap::Defaults::BACKGROUND_COLOR,
         "#bbbbbb",
         "#bbbbbb",
         "#E9B96E", // Brown
@@ -105,25 +106,15 @@ ColorDialog::ColorDialog(Role role, std::shared_ptr<Mediator> mediator)
     }
 
     connect(this, &QColorDialog::colorSelected, [=](QColor color) {
-        if (!color.isValid()) {
-            return;
-        }
-        switch (role) {
-        case Role::Background:
-            mediator->setBackgroundColor(color);
-            break;
-        case Role::Edge:
-            mediator->setEdgeColor(color);
-            break;
-        case Role::Grid:
-            mediator->setGridColor(color);
-            break;
-        case Role::Node:
-            mediator->performNodeAction({ NodeAction::Type::SetNodeColor, color });
-            break;
-        case Role::Text:
-            mediator->performNodeAction({ NodeAction::Type::SetTextColor, color });
-            break;
+        if (color.isValid()) {
+            m_color = color;
         }
     });
 }
+
+const QColor & ColorDialog::color() const
+{
+    return m_color;
+}
+
+ColorDialog::~ColorDialog() = default;

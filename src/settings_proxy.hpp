@@ -33,6 +33,26 @@ public:
 
     void setAutosave(bool autosave);
 
+    const QColor & backgroundColor() const;
+
+    void setBackgroundColor(const QColor & backgroundColor);
+
+    const QColor & edgeColor() const;
+
+    void setEdgeColor(const QColor & edgeColor);
+
+    const QColor & gridColor() const;
+
+    void setGridColor(const QColor & gridColor);
+
+    const QColor & nodeColor() const;
+
+    void setNodeColor(const QColor & nodeColor);
+
+    const QColor & nodeTextColor() const;
+
+    void setNodeTextColor(const QColor & nodeTextColor);
+
     Edge::ArrowMode edgeArrowMode() const;
 
     void setEdgeArrowMode(Edge::ArrowMode mode);
@@ -51,6 +71,16 @@ public:
 
 private:
     bool m_autosave = false;
+
+    QColor m_backgroundColor;
+
+    QColor m_edgeColor;
+
+    QColor m_gridColor;
+
+    QColor m_nodeColor;
+
+    QColor m_nodeTextColor;
 
     Edge::ArrowMode m_edgeArrowMode;
 

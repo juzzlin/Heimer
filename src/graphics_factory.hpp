@@ -61,11 +61,11 @@ struct ShadowEffectParams
         return !(*this == other);
     }
 
-    int offset = Constants::Effects::DEFAULT_SHADOW_EFFECT_OFFSET;
+    int offset = Constants::Effects::Defaults::SHADOW_EFFECT_OFFSET;
 
-    int blurRadiusNormal = Constants::Effects::DEFAULT_SHADOW_EFFECT_NORMAL_BLUR_RADIUS;
+    int blurRadiusNormal = Constants::Effects::Defaults::SHADOW_EFFECT_NORMAL_BLUR_RADIUS;
 
-    int blurRadiusSelected = Constants::Effects::DEFAULT_SHADOW_EFFECT_SELECTED_BLUR_RADIUS;
+    int blurRadiusSelected = Constants::Effects::Defaults::SHADOW_EFFECT_SELECTED_BLUR_RADIUS;
 
     QColor colorNormal = { 96, 96, 96 };
 

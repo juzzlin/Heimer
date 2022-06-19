@@ -21,7 +21,9 @@
 #include <utility>
 
 class QGroupBox;
+class QHBoxLayout;
 class QLayout;
+class QPushButton;
 class QVBoxLayout;
 class QWidget;
 class QWidgetAction;
@@ -29,6 +31,8 @@ class QWidgetAction;
 namespace WidgetFactory {
 
 std::pair<QGroupBox *, QVBoxLayout *> buildGroupBoxWithVLayout(QString title, QLayout & parentLayout);
+
+std::pair<QPushButton *, QHBoxLayout *> buildResetToDefaultsButtonWithHLayout();
 
 std::pair<QWidget *, QWidgetAction *> buildToolBarWidgetAction(QWidget & widget, QWidget & parent);
 

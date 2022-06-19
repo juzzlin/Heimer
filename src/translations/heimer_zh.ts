@@ -110,27 +110,57 @@
 <context>
     <name>DefaultsTab</name>
     <message>
-        <location filename="../defaults_tab.cpp" line="50"/>
+        <location filename="../defaults_tab.cpp" line="35"/>
+        <source>Background</source>
+        <translation type="unfinished">背景</translation>
+    </message>
+    <message>
+        <location filename="../defaults_tab.cpp" line="36"/>
+        <source>Edge color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../defaults_tab.cpp" line="37"/>
+        <source>Grid color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../defaults_tab.cpp" line="38"/>
+        <source>Node color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../defaults_tab.cpp" line="39"/>
+        <source>Node text color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../defaults_tab.cpp" line="71"/>
         <source>Edge Arrow Style</source>
         <translation>箭头样式</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="53"/>
+        <location filename="../defaults_tab.cpp" line="74"/>
         <source>No arrow</source>
         <translation>无箭头</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="54"/>
+        <location filename="../defaults_tab.cpp" line="75"/>
         <source>Single arrow</source>
         <translation>单箭头</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="55"/>
+        <location filename="../defaults_tab.cpp" line="76"/>
         <source>Double arrow</source>
         <translation>双箭头</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="66"/>
+        <location filename="../defaults_tab.cpp" line="92"/>
+        <source>Colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../defaults_tab.cpp" line="34"/>
         <source>Reversed direction</source>
         <translation>反向</translation>
     </message>
@@ -595,6 +625,11 @@
         <location filename="../xml_reader.cpp" line="33"/>
         <source>Corrupted file: &apos;</source>
         <translation>损坏的文件：&apos;</translation>
+    </message>
+    <message>
+        <location filename="../widget_factory.cpp" line="44"/>
+        <source>Reset to defaults</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

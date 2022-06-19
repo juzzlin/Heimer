@@ -24,6 +24,7 @@ set(LIB_SRC
     alz_serializer.cpp
     application.cpp
     color_dialog.cpp
+    color_setting_button.cpp
     constants.hpp
     copy_context.cpp
     defaults_tab.cpp
@@ -61,6 +62,7 @@ set(LIB_SRC
     png_export_dialog.cpp
     recent_files_manager.cpp
     recent_files_menu.cpp
+    scene_color_dialog.cpp
     selection_group.cpp
     settings.cpp
     settings_dialog.cpp

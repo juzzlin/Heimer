@@ -53,6 +53,12 @@ static constexpr auto TRANSLATIONS_RESOURCE_BASE = ":/translations/heimer_";
 
 namespace Edge {
 
+namespace Defaults {
+
+static const double ARROW_SIZE = 10;
+
+} // namespace Defaults
+
 static const double ARROW_SIZE_STEP = 5;
 
 static const double ARROW_OPENING = 150;
@@ -60,8 +66,6 @@ static const double ARROW_OPENING = 150;
 static const double CORNER_RADIUS_SCALE = 0.3;
 
 static const QVector DASH_PATTERN { qreal(5), qreal(5) };
-
-static const double DEFAULT_ARROW_SIZE = 10;
 
 static const QColor DOT_COLOR { 255, 0, 0, 192 };
 
@@ -121,15 +125,35 @@ static const int MAX_SIZE = 500;
 
 namespace MindMap {
 
-static const QColor DEFAULT_BACKGROUND_COLOR { 0xba, 0xbd, 0xb6 };
+namespace Defaults {
 
-static const QColor DEFAULT_EDGE_COLOR { 0, 0, 0, 200 };
+const auto SETTINGS_GROUP = "Defaults";
 
-static const QColor DEFAULT_GRID_COLOR { Qt::gray };
+static const QColor BACKGROUND_COLOR { 0xba, 0xbd, 0xb6 };
 
-static const double DEFAULT_EDGE_WIDTH = 2.0;
+static const auto BACKGROUND_COLOR_SETTINGS_KEY = "backgroundColor";
 
-static const int DEFAULT_TEXT_SIZE = 11;
+static const QColor EDGE_COLOR { 0, 0, 0, 200 };
+
+static const auto EDGE_COLOR_SETTINGS_KEY = "edgeColor";
+
+static const QColor GRID_COLOR { Qt::gray };
+
+static const auto GRID_COLOR_SETTINGS_KEY = "gridColor";
+
+static const QColor NODE_COLOR { Qt::white };
+
+static const auto NODE_COLOR_SETTINGS_KEY = "nodeColor";
+
+static const QColor NODE_TEXT_COLOR { Qt::black };
+
+static const auto NODE_TEXT_COLOR_SETTINGS_KEY = "nodeTextColor";
+
+static const double EDGE_WIDTH = 2.0;
+
+static const int TEXT_SIZE = 11;
+
+} // namespace Defaults
 
 } // namespace MindMap
 
@@ -141,7 +165,11 @@ static const auto THREE_DOTS = "...";
 
 namespace Node {
 
-static const int DEFAULT_CORNER_RADIUS = 5;
+namespace Defaults {
+
+static const int CORNER_RADIUS = 5;
+
+} // namespace Defaults
 
 static const int HANDLE_ANIMATION_DURATION = 150;
 
@@ -181,13 +209,17 @@ static const auto QSETTINGS_FILE_PATH_KEY = "filePath";
 
 namespace LayoutOptimizer {
 
-static const int DEFAULT_MIN_EDGE_LENGTH = 100;
+namespace Defaults {
+
+static const int MIN_EDGE_LENGTH = 100;
+
+static const double ASPECT_RATIO = 1.0;
+
+} // namespace Defaults
 
 static const double MIN_EDGE_LENGTH = 10;
 
 static const double MAX_EDGE_LENGTH = 250;
-
-static const double DEFAULT_ASPECT_RATIO = 1.0;
 
 static const double MIN_ASPECT_RATIO = 0.1;
 
@@ -233,6 +265,16 @@ static const double ZOOM_SENSITIVITY = 1.1;
 
 namespace Effects {
 
+namespace Defaults {
+
+static const int SHADOW_EFFECT_OFFSET = 3;
+
+static const int SHADOW_EFFECT_NORMAL_BLUR_RADIUS = 5;
+
+static const int SHADOW_EFFECT_SELECTED_BLUR_RADIUS = 50;
+
+} // namespace Defaults
+
 static const auto EFFECTS_SETTINGS_GROUP = "Effects";
 
 static const int SHADOW_EFFECT_MAX_OFFSET = 10;
@@ -242,12 +284,6 @@ static const int SHADOW_EFFECT_MIN_OFFSET = 0;
 static const int SHADOW_EFFECT_MAX_BLUR_RADIUS = 100;
 
 static const int SHADOW_EFFECT_MIN_BLUR_RADIUS = 0;
-
-static const int DEFAULT_SHADOW_EFFECT_OFFSET = 3;
-
-static const int DEFAULT_SHADOW_EFFECT_NORMAL_BLUR_RADIUS = 5;
-
-static const int DEFAULT_SHADOW_EFFECT_SELECTED_BLUR_RADIUS = 50;
 
 static const auto SHADOW_EFFECT_OFFSET_SETTINGS_KEY = "shadowEffectOffset";
 

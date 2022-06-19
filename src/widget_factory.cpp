@@ -19,6 +19,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QObject>
+#include <QPushButton>
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QWidgetAction>
@@ -32,6 +33,17 @@ std::pair<QGroupBox *, QVBoxLayout *> buildGroupBoxWithVLayout(QString title, QL
     const auto groupLayout = new QVBoxLayout;
     group->setLayout(groupLayout);
     return { group, groupLayout };
+}
+
+std::pair<QPushButton *, QHBoxLayout *> buildResetToDefaultsButtonWithHLayout()
+{
+    const auto layout = new QHBoxLayout;
+    const auto spacer = new QWidget;
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    layout->addWidget(spacer);
+    const auto button = new QPushButton(QObject::tr("Reset to defaults"));
+    layout->addWidget(button);
+    return { button, layout };
 }
 
 std::pair<QWidget *, QWidgetAction *> buildToolBarWidgetAction(QWidget & widget, QWidget & parent)
@@ -53,5 +65,4 @@ std::pair<QWidget *, QWidgetAction *> buildToolBarWidgetActionWithLabel(QString 
     action->setDefaultWidget(dummyWidget);
     return { dummyWidget, action };
 }
-
 } // namespace WidgetFactory

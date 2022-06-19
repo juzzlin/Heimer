@@ -107,25 +107,25 @@ private:
 
     QString m_version;
 
-    QColor m_backgroundColor = Constants::MindMap::DEFAULT_BACKGROUND_COLOR;
+    QColor m_backgroundColor;
 
-    double m_arrowSize = Constants::Edge::DEFAULT_ARROW_SIZE;
+    double m_arrowSize = Constants::Edge::Defaults::ARROW_SIZE;
 
-    QColor m_edgeColor = Constants::MindMap::DEFAULT_EDGE_COLOR;
+    QColor m_edgeColor;
 
-    QColor m_gridColor = Constants::MindMap::DEFAULT_GRID_COLOR;
+    QColor m_gridColor;
 
-    double m_edgeWidth = Constants::MindMap::DEFAULT_EDGE_WIDTH;
+    double m_edgeWidth = Constants::MindMap::Defaults::EDGE_WIDTH;
 
     QFont m_font;
 
-    int m_textSize = Constants::MindMap::DEFAULT_TEXT_SIZE;
+    int m_textSize = Constants::MindMap::Defaults::TEXT_SIZE;
 
-    int m_cornerRadius = Constants::Node::DEFAULT_CORNER_RADIUS;
+    int m_cornerRadius = Constants::Node::Defaults::CORNER_RADIUS;
 
-    double m_aspectRatio = Constants::LayoutOptimizer::DEFAULT_ASPECT_RATIO;
+    double m_aspectRatio = Constants::LayoutOptimizer::Defaults::ASPECT_RATIO;
 
-    double m_minEdgeLength = Constants::LayoutOptimizer::DEFAULT_MIN_EDGE_LENGTH;
+    double m_minEdgeLength = Constants::LayoutOptimizer::Defaults::MIN_EDGE_LENGTH;
 
     Graph m_graph;
 

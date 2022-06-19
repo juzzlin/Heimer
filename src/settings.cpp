@@ -26,8 +26,6 @@ namespace {
 
 const auto settingsGroupApplication = "Application";
 
-const auto settingsGroupDefaults = "Defaults";
-
 const auto settingsGroupEditing = "Editing";
 
 const auto settingsGroupMainWindow = "MainWindow";
@@ -97,7 +95,7 @@ void saveAutoSnapState(int state)
 Edge::ArrowMode loadEdgeArrowMode(Edge::ArrowMode defaultMode)
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupDefaults);
+    settings.beginGroup(Constants::MindMap::Defaults::SETTINGS_GROUP);
     const auto mode = static_cast<Edge::ArrowMode>(settings.value(edgeArrowModeKey, static_cast<int>(defaultMode)).toInt());
     settings.endGroup();
     return mode;
@@ -106,7 +104,7 @@ Edge::ArrowMode loadEdgeArrowMode(Edge::ArrowMode defaultMode)
 void saveEdgeArrowMode(Edge::ArrowMode mode)
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupDefaults);
+    settings.beginGroup(Constants::MindMap::Defaults::SETTINGS_GROUP);
     settings.setValue(edgeArrowModeKey, static_cast<int>(mode));
     settings.endGroup();
 }
@@ -114,7 +112,7 @@ void saveEdgeArrowMode(Edge::ArrowMode mode)
 bool loadReversedEdgeDirection(bool defaultDirection)
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupDefaults);
+    settings.beginGroup(Constants::MindMap::Defaults::SETTINGS_GROUP);
     const auto direction = settings.value(reversedEdgeDirectionKey, defaultDirection).toBool();
     settings.endGroup();
     return direction;
@@ -123,7 +121,7 @@ bool loadReversedEdgeDirection(bool defaultDirection)
 void saveReversedEdgeDirection(bool reversed)
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupDefaults);
+    settings.beginGroup(Constants::MindMap::Defaults::SETTINGS_GROUP);
     settings.setValue(reversedEdgeDirectionKey, reversed);
     settings.endGroup();
 }
@@ -247,7 +245,7 @@ void saveFullScreen(bool fullScreen)
 bool loadSelectNodeGroupByIntersection()
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupDefaults);
+    settings.beginGroup(Constants::MindMap::Defaults::SETTINGS_GROUP);
     const auto fullScreen = settings.value(selectNodeGroupByIntersectionKey, false).toBool();
     settings.endGroup();
     return fullScreen;
@@ -256,7 +254,7 @@ bool loadSelectNodeGroupByIntersection()
 void saveSelectNodeGroupByIntersection(bool selectNodeGroupByIntersection)
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupDefaults);
+    settings.beginGroup(Constants::MindMap::Defaults::SETTINGS_GROUP);
     settings.setValue(selectNodeGroupByIntersectionKey, selectNodeGroupByIntersection);
     settings.endGroup();
 }
@@ -275,6 +273,23 @@ bool getBoolean(QString group, QString key, bool defaultValue)
 }
 
 void setBoolean(QString group, QString key, bool value)
+{
+    QSettings settings;
+    settings.beginGroup(group);
+    settings.setValue(key, value);
+    settings.endGroup();
+}
+
+QColor getColor(QString group, QString key, QColor defaultValue)
+{
+    QSettings settings;
+    settings.beginGroup(group);
+    const auto val = settings.value(key, defaultValue).value<QColor>();
+    settings.endGroup();
+    return val;
+}
+
+void setColor(QString group, QString key, QColor value)
 {
     QSettings settings;
     settings.beginGroup(group);

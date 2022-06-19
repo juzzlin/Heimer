@@ -172,10 +172,10 @@ private:
     int m_cornerRadius = 0;
 
     // Arrow size for the dummy drag edge
-    double m_arrowSize = Constants::Edge::DEFAULT_ARROW_SIZE;
+    double m_arrowSize = Constants::Edge::Defaults::ARROW_SIZE;
 
     // Width for the dummy drag edge
-    double m_edgeWidth = Constants::MindMap::DEFAULT_EDGE_WIDTH;
+    double m_edgeWidth = Constants::MindMap::Defaults::EDGE_WIDTH;
 
     QColor m_edgeColor;
 

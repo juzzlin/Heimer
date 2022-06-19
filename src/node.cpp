@@ -42,7 +42,9 @@
 NodeP Node::m_lastHoveredNode = nullptr;
 
 Node::Node()
-  : m_textEdit(new TextEdit(this))
+  : m_color(SettingsProxy::instance().nodeColor())
+  , m_textColor(SettingsProxy::instance().nodeTextColor())
+  , m_textEdit(new TextEdit(this))
 {
     setAcceptHoverEvents(true);
 
@@ -71,6 +73,8 @@ Node::Node()
     // The reason for this is that TextEdit's background affects only the area that includes letters
     // and we want to render a larger area.
     m_textEdit->setBackgroundColor({ 0, 0, 0, 0 });
+
+    setTextColor(m_textColor);
 }
 
 Node::Node(NodeCR other)

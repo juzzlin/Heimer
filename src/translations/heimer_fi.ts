@@ -149,27 +149,57 @@
 <context>
     <name>DefaultsTab</name>
     <message>
-        <location filename="../defaults_tab.cpp" line="50"/>
+        <location filename="../defaults_tab.cpp" line="35"/>
+        <source>Background</source>
+        <translation>Tausta</translation>
+    </message>
+    <message>
+        <location filename="../defaults_tab.cpp" line="36"/>
+        <source>Edge color</source>
+        <translation>Kaaren väri</translation>
+    </message>
+    <message>
+        <location filename="../defaults_tab.cpp" line="37"/>
+        <source>Grid color</source>
+        <translation>Ruudukon väri</translation>
+    </message>
+    <message>
+        <location filename="../defaults_tab.cpp" line="38"/>
+        <source>Node color</source>
+        <translation>Solmun väri</translation>
+    </message>
+    <message>
+        <location filename="../defaults_tab.cpp" line="39"/>
+        <source>Node text color</source>
+        <translation>Solmun tekstin väri</translation>
+    </message>
+    <message>
+        <location filename="../defaults_tab.cpp" line="71"/>
         <source>Edge Arrow Style</source>
         <translation>Kaaren Nuolen Tyyli</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="53"/>
+        <location filename="../defaults_tab.cpp" line="74"/>
         <source>No arrow</source>
         <translation>Ei nuolta</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="54"/>
+        <location filename="../defaults_tab.cpp" line="75"/>
         <source>Single arrow</source>
         <translation>Yksi nuoli</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="55"/>
+        <location filename="../defaults_tab.cpp" line="76"/>
         <source>Double arrow</source>
         <translation>Kaksi nuolta</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="66"/>
+        <location filename="../defaults_tab.cpp" line="92"/>
+        <source>Colors</source>
+        <translation>Värit</translation>
+    </message>
+    <message>
+        <location filename="../defaults_tab.cpp" line="34"/>
         <source>Reversed direction</source>
         <translation>Käännetty suunta</translation>
     </message>
@@ -828,6 +858,11 @@
         <location filename="../xml_reader.cpp" line="33"/>
         <source>Corrupted file: &apos;</source>
         <translation>Korruptoitunut tiedosto: &apos;</translation>
+    </message>
+    <message>
+        <location filename="../widget_factory.cpp" line="44"/>
+        <source>Reset to defaults</source>
+        <translation>Palauta oletusarvot</translation>
     </message>
 </context>
 <context>

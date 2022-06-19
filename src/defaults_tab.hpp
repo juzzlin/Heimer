@@ -19,9 +19,12 @@
 #include "settings_proxy.hpp"
 #include <QWidget>
 #include <map>
+#include <vector>
 
+class ColorSettingButton;
 class QCheckBox;
 class QRadioButton;
+class QVBoxLayout;
 
 class DefaultsTab : public QWidget
 {
@@ -33,6 +36,9 @@ public:
     void apply();
 
 private:
+    void createColorWidgets(QVBoxLayout & mainLayout);
+
+    void createEdgeWidgets(QVBoxLayout & mainLayout);
 
     void initWidgets();
 
@@ -41,6 +47,18 @@ private:
     std::map<Edge::ArrowMode, QRadioButton *> m_edgeArrowStyleRadioMap;
 
     QCheckBox * m_edgeDirectionCheckBox = nullptr;
+
+    ColorSettingButton * m_backgroundColorButton = nullptr;
+
+    ColorSettingButton * m_edgeColorButton = nullptr;
+
+    ColorSettingButton * m_gridColorButton = nullptr;
+
+    ColorSettingButton * m_nodeColorButton = nullptr;
+
+    ColorSettingButton * m_nodeTextColorButton = nullptr;
+
+    std::vector<ColorSettingButton *> m_colorSettingButtons;
 };
 
 #endif // DEFAULTS_TAB_HPP

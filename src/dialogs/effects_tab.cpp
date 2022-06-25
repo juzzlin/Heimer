@@ -23,6 +23,7 @@
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QPushButton>
 #include <QSpinBox>
 #include <QVBoxLayout>
 
@@ -101,8 +102,14 @@ void EffectsTab::initWidgets()
     shadowsGroup.second->addLayout(normalBlurRadiusLayout);
     shadowsGroup.second->addLayout(selectedBlurRadiusLayout);
 
-    const auto shadowHelp = new QLabel(tr("Autosave feature will automatically save your mind map on every modification after it has been initially saved once."));
-    shadowHelp->setWordWrap(true);
+    const auto resetToDefaultsButton = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
+    shadowsGroup.second->addLayout(resetToDefaultsButton.second);
+    connect(resetToDefaultsButton.first, &QPushButton::clicked, this, [=] {
+        m_shadowOffsetSpinBox->setValue(Constants::Effects::Defaults::SHADOW_EFFECT_OFFSET);
+        m_shadowNormalBlurRadiusSpinBox->setValue(Constants::Effects::Defaults::SHADOW_EFFECT_NORMAL_BLUR_RADIUS);
+        m_shadowSelectedBlurRadiusSpinBox->setValue(Constants::Effects::Defaults::SHADOW_EFFECT_SELECTED_BLUR_RADIUS);
+        apply();
+    });
 
     setLayout(mainLayout);
 }

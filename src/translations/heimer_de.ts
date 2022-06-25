@@ -264,29 +264,28 @@
 <context>
     <name>EffectsTab</name>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="77"/>
+        <location filename="../dialogs/effects_tab.cpp" line="78"/>
         <source>Shadows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="80"/>
+        <location filename="../dialogs/effects_tab.cpp" line="81"/>
         <source>Normal shadow effect offset:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="87"/>
+        <location filename="../dialogs/effects_tab.cpp" line="88"/>
         <source>Normal shadow blur radius:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="94"/>
+        <location filename="../dialogs/effects_tab.cpp" line="95"/>
         <source>Selected item shadow blur radius:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="104"/>
         <source>Autosave feature will automatically save your mind map on every modification after it has been initially saved once.</source>
-        <translation type="unfinished">Die Autosave-Funktion speichert Ihre Mindmap automatisch bei jeder Änderung, nachdem sie einmal gespeichert wurde.</translation>
+        <translation type="obsolete">Die Autosave-Funktion speichert Ihre Mindmap automatisch bei jeder Änderung, nachdem sie einmal gespeichert wurde.</translation>
     </message>
 </context>
 <context>

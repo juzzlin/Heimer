@@ -354,29 +354,28 @@
 <context>
     <name>EffectsTab</name>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="77"/>
+        <location filename="../dialogs/effects_tab.cpp" line="78"/>
         <source>Shadows</source>
         <translation>Varjot</translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="80"/>
+        <location filename="../dialogs/effects_tab.cpp" line="81"/>
         <source>Normal shadow effect offset:</source>
         <translation>Tavallisen varjon siirros:</translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="87"/>
+        <location filename="../dialogs/effects_tab.cpp" line="88"/>
         <source>Normal shadow blur radius:</source>
         <translation>Tavallisen varjon sumennuksen säde:</translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="94"/>
+        <location filename="../dialogs/effects_tab.cpp" line="95"/>
         <source>Selected item shadow blur radius:</source>
         <translation>Valittujen objektien varjon sumennuksen säde:</translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="104"/>
         <source>Autosave feature will automatically save your mind map on every modification after it has been initially saved once.</source>
-        <translation>Automaattinen tallennus tallentaa käsitekarttasi jokaisen muutoksen jälkeen siitä lähtien kun käsitekartta on ensimmäisen kerran tallennettu.</translation>
+        <translation type="vanished">Automaattinen tallennus tallentaa käsitekarttasi jokaisen muutoksen jälkeen siitä lähtien kun käsitekartta on ensimmäisen kerran tallennettu.</translation>
     </message>
     <message>
         <source>Shadow effect offset (0 is disabled):</source>

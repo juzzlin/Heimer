@@ -16,9 +16,10 @@
 #include "effects_tab.hpp"
 
 #include "../constants.hpp"
-#include "../graphics_factory.hpp"
 #include "../settings_proxy.hpp"
+#include "../shadow_effect_params.hpp"
 #include "../widget_factory.hpp"
+#include "color_setting_button.hpp"
 
 #include <QGroupBox>
 #include <QHBoxLayout>
@@ -30,20 +31,22 @@
 EffectsTab::EffectsTab(QWidget * parent)
   : QWidget(parent)
   , m_shadowOffsetSpinBox(new QSpinBox(this))
-  , m_shadowNormalBlurRadiusSpinBox(new QSpinBox(this))
-  , m_shadowSelectedBlurRadiusSpinBox(new QSpinBox(this))
+  , m_shadowBlurRadiusSpinBox(new QSpinBox(this))
+  , m_selectedItemShadowBlurRadiusSpinBox(new QSpinBox(this))
+  , m_shadowColorButton(new ColorSettingButton(tr("Shadow color"), ColorDialog::Role::ShadowColor, this))
+  , m_selectedItemShadowColorButton(new ColorSettingButton(tr("Selected item shadow color"), ColorDialog::Role::SelectedItemShadowColor, this))
 {
     m_shadowOffsetSpinBox->setMinimum(Constants::Effects::SHADOW_EFFECT_MIN_OFFSET);
     m_shadowOffsetSpinBox->setMaximum(Constants::Effects::SHADOW_EFFECT_MAX_OFFSET);
     m_shadowOffsetSpinBox->setValue(SettingsProxy::instance().shadowEffect().offset);
 
-    m_shadowNormalBlurRadiusSpinBox->setMinimum(Constants::Effects::SHADOW_EFFECT_MIN_BLUR_RADIUS);
-    m_shadowNormalBlurRadiusSpinBox->setMaximum(Constants::Effects::SHADOW_EFFECT_MAX_BLUR_RADIUS);
-    m_shadowNormalBlurRadiusSpinBox->setValue(SettingsProxy::instance().shadowEffect().blurRadiusNormal);
+    m_shadowBlurRadiusSpinBox->setMinimum(Constants::Effects::SHADOW_EFFECT_MIN_BLUR_RADIUS);
+    m_shadowBlurRadiusSpinBox->setMaximum(Constants::Effects::SHADOW_EFFECT_MAX_BLUR_RADIUS);
+    m_shadowBlurRadiusSpinBox->setValue(SettingsProxy::instance().shadowEffect().blurRadius);
 
-    m_shadowSelectedBlurRadiusSpinBox->setMinimum(Constants::Effects::SHADOW_EFFECT_MIN_BLUR_RADIUS);
-    m_shadowSelectedBlurRadiusSpinBox->setMaximum(Constants::Effects::SHADOW_EFFECT_MAX_BLUR_RADIUS);
-    m_shadowSelectedBlurRadiusSpinBox->setValue(SettingsProxy::instance().shadowEffect().blurRadiusSelected);
+    m_selectedItemShadowBlurRadiusSpinBox->setMinimum(Constants::Effects::SHADOW_EFFECT_MIN_BLUR_RADIUS);
+    m_selectedItemShadowBlurRadiusSpinBox->setMaximum(Constants::Effects::SHADOW_EFFECT_MAX_BLUR_RADIUS);
+    m_selectedItemShadowBlurRadiusSpinBox->setValue(SettingsProxy::instance().shadowEffect().selectedItemBlurRadius);
 
     initWidgets();
 
@@ -55,16 +58,22 @@ EffectsTab::EffectsTab(QWidget * parent)
     const auto target = static_cast<void (EffectsTab::*)()>(&EffectsTab::apply);
 #endif
     connect(m_shadowOffsetSpinBox, signal, this, target);
-    connect(m_shadowNormalBlurRadiusSpinBox, signal, this, target);
-    connect(m_shadowSelectedBlurRadiusSpinBox, signal, this, target);
+    connect(m_shadowBlurRadiusSpinBox, signal, this, target);
+    connect(m_selectedItemShadowBlurRadiusSpinBox, signal, this, target);
+    connect(m_shadowColorButton, &ColorSettingButton::colorSelected, this, [this] {
+        apply();
+    });
+    connect(m_selectedItemShadowColorButton, &ColorSettingButton::colorSelected, this, [this] {
+        apply();
+    });
 }
 
 void EffectsTab::apply()
 {
-    apply({ m_shadowOffsetSpinBox->value(), m_shadowNormalBlurRadiusSpinBox->value(), m_shadowSelectedBlurRadiusSpinBox->value() });
+    apply({ m_shadowOffsetSpinBox->value(), m_shadowBlurRadiusSpinBox->value(), m_selectedItemShadowBlurRadiusSpinBox->value(), m_shadowColorButton->selectedColor(), m_selectedItemShadowColorButton->selectedColor() });
 }
 
-void EffectsTab::apply(const GraphicsFactory::ShadowEffectParams & params)
+void EffectsTab::apply(const ShadowEffectParams & params)
 {
     if (SettingsProxy::instance().shadowEffect() != params) {
         SettingsProxy::instance().setShadowEffect(params);
@@ -83,31 +92,36 @@ void EffectsTab::initWidgets()
     spacer1->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     offsetLayout->addWidget(spacer1);
     offsetLayout->addWidget(m_shadowOffsetSpinBox);
+    shadowsGroup.second->addLayout(offsetLayout);
 
-    const auto normalBlurRadiusLayout = new QHBoxLayout;
-    normalBlurRadiusLayout->addWidget(new QLabel(tr("Normal shadow blur radius:")));
+    const auto blurRadiusLayout = new QHBoxLayout;
+    blurRadiusLayout->addWidget(new QLabel(tr("Normal shadow blur radius:")));
     const auto spacer2 = new QWidget;
     spacer2->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    normalBlurRadiusLayout->addWidget(spacer2);
-    normalBlurRadiusLayout->addWidget(m_shadowNormalBlurRadiusSpinBox);
+    blurRadiusLayout->addWidget(spacer2);
+    blurRadiusLayout->addWidget(m_shadowBlurRadiusSpinBox);
+    shadowsGroup.second->addLayout(blurRadiusLayout);
 
-    const auto selectedBlurRadiusLayout = new QHBoxLayout;
-    selectedBlurRadiusLayout->addWidget(new QLabel(tr("Selected item shadow blur radius:")));
+    shadowsGroup.second->addWidget(m_shadowColorButton);
+
+    const auto selectedItemBlurRadiusLayout = new QHBoxLayout;
+    selectedItemBlurRadiusLayout->addWidget(new QLabel(tr("Selected item shadow blur radius:")));
     const auto spacer3 = new QWidget;
     spacer3->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    selectedBlurRadiusLayout->addWidget(spacer3);
-    selectedBlurRadiusLayout->addWidget(m_shadowSelectedBlurRadiusSpinBox);
+    selectedItemBlurRadiusLayout->addWidget(spacer3);
+    selectedItemBlurRadiusLayout->addWidget(m_selectedItemShadowBlurRadiusSpinBox);
+    shadowsGroup.second->addLayout(selectedItemBlurRadiusLayout);
 
-    shadowsGroup.second->addLayout(offsetLayout);
-    shadowsGroup.second->addLayout(normalBlurRadiusLayout);
-    shadowsGroup.second->addLayout(selectedBlurRadiusLayout);
+    shadowsGroup.second->addWidget(m_selectedItemShadowColorButton);
 
     const auto resetToDefaultsButton = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
     shadowsGroup.second->addLayout(resetToDefaultsButton.second);
     connect(resetToDefaultsButton.first, &QPushButton::clicked, this, [=] {
         m_shadowOffsetSpinBox->setValue(Constants::Effects::Defaults::SHADOW_EFFECT_OFFSET);
-        m_shadowNormalBlurRadiusSpinBox->setValue(Constants::Effects::Defaults::SHADOW_EFFECT_NORMAL_BLUR_RADIUS);
-        m_shadowSelectedBlurRadiusSpinBox->setValue(Constants::Effects::Defaults::SHADOW_EFFECT_SELECTED_BLUR_RADIUS);
+        m_shadowBlurRadiusSpinBox->setValue(Constants::Effects::Defaults::SHADOW_EFFECT_BLUR_RADIUS);
+        m_selectedItemShadowBlurRadiusSpinBox->setValue(Constants::Effects::Defaults::SELECTED_ITEM_SHADOW_EFFECT_BLUR_RADIUS);
+        m_shadowColorButton->resetToDefault();
+        m_selectedItemShadowColorButton->resetToDefault();
         apply();
     });
 

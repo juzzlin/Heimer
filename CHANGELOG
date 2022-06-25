@@ -14,6 +14,8 @@ New features:
 * Fix GitHub Issue #211: Color defaults
   - Default colors can now be set via the default settings tab
 
+* Make it possible to tune shadow colors via the effects tab
+
 Bug fixes:
 
 Other:

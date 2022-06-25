@@ -23,6 +23,7 @@
 #include "layers.hpp"
 #include "node.hpp"
 #include "settings_proxy.hpp"
+#include "shadow_effect_params.hpp"
 #include "test_mode.hpp"
 
 #include "simple_logger.hpp"
@@ -278,7 +279,7 @@ void Edge::setSelected(bool selected)
     update();
 }
 
-void Edge::setShadowEffect(const GraphicsFactory::ShadowEffectParams & params)
+void Edge::setShadowEffect(const ShadowEffectParams & params)
 {
     GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_selected, params);
     update();

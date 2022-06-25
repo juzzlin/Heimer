@@ -21,6 +21,7 @@
 #include "image.hpp"
 #include "layers.hpp"
 #include "settings_proxy.hpp"
+#include "shadow_effect_params.hpp"
 #include "test_mode.hpp"
 #include "text_edit.hpp"
 
@@ -421,7 +422,7 @@ void Node::setSelected(bool selected)
     update();
 }
 
-void Node::setShadowEffect(const GraphicsFactory::ShadowEffectParams & params)
+void Node::setShadowEffect(const ShadowEffectParams & params)
 {
     GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_selected, params);
     update();

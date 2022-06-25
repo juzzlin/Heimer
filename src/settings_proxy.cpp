@@ -16,8 +16,6 @@
 #include "settings.hpp"
 #include "settings_proxy.hpp"
 
-#include "graphics_factory.hpp"
-
 std::unique_ptr<SettingsProxy> SettingsProxy::m_instance;
 
 SettingsProxy::SettingsProxy()
@@ -32,8 +30,10 @@ SettingsProxy::SettingsProxy()
   , m_selectNodeGroupByIntersection(Settings::V1::loadSelectNodeGroupByIntersection())
   , m_shadowEffectParams(
       static_cast<int>(Settings::V2::getNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_OFFSET_SETTINGS_KEY, Constants::Effects::Defaults::SHADOW_EFFECT_OFFSET)),
-      static_cast<int>(Settings::V2::getNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_NORMAL_BLUR_RADIUS_SETTINGS_KEY, Constants::Effects::Defaults::SHADOW_EFFECT_NORMAL_BLUR_RADIUS)),
-      static_cast<int>(Settings::V2::getNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_SELECTED_BLUR_RADIUS_SETTINGS_KEY, Constants::Effects::Defaults::SHADOW_EFFECT_SELECTED_BLUR_RADIUS)))
+      static_cast<int>(Settings::V2::getNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_NORMAL_BLUR_RADIUS_SETTINGS_KEY, Constants::Effects::Defaults::SHADOW_EFFECT_BLUR_RADIUS)),
+      static_cast<int>(Settings::V2::getNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_SELECTED_ITEM_BLUR_RADIUS_SETTINGS_KEY, Constants::Effects::Defaults::SELECTED_ITEM_SHADOW_EFFECT_BLUR_RADIUS)),
+      Settings::V2::getColor(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_SHADOW_COLOR_SETTINGS_KEY, Constants::Effects::Defaults::SHADOW_EFFECT_SHADOW_COLOR),
+      Settings::V2::getColor(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR_SETTINGS_KEY, Constants::Effects::Defaults::SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR))
 {
 }
 
@@ -162,17 +162,19 @@ void SettingsProxy::setSelectNodeGroupByIntersection(bool selectNodeGroupByInter
     }
 }
 
-const GraphicsFactory::ShadowEffectParams SettingsProxy::shadowEffect() const
+const ShadowEffectParams SettingsProxy::shadowEffect() const
 {
     return m_shadowEffectParams;
 }
 
-void SettingsProxy::setShadowEffect(const GraphicsFactory::ShadowEffectParams & params)
+void SettingsProxy::setShadowEffect(const ShadowEffectParams & params)
 {
     if (m_shadowEffectParams != params) {
         m_shadowEffectParams = params;
         Settings::V2::setNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_OFFSET_SETTINGS_KEY, params.offset);
-        Settings::V2::setNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_NORMAL_BLUR_RADIUS_SETTINGS_KEY, params.blurRadiusNormal);
-        Settings::V2::setNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_SELECTED_BLUR_RADIUS_SETTINGS_KEY, params.blurRadiusSelected);
+        Settings::V2::setNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_NORMAL_BLUR_RADIUS_SETTINGS_KEY, params.blurRadius);
+        Settings::V2::setNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_SELECTED_ITEM_BLUR_RADIUS_SETTINGS_KEY, params.selectedItemBlurRadius);
+        Settings::V2::setColor(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_SHADOW_COLOR_SETTINGS_KEY, params.shadowColor);
+        Settings::V2::setColor(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR_SETTINGS_KEY, params.selectedItemShadowColor);
     }
 }

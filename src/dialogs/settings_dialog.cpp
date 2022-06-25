@@ -15,7 +15,7 @@
 
 #include "settings_dialog.hpp"
 
-#include "../graphics_factory.hpp"
+#include "../shadow_effect_params.hpp"
 #include "defaults_tab.hpp"
 #include "editing_tab.hpp"
 #include "effects_tab.hpp"

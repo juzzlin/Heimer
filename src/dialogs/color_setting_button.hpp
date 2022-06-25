@@ -22,17 +22,26 @@
 
 class ColorSettingButton : public QPushButton
 {
+    Q_OBJECT
+
 public:
     explicit ColorSettingButton(QString text, ColorDialog::Role role, QWidget * parent = nullptr);
+
+    const QColor & selectedColor() const;
 
     void resetToDefault();
 
     void setColor(QColor color);
 
+signals:
+    void colorSelected(const QColor & color);
+
 private:
     void apply(QColor color);
 
     ColorDialog::Role m_role;
+
+    QColor m_selectedColor;
 };
 
 #endif // COLOR_SETTING_BUTTON_HPP

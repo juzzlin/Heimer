@@ -18,13 +18,13 @@
 #include "editor_data.hpp"
 #include "editor_scene.hpp"
 #include "editor_view.hpp"
-#include "graphics_factory.hpp"
 #include "image_manager.hpp"
 #include "main_window.hpp"
 #include "mouse_action.hpp"
 #include "node_action.hpp"
 #include "node_handle.hpp"
 #include "settings_proxy.hpp"
+#include "shadow_effect_params.hpp"
 
 #include "simple_logger.hpp"
 
@@ -740,7 +740,7 @@ void Mediator::setSearchText(QString text)
     updateNodeConnectionActions();
 }
 
-void Mediator::setShadowEffect(const GraphicsFactory::ShadowEffectParams & params)
+void Mediator::setShadowEffect(const ShadowEffectParams & params)
 {
     m_editorData->mindMapData()->setShadowEffect(params);
 }

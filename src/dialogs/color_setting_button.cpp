@@ -26,7 +26,9 @@ ColorSettingButton::ColorSettingButton(QString text, ColorDialog::Role role, QWi
           { ColorDialog::Role::Edge, SettingsProxy::instance().edgeColor() },
           { ColorDialog::Role::Grid, SettingsProxy::instance().gridColor() },
           { ColorDialog::Role::Node, SettingsProxy::instance().nodeColor() },
-          { ColorDialog::Role::Text, SettingsProxy::instance().nodeTextColor() } };
+          { ColorDialog::Role::Text, SettingsProxy::instance().nodeTextColor() },
+          { ColorDialog::Role::ShadowColor, SettingsProxy::instance().shadowEffect().shadowColor },
+          { ColorDialog::Role::SelectedItemShadowColor, SettingsProxy::instance().shadowEffect().selectedItemShadowColor } };
         roleToColorMap.count(role)) {
         setColor(roleToColorMap.at(role));
     }
@@ -37,6 +39,11 @@ ColorSettingButton::ColorSettingButton(QString text, ColorDialog::Role role, QWi
         cd.exec();
         apply(cd.color());
     });
+}
+
+const QColor & ColorSettingButton::selectedColor() const
+{
+    return m_selectedColor;
 }
 
 void ColorSettingButton::apply(QColor color)
@@ -59,7 +66,13 @@ void ColorSettingButton::apply(QColor color)
         case ColorDialog::Role::Text:
             SettingsProxy::instance().setNodeTextColor(color);
             break;
+        case ColorDialog::Role::ShadowColor:
+            // Saving shadow effect handled in effects_tab.cpp
+        case ColorDialog::Role::SelectedItemShadowColor:
+            // Saving shadow effect handled in effects_tab.cpp
+            break;
         }
+        emit colorSelected(m_selectedColor);
     }
 }
 
@@ -70,7 +83,9 @@ void ColorSettingButton::resetToDefault()
           { ColorDialog::Role::Edge, Constants::MindMap::Defaults::EDGE_COLOR },
           { ColorDialog::Role::Grid, Constants::MindMap::Defaults::GRID_COLOR },
           { ColorDialog::Role::Node, Constants::MindMap::Defaults::NODE_COLOR },
-          { ColorDialog::Role::Text, Constants::MindMap::Defaults::NODE_TEXT_COLOR } };
+          { ColorDialog::Role::Text, Constants::MindMap::Defaults::NODE_TEXT_COLOR },
+          { ColorDialog::Role::ShadowColor, Constants::Effects::Defaults::SHADOW_EFFECT_SHADOW_COLOR },
+          { ColorDialog::Role::SelectedItemShadowColor, Constants::Effects::Defaults::SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR } };
         roleToColorMap.count(m_role)) {
         setColor(roleToColorMap.at(m_role));
         apply(roleToColorMap.at(m_role));
@@ -84,6 +99,7 @@ static int getTextColorComponent(int backgroundColorComponent)
 
 void ColorSettingButton::setColor(QColor backgroundColor)
 {
+    m_selectedColor = backgroundColor;
     const QColor textColor = { getTextColorComponent(backgroundColor.red()), getTextColorComponent(backgroundColor.green()), getTextColorComponent(backgroundColor.blue()) };
     setStyleSheet(QString("color: %1; background-color: %2").arg(textColor.name(), backgroundColor.name()));
 }

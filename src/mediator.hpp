@@ -35,10 +35,7 @@ class MainWindow;
 class NodeAction;
 class NodeHandle;
 class QGraphicsItem;
-
-namespace GraphicsFactory {
 struct ShadowEffectParams;
-}
 
 /*! Acts as a communication channel between MainWindow and editor components:
  *
@@ -195,7 +192,7 @@ public slots:
 
     void setSearchText(QString text);
 
-    void setShadowEffect(const GraphicsFactory::ShadowEffectParams & params);
+    void setShadowEffect(const ShadowEffectParams & params);
 
     void setTextSize(int textSize);
 

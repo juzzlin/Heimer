@@ -15,10 +15,10 @@
 
 #include "mind_map_data.hpp"
 
-#include "graphics_factory.hpp"
 #include "grid.hpp"
 #include "node.hpp"
 #include "settings_proxy.hpp"
+#include "shadow_effect_params.hpp"
 
 #include <memory>
 
@@ -214,7 +214,7 @@ void MindMapData::changeFont(QFont font)
     }
 }
 
-void MindMapData::setShadowEffect(const GraphicsFactory::ShadowEffectParams & params)
+void MindMapData::setShadowEffect(const ShadowEffectParams & params)
 {
     for (auto && node : m_graph.getNodes()) {
         node->setShadowEffect(params);

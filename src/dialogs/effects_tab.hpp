@@ -19,11 +19,9 @@
 #include <QWidget>
 #include <map>
 
+class ColorSettingButton;
 class QSpinBox;
-
-namespace GraphicsFactory {
 struct ShadowEffectParams;
-}
 
 class EffectsTab : public QWidget
 {
@@ -35,18 +33,22 @@ public:
     void apply();
 
 signals:
-    void shadowEffectChanged(const GraphicsFactory::ShadowEffectParams & params);
+    void shadowEffectChanged(const ShadowEffectParams & params);
 
 private:
-    void apply(const GraphicsFactory::ShadowEffectParams & params);
+    void apply(const ShadowEffectParams & params);
 
     void initWidgets();
 
-    QSpinBox * m_shadowOffsetSpinBox = nullptr;
+    QSpinBox * m_shadowOffsetSpinBox;
 
-    QSpinBox * m_shadowNormalBlurRadiusSpinBox = nullptr;
+    QSpinBox * m_shadowBlurRadiusSpinBox;
 
-    QSpinBox * m_shadowSelectedBlurRadiusSpinBox = nullptr;
+    QSpinBox * m_selectedItemShadowBlurRadiusSpinBox;
+
+    ColorSettingButton * m_shadowColorButton;
+
+    ColorSettingButton * m_selectedItemShadowColorButton;
 };
 
 #endif // EFFECTS_TAB_HPP

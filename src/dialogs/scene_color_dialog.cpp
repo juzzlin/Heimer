@@ -41,6 +41,9 @@ SceneColorDialog::SceneColorDialog(Role role, std::shared_ptr<Mediator> mediator
         case Role::Text:
             mediator->performNodeAction({ NodeAction::Type::SetTextColor, color });
             break;
+        case Role::ShadowColor:
+        case Role::SelectedItemShadowColor:
+            break;
         }
     });
 }

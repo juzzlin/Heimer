@@ -33,10 +33,7 @@ class Node;
 class QFont;
 class QGraphicsEllipseItem;
 class QPropertyAnimation;
-
-namespace GraphicsFactory {
 struct ShadowEffectParams;
-}
 
 //! A graphic representation of a graph edge between nodes.
 class Edge : public QObject, public QGraphicsLineItem
@@ -111,7 +108,7 @@ public slots:
 
     void setSelected(bool selected);
 
-    void setShadowEffect(const GraphicsFactory::ShadowEffectParams & params);
+    void setShadowEffect(const ShadowEffectParams & params);
 
 signals:
 

@@ -27,7 +27,9 @@ public:
         Edge,
         Grid,
         Text,
-        Background
+        Background,
+        ShadowColor,
+        SelectedItemShadowColor
     };
 
     ColorDialog(Role role);

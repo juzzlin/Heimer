@@ -18,7 +18,7 @@
 
 #include "constants.hpp"
 #include "edge.hpp"
-#include "graphics_factory.hpp"
+#include "shadow_effect_params.hpp"
 
 #include <memory>
 
@@ -65,9 +65,9 @@ public:
 
     void setSelectNodeGroupByIntersection(bool selectNodeGroupByIntersection);
 
-    const GraphicsFactory::ShadowEffectParams shadowEffect() const;
+    const ShadowEffectParams shadowEffect() const;
 
-    void setShadowEffect(const GraphicsFactory::ShadowEffectParams & params);
+    void setShadowEffect(const ShadowEffectParams & params);
 
 private:
     bool m_autosave = false;
@@ -88,7 +88,7 @@ private:
 
     bool m_selectNodeGroupByIntersection = false;
 
-    GraphicsFactory::ShadowEffectParams m_shadowEffectParams;
+    ShadowEffectParams m_shadowEffectParams;
 
     static std::unique_ptr<SettingsProxy> m_instance;
 };

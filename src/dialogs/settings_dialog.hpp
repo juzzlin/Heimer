@@ -21,10 +21,7 @@
 class DefaultsTab;
 class EditingTab;
 class EffectsTab;
-
-namespace GraphicsFactory {
 struct ShadowEffectParams;
-}
 
 class SettingsDialog : public QDialog
 {
@@ -34,7 +31,7 @@ public:
     explicit SettingsDialog(QWidget * parent = nullptr);
 
 signals:
-    void shadowEffectChanged(const GraphicsFactory::ShadowEffectParams & params);
+    void shadowEffectChanged(const ShadowEffectParams & params);
 
 private:
     void accept() override;

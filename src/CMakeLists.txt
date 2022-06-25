@@ -57,6 +57,7 @@ set(LIB_SRC
     selection_group.cpp
     settings.cpp
     settings_proxy.cpp
+    shadow_effect_params.hpp
     state_machine.cpp
     test_mode.cpp
     text_edit.cpp

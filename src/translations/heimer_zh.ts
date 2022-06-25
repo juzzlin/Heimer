@@ -110,57 +110,62 @@
 <context>
     <name>DefaultsTab</name>
     <message>
-        <location filename="../defaults_tab.cpp" line="35"/>
+        <location filename="../defaults_tab.cpp" line="36"/>
         <source>Background</source>
         <translation type="unfinished">背景</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="36"/>
+        <location filename="../defaults_tab.cpp" line="37"/>
         <source>Edge color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="37"/>
+        <location filename="../defaults_tab.cpp" line="38"/>
         <source>Grid color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="38"/>
+        <location filename="../defaults_tab.cpp" line="39"/>
         <source>Node color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="39"/>
+        <location filename="../defaults_tab.cpp" line="40"/>
         <source>Node text color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="71"/>
+        <location filename="../defaults_tab.cpp" line="61"/>
+        <source>These default settings will be applied each time a new mind map is created.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../defaults_tab.cpp" line="76"/>
         <source>Edge Arrow Style</source>
         <translation>箭头样式</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="74"/>
+        <location filename="../defaults_tab.cpp" line="79"/>
         <source>No arrow</source>
         <translation>无箭头</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="75"/>
+        <location filename="../defaults_tab.cpp" line="80"/>
         <source>Single arrow</source>
         <translation>单箭头</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="76"/>
+        <location filename="../defaults_tab.cpp" line="81"/>
         <source>Double arrow</source>
         <translation>双箭头</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="92"/>
+        <location filename="../defaults_tab.cpp" line="97"/>
         <source>Colors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="34"/>
+        <location filename="../defaults_tab.cpp" line="35"/>
         <source>Reversed direction</source>
         <translation>反向</translation>
     </message>

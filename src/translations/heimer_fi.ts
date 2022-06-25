@@ -149,57 +149,62 @@
 <context>
     <name>DefaultsTab</name>
     <message>
-        <location filename="../defaults_tab.cpp" line="35"/>
+        <location filename="../defaults_tab.cpp" line="36"/>
         <source>Background</source>
         <translation>Tausta</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="36"/>
+        <location filename="../defaults_tab.cpp" line="37"/>
         <source>Edge color</source>
         <translation>Kaaren väri</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="37"/>
+        <location filename="../defaults_tab.cpp" line="38"/>
         <source>Grid color</source>
         <translation>Ruudukon väri</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="38"/>
+        <location filename="../defaults_tab.cpp" line="39"/>
         <source>Node color</source>
         <translation>Solmun väri</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="39"/>
+        <location filename="../defaults_tab.cpp" line="40"/>
         <source>Node text color</source>
         <translation>Solmun tekstin väri</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="71"/>
+        <location filename="../defaults_tab.cpp" line="61"/>
+        <source>These default settings will be applied each time a new mind map is created.</source>
+        <translation>Nämä oletusasetukset tulevat voimaan aina kun uusi käsitekartta luodaan.</translation>
+    </message>
+    <message>
+        <location filename="../defaults_tab.cpp" line="76"/>
         <source>Edge Arrow Style</source>
         <translation>Kaaren Nuolen Tyyli</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="74"/>
+        <location filename="../defaults_tab.cpp" line="79"/>
         <source>No arrow</source>
         <translation>Ei nuolta</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="75"/>
+        <location filename="../defaults_tab.cpp" line="80"/>
         <source>Single arrow</source>
         <translation>Yksi nuoli</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="76"/>
+        <location filename="../defaults_tab.cpp" line="81"/>
         <source>Double arrow</source>
         <translation>Kaksi nuolta</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="92"/>
+        <location filename="../defaults_tab.cpp" line="97"/>
         <source>Colors</source>
         <translation>Värit</translation>
     </message>
     <message>
-        <location filename="../defaults_tab.cpp" line="34"/>
+        <location filename="../defaults_tab.cpp" line="35"/>
         <source>Reversed direction</source>
         <translation>Käännetty suunta</translation>
     </message>

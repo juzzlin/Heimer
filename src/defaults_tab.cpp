@@ -23,6 +23,7 @@
 #include <QCheckBox>
 #include <QGroupBox>
 #include <QHBoxLayout>
+#include <QLabel>
 #include <QPushButton>
 #include <QRadioButton>
 #include <QVBoxLayout>
@@ -56,6 +57,10 @@ void DefaultsTab::apply()
 void DefaultsTab::initWidgets()
 {
     const auto mainLayout = new QVBoxLayout;
+
+    const auto defaultsHelp = new QLabel(tr("These default settings will be applied each time a new mind map is created."));
+    defaultsHelp->setWordWrap(true);
+    mainLayout->addWidget(defaultsHelp);
 
     createEdgeWidgets(*mainLayout);
 

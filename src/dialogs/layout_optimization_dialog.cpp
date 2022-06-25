@@ -14,11 +14,12 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "layout_optimization_dialog.hpp"
-#include "constants.hpp"
+
+#include "../constants.hpp"
+#include "../layout_optimizer.hpp"
+#include "../mind_map_data.hpp"
+#include "../widget_factory.hpp"
 #include "contrib/SimpleLogger/src/simple_logger.hpp"
-#include "layout_optimizer.hpp"
-#include "mind_map_data.hpp"
-#include "widget_factory.hpp"
 
 #include <QDialogButtonBox>
 #include <QDoubleSpinBox>

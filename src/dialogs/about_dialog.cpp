@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "about_dlg.hpp"
-#include "constants.hpp"
+#include "about_dialog.hpp"
+#include "../constants.hpp"
 
 #include <QDialogButtonBox>
 #include <QHBoxLayout>
@@ -27,7 +27,7 @@ namespace {
 const int logoSize = 256;
 }
 
-AboutDlg::AboutDlg(QWidget * parent)
+AboutDialog::AboutDialog(QWidget * parent)
   : QDialog(parent)
 {
     setWindowTitle(tr("About ") + Constants::Application::APPLICATION_NAME);
@@ -35,7 +35,7 @@ AboutDlg::AboutDlg(QWidget * parent)
     initWidgets();
 }
 
-void AboutDlg::initWidgets()
+void AboutDialog::initWidgets()
 {
     const auto vLayout = new QVBoxLayout(this);
     const auto pixmapLabel = new QLabel(this);

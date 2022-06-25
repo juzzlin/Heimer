@@ -15,10 +15,10 @@
 
 #include "settings_dialog.hpp"
 
+#include "../graphics_factory.hpp"
 #include "defaults_tab.hpp"
 #include "editing_tab.hpp"
 #include "effects_tab.hpp"
-#include "graphics_factory.hpp"
 
 #include <QDialogButtonBox>
 #include <QTabWidget>

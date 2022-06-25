@@ -15,18 +15,19 @@
 
 #include "main_window.hpp"
 
-#include "about_dlg.hpp"
 #include "constants.hpp"
 #include "mediator.hpp"
 #include "node_action.hpp"
 #include "recent_files_manager.hpp"
 #include "recent_files_menu.hpp"
 #include "settings.hpp"
-#include "settings_dialog.hpp"
 #include "simple_logger.hpp"
 #include "tool_bar.hpp"
-#include "whats_new_dlg.hpp"
 #include "widget_factory.hpp"
+
+#include "dialogs/about_dialog.hpp"
+#include "dialogs/settings_dialog.hpp"
+#include "dialogs/whats_new_dialog.hpp"
 
 #include <QAction>
 #include <QApplication>
@@ -49,10 +50,10 @@
 MainWindow * MainWindow::m_instance = nullptr;
 
 MainWindow::MainWindow()
-  : m_aboutDlg(new AboutDlg(this))
+  : m_aboutDlg(new AboutDialog(this))
   , m_settingsDlg(new SettingsDialog(this))
   , m_toolBar(new ToolBar(this))
-  , m_whatsNewDlg(new WhatsNewDlg(this))
+  , m_whatsNewDlg(new WhatsNewDialog(this))
   , m_connectSelectedNodesAction(new QAction(tr("Connect selected nodes"), this))
   , m_disconnectSelectedNodesAction(new QAction(tr("Disconnect selected nodes"), this))
   , m_saveAction(new QAction(tr("&Save"), this))
@@ -320,7 +321,7 @@ void MainWindow::createHelpMenu()
     // Add "about"-action
     const auto aboutAct = new QAction(tr("&About"), this);
     helpMenu->addAction(aboutAct);
-    connect(aboutAct, &QAction::triggered, m_aboutDlg, &AboutDlg::exec);
+    connect(aboutAct, &QAction::triggered, m_aboutDlg, &AboutDialog::exec);
 
     // Add "about Qt"-action
     const auto aboutQtAct = new QAction(tr("About &Qt"), this);

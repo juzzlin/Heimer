@@ -14,8 +14,8 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "editing_tab.hpp"
-#include "settings_proxy.hpp"
-#include "widget_factory.hpp"
+#include "../settings_proxy.hpp"
+#include "../widget_factory.hpp"
 
 #include <QButtonGroup>
 #include <QCheckBox>

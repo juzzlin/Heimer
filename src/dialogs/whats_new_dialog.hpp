@@ -13,22 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef WHATS_NEW_DLG_HPP
-#define WHATS_NEW_DLG_HPP
+#ifndef WHATS_NEW_DIALOG_HPP
+#define WHATS_NEW_DIALOG_HPP
 
 #include <QDialog>
 
-//! The about dialog.
-class WhatsNewDlg : public QDialog
+//! Dialog that shows the latest changes from CHANGELOG.
+class WhatsNewDialog : public QDialog
 {
     Q_OBJECT
 
 public:
     //! Constructor.
-    explicit WhatsNewDlg(QWidget * parent = nullptr);
+    explicit WhatsNewDialog(QWidget * parent = nullptr);
 
 private:
     void initWidgets();
 };
 
-#endif // WHATS_NEW_DLG_HPP
+#endif // WHATS_NEW_DIALOG_HPP

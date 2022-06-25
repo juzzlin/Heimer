@@ -15,9 +15,9 @@
 
 #include "defaults_tab.hpp"
 
+#include "../settings_proxy.hpp"
+#include "../widget_factory.hpp"
 #include "color_setting_button.hpp"
-#include "settings_proxy.hpp"
-#include "widget_factory.hpp"
 
 #include <QButtonGroup>
 #include <QCheckBox>

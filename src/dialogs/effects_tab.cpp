@@ -14,10 +14,11 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "effects_tab.hpp"
-#include "constants.hpp"
-#include "graphics_factory.hpp"
-#include "settings_proxy.hpp"
-#include "widget_factory.hpp"
+
+#include "../constants.hpp"
+#include "../graphics_factory.hpp"
+#include "../settings_proxy.hpp"
+#include "../widget_factory.hpp"
 
 #include <QGroupBox>
 #include <QHBoxLayout>

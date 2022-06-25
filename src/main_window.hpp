@@ -27,7 +27,7 @@
 #include <map>
 #include <memory>
 
-class AboutDlg;
+class AboutDialog;
 class SettingsDialog;
 class EditorData;
 class EditorView;
@@ -43,7 +43,7 @@ class QSpinBox;
 class QTextEdit;
 class QWidgetAction;
 class ToolBar;
-class WhatsNewDlg;
+class WhatsNewDialog;
 
 namespace GraphicsFactory {
 struct ShadowEffectParams;
@@ -164,13 +164,13 @@ private:
 
     void populateMenuBar();
 
-    AboutDlg * m_aboutDlg;
+    AboutDialog * m_aboutDlg;
 
     SettingsDialog * m_settingsDlg;
 
     ToolBar * m_toolBar;
 
-    WhatsNewDlg * m_whatsNewDlg;
+    WhatsNewDialog * m_whatsNewDlg;
 
     QAction * m_connectSelectedNodesAction = nullptr;
 

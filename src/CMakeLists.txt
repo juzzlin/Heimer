@@ -20,24 +20,18 @@ set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_BINAR
 
 # Set sources for the lib
 set(LIB_SRC
-    about_dlg.cpp
     alz_serializer.cpp
     application.cpp
-    color_dialog.cpp
-    color_setting_button.cpp
     constants.hpp
     copy_context.cpp
-    defaults_tab.cpp
     edge.cpp
     edge_context_menu.cpp
     edge_dot.cpp
     edge_point.hpp
     edge_text_edit.cpp
-    editing_tab.cpp
     editor_data.cpp
     editor_scene.cpp
     editor_view.cpp
-    effects_tab.cpp
     file_exception.hpp
     graph.cpp
     graphics_factory.cpp
@@ -47,7 +41,6 @@ set(LIB_SRC
     image_manager.cpp
     item_filter.cpp
     layers.hpp
-    layout_optimization_dialog.cpp
     layout_optimizer.cpp
     magic_zoom.cpp
     main_context_menu.cpp
@@ -59,16 +52,12 @@ set(LIB_SRC
     node.cpp
     node_action.hpp
     node_handle.cpp
-    png_export_dialog.cpp
     recent_files_manager.cpp
     recent_files_menu.cpp
-    scene_color_dialog.cpp
     selection_group.cpp
     settings.cpp
-    settings_dialog.cpp
     settings_proxy.cpp
     state_machine.cpp
-    svg_export_dialog.cpp
     test_mode.cpp
     text_edit.cpp
     tool_bar.cpp
@@ -77,10 +66,21 @@ set(LIB_SRC
     user_exception.hpp
     version.hpp
     version_checker.cpp
-    whats_new_dlg.cpp
     widget_factory.cpp
     xml_reader.cpp
     xml_writer.cpp
+    dialogs/about_dialog.cpp
+    dialogs/color_dialog.cpp
+    dialogs/color_setting_button.cpp
+    dialogs/defaults_tab.cpp
+    dialogs/editing_tab.cpp
+    dialogs/effects_tab.cpp
+    dialogs/layout_optimization_dialog.cpp
+    dialogs/png_export_dialog.cpp
+    dialogs/scene_color_dialog.cpp
+    dialogs/settings_dialog.cpp
+    dialogs/svg_export_dialog.cpp
+    dialogs/whats_new_dialog.cpp
 )
 
 # Set sources for the app

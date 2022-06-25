@@ -13,8 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "whats_new_dlg.hpp"
-#include "constants.hpp"
+#include "whats_new_dialog.hpp"
+
+#include "../constants.hpp"
 
 #include <QDialogButtonBox>
 #include <QFile>
@@ -22,7 +23,7 @@
 #include <QTextEdit>
 #include <QVBoxLayout>
 
-WhatsNewDlg::WhatsNewDlg(QWidget * parent)
+WhatsNewDialog::WhatsNewDialog(QWidget * parent)
   : QDialog(parent)
 {
     setWindowTitle(tr("What's New"));
@@ -45,7 +46,7 @@ QString filterChangeLog(QString data)
     return filteredLines;
 }
 
-void WhatsNewDlg::initWidgets()
+void WhatsNewDialog::initWidgets()
 {
     const auto vLayout = new QVBoxLayout(this);
     const auto textEdit = new QTextEdit(this);

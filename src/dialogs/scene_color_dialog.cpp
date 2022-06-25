@@ -15,8 +15,8 @@
 
 #include "scene_color_dialog.hpp"
 
-#include "mediator.hpp"
-#include "node_action.hpp"
+#include "../mediator.hpp"
+#include "../node_action.hpp"
 
 SceneColorDialog::SceneColorDialog(Role role, std::shared_ptr<Mediator> mediator)
   : ColorDialog(role)

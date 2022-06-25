@@ -14,7 +14,7 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "color_setting_button.hpp"
-#include "settings_proxy.hpp"
+#include "../settings_proxy.hpp"
 
 ColorSettingButton::ColorSettingButton(QString text, ColorDialog::Role role, QWidget * parent)
   : QPushButton(text, parent)

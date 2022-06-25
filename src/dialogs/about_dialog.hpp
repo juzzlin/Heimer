@@ -13,22 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef ABOUT_DLG_HPP
-#define ABOUT_DLG_HPP
+#ifndef ABOUT_DIALOG_HPP
+#define ABOUT_DIALOG_HPP
 
 #include <QDialog>
 
 //! The about dialog.
-class AboutDlg : public QDialog
+class AboutDialog : public QDialog
 {
     Q_OBJECT
 
 public:
     //! Constructor.
-    explicit AboutDlg(QWidget * parent = nullptr);
+    explicit AboutDialog(QWidget * parent = nullptr);
 
 private:
     void initWidgets();
 };
 
-#endif // ABOUT_DLG_HPP
+#endif // ABOUT_DIALOG_HPP

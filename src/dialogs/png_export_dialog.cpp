@@ -14,8 +14,9 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "png_export_dialog.hpp"
-#include "constants.hpp"
-#include "widget_factory.hpp"
+
+#include "../constants.hpp"
+#include "../widget_factory.hpp"
 
 #include <QCheckBox>
 #include <QDialogButtonBox>

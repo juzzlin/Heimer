@@ -14,7 +14,7 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "color_dialog.hpp"
-#include "constants.hpp"
+#include "../constants.hpp"
 
 #include <vector>
 

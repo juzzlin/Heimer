@@ -5,6 +5,19 @@ Release date:
 
 New features:
 
+Bug fixes:
+
+Other:
+
+3.4.0
+=====
+
+Release date:
+
+Sun, 26 Jun 2022 21:42:11 +0300
+
+New features:
+
 * Fetch the newest version and show in status bar if newer version available
 
 * Fix GitHub Issue #210: Option to set shadow offset and disable shadows
@@ -15,10 +28,6 @@ New features:
   - Default colors can now be set via the default settings tab
 
 * Make it possible to tune shadow colors via the effects tab
-
-Bug fixes:
-
-Other:
 
 3.3.0
 =====

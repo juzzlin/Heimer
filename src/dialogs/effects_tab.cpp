@@ -87,7 +87,7 @@ void EffectsTab::initWidgets()
     const auto shadowsGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Shadows"), *mainLayout);
 
     const auto offsetLayout = new QHBoxLayout;
-    offsetLayout->addWidget(new QLabel(tr("Normal shadow effect offset:")));
+    offsetLayout->addWidget(new QLabel(tr("Shadow effect offset:")));
     const auto spacer1 = new QWidget;
     spacer1->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     offsetLayout->addWidget(spacer1);
@@ -95,7 +95,7 @@ void EffectsTab::initWidgets()
     shadowsGroup.second->addLayout(offsetLayout);
 
     const auto blurRadiusLayout = new QHBoxLayout;
-    blurRadiusLayout->addWidget(new QLabel(tr("Normal shadow blur radius:")));
+    blurRadiusLayout->addWidget(new QLabel(tr("Shadow blur radius:")));
     const auto spacer2 = new QWidget;
     spacer2->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     blurRadiusLayout->addWidget(spacer2);

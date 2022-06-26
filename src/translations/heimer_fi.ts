@@ -354,22 +354,40 @@
 <context>
     <name>EffectsTab</name>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="78"/>
+        <location filename="../dialogs/effects_tab.cpp" line="36"/>
+        <source>Shadow color</source>
+        <translation>Varjon väri</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/effects_tab.cpp" line="37"/>
+        <source>Selected item shadow color</source>
+        <translation>Valittujen objektien varjon väri</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/effects_tab.cpp" line="87"/>
         <source>Shadows</source>
         <translation>Varjot</translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="81"/>
+        <location filename="../dialogs/effects_tab.cpp" line="90"/>
+        <source>Shadow effect offset:</source>
+        <translation>Varjon siirros:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/effects_tab.cpp" line="98"/>
+        <source>Shadow blur radius:</source>
+        <translation>Varjon sumennuksen säde:</translation>
+    </message>
+    <message>
         <source>Normal shadow effect offset:</source>
-        <translation>Tavallisen varjon siirros:</translation>
+        <translation type="vanished">Tavallisen varjon siirros:</translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="88"/>
         <source>Normal shadow blur radius:</source>
-        <translation>Tavallisen varjon sumennuksen säde:</translation>
+        <translation type="vanished">Tavallisen varjon sumennuksen säde:</translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="95"/>
+        <location filename="../dialogs/effects_tab.cpp" line="108"/>
         <source>Selected item shadow blur radius:</source>
         <translation>Valittujen objektien varjon sumennuksen säde:</translation>
     </message>

@@ -295,22 +295,32 @@
 <context>
     <name>EffectsTab</name>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="78"/>
+        <location filename="../dialogs/effects_tab.cpp" line="36"/>
+        <source>Shadow color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/effects_tab.cpp" line="37"/>
+        <source>Selected item shadow color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/effects_tab.cpp" line="87"/>
         <source>Shadows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="81"/>
-        <source>Normal shadow effect offset:</source>
+        <location filename="../dialogs/effects_tab.cpp" line="90"/>
+        <source>Shadow effect offset:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="88"/>
-        <source>Normal shadow blur radius:</source>
+        <location filename="../dialogs/effects_tab.cpp" line="98"/>
+        <source>Shadow blur radius:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="95"/>
+        <location filename="../dialogs/effects_tab.cpp" line="108"/>
         <source>Selected item shadow blur radius:</source>
         <translation type="unfinished"></translation>
     </message>

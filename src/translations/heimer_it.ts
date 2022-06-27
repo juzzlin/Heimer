@@ -6,59 +6,59 @@
     <message>
         <location filename="../dialogs/about_dialog.cpp" line="33"/>
         <source>About </source>
-        <translation type="unfinished">informazioni</translation>
+        <translation>informazioni </translation>
     </message>
     <message>
         <location filename="../dialogs/about_dialog.cpp" line="51"/>
         <source> is licenced under </source>
-        <translation type="unfinished"> è concesso in licenza sotto </translation>
+        <translation> è concesso in licenza sotto </translation>
     </message>
     <message>
         <location filename="../dialogs/about_dialog.cpp" line="53"/>
         <source>Package type: </source>
-        <translation type="unfinished">Tipo di pacchetto: </translation>
+        <translation>Tipo di pacchetto: </translation>
     </message>
     <message>
         <location filename="../dialogs/about_dialog.cpp" line="54"/>
         <source>Project website: </source>
-        <translation type="unfinished">Sito web del progetto: </translation>
+        <translation>Sito web del progetto: </translation>
     </message>
     <message>
         <location filename="../dialogs/about_dialog.cpp" line="56"/>
         <source>Support </source>
-        <translation type="unfinished">Supporto</translation>
+        <translation>Supporto </translation>
     </message>
     <message>
         <location filename="../dialogs/about_dialog.cpp" line="56"/>
         <source> via PayPal: </source>
-        <translation type="unfinished"></translation>
+        <translation>via PayPal: </translation>
     </message>
 </context>
 <context>
     <name>AboutDlg</name>
     <message>
         <source>About </source>
-        <translation type="vanished">informazioni</translation>
+        <translation>informazioni </translation>
     </message>
     <message>
         <source> is licenced under </source>
-        <translation type="vanished"> è concesso in licenza sotto </translation>
+        <translation> è concesso in licenza sotto </translation>
     </message>
     <message>
         <source>Package type: </source>
-        <translation type="vanished">Tipo di pacchetto: </translation>
+        <translation>Tipo di pacchetto: </translation>
     </message>
     <message>
         <source>Project website: </source>
-        <translation type="vanished">Sito web del progetto: </translation>
+        <translation>Sito web del progetto: </translation>
     </message>
     <message>
         <source>Support </source>
-        <translation type="vanished">Supporto</translation>
+        <translation>Supporto </translation>
     </message>
     <message>
         <source> on Patreon: </source>
-        <translation type="vanished">su Patreon: </translation>
+        <translation>su Patreon: </translation>
     </message>
 </context>
 <context>
@@ -66,7 +66,7 @@
     <message>
         <location filename="../application.cpp" line="198"/>
         <source>A new version %1 available at &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Una nuova versione %1 disponibile su &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../application.cpp" line="205"/>
@@ -138,27 +138,27 @@
     <name>DefaultsDlg</name>
     <message>
         <source>Defaults</source>
-        <translation type="vanished">Predefinito</translation>
+        <translation>Predefinito</translation>
     </message>
     <message>
         <source>Edge Arrow Style</source>
-        <translation type="vanished">Stile Bordo Freccia</translation>
+        <translation>Stile Bordo Freccia</translation>
     </message>
     <message>
         <source>No arrow</source>
-        <translation type="vanished">Nessuna freccia</translation>
+        <translation>Nessuna freccia</translation>
     </message>
     <message>
         <source>Single arrow</source>
-        <translation type="vanished">Singola freccia</translation>
+        <translation>Singola freccia</translation>
     </message>
     <message>
         <source>Double arrow</source>
-        <translation type="vanished">Doppia freccia</translation>
+        <translation>Doppia freccia</translation>
     </message>
     <message>
         <source>Reversed direction</source>
-        <translation type="vanished">Direzione invertita</translation>
+        <translation>Direzione invertita</translation>
     </message>
 </context>
 <context>
@@ -166,32 +166,32 @@
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="36"/>
         <source>Background</source>
-        <translation type="unfinished">Sfondo</translation>
+        <translation>Sfondo</translation>
     </message>
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="37"/>
         <source>Edge color</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore del bordo</translation>
     </message>
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="38"/>
         <source>Grid color</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore griglia</translation>
     </message>
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="39"/>
         <source>Node color</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore del nodo</translation>
     </message>
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="40"/>
         <source>Node text color</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore testo nodo</translation>
     </message>
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="61"/>
         <source>These default settings will be applied each time a new mind map is created.</source>
-        <translation type="unfinished"></translation>
+        <translation>Queste impostazioni predefinite verranno applicate ogni volta che viene creata una nuova mappa mentale.</translation>
     </message>
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="76"/>
@@ -216,7 +216,7 @@
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="97"/>
         <source>Colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Colori</translation>
     </message>
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="35"/>
@@ -237,7 +237,7 @@
     </message>
     <message>
         <source>Single arrow</source>
-        <translation type="vanished">Singola freccia</translation>
+        <translation>Singola freccia</translation>
     </message>
     <message>
         <location filename="../edge_context_menu.cpp" line="33"/>
@@ -293,36 +293,36 @@
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="36"/>
         <source>Shadow color</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore dell'ombra</translation>
     </message>
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="37"/>
         <source>Selected item shadow color</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore ombra oggetto selezionato</translation>
     </message>
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="87"/>
         <source>Shadows</source>
-        <translation type="unfinished"></translation>
+        <translation>Ombre</translation>
     </message>
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="90"/>
         <source>Shadow effect offset:</source>
-        <translation type="unfinished"></translation>
+        <translation>Compensazione dell'effetto ombra:</translation>
     </message>
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="98"/>
         <source>Shadow blur radius:</source>
-        <translation type="unfinished"></translation>
+        <translation>Raggio sfocatura ombra:</translation>
     </message>
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="108"/>
         <source>Selected item shadow blur radius:</source>
-        <translation type="unfinished"></translation>
+        <translation>Raggio di sfocatura dell'ombra dell'oggetto selezionato:</translation>
     </message>
     <message>
         <source>Autosave feature will automatically save your mind map on every modification after it has been initially saved once.</source>
-        <translation type="obsolete">La funzione di salvataggio automatico salverà automaticamente la tua mappa mentale ad ogni modifica dopo che è stata inizialmente salvata una volta.</translation>
+        <translation>La funzione di salvataggio automatico salverà automaticamente la tua mappa mentale su ogni modifica dopo che è stata inizialmente salvata una volta.</translation>
     </message>
 </context>
 <context>
@@ -349,11 +349,11 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="vanished">Cancella</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Optimize</source>
-        <translation type="vanished">Ottimizza</translation>
+        <translation>Ottimizza</translation>
     </message>
 </context>
 <context>
@@ -437,7 +437,7 @@
     </message>
     <message>
         <source>&amp;Colors</source>
-        <translation type="vanished">&amp;Colori</translation>
+        <translation>&amp;Colori</translation>
     </message>
 </context>
 <context>
@@ -464,7 +464,7 @@
     </message>
     <message>
         <source>Copy on drag</source>
-        <translation type="vanished">Copia trascinando</translation>
+        <translation>Copia trascinando</translation>
     </message>
     <message>
         <source>Show grid</source>
@@ -506,19 +506,19 @@
     </message>
     <message>
         <source>Corner radius:</source>
-        <translation type="vanished">Raggio dell&apos;&apos;angolo:</translation>
+        <translation>Raggio dell&apos;&apos;angolo:</translation>
     </message>
     <message>
         <source>Edge width:</source>
-        <translation type="vanished">Larghezza del bordo:</translation>
+        <translation>Larghezza del bordo:</translation>
     </message>
     <message>
         <source>Text size:</source>
-        <translation type="vanished">Dimensione del testo:</translation>
+        <translation>Dimensione del testo:</translation>
     </message>
     <message>
         <source>Grid size:</source>
-        <translation type="vanished">Dimensione della griglia:</translation>
+        <translation>Dimensione della griglia:</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="221"/>
@@ -572,7 +572,7 @@
     </message>
     <message>
         <source>&amp;Export to PNG image</source>
-        <translation type="vanished">&amp;Esporta in immagine PNG</translation>
+        <translation>&amp;Esporta in immagine PNG</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="305"/>
@@ -707,11 +707,11 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="vanished">Cancella</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="vanished">Esporta</translation>
+        <translation>Esporta</translation>
     </message>
 </context>
 <context>
@@ -729,7 +729,7 @@
     <message>
         <location filename="../widget_factory.cpp" line="44"/>
         <source>Reset to defaults</source>
-        <translation type="unfinished"></translation>
+        <translation>Ripristina i valori predefiniti</translation>
     </message>
 </context>
 <context>
@@ -752,7 +752,7 @@
     <message>
         <location filename="../dialogs/settings_dialog.cpp" line="56"/>
         <source>Effects</source>
-        <translation type="unfinished"></translation>
+        <translation>Effetti</translation>
     </message>
 </context>
 <context>
@@ -789,11 +789,11 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="vanished">Cancella</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="vanished">Esporta</translation>
+        <translation>Esporta</translation>
     </message>
 </context>
 <context>
@@ -859,14 +859,14 @@
     <message>
         <location filename="../dialogs/whats_new_dialog.cpp" line="29"/>
         <source>What&apos;s New</source>
-        <translation type="unfinished"></translation>
+        <translation>Cosa c&apos;è di nuovo</translation>
     </message>
 </context>
 <context>
     <name>WhatsNewDlg</name>
     <message>
         <source>What&apos;s New</source>
-        <translation type="vanished">Cosa c&apos;&apos;&apos;è di nuovo</translation>
+        <translation>Cosa c&apos;è di nuovo</translation>
     </message>
 </context>
 </TS>

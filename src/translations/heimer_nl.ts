@@ -6,32 +6,32 @@
     <message>
         <location filename="../dialogs/about_dialog.cpp" line="33"/>
         <source>About </source>
-        <translation type="unfinished">Over </translation>
+        <translation>Over </translation>
     </message>
     <message>
         <location filename="../dialogs/about_dialog.cpp" line="51"/>
         <source> is licenced under </source>
-        <translation type="unfinished"> is uitgebracht onder de </translation>
+        <translation> is uitgebracht onder de </translation>
     </message>
     <message>
         <location filename="../dialogs/about_dialog.cpp" line="53"/>
         <source>Package type: </source>
-        <translation type="unfinished">Soort pakket: </translation>
+        <translation>Soort pakket: </translation>
     </message>
     <message>
         <location filename="../dialogs/about_dialog.cpp" line="54"/>
         <source>Project website: </source>
-        <translation type="unfinished">Projectwebsite: </translation>
+        <translation>Projectwebsite: </translation>
     </message>
     <message>
         <location filename="../dialogs/about_dialog.cpp" line="56"/>
         <source>Support </source>
-        <translation type="unfinished">Ondersteunen </translation>
+        <translation>Ondersteunen </translation>
     </message>
     <message>
         <location filename="../dialogs/about_dialog.cpp" line="56"/>
         <source> via PayPal: </source>
-        <translation type="unfinished"> via PayPal: </translation>
+        <translation> via PayPal: </translation>
     </message>
 </context>
 <context>
@@ -70,7 +70,7 @@
     <message>
         <location filename="../application.cpp" line="198"/>
         <source>A new version %1 available at &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Er is een nieuwe versie, %1, beschikbaar op &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../application.cpp" line="205"/>
@@ -170,32 +170,32 @@
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="36"/>
         <source>Background</source>
-        <translation type="unfinished">Achtergrond</translation>
+        <translation>Achtergrond</translation>
     </message>
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="37"/>
         <source>Edge color</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaderkleur</translation>
     </message>
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="38"/>
         <source>Grid color</source>
-        <translation type="unfinished"></translation>
+        <translation>Roosterkleur</translation>
     </message>
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="39"/>
         <source>Node color</source>
-        <translation type="unfinished"></translation>
+        <translation>Knoopkleur</translation>
     </message>
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="40"/>
         <source>Node text color</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekstkleur van knoop</translation>
     </message>
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="61"/>
         <source>These default settings will be applied each time a new mind map is created.</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze standaardinstellingen worden toegepast bij het maken nieuwe mindmaps.</translation>
     </message>
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="76"/>
@@ -220,7 +220,7 @@
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="97"/>
         <source>Colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Kleuren</translation>
     </message>
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="35"/>
@@ -297,32 +297,32 @@
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="36"/>
         <source>Shadow color</source>
-        <translation type="unfinished"></translation>
+        <translation>Schaduwkleur</translation>
     </message>
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="37"/>
         <source>Selected item shadow color</source>
-        <translation type="unfinished"></translation>
+        <translation>Schaduwkleur van geselecteerd item</translation>
     </message>
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="87"/>
         <source>Shadows</source>
-        <translation type="unfinished"></translation>
+        <translation>Schaduwen</translation>
     </message>
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="90"/>
         <source>Shadow effect offset:</source>
-        <translation type="unfinished"></translation>
+        <translation>Schaduweffectverschuiving:</translation>
     </message>
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="98"/>
         <source>Shadow blur radius:</source>
-        <translation type="unfinished"></translation>
+        <translation>Schaduwvervaging:</translation>
     </message>
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="108"/>
         <source>Selected item shadow blur radius:</source>
-        <translation type="unfinished"></translation>
+        <translation>Schaduwvervaging van geselecteerd item</translation>
     </message>
     <message>
         <source>Autosave feature will automatically save your mind map on every modification after it has been initially saved once.</source>
@@ -729,7 +729,7 @@
     <message>
         <location filename="../widget_factory.cpp" line="44"/>
         <source>Reset to defaults</source>
-        <translation type="unfinished"></translation>
+        <translation>Standaardwaarden</translation>
     </message>
 </context>
 <context>
@@ -752,7 +752,7 @@
     <message>
         <location filename="../dialogs/settings_dialog.cpp" line="56"/>
         <source>Effects</source>
-        <translation type="unfinished"></translation>
+        <translation>Effecten</translation>
     </message>
 </context>
 <context>
@@ -826,7 +826,7 @@
     <message>
         <location filename="../tool_bar.cpp" line="132"/>
         <source>Arrow size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Pijlgrootte</translation>
     </message>
     <message>
         <location filename="../tool_bar.cpp" line="149"/>
@@ -859,7 +859,7 @@
     <message>
         <location filename="../dialogs/whats_new_dialog.cpp" line="29"/>
         <source>What&apos;s New</source>
-        <translation type="unfinished">Wijzigingslog</translation>
+        <translation>Wijzigingslog</translation>
     </message>
 </context>
 <context>

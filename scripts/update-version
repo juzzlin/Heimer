@@ -18,9 +18,9 @@ sed -i "s/^set(VERSION_MAJOR.*/set(VERSION_MAJOR ${VERSION_MAJOR})/" ${FILE} ||�
 sed -i "s/^set(VERSION_MINOR.*/set(VERSION_MINOR ${VERSION_MINOR})/" ${FILE} || exit 1
 sed -i "s/^set(VERSION_PATCH.*/set(VERSION_PATCH ${VERSION_PATCH})/" ${FILE} || exit 1
 
-for FILE in heimer.pro snapcraft.yaml scripts/build-app-image scripts/build-windows-zip; do
+for FILE in heimer.pro snapcraft.yaml scripts/build-app-image scripts/build-archive scripts/build-windows-zip; do
     echo "Updating ${FILE} .."
-    sed -i -E "s/[0-9]+\.[0-9]+\.[0-9]+/$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH/" ${FILE} || exit 1
+    sed -i -E "s/[0-9]+\.[0-9]+\.[0-9]+/$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH/g" ${FILE} || exit 1
 done
 
 git diff

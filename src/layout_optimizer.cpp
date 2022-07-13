@@ -159,72 +159,38 @@ public:
         }
 
         OptimizationInfo oi;
-        double cost = calculateCost();
-        oi.initialCost = cost;
+        oi.initialCost = calculateCost();
+        oi.currentCost = oi.initialCost;
+        oi.sliceSize = m_layout->all.size() * 200;
+        oi.t0 = 33;
+        oi.tC = oi.t0;
+
         juzzlin::L().info() << "Initial cost: " << oi.initialCost;
 
-        std::uniform_real_distribution<double> dist { 0, 1 };
-
-        const double t0 = 33;
-        double t = t0;
-        while (t > 0.05 && cost > 0) {
-            double acceptRatio = 0;
-            int stuck = 0;
+        while (oi.tC > oi.t1 && oi.currentCost > 0) {
+            oi.acceptRatio = 0;
+            size_t stuckCounter = 0;
             do {
-                double accepts = 0;
-                double rejects = 0;
-                double sliceCost = cost;
-                for (size_t i = 0; i < m_layout->all.size() * 200; i++) {
-                    const auto change = planChange();
-
-                    LayoutOptimizer::Impl::Cell::globalMoveId++;
-
-                    double newCost = cost;
-                    newCost -= change.sourceCell->getCost();
-                    newCost -= change.targetCell->getCost();
-
-                    doChange(change);
-                    oi.changes++;
-
-                    LayoutOptimizer::Impl::Cell::globalMoveId++;
-
-                    newCost += change.sourceCell->getCost();
-                    newCost += change.targetCell->getCost();
-
-                    const double delta = newCost - cost;
-                    if (delta <= 0) {
-                        cost = newCost;
-                        accepts++;
-                    } else {
-                        if (dist(m_engine) < std::exp(-delta / t)) {
-                            cost = newCost;
-                            accepts++;
-                        } else {
-                            undoChange(change);
-                            rejects++;
-                        }
-                    }
+                oi.accepts = 0;
+                oi.rejects = 0;
+                double sliceCost = oi.currentCost;
+                for (size_t i = 0; i < oi.sliceSize; i++) {
+                    changeLayoutAndUpdateCost(oi);
                 }
+                oi.acceptRatio = static_cast<double>(oi.accepts) / static_cast<double>(oi.rejects + 1);
+                const double gain = (oi.currentCost - sliceCost) / sliceCost;
+                juzzlin::L().debug() << "Cost: " << oi.currentCost << " (" << gain * 100 << "%)"
+                                     << " acc: " << oi.acceptRatio << " t: " << oi.tC;
+                stuckCounter = gain < oi.stuckTh ? stuckCounter + 1 : 0;
 
-                acceptRatio = accepts / (rejects + 1);
-                const double gain = (cost - sliceCost) / sliceCost;
-                juzzlin::L().debug() << "Cost: " << cost << " (" << gain * 100 << "%)"
-                                     << " acc: " << acceptRatio << " t: " << t;
+            } while (stuckCounter < oi.stuckLimit);
 
-                if (gain < 0.1) {
-                    stuck++;
-                } else {
-                    stuck = 0;
-                }
+            oi.tC *= oi.cS;
 
-            } while (stuck < 5);
-
-            t *= 0.7;
-
-            updateProgress(std::min(1.0, 1.0 - std::log(t) / std::log(t0)));
+            updateProgress(std::min(1.0, 1.0 - std::log(oi.tC) / std::log(oi.t0)));
         }
 
-        oi.finalCost = cost;
+        oi.finalCost = oi.currentCost;
 
         return oi;
     }
@@ -300,6 +266,32 @@ private:
 
         size_t targetIndex = 0;
     };
+
+    void changeLayoutAndUpdateCost(OptimizationInfo & oi)
+    {
+        const auto change = planChange();
+        LayoutOptimizer::Impl::Cell::globalMoveId++;
+        double newCost = oi.currentCost;
+        newCost -= change.sourceCell->getCost();
+        newCost -= change.targetCell->getCost();
+        doChange(change);
+        oi.changes++;
+        LayoutOptimizer::Impl::Cell::globalMoveId++;
+        newCost += change.sourceCell->getCost();
+        newCost += change.targetCell->getCost();
+        if (const double delta = newCost - oi.currentCost; delta <= 0) {
+            oi.currentCost = newCost;
+            oi.accepts++;
+        } else {
+            if (m_saDist(m_engine) < std::exp(-delta / oi.tC)) {
+                oi.currentCost = newCost;
+                oi.accepts++;
+            } else {
+                undoChange(change);
+                oi.rejects++;
+            }
+        }
+    }
 
     void doChange(const Change & change)
     {
@@ -593,6 +585,8 @@ private:
     std::uniform_int_distribution<size_t> m_rowDist;
 
     std::uniform_int_distribution<size_t> m_oneOrTwoDist { 0, 1 };
+
+    std::uniform_real_distribution<double> m_saDist { 0, 1 };
 
     ProgressCallback m_progressCallback = nullptr;
 };

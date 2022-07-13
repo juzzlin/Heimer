@@ -58,7 +58,7 @@ public:
     {
         juzzlin::L().info() << "Initializing LayoutOptimizer: aspectRatio=" << aspectRatio << ", minEdgeLength=" << minEdgeLength;
 
-        if (m_mindMapData->graph().numNodes() == 0) {
+        if (!m_mindMapData->graph().numNodes()) {
             juzzlin::L().info() << "No nodes";
             return false;
         }
@@ -68,16 +68,18 @@ public:
             area += (node->size().width() + minEdgeLength) * (node->size().height() + minEdgeLength);
         }
 
-        const double height = std::sqrt(area / aspectRatio);
-        const double width = area / height;
-
-        // Builds initial layout
+        // Build initial layout
 
         auto nodes = m_mindMapData->graph().getNodes();
+        const auto originalLayoutDimensions = calculateLayoutDimensions(nodes);
+        juzzlin::L().info() << "Area: " << originalLayoutDimensions.height() * originalLayoutDimensions.width();
+        const double height = std::sqrt(area / aspectRatio);
+        const double width = area / height;
         m_layout = std::make_unique<Layout>();
         m_layout->cols = static_cast<size_t>(width / (Constants::Node::MIN_WIDTH + minEdgeLength)) + 1;
         m_layout->minEdgeLength = minEdgeLength;
         std::map<int, std::shared_ptr<Cell>> nodesToCells; // Used when building connections
+        std::vector<std::shared_ptr<Cell>> cells;
         const auto rows = static_cast<size_t>(height / (Constants::Node::MIN_HEIGHT + minEdgeLength)) + 1;
         for (size_t j = 0; j < rows; j++) {
             const auto row = std::make_shared<Row>();
@@ -86,19 +88,54 @@ public:
             for (size_t i = 0; i < m_layout->cols; i++) {
                 const auto cell = std::make_shared<Cell>();
                 row->cells.push_back(cell);
-                cell->rect.x = row->rect.x + static_cast<int>(i) * Constants::Node::MIN_WIDTH;
-                cell->rect.y = row->rect.y;
-                cell->rect.h = Constants::Node::MIN_HEIGHT;
-                cell->rect.w = Constants::Node::MIN_WIDTH;
-
-                if (!nodes.empty()) {
-                    m_layout->all.push_back(cell);
-                    cell->node = nodes.back();
-                    nodesToCells[cell->node.lock()->index()] = cell;
-                    nodes.pop_back();
-                }
+                cells.push_back(cell);
+                cell->rect = { row->rect.x + static_cast<int>(i) * Constants::Node::MIN_WIDTH,
+                               row->rect.y,
+                               Constants::Node::MIN_HEIGHT,
+                               Constants::Node::MIN_WIDTH };
             }
             m_layout->rows.push_back(row);
+        }
+
+        m_rowDist = std::uniform_int_distribution<size_t> { 0, m_layout->rows.size() - 1 };
+
+        // Assign nodes to nearest cells
+
+        double minX = std::numeric_limits<double>::max();
+        double maxX = -minX;
+        double minY = std::numeric_limits<double>::max();
+        double maxY = -minY;
+        for (auto && cell : cells) {
+            minX = std::min(minX, cell->x());
+            maxX = std::max(maxX, cell->x());
+            minY = std::min(minY, cell->y());
+            maxY = std::max(maxY, cell->y());
+        }
+        const double cellAreaW = maxX - minX;
+        const double cellAreaH = maxY - minY;
+
+        for (auto && node : nodes) {
+            if (!cells.empty()) {
+                size_t nearestCellIndex = 0;
+                double nearestDistance = std::numeric_limits<double>::max();
+                for (size_t i = 0; i < cells.size(); i++) {
+                    const auto cell = cells.at(i);
+                    const auto dx = (cell->x() - minX - cellAreaW / 2) / cellAreaW - (node->location().x() - originalLayoutDimensions.x() - originalLayoutDimensions.width() / 2) / originalLayoutDimensions.width();
+                    const auto dy = (cell->y() - minY - cellAreaH / 2) / cellAreaH - (node->location().y() - originalLayoutDimensions.y() - originalLayoutDimensions.height() / 2) / originalLayoutDimensions.height();
+                    if (double distance = dx * dx + dy * dy; distance < nearestDistance) {
+                        nearestDistance = distance;
+                        nearestCellIndex = i;
+                    }
+                }
+                const auto cell = cells.at(nearestCellIndex);
+                cell->node = node;
+                cells.at(nearestCellIndex) = cells.back();
+                cells.pop_back();
+                nodesToCells[node->index()] = cell;
+                m_layout->all.push_back(cell);
+            } else {
+                return false;
+            }
         }
 
         // Setup connections
@@ -128,8 +165,7 @@ public:
 
         std::uniform_real_distribution<double> dist { 0, 1 };
 
-        // TODO: Automatically decide optimal t
-        const double t0 = 200;
+        const double t0 = 33;
         double t = t0;
         while (t > 0.05 && cost > 0) {
             double acceptRatio = 0;
@@ -216,6 +252,18 @@ public:
     }
 
 private:
+    QRectF calculateLayoutDimensions(const Graph::NodeVector & nodes) const
+    {
+        if (nodes.empty()) {
+            return {};
+        }
+        QRectF dimensions = nodes.at(0)->placementBoundingRect();
+        for (auto && node : nodes) {
+            dimensions = dimensions.united(node->placementBoundingRect().translated(node->location()));
+        }
+        return dimensions;
+    }
+
     double calculateCost() const
     {
         return std::accumulate(std::begin(m_layout->all), std::end(m_layout->all), double {},
@@ -273,17 +321,16 @@ private:
         change.targetCell->popRect();
     }
 
+    // Note: Here we plan only very local changes with a very small search radius as we assume that the nodes are already relatively well placed globally.
     Change planChange()
     {
-        std::uniform_int_distribution<size_t> rowDist { 0, m_layout->rows.size() - 1 };
-
         Change change;
         change.type = Change::Type::Swap;
         size_t sourceRowIndex = 0;
         size_t targetRowIndex = 0;
 
         do {
-            sourceRowIndex = rowDist(m_engine);
+            sourceRowIndex = m_rowDist(m_engine);
             change.sourceRow = m_layout->rows.at(sourceRowIndex);
             if (change.sourceRow->cells.empty()) {
                 continue;
@@ -292,13 +339,15 @@ private:
             change.sourceIndex = sourceCellDist(m_engine);
             change.sourceCell = change.sourceRow->cells.at(change.sourceIndex);
 
-            targetRowIndex = rowDist(m_engine);
+            const auto rowDelta = m_oneOrTwoDist(m_engine);
+            targetRowIndex = sourceRowIndex + rowDelta < m_layout->rows.size() ? sourceRowIndex + rowDelta : sourceRowIndex;
             change.targetRow = m_layout->rows.at(targetRowIndex);
             if (change.targetRow->cells.empty()) {
                 continue;
             }
-            std::uniform_int_distribution<size_t> targetCellDist { 0, change.targetRow->cells.size() - 1 };
-            change.targetIndex = targetCellDist(m_engine);
+
+            const auto cellDelta = m_oneOrTwoDist(m_engine);
+            change.targetIndex = change.sourceIndex + cellDelta < change.targetRow->cells.size() ? change.sourceIndex + cellDelta : change.sourceIndex;
             change.targetCell = change.targetRow->cells.at(change.targetIndex);
 
         } while (change.sourceCell == change.targetCell);
@@ -312,6 +361,18 @@ private:
 
     struct Rect
     {
+        Rect()
+        {
+        }
+
+        Rect(int x, int y, int w, int h)
+          : x(x)
+          , y(y)
+          , w(w)
+          , h(h)
+        {
+        }
+
         int x = 0;
 
         int y = 0;
@@ -527,6 +588,11 @@ private:
     std::unique_ptr<Layout> m_layout;
 
     std::mt19937 m_engine;
+
+    // Will be initialized once we now the row count after building the initial layout
+    std::uniform_int_distribution<size_t> m_rowDist;
+
+    std::uniform_int_distribution<size_t> m_oneOrTwoDist { 0, 1 };
 
     ProgressCallback m_progressCallback = nullptr;
 };

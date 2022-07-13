@@ -125,7 +125,7 @@ void LayoutOptimizerTest::testMultipleNodes_ShouldReduceCost()
         QVERIFY(optimizationInfo.changes > 100);
         const double gain = (optimizationInfo.finalCost - optimizationInfo.initialCost) / optimizationInfo.initialCost;
         juzzlin::L().info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
-        QVERIFY(gain < -0.3);
+        QVERIFY(gain < -0.25);
 
         lol.extract();
         for (auto && node : nodes) {

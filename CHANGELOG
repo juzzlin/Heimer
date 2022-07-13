@@ -5,6 +5,11 @@ Release date:
 
 New features:
 
+* Fix GitHub Issue #112: Optimizer: Take current node locations into account when building initial layout
+  - This change makes the optimizer way more stable with respect to the original global placement
+  - Tries to find the best possible initial locations for the nodes in a normalized coordinate space
+  - Makes only local changes within a very small search radius (row-wise and cell-wise)
+
 Bug fixes:
 
 Other:

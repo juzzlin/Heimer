@@ -490,7 +490,7 @@
     <message>
         <location filename="../main_window.cpp" line="221"/>
         <source>&amp;Export</source>
-        <translation></translation>
+        <translation>&amp;Exportieren</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="224"/>
@@ -505,7 +505,7 @@
     <message>
         <location filename="../main_window.cpp" line="247"/>
         <source>&amp;File</source>
-        <translation></translation>
+        <translation>&amp;Datei</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="250"/>
@@ -560,7 +560,7 @@
     <message>
         <location filename="../main_window.cpp" line="346"/>
         <source>&amp;View</source>
-        <translation></translation>
+        <translation>&amp;Ansicht</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="349"/>
@@ -765,7 +765,7 @@
     <message>
         <location filename="../tool_bar.cpp" line="154"/>
         <source>Font</source>
-        <translation></translation>
+        <translation>Schrift</translation>
     </message>
     <message>
         <location filename="../tool_bar.cpp" line="189"/>

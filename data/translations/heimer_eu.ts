@@ -35,7 +35,7 @@
     </message>
     <message>
         <source> on Patreon: </source>
-        <translation type="vanished"> Patreon-en: </translation>
+        <translation> Patreon-en: </translation>
     </message>
 </context>
 <context>
@@ -110,35 +110,35 @@
     <name>DefaultsDlg</name>
     <message>
         <source>Defaults</source>
-        <translation type="vanished">Lehenetsiak</translation>
+        <translation>Lehenetsiak</translation>
     </message>
     <message>
         <source>Edge Arrow Style</source>
-        <translation type="vanished">Gezi estiloa</translation>
+        <translation>Geziaren estiloa</translation>
     </message>
     <message>
         <source>No arrow</source>
-        <translation type="vanished">Gezirik gabe</translation>
+        <translation>Gezirik gabe</translation>
     </message>
     <message>
         <source>Single arrow</source>
-        <translation type="vanished">Gezi bakarra</translation>
+        <translation>Gezi bakarra</translation>
     </message>
     <message>
         <source>Double arrow</source>
-        <translation type="vanished">Gezi bikoitza</translation>
+        <translation>Gezi bikoitza</translation>
     </message>
     <message>
         <source>Reversed direction</source>
-        <translation type="vanished">Kontrako noranzkoan</translation>
+        <translation>Kontrako noranzkoan</translation>
     </message>
     <message>
         <source>Editing</source>
-        <translation type="vanished">Edizioa</translation>
+        <translation>Edizioa</translation>
     </message>
     <message>
         <source>Select node group by intersection</source>
-        <translation type="vanished">Hautatu nodo taldea ebakiduraren arabera</translation>
+        <translation>Hautatu nodo taldea ebakiduraren arabera</translation>
     </message>
 </context>
 <context>

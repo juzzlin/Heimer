@@ -5,14 +5,29 @@ Release date:
 
 New features:
 
+Bug fixes:
+
+Other:
+
+3.5.0
+=====
+
+Release date:
+
+Sat, 30 Jul 2022 21:12:12 +0300
+
+New features:
+
 * Fix GitHub Issue #112: Optimizer: Take current node locations into account when building initial layout
   - This change makes the optimizer way more stable with respect to the original global placement
   - Tries to find the best possible initial locations for the nodes in a normalized coordinate space
   - Makes only local changes within a very small search radius (row-wise and cell-wise)
 
-Bug fixes:
-
 Other:
+
+* Update German translations
+
+* Update Dutch translations
 
 3.4.0
 =====

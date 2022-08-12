@@ -33,7 +33,7 @@ EdgeTextEdit::EdgeTextEdit(EdgeP parentItem)
     m_visibilityTimer.setInterval(Constants::Edge::TEXT_EDIT_DURATION);
 
     connect(&m_visibilityTimer, &QTimer::timeout, this, [=] {
-        setVisible(false);
+        emit visibilityTimeout();
     });
 }
 
@@ -41,9 +41,9 @@ void EdgeTextEdit::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 {
     m_visibilityTimer.stop();
 
-    setVisible(true);
-
     TextEdit::hoverEnterEvent(event);
+
+    emit hoverEntered();
 }
 
 void EdgeTextEdit::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
@@ -69,20 +69,7 @@ void EdgeTextEdit::setAnimationConfig(bool visible)
     }
 }
 
-void EdgeTextEdit::setVisible(bool visible, VisibilityChangeReason vcr)
+void EdgeTextEdit::setVisible(bool visible)
 {
-    switch (vcr) {
-    case VisibilityChangeReason::Default:
-        if (visible) {
-            setAnimationConfig(true);
-        } else if (text().isEmpty()) {
-            setAnimationConfig(false);
-        }
-        break;
-    case VisibilityChangeReason::AvailableSpaceChanged:
-        if (!text().isEmpty()) {
-            setAnimationConfig(visible);
-        }
-        break;
-    }
+    setAnimationConfig(visible);
 }

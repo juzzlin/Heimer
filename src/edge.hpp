@@ -123,7 +123,7 @@ private:
 
     void setArrowHeadPen(const QPen & pen);
 
-    void setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason vcr = EdgeTextEdit::VisibilityChangeReason::Default);
+    void setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason vcr = EdgeTextEdit::VisibilityChangeReason::Timeout);
 
     void updateArrowhead();
 
@@ -172,6 +172,8 @@ private:
     QPointF m_previousRelativeTargetPos;
 
     EdgeTextEdit * m_label;
+
+    EdgeTextEdit * m_dummyLabel;
 
     QGraphicsLineItem * m_arrowheadL0;
 

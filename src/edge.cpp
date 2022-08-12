@@ -51,6 +51,7 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
   , m_sourceDot(enableAnimations ? new EdgeDot(this) : nullptr)
   , m_targetDot(enableAnimations ? new EdgeDot(this) : nullptr)
   , m_label(enableLabel ? new EdgeTextEdit(this) : nullptr)
+  , m_dummyLabel(enableLabel ? new EdgeTextEdit(this) : nullptr)
   , m_arrowheadL0(new QGraphicsLineItem(this))
   , m_arrowheadR0(new QGraphicsLineItem(this))
   , m_arrowheadL1(new QGraphicsLineItem(this))
@@ -76,6 +77,20 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
         });
 
         connect(m_label, &TextEdit::undoPointRequested, this, &Edge::undoPointRequested);
+
+        m_dummyLabel->setZValue(static_cast<int>(Layers::EdgeDummyLabel));
+        m_dummyLabel->setAcceptHoverEvents(false);
+        m_dummyLabel->setBackgroundColor(Constants::Edge::LABEL_COLOR);
+        m_dummyLabel->setText(tr("..."));
+        m_dummyLabel->setEnabled(false);
+
+        connect(m_label, &EdgeTextEdit::hoverEntered, this, [=] {
+            setLabelVisible(true, EdgeTextEdit::VisibilityChangeReason::Focused);
+        });
+
+        connect(m_label, &EdgeTextEdit::visibilityTimeout, this, [=] {
+            setLabelVisible(false);
+        });
 
         m_labelVisibilityTimer.setSingleShot(true);
         m_labelVisibilityTimer.setInterval(Constants::Edge::LABEL_DURATION);
@@ -107,7 +122,7 @@ void Edge::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 {
     m_labelVisibilityTimer.stop();
 
-    setLabelVisible(true);
+    setLabelVisible(true, EdgeTextEdit::VisibilityChangeReason::Focused);
 
     QGraphicsItem::hoverEnterEvent(event);
 }
@@ -147,6 +162,14 @@ void Edge::changeFont(const QFont & font)
             newFont.setPointSize(m_label->font().pointSize());
         }
         m_label->setFont(newFont);
+        if (m_dummyLabel) {
+            // Handle size and family separately to maintain backwards compatibility
+            QFont newFont(font);
+            if (m_dummyLabel->font().pointSize() >= 0) {
+                newFont.setPointSize(m_dummyLabel->font().pointSize());
+            }
+            m_dummyLabel->setFont(newFont);
+        }
     }
 }
 
@@ -195,8 +218,36 @@ void Edge::setArrowHeadPen(const QPen & pen)
 
 void Edge::setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason vcr)
 {
-    if (m_label) {
-        m_label->setVisible(visible, vcr);
+    if (m_label && m_dummyLabel) {
+        const bool isEnoughSpaceForLabel = !m_label->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && !m_label->sceneBoundingRect().intersects(targetNode().sceneBoundingRect());
+        const bool dummyLabelTextIsShoterThanLabelText = m_dummyLabel->text().length() < m_label->text().length();
+        const bool isEnoughSpaceForDummyLabel = !m_dummyLabel->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && !m_dummyLabel->sceneBoundingRect().intersects(targetNode().sceneBoundingRect());
+        switch (vcr) {
+        case EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged: {
+            // Toggle visibility according to space available if geometry changed
+            const bool isLabelVisible = isEnoughSpaceForLabel && !m_label->text().isEmpty();
+            m_label->setVisible(isLabelVisible);
+            m_dummyLabel->setVisible(!isLabelVisible && isEnoughSpaceForDummyLabel && dummyLabelTextIsShoterThanLabelText);
+        } break;
+        case EdgeTextEdit::VisibilityChangeReason::Explicit: {
+            m_label->setVisible(visible);
+            m_dummyLabel->setVisible(visible);
+        } break;
+        case EdgeTextEdit::VisibilityChangeReason::Focused: {
+            if (visible) {
+                m_label->setVisible(true);
+                m_dummyLabel->setVisible(false);
+            }
+        } break;
+        case EdgeTextEdit::VisibilityChangeReason::Timeout: {
+            if (!visible) {
+                if (m_label->text().isEmpty() || !isEnoughSpaceForLabel) {
+                    m_label->setVisible(false);
+                    m_dummyLabel->setVisible(isEnoughSpaceForDummyLabel && dummyLabelTextIsShoterThanLabelText);
+                }
+            }
+        } break;
+        }
     }
 }
 
@@ -388,10 +439,12 @@ void Edge::updateLabel(LabelUpdateReason lur)
 {
     if (m_label) {
         m_label->setPos((line().p1() + line().p2()) * 0.5 - QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()) * 0.5);
-
+        if (m_dummyLabel) {
+            m_dummyLabel->setPos((line().p1() + line().p2()) * 0.5 - QPointF(m_dummyLabel->boundingRect().width(), m_dummyLabel->boundingRect().height()) * 0.5);
+        }
         // Toggle visibility according to space available if geometry changed
         if (lur == LabelUpdateReason::EdgeGeometryChanged) {
-            setLabelVisible(!m_label->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && !m_label->sceneBoundingRect().intersects(targetNode().sceneBoundingRect()), EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged);
+            setLabelVisible(m_label->isVisible(), EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged);
         }
     }
 }

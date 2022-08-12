@@ -5,6 +5,8 @@ Release date:
 
 New features:
 
+* Show a dummy edge label with '...' when the actual label won't fit
+
 Bug fixes:
 
 Other:

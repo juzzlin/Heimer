@@ -20,6 +20,7 @@ enum class Layers
 {
     Edge = 1,
     EdgeDot = 20,
+    EdgeDummyLabel = 24,
     EdgeLabel = 25,
     NodeHandle = 30,
     Node = 10

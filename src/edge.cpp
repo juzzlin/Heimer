@@ -236,6 +236,8 @@ void Edge::setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason vc
         case EdgeTextEdit::VisibilityChangeReason::Focused: {
             if (visible) {
                 m_label->setVisible(true);
+                m_label->setParentItem(nullptr);
+                m_label->setGraphicsEffect(GraphicsFactory::createDropShadowEffect(false, SettingsProxy::instance().shadowEffect()));
                 m_dummyLabel->setVisible(false);
             }
         } break;

@@ -41,6 +41,8 @@ public:
 
     void setVisible(bool visible);
 
+    void updateDueToLostFocus();
+
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
 
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;

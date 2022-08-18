@@ -73,3 +73,8 @@ void EdgeTextEdit::setVisible(bool visible)
 {
     setAnimationConfig(visible);
 }
+
+void EdgeTextEdit::updateDueToLostFocus()
+{
+    m_visibilityTimer.start();
+}

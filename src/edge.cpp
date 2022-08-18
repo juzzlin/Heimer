@@ -243,7 +243,7 @@ void Edge::setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason vc
         } break;
         case EdgeTextEdit::VisibilityChangeReason::Timeout: {
             if (!visible) {
-                if (m_label->text().isEmpty() || !isEnoughSpaceForLabel) {
+                if ((m_label->text().isEmpty() || (!m_label->text().isEmpty() && !isEnoughSpaceForLabel)) && !m_label->hasFocus()) {
                     m_label->setVisible(false);
                     m_dummyLabel->setVisible(isEnoughSpaceForDummyLabel && dummyLabelTextIsShoterThanLabelText);
                 }

@@ -155,21 +155,14 @@ void Edge::copyData(EdgeCR other)
 
 void Edge::changeFont(const QFont & font)
 {
-    if (m_label) {
+    if (m_enableLabel) {
         // Handle size and family separately to maintain backwards compatibility
         QFont newFont(font);
         if (m_label->font().pointSize() >= 0) {
             newFont.setPointSize(m_label->font().pointSize());
         }
         m_label->setFont(newFont);
-        if (m_dummyLabel) {
-            // Handle size and family separately to maintain backwards compatibility
-            QFont newFont(font);
-            if (m_dummyLabel->font().pointSize() >= 0) {
-                newFont.setPointSize(m_dummyLabel->font().pointSize());
-            }
-            m_dummyLabel->setFont(newFont);
-        }
+        m_dummyLabel->setFont(newFont);
     }
 }
 
@@ -218,10 +211,12 @@ void Edge::setArrowHeadPen(const QPen & pen)
 
 void Edge::setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason vcr)
 {
-    if (m_label && m_dummyLabel) {
-        const bool isEnoughSpaceForLabel = !m_label->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && !m_label->sceneBoundingRect().intersects(targetNode().sceneBoundingRect());
+    if (m_enableLabel) {
+        const bool isEnoughSpaceForLabel = !m_label->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && //
+          !m_label->sceneBoundingRect().intersects(targetNode().sceneBoundingRect());
         const bool dummyLabelTextIsShoterThanLabelText = m_dummyLabel->text().length() < m_label->text().length();
-        const bool isEnoughSpaceForDummyLabel = !m_dummyLabel->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && !m_dummyLabel->sceneBoundingRect().intersects(targetNode().sceneBoundingRect());
+        const bool isEnoughSpaceForDummyLabel = !m_dummyLabel->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && //
+          !m_dummyLabel->sceneBoundingRect().intersects(targetNode().sceneBoundingRect());
         switch (vcr) {
         case EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged: {
             // Toggle visibility according to space available if geometry changed
@@ -298,10 +293,10 @@ void Edge::setText(const QString & text)
 {
     m_text = text;
     if (!TestMode::enabled()) {
-        if (m_label) {
+        if (m_enableLabel) {
             m_label->setText(text);
+            setLabelVisible(!text.isEmpty());
         }
-        setLabelVisible(!text.isEmpty());
     } else {
         TestMode::logDisabledCode("Set label text");
     }
@@ -309,12 +304,9 @@ void Edge::setText(const QString & text)
 
 void Edge::setTextSize(int textSize)
 {
-    if (textSize <= 0) {
-        return;
-    }
-
-    if (m_label) {
+    if (m_enableLabel && textSize > 0) {
         m_label->setTextSize(textSize);
+        m_dummyLabel->setTextSize(textSize);
     }
 }
 
@@ -439,11 +431,9 @@ void Edge::updateDots()
 
 void Edge::updateLabel(LabelUpdateReason lur)
 {
-    if (m_label) {
+    if (m_enableLabel) {
         m_label->setPos((line().p1() + line().p2()) * 0.5 - QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()) * 0.5);
-        if (m_dummyLabel) {
-            m_dummyLabel->setPos((line().p1() + line().p2()) * 0.5 - QPointF(m_dummyLabel->boundingRect().width(), m_dummyLabel->boundingRect().height()) * 0.5);
-        }
+        m_dummyLabel->setPos((line().p1() + line().p2()) * 0.5 - QPointF(m_dummyLabel->boundingRect().width(), m_dummyLabel->boundingRect().height()) * 0.5);
         // Toggle visibility according to space available if geometry changed
         if (lur == LabelUpdateReason::EdgeGeometryChanged) {
             setLabelVisible(m_label->isVisible(), EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged);

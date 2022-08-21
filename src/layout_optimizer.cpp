@@ -58,19 +58,19 @@ public:
     {
         juzzlin::L().info() << "Initializing LayoutOptimizer: aspectRatio=" << aspectRatio << ", minEdgeLength=" << minEdgeLength;
 
-        if (!m_mindMapData->graph().numNodes()) {
+        const auto nodes = m_mindMapData->graph().getNodes();
+        if (nodes.empty()) {
             juzzlin::L().info() << "No nodes";
             return false;
         }
 
         double area = 0;
-        for (auto && node : m_mindMapData->graph().getNodes()) {
+        for (auto && node : nodes) {
             area += (node->size().width() + minEdgeLength) * (node->size().height() + minEdgeLength);
         }
 
         // Build initial layout
 
-        auto nodes = m_mindMapData->graph().getNodes();
         const auto originalLayoutDimensions = calculateLayoutDimensions(nodes);
         juzzlin::L().info() << "Area: " << originalLayoutDimensions.height() * originalLayoutDimensions.width();
         const double height = std::sqrt(area / aspectRatio);

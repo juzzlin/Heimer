@@ -5,11 +5,22 @@ Release date:
 
 New features:
 
-* Show a dummy edge label with '...' when the actual label won't fit
-
 Bug fixes:
 
 Other:
+
+3.6.0
+=====
+
+Release date:
+
+Sat, 27 Aug 2022 19:03:46 +0300
+
+New features:
+
+* Usability improvements:
+  - Show a dummy edge label with '...' when the actual label won't fit
+  - Stack edge text edits on top of nodes
 
 3.5.0
 =====

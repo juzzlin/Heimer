@@ -320,12 +320,18 @@ void Edge::setSelected(bool selected)
 {
     m_selected = selected;
     GraphicsFactory::updateDropShadowEffect(graphicsEffect(), selected, SettingsProxy::instance().shadowEffect());
+    if (m_label && m_label->parentItem() != this) {
+        GraphicsFactory::updateDropShadowEffect(m_label->graphicsEffect(), selected, SettingsProxy::instance().shadowEffect());
+    }
     update();
 }
 
 void Edge::setShadowEffect(const ShadowEffectParams & params)
 {
     GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_selected, params);
+    if (m_label && m_label->parentItem() != this) {
+        GraphicsFactory::updateDropShadowEffect(m_label->graphicsEffect(), m_selected, SettingsProxy::instance().shadowEffect());
+    }
     update();
 }
 

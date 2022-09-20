@@ -521,6 +521,7 @@ size_t EditorData::selectionGroupSize() const
 
 void EditorData::removeEdgeFromScene(EdgeR edge)
 {
+    edge.restoreLabelParent();
     edge.hide();
     if (const auto scene = edge.scene()) {
         scene->removeItem(&edge);

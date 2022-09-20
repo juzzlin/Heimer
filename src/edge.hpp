@@ -70,6 +70,8 @@ public:
 
     bool reversed() const;
 
+    void restoreLabelParent();
+
     NodeR sourceNode() const;
 
     NodeR targetNode() const;

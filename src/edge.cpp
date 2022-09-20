@@ -70,7 +70,6 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
     if (m_enableLabel) {
         m_label->setZValue(static_cast<int>(Layers::EdgeLabel));
         m_label->setBackgroundColor(Constants::Edge::LABEL_COLOR);
-
         connect(m_label, &TextEdit::textChanged, this, [=](const QString & text) {
             updateLabel();
             m_text = text;
@@ -454,6 +453,13 @@ void Edge::setSourceNode(NodeR sourceNode)
 bool Edge::reversed() const
 {
     return m_reversed;
+}
+
+void Edge::restoreLabelParent()
+{
+    if (m_label) {
+        m_label->setParentItem(this);
+    }
 }
 
 Edge::ArrowMode Edge::arrowMode() const

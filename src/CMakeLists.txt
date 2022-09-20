@@ -23,6 +23,7 @@ set(LIB_SRC
     alz_serializer.cpp
     application.cpp
     constants.hpp
+    control_strategy.cpp
     copy_context.cpp
     edge.cpp
     edge_context_menu.cpp

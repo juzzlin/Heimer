@@ -31,6 +31,8 @@ class EdgeTextEdit : public TextEdit
 public:
     EdgeTextEdit(EdgeP parentItem);
 
+    EdgeP edge() const;
+
     enum class VisibilityChangeReason
     {
         Timeout,
@@ -55,6 +57,8 @@ signals:
 
 private:
     void setAnimationConfig(bool visible);
+
+    EdgeP m_edge;
 
     QPropertyAnimation m_opacityAnimation;
 

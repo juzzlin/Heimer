@@ -308,7 +308,7 @@ void EditorView::mousePressEvent(QMouseEvent * event)
             // This hack enables edge context menu even if user clicks on the edge text edit.
         } else if (result.edgeTextEdit) {
             if (m_controlStrategy->secondaryButtonClicked(*event)) {
-                if (const auto edge = dynamic_cast<EdgeP>(result.edgeTextEdit->parentItem()); edge) {
+                if (const auto edge = result.edgeTextEdit->edge(); edge) {
                     juzzlin::L().debug() << "Edge text edit pressed";
                     handleMousePressEventOnEdge(*event, *edge);
                     return;

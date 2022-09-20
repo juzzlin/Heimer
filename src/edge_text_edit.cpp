@@ -20,6 +20,7 @@
 
 EdgeTextEdit::EdgeTextEdit(EdgeP parentItem)
   : TextEdit(parentItem)
+  , m_edge(parentItem)
   , m_opacityAnimation(this, "opacity")
 {
     setAcceptHoverEvents(true);
@@ -35,6 +36,11 @@ EdgeTextEdit::EdgeTextEdit(EdgeP parentItem)
     connect(&m_visibilityTimer, &QTimer::timeout, this, [=] {
         emit visibilityTimeout();
     });
+}
+
+EdgeP EdgeTextEdit::edge() const
+{
+    return m_edge;
 }
 
 void EdgeTextEdit::hoverEnterEvent(QGraphicsSceneHoverEvent * event)

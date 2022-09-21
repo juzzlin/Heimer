@@ -9,6 +9,25 @@ Bug fixes:
 
 Other:
 
+3.6.1
+=====
+
+Release date:
+
+Wed, 21 Sep 2022 18:26:35 -0000
+
+Bug fixes:
+
+* Fix shadow effect of edge label when edge is selected
+
+* Fix edge label not deleted together with the edge
+
+* Fix edge context menu not opening when edge text edit right-clicked
+
+Other:
+
+* constants.hpp: added <qreal> to QVector so that the compiler wouldn't throw an error
+
 3.6.0
 =====
 

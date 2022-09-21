@@ -1,1 +1,1 @@
-git archive --format=tar.gz --prefix=heimer-3.6.0/ HEAD > heimer-3.6.0.tar.gz
+git archive --format=tar.gz --prefix=heimer-3.6.1/ HEAD > heimer-3.6.1.tar.gz

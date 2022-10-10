@@ -7,6 +7,8 @@ New features:
 
 Bug fixes:
 
+* Fix GitHub issue #224: Tests fail when compiled with UBSan
+
 Other:
 
 3.6.1

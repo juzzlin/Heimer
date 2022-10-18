@@ -64,6 +64,10 @@ public:
     int radius() const;
 
 private:
+    void drawColorHandle(QPainter & painter);
+
+    void drawPixmapHandle(QPainter & painter);
+
     NodeR m_parentNode;
 
     Role m_role;

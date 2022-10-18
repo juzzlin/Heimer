@@ -77,13 +77,31 @@ void NodeHandle::hoverMoveEvent(QGraphicsSceneHoverEvent * event)
     QGraphicsItem::hoverMoveEvent(event);
 }
 
-void NodeHandle::paint(QPainter * painter,
-                       const QStyleOptionGraphicsItem * option, QWidget * widget)
+void NodeHandle::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
     Q_UNUSED(widget)
     Q_UNUSED(option)
 
-    const std::map<Role, QPixmap> pixmapMap = {
+    switch (role()) {
+    case Role::Color:
+        drawColorHandle(*painter);
+        break;
+    case Role::Add:
+    case Role::Drag:
+    case Role::TextColor:
+        drawPixmapHandle(*painter);
+        break;
+    }
+}
+
+void NodeHandle::drawColorHandle(QPainter & painter)
+{
+    drawPixmapHandle(painter);
+}
+
+void NodeHandle::drawPixmapHandle(QPainter & painter)
+{
+    static const std::map<Role, QPixmap> pixmapMap = {
         { Role::Add, QPixmap(":/add.png") },
         { Role::Drag, QPixmap(":/drag.png") },
         { Role::Color, QPixmap(":/colors.png") },
@@ -91,10 +109,10 @@ void NodeHandle::paint(QPainter * painter,
     };
 
     if (pixmapMap.count(role())) {
-        painter->save();
-        painter->setRenderHint(QPainter::SmoothPixmapTransform);
-        painter->drawPixmap(-m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height(), pixmapMap.at(role()));
-        painter->restore();
+        painter.save();
+        painter.setRenderHint(QPainter::SmoothPixmapTransform);
+        painter.drawPixmap(-m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height(), pixmapMap.at(role()));
+        painter.restore();
     }
 }
 

@@ -64,6 +64,8 @@ public:
     int radius() const;
 
 private:
+    QColor calculateBackgroundColor() const;
+
     void drawColorHandle(QPainter & painter);
 
     void drawPixmapHandle(QPainter & painter);

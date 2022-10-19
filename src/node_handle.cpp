@@ -94,6 +94,11 @@ void NodeHandle::paint(QPainter * painter, const QStyleOptionGraphicsItem * opti
     }
 }
 
+QColor NodeHandle::calculateBackgroundColor() const
+{
+    return { (230 + m_parentNode.color().red()) / 2, (230 + m_parentNode.color().green()) / 2, (230 + m_parentNode.color().blue()) / 2 };
+}
+
 void NodeHandle::drawColorHandle(QPainter & painter)
 {
     const std::vector<QColor> paletteColors = {
@@ -109,7 +114,7 @@ void NodeHandle::drawColorHandle(QPainter & painter)
     };
 
     painter.save();
-    painter.setBrush(QColor { 230, 230, 230 });
+    painter.setBrush(calculateBackgroundColor());
     painter.setPen(Qt::PenStyle::NoPen);
     painter.drawEllipse(-m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height());
 

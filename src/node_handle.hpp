@@ -70,6 +70,8 @@ private:
 
     void drawPixmapHandle(QPainter & painter);
 
+    void drawTextColorHandle(QPainter & painter);
+
     NodeR m_parentNode;
 
     Role m_role;

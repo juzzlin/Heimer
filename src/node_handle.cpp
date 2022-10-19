@@ -88,8 +88,10 @@ void NodeHandle::paint(QPainter * painter, const QStyleOptionGraphicsItem * opti
         break;
     case Role::Add:
     case Role::Drag:
-    case Role::TextColor:
         drawPixmapHandle(*painter);
+        break;
+    case Role::TextColor:
+        drawTextColorHandle(*painter);
         break;
     }
 }
@@ -144,8 +146,7 @@ void NodeHandle::drawPixmapHandle(QPainter & painter)
 {
     static const std::map<Role, QPixmap> pixmapMap = {
         { Role::Add, QPixmap(":/add.png") },
-        { Role::Drag, QPixmap(":/drag.png") },
-        { Role::TextColor, QPixmap(":/colorsText.png") }
+        { Role::Drag, QPixmap(":/drag.png") }
     };
 
     if (pixmapMap.count(role())) {
@@ -154,6 +155,22 @@ void NodeHandle::drawPixmapHandle(QPainter & painter)
         painter.drawPixmap(-m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height(), pixmapMap.at(role()));
         painter.restore();
     }
+}
+
+void NodeHandle::drawTextColorHandle(QPainter & painter)
+{
+    drawColorHandle(painter);
+
+    painter.save();
+    painter.setPen(Qt::black);
+    painter.setOpacity(0.5);
+    QFont font;
+    font.setPixelSize(2 * m_size.height() / 3);
+    font.setItalic(true);
+    font.setBold(true);
+    painter.setFont(font);
+    painter.drawText(QRectF(0, -m_size.height() / 2, m_size.width() / 2, m_size.height() / 2), Qt::AlignCenter, tr("A"));
+    painter.restore();
 }
 
 NodeR NodeHandle::parentNode() const

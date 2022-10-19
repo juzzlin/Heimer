@@ -96,7 +96,43 @@ void NodeHandle::paint(QPainter * painter, const QStyleOptionGraphicsItem * opti
 
 void NodeHandle::drawColorHandle(QPainter & painter)
 {
-    drawPixmapHandle(painter);
+    const std::vector<QColor> paletteColors = {
+        { 255, 0, 255 },
+        { 255, 0, 0 },
+        { 255, 128, 0 },
+        { 0, 0, 128 },
+        { 0, 255, 0 },
+        { 255, 255, 0 },
+        { 255, 255, 255 },
+        { 0, 255, 255 },
+        { 0, 0, 255 }
+    };
+
+    painter.save();
+    painter.setBrush(QColor { 230, 230, 230 });
+    painter.setPen(Qt::PenStyle::NoPen);
+    painter.drawEllipse(-m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height());
+
+    const size_t paletteSize = 3;
+    const auto paletteWidth = static_cast<float>(m_size.width()) * 0.7f;
+    const auto paletteColorWidth = paletteWidth / paletteSize;
+    const auto paletteColorMarginW = paletteColorWidth * 0.1f;
+    const auto paletteHeight = paletteWidth;
+    const auto paletteColorHeight = paletteColorWidth;
+    const auto paletteColorMarginH = paletteColorMarginW;
+    for (size_t i = 0; i < paletteSize; i++) {
+        for (size_t j = 0; j < paletteSize; j++) {
+            const float x = -paletteWidth / 2 + paletteColorWidth * static_cast<float>(i);
+            const float y = -paletteHeight / 2 + paletteColorHeight * static_cast<float>(j);
+            painter.fillRect(QRectF { static_cast<qreal>(x + paletteColorMarginW),
+                                      static_cast<qreal>(y + paletteColorMarginH),
+                                      static_cast<qreal>(paletteColorWidth - paletteColorMarginW * 2),
+                                      static_cast<qreal>(paletteColorHeight - paletteColorMarginH * 2) },
+                             paletteColors[static_cast<size_t>(i + j * paletteSize) % paletteColors.size()]);
+        }
+    }
+
+    painter.restore();
 }
 
 void NodeHandle::drawPixmapHandle(QPainter & painter)
@@ -104,7 +140,6 @@ void NodeHandle::drawPixmapHandle(QPainter & painter)
     static const std::map<Role, QPixmap> pixmapMap = {
         { Role::Add, QPixmap(":/add.png") },
         { Role::Drag, QPixmap(":/drag.png") },
-        { Role::Color, QPixmap(":/colors.png") },
         { Role::TextColor, QPixmap(":/colorsText.png") }
     };
 

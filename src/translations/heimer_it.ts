@@ -38,27 +38,27 @@
     <name>AboutDlg</name>
     <message>
         <source>About </source>
-        <translation>informazioni </translation>
+        <translation type="vanished">informazioni </translation>
     </message>
     <message>
         <source> is licenced under </source>
-        <translation> è concesso in licenza sotto </translation>
+        <translation type="vanished"> è concesso in licenza sotto </translation>
     </message>
     <message>
         <source>Package type: </source>
-        <translation>Tipo di pacchetto: </translation>
+        <translation type="vanished">Tipo di pacchetto: </translation>
     </message>
     <message>
         <source>Project website: </source>
-        <translation>Sito web del progetto: </translation>
+        <translation type="vanished">Sito web del progetto: </translation>
     </message>
     <message>
         <source>Support </source>
-        <translation>Supporto </translation>
+        <translation type="vanished">Supporto </translation>
     </message>
     <message>
         <source> on Patreon: </source>
-        <translation>su Patreon: </translation>
+        <translation type="vanished">su Patreon: </translation>
     </message>
 </context>
 <context>
@@ -138,27 +138,27 @@
     <name>DefaultsDlg</name>
     <message>
         <source>Defaults</source>
-        <translation>Predefinito</translation>
+        <translation type="vanished">Predefinito</translation>
     </message>
     <message>
         <source>Edge Arrow Style</source>
-        <translation>Stile Bordo Freccia</translation>
+        <translation type="vanished">Stile Bordo Freccia</translation>
     </message>
     <message>
         <source>No arrow</source>
-        <translation>Nessuna freccia</translation>
+        <translation type="vanished">Nessuna freccia</translation>
     </message>
     <message>
         <source>Single arrow</source>
-        <translation>Singola freccia</translation>
+        <translation type="vanished">Singola freccia</translation>
     </message>
     <message>
         <source>Double arrow</source>
-        <translation>Doppia freccia</translation>
+        <translation type="vanished">Doppia freccia</translation>
     </message>
     <message>
         <source>Reversed direction</source>
-        <translation>Direzione invertita</translation>
+        <translation type="vanished">Direzione invertita</translation>
     </message>
 </context>
 <context>
@@ -225,6 +225,14 @@
     </message>
 </context>
 <context>
+    <name>Edge</name>
+    <message>
+        <location filename="../edge.cpp" line="83"/>
+        <source>...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EdgeContextMenu</name>
     <message>
         <location filename="../edge_context_menu.cpp" line="27"/>
@@ -237,7 +245,7 @@
     </message>
     <message>
         <source>Single arrow</source>
-        <translation>Singola freccia</translation>
+        <translation type="vanished">Singola freccia</translation>
     </message>
     <message>
         <location filename="../edge_context_menu.cpp" line="33"/>
@@ -293,7 +301,7 @@
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="36"/>
         <source>Shadow color</source>
-        <translation>Colore dell'ombra</translation>
+        <translation>Colore dell&apos;ombra</translation>
     </message>
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="37"/>
@@ -308,7 +316,7 @@
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="90"/>
         <source>Shadow effect offset:</source>
-        <translation>Compensazione dell'effetto ombra:</translation>
+        <translation>Compensazione dell&apos;effetto ombra:</translation>
     </message>
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="98"/>
@@ -318,11 +326,11 @@
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="108"/>
         <source>Selected item shadow blur radius:</source>
-        <translation>Raggio di sfocatura dell'ombra dell'oggetto selezionato:</translation>
+        <translation>Raggio di sfocatura dell&apos;ombra dell&apos;oggetto selezionato:</translation>
     </message>
     <message>
         <source>Autosave feature will automatically save your mind map on every modification after it has been initially saved once.</source>
-        <translation>La funzione di salvataggio automatico salverà automaticamente la tua mappa mentale su ogni modifica dopo che è stata inizialmente salvata una volta.</translation>
+        <translation type="vanished">La funzione di salvataggio automatico salverà automaticamente la tua mappa mentale su ogni modifica dopo che è stata inizialmente salvata una volta.</translation>
     </message>
 </context>
 <context>
@@ -349,11 +357,11 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancella</translation>
+        <translation type="vanished">Cancella</translation>
     </message>
     <message>
         <source>Optimize</source>
-        <translation>Ottimizza</translation>
+        <translation type="vanished">Ottimizza</translation>
     </message>
 </context>
 <context>
@@ -437,7 +445,7 @@
     </message>
     <message>
         <source>&amp;Colors</source>
-        <translation>&amp;Colori</translation>
+        <translation type="vanished">&amp;Colori</translation>
     </message>
 </context>
 <context>
@@ -464,7 +472,7 @@
     </message>
     <message>
         <source>Copy on drag</source>
-        <translation>Copia trascinando</translation>
+        <translation type="vanished">Copia trascinando</translation>
     </message>
     <message>
         <source>Show grid</source>
@@ -506,19 +514,19 @@
     </message>
     <message>
         <source>Corner radius:</source>
-        <translation>Raggio dell&apos;&apos;angolo:</translation>
+        <translation type="vanished">Raggio dell&apos;&apos;angolo:</translation>
     </message>
     <message>
         <source>Edge width:</source>
-        <translation>Larghezza del bordo:</translation>
+        <translation type="vanished">Larghezza del bordo:</translation>
     </message>
     <message>
         <source>Text size:</source>
-        <translation>Dimensione del testo:</translation>
+        <translation type="vanished">Dimensione del testo:</translation>
     </message>
     <message>
         <source>Grid size:</source>
-        <translation>Dimensione della griglia:</translation>
+        <translation type="vanished">Dimensione della griglia:</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="221"/>
@@ -572,7 +580,7 @@
     </message>
     <message>
         <source>&amp;Export to PNG image</source>
-        <translation>&amp;Esporta in immagine PNG</translation>
+        <translation type="vanished">&amp;Esporta in immagine PNG</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="305"/>
@@ -649,6 +657,34 @@
     </message>
 </context>
 <context>
+    <name>NodeHandle</name>
+    <message>
+        <location filename="../node_handle.cpp" line="57"/>
+        <source>Drag to connect or create a child node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../node_handle.cpp" line="59"/>
+        <source>Move the node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../node_handle.cpp" line="61"/>
+        <source>Select node color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../node_handle.cpp" line="63"/>
+        <source>Select text color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../node_handle.cpp" line="189"/>
+        <source>A</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PngExportDialog</name>
     <message>
         <location filename="../dialogs/png_export_dialog.cpp" line="39"/>
@@ -707,11 +743,11 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancella</translation>
+        <translation type="vanished">Cancella</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation>Esporta</translation>
+        <translation type="vanished">Esporta</translation>
     </message>
 </context>
 <context>
@@ -789,11 +825,11 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancella</translation>
+        <translation type="vanished">Cancella</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation>Esporta</translation>
+        <translation type="vanished">Esporta</translation>
     </message>
 </context>
 <context>
@@ -866,7 +902,7 @@
     <name>WhatsNewDlg</name>
     <message>
         <source>What&apos;s New</source>
-        <translation>Cosa c&apos;è di nuovo</translation>
+        <translation type="vanished">Cosa c&apos;è di nuovo</translation>
     </message>
 </context>
 </TS>

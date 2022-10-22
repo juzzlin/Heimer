@@ -68,7 +68,7 @@ QString NodeHandle::getToolTipTextByRole(NodeHandle::Role role) const
 QRectF NodeHandle::boundingRect() const
 {
     const int margin = 1;
-    return QRectF(-m_size.width() / 2 - margin, -m_size.height() / 2 - margin, m_size.width() + margin * 2, m_size.height() + margin * 2);
+    return QRectF(-m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height()).adjusted(margin, margin, -margin, -margin);
 }
 
 void NodeHandle::hoverEnterEvent(QGraphicsSceneHoverEvent * event)

@@ -5,6 +5,8 @@ Release date:
 
 New features:
 
+* Add tooltips to node handles
+
 Bug fixes:
 
 * Fix GitHub issue #224: Tests fail when compiled with UBSan

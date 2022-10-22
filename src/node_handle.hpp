@@ -34,9 +34,9 @@ class NodeHandle : public QObject, public QGraphicsItem
 public:
     enum class Role
     {
-        Add,
-        Color,
-        Drag,
+        ConnectOrCreate,
+        NodeColor,
+        Move,
         TextColor
     };
 
@@ -71,6 +71,8 @@ private:
     void drawPixmapHandle(QPainter & painter);
 
     void drawTextColorHandle(QPainter & painter);
+
+    QString getToolTipTextByRole(NodeHandle::Role role) const;
 
     NodeR m_parentNode;
 

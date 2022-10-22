@@ -46,6 +46,23 @@ NodeHandle::NodeHandle(NodeR parentNode, NodeHandle::Role role, int radius)
     QGraphicsItem::setVisible(false);
 
     setZValue(static_cast<int>(Layers::NodeHandle));
+
+    setToolTip(getToolTipTextByRole(role));
+}
+
+QString NodeHandle::getToolTipTextByRole(NodeHandle::Role role) const
+{
+    switch (role) {
+    case NodeHandle::Role::ConnectOrCreate:
+        return tr("Drag to connect or create a child node");
+    case NodeHandle::Role::Move:
+        return tr("Move the node");
+    case NodeHandle::Role::NodeColor:
+        return tr("Select node color");
+    case NodeHandle::Role::TextColor:
+        return tr("Select text color");
+    }
+    return "";
 }
 
 QRectF NodeHandle::boundingRect() const
@@ -83,11 +100,11 @@ void NodeHandle::paint(QPainter * painter, const QStyleOptionGraphicsItem * opti
     Q_UNUSED(option)
 
     switch (role()) {
-    case Role::Color:
+    case Role::NodeColor:
         drawColorHandle(*painter);
         break;
-    case Role::Add:
-    case Role::Drag:
+    case Role::ConnectOrCreate:
+    case Role::Move:
         drawPixmapHandle(*painter);
         break;
     case Role::TextColor:
@@ -145,8 +162,8 @@ void NodeHandle::drawColorHandle(QPainter & painter)
 void NodeHandle::drawPixmapHandle(QPainter & painter)
 {
     static const std::map<Role, QPixmap> pixmapMap = {
-        { Role::Add, QPixmap(":/add.png") },
-        { Role::Drag, QPixmap(":/drag.png") }
+        { Role::ConnectOrCreate, QPixmap(":/add.png") },
+        { Role::Move, QPixmap(":/drag.png") }
     };
 
     if (pixmapMap.count(role())) {

@@ -196,13 +196,13 @@ void Node::createEdgePoints()
 
 void Node::createHandles()
 {
-    m_handles[NodeHandle::Role::Add] = new NodeHandle(*this, NodeHandle::Role::Add, Constants::Node::HANDLE_RADIUS);
+    m_handles[NodeHandle::Role::ConnectOrCreate] = new NodeHandle(*this, NodeHandle::Role::ConnectOrCreate, Constants::Node::HANDLE_RADIUS);
 
-    m_handles[NodeHandle::Role::Color] = new NodeHandle(*this, NodeHandle::Role::Color, Constants::Node::HANDLE_RADIUS_SMALL);
+    m_handles[NodeHandle::Role::NodeColor] = new NodeHandle(*this, NodeHandle::Role::NodeColor, Constants::Node::HANDLE_RADIUS_SMALL);
 
     m_handles[NodeHandle::Role::TextColor] = new NodeHandle(*this, NodeHandle::Role::TextColor, Constants::Node::HANDLE_RADIUS_SMALL);
 
-    m_handles[NodeHandle::Role::Drag] = new NodeHandle(*this, NodeHandle::Role::Drag, Constants::Node::HANDLE_RADIUS_MEDIUM);
+    m_handles[NodeHandle::Role::Move] = new NodeHandle(*this, NodeHandle::Role::Move, Constants::Node::HANDLE_RADIUS_MEDIUM);
 
     updateHandlePositions();
 }
@@ -515,13 +515,13 @@ void Node::updateEdgeLines()
 
 void Node::updateHandlePositions()
 {
-    m_handles[NodeHandle::Role::Add]->setPos(pos() + QPointF { 0, m_size.height() * 0.5 });
+    m_handles[NodeHandle::Role::ConnectOrCreate]->setPos(pos() + QPointF { 0, m_size.height() * 0.5 });
 
-    m_handles[NodeHandle::Role::Color]->setPos(pos() + QPointF { m_size.width() * 0.5, m_size.height() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.5 });
+    m_handles[NodeHandle::Role::NodeColor]->setPos(pos() + QPointF { m_size.width() * 0.5, m_size.height() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.5 });
 
     m_handles[NodeHandle::Role::TextColor]->setPos(pos() + QPointF { m_size.width() * 0.5, -m_size.height() * 0.5 + Constants::Node::HANDLE_RADIUS_SMALL * 0.5 });
 
-    m_handles[NodeHandle::Role::Drag]->setPos(pos() + QPointF { -m_size.width() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15, -m_size.height() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15 });
+    m_handles[NodeHandle::Role::Move]->setPos(pos() + QPointF { -m_size.width() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15, -m_size.height() * 0.5 - Constants::Node::HANDLE_RADIUS_SMALL * 0.15 });
 }
 
 NodeP Node::lastHoveredNode()

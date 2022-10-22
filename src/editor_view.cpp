@@ -146,13 +146,13 @@ void EditorView::handlePrimaryButtonClickOnNodeHandle(NodeHandle & nodeHandle)
     }
 
     switch (nodeHandle.role()) {
-    case NodeHandle::Role::Add:
+    case NodeHandle::Role::ConnectOrCreate:
         m_mediator.initiateNewNodeDrag(nodeHandle);
         break;
-    case NodeHandle::Role::Drag:
+    case NodeHandle::Role::Move:
         m_mediator.initiateNodeDrag(nodeHandle.parentNode());
         break;
-    case NodeHandle::Role::Color:
+    case NodeHandle::Role::NodeColor:
         m_mediator.addNodeToSelectionGroup(nodeHandle.parentNode());
         emit actionTriggered(StateMachine::Action::NodeColorChangeRequested);
         break;

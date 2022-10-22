@@ -66,13 +66,27 @@ public:
 private:
     QColor calculateBackgroundColor() const;
 
-    void drawColorHandle(QPainter & painter);
+    QColor calculateForegroundColor() const;
 
-    void drawPixmapHandle(QPainter & painter);
+    void drawColorHandle(QPainter & painter) const;
 
-    void drawTextColorHandle(QPainter & painter);
+    void drawConnectOrCreateHandle(QPainter & painter) const;
+
+    void drawPixmapHandle(QPainter & painter) const;
+
+    void drawTextColorHandle(QPainter & painter) const;
+
+    void drawCenteredRect(QPainter & painter, qreal relW, qreal relH, qreal relY) const;
 
     QString getToolTipTextByRole(NodeHandle::Role role) const;
+
+    qreal relXToX(qreal relX) const;
+
+    qreal relYToY(qreal relY) const;
+
+    qreal relWToW(qreal relW) const;
+
+    qreal relHToH(qreal relH) const;
 
     NodeR m_parentNode;
 

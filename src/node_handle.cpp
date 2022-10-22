@@ -19,6 +19,7 @@
 #include "constants.hpp"
 #include "graphics_factory.hpp"
 #include "layers.hpp"
+#include "utils.hpp"
 
 #include <QPainter>
 #include <QPen>
@@ -104,6 +105,8 @@ void NodeHandle::paint(QPainter * painter, const QStyleOptionGraphicsItem * opti
         drawColorHandle(*painter);
         break;
     case Role::ConnectOrCreate:
+        drawConnectOrCreateHandle(*painter);
+        break;
     case Role::Move:
         drawPixmapHandle(*painter);
         break;
@@ -118,7 +121,32 @@ QColor NodeHandle::calculateBackgroundColor() const
     return { (230 + m_parentNode.color().red()) / 2, (230 + m_parentNode.color().green()) / 2, (230 + m_parentNode.color().blue()) / 2 };
 }
 
-void NodeHandle::drawColorHandle(QPainter & painter)
+QColor NodeHandle::calculateForegroundColor() const
+{
+    return { (127 + m_parentNode.color().red()) % 256, (127 + m_parentNode.color().green()) % 256, (127 + m_parentNode.color().blue()) % 256 };
+}
+
+qreal NodeHandle::relXToX(qreal relX) const
+{
+    return -m_size.width() / 2 + relX * m_size.width();
+}
+
+qreal NodeHandle::relYToY(qreal relY) const
+{
+    return -m_size.height() / 2 + relY * m_size.height();
+}
+
+qreal NodeHandle::relWToW(qreal relW) const
+{
+    return relW * m_size.width();
+}
+
+qreal NodeHandle::relHToH(qreal relH) const
+{
+    return relH * m_size.height();
+}
+
+void NodeHandle::drawColorHandle(QPainter & painter) const
 {
     const std::vector<QColor> paletteColors = {
         { 255, 0, 255 },
@@ -159,7 +187,47 @@ void NodeHandle::drawColorHandle(QPainter & painter)
     painter.restore();
 }
 
-void NodeHandle::drawPixmapHandle(QPainter & painter)
+void NodeHandle::drawCenteredRect(QPainter & painter, qreal relW, qreal relH, qreal relY) const
+{
+    painter.drawRect(QRectF {
+      QPointF { relXToX(0.5 - relW / 2),
+                relYToY(0.5 - relH / 2 + relY) },
+      QPointF { relXToX(0.5 + relW / 2),
+                relYToY(0.5 + relH / 2 + relY) } });
+}
+
+void NodeHandle::drawConnectOrCreateHandle(QPainter & painter) const
+{
+    painter.save();
+    painter.setBrush(calculateBackgroundColor());
+    painter.setPen(Qt::PenStyle::NoPen);
+    painter.drawEllipse(-m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height());
+    painter.setBrush(Qt::BrushStyle::NoBrush);
+    QPen pen(Utils::isColorBright(m_parentNode.color()) ? QColor(20, 20, 20) : QColor(255, 255, 255));
+    pen.setWidthF(2);
+    pen.setCapStyle(Qt::PenCapStyle::SquareCap);
+    pen.setJoinStyle(Qt::PenJoinStyle::MiterJoin);
+    painter.setPen(pen);
+    const qreal relW = 0.4;
+    const qreal relH = 0.25;
+    const qreal relD = 0.175;
+    drawCenteredRect(painter, relW, relH, -relD);
+    pen.setDashPattern({ qreal(2), qreal(2) });
+    painter.setPen(pen);
+    drawCenteredRect(painter, relW, relH, +relD);
+    pen.setStyle(Qt::PenStyle::SolidLine);
+    pen.setCapStyle(Qt::PenCapStyle::RoundCap);
+    painter.setPen(pen);
+    const QPointF arrowEnd { relXToX(0.5), relYToY(0.55 + relD) };
+    painter.drawLine(QPointF { relXToX(0.5), relYToY(0.5 - relD) }, arrowEnd);
+    const qreal arrowD = 0.075;
+    painter.setPen(pen);
+    painter.drawLine(arrowEnd, QPointF { relXToX(0.5 + arrowD), relYToY(0.55 + relD - arrowD) });
+    painter.drawLine(arrowEnd, QPointF { relXToX(0.5 - arrowD), relYToY(0.55 + relD - arrowD) });
+    painter.restore();
+}
+
+void NodeHandle::drawPixmapHandle(QPainter & painter) const
 {
     static const std::map<Role, QPixmap> pixmapMap = {
         { Role::ConnectOrCreate, QPixmap(":/add.png") },
@@ -174,7 +242,7 @@ void NodeHandle::drawPixmapHandle(QPainter & painter)
     }
 }
 
-void NodeHandle::drawTextColorHandle(QPainter & painter)
+void NodeHandle::drawTextColorHandle(QPainter & painter) const
 {
     drawColorHandle(painter);
 

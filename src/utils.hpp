@@ -13,8 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
+#include <QColor>
 #include <cstddef>
 
 namespace Utils {
+
 size_t tsMs();
-}
+
+bool isColorBright(QColor color);
+
+} // namespace Utils

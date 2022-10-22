@@ -22,3 +22,8 @@ size_t Utils::tsMs()
     using namespace std::chrono;
     return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 }
+
+bool Utils::isColorBright(QColor color)
+{
+    return color.red() * color.red() + color.blue() * color.blue() + color.green() * color.green() > 127 * 127 * 3;
+}

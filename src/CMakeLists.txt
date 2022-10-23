@@ -66,6 +66,7 @@ set(LIB_SRC
     types.hpp
     undo_stack.cpp
     user_exception.hpp
+    utils.cpp
     version.hpp
     version_checker.cpp
     widget_factory.cpp

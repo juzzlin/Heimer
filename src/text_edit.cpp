@@ -97,7 +97,6 @@ void TextEdit::setBackgroundColor(const QColor & backgroundColor)
 
     update();
 }
-
 void TextEdit::setTextSize(int textSize)
 {
     m_textSize = textSize;

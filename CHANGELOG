@@ -7,6 +7,8 @@ New features:
 
 * Add tooltips to node handles
 
+* Light or dark text edit highlight based on node color
+
 Bug fixes:
 
 * Fix GitHub issue #224: Tests fail when compiled with UBSan

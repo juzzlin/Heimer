@@ -24,6 +24,7 @@
 #include "shadow_effect_params.hpp"
 #include "test_mode.hpp"
 #include "text_edit.hpp"
+#include "utils.hpp"
 
 #include "simple_logger.hpp"
 
@@ -350,8 +351,8 @@ void Node::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
 
     // Patch for TextEdit
 
-    painter->fillRect(expandedTextEditRect(), Constants::Node::TEXT_EDIT_BACKGROUND_COLOR);
-
+    painter->fillRect(expandedTextEditRect(),
+                      Utils::isColorBright(m_color) ? Constants::Node::TEXT_EDIT_BACKGROUND_COLOR_DARK : Constants::Node::TEXT_EDIT_BACKGROUND_COLOR_LIGHT);
     painter->restore();
 }
 

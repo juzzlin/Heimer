@@ -66,8 +66,6 @@ public:
 private:
     QColor calculateBackgroundColor() const;
 
-    QColor calculateForegroundColor() const;
-
     void drawColorHandle(QPainter & painter) const;
 
     void drawConnectOrCreateHandle(QPainter & painter) const;

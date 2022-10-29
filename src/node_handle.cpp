@@ -121,11 +121,6 @@ QColor NodeHandle::calculateBackgroundColor() const
     return { (230 + m_parentNode.color().red()) / 2, (230 + m_parentNode.color().green()) / 2, (230 + m_parentNode.color().blue()) / 2 };
 }
 
-QColor NodeHandle::calculateForegroundColor() const
-{
-    return { (127 + m_parentNode.color().red()) % 256, (127 + m_parentNode.color().green()) % 256, (127 + m_parentNode.color().blue()) % 256 };
-}
-
 qreal NodeHandle::relXToX(qreal relX) const
 {
     return -m_size.width() / 2 + relX * m_size.width();

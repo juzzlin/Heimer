@@ -108,7 +108,7 @@ void NodeHandle::paint(QPainter * painter, const QStyleOptionGraphicsItem * opti
         drawConnectOrCreateHandle(*painter);
         break;
     case Role::Move:
-        drawPixmapHandle(*painter);
+        drawMoveHandle(*painter);
         break;
     case Role::TextColor:
         drawTextColorHandle(*painter);
@@ -139,6 +139,20 @@ qreal NodeHandle::relWToW(qreal relW) const
 qreal NodeHandle::relHToH(qreal relH) const
 {
     return relH * m_size.height();
+}
+
+QPointF NodeHandle::relPToP(const QPointF & relP) const
+{
+    return { relXToX(relP.x()), relYToY(relP.y()) };
+}
+
+QPen NodeHandle::getForegroundPen() const
+{
+    QPen pen(Utils::isColorBright(m_parentNode.color()) ? QColor(20, 20, 20) : QColor(255, 255, 255));
+    pen.setWidthF(2);
+    pen.setCapStyle(Qt::PenCapStyle::SquareCap);
+    pen.setJoinStyle(Qt::PenJoinStyle::MiterJoin);
+    return pen;
 }
 
 void NodeHandle::drawColorHandle(QPainter & painter) const
@@ -191,56 +205,92 @@ void NodeHandle::drawCenteredRect(QPainter & painter, qreal relW, qreal relH, qr
                 relYToY(0.5 + relH / 2 + relY) } });
 }
 
-void NodeHandle::drawConnectOrCreateHandle(QPainter & painter) const
+void NodeHandle::drawArrow(QPainter & painter, QPointF arrowStart, QPointF arrowEnd) const
 {
-    painter.save();
+    painter.drawLine(relPToP(arrowStart), relPToP(arrowEnd));
+    const qreal arrowD = 0.075;
+    painter.drawLine(relPToP(arrowEnd), QPointF { relXToX(arrowEnd.x() + arrowD), relYToY(arrowEnd.y() - arrowD) });
+    painter.drawLine(relPToP(arrowEnd), QPointF { relXToX(arrowEnd.x() - arrowD), relYToY(arrowEnd.y() - arrowD) });
+}
+
+void NodeHandle::drawBackground(QPainter & painter) const
+{
     painter.setBrush(calculateBackgroundColor());
     painter.setPen(Qt::PenStyle::NoPen);
     painter.drawEllipse(-m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height());
+}
+
+void NodeHandle::drawConnectOrCreateHandle(QPainter & painter) const
+{
+    painter.save();
+
+    // Background
+    drawBackground(painter);
+
+    // Solid rectangle
+    auto pen = getForegroundPen();
     painter.setBrush(Qt::BrushStyle::NoBrush);
-    QPen pen(Utils::isColorBright(m_parentNode.color()) ? QColor(20, 20, 20) : QColor(255, 255, 255));
-    pen.setWidthF(2);
-    pen.setCapStyle(Qt::PenCapStyle::SquareCap);
-    pen.setJoinStyle(Qt::PenJoinStyle::MiterJoin);
     painter.setPen(pen);
     const qreal relW = 0.4;
     const qreal relH = 0.25;
     const qreal relD = 0.175;
     drawCenteredRect(painter, relW, relH, -relD);
+
+    // Dashed rectangle
     pen.setDashPattern({ qreal(2), qreal(2) });
     painter.setPen(pen);
     drawCenteredRect(painter, relW, relH, +relD);
+
+    // Arrow
     pen.setStyle(Qt::PenStyle::SolidLine);
     pen.setCapStyle(Qt::PenCapStyle::RoundCap);
     painter.setPen(pen);
-    const QPointF arrowEnd { relXToX(0.5), relYToY(0.55 + relD) };
-    painter.drawLine(QPointF { relXToX(0.5), relYToY(0.5 - relD) }, arrowEnd);
-    const qreal arrowD = 0.075;
-    painter.setPen(pen);
-    painter.drawLine(arrowEnd, QPointF { relXToX(0.5 + arrowD), relYToY(0.55 + relD - arrowD) });
-    painter.drawLine(arrowEnd, QPointF { relXToX(0.5 - arrowD), relYToY(0.55 + relD - arrowD) });
+    drawArrow(painter, QPointF { 0.5, 0.5 - relD }, { 0.5, 0.55 + relD });
     painter.restore();
 }
 
-void NodeHandle::drawPixmapHandle(QPainter & painter) const
+void NodeHandle::drawMoveHandle(QPainter & painter) const
 {
-    static const std::map<Role, QPixmap> pixmapMap = {
-        { Role::ConnectOrCreate, QPixmap(":/add.png") },
-        { Role::Move, QPixmap(":/drag.png") }
-    };
+    painter.save();
 
-    if (pixmapMap.count(role())) {
-        painter.save();
-        painter.setRenderHint(QPainter::SmoothPixmapTransform);
-        painter.drawPixmap(-m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height(), pixmapMap.at(role()));
-        painter.restore();
-    }
+    // Background
+    drawBackground(painter);
+
+    // Dashed rectangle
+    painter.setBrush(Qt::BrushStyle::NoBrush);
+    auto pen = getForegroundPen();
+    painter.setPen(pen);
+    const qreal relW = 0.4;
+    const qreal relH = 0.25;
+    pen.setDashPattern({ qreal(2), qreal(2) });
+    painter.setPen(pen);
+    drawCenteredRect(painter, relW, relH, 0);
+
+    // Arrows
+    pen.setStyle(Qt::PenStyle::SolidLine);
+    pen.setCapStyle(Qt::PenCapStyle::RoundCap);
+    painter.setPen(pen);
+
+    const qreal margin = 0.1;
+    const QPointF arrowEnd { 0.5, 0.9 };
+    const QPointF vArrowStart { 0.5, 0.5 + margin + relH / 2 };
+    drawArrow(painter, vArrowStart, arrowEnd);
+    painter.rotate(180);
+    drawArrow(painter, vArrowStart, arrowEnd);
+    painter.rotate(90);
+
+    const QPointF hArrowStart { 0.5, 0.5 + margin + relW / 2 };
+    drawArrow(painter, hArrowStart, arrowEnd);
+    painter.rotate(180);
+    drawArrow(painter, hArrowStart, arrowEnd);
+    painter.restore();
 }
 
 void NodeHandle::drawTextColorHandle(QPainter & painter) const
 {
     drawColorHandle(painter);
 
+    // The text symbol "A"
     painter.save();
     painter.setPen(Qt::black);
     painter.setOpacity(0.5);

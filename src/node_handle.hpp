@@ -66,9 +66,15 @@ public:
 private:
     QColor calculateBackgroundColor() const;
 
+    void drawArrow(QPainter & painter, QPointF arrowStart, QPointF arrowEnd) const;
+
+    void drawBackground(QPainter & painter) const;
+
     void drawColorHandle(QPainter & painter) const;
 
     void drawConnectOrCreateHandle(QPainter & painter) const;
+
+    void drawMoveHandle(QPainter & painter) const;
 
     void drawPixmapHandle(QPainter & painter) const;
 
@@ -85,6 +91,10 @@ private:
     qreal relWToW(qreal relW) const;
 
     qreal relHToH(qreal relH) const;
+
+    QPointF relPToP(const QPointF & relP) const;
+
+    QPen getForegroundPen() const;
 
     NodeR m_parentNode;
 

@@ -7,6 +7,8 @@ New features:
 
 * Add tooltips to node handles
 
+* Set handle background color based on node color
+
 * Light or dark text edit highlight based on node color
 
 Bug fixes:

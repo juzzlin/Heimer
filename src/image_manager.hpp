@@ -19,6 +19,7 @@
 #include <QObject>
 
 #include <map>
+#include <optional>
 
 #include "image.hpp"
 #include "types.hpp"
@@ -38,7 +39,7 @@ public:
 
     void setImage(const Image & image);
 
-    std::pair<Image, bool> getImage(size_t id);
+    std::optional<Image> getImage(size_t id);
 
     void handleImageRequest(size_t id, NodeR node);
 

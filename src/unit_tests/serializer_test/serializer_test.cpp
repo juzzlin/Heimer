@@ -187,6 +187,54 @@ void SerializerTest::testLayoutOptimizer()
     QCOMPARE(inData->minEdgeLength(), outData.minEdgeLength());
 }
 
+void SerializerTest::testLoadJpg()
+{
+    const QString xml =
+      "<?xml version='1.0' encoding='UTF-8'?>"
+      "<heimer-mind-map version=\"3.6.1\">"
+      " <graph>"
+      "  <node w=\"200000\" x=\"0\" y=\"0\" h=\"75000\" index=\"0\">"
+      "   <image ref=\"1\"/>"
+      "  </node>"
+      " </graph>"
+      " <image path=\"test.jpg\" id=\"1\">/9j/4AAQSkZJRgABAQEASABIAAD//gAgRGVzY3JpcHRpb246IENyZWF0ZWQgd2l0aCBHSU1Q/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8AAEQgABAAEAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/aAAwDAQACEQMRAD8A9/ooooA//9k=</image>"
+      " </heimer-mind-map>";
+    QDomDocument document;
+    document.setContent(xml, false);
+    const auto inData = AlzSerializer::fromXml(document);
+    QCOMPARE(inData->imageManager().images().size(), size_t { 1 });
+    const auto image = inData->imageManager().getImage(1);
+    QVERIFY(image.has_value());
+    QCOMPARE(image->image().width(), 4);
+    QCOMPARE(image->image().height(), 4);
+    QCOMPARE(image->id(), size_t(1));
+    QCOMPARE(image->path(), std::string("test.jpg"));
+}
+
+void SerializerTest::testLoadPng()
+{
+    const QString xml =
+      "<?xml version='1.0' encoding='UTF-8'?>"
+      "<heimer-mind-map version=\"3.6.1\">"
+      " <graph>"
+      "  <node w=\"200000\" x=\"0\" y=\"0\" h=\"75000\" index=\"0\">"
+      "   <image ref=\"1\"/>"
+      "  </node>"
+      " </graph>"
+      " <image path=\"test.png\" id=\"1\">iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAIAAAAmkwkpAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAABRJREFUCJlj/P//PwMMMDEgAdwcAJZuAwUDbWh7AAAAAElFTkSuQmCC</image>"
+      " </heimer-mind-map>";
+    QDomDocument document;
+    document.setContent(xml, false);
+    const auto inData = AlzSerializer::fromXml(document);
+    QCOMPARE(inData->imageManager().images().size(), size_t { 1 });
+    const auto image = inData->imageManager().getImage(1);
+    QVERIFY(image.has_value());
+    QCOMPARE(image->image().width(), 4);
+    QCOMPARE(image->image().height(), 4);
+    QCOMPARE(image->id(), size_t(1));
+    QCOMPARE(image->path(), std::string("test.png"));
+}
+
 void SerializerTest::testNotUsedImages()
 {
     MindMapData outData;

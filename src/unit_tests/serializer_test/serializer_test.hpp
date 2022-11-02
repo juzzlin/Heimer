@@ -63,6 +63,10 @@ private slots:
 
     void testLayoutOptimizer();
 
+    void testLoadJpg();
+
+    void testLoadPng();
+
     void testNotUsedImages();
 
     void testNodeDeletion();

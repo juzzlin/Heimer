@@ -245,26 +245,16 @@ static QString getBase64Data(std::string path)
 
 static QImage base64ToQImage(const std::string & base64, size_t imageId, std::string imagePath)
 {
-    if (!TestMode::enabled()) {
-        if (QTemporaryDir dir; dir.isValid()) {
-            QFileInfo info(imagePath.c_str());
-            const auto extractedFilePath = (dir.path() + QDir::separator() + info.fileName()).toStdString();
-            juzzlin::L().info() << "Extracting embedded image id=" << imageId << " to '" << extractedFilePath << "'";
-            QByteArray bytes = QByteArray::fromBase64(base64.c_str(), QByteArray::Base64Encoding);
-            QFile out(extractedFilePath.c_str());
-            if (!out.open(QIODevice::WriteOnly)) {
-                throw std::runtime_error("Cannot open file: '" + extractedFilePath + "' for write!");
-            }
-            auto bytesWritten = out.write(bytes);
-            juzzlin::L().info() << "Bytes written: " << bytesWritten << ", " << (bytesWritten == bytes.length() ? "OK" : "SIZE MISMATCH");
-            return QImage { extractedFilePath.c_str() };
-        } else {
-            throw std::runtime_error("Temp dir not valid: '" + dir.path().toStdString() + "'");
-        }
-    } else {
-        TestMode::logDisabledCode("base64ToQImage");
+    juzzlin::L().info() << "Extracting embedded Image id=" << imageId << ", path=" << imagePath;
+    const auto ba = QByteArray::fromBase64(base64.c_str(), QByteArray::Base64Encoding);
+    QImage in;
+    if (!in.loadFromData(ba)) {
+        juzzlin::L().error() << "Could not load embedded Image id=" << imageId << ", path=" << imagePath;
     }
-    return {};
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    juzzlin::L().info() << "Image size: " << in.sizeInBytes() << " bytes";
+#endif
+    return in;
 }
 
 static void writeImages(MindMapData & mindMapData, QDomElement & root, QDomDocument & doc)
@@ -275,23 +265,20 @@ static void writeImages(MindMapData & mindMapData, QDomElement & root, QDomDocum
             if (writtenImageRefs.count(node->imageRef())) {
                 juzzlin::L().info() << "Image id=" << node->imageRef() << " already written";
             } else {
-                Image image;
-                bool exists;
-                std::tie(image, exists) = mindMapData.imageManager().getImage(node->imageRef());
-                if (exists) {
+                if (const auto image = mindMapData.imageManager().getImage(node->imageRef()); image.has_value()) {
                     auto imageElement = doc.createElement(DataKeywords::MindMap::IMAGE);
-                    imageElement.setAttribute(DataKeywords::MindMap::Image::ID, static_cast<int>(image.id()));
-                    imageElement.setAttribute(DataKeywords::MindMap::Image::PATH, image.path().c_str());
+                    imageElement.setAttribute(DataKeywords::MindMap::Image::ID, static_cast<int>(image->id()));
+                    imageElement.setAttribute(DataKeywords::MindMap::Image::PATH, image->path().c_str());
                     root.appendChild(imageElement);
 
                     // Create a child node for the image content
                     if (!TestMode::enabled()) {
                         QTemporaryDir dir;
-                        const QFileInfo info(image.path().c_str());
+                        const QFileInfo info(image->path().c_str());
                         const QString tempImagePath = (dir.path() + QDir::separator() + info.fileName());
-                        image.image().save(tempImagePath);
+                        image->image().save(tempImagePath);
                         imageElement.appendChild(doc.createTextNode(getBase64Data(tempImagePath.toStdString())));
-                        writtenImageRefs.insert(image.id());
+                        writtenImageRefs.insert(image->id());
                     } else {
                         TestMode::logDisabledCode("writeImages");
                     }

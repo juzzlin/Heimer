@@ -15,6 +15,9 @@ Bug fixes:
 
 * Fix GitHub issue #224: Tests fail when compiled with UBSan
 
+* Fix GitHub Issue #226: Attached node background images not loading    
+  - Decode images in memory without exporting into a file first
+
 Other:
 
 * Add timestamp to log file name

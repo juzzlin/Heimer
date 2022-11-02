@@ -104,6 +104,7 @@ else()
     find_package(QT NAMES Qt5 COMPONENTS Core REQUIRED)
     find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Xml Widgets LinguistTools Svg Test Network REQUIRED)
 endif()
+message(STATUS "Qt version found: ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_PATCH}")
 # Install paths depend on the build type and target platform
 setup_install_targets()
 

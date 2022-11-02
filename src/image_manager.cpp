@@ -49,7 +49,7 @@ void ImageManager::setImage(const Image & image)
         throw std::runtime_error("Image must have id > 0 !");
     }
 
-    if (!image.image().sizeInBytes()) {
+    if (!image.image().size().height() || !image.image().size().width()) {
         juzzlin::L().warning() << "QImage size is zero!";
     }
 
@@ -57,19 +57,19 @@ void ImageManager::setImage(const Image & image)
     m_images[image.id()] = image;
 }
 
-std::pair<Image, bool> ImageManager::getImage(size_t id)
+std::optional<Image> ImageManager::getImage(size_t id)
 {
     if (m_images.count(id)) {
-        return { m_images[id], true };
+        return { m_images[id] };
     }
     return {};
 }
 
 void ImageManager::handleImageRequest(size_t id, NodeR node)
 {
-    if (const auto && imagePair = getImage(id); imagePair.second) {
+    if (const auto && imagePair = getImage(id); imagePair.has_value()) {
         juzzlin::L().debug() << "Applying image id=" << id << " to node " << node.index();
-        node.applyImage(imagePair.first);
+        node.applyImage(*imagePair);
     } else {
         juzzlin::L().warning() << "Cannot find image with id=" << id;
     }

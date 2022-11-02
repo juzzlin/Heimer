@@ -43,14 +43,18 @@ size_t ImageManager::addImage(const Image & image)
 
 void ImageManager::setImage(const Image & image)
 {
+    juzzlin::L().debug() << "Setting image, path=" << image.path() << ", id=" << image.id();
+
     if (!image.id()) {
         throw std::runtime_error("Image must have id > 0 !");
     }
 
+    if (!image.image().sizeInBytes()) {
+        juzzlin::L().warning() << "QImage size is zero!";
+    }
+
     m_count = std::max(image.id(), m_count);
     m_images[image.id()] = image;
-
-    juzzlin::L().debug() << "Setting image, path=" << image.path() << ", id=" << image.id();
 }
 
 std::pair<Image, bool> ImageManager::getImage(size_t id)

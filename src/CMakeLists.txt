@@ -20,7 +20,7 @@ set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_BINAR
 
 # Set sources for the lib
 set(LIB_SRC
-    alz_serializer.cpp
+    alz_file_io.cpp
     application.cpp
     constants.hpp
     control_strategy.cpp
@@ -34,6 +34,7 @@ set(LIB_SRC
     editor_scene.cpp
     editor_view.cpp
     file_exception.hpp
+    file_io.hpp
     graph.cpp
     graphics_factory.cpp
     grid.cpp

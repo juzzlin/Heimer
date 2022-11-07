@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "alz_serializer.hpp"
+#include "alz_file_io.hpp"
 
 #include "types.hpp"
 
@@ -23,6 +23,8 @@
 #include "node.hpp"
 #include "simple_logger.hpp"
 #include "test_mode.hpp"
+#include "xml_reader.hpp"
+#include "xml_writer.hpp"
 
 #include <cassert>
 #include <functional>
@@ -34,7 +36,6 @@
 #include <QFile>
 #include <QTemporaryDir>
 
-namespace AlzSerializer {
 namespace DataKeywords {
 namespace MindMap {
 
@@ -537,4 +538,24 @@ QDomDocument toXml(MindMapData & mindMapData)
     return doc;
 }
 
-} // namespace AlzSerializer
+std::unique_ptr<MindMapData> AlzFileIO::fromFile(QString path) const
+{
+    return ::fromXml(XmlReader::readFromFile(path));
+}
+
+bool AlzFileIO::toFile(MindMapData & mindMapData, QString path) const
+{
+    return XmlWriter::writeToFile(::toXml(mindMapData), path);
+}
+
+std::unique_ptr<MindMapData> AlzFileIO::fromXml(QString xml) const
+{
+    QDomDocument document;
+    document.setContent(xml, false);
+    return ::fromXml(document);
+}
+
+QString AlzFileIO::toXml(MindMapData & mindMapData) const
+{
+    return ::toXml(mindMapData).toString();
+}

@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2022 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,21 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef ALZ_SERIALIZER_HPP
-#define ALZ_SERIALIZER_HPP
-
-#include <QDomDocument>
+#ifndef FILE_IO_HPP
+#define FILE_IO_HPP
 
 #include <memory>
 
+#include <QString>
+
 class MindMapData;
 
-namespace AlzSerializer {
+class FileIO
+{
+public:
+    virtual std::unique_ptr<MindMapData> fromFile(QString path) const = 0;
 
-std::unique_ptr<MindMapData> fromXml(QDomDocument document);
+    virtual bool toFile(MindMapData & mindMapData, QString path) const = 0;
+};
 
-QDomDocument toXml(MindMapData & mindMapData);
-
-} // namespace AlzSerializer
-
-#endif // ALZ_SERIALIZER_HPP
+#endif // FILE_IO_HPP

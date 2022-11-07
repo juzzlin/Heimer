@@ -15,7 +15,6 @@
 
 #include "editor_data_test.hpp"
 
-#include "alz_serializer.hpp"
 #include "editor_data.hpp"
 #include "mind_map_data.hpp"
 #include "test_mode.hpp"

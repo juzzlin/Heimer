@@ -31,6 +31,8 @@ public:
     explicit SettingsDialog(QWidget * parent = nullptr);
 
 signals:
+    void autosaveEnabled(bool enabled);
+
     void shadowEffectChanged(const ShadowEffectParams & params);
 
 private:

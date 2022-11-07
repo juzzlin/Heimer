@@ -22,6 +22,8 @@ Other:
 
 * Add timestamp to log file name
 
+* Save immediately when autosave enabled
+
 3.6.1
 =====
 

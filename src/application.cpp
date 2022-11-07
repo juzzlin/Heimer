@@ -175,6 +175,7 @@ Application::Application(int & argc, char ** argv)
     connect(m_mediator.get(), &Mediator::svgExportFinished, m_svgExportDialog.get(), &SvgExportDialog::finishExport);
 
     connect(m_mainWindow.get(), &MainWindow::arrowSizeChanged, m_mediator.get(), &Mediator::setArrowSize);
+    connect(m_mainWindow.get(), &MainWindow::autosaveEnabled, m_mediator.get(), &Mediator::enableAutosave);
     connect(m_mainWindow.get(), &MainWindow::cornerRadiusChanged, m_mediator.get(), &Mediator::setCornerRadius);
     connect(m_mainWindow.get(), &MainWindow::edgeWidthChanged, m_mediator.get(), &Mediator::setEdgeWidth);
     connect(m_mainWindow.get(), &MainWindow::fontChanged, m_mediator.get(), &Mediator::changeFont);

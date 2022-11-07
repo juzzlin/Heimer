@@ -156,10 +156,10 @@ void EditorData::removeImageRefsOfSelectedNodes()
 
 bool EditorData::saveMindMap()
 {
-    assert(m_mindMapData);
-    assert(!m_fileName.isEmpty());
-
-    return saveMindMapAs(m_fileName);
+    if (m_mindMapData && !m_fileName.isEmpty()) {
+        return saveMindMapAs(m_fileName);
+    }
+    return false;
 }
 
 void EditorData::saveUndoPoint(bool dontClearRedoStack)

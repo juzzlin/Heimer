@@ -54,6 +54,10 @@ void EditingTab::initWidgets()
     setLayout(mainLayout);
 
     setActiveSettings();
+
+    connect(m_autosaveCheckBox, &QCheckBox::stateChanged, this, [=](auto state) {
+        emit autosaveEnabled(state == Qt::CheckState::Checked);
+    });
 }
 
 void EditingTab::setActiveSettings()

@@ -32,8 +32,10 @@ public:
 
     void apply();
 
-private:
+signals:
+    void autosaveEnabled(bool enabled);
 
+private:
     void initWidgets();
 
     void setActiveSettings();

@@ -54,6 +54,7 @@ set(LIB_SRC
     node.cpp
     node_action.hpp
     node_handle.cpp
+    node_model.hpp
     recent_files_manager.cpp
     recent_files_menu.cpp
     selection_group.cpp

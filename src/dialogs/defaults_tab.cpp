@@ -76,9 +76,9 @@ void DefaultsTab::createEdgeWidgets(QVBoxLayout & mainLayout)
     const auto edgeGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Edge Arrow Style"), mainLayout);
 
     m_edgeArrowStyleRadioMap = {
-        { Edge::ArrowMode::Hidden, new QRadioButton(tr("No arrow")) },
-        { Edge::ArrowMode::Single, new QRadioButton(tr("Single arrow")) },
-        { Edge::ArrowMode::Double, new QRadioButton(tr("Double arrow")) }
+        { EdgeModel::ArrowMode::Hidden, new QRadioButton(tr("No arrow")) },
+        { EdgeModel::ArrowMode::Single, new QRadioButton(tr("Single arrow")) },
+        { EdgeModel::ArrowMode::Double, new QRadioButton(tr("Double arrow")) }
     };
 
     const auto edgeArrowRadioGroup = new QButtonGroup;

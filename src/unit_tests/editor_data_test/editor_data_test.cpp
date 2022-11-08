@@ -357,21 +357,21 @@ void EditorDataTest::testUndoArrowMode()
     const auto edge01 = std::make_shared<Edge>(node0, node1);
     editorData.addEdge(edge01);
 
-    QCOMPARE(edge01->arrowMode(), Edge::ArrowMode::Single);
+    QCOMPARE(edge01->arrowMode(), EdgeModel::ArrowMode::Single);
 
-    edge01->setArrowMode(Edge::ArrowMode::Double);
+    edge01->setArrowMode(EdgeModel::ArrowMode::Double);
 
     editorData.saveUndoPoint();
 
-    edge01->setArrowMode(Edge::ArrowMode::Hidden);
+    edge01->setArrowMode(EdgeModel::ArrowMode::Hidden);
 
     editorData.undo();
 
-    QCOMPARE(editorData.mindMapData()->graph().getEdges().at(0)->arrowMode(), Edge::ArrowMode::Double);
+    QCOMPARE(editorData.mindMapData()->graph().getEdges().at(0)->arrowMode(), EdgeModel::ArrowMode::Double);
 
     editorData.redo();
 
-    QCOMPARE(editorData.mindMapData()->graph().getEdges().at(0)->arrowMode(), Edge::ArrowMode::Hidden);
+    QCOMPARE(editorData.mindMapData()->graph().getEdges().at(0)->arrowMode(), EdgeModel::ArrowMode::Hidden);
 }
 
 void EditorDataTest::testUndoArrowSize()

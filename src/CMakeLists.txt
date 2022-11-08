@@ -28,6 +28,7 @@ set(LIB_SRC
     edge.cpp
     edge_context_menu.cpp
     edge_dot.cpp
+    edge_model.hpp
     edge_point.hpp
     edge_text_edit.cpp
     editor_data.cpp

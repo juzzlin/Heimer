@@ -23,6 +23,7 @@
 #include <memory>
 
 #include "constants.hpp"
+#include "edge_model.hpp"
 #include "edge_point.hpp"
 #include "edge_text_edit.hpp"
 #include "types.hpp"
@@ -33,6 +34,7 @@ class Node;
 class QFont;
 class QGraphicsEllipseItem;
 class QPropertyAnimation;
+
 struct ShadowEffectParams;
 
 //! A graphic representation of a graph edge between nodes.
@@ -41,12 +43,6 @@ class Edge : public QObject, public QGraphicsLineItem
     Q_OBJECT
 
 public:
-    enum class ArrowMode
-    {
-        Single = 0,
-        Double = 1,
-        Hidden = 2
-    };
 
     //! Constructor.
     //! Note!!: We are using raw pointers here because the edge only must only refer to the nodes.
@@ -64,7 +60,7 @@ public:
 
     virtual ~Edge() override;
 
-    ArrowMode arrowMode() const;
+    EdgeModel::ArrowMode arrowMode() const;
 
     bool dashedLine() const;
 
@@ -92,7 +88,7 @@ public slots:
 
     void updateLine();
 
-    void setArrowMode(ArrowMode arrowMode);
+    void setArrowMode(EdgeModel::ArrowMode arrowMode);
 
     void setArrowSize(double arrowSize);
 
@@ -139,11 +135,11 @@ private:
 
     void updateLabel(LabelUpdateReason lur = LabelUpdateReason::Default);
 
+    std::unique_ptr<EdgeModel> m_edgeModel;
+
     NodeP m_sourceNode = nullptr;
 
     NodeP m_targetNode = nullptr;
-
-    QString m_text;
 
     double m_arrowSize = Constants::Edge::Defaults::ARROW_SIZE;
 
@@ -153,13 +149,7 @@ private:
 
     QColor m_color;
 
-    bool m_reversed;
-
     bool m_selected = false;
-
-    ArrowMode m_arrowMode;
-
-    bool m_dashedLine = false;
 
     bool m_enableAnimations;
 

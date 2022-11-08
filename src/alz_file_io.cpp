@@ -391,7 +391,7 @@ static EdgeU readEdge(const QDomElement & element, MindMapData & data)
 
     // Initialize a new edge. QGraphicsScene will take the ownership eventually.
     auto edge = std::make_unique<Edge>(data.graph().getNode(index0), data.graph().getNode(index1));
-    edge->setArrowMode(static_cast<Edge::ArrowMode>(arrowMode));
+    edge->setArrowMode(static_cast<EdgeModel::ArrowMode>(arrowMode));
     edge->setDashedLine(dashedLine);
     edge->setReversed(reversed);
 

@@ -53,9 +53,9 @@ public:
 
     void setNodeTextColor(const QColor & nodeTextColor);
 
-    Edge::ArrowMode edgeArrowMode() const;
+    EdgeModel::ArrowMode edgeArrowMode() const;
 
-    void setEdgeArrowMode(Edge::ArrowMode mode);
+    void setEdgeArrowMode(EdgeModel::ArrowMode mode);
 
     bool reversedEdgeDirection() const;
 
@@ -82,7 +82,7 @@ private:
 
     QColor m_nodeTextColor;
 
-    Edge::ArrowMode m_edgeArrowMode;
+    EdgeModel::ArrowMode m_edgeArrowMode;
 
     bool m_reversedEdgeDirection = false;
 

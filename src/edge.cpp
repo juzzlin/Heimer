@@ -42,10 +42,9 @@
 #include <cmath>
 
 Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enableLabel)
-  : m_sourceNode(sourceNode)
+  : m_edgeModel(std::make_unique<EdgeModel>(SettingsProxy::instance().reversedEdgeDirection(), SettingsProxy::instance().edgeArrowMode()))
+  , m_sourceNode(sourceNode)
   , m_targetNode(targetNode)
-  , m_reversed(SettingsProxy::instance().reversedEdgeDirection())
-  , m_arrowMode(SettingsProxy::instance().edgeArrowMode())
   , m_enableAnimations(enableAnimations)
   , m_enableLabel(enableLabel)
   , m_sourceDot(enableAnimations ? new EdgeDot(this) : nullptr)
@@ -72,7 +71,7 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
         m_label->setBackgroundColor(Constants::Edge::LABEL_COLOR);
         connect(m_label, &TextEdit::textChanged, this, [=](const QString & text) {
             updateLabel();
-            m_text = text;
+            m_edgeModel->text = text;
         });
 
         connect(m_label, &TextEdit::undoPointRequested, this, &Edge::undoPointRequested);
@@ -137,7 +136,7 @@ QPen Edge::buildPen(bool ignoreDashSetting) const
 {
     QPen pen { QBrush { QColor { m_color.red(), m_color.green(), m_color.blue() } }, m_edgeWidth };
     pen.setCapStyle(Qt::PenCapStyle::RoundCap);
-    if (!ignoreDashSetting && m_dashedLine) {
+    if (!ignoreDashSetting && m_edgeModel->dashedLine) {
         pen.setDashPattern(Constants::Edge::DASH_PATTERN);
     }
     return pen;
@@ -145,11 +144,9 @@ QPen Edge::buildPen(bool ignoreDashSetting) const
 
 void Edge::copyData(EdgeCR other)
 {
-    m_arrowMode = other.m_arrowMode;
-    m_dashedLine = other.m_dashedLine;
-    m_reversed = other.m_reversed;
+    *m_edgeModel = *other.m_edgeModel;
 
-    setText(other.m_text); // Update text to the label component
+    setText(other.m_edgeModel->text); // Update text to the label component
 }
 
 void Edge::changeFont(const QFont & font)
@@ -167,7 +164,7 @@ void Edge::changeFont(const QFont & font)
 
 bool Edge::dashedLine() const
 {
-    return m_dashedLine;
+    return m_edgeModel->dashedLine;
 }
 
 void Edge::initDots()
@@ -254,9 +251,9 @@ void Edge::setEdgeWidth(double edgeWidth)
     updateLine();
 }
 
-void Edge::setArrowMode(ArrowMode arrowMode)
+void Edge::setArrowMode(EdgeModel::ArrowMode arrowMode)
 {
-    m_arrowMode = arrowMode;
+    m_edgeModel->arrowMode = arrowMode;
     if (!TestMode::enabled()) {
         updateLine();
     } else {
@@ -280,7 +277,7 @@ void Edge::setColor(const QColor & color)
 
 void Edge::setDashedLine(bool enable)
 {
-    m_dashedLine = enable;
+    m_edgeModel->dashedLine = enable;
     if (!TestMode::enabled()) {
         updateLine();
     } else {
@@ -290,7 +287,7 @@ void Edge::setDashedLine(bool enable)
 
 void Edge::setText(const QString & text)
 {
-    m_text = text;
+    m_edgeModel->text = text;
     if (!TestMode::enabled()) {
         if (m_enableLabel) {
             m_label->setText(text);
@@ -311,7 +308,7 @@ void Edge::setTextSize(int textSize)
 
 void Edge::setReversed(bool reversed)
 {
-    m_reversed = reversed;
+    m_edgeModel->reversed = reversed;
 
     updateArrowhead();
 }
@@ -349,18 +346,19 @@ void Edge::updateArrowhead()
 {
     setArrowHeadPen(buildPen(true));
 
-    const auto point0 = m_reversed ? this->line().p1() : this->line().p2();
-    const auto angle0 = m_reversed ? -this->line().angle() + 180 : -this->line().angle();
-    const auto point1 = m_reversed ? this->line().p2() : this->line().p1();
-    const auto angle1 = m_reversed ? -this->line().angle() : -this->line().angle() + 180;
+    const auto reversed = m_edgeModel->reversed;
+    const auto point0 = reversed ? this->line().p1() : this->line().p2();
+    const auto angle0 = reversed ? -this->line().angle() + 180 : -this->line().angle();
+    const auto point1 = reversed ? this->line().p2() : this->line().p1();
+    const auto angle1 = reversed ? -this->line().angle() : -this->line().angle() + 180;
 
     QLineF lineL0;
     QLineF lineR0;
     QLineF lineL1;
     QLineF lineR1;
 
-    switch (m_arrowMode) {
-    case ArrowMode::Single: {
+    switch (m_edgeModel->arrowMode) {
+    case EdgeModel::ArrowMode::Single: {
         lineL0.setP1(point0);
         const auto angleL = qDegreesToRadians(angle0 + Constants::Edge::ARROW_OPENING);
         lineL0.setP2(point0 + QPointF(std::cos(angleL), std::sin(angleL)) * m_arrowSize);
@@ -375,7 +373,7 @@ void Edge::updateArrowhead()
         m_arrowheadR1->hide();
         break;
     }
-    case ArrowMode::Double: {
+    case EdgeModel::ArrowMode::Double: {
         lineL0.setP1(point0);
         const auto angleL0 = qDegreesToRadians(angle0 + Constants::Edge::ARROW_OPENING);
         lineL0.setP2(point0 + QPointF(std::cos(angleL0), std::sin(angleL0)) * m_arrowSize);
@@ -398,7 +396,7 @@ void Edge::updateArrowhead()
         m_arrowheadR1->show();
         break;
     }
-    case ArrowMode::Hidden:
+    case EdgeModel::ArrowMode::Hidden:
         m_arrowheadL0->hide();
         m_arrowheadR0->hide();
         m_arrowheadL1->hide();
@@ -458,7 +456,7 @@ void Edge::setSourceNode(NodeR sourceNode)
 
 bool Edge::reversed() const
 {
-    return m_reversed;
+    return m_edgeModel->reversed;
 }
 
 void Edge::restoreLabelParent()
@@ -468,14 +466,14 @@ void Edge::restoreLabelParent()
     }
 }
 
-Edge::ArrowMode Edge::arrowMode() const
+EdgeModel::ArrowMode Edge::arrowMode() const
 {
-    return m_arrowMode;
+    return m_edgeModel->arrowMode;
 }
 
 QString Edge::text() const
 {
-    return m_text;
+    return m_edgeModel->text;
 }
 
 void Edge::updateLine()

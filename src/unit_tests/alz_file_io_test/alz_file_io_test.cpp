@@ -306,7 +306,7 @@ void AlzFileIOTest::testSingleEdge()
 
     const auto edge = std::make_shared<Edge>(outNode0, outNode1);
     const QString text = "Lorem ipsum";
-    edge->setArrowMode(Edge::ArrowMode::Double);
+    edge->setArrowMode(EdgeModel::ArrowMode::Double);
     edge->setDashedLine(true);
     edge->setReversed(true);
     edge->setText(text);

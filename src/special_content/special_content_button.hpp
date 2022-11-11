@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2019 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2023 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,40 +13,40 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef IMAGE_HPP
-#define IMAGE_HPP
+#ifndef SPECIAL_CONTENT_BUTTON_HPP
+#define SPECIAL_CONTENT_BUTTON_HPP
 
-#include <QImage>
+#include <QGraphicsItem>
 
-#include <string>
+namespace SpecialContent {
 
-class Image
+class SpecialContentButton : public QGraphicsItem
 {
 public:
-    Image();
+    enum class Role
+    {
+        Image,
+        WebLink
+    };
 
-    Image(QImage image, std::string path);
+    SpecialContentButton(Role role);
 
-    QImage image() const;
+    QRectF
+    boundingRect() const override;
 
-    std::string path() const;
+    const QSizeF & size() const;
 
-    size_t id() const;
+    void setSize(const QSizeF & newSize);
 
-    void setId(size_t id);
-
-    bool isSimilar(const Image & other) const;
-
-    QByteArray hash() const;
+protected:
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
 
 private:
-    QImage m_image;
+    Role m_role;
 
-    std::string m_path;
-
-    size_t m_id = 0;
-
-    QByteArray m_hash;
+    QSizeF m_size;
 };
 
-#endif // IMAGE_HPP
+} // namespace SpecialContent
+
+#endif // SPECIAL_CONTENT_BUTTON_HPP

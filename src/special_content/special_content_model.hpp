@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2019 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2022 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,40 +13,29 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef IMAGE_HPP
-#define IMAGE_HPP
+#ifndef SPECIAL_CONTENT_MODEL_HPP
+#define SPECIAL_CONTENT_MODEL_HPP
 
-#include <QImage>
+#include <QString>
 
-#include <string>
+#include <optional>
 
-class Image
+#include "../image.hpp"
+
+namespace SpecialContent {
+
+struct SpecialContentModel
 {
-public:
-    Image();
+    bool hasData() const
+    {
+        return url.has_value() || image.has_value();
+    }
 
-    Image(QImage image, std::string path);
+    std::optional<QString> url;
 
-    QImage image() const;
-
-    std::string path() const;
-
-    size_t id() const;
-
-    void setId(size_t id);
-
-    bool isSimilar(const Image & other) const;
-
-    QByteArray hash() const;
-
-private:
-    QImage m_image;
-
-    std::string m_path;
-
-    size_t m_id = 0;
-
-    QByteArray m_hash;
+    std::optional<Image> image;
 };
 
-#endif // IMAGE_HPP
+} // namespace SpecialContent
+
+#endif // SPECIAL_CONTENT_MODEL_HPP

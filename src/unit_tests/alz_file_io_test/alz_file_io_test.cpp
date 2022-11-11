@@ -339,6 +339,40 @@ void AlzFileIOTest::testGraph_NodeDeletion()
     QCOMPARE(edges.size(), static_cast<size_t>(1));
 }
 
+void AlzFileIOTest::testSimilarImages_notSimilar()
+{
+    Image image1;
+    Image image2;
+
+    QCOMPARE(image1.isSimilar(image2), false);
+
+    const auto outData = std::make_shared<MindMapData>();
+    const auto id1 = outData->imageManager().addImage(image1);
+    const auto id2 = outData->imageManager().addImage(image2);
+
+    QCOMPARE(id1 == id2, false);
+}
+
+void AlzFileIOTest::testSimilarImages_similar()
+{
+    QImage qImage1({ 4, 4 }, QImage::Format_RGB555);
+    qImage1.fill(0);
+    Image image1(qImage1, "qImage1");
+
+    QImage qImage2({ 4, 4 }, QImage::Format_RGB555);
+    qImage2.fill(0);
+    Image image2(qImage2, "qImage2");
+
+    QCOMPARE(image1.hash(), image2.hash());
+    QCOMPARE(image1.isSimilar(image2), true);
+
+    const auto outData = std::make_shared<MindMapData>();
+    const auto id1 = outData->imageManager().addImage(image1);
+    const auto id2 = outData->imageManager().addImage(image2);
+
+    QCOMPARE(id1, id2);
+}
+
 void AlzFileIOTest::testGraph_SingleEdge()
 {
     const auto outData = std::make_shared<MindMapData>();

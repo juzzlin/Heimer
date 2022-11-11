@@ -41,6 +41,14 @@ ImageManager & ImageManager::operator=(const ImageManager & other)
 
 size_t ImageManager::addImage(const Image & image)
 {
+    if (const auto iter = std::find_if(m_images.begin(), m_images.end(), [image](const auto & imagePair) {
+            return imagePair.second.isSimilar(image);
+        });
+        iter != m_images.end()) {
+        juzzlin::L().debug() << "Similar image already added, id=" << iter->second.id();
+        return iter->second.id();
+    }
+
     const auto id = ++m_count;
     m_images[id] = image;
     m_images[id].setId(id);

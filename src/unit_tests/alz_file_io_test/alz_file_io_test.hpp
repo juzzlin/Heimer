@@ -83,6 +83,10 @@ private slots:
 
     void testNotUsedImages();
 
+    void testSimilarImages_notSimilar();
+
+    void testSimilarImages_similar();
+
     void testUsedImages();
 
     void testV1_ArrowSize();

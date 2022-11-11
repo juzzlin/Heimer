@@ -37,6 +37,7 @@
 #include "dialogs/layout_optimization_dialog.hpp"
 #include "dialogs/png_export_dialog.hpp"
 #include "dialogs/scene_color_dialog.hpp"
+#include "dialogs/special_content_dialog.hpp"
 #include "dialogs/svg_export_dialog.hpp"
 
 #include "argengine.hpp"
@@ -274,6 +275,9 @@ void Application::runState(StateMachine::State state)
     case StateMachine::State::ShowNodeColorDialog:
         showNodeColorDialog();
         break;
+    case StateMachine::State::ShowSpecialContentDialog:
+        showSpecialContentDialog();
+        break;
     case StateMachine::State::ShowTextColorDialog:
         showTextColorDialog();
         break;
@@ -424,6 +428,15 @@ void Application::showNodeColorDialog()
         m_mediator->clearSelectionGroup(true);
     }
     emit actionTriggered(StateMachine::Action::NodeColorChanged);
+}
+
+void Application::showSpecialContentDialog()
+{
+    Dialogs::SpecialContentDialog dialog(m_mainWindow.get());
+    if (dialog.exec() == QDialog::Accepted) {
+        m_mediator->performNodeAction({ NodeAction::Type::AddSpecialContent, dialog.specialContentModel() });
+    }
+    emit actionTriggered(StateMachine::Action::SpecialContentAdded);
 }
 
 void Application::showTextColorDialog()

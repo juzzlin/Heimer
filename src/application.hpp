@@ -88,6 +88,8 @@ private:
 
     void showPngExportDialog();
 
+    void showSpecialContentDialog();
+
     void showSvgExportDialog();
 
     void showTextColorDialog();

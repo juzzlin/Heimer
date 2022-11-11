@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2019 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2023 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,40 +13,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef IMAGE_HPP
-#define IMAGE_HPP
+#include "special_content_tray.hpp"
 
-#include <QImage>
+namespace SpecialContent {
 
-#include <string>
-
-class Image
+SpecialContentTray::SpecialContentTray(NodeR parentNode)
+  : m_parentNode(parentNode)
 {
-public:
-    Image();
+}
 
-    Image(QImage image, std::string path);
+QRectF SpecialContentTray::boundingRect() const
+{
+    return { -size().width() / 2, -size().height() / 2, size().width(), size().height() };
+}
 
-    QImage image() const;
+void SpecialContentTray::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
+{
+}
 
-    std::string path() const;
+const QSizeF & SpecialContentTray::size() const
+{
+    return m_size;
+}
 
-    size_t id() const;
+void SpecialContentTray::setSize(const QSizeF & newSize)
+{
+    m_size = newSize;
+}
 
-    void setId(size_t id);
-
-    bool isSimilar(const Image & other) const;
-
-    QByteArray hash() const;
-
-private:
-    QImage m_image;
-
-    std::string m_path;
-
-    size_t m_id = 0;
-
-    QByteArray m_hash;
-};
-
-#endif // IMAGE_HPP
+} // namespace SpecialContent

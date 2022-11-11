@@ -527,6 +527,17 @@ void Mediator::performNodeAction(const NodeAction & action)
     switch (action.type) {
     case NodeAction::Type::None:
         break;
+    case NodeAction::Type::AddSpecialContent: {
+        if (m_editorData->selectionGroupSize()) {
+            saveUndoPoint();
+            auto specialContentModelCopy = action.specialContentModel;
+            if (specialContentModelCopy.image.has_value()) {
+                const auto imageId = m_editorData->mindMapData()->imageManager().addImage(specialContentModelCopy.image.value());
+                specialContentModelCopy.image->setId(imageId);
+            }
+            m_editorData->addSpecialContentForSelectedNodes(specialContentModelCopy);
+        }
+    } break;
     case NodeAction::Type::AttachImage: {
         const Image image { action.image, action.fileName.toStdString() };
         const auto id = m_editorData->mindMapData()->imageManager().addImage(image);

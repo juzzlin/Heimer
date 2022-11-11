@@ -19,11 +19,16 @@
 #include <QColor>
 #include <QImage>
 
+#include <optional>
+
+#include "special_content/special_content_model.hpp"
+
 struct NodeAction
 {
     enum class Type
     {
         None,
+        AddSpecialContent,
         AttachImage,
         ConnectSelected,
         Copy,
@@ -55,6 +60,12 @@ struct NodeAction
     {
     }
 
+    NodeAction(Type type, SpecialContent::SpecialContentModel specialContentModel)
+      : type(type)
+      , specialContentModel(specialContentModel)
+    {
+    }
+
     Type type = Type::None;
 
     QColor color = Qt::white;
@@ -62,6 +73,8 @@ struct NodeAction
     QImage image;
 
     QString fileName;
+
+    SpecialContent::SpecialContentModel specialContentModel;
 };
 
 #endif // NODE_ACTION_HPP

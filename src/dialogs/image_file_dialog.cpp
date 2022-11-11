@@ -15,7 +15,7 @@
 
 #include "image_file_dialog.hpp"
 
-#include "../settings.hpp"
+#include "../core/settings.hpp"
 
 #include <QFileInfo>
 #include <QMessageBox>

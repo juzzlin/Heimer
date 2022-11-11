@@ -21,6 +21,10 @@
 #include <QSizeF>
 #include <QString>
 
+#include <vector>
+
+#include "special_content/special_content_model.hpp"
+
 namespace SceneItems {
 
 struct NodeModel
@@ -44,6 +48,8 @@ struct NodeModel
     QColor textColor;
 
     QString text;
+
+    std::vector<SpecialContent::SpecialContentModel> specialContentModels;
 };
 
 } // namespace SceneItems

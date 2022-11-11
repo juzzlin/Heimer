@@ -30,6 +30,9 @@
 #include "../core/single_instance_container.hpp"
 #include "../core/test_mode.hpp"
 
+#include "../special_content/special_content_model.hpp"
+#include "../special_content/special_content_tray.hpp"
+
 #include "simple_logger.hpp"
 
 #include <QFont>
@@ -55,6 +58,7 @@ Node::Node()
   : m_settingsProxy(Core::SingleInstanceContainer::instance().settingsProxy())
   , m_nodeModel(std::make_unique<NodeModel>(m_settingsProxy.nodeColor(), m_settingsProxy.nodeTextColor()))
   , m_textEdit(new TextEdit(this))
+  , m_specialContentTray(new SpecialContent::SpecialContentTray(*this))
 {
     setAcceptHoverEvents(true);
 
@@ -131,6 +135,24 @@ void Node::removeGraphicsEdge(EdgeR edge)
     }
 }
 
+void Node::addSpecialContent(const SpecialContent::SpecialContentModel & specialContentModel)
+{
+    if (specialContentModel.hasData()) {
+        m_nodeModel->specialContentModels.push_back(specialContentModel);
+        setShowSpecialContentTray(true);
+        // Handle image
+        if (specialContentModel.image.has_value()) {
+            juzzlin::L().info() << "Adding special content image id=" << specialContentModel.image.value().id() << " to node " << index();
+        }
+        // Handle web link
+        if (specialContentModel.url.has_value()) {
+            juzzlin::L().info() << "Adding special content url='" << specialContentModel.url.value().toStdString() << "' to node " << index();
+        }
+    } else {
+        juzzlin::L().warning() << "Special content has no data for node " << index();
+    }
+}
+
 void Node::removeFromScene()
 {
     hide();
@@ -155,12 +177,20 @@ void Node::adjustSize()
     prepareGeometryChange();
 
     const auto margin = Constants::Node::MARGIN * 2;
-    const auto newSize = QSize {
-        std::max(Constants::Node::MIN_WIDTH, static_cast<int>(m_textEdit->boundingRect().width() + margin)),
-        std::max(Constants::Node::MIN_HEIGHT, static_cast<int>(m_textEdit->boundingRect().height() + margin))
-    };
 
-    m_nodeModel->size = newSize;
+    if (m_showSpecialContentTray) {
+        const auto newSize = QSize {
+            std::max(Constants::Node::MIN_WIDTH, static_cast<int>(m_textEdit->boundingRect().width() + margin)),
+            std::max(Constants::Node::MIN_HEIGHT, static_cast<int>(m_textEdit->boundingRect().height() + margin + Constants::Node::SPECIAL_CONTENT_TRAY_HEIGHT))
+        };
+        m_nodeModel->size = newSize;
+    } else {
+        const auto newSize = QSize {
+            std::max(Constants::Node::MIN_WIDTH, static_cast<int>(m_textEdit->boundingRect().width() + margin)),
+            std::max(Constants::Node::MIN_HEIGHT, static_cast<int>(m_textEdit->boundingRect().height() + margin))
+        };
+        m_nodeModel->size = newSize;
+    }
 
     createEdgePoints();
 
@@ -175,8 +205,7 @@ void Node::adjustSize()
 
 QRectF Node::boundingRect() const
 {
-    const auto size = m_nodeModel->size;
-    return { -size.width() / 2, -size.height() / 2, size.width(), size.height() };
+    return { -size().width() / 2, -size().height() / 2, size().width(), size().height() };
 }
 
 void Node::changeFont(const QFont & font)
@@ -454,6 +483,13 @@ void Node::setShadowEffect(const ShadowEffectParams & params)
 {
     GraphicsFactory::updateDropShadowEffect(graphicsEffect(), params, m_selected);
     update();
+}
+
+void Node::setShowSpecialContentTray(bool showSpecialContentTray)
+{
+    m_showSpecialContentTray = showSpecialContentTray;
+
+    adjustSize();
 }
 
 void Node::setTextInputActive(bool active)

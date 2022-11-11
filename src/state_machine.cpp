@@ -106,6 +106,7 @@ void StateMachine::calculateState(StateMachine::Action action)
     case Action::OpeningMindMapCanceled:
     case Action::OpeningMindMapFailed:
     case Action::PngExported:
+    case Action::SpecialContentAdded:
     case Action::SvgExported:
     case Action::TextColorChanged:
         m_quitType = QuitType::None;
@@ -141,6 +142,10 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::SaveAsSelected:
         m_state = State::ShowSaveAsDialog;
+        break;
+
+    case Action::SpecialContentAdditionRequested:
+        m_state = State::ShowSpecialContentDialog;
         break;
 
     case Action::SvgExportSelected:

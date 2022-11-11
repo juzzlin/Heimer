@@ -17,6 +17,7 @@
 #include "editor_scene.hpp"
 
 #include "constants.hpp"
+#include "image_manager.hpp"
 #include "recent_files_manager.hpp"
 #include "selection_group.hpp"
 
@@ -31,6 +32,8 @@
 
 #include "scene_items/edge.hpp"
 #include "scene_items/node.hpp"
+
+#include "special_content/special_content_model.hpp"
 
 #include "simple_logger.hpp"
 
@@ -57,6 +60,13 @@ void EditorData::addNodeToSelectionGroup(NodeR node, bool isImplicit)
     L().debug() << "Adding node " << node.index() << " to selection group..";
 
     m_selectionGroup->addNode(node, isImplicit);
+}
+
+void EditorData::addSpecialContentForSelectedNodes(const SpecialContent::SpecialContentModel & specialContentModel)
+{
+    for (auto && node : m_selectionGroup->nodes()) {
+        node->addSpecialContent(specialContentModel);
+    }
 }
 
 void EditorData::requestAutosave(AutosaveContext context, bool async)

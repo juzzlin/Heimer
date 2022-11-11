@@ -41,6 +41,11 @@ namespace Core {
 class SettingsProxy;
 }
 
+namespace SpecialContent {
+class SpecialContentModel;
+class SpecialContentTray;
+}
+
 namespace SceneItems {
 
 struct NodeModel;
@@ -60,6 +65,8 @@ public:
     ~Node() override;
 
     void addGraphicsEdge(EdgeR edge);
+
+    void addSpecialContent(const SpecialContent::SpecialContentModel & specialContentModel);
 
     void adjustSize();
 
@@ -112,6 +119,8 @@ public:
     void setSelected(bool selected);
 
     void setShadowEffect(const ShadowEffectParams & params);
+
+    void setShowSpecialContentTray(bool showSpecialContentTray);
 
     void setSize(const QSizeF & size);
 
@@ -181,9 +190,13 @@ private:
 
     TextEdit * m_textEdit;
 
+    SpecialContent::SpecialContentTray * m_specialContentTray;
+
     QPointF m_currentMousePos;
 
     QPixmap m_pixmap;
+
+    bool m_showSpecialContentTray = false;
 
     static NodeP m_lastHoveredNode;
 };

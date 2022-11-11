@@ -61,11 +61,14 @@ set(HEIMER_LIB_SRC
     dialogs/defaults_tab.cpp
     dialogs/editing_tab.cpp
     dialogs/effects_tab.cpp
+    dialogs/image_file_dialog.cpp
+    dialogs/image_file_display.cpp
     dialogs/layout_optimization_dialog.cpp
     dialogs/png_export_dialog.cpp
     dialogs/scene_color_dialog.cpp
     dialogs/settings_dialog.cpp
     dialogs/settings_tab_base.cpp
+    dialogs/special_content_dialog.cpp
     dialogs/spinner_dialog.cpp
     dialogs/svg_export_dialog.cpp
     dialogs/whats_new_dialog.cpp
@@ -97,6 +100,11 @@ set(HEIMER_LIB_SRC
     scene_items/node_model.hpp
     scene_items/scene_item_base.cpp
     scene_items/text_edit.cpp
+
+    special_content/special_content_button.cpp
+    special_content/special_content_model.hpp
+    special_content/special_content_tray.cpp
+    special_content/special_content_tray_model.hpp
 
     widgets/font_button.cpp
     widgets/status_label.cpp

@@ -123,6 +123,13 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
 
     m_mainContextMenuActions[Mode::Node].push_back(attachImageAction);
 
+    const auto addSpecialContentAction(new QAction(tr("Add special content..."), this));
+    connect(addSpecialContentAction, &QAction::triggered, this, [this] {
+        emit actionTriggered(StateMachine::Action::SpecialContentAdditionRequested);
+    });
+
+    m_mainContextMenuActions[Mode::Node].push_back(addSpecialContentAction);
+
     m_removeImageAction = new QAction(tr("Remove attached image"), this);
     connect(m_removeImageAction, &QAction::triggered, this, [this] {
         m_mediator.performNodeAction({ NodeAction::Type::RemoveAttachedImage });
@@ -148,11 +155,13 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     colorMenu->addAction(setNodeColorAction);
     addSeparator();
     colorMenu->addAction(setNodeTextColorAction);
-
+    addSeparator();
     addAction(deleteNodeAction);
     addSeparator();
     addAction(attachImageAction);
     addAction(m_removeImageAction);
+    addSeparator();
+    addAction(addSpecialContentAction);
 }
 
 void MainContextMenu::setMode(const Mode & mode)

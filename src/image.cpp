@@ -15,6 +15,8 @@
 
 #include "image.hpp"
 
+#include <QCryptographicHash>
+
 Image::Image()
 {
 }
@@ -22,7 +24,20 @@ Image::Image()
 Image::Image(QImage image, std::string path)
   : m_image(image)
   , m_path(path)
+  , m_hash(QCryptographicHash::hash(QByteArray::fromRawData(reinterpret_cast<const char *>(image.bits()),
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+                                                            image.sizeInBytes()),
+#else
+                                                            image.byteCount()),
+#endif
+                                    QCryptographicHash::Md5))
 {
+}
+
+bool Image::isSimilar(const Image & other) const
+{
+    return !m_image.isNull() && !other.image().isNull() && //
+      m_image.size() == other.image().size() && !m_hash.isEmpty() && !other.m_hash.isEmpty() && m_hash == other.m_hash;
 }
 
 QImage Image::image() const
@@ -43,4 +58,9 @@ size_t Image::id() const
 void Image::setId(size_t id)
 {
     m_id = id;
+}
+
+QByteArray Image::hash() const
+{
+    return m_hash;
 }

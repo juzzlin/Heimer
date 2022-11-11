@@ -47,6 +47,10 @@ class Node;
 class NodeBase;
 } // namespace SceneItems
 
+namespace SpecialContent {
+class SpecialContentModel;
+}
+
 namespace IO {
 class AlzFileIO;
 } // namespace IO
@@ -63,6 +67,8 @@ public:
     EdgeS addEdge(EdgeS edge);
 
     void addNodeToSelectionGroup(NodeR node, bool isImplicit = false);
+
+    void addSpecialContentForSelectedNodes(const SpecialContent::SpecialContentModel & specialContentModel);
 
     //! \return true if at least one selected node pair can be connected.
     bool areSelectedNodesConnectable() const;

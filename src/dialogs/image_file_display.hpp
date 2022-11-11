@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2023 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2022 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,36 +13,40 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SCENE_ITEM_BASE_HPP
-#define SCENE_ITEM_BASE_HPP
+#ifndef IMAGE_FILE_DISPLAY_HPP
+#define IMAGE_FILE_DISPLAY_HPP
 
-#include <QGraphicsItem>
-#include <QObject>
-#include <QPropertyAnimation>
+#include <QWidget>
 
-namespace SceneItems {
+#include <optional>
 
-class SceneItemBase : public QObject, public QGraphicsItem
+#include "../image.hpp"
+
+namespace Dialogs {
+
+class ImageFileDisplay : public QWidget
 {
     Q_OBJECT
-    Q_INTERFACES(QGraphicsItem)
-    Q_PROPERTY(qreal scale READ scale WRITE setScale)
 
 public:
-    SceneItemBase();
+    explicit ImageFileDisplay(QWidget * parent = nullptr);
 
-    virtual ~SceneItemBase() override;
+    bool event(QEvent * event) override;
 
-    virtual void hideWithAnimation();
+    QSize sizeHint() const override;
 
-    virtual void removeFromScene();
+    QSize minimumSizeHint() const override;
 
-    virtual void enableShadowEffect(bool enable);
+    void mousePressEvent(QMouseEvent * event) override;
 
-private:
-    QPropertyAnimation m_scaleAnimation;
+    void setImage(const Image & image);
+
+protected:
+    void paintEvent(QPaintEvent * event) override;
+
+    std::optional<Image> m_image;
 };
 
-} // namespace SceneItems
+} // namespace Dialogs
 
-#endif // SCENE_ITEM_BASE_HPP
+#endif // IMAGE_FILE_DISPLAY_HPP

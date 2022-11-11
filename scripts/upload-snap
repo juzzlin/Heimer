@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SNAP_BUILD_PATH=/home/jenkins/workspace/Heimer-Snap_master/
-SNAP_FILE_PATH=$(ls -t ${SNAP_BUILD_PATH}/heimer*.snap)
+SNAP_FILE_PATH=$(ls -t ${SNAP_BUILD_PATH}/heimer*.snap | head -1)
 SNAP_FILE_NAME=$(basename ${SNAP_FILE_PATH})
 
 cp -v ${SNAP_FILE_PATH} ./${SNAP_FILE_NAME} || exit 1

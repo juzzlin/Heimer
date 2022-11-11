@@ -1,0 +1,39 @@
+ #!/bin/bash
+
+BUILD_PATH_BASE=/home/jenkins/workspace/Heimer_master_2/
+
+TARGET_DIR=artifacts
+rm -rf ${TARGET_DIR} && mkdir ${TARGET_DIR} && pushd ${TARGET_DIR} || exit 1
+
+DEB_FILE_PATH=$(ls -t ${BUILD_PATH_BASE}/build-deb-ubuntu-18.04/heimer*.deb | head -1)
+DEB_FILE_NAME=$(basename ${DEB_FILE_PATH})
+cp -v ${DEB_FILE_PATH} ./${DEB_FILE_NAME} || exit 1
+
+DEB_FILE_PATH=$(ls -t ${BUILD_PATH_BASE}/build-deb-ubuntu-20.04/heimer*.deb | head -1)
+DEB_FILE_NAME=$(basename ${DEB_FILE_PATH})
+cp -v ${DEB_FILE_PATH} ./${DEB_FILE_NAME} || exit 1
+
+DEB_FILE_PATH=$(ls -t ${BUILD_PATH_BASE}/build-deb-ubuntu-22.04/heimer*.deb | head -1)
+DEB_FILE_NAME=$(basename ${DEB_FILE_PATH})
+cp -v ${DEB_FILE_PATH} ./${DEB_FILE_NAME} || exit 1
+
+APP_FILE_PATH=$(ls -t ${BUILD_PATH_BASE}/build-appimage/Heimer*.AppImage | head -1)
+APP_FILE_NAME=$(basename ${APP_FILE_PATH})
+cp -v ${APP_FILE_PATH} ./${APP_FILE_NAME} || exit 1
+
+WIN_FILE_PATH=$(ls -t ${BUILD_PATH_BASE}/build-windows-nsis/heimer*win32.exe | head -1)
+WIN_FILE_NAME=$(basename ${WIN_FILE_PATH})
+cp -v ${WIN_FILE_PATH} ./${WIN_FILE_NAME} || exit 1
+
+WIN_FILE_PATH=$(ls -t ${BUILD_PATH_BASE}/build-windows-zip/zip/heimer*_win32.zip | head -1)
+WIN_FILE_NAME=$(basename ${WIN_FILE_PATH})
+cp -v ${WIN_FILE_PATH} ./${WIN_FILE_NAME} || exit 1
+
+SRC_FILE_PATH=$(ls -t ${BUILD_PATH_BASE}/*.tar.gz | head -1)
+SRC_FILE_NAME=$(basename ${SRC_FILE_PATH})
+cp -v ${SRC_FILE_PATH} ./${SRC_FILE_NAME} || exit 1
+
+popd
+
+echo "Done."
+

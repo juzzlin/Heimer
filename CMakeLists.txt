@@ -27,7 +27,7 @@ endif()
 # Global version
 set(VERSION_MAJOR 3)
 set(VERSION_MINOR 6)
-set(VERSION_PATCH 1)
+set(VERSION_PATCH 2)
 set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 # Some common CPack variables

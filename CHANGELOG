@@ -5,6 +5,19 @@ Release date:
 
 New features:
 
+Bug fixes:
+
+Other:
+
+3.6.2
+=====
+
+Release date:
+
+Fri, 11 Nov 2022 16:22:10 -0000
+
+New features:
+
 * Add tooltips to node handles
 
 * Set handle background color based on node color

@@ -38,27 +38,27 @@
     <name>AboutDlg</name>
     <message>
         <source>About </source>
-        <translation type="vanished">informazioni </translation>
+        <translation>informazioni </translation>
     </message>
     <message>
         <source> is licenced under </source>
-        <translation type="vanished"> è concesso in licenza sotto </translation>
+        <translation> è concesso in licenza sotto </translation>
     </message>
     <message>
         <source>Package type: </source>
-        <translation type="vanished">Tipo di pacchetto: </translation>
+        <translation>Tipo di pacchetto: </translation>
     </message>
     <message>
         <source>Project website: </source>
-        <translation type="vanished">Sito web del progetto: </translation>
+        <translation>Sito web del progetto: </translation>
     </message>
     <message>
         <source>Support </source>
-        <translation type="vanished">Supporto </translation>
+        <translation>Supporto </translation>
     </message>
     <message>
         <source> on Patreon: </source>
-        <translation type="vanished">su Patreon: </translation>
+        <translation>su Patreon: </translation>
     </message>
 </context>
 <context>
@@ -138,27 +138,27 @@
     <name>DefaultsDlg</name>
     <message>
         <source>Defaults</source>
-        <translation type="vanished">Predefinito</translation>
+        <translation>Predefinito</translation>
     </message>
     <message>
         <source>Edge Arrow Style</source>
-        <translation type="vanished">Stile Bordo Freccia</translation>
+        <translation>Stile Bordo Freccia</translation>
     </message>
     <message>
         <source>No arrow</source>
-        <translation type="vanished">Nessuna freccia</translation>
+        <translation>Nessuna freccia</translation>
     </message>
     <message>
         <source>Single arrow</source>
-        <translation type="vanished">Singola freccia</translation>
+        <translation>Singola freccia</translation>
     </message>
     <message>
         <source>Double arrow</source>
-        <translation type="vanished">Doppia freccia</translation>
+        <translation>Doppia freccia</translation>
     </message>
     <message>
         <source>Reversed direction</source>
-        <translation type="vanished">Direzione invertita</translation>
+        <translation>Direzione invertita</translation>
     </message>
 </context>
 <context>
@@ -229,7 +229,7 @@
     <message>
         <location filename="../edge.cpp" line="83"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
 </context>
 <context>
@@ -241,11 +241,11 @@
     </message>
     <message>
         <source>Hide arrow</source>
-        <translation type="vanished">Nascondi freccia</translation>
+        <translation>Nascondi freccia</translation>
     </message>
     <message>
         <source>Single arrow</source>
-        <translation type="vanished">Singola freccia</translation>
+        <translation>Singola freccia</translation>
     </message>
     <message>
         <location filename="../edge_context_menu.cpp" line="33"/>
@@ -330,7 +330,7 @@
     </message>
     <message>
         <source>Autosave feature will automatically save your mind map on every modification after it has been initially saved once.</source>
-        <translation type="vanished">La funzione di salvataggio automatico salverà automaticamente la tua mappa mentale su ogni modifica dopo che è stata inizialmente salvata una volta.</translation>
+        <translation>La funzione di salvataggio automatico salverà automaticamente la tua mappa mentale su ogni modifica dopo che è stata inizialmente salvata una volta.</translation>
     </message>
 </context>
 <context>
@@ -357,11 +357,11 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="vanished">Cancella</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Optimize</source>
-        <translation type="vanished">Ottimizza</translation>
+        <translation>Ottimizza</translation>
     </message>
 </context>
 <context>
@@ -445,7 +445,7 @@
     </message>
     <message>
         <source>&amp;Colors</source>
-        <translation type="vanished">&amp;Colori</translation>
+        <translation>&amp;Colori</translation>
     </message>
 </context>
 <context>
@@ -472,11 +472,11 @@
     </message>
     <message>
         <source>Copy on drag</source>
-        <translation type="vanished">Copia trascinando</translation>
+        <translation>Copia trascinando</translation>
     </message>
     <message>
         <source>Show grid</source>
-        <translation type="vanished">Mostra griglia</translation>
+        <translation>Mostra griglia</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="156"/>
@@ -485,7 +485,7 @@
     </message>
     <message>
         <source>&amp;Colors</source>
-        <translation type="vanished">&amp;Colori</translation>
+        <translation>&amp;Colori</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="172"/>
@@ -514,19 +514,19 @@
     </message>
     <message>
         <source>Corner radius:</source>
-        <translation type="vanished">Raggio dell&apos;&apos;angolo:</translation>
+        <translation>Raggio dell&apos;&apos;angolo:</translation>
     </message>
     <message>
         <source>Edge width:</source>
-        <translation type="vanished">Larghezza del bordo:</translation>
+        <translation>Larghezza del bordo:</translation>
     </message>
     <message>
         <source>Text size:</source>
-        <translation type="vanished">Dimensione del testo:</translation>
+        <translation>Dimensione del testo:</translation>
     </message>
     <message>
         <source>Grid size:</source>
-        <translation type="vanished">Dimensione della griglia:</translation>
+        <translation>Dimensione della griglia:</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="221"/>
@@ -580,7 +580,7 @@
     </message>
     <message>
         <source>&amp;Export to PNG image</source>
-        <translation type="vanished">&amp;Esporta in immagine PNG</translation>
+        <translation>&amp;Esporta in immagine PNG</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="305"/>
@@ -609,11 +609,11 @@
     </message>
     <message>
         <source>&amp;Settings</source>
-        <translation type="vanished">&amp;Impostazioni</translation>
+        <translation>&amp;Impostazioni</translation>
     </message>
     <message>
         <source>&amp;Defaults</source>
-        <translation type="vanished">&amp;Predefiniti</translation>
+        <translation>&amp;Predefiniti</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="346"/>
@@ -661,27 +661,27 @@
     <message>
         <location filename="../node_handle.cpp" line="57"/>
         <source>Drag to connect or create a child node</source>
-        <translation type="unfinished"></translation>
+        <translation>Trascina per connettere o creare un nodo figlio</translation>
     </message>
     <message>
         <location filename="../node_handle.cpp" line="59"/>
         <source>Move the node</source>
-        <translation type="unfinished"></translation>
+        <translation>Sposta il nodo</translation>
     </message>
     <message>
         <location filename="../node_handle.cpp" line="61"/>
         <source>Select node color</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona il colore del nodo</translation>
     </message>
     <message>
         <location filename="../node_handle.cpp" line="63"/>
         <source>Select text color</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona il colore del testo</translation>
     </message>
     <message>
         <location filename="../node_handle.cpp" line="189"/>
         <source>A</source>
-        <translation type="unfinished"></translation>
+        <translation>A</translation>
     </message>
 </context>
 <context>
@@ -743,11 +743,11 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="vanished">Cancella</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="vanished">Esporta</translation>
+        <translation>Esporta</translation>
     </message>
 </context>
 <context>
@@ -825,11 +825,11 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="vanished">Cancella</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="vanished">Esporta</translation>
+        <translation>Esporta</translation>
     </message>
 </context>
 <context>
@@ -902,7 +902,7 @@
     <name>WhatsNewDlg</name>
     <message>
         <source>What&apos;s New</source>
-        <translation type="vanished">Cosa c&apos;è di nuovo</translation>
+        <translation>Cosa c&apos;è di nuovo</translation>
     </message>
 </context>
 </TS>

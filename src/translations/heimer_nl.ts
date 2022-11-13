@@ -233,7 +233,7 @@
     <message>
         <location filename="../edge.cpp" line="83"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>…</translation>
     </message>
 </context>
 <context>
@@ -661,27 +661,27 @@
     <message>
         <location filename="../node_handle.cpp" line="57"/>
         <source>Drag to connect or create a child node</source>
-        <translation type="unfinished"></translation>
+        <translation>Versleep om een onderliggende knoop te maken of verbinden</translation>
     </message>
     <message>
         <location filename="../node_handle.cpp" line="59"/>
         <source>Move the node</source>
-        <translation type="unfinished"></translation>
+        <translation>Knoop verplaatsen</translation>
     </message>
     <message>
         <location filename="../node_handle.cpp" line="61"/>
         <source>Select node color</source>
-        <translation type="unfinished"></translation>
+        <translation>Knoopkleur instellen</translation>
     </message>
     <message>
         <location filename="../node_handle.cpp" line="63"/>
         <source>Select text color</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekstkleur instellen</translation>
     </message>
     <message>
         <location filename="../node_handle.cpp" line="189"/>
         <source>A</source>
-        <translation type="unfinished"></translation>
+        <translation>A</translation>
     </message>
 </context>
 <context>

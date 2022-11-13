@@ -16,15 +16,13 @@
 #include "editor_data.hpp"
 #include "editor_scene.hpp"
 
-#include "alz_serializer.hpp"
+#include "alz_file_io.hpp"
 #include "constants.hpp"
 #include "node.hpp"
 #include "recent_files_manager.hpp"
 #include "selection_group.hpp"
 #include "settings_proxy.hpp"
 #include "test_mode.hpp"
-#include "xml_reader.hpp"
-#include "xml_writer.hpp"
 
 #include "simple_logger.hpp"
 
@@ -85,7 +83,7 @@ void EditorData::loadMindMapData(QString fileName)
     m_selectedEdge = nullptr;
 
     if (!TestMode::enabled()) {
-        setMindMapData(AlzSerializer::fromXml(XmlReader::readFromFile(fileName)));
+        setMindMapData(AlzFileIO().fromFile(fileName));
     } else {
         TestMode::logDisabledCode("setMindMapData");
     }
@@ -156,10 +154,10 @@ void EditorData::removeImageRefsOfSelectedNodes()
 
 bool EditorData::saveMindMap()
 {
-    assert(m_mindMapData);
-    assert(!m_fileName.isEmpty());
-
-    return saveMindMapAs(m_fileName);
+    if (m_mindMapData && !m_fileName.isEmpty()) {
+        return saveMindMapAs(m_fileName);
+    }
+    return false;
 }
 
 void EditorData::saveUndoPoint(bool dontClearRedoStack)
@@ -198,7 +196,7 @@ bool EditorData::saveMindMapAs(QString fileName)
 {
     assert(m_mindMapData);
 
-    if (XmlWriter::writeToFile(AlzSerializer::toXml(*m_mindMapData), fileName)) {
+    if (AlzFileIO().toFile(*m_mindMapData, fileName)) {
         m_fileName = fileName;
         setIsModified(false);
         RecentFilesManager::instance().addRecentFile(fileName);
@@ -521,6 +519,7 @@ size_t EditorData::selectionGroupSize() const
 
 void EditorData::removeEdgeFromScene(EdgeR edge)
 {
+    edge.restoreLabelParent();
     edge.hide();
     if (const auto scene = edge.scene()) {
         scene->removeItem(&edge);

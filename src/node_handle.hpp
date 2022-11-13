@@ -34,9 +34,9 @@ class NodeHandle : public QObject, public QGraphicsItem
 public:
     enum class Role
     {
-        Add,
-        Color,
-        Drag,
+        ConnectOrCreate,
+        NodeColor,
+        Move,
         TextColor
     };
 
@@ -64,6 +64,38 @@ public:
     int radius() const;
 
 private:
+    QColor calculateBackgroundColor() const;
+
+    void drawArrow(QPainter & painter, QPointF arrowStart, QPointF arrowEnd) const;
+
+    void drawBackground(QPainter & painter) const;
+
+    void drawColorHandle(QPainter & painter) const;
+
+    void drawConnectOrCreateHandle(QPainter & painter) const;
+
+    void drawMoveHandle(QPainter & painter) const;
+
+    void drawPixmapHandle(QPainter & painter) const;
+
+    void drawTextColorHandle(QPainter & painter) const;
+
+    void drawCenteredRect(QPainter & painter, qreal relW, qreal relH, qreal relY) const;
+
+    QString getToolTipTextByRole(NodeHandle::Role role) const;
+
+    qreal relXToX(qreal relX) const;
+
+    qreal relYToY(qreal relY) const;
+
+    qreal relWToW(qreal relW) const;
+
+    qreal relHToH(qreal relH) const;
+
+    QPointF relPToP(const QPointF & relP) const;
+
+    QPen getForegroundPen() const;
+
     NodeR m_parentNode;
 
     Role m_role;

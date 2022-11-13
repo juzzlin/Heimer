@@ -17,6 +17,7 @@
 
 #include "constants.hpp"
 #include "edge.hpp"
+#include "edge_text_edit.hpp"
 #include "magic_zoom.hpp"
 #include "node.hpp"
 
@@ -33,6 +34,12 @@ EditorScene::EditorScene()
     const auto rW = Constants::Scene::INITIAL_SIZE;
     const auto rH = Constants::Scene::INITIAL_SIZE;
     setSceneRect(-rW, -rH, rW * 2, rH * 2);
+
+    connect(this, &QGraphicsScene::focusItemChanged, this, [](QGraphicsItem *, QGraphicsItem * oldFocus, Qt::FocusReason) {
+        if (const auto edgeTextEdit = dynamic_cast<EdgeTextEdit *>(oldFocus); edgeTextEdit) {
+            edgeTextEdit->updateDueToLostFocus();
+        }
+    });
 }
 
 void EditorScene::adjustSceneRect()

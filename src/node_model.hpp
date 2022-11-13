@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2019 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2022 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,43 +13,35 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef IMAGE_MANAGER_HPP
-#define IMAGE_MANAGER_HPP
+#ifndef NODE_MODEL_HPP
+#define NODE_MODEL_HPP
 
-#include <QObject>
+#include <QColor>
+#include <QPointF>
+#include <QSizeF>
+#include <QString>
 
-#include <map>
-#include <optional>
-
-#include "image.hpp"
-#include "types.hpp"
-
-class Node;
-
-class ImageManager : public QObject
+struct NodeModel
 {
-    Q_OBJECT
+    NodeModel(QColor color, QColor textColor)
+      : color(color)
+      , textColor(textColor)
+    {
+    }
 
-public:
-    ImageManager();
+    QColor color;
 
-    void clear();
+    int index = -1;
 
-    size_t addImage(const Image & image);
+    size_t imageRef = 0;
 
-    void setImage(const Image & image);
+    QPointF location;
 
-    std::optional<Image> getImage(size_t id);
+    QSizeF size;
 
-    void handleImageRequest(size_t id, NodeR node);
+    QColor textColor;
 
-    using ImageVector = std::vector<Image>;
-    ImageVector images() const;
-
-private:
-    std::map<size_t, Image> m_images;
-
-    size_t m_count = 0;
+    QString text;
 };
 
-#endif // IMAGE_MANAGER_HPP
+#endif // NODE_MODEL_HPP

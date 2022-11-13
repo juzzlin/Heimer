@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2019 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2022 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,43 +13,30 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef IMAGE_MANAGER_HPP
-#define IMAGE_MANAGER_HPP
+#ifndef CONTROL_STRATEGY_HPP
+#define CONTROL_STRATEGY_HPP
 
-#include <QObject>
+class QMouseEvent;
 
-#include <map>
-#include <optional>
-
-#include "image.hpp"
-#include "types.hpp"
-
-class Node;
-
-class ImageManager : public QObject
+class ControlStrategy
 {
-    Q_OBJECT
-
 public:
-    ImageManager();
+    ControlStrategy();
 
-    void clear();
+    bool backgroundDragInitiated(QMouseEvent & event) const;
 
-    size_t addImage(const Image & image);
+    bool rubberBandInitiated(QMouseEvent & event) const;
 
-    void setImage(const Image & image);
+    bool primaryButtonClicked(QMouseEvent & event) const;
 
-    std::optional<Image> getImage(size_t id);
+    bool secondaryButtonClicked(QMouseEvent & event) const;
 
-    void handleImageRequest(size_t id, NodeR node);
-
-    using ImageVector = std::vector<Image>;
-    ImageVector images() const;
+    void setInvertedMode(bool invertedMode);
 
 private:
-    std::map<size_t, Image> m_images;
+    bool isModifierPressed() const;
 
-    size_t m_count = 0;
+    bool m_invertedMode = false;
 };
 
-#endif // IMAGE_MANAGER_HPP
+#endif // CONTROL_STRATEGY_HPP

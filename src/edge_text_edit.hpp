@@ -26,23 +26,39 @@ class Edge;
 
 class EdgeTextEdit : public TextEdit
 {
+    Q_OBJECT
+
 public:
     EdgeTextEdit(EdgeP parentItem);
 
+    EdgeP edge() const;
+
     enum class VisibilityChangeReason
     {
-        Default,
+        Timeout,
+        Explicit,
+        Focused,
         AvailableSpaceChanged
     };
 
-    void setVisible(bool visible, VisibilityChangeReason vcr = VisibilityChangeReason::Default);
+    void setVisible(bool visible);
+
+    void updateDueToLostFocus();
 
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
 
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
 
+signals:
+
+    void hoverEntered();
+
+    void visibilityTimeout();
+
 private:
     void setAnimationConfig(bool visible);
+
+    EdgeP m_edge;
 
     QPropertyAnimation m_opacityAnimation;
 

@@ -9,6 +9,86 @@ Bug fixes:
 
 Other:
 
+3.6.2
+=====
+
+Release date:
+
+Fri, 11 Nov 2022 16:22:10 -0000
+
+New features:
+
+* Add tooltips to node handles
+
+* Set handle background color based on node color
+
+* Light or dark text edit highlight based on node color
+
+Bug fixes:
+
+* Fix GitHub issue #224: Tests fail when compiled with UBSan
+
+* Fix GitHub Issue #226: Attached node background images not loading    
+  - Decode images in memory without exporting into a file first
+
+Other:
+
+* Add timestamp to log file name
+
+* Save immediately when autosave enabled
+
+3.6.1
+=====
+
+Release date:
+
+Wed, 21 Sep 2022 18:26:35 -0000
+
+Bug fixes:
+
+* Fix shadow effect of edge label when edge is selected
+
+* Fix edge label not deleted together with the edge
+
+* Fix edge context menu not opening when edge text edit right-clicked
+
+Other:
+
+* constants.hpp: added <qreal> to QVector so that the compiler wouldn't throw an error
+
+3.6.0
+=====
+
+Release date:
+
+Sat, 27 Aug 2022 19:03:46 +0300
+
+New features:
+
+* Usability improvements:
+  - Show a dummy edge label with '...' when the actual label won't fit
+  - Stack edge text edits on top of nodes
+
+3.5.0
+=====
+
+Release date:
+
+Sat, 30 Jul 2022 21:12:12 +0300
+
+New features:
+
+* Fix GitHub Issue #112: Optimizer: Take current node locations into account when building initial layout
+  - This change makes the optimizer way more stable with respect to the original global placement
+  - Tries to find the best possible initial locations for the nodes in a normalized coordinate space
+  - Makes only local changes within a very small search radius (row-wise and cell-wise)
+
+Other:
+
+* Update German translations
+
+* Update Dutch translations
+
 3.4.0
 =====
 

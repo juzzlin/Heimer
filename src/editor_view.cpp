@@ -27,6 +27,7 @@
 #include "editor_view.hpp"
 
 #include "constants.hpp"
+#include "control_strategy.hpp"
 #include "edge.hpp"
 #include "edge_context_menu.hpp"
 #include "edge_text_edit.hpp"
@@ -52,6 +53,7 @@ EditorView::EditorView(Mediator & mediator)
   : m_mediator(mediator)
   , m_edgeContextMenu(new EdgeContextMenu(this, m_mediator))
   , m_mainContextMenu(new MainContextMenu(this, m_mediator, m_grid))
+  , m_controlStrategy(std::make_unique<ControlStrategy>())
 {
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -82,22 +84,19 @@ void EditorView::finishRubberBand()
 
 void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
 {
-    if ((event.button() == Qt::LeftButton && isModifierPressed()) || event.button() == Qt::MiddleButton) {
+    if (m_controlStrategy->rubberBandInitiated(event)) {
         initiateRubberBand();
-    } else if (event.button() == Qt::LeftButton) {
-        m_mediator.setSelectedEdge(nullptr);
-        m_mediator.unselectText();
-        m_mediator.mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
-        setDragMode(ScrollHandDrag);
-    } else if (event.button() == Qt::RightButton) {
+    } else if (m_controlStrategy->backgroundDragInitiated(event)) {
+        initiateBackgroundDrag();
+    } else if (m_controlStrategy->secondaryButtonClicked(event)) {
         openMainContextMenu(MainContextMenu::Mode::Background);
     }
 }
 
 void EditorView::handleMousePressEventOnEdge(QMouseEvent & event, EdgeR edge)
 {
-    if (event.button() == Qt::RightButton) {
-        handleRightButtonClickOnEdge(edge);
+    if (m_controlStrategy->secondaryButtonClicked(event)) {
+        handleSecondaryButtonClickOnEdge(edge);
     }
 }
 
@@ -105,10 +104,10 @@ void EditorView::handleMousePressEventOnNode(QMouseEvent & event, NodeR node)
 {
     if (node.index() != -1) // Prevent right-click on the drag node
     {
-        if (event.button() == Qt::RightButton) {
-            handleRightButtonClickOnNode(node);
-        } else if (event.button() == Qt::LeftButton) {
-            handleLeftButtonClickOnNode(node);
+        if (m_controlStrategy->secondaryButtonClicked(event)) {
+            handleSecondaryButtonClickOnNode(node);
+        } else if (m_controlStrategy->primaryButtonClicked(event)) {
+            handlePrimaryButtonClickOnNode(node);
         }
     }
 }
@@ -119,12 +118,12 @@ void EditorView::handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHand
         return;
     }
 
-    if (event.button() == Qt::LeftButton) {
-        handleLeftButtonClickOnNodeHandle(nodeHandle);
+    if (m_controlStrategy->primaryButtonClicked(event)) {
+        handlePrimaryButtonClickOnNodeHandle(nodeHandle);
     }
 }
 
-void EditorView::handleLeftButtonClickOnNode(NodeR node)
+void EditorView::handlePrimaryButtonClickOnNode(NodeR node)
 {
     if (isModifierPressed()) {
         // User is selecting a node
@@ -140,20 +139,20 @@ void EditorView::handleLeftButtonClickOnNode(NodeR node)
     }
 }
 
-void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
+void EditorView::handlePrimaryButtonClickOnNodeHandle(NodeHandle & nodeHandle)
 {
     if (!nodeHandle.parentNode().selected()) {
         m_mediator.clearSelectionGroup();
     }
 
     switch (nodeHandle.role()) {
-    case NodeHandle::Role::Add:
+    case NodeHandle::Role::ConnectOrCreate:
         m_mediator.initiateNewNodeDrag(nodeHandle);
         break;
-    case NodeHandle::Role::Drag:
+    case NodeHandle::Role::Move:
         m_mediator.initiateNodeDrag(nodeHandle.parentNode());
         break;
-    case NodeHandle::Role::Color:
+    case NodeHandle::Role::NodeColor:
         m_mediator.addNodeToSelectionGroup(nodeHandle.parentNode());
         emit actionTriggered(StateMachine::Action::NodeColorChangeRequested);
         break;
@@ -164,14 +163,14 @@ void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
     }
 }
 
-void EditorView::handleRightButtonClickOnEdge(EdgeR edge)
+void EditorView::handleSecondaryButtonClickOnEdge(EdgeR edge)
 {
     m_mediator.setSelectedEdge(&edge);
 
     openEdgeContextMenu();
 }
 
-void EditorView::handleRightButtonClickOnNode(NodeR node)
+void EditorView::handleSecondaryButtonClickOnNode(NodeR node)
 {
     if (!node.selected()) {
         m_mediator.clearSelectionGroup();
@@ -180,6 +179,17 @@ void EditorView::handleRightButtonClickOnNode(NodeR node)
     m_mediator.addNodeToSelectionGroup(node);
 
     openMainContextMenu(MainContextMenu::Mode::Node);
+}
+
+void EditorView::initiateBackgroundDrag()
+{
+    juzzlin::L().debug() << "Initiating background drag..";
+
+    m_mediator.setSelectedEdge(nullptr);
+    m_mediator.unselectText();
+    m_mediator.mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
+
+    setDragMode(ScrollHandDrag);
 }
 
 void EditorView::initiateRubberBand()
@@ -297,8 +307,8 @@ void EditorView::mousePressEvent(QMouseEvent * event)
             }
             // This hack enables edge context menu even if user clicks on the edge text edit.
         } else if (result.edgeTextEdit) {
-            if (event->button() == Qt::RightButton) {
-                if (const auto edge = dynamic_cast<EdgeP>(result.edgeTextEdit->parentItem()); edge) {
+            if (m_controlStrategy->secondaryButtonClicked(*event)) {
+                if (const auto edge = result.edgeTextEdit->edge(); edge) {
                     juzzlin::L().debug() << "Edge text edit pressed";
                     handleMousePressEventOnEdge(*event, *edge);
                     return;
@@ -306,7 +316,7 @@ void EditorView::mousePressEvent(QMouseEvent * event)
             }
             // This hack enables node context menu even if user clicks on the node text edit.
         } else if (result.nodeTextEdit) {
-            if (event->button() == Qt::RightButton || (event->button() == Qt::LeftButton && isModifierPressed())) {
+            if (m_controlStrategy->secondaryButtonClicked(*event) || (m_controlStrategy->primaryButtonClicked(*event) && isModifierPressed())) {
                 if (const auto node = dynamic_cast<NodeP>(result.nodeTextEdit->parentItem()); node) {
                     juzzlin::L().debug() << "Node text edit pressed";
                     handleMousePressEventOnNode(*event, *node);
@@ -333,7 +343,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
         default:
             break;
         }
-    } else if (event->button() == Qt::LeftButton) {
+    } else if (m_controlStrategy->primaryButtonClicked(*event)) {
         switch (m_mediator.mouseAction().action()) {
         case MouseAction::Action::None:
             // This can happen if the user deletes the drag node while connecting nodes or creating a new node.

@@ -65,7 +65,7 @@ static const double ARROW_OPENING = 150;
 
 static const double CORNER_RADIUS_SCALE = 0.3;
 
-static const QVector DASH_PATTERN { qreal(5), qreal(5) };
+static const QVector<qreal> DASH_PATTERN { qreal(5), qreal(5) };
 
 static const QColor DOT_COLOR { 255, 0, 0, 192 };
 
@@ -193,7 +193,9 @@ static const int MIN_HEIGHT = 75;
 
 static const int MIN_WIDTH = 200;
 
-static const QColor TEXT_EDIT_BACKGROUND_COLOR { 0x00, 0x00, 0x00, 0x10 };
+static const QColor TEXT_EDIT_BACKGROUND_COLOR_DARK { 0x00, 0x00, 0x00, 0x10 };
+
+static const QColor TEXT_EDIT_BACKGROUND_COLOR_LIGHT { 0xff, 0xff, 0xff, 0x10 };
 
 } // namespace Node
 

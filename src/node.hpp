@@ -33,6 +33,8 @@
 class Image;
 class QGraphicsTextItem;
 class TextEdit;
+
+struct NodeModel;
 struct ShadowEffectParams;
 
 //! Freely placeable target node.
@@ -148,27 +150,15 @@ private:
 
     void updateHandlePositions();
 
-    QColor m_color;
+    std::unique_ptr<NodeModel> m_nodeModel;
 
     int m_cornerRadius = 0;
-
-    QColor m_textColor;
 
     int m_textSize = 11; // Not sure if we should set yet another default value here..
 
     QFont m_font;
 
-    QPointF m_location;
-
-    QSizeF m_size;
-
-    QString m_text;
-
     bool m_selected = false;
-
-    int m_index = -1;
-
-    size_t m_imageRef = 0;
 
     std::map<NodeHandle::Role, NodeHandle *> m_handles;
 

@@ -84,7 +84,6 @@ public:
     void setTitle();
 
 public slots:
-
     void changeFont(const QFont & font);
 
     void enableUndo(bool enable);
@@ -109,10 +108,11 @@ protected:
     void closeEvent(QCloseEvent * event) override;
 
 signals:
-
     void actionTriggered(StateMachine::Action action);
 
     void arrowSizeChanged(double arrowSize);
+
+    void autosaveEnabled(bool enabled);
 
     void cornerRadiusChanged(int size);
 

@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2022 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,21 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef ALZ_SERIALIZER_HPP
-#define ALZ_SERIALIZER_HPP
+#include <QColor>
+#include <cstddef>
 
-#include <QDomDocument>
+namespace Utils {
 
-#include <memory>
+size_t tsMs();
 
-class MindMapData;
+bool isColorBright(QColor color);
 
-namespace AlzSerializer {
-
-std::unique_ptr<MindMapData> fromXml(QDomDocument document);
-
-QDomDocument toXml(MindMapData & mindMapData);
-
-} // namespace AlzSerializer
-
-#endif // ALZ_SERIALIZER_HPP
+} // namespace Utils

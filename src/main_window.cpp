@@ -74,6 +74,8 @@ MainWindow::MainWindow()
 
     connect(m_settingsDlg, &SettingsDialog::shadowEffectChanged, this, &MainWindow::shadowEffectChanged);
 
+    connect(m_settingsDlg, &SettingsDialog::autosaveEnabled, this, &MainWindow::autosaveEnabled);
+
     m_statusText->setOpenExternalLinks(true);
 }
 

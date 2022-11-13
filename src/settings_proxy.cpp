@@ -25,7 +25,7 @@ SettingsProxy::SettingsProxy()
   , m_gridColor(Settings::V2::getColor(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::GRID_COLOR_SETTINGS_KEY, Constants::MindMap::Defaults::GRID_COLOR))
   , m_nodeColor(Settings::V2::getColor(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::NODE_COLOR_SETTINGS_KEY, Constants::MindMap::Defaults::NODE_COLOR))
   , m_nodeTextColor(Settings::V2::getColor(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::NODE_TEXT_COLOR_SETTINGS_KEY, Constants::MindMap::Defaults::NODE_TEXT_COLOR))
-  , m_edgeArrowMode(Settings::V1::loadEdgeArrowMode(Edge::ArrowMode::Single))
+  , m_edgeArrowMode(Settings::V1::loadEdgeArrowMode(EdgeModel::ArrowMode::Single))
   , m_reversedEdgeDirection(Settings::V1::loadReversedEdgeDirection(false))
   , m_selectNodeGroupByIntersection(Settings::V1::loadSelectNodeGroupByIntersection())
   , m_shadowEffectParams(
@@ -123,12 +123,12 @@ void SettingsProxy::setNodeTextColor(const QColor & nodeTextColor)
     }
 }
 
-Edge::ArrowMode SettingsProxy::edgeArrowMode() const
+EdgeModel::ArrowMode SettingsProxy::edgeArrowMode() const
 {
     return m_edgeArrowMode;
 }
 
-void SettingsProxy::setEdgeArrowMode(Edge::ArrowMode mode)
+void SettingsProxy::setEdgeArrowMode(EdgeModel::ArrowMode mode)
 {
     if (m_edgeArrowMode != mode) {
         m_edgeArrowMode = mode;

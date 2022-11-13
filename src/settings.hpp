@@ -32,9 +32,9 @@ Qt::CheckState loadAutoSnapState();
 
 void saveAutoSnapState(int state);
 
-Edge::ArrowMode loadEdgeArrowMode(Edge::ArrowMode defaultMode);
+EdgeModel::ArrowMode loadEdgeArrowMode(EdgeModel::ArrowMode defaultMode);
 
-void saveEdgeArrowMode(Edge::ArrowMode mode);
+void saveEdgeArrowMode(EdgeModel::ArrowMode mode);
 
 bool loadReversedEdgeDirection(bool defaultDirection);
 

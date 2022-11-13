@@ -79,9 +79,13 @@ public:
     NodeVector getNodesConnectedToNode(NodeS node) const;
 
 private:
-    std::unordered_map<int, NodeS> m_nodes;
+    // Maps node id (index) to a Node object
+    using NodeId = int32_t;
+    std::unordered_map<NodeId, NodeS> m_nodes;
 
-    std::unordered_map<int64_t, EdgeS> m_edges;
+    // Maps a connection hash (node id -> node id) to an Edge object
+    using ConnectionHash = int64_t;
+    std::unordered_map<ConnectionHash, EdgeS> m_edges;
 
     NodeVector m_deletedNodes;
 

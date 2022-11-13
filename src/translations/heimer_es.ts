@@ -198,6 +198,14 @@
     </message>
 </context>
 <context>
+    <name>Edge</name>
+    <message>
+        <location filename="../edge.cpp" line="83"/>
+        <source>...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EdgeContextMenu</name>
     <message>
         <location filename="../edge_context_menu.cpp" line="27"/>
@@ -595,6 +603,34 @@
         <location filename="../main_window.cpp" line="440"/>
         <source>Not Saved</source>
         <translation>Sin guardar</translation>
+    </message>
+</context>
+<context>
+    <name>NodeHandle</name>
+    <message>
+        <location filename="../node_handle.cpp" line="57"/>
+        <source>Drag to connect or create a child node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../node_handle.cpp" line="59"/>
+        <source>Move the node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../node_handle.cpp" line="61"/>
+        <source>Select node color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../node_handle.cpp" line="63"/>
+        <source>Select text color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../node_handle.cpp" line="189"/>
+        <source>A</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -168,6 +168,8 @@ public:
 
 public slots:
 
+    void enableAutosave(bool enable);
+
     void enableUndo(bool enable);
 
     void enableRedo(bool enable);

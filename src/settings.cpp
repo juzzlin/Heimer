@@ -92,16 +92,16 @@ void saveAutoSnapState(int state)
     settings.endGroup();
 }
 
-Edge::ArrowMode loadEdgeArrowMode(Edge::ArrowMode defaultMode)
+EdgeModel::ArrowMode loadEdgeArrowMode(EdgeModel::ArrowMode defaultMode)
 {
     QSettings settings;
     settings.beginGroup(Constants::MindMap::Defaults::SETTINGS_GROUP);
-    const auto mode = static_cast<Edge::ArrowMode>(settings.value(edgeArrowModeKey, static_cast<int>(defaultMode)).toInt());
+    const auto mode = static_cast<EdgeModel::ArrowMode>(settings.value(edgeArrowModeKey, static_cast<int>(defaultMode)).toInt());
     settings.endGroup();
     return mode;
 }
 
-void saveEdgeArrowMode(Edge::ArrowMode mode)
+void saveEdgeArrowMode(EdgeModel::ArrowMode mode)
 {
     QSettings settings;
     settings.beginGroup(Constants::MindMap::Defaults::SETTINGS_GROUP);

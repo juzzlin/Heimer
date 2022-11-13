@@ -13,17 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SERIALIZER_TEST_HPP
-#define SERIALIZER_TEST_HPP
+#ifndef ALZ_FILE_IO_TEST_HPP
+#define ALZ_FILE_IO_TEST_HPP
 
 #include <QTest>
 
-class SerializerTest : public QObject
+class AlzFileIOTest : public QObject
 {
     Q_OBJECT
 
 public:
-    SerializerTest();
+    AlzFileIOTest();
 
 private slots:
 
@@ -63,6 +63,10 @@ private slots:
 
     void testLayoutOptimizer();
 
+    void testLoadJpg();
+
+    void testLoadPng();
+
     void testNotUsedImages();
 
     void testNodeDeletion();
@@ -76,4 +80,4 @@ private slots:
     void testUsedImages();
 };
 
-#endif // SERIALIZER_TEST_HPP
+#endif // ALZ_FILE_IO_TEST_HPP

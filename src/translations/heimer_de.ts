@@ -198,6 +198,14 @@
     </message>
 </context>
 <context>
+    <name>Edge</name>
+    <message>
+        <location filename="../edge.cpp" line="83"/>
+        <source>...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EdgeContextMenu</name>
     <message>
         <location filename="../edge_context_menu.cpp" line="27"/>
@@ -490,7 +498,7 @@
     <message>
         <location filename="../main_window.cpp" line="221"/>
         <source>&amp;Export</source>
-        <translation></translation>
+        <translation>&amp;Exportieren</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="224"/>
@@ -505,7 +513,7 @@
     <message>
         <location filename="../main_window.cpp" line="247"/>
         <source>&amp;File</source>
-        <translation></translation>
+        <translation>&amp;Datei</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="250"/>
@@ -560,7 +568,7 @@
     <message>
         <location filename="../main_window.cpp" line="346"/>
         <source>&amp;View</source>
-        <translation></translation>
+        <translation>&amp;Ansicht</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="349"/>
@@ -591,6 +599,34 @@
         <location filename="../main_window.cpp" line="440"/>
         <source>Not Saved</source>
         <translation>Nicht gespeichert</translation>
+    </message>
+</context>
+<context>
+    <name>NodeHandle</name>
+    <message>
+        <location filename="../node_handle.cpp" line="57"/>
+        <source>Drag to connect or create a child node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../node_handle.cpp" line="59"/>
+        <source>Move the node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../node_handle.cpp" line="61"/>
+        <source>Select node color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../node_handle.cpp" line="63"/>
+        <source>Select text color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../node_handle.cpp" line="189"/>
+        <source>A</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -765,7 +801,7 @@
     <message>
         <location filename="../tool_bar.cpp" line="154"/>
         <source>Font</source>
-        <translation></translation>
+        <translation>Schrift</translation>
     </message>
     <message>
         <location filename="../tool_bar.cpp" line="189"/>

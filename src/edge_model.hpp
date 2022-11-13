@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2019 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2022 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,43 +13,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef IMAGE_MANAGER_HPP
-#define IMAGE_MANAGER_HPP
+#ifndef EDGE_MODEL_HPP
+#define EDGE_MODEL_HPP
 
-#include <QObject>
+#include <QString>
 
-#include <map>
-#include <optional>
-
-#include "image.hpp"
-#include "types.hpp"
-
-class Node;
-
-class ImageManager : public QObject
+struct EdgeModel
 {
-    Q_OBJECT
+    enum class ArrowMode
+    {
+        Single = 0,
+        Double = 1,
+        Hidden = 2
+    };
 
-public:
-    ImageManager();
+    EdgeModel(bool reversed, ArrowMode arrowMode)
+      : arrowMode(arrowMode)
+      , reversed(reversed)
+    {
+    }
 
-    void clear();
+    ArrowMode arrowMode;
 
-    size_t addImage(const Image & image);
+    bool dashedLine = false;
 
-    void setImage(const Image & image);
+    bool reversed;
 
-    std::optional<Image> getImage(size_t id);
-
-    void handleImageRequest(size_t id, NodeR node);
-
-    using ImageVector = std::vector<Image>;
-    ImageVector images() const;
-
-private:
-    std::map<size_t, Image> m_images;
-
-    size_t m_count = 0;
+    QString text;
 };
 
-#endif // IMAGE_MANAGER_HPP
+#endif // EDGE_MODEL_HPP

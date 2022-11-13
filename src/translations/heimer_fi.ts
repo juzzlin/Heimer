@@ -237,6 +237,14 @@
     </message>
 </context>
 <context>
+    <name>Edge</name>
+    <message>
+        <location filename="../edge.cpp" line="83"/>
+        <source>...</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
     <name>EdgeContextMenu</name>
     <message>
         <location filename="../edge_context_menu.cpp" line="27"/>
@@ -828,6 +836,34 @@
     <message>
         <source>Failed to save file as &apos;</source>
         <translation type="vanished">Tietoston tallentaminen epäonnistui nimellä &apos;</translation>
+    </message>
+</context>
+<context>
+    <name>NodeHandle</name>
+    <message>
+        <location filename="../node_handle.cpp" line="57"/>
+        <source>Drag to connect or create a child node</source>
+        <translation>Raahaa kytkeäksesi tai tee uusi lapsisolmu</translation>
+    </message>
+    <message>
+        <location filename="../node_handle.cpp" line="59"/>
+        <source>Move the node</source>
+        <translation>Siirrä solmua</translation>
+    </message>
+    <message>
+        <location filename="../node_handle.cpp" line="61"/>
+        <source>Select node color</source>
+        <translation>Valitse solmun väri</translation>
+    </message>
+    <message>
+        <location filename="../node_handle.cpp" line="63"/>
+        <source>Select text color</source>
+        <translation>Valitse tekstin väri</translation>
+    </message>
+    <message>
+        <location filename="../node_handle.cpp" line="189"/>
+        <source>A</source>
+        <translation></translation>
     </message>
 </context>
 <context>

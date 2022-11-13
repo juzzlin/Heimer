@@ -42,15 +42,15 @@
 #include <cmath>
 
 Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enableLabel)
-  : m_sourceNode(sourceNode)
+  : m_edgeModel(std::make_unique<EdgeModel>(SettingsProxy::instance().reversedEdgeDirection(), SettingsProxy::instance().edgeArrowMode()))
+  , m_sourceNode(sourceNode)
   , m_targetNode(targetNode)
-  , m_reversed(SettingsProxy::instance().reversedEdgeDirection())
-  , m_arrowMode(SettingsProxy::instance().edgeArrowMode())
   , m_enableAnimations(enableAnimations)
   , m_enableLabel(enableLabel)
   , m_sourceDot(enableAnimations ? new EdgeDot(this) : nullptr)
   , m_targetDot(enableAnimations ? new EdgeDot(this) : nullptr)
   , m_label(enableLabel ? new EdgeTextEdit(this) : nullptr)
+  , m_dummyLabel(enableLabel ? new EdgeTextEdit(this) : nullptr)
   , m_arrowheadL0(new QGraphicsLineItem(this))
   , m_arrowheadR0(new QGraphicsLineItem(this))
   , m_arrowheadL1(new QGraphicsLineItem(this))
@@ -69,13 +69,26 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
     if (m_enableLabel) {
         m_label->setZValue(static_cast<int>(Layers::EdgeLabel));
         m_label->setBackgroundColor(Constants::Edge::LABEL_COLOR);
-
         connect(m_label, &TextEdit::textChanged, this, [=](const QString & text) {
             updateLabel();
-            m_text = text;
+            m_edgeModel->text = text;
         });
 
         connect(m_label, &TextEdit::undoPointRequested, this, &Edge::undoPointRequested);
+
+        m_dummyLabel->setZValue(static_cast<int>(Layers::EdgeDummyLabel));
+        m_dummyLabel->setAcceptHoverEvents(false);
+        m_dummyLabel->setBackgroundColor(Constants::Edge::LABEL_COLOR);
+        m_dummyLabel->setText(tr("..."));
+        m_dummyLabel->setEnabled(false);
+
+        connect(m_label, &EdgeTextEdit::hoverEntered, this, [=] {
+            setLabelVisible(true, EdgeTextEdit::VisibilityChangeReason::Focused);
+        });
+
+        connect(m_label, &EdgeTextEdit::visibilityTimeout, this, [=] {
+            setLabelVisible(false);
+        });
 
         m_labelVisibilityTimer.setSingleShot(true);
         m_labelVisibilityTimer.setInterval(Constants::Edge::LABEL_DURATION);
@@ -107,7 +120,7 @@ void Edge::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 {
     m_labelVisibilityTimer.stop();
 
-    setLabelVisible(true);
+    setLabelVisible(true, EdgeTextEdit::VisibilityChangeReason::Focused);
 
     QGraphicsItem::hoverEnterEvent(event);
 }
@@ -123,7 +136,7 @@ QPen Edge::buildPen(bool ignoreDashSetting) const
 {
     QPen pen { QBrush { QColor { m_color.red(), m_color.green(), m_color.blue() } }, m_edgeWidth };
     pen.setCapStyle(Qt::PenCapStyle::RoundCap);
-    if (!ignoreDashSetting && m_dashedLine) {
+    if (!ignoreDashSetting && m_edgeModel->dashedLine) {
         pen.setDashPattern(Constants::Edge::DASH_PATTERN);
     }
     return pen;
@@ -131,28 +144,27 @@ QPen Edge::buildPen(bool ignoreDashSetting) const
 
 void Edge::copyData(EdgeCR other)
 {
-    m_arrowMode = other.m_arrowMode;
-    m_dashedLine = other.m_dashedLine;
-    m_reversed = other.m_reversed;
+    *m_edgeModel = *other.m_edgeModel;
 
-    setText(other.m_text); // Update text to the label component
+    setText(other.m_edgeModel->text); // Update text to the label component
 }
 
 void Edge::changeFont(const QFont & font)
 {
-    if (m_label) {
+    if (m_enableLabel) {
         // Handle size and family separately to maintain backwards compatibility
         QFont newFont(font);
         if (m_label->font().pointSize() >= 0) {
             newFont.setPointSize(m_label->font().pointSize());
         }
         m_label->setFont(newFont);
+        m_dummyLabel->setFont(newFont);
     }
 }
 
 bool Edge::dashedLine() const
 {
-    return m_dashedLine;
+    return m_edgeModel->dashedLine;
 }
 
 void Edge::initDots()
@@ -195,8 +207,40 @@ void Edge::setArrowHeadPen(const QPen & pen)
 
 void Edge::setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason vcr)
 {
-    if (m_label) {
-        m_label->setVisible(visible, vcr);
+    if (m_enableLabel) {
+        const bool isEnoughSpaceForLabel = !m_label->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && //
+          !m_label->sceneBoundingRect().intersects(targetNode().sceneBoundingRect());
+        const bool dummyLabelTextIsShoterThanLabelText = m_dummyLabel->text().length() < m_label->text().length();
+        const bool isEnoughSpaceForDummyLabel = !m_dummyLabel->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && //
+          !m_dummyLabel->sceneBoundingRect().intersects(targetNode().sceneBoundingRect());
+        switch (vcr) {
+        case EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged: {
+            // Toggle visibility according to space available if geometry changed
+            const bool isLabelVisible = isEnoughSpaceForLabel && !m_label->text().isEmpty();
+            m_label->setVisible(isLabelVisible);
+            m_dummyLabel->setVisible(!isLabelVisible && isEnoughSpaceForDummyLabel && dummyLabelTextIsShoterThanLabelText);
+        } break;
+        case EdgeTextEdit::VisibilityChangeReason::Explicit: {
+            m_label->setVisible(visible);
+            m_dummyLabel->setVisible(visible);
+        } break;
+        case EdgeTextEdit::VisibilityChangeReason::Focused: {
+            if (visible) {
+                m_label->setVisible(true);
+                m_label->setParentItem(nullptr);
+                m_label->setGraphicsEffect(GraphicsFactory::createDropShadowEffect(false, SettingsProxy::instance().shadowEffect()));
+                m_dummyLabel->setVisible(false);
+            }
+        } break;
+        case EdgeTextEdit::VisibilityChangeReason::Timeout: {
+            if (!visible) {
+                if ((m_label->text().isEmpty() || (!m_label->text().isEmpty() && !isEnoughSpaceForLabel)) && !m_label->hasFocus()) {
+                    m_label->setVisible(false);
+                    m_dummyLabel->setVisible(isEnoughSpaceForDummyLabel && dummyLabelTextIsShoterThanLabelText);
+                }
+            }
+        } break;
+        }
     }
 }
 
@@ -207,9 +251,9 @@ void Edge::setEdgeWidth(double edgeWidth)
     updateLine();
 }
 
-void Edge::setArrowMode(ArrowMode arrowMode)
+void Edge::setArrowMode(EdgeModel::ArrowMode arrowMode)
 {
-    m_arrowMode = arrowMode;
+    m_edgeModel->arrowMode = arrowMode;
     if (!TestMode::enabled()) {
         updateLine();
     } else {
@@ -233,7 +277,7 @@ void Edge::setColor(const QColor & color)
 
 void Edge::setDashedLine(bool enable)
 {
-    m_dashedLine = enable;
+    m_edgeModel->dashedLine = enable;
     if (!TestMode::enabled()) {
         updateLine();
     } else {
@@ -243,12 +287,12 @@ void Edge::setDashedLine(bool enable)
 
 void Edge::setText(const QString & text)
 {
-    m_text = text;
+    m_edgeModel->text = text;
     if (!TestMode::enabled()) {
-        if (m_label) {
+        if (m_enableLabel) {
             m_label->setText(text);
+            setLabelVisible(!text.isEmpty());
         }
-        setLabelVisible(!text.isEmpty());
     } else {
         TestMode::logDisabledCode("Set label text");
     }
@@ -256,18 +300,15 @@ void Edge::setText(const QString & text)
 
 void Edge::setTextSize(int textSize)
 {
-    if (textSize <= 0) {
-        return;
-    }
-
-    if (m_label) {
+    if (m_enableLabel && textSize > 0) {
         m_label->setTextSize(textSize);
+        m_dummyLabel->setTextSize(textSize);
     }
 }
 
 void Edge::setReversed(bool reversed)
 {
-    m_reversed = reversed;
+    m_edgeModel->reversed = reversed;
 
     updateArrowhead();
 }
@@ -276,12 +317,18 @@ void Edge::setSelected(bool selected)
 {
     m_selected = selected;
     GraphicsFactory::updateDropShadowEffect(graphicsEffect(), selected, SettingsProxy::instance().shadowEffect());
+    if (m_label && m_label->parentItem() != this) {
+        GraphicsFactory::updateDropShadowEffect(m_label->graphicsEffect(), selected, SettingsProxy::instance().shadowEffect());
+    }
     update();
 }
 
 void Edge::setShadowEffect(const ShadowEffectParams & params)
 {
     GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_selected, params);
+    if (m_label && m_label->parentItem() != this) {
+        GraphicsFactory::updateDropShadowEffect(m_label->graphicsEffect(), m_selected, SettingsProxy::instance().shadowEffect());
+    }
     update();
 }
 
@@ -299,18 +346,19 @@ void Edge::updateArrowhead()
 {
     setArrowHeadPen(buildPen(true));
 
-    const auto point0 = m_reversed ? this->line().p1() : this->line().p2();
-    const auto angle0 = m_reversed ? -this->line().angle() + 180 : -this->line().angle();
-    const auto point1 = m_reversed ? this->line().p2() : this->line().p1();
-    const auto angle1 = m_reversed ? -this->line().angle() : -this->line().angle() + 180;
+    const auto reversed = m_edgeModel->reversed;
+    const auto point0 = reversed ? this->line().p1() : this->line().p2();
+    const auto angle0 = reversed ? -this->line().angle() + 180 : -this->line().angle();
+    const auto point1 = reversed ? this->line().p2() : this->line().p1();
+    const auto angle1 = reversed ? -this->line().angle() : -this->line().angle() + 180;
 
     QLineF lineL0;
     QLineF lineR0;
     QLineF lineL1;
     QLineF lineR1;
 
-    switch (m_arrowMode) {
-    case ArrowMode::Single: {
+    switch (m_edgeModel->arrowMode) {
+    case EdgeModel::ArrowMode::Single: {
         lineL0.setP1(point0);
         const auto angleL = qDegreesToRadians(angle0 + Constants::Edge::ARROW_OPENING);
         lineL0.setP2(point0 + QPointF(std::cos(angleL), std::sin(angleL)) * m_arrowSize);
@@ -325,7 +373,7 @@ void Edge::updateArrowhead()
         m_arrowheadR1->hide();
         break;
     }
-    case ArrowMode::Double: {
+    case EdgeModel::ArrowMode::Double: {
         lineL0.setP1(point0);
         const auto angleL0 = qDegreesToRadians(angle0 + Constants::Edge::ARROW_OPENING);
         lineL0.setP2(point0 + QPointF(std::cos(angleL0), std::sin(angleL0)) * m_arrowSize);
@@ -348,7 +396,7 @@ void Edge::updateArrowhead()
         m_arrowheadR1->show();
         break;
     }
-    case ArrowMode::Hidden:
+    case EdgeModel::ArrowMode::Hidden:
         m_arrowheadL0->hide();
         m_arrowheadR0->hide();
         m_arrowheadL1->hide();
@@ -386,12 +434,12 @@ void Edge::updateDots()
 
 void Edge::updateLabel(LabelUpdateReason lur)
 {
-    if (m_label) {
+    if (m_enableLabel) {
         m_label->setPos((line().p1() + line().p2()) * 0.5 - QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()) * 0.5);
-
+        m_dummyLabel->setPos((line().p1() + line().p2()) * 0.5 - QPointF(m_dummyLabel->boundingRect().width(), m_dummyLabel->boundingRect().height()) * 0.5);
         // Toggle visibility according to space available if geometry changed
         if (lur == LabelUpdateReason::EdgeGeometryChanged) {
-            setLabelVisible(!m_label->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && !m_label->sceneBoundingRect().intersects(targetNode().sceneBoundingRect()), EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged);
+            setLabelVisible(m_label->isVisible(), EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged);
         }
     }
 }
@@ -408,17 +456,24 @@ void Edge::setSourceNode(NodeR sourceNode)
 
 bool Edge::reversed() const
 {
-    return m_reversed;
+    return m_edgeModel->reversed;
 }
 
-Edge::ArrowMode Edge::arrowMode() const
+void Edge::restoreLabelParent()
 {
-    return m_arrowMode;
+    if (m_label) {
+        m_label->setParentItem(this);
+    }
+}
+
+EdgeModel::ArrowMode Edge::arrowMode() const
+{
+    return m_edgeModel->arrowMode;
 }
 
 QString Edge::text() const
 {
-    return m_text;
+    return m_edgeModel->text;
 }
 
 void Edge::updateLine()

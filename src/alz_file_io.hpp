@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2019 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,43 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef IMAGE_MANAGER_HPP
-#define IMAGE_MANAGER_HPP
+#ifndef ALZ_FILE_IO_HPP
+#define ALZ_FILE_IO_HPP
 
-#include <QObject>
+#include "file_io.hpp"
 
-#include <map>
-#include <optional>
-
-#include "image.hpp"
-#include "types.hpp"
-
-class Node;
-
-class ImageManager : public QObject
+class AlzFileIO : public FileIO
 {
-    Q_OBJECT
-
 public:
-    ImageManager();
+    std::unique_ptr<MindMapData> fromFile(QString path) const override;
 
-    void clear();
+    bool toFile(MindMapData & mindMapData, QString path) const override;
 
-    size_t addImage(const Image & image);
+    std::unique_ptr<MindMapData> fromXml(QString xml) const;
 
-    void setImage(const Image & image);
-
-    std::optional<Image> getImage(size_t id);
-
-    void handleImageRequest(size_t id, NodeR node);
-
-    using ImageVector = std::vector<Image>;
-    ImageVector images() const;
-
-private:
-    std::map<size_t, Image> m_images;
-
-    size_t m_count = 0;
+    QString toXml(MindMapData & mindMapData) const;
 };
 
-#endif // IMAGE_MANAGER_HPP
+#endif // ALZ_FILE_IO_HPP

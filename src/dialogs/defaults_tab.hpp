@@ -44,7 +44,7 @@ private:
 
     void setActiveDefaults();
 
-    std::map<Edge::ArrowMode, QRadioButton *> m_edgeArrowStyleRadioMap;
+    std::map<EdgeModel::ArrowMode, QRadioButton *> m_edgeArrowStyleRadioMap;
 
     QCheckBox * m_edgeDirectionCheckBox = nullptr;
 

@@ -113,6 +113,22 @@ pipeline {
                 }
             }
         }
+        stage('Source .tar.gz') {
+            agent {
+                docker {
+                    image 'juzzlin/qt5-22.04:latest'
+                    args '--privileged -t -v $WORKSPACE:/heimer'
+                }
+            }
+            steps {
+                sh "./scripts/build-archive"
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'heimer*.tar.gz', fingerprint: true
+                }
+            }
+        }
     }
 }
 

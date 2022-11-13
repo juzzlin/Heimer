@@ -42,7 +42,9 @@ Graph::Graph()
 void Graph::clear()
 {
     m_edges.clear();
+    m_deletedEdges.clear();
     m_nodes.clear();
+    m_deletedNodes.clear();
 }
 
 void Graph::addNode(NodeS node)

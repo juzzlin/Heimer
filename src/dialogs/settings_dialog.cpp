@@ -36,6 +36,8 @@ SettingsDialog::SettingsDialog(QWidget * parent)
     initWidgets();
 
     connect(m_effectsTab, &EffectsTab::shadowEffectChanged, this, &SettingsDialog::shadowEffectChanged);
+
+    connect(m_editingTab, &EditingTab::autosaveEnabled, this, &SettingsDialog::autosaveEnabled);
 }
 
 void SettingsDialog::accept()

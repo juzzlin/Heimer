@@ -20,19 +20,22 @@ set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_BINAR
 
 # Set sources for the lib
 set(LIB_SRC
-    alz_serializer.cpp
+    alz_file_io.cpp
     application.cpp
     constants.hpp
+    control_strategy.cpp
     copy_context.cpp
     edge.cpp
     edge_context_menu.cpp
     edge_dot.cpp
+    edge_model.hpp
     edge_point.hpp
     edge_text_edit.cpp
     editor_data.cpp
     editor_scene.cpp
     editor_view.cpp
     file_exception.hpp
+    file_io.hpp
     graph.cpp
     graphics_factory.cpp
     grid.cpp
@@ -52,6 +55,7 @@ set(LIB_SRC
     node.cpp
     node_action.hpp
     node_handle.cpp
+    node_model.hpp
     recent_files_manager.cpp
     recent_files_menu.cpp
     selection_group.cpp
@@ -65,6 +69,7 @@ set(LIB_SRC
     types.hpp
     undo_stack.cpp
     user_exception.hpp
+    utils.cpp
     version.hpp
     version_checker.cpp
     widget_factory.cpp

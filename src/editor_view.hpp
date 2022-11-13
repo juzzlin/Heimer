@@ -26,9 +26,11 @@
 #include <QGraphicsView>
 #include <QMenu>
 
+#include <memory>
 #include <optional>
 #include <set>
 
+class ControlStrategy;
 class Edge;
 class EdgeContextMenu;
 class Node;
@@ -113,13 +115,15 @@ private:
 
     void handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHandle & nodeHandle);
 
-    void handleLeftButtonClickOnNode(NodeR node);
+    void handlePrimaryButtonClickOnNode(NodeR node);
 
-    void handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle);
+    void handlePrimaryButtonClickOnNodeHandle(NodeHandle & nodeHandle);
 
-    void handleRightButtonClickOnEdge(EdgeR edge);
+    void handleSecondaryButtonClickOnEdge(EdgeR edge);
 
-    void handleRightButtonClickOnNode(NodeR node);
+    void handleSecondaryButtonClickOnNode(NodeR node);
+
+    void initiateBackgroundDrag();
 
     void initiateRubberBand();
 
@@ -201,6 +205,8 @@ private:
     };
 
     std::optional<ZoomParameters> m_savedZoom;
+
+    std::unique_ptr<ControlStrategy> m_controlStrategy;
 };
 
 #endif // EDITOR_VIEW_HPP

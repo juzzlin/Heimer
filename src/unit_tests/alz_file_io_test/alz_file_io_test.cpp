@@ -13,12 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "alz_file_io.hpp"
 #include "alz_file_io_test.hpp"
 #include "mind_map_data.hpp"
 #include "test_mode.hpp"
-#include "xml_reader.hpp"
-#include "xml_writer.hpp"
+
+#include "../io/alz_file_io.hpp"
+#include "../io/xml_reader.hpp"
+#include "../io/xml_writer.hpp"
 
 AlzFileIOTest::AlzFileIOTest()
 {
@@ -28,7 +29,7 @@ AlzFileIOTest::AlzFileIOTest()
 void AlzFileIOTest::testEmptyDesign()
 {
     MindMapData outData;
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(QString(inData->version()), QString(VERSION));
 }
 
@@ -36,7 +37,7 @@ void AlzFileIOTest::testArrowSize()
 {
     MindMapData outData;
     outData.setArrowSize(42.42);
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->arrowSize(), outData.arrowSize());
 }
 
@@ -44,7 +45,7 @@ void AlzFileIOTest::testBackgroundColor()
 {
     MindMapData outData;
     outData.setBackgroundColor(QColor(1, 2, 3));
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->backgroundColor(), outData.backgroundColor());
 }
 
@@ -52,7 +53,7 @@ void AlzFileIOTest::testCornerRadius()
 {
     MindMapData outData;
     outData.setCornerRadius(Constants::Node::Defaults::CORNER_RADIUS + 1);
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->cornerRadius(), outData.cornerRadius());
 }
 
@@ -60,7 +61,7 @@ void AlzFileIOTest::testEdgeColor()
 {
     MindMapData outData;
     outData.setEdgeColor(QColor(1, 2, 3));
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->edgeColor(), outData.edgeColor());
 }
 
@@ -68,7 +69,7 @@ void AlzFileIOTest::testEdgeWidth()
 {
     MindMapData outData;
     outData.setEdgeWidth(666.42);
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->edgeWidth(), outData.edgeWidth());
 }
 
@@ -78,7 +79,7 @@ void AlzFileIOTest::testFontItalic()
     QFont font("Foobar", 42, 666, true);
     outData.changeFont(font);
     outData.setTextSize(24);
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().family(), outData.font().family());
     QCOMPARE(inData->font().italic(), true);
     QCOMPARE(inData->font().weight(), outData.font().weight());
@@ -90,7 +91,7 @@ void AlzFileIOTest::testFontNonItalic()
     MindMapData outData;
     QFont font;
     outData.changeFont(font);
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().italic(), false);
 }
 
@@ -100,7 +101,7 @@ void AlzFileIOTest::testFontBold()
     QFont font;
     font.setBold(true);
     outData.changeFont(font);
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().bold(), true);
 }
 
@@ -109,7 +110,7 @@ void AlzFileIOTest::testFontNonBold()
     MindMapData outData;
     QFont font;
     outData.changeFont(font);
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().bold(), false);
 }
 
@@ -119,7 +120,7 @@ void AlzFileIOTest::testFontOverline()
     QFont font;
     font.setOverline(true);
     outData.changeFont(font);
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().overline(), true);
 }
 
@@ -128,7 +129,7 @@ void AlzFileIOTest::testFontNonOverline()
     MindMapData outData;
     QFont font;
     outData.changeFont(font);
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().overline(), false);
 }
 
@@ -138,7 +139,7 @@ void AlzFileIOTest::testFontStrikeOut()
     QFont font;
     font.setStrikeOut(true);
     outData.changeFont(font);
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().strikeOut(), true);
 }
 
@@ -147,7 +148,7 @@ void AlzFileIOTest::testFontNonStrikeOut()
     MindMapData outData;
     QFont font;
     outData.changeFont(font);
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().strikeOut(), false);
 }
 
@@ -157,7 +158,7 @@ void AlzFileIOTest::testFontUnderline()
     QFont font("Foobar");
     font.setUnderline(true);
     outData.changeFont(font);
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().underline(), true);
 }
 
@@ -166,7 +167,7 @@ void AlzFileIOTest::testFontNonUnderline()
     MindMapData outData;
     QFont font("Foobar");
     outData.changeFont(font);
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().underline(), false);
 }
 
@@ -174,7 +175,7 @@ void AlzFileIOTest::testGridColor()
 {
     MindMapData outData;
     outData.setGridColor(QColor(1, 2, 3));
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->gridColor(), outData.gridColor());
 }
 
@@ -183,7 +184,7 @@ void AlzFileIOTest::testLayoutOptimizer()
     MindMapData outData;
     outData.setAspectRatio(3.14);
     outData.setMinEdgeLength(42.666);
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->aspectRatio(), outData.aspectRatio());
     QCOMPARE(inData->minEdgeLength(), outData.minEdgeLength());
 }
@@ -200,7 +201,7 @@ void AlzFileIOTest::testLoadJpg()
       " </graph>"
       " <image path=\"test.jpg\" id=\"1\">/9j/4AAQSkZJRgABAQEASABIAAD//gAgRGVzY3JpcHRpb246IENyZWF0ZWQgd2l0aCBHSU1Q/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8AAEQgABAAEAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/aAAwDAQACEQMRAD8A9/ooooA//9k=</image>"
       " </heimer-mind-map>";
-    const auto inData = AlzFileIO().fromXml(xml);
+    const auto inData = IO::AlzFileIO().fromXml(xml);
     QCOMPARE(inData->imageManager().images().size(), size_t { 1 });
     const auto image = inData->imageManager().getImage(1);
     QVERIFY(image.has_value());
@@ -222,7 +223,7 @@ void AlzFileIOTest::testLoadPng()
       " </graph>"
       " <image path=\"test.png\" id=\"1\">iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAIAAAAmkwkpAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAABRJREFUCJlj/P//PwMMMDEgAdwcAJZuAwUDbWh7AAAAAElFTkSuQmCC</image>"
       " </heimer-mind-map>";
-    const auto inData = AlzFileIO().fromXml(xml);
+    const auto inData = IO::AlzFileIO().fromXml(xml);
     QCOMPARE(inData->imageManager().images().size(), size_t { 1 });
     const auto image = inData->imageManager().getImage(1);
     QVERIFY(image.has_value());
@@ -237,10 +238,10 @@ void AlzFileIOTest::testNotUsedImages()
     MindMapData outData;
     outData.imageManager().addImage(Image {});
     outData.imageManager().addImage(Image {});
-    const auto outXml = AlzFileIO().toXml(outData);
+    const auto outXml = IO::AlzFileIO().toXml(outData);
     outData.imageManager().clear(); // ImageManager is a static class
     QCOMPARE(outData.imageManager().images().size(), size_t { 0 });
-    const auto inData = AlzFileIO().fromXml(outXml);
+    const auto inData = IO::AlzFileIO().fromXml(outXml);
     // No nodes are using the added images, so nothing should have been serialized
     QCOMPARE(outData.imageManager().images().size(), size_t { 0 });
 }
@@ -257,10 +258,10 @@ void AlzFileIOTest::testUsedImages()
     outData.graph().addNode(node2);
     node2->setImageRef(id2);
 
-    const auto outXml = AlzFileIO().toXml(outData);
+    const auto outXml = IO::AlzFileIO().toXml(outData);
     outData.imageManager().clear(); // ImageManager is a static class
     QCOMPARE(outData.imageManager().images().size(), size_t { 0 });
-    const auto inData = AlzFileIO().fromXml(outXml);
+    const auto inData = IO::AlzFileIO().fromXml(outXml);
     QCOMPARE(outData.imageManager().images().size(), size_t { 2 });
 }
 
@@ -268,7 +269,7 @@ void AlzFileIOTest::testTextSize()
 {
     MindMapData outData;
     outData.setTextSize(42);
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->textSize(), outData.textSize());
 }
 
@@ -291,7 +292,7 @@ void AlzFileIOTest::testNodeDeletion()
 
     outData.graph().deleteNode(outNode1->index()); // Delete node in between
 
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     const auto edges = inData->graph().getEdgesFromNode(outNode0);
     QCOMPARE(edges.size(), static_cast<size_t>(1));
 }
@@ -312,7 +313,7 @@ void AlzFileIOTest::testSingleEdge()
     edge->setText(text);
     outData.graph().addEdge(edge);
 
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     const auto edges = inData->graph().getEdgesFromNode(outNode0);
     QCOMPARE(edges.size(), static_cast<size_t>(1));
     QCOMPARE((*edges.begin())->arrowMode(), edge->arrowMode());
@@ -335,7 +336,7 @@ void AlzFileIOTest::testSingleNode()
     outNode->setTextColor(QColor(4, 5, 6));
     outData.graph().addNode(outNode);
 
-    const auto inData = AlzFileIO().fromXml(AlzFileIO().toXml(outData));
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QVERIFY(inData->graph().numNodes() == 1);
 
     const auto node = inData->graph().getNode(0);

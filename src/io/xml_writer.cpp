@@ -13,21 +13,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef ALZ_FILE_IO_HPP
-#define ALZ_FILE_IO_HPP
+#include "xml_writer.hpp"
 
-#include "file_io.hpp"
+#include <QFile>
+#include <QTextStream>
 
-class AlzFileIO : public FileIO
+namespace IO {
+
+bool XmlWriter::writeToFile(QDomDocument document, QString filePath)
 {
-public:
-    std::unique_ptr<MindMapData> fromFile(QString path) const override;
+    QFile file(filePath);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file);
+        out << document;
+        file.close();
+        return true;
+    }
 
-    bool toFile(MindMapData & mindMapData, QString path) const override;
+    return false;
+}
 
-    std::unique_ptr<MindMapData> fromXml(QString xml) const;
-
-    QString toXml(MindMapData & mindMapData) const;
-};
-
-#endif // ALZ_FILE_IO_HPP
+} // namespace IO

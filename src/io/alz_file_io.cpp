@@ -15,14 +15,15 @@
 
 #include "alz_file_io.hpp"
 
-#include "types.hpp"
+#include "../constants.hpp"
+#include "../graph.hpp"
+#include "../mind_map_data.hpp"
+#include "../node.hpp"
+#include "../test_mode.hpp"
+#include "../types.hpp"
 
-#include "constants.hpp"
-#include "graph.hpp"
-#include "mind_map_data.hpp"
-#include "node.hpp"
 #include "simple_logger.hpp"
-#include "test_mode.hpp"
+
 #include "xml_reader.hpp"
 #include "xml_writer.hpp"
 
@@ -36,8 +37,9 @@
 #include <QFile>
 #include <QTemporaryDir>
 
-namespace DataKeywords {
-namespace MindMap {
+namespace IO {
+
+namespace DataKeywords::MindMap {
 
 const auto APPLICATION_VERSION = "version";
 
@@ -150,9 +152,7 @@ const auto MIN_EDGE_LENGTH = "min-edge-length";
 
 } // namespace LayoutOptimizer
 
-} // namespace MindMap
-
-} // namespace DataKeywords
+} // namespace DataKeywords::MindMap
 
 static const double SCALE = 1000; // https://bugreports.qt.io/browse/QTBUG-67129
 
@@ -540,22 +540,24 @@ QDomDocument toXml(MindMapData & mindMapData)
 
 std::unique_ptr<MindMapData> AlzFileIO::fromFile(QString path) const
 {
-    return ::fromXml(XmlReader::readFromFile(path));
+    return IO::fromXml(XmlReader::readFromFile(path));
 }
 
 bool AlzFileIO::toFile(MindMapData & mindMapData, QString path) const
 {
-    return XmlWriter::writeToFile(::toXml(mindMapData), path);
+    return XmlWriter::writeToFile(IO::toXml(mindMapData), path);
 }
 
 std::unique_ptr<MindMapData> AlzFileIO::fromXml(QString xml) const
 {
     QDomDocument document;
     document.setContent(xml, false);
-    return ::fromXml(document);
+    return IO::fromXml(document);
 }
 
 QString AlzFileIO::toXml(MindMapData & mindMapData) const
 {
-    return ::toXml(mindMapData).toString();
+    return IO::toXml(mindMapData).toString();
 }
+
+} // namespace IO

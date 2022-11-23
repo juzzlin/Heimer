@@ -16,13 +16,14 @@
 #include "editor_data.hpp"
 #include "editor_scene.hpp"
 
-#include "alz_file_io.hpp"
 #include "constants.hpp"
 #include "node.hpp"
 #include "recent_files_manager.hpp"
 #include "selection_group.hpp"
 #include "settings_proxy.hpp"
 #include "test_mode.hpp"
+
+#include "io/alz_file_io.hpp"
 
 #include "simple_logger.hpp"
 
@@ -83,7 +84,7 @@ void EditorData::loadMindMapData(QString fileName)
     m_selectedEdge = nullptr;
 
     if (!TestMode::enabled()) {
-        setMindMapData(AlzFileIO().fromFile(fileName));
+        setMindMapData(IO::AlzFileIO().fromFile(fileName));
     } else {
         TestMode::logDisabledCode("setMindMapData");
     }
@@ -196,7 +197,7 @@ bool EditorData::saveMindMapAs(QString fileName)
 {
     assert(m_mindMapData);
 
-    if (AlzFileIO().toFile(*m_mindMapData, fileName)) {
+    if (IO::AlzFileIO().toFile(*m_mindMapData, fileName)) {
         m_fileName = fileName;
         setIsModified(false);
         RecentFilesManager::instance().addRecentFile(fileName);

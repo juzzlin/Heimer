@@ -13,14 +13,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef XML_WRITER_HPP
-#define XML_WRITER_HPP
+#include "xml_reader.hpp"
 
-#include <QDomDocument>
+#include <QFile>
+#include <QObject>
 
-namespace XmlWriter {
+namespace IO {
 
-bool writeToFile(QDomDocument document, QString filePath);
+QDomDocument XmlReader::readFromFile(QString filePath)
+{
+    QDomDocument doc;
+
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly)) {
+        throw FileException(QObject::tr("Cannot open file: '") + filePath + "'");
+    }
+
+    if (!doc.setContent(&file)) {
+        file.close();
+
+        throw FileException(QObject::tr("Corrupted file: '") + filePath + "'");
+    }
+
+    file.close();
+
+    return doc;
 }
 
-#endif // XML_WRITER_HPP
+} // namespace IO

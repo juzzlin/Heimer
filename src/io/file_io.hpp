@@ -22,6 +22,8 @@
 
 class MindMapData;
 
+namespace IO {
+
 class FileIO
 {
 public:
@@ -29,5 +31,7 @@ public:
 
     virtual bool toFile(MindMapData & mindMapData, QString path) const = 0;
 };
+
+} // namespace IO
 
 #endif // FILE_IO_HPP

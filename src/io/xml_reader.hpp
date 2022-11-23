@@ -20,7 +20,7 @@
 
 #include "file_exception.hpp"
 
-namespace XmlReader {
+namespace IO::XmlReader {
 
 QDomDocument readFromFile(QString filePath);
 

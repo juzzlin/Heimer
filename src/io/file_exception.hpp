@@ -19,6 +19,8 @@
 #include <QString>
 #include <stdexcept>
 
+namespace IO {
+
 class FileException : public std::runtime_error
 {
 public:
@@ -36,5 +38,7 @@ public:
 private:
     QString m_message;
 };
+
+} // namespace IO
 
 #endif // FILE_EXCEPTION_HPP

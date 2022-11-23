@@ -567,7 +567,7 @@ bool Mediator::openMindMap(QString fileName)
         connectGraphToUndoMechanism();
         connectGraphToImageManager();
         zoomToFit();
-    } catch (const FileException & e) {
+    } catch (const IO::FileException & e) {
         m_mainWindow.showErrorDialog(e.message());
         return false;
     } catch (const std::runtime_error & e) {

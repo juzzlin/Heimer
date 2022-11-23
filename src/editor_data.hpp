@@ -28,13 +28,14 @@
 
 #include "copy_context.hpp"
 #include "edge.hpp"
-#include "file_exception.hpp"
 #include "grid.hpp"
 #include "mind_map_data.hpp"
 #include "mouse_action.hpp"
 #include "node.hpp"
 #include "types.hpp"
 #include "undo_stack.hpp"
+
+#include "io/file_exception.hpp"
 
 class Node;
 class NodeBase;

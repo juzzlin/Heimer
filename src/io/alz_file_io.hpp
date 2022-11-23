@@ -13,27 +13,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "xml_reader.hpp"
+#ifndef ALZ_FILE_IO_HPP
+#define ALZ_FILE_IO_HPP
 
-#include <QFile>
-#include <QObject>
+#include "file_io.hpp"
 
-QDomDocument XmlReader::readFromFile(QString filePath)
+namespace IO {
+
+class AlzFileIO : public FileIO
 {
-    QDomDocument doc;
+public:
+    std::unique_ptr<MindMapData> fromFile(QString path) const override;
 
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly)) {
-        throw FileException(QObject::tr("Cannot open file: '") + filePath + "'");
-    }
+    bool toFile(MindMapData & mindMapData, QString path) const override;
 
-    if (!doc.setContent(&file)) {
-        file.close();
+    std::unique_ptr<MindMapData> fromXml(QString xml) const;
 
-        throw FileException(QObject::tr("Corrupted file: '") + filePath + "'");
-    }
+    QString toXml(MindMapData & mindMapData) const;
+};
 
-    file.close();
+} // namespace IO
 
-    return doc;
-}
+#endif // ALZ_FILE_IO_HPP

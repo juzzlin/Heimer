@@ -19,7 +19,8 @@
 #include "../layout_optimizer.hpp"
 #include "../mind_map_data.hpp"
 #include "../widget_factory.hpp"
-#include "contrib/SimpleLogger/src/simple_logger.hpp"
+
+#include "simple_logger.hpp"
 
 #include <QDialogButtonBox>
 #include <QDoubleSpinBox>

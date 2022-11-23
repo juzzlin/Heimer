@@ -8,6 +8,9 @@ include_directories(contrib/Argengine/src)
 add_subdirectory(contrib/range-v3-0.11.0 EXCLUDE_FROM_ALL)
 include_directories(contrib/range-v3-0.11.0/include)
 
+set(DIALOGS_LIB_NAME DialogsLib)
+add_subdirectory(dialogs)
+
 set(IO_LIB_NAME IOLib)
 add_subdirectory(io)
 
@@ -73,18 +76,6 @@ set(LIB_SRC
     version.hpp
     version_checker.cpp
     widget_factory.cpp
-    dialogs/about_dialog.cpp
-    dialogs/color_dialog.cpp
-    dialogs/color_setting_button.cpp
-    dialogs/defaults_tab.cpp
-    dialogs/editing_tab.cpp
-    dialogs/effects_tab.cpp
-    dialogs/layout_optimization_dialog.cpp
-    dialogs/png_export_dialog.cpp
-    dialogs/scene_color_dialog.cpp
-    dialogs/settings_dialog.cpp
-    dialogs/svg_export_dialog.cpp
-    dialogs/whats_new_dialog.cpp
 )
 
 # Set sources for the app
@@ -144,7 +135,7 @@ endif()
 
 # Add the library
 add_library(${LIBRARY_NAME} STATIC ${LIB_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
-target_link_libraries(${LIBRARY_NAME} ${IO_LIB_NAME} Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Svg Qt${QT_VERSION_MAJOR}::Xml Qt${QT_VERSION_MAJOR}::Network SimpleLogger_static Argengine_static)
+target_link_libraries(${LIBRARY_NAME} ${IO_LIB_NAME} ${DIALOGS_LIB_NAME} Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Network SimpleLogger_static Argengine_static)
 
 # Add the executable
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})

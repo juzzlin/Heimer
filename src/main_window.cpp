@@ -50,8 +50,8 @@
 MainWindow * MainWindow::m_instance = nullptr;
 
 MainWindow::MainWindow()
-  : m_aboutDlg(new AboutDialog(this))
-  , m_settingsDlg(new SettingsDialog(this))
+  : m_aboutDlg(new Dialogs::AboutDialog(this))
+  , m_settingsDlg(new Dialogs::SettingsDialog(this))
   , m_toolBar(new ToolBar(this))
   , m_whatsNewDlg(new WhatsNewDialog(this))
   , m_connectSelectedNodesAction(new QAction(tr("Connect selected nodes"), this))
@@ -72,9 +72,9 @@ MainWindow::MainWindow()
 
     connectToolBar();
 
-    connect(m_settingsDlg, &SettingsDialog::shadowEffectChanged, this, &MainWindow::shadowEffectChanged);
+    connect(m_settingsDlg, &Dialogs::SettingsDialog::shadowEffectChanged, this, &MainWindow::shadowEffectChanged);
 
-    connect(m_settingsDlg, &SettingsDialog::autosaveEnabled, this, &MainWindow::autosaveEnabled);
+    connect(m_settingsDlg, &Dialogs::SettingsDialog::autosaveEnabled, this, &MainWindow::autosaveEnabled);
 
     m_statusText->setOpenExternalLinks(true);
 }
@@ -298,7 +298,7 @@ void MainWindow::createFileMenu()
 
     // Add "settings"-action
     const auto settingsAct = new QAction(tr("Settings") + Constants::Misc::THREE_DOTS, this);
-    connect(settingsAct, &QAction::triggered, m_settingsDlg, &SettingsDialog::exec);
+    connect(settingsAct, &QAction::triggered, m_settingsDlg, &Dialogs::SettingsDialog::exec);
     fileMenu->addAction(settingsAct);
 
     fileMenu->addSeparator();
@@ -323,7 +323,7 @@ void MainWindow::createHelpMenu()
     // Add "about"-action
     const auto aboutAct = new QAction(tr("&About"), this);
     helpMenu->addAction(aboutAct);
-    connect(aboutAct, &QAction::triggered, m_aboutDlg, &AboutDialog::exec);
+    connect(aboutAct, &QAction::triggered, m_aboutDlg, &Dialogs::AboutDialog::exec);
 
     // Add "about Qt"-action
     const auto aboutQtAct = new QAction(tr("About &Qt"), this);

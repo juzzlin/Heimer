@@ -30,6 +30,8 @@
 
 #include "simple_logger.hpp"
 
+namespace Dialogs {
+
 DefaultsTab::DefaultsTab(QWidget * parent)
   : QWidget(parent)
   , m_edgeDirectionCheckBox(new QCheckBox(tr("Reversed direction"), this))
@@ -130,3 +132,5 @@ void DefaultsTab::setActiveDefaults()
 
     m_edgeDirectionCheckBox->setChecked(SettingsProxy::instance().reversedEdgeDirection());
 }
+
+} // namespace Dialogs

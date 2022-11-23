@@ -24,6 +24,8 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 
+namespace Dialogs {
+
 SettingsDialog::SettingsDialog(QWidget * parent)
   : QDialog(parent)
   , m_defaultsTab(new DefaultsTab(this))
@@ -69,3 +71,5 @@ void SettingsDialog::initWidgets()
 
     setLayout(mainLayout);
 }
+
+} // namespace Dialogs

@@ -19,9 +19,12 @@
 #include <QWidget>
 #include <map>
 
-class ColorSettingButton;
 class QSpinBox;
 struct ShadowEffectParams;
+
+namespace Dialogs {
+
+class ColorSettingButton;
 
 class EffectsTab : public QWidget
 {
@@ -50,5 +53,7 @@ private:
 
     ColorSettingButton * m_selectedItemShadowColorButton;
 };
+
+} // namespace Dialogs
 
 #endif // EFFECTS_TAB_HPP

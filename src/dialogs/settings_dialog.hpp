@@ -18,10 +18,13 @@
 
 #include <QDialog>
 
+struct ShadowEffectParams;
+
+namespace Dialogs {
+
 class DefaultsTab;
 class EditingTab;
 class EffectsTab;
-struct ShadowEffectParams;
 
 class SettingsDialog : public QDialog
 {
@@ -46,5 +49,7 @@ private:
 
     EffectsTab * m_effectsTab;
 };
+
+} // namespace Dialogs
 
 #endif // SETTINGS_DIALOG_HPP

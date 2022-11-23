@@ -369,31 +369,31 @@ void Application::saveMindMapAs()
 
 void Application::showBackgroundColorDialog()
 {
-    SceneColorDialog(ColorDialog::Role::Background, m_mediator).exec();
+    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Background, m_mediator).exec();
     emit actionTriggered(StateMachine::Action::BackgroundColorChanged);
 }
 
 void Application::showEdgeColorDialog()
 {
-    SceneColorDialog(ColorDialog::Role::Edge, m_mediator).exec();
+    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Edge, m_mediator).exec();
     emit actionTriggered(StateMachine::Action::EdgeColorChanged);
 }
 
 void Application::showGridColorDialog()
 {
-    SceneColorDialog(ColorDialog::Role::Grid, m_mediator).exec();
+    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Grid, m_mediator).exec();
     emit actionTriggered(StateMachine::Action::GridColorChanged);
 }
 
 void Application::showNodeColorDialog()
 {
-    SceneColorDialog(ColorDialog::Role::Node, m_mediator).exec();
+    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Node, m_mediator).exec();
     emit actionTriggered(StateMachine::Action::NodeColorChanged);
 }
 
 void Application::showTextColorDialog()
 {
-    SceneColorDialog(ColorDialog::Role::Text, m_mediator).exec();
+    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Text, m_mediator).exec();
     emit actionTriggered(StateMachine::Action::TextColorChanged);
 }
 

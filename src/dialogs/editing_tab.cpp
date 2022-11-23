@@ -23,6 +23,8 @@
 #include <QLabel>
 #include <QVBoxLayout>
 
+namespace Dialogs {
+
 EditingTab::EditingTab(QWidget * parent)
   : QWidget(parent)
 {
@@ -66,3 +68,5 @@ void EditingTab::setActiveSettings()
 
     m_autosaveCheckBox->setChecked(SettingsProxy::instance().autosave());
 }
+
+} // namespace Dialogs

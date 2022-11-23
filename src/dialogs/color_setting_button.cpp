@@ -16,6 +16,8 @@
 #include "color_setting_button.hpp"
 #include "../settings_proxy.hpp"
 
+namespace Dialogs {
+
 ColorSettingButton::ColorSettingButton(QString text, ColorDialog::Role role, QWidget * parent)
   : QPushButton(text, parent)
   , m_role(role)
@@ -103,3 +105,5 @@ void ColorSettingButton::setColor(QColor backgroundColor)
     const QColor textColor = { getTextColorComponent(backgroundColor.red()), getTextColorComponent(backgroundColor.green()), getTextColorComponent(backgroundColor.blue()) };
     setStyleSheet(QString("color: %1; background-color: %2").arg(textColor.name(), backgroundColor.name()));
 }
+
+} // namespace Dialogs

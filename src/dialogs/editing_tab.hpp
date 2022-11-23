@@ -16,12 +16,13 @@
 #ifndef EDITING_TAB_HPP
 #define EDITING_TAB_HPP
 
-#include "settings_proxy.hpp"
 #include <QWidget>
 #include <map>
 
 class QCheckBox;
 class QRadioButton;
+
+namespace Dialogs {
 
 class EditingTab : public QWidget
 {
@@ -44,5 +45,7 @@ private:
 
     QCheckBox * m_autosaveCheckBox = nullptr;
 };
+
+} // namespace Dialogs
 
 #endif // EDITING_TAB_HPP

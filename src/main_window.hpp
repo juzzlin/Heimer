@@ -27,8 +27,11 @@
 #include <map>
 #include <memory>
 
+namespace Dialogs {
 class AboutDialog;
 class SettingsDialog;
+} // namespace Dialogs
+
 class EditorData;
 class EditorView;
 class Mediator;
@@ -161,9 +164,9 @@ private:
 
     void populateMenuBar();
 
-    AboutDialog * m_aboutDlg;
+    Dialogs::AboutDialog * m_aboutDlg;
 
-    SettingsDialog * m_settingsDlg;
+    Dialogs::SettingsDialog * m_settingsDlg;
 
     ToolBar * m_toolBar;
 

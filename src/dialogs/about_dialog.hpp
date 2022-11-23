@@ -18,6 +18,8 @@
 
 #include <QDialog>
 
+namespace Dialogs {
+
 //! The about dialog.
 class AboutDialog : public QDialog
 {
@@ -30,5 +32,7 @@ public:
 private:
     void initWidgets();
 };
+
+} // namespace Dialogs
 
 #endif // ABOUT_DIALOG_HPP

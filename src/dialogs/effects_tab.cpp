@@ -28,6 +28,8 @@
 #include <QSpinBox>
 #include <QVBoxLayout>
 
+namespace Dialogs {
+
 EffectsTab::EffectsTab(QWidget * parent)
   : QWidget(parent)
   , m_shadowOffsetSpinBox(new QSpinBox(this))
@@ -127,3 +129,5 @@ void EffectsTab::initWidgets()
 
     setLayout(mainLayout);
 }
+
+} // namespace Dialogs

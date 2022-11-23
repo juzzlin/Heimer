@@ -16,15 +16,19 @@
 #ifndef DEFAULTS_TAB_HPP
 #define DEFAULTS_TAB_HPP
 
-#include "settings_proxy.hpp"
 #include <QWidget>
 #include <map>
 #include <vector>
 
-class ColorSettingButton;
+#include "../edge_model.hpp"
+
 class QCheckBox;
 class QRadioButton;
 class QVBoxLayout;
+
+namespace Dialogs {
+
+class ColorSettingButton;
 
 class DefaultsTab : public QWidget
 {
@@ -60,5 +64,7 @@ private:
 
     std::vector<ColorSettingButton *> m_colorSettingButtons;
 };
+
+} // namespace Dialogs
 
 #endif // DEFAULTS_TAB_HPP

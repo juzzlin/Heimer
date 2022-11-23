@@ -20,6 +20,8 @@
 #include <QColor>
 #include <QPushButton>
 
+namespace Dialogs {
+
 class ColorSettingButton : public QPushButton
 {
     Q_OBJECT
@@ -43,5 +45,7 @@ private:
 
     QColor m_selectedColor;
 };
+
+} // namespace Dialogs
 
 #endif // COLOR_SETTING_BUTTON_HPP

@@ -18,7 +18,8 @@
 #include "../constants.hpp"
 #include "../layout_optimizer.hpp"
 #include "../mind_map_data.hpp"
-#include "../widget_factory.hpp"
+
+#include "widget_factory.hpp"
 
 #include "simple_logger.hpp"
 

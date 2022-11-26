@@ -16,7 +16,8 @@
 #include "png_export_dialog.hpp"
 
 #include "../constants.hpp"
-#include "../widget_factory.hpp"
+
+#include "widget_factory.hpp"
 
 #include <QCheckBox>
 #include <QDialogButtonBox>

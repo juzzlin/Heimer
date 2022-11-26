@@ -16,8 +16,10 @@
 #include "defaults_tab.hpp"
 
 #include "../settings_proxy.hpp"
-#include "../widget_factory.hpp"
 #include "color_setting_button.hpp"
+#include "widget_factory.hpp"
+
+#include "simple_logger.hpp"
 
 #include <QButtonGroup>
 #include <QCheckBox>
@@ -27,8 +29,6 @@
 #include <QPushButton>
 #include <QRadioButton>
 #include <QVBoxLayout>
-
-#include "simple_logger.hpp"
 
 namespace Dialogs {
 

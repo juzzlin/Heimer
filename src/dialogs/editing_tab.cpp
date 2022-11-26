@@ -15,7 +15,7 @@
 
 #include "editing_tab.hpp"
 #include "../settings_proxy.hpp"
-#include "../widget_factory.hpp"
+#include "widget_factory.hpp"
 
 #include <QButtonGroup>
 #include <QCheckBox>

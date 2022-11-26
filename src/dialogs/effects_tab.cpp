@@ -18,8 +18,8 @@
 #include "../constants.hpp"
 #include "../settings_proxy.hpp"
 #include "../shadow_effect_params.hpp"
-#include "../widget_factory.hpp"
 #include "color_setting_button.hpp"
+#include "widget_factory.hpp"
 
 #include <QGroupBox>
 #include <QHBoxLayout>

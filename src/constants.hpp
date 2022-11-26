@@ -85,7 +85,7 @@ static const double MIN_EDGE_WIDTH = 0.1;
 
 static const double MAX_EDGE_WIDTH = 5.0;
 
-static const double EDGE_WIDTH_STEP = 0.1;
+static const double EDGE_WIDTH_STEP = 0.25;
 
 static const int TEXT_EDIT_ANIMATION_DURATION = 150;
 

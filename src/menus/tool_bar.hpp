@@ -28,6 +28,8 @@ class QPushButton;
 class QSpinBox;
 class QWidgetAction;
 
+namespace Menus {
+
 class ToolBar : public QToolBar
 {
     Q_OBJECT
@@ -109,5 +111,7 @@ private:
 
     QSpinBox * m_textSizeSpinBox = nullptr;
 };
+
+} // namespace Menus
 
 #endif // TOOL_BAR_HPP

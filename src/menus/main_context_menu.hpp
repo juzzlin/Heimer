@@ -28,6 +28,8 @@ class Grid;
 class Node;
 class Mediator;
 
+namespace Menus {
+
 class MainContextMenu : public QMenu
 {
     Q_OBJECT
@@ -67,5 +69,7 @@ private:
 
     Mediator & m_mediator;
 };
+
+} // namespace Menus
 
 #endif // MAIN_CONTEXT_MENU_HPP

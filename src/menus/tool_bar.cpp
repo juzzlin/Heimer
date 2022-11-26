@@ -30,6 +30,8 @@
 #include <QSpinBox>
 #include <QWidgetAction>
 
+namespace Menus {
+
 ToolBar::ToolBar(QWidget * parent)
   : QToolBar(parent)
   , m_autoSnapCheckBox(new QCheckBox(tr("Auto snap"), this))
@@ -284,3 +286,5 @@ void ToolBar::updateFontButtonFont(const QFont & font)
     newFont.setPointSize(m_fontButton->font().pointSize());
     m_fontButton->setFont(newFont);
 }
+
+} // namespace Menus

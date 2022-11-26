@@ -33,10 +33,15 @@ class SettingsDialog;
 class WhatsNewDialog;
 } // namespace Dialogs
 
+namespace Menus {
+class ToolBar;
+} // namespace Menus
+
 class EditorData;
 class EditorView;
 class Mediator;
 class Node;
+
 class QAction;
 class QCheckBox;
 class QFont;
@@ -46,7 +51,7 @@ class QSlider;
 class QSpinBox;
 class QTextEdit;
 class QWidgetAction;
-class ToolBar;
+
 struct ShadowEffectParams;
 
 class MainWindow : public QMainWindow
@@ -168,7 +173,7 @@ private:
 
     Dialogs::SettingsDialog * m_settingsDlg;
 
-    ToolBar * m_toolBar;
+    Menus::ToolBar * m_toolBar;
 
     Dialogs::WhatsNewDialog * m_whatsNewDlg;
 

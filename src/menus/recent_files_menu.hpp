@@ -23,6 +23,8 @@
 
 class QAction;
 
+namespace Menus {
+
 class RecentFilesMenu : public QMenu
 {
     Q_OBJECT
@@ -38,5 +40,7 @@ private:
 
     QString m_selectedFile;
 };
+
+} // namespace Menus
 
 #endif // RECENT_FILES_MENU_HPP

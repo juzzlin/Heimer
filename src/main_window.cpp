@@ -53,7 +53,7 @@ MainWindow * MainWindow::m_instance = nullptr;
 MainWindow::MainWindow()
   : m_aboutDlg(new Dialogs::AboutDialog(this))
   , m_settingsDlg(new Dialogs::SettingsDialog(this))
-  , m_toolBar(new ToolBar(this))
+  , m_toolBar(new Menus::ToolBar(this))
   , m_whatsNewDlg(new Dialogs::WhatsNewDialog(this))
   , m_connectSelectedNodesAction(new QAction(tr("Connect selected nodes"), this))
   , m_disconnectSelectedNodesAction(new QAction(tr("Disconnect selected nodes"), this))
@@ -135,23 +135,23 @@ void MainWindow::changeFont(const QFont & font)
 
 void MainWindow::connectToolBar()
 {
-    connect(m_toolBar, &ToolBar::gridVisibleChanged, this, &MainWindow::gridVisibleChanged);
+    connect(m_toolBar, &Menus::ToolBar::gridVisibleChanged, this, &MainWindow::gridVisibleChanged);
 
-    connect(m_toolBar, &ToolBar::arrowSizeChanged, this, &MainWindow::arrowSizeChanged);
+    connect(m_toolBar, &Menus::ToolBar::arrowSizeChanged, this, &MainWindow::arrowSizeChanged);
 
-    connect(m_toolBar, &ToolBar::cornerRadiusChanged, this, &MainWindow::cornerRadiusChanged);
+    connect(m_toolBar, &Menus::ToolBar::cornerRadiusChanged, this, &MainWindow::cornerRadiusChanged);
 
-    connect(m_toolBar, &ToolBar::edgeWidthChanged, this, &MainWindow::edgeWidthChanged);
+    connect(m_toolBar, &Menus::ToolBar::edgeWidthChanged, this, &MainWindow::edgeWidthChanged);
 
-    connect(m_toolBar, &ToolBar::fontChanged, this, &MainWindow::fontChanged);
+    connect(m_toolBar, &Menus::ToolBar::fontChanged, this, &MainWindow::fontChanged);
 
-    connect(m_toolBar, &ToolBar::gridSizeChanged, this, &MainWindow::gridSizeChanged);
+    connect(m_toolBar, &Menus::ToolBar::gridSizeChanged, this, &MainWindow::gridSizeChanged);
 
-    connect(m_toolBar, &ToolBar::gridVisibleChanged, this, &MainWindow::gridVisibleChanged);
+    connect(m_toolBar, &Menus::ToolBar::gridVisibleChanged, this, &MainWindow::gridVisibleChanged);
 
-    connect(m_toolBar, &ToolBar::searchTextChanged, this, &MainWindow::searchTextChanged);
+    connect(m_toolBar, &Menus::ToolBar::searchTextChanged, this, &MainWindow::searchTextChanged);
 
-    connect(m_toolBar, &ToolBar::textSizeChanged, this, &MainWindow::textSizeChanged);
+    connect(m_toolBar, &Menus::ToolBar::textSizeChanged, this, &MainWindow::textSizeChanged);
 }
 
 void MainWindow::createEditMenu()
@@ -266,10 +266,10 @@ void MainWindow::createFileMenu()
     });
 
     // Add "Recent Files"-menu
-    const auto recentFilesMenu = new RecentFilesMenu;
+    const auto recentFilesMenu = new Menus::RecentFilesMenu;
     const auto recentFilesMenuAction = fileMenu->addMenu(recentFilesMenu);
     recentFilesMenuAction->setText(tr("Recent &Files"));
-    connect(recentFilesMenu, &RecentFilesMenu::fileSelected, this, [=] {
+    connect(recentFilesMenu, &Menus::RecentFilesMenu::fileSelected, this, [=] {
         emit actionTriggered(StateMachine::Action::RecentFileSelected);
     });
 

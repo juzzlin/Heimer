@@ -18,6 +18,8 @@
 
 #include <functional>
 
+namespace Menus {
+
 RecentFilesMenu::RecentFilesMenu(QWidget * parent)
   : QMenu(parent)
 {
@@ -37,3 +39,5 @@ RecentFilesMenu::RecentFilesMenu(QWidget * parent)
         // clang-format on
     });
 }
+
+} // namespace Menus

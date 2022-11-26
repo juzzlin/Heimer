@@ -28,12 +28,12 @@ class QVBoxLayout;
 class QWidget;
 class QWidgetAction;
 
-namespace WidgetFactory {
+namespace Menus::WidgetFactory {
 
 std::pair<QWidget *, QWidgetAction *> buildToolBarWidgetAction(QWidget & widget, QWidget & parent);
 
 std::pair<QWidget *, QWidgetAction *> buildToolBarWidgetActionWithLabel(QString label, QWidget & widget, QWidget & parent);
 
-} // namespace WidgetFactory
+} // namespace Menus::WidgetFactory
 
 #endif // WIDGET_FACTORY_HPP

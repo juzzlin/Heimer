@@ -25,6 +25,8 @@
 
 #include <QShortcut>
 
+namespace Menus {
+
 MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & grid)
   : QMenu(parent)
   , m_copyNodeAction(new QAction(tr("Copy node"), this))
@@ -171,3 +173,5 @@ void MainContextMenu::setMode(const Mode & mode)
 
     m_removeImageAction->setEnabled(m_mediator.nodeHasImageAttached());
 }
+
+} // namespace Menus

@@ -23,6 +23,8 @@
 class Edge;
 class Mediator;
 
+namespace Menus {
+
 class EdgeContextMenu : public QMenu
 {
     Q_OBJECT
@@ -35,5 +37,7 @@ private:
 
     EdgeP m_selectedEdge = nullptr;
 };
+
+} // namespace Menus
 
 #endif // EDGE_CONTEXT_MENU_H

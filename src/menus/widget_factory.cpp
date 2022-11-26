@@ -24,7 +24,7 @@
 #include <QWidget>
 #include <QWidgetAction>
 
-namespace WidgetFactory {
+namespace Menus::WidgetFactory {
 
 std::pair<QWidget *, QWidgetAction *> buildToolBarWidgetAction(QWidget & widget, QWidget & parent)
 {
@@ -46,4 +46,4 @@ std::pair<QWidget *, QWidgetAction *> buildToolBarWidgetActionWithLabel(QString 
     return { dummyWidget, action };
 }
 
-} // namespace WidgetFactory
+} // namespace Menus::WidgetFactory

@@ -51,8 +51,8 @@ using juzzlin::L;
 
 EditorView::EditorView(Mediator & mediator)
   : m_mediator(mediator)
-  , m_edgeContextMenu(new EdgeContextMenu(this, m_mediator))
-  , m_mainContextMenu(new MainContextMenu(this, m_mediator, m_grid))
+  , m_edgeContextMenu(new Menus::EdgeContextMenu(this, m_mediator))
+  , m_mainContextMenu(new Menus::MainContextMenu(this, m_mediator, m_grid))
   , m_controlStrategy(std::make_unique<ControlStrategy>())
 {
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -64,8 +64,8 @@ EditorView::EditorView(Mediator & mediator)
     setRenderHint(QPainter::Antialiasing);
 
     // Forward signals from main context menu
-    connect(m_mainContextMenu, &MainContextMenu::actionTriggered, this, &EditorView::actionTriggered);
-    connect(m_mainContextMenu, &MainContextMenu::newNodeRequested, this, &EditorView::newNodeRequested);
+    connect(m_mainContextMenu, &Menus::MainContextMenu::actionTriggered, this, &EditorView::actionTriggered);
+    connect(m_mainContextMenu, &Menus::MainContextMenu::newNodeRequested, this, &EditorView::newNodeRequested);
 }
 
 const Grid & EditorView::grid() const
@@ -89,7 +89,7 @@ void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
     } else if (m_controlStrategy->backgroundDragInitiated(event)) {
         initiateBackgroundDrag();
     } else if (m_controlStrategy->secondaryButtonClicked(event)) {
-        openMainContextMenu(MainContextMenu::Mode::Background);
+        openMainContextMenu(Menus::MainContextMenu::Mode::Background);
     }
 }
 
@@ -178,7 +178,7 @@ void EditorView::handleSecondaryButtonClickOnNode(NodeR node)
 
     m_mediator.addNodeToSelectionGroup(node);
 
-    openMainContextMenu(MainContextMenu::Mode::Node);
+    openMainContextMenu(Menus::MainContextMenu::Mode::Node);
 }
 
 void EditorView::initiateBackgroundDrag()
@@ -389,7 +389,7 @@ void EditorView::openEdgeContextMenu()
     m_edgeContextMenu->exec(mapToGlobal(m_clickedPos));
 }
 
-void EditorView::openMainContextMenu(MainContextMenu::Mode mode)
+void EditorView::openMainContextMenu(Menus::MainContextMenu::Mode mode)
 {
     m_mainContextMenu->setMode(mode);
     m_mainContextMenu->exec(mapToGlobal(m_clickedPos));

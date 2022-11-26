@@ -33,7 +33,6 @@
 
 class ControlStrategy;
 class Edge;
-class EdgeContextMenu;
 class Node;
 class NodeHandle;
 class Mediator;
@@ -46,6 +45,10 @@ class QPaintEvent;
 class QWheelEvent;
 class QGraphicsSimpleTextItem;
 class QRubberBand;
+
+namespace Menus {
+class EdgeContextMenu;
+}
 
 class EditorView : public QGraphicsView
 {
@@ -134,7 +137,7 @@ private:
 
     void openEdgeContextMenu();
 
-    void openMainContextMenu(MainContextMenu::Mode mode);
+    void openMainContextMenu(Menus::MainContextMenu::Mode mode);
 
     void showDummyDragEdge(bool show);
 
@@ -188,9 +191,9 @@ private:
 
     QRubberBand * m_rubberBand = nullptr;
 
-    EdgeContextMenu * m_edgeContextMenu;
+    Menus::EdgeContextMenu * m_edgeContextMenu;
 
-    MainContextMenu * m_mainContextMenu;
+    Menus::MainContextMenu * m_mainContextMenu;
 
     bool m_gridVisible = false;
 

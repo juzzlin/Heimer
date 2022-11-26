@@ -20,6 +20,8 @@
 
 #include <cassert>
 
+namespace Menus {
+
 EdgeContextMenu::EdgeContextMenu(QWidget * parent, Mediator & mediator)
   : QMenu(parent)
   , m_mediator(mediator)
@@ -89,3 +91,5 @@ EdgeContextMenu::EdgeContextMenu(QWidget * parent, Mediator & mediator)
         });
     });
 }
+
+} // namespace Menus

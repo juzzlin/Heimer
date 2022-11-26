@@ -17,7 +17,7 @@
 
 #include "../constants.hpp"
 #include "../settings.hpp"
-#include "../widget_factory.hpp"
+#include "widget_factory.hpp"
 
 #include "simple_logger.hpp"
 

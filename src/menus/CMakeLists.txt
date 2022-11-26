@@ -9,5 +9,4 @@ set(LIB_SRC
 
 # Add the library
 add_library(${MENU_LIB_NAME} STATIC ${LIB_SRC})
-target_link_libraries(${MENU_LIB_NAME} Qt${QT_VERSION_MAJOR}::Widgets SimpleLogger_static)
-
+target_link_libraries(${MENU_LIB_NAME} Qt${QT_VERSION_MAJOR}::Widgets)

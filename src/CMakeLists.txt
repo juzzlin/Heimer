@@ -8,7 +8,7 @@ include_directories(contrib/Argengine/src)
 add_subdirectory(contrib/range-v3-0.11.0 EXCLUDE_FROM_ALL)
 include_directories(contrib/range-v3-0.11.0/include)
 
-set(DIALOGS_LIB_NAME DialogsLib)
+set(DIALOGS_LIB_NAME DialogLib)
 add_subdirectory(dialogs)
 
 set(IO_LIB_NAME IOLib)

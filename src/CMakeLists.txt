@@ -8,13 +8,13 @@ include_directories(contrib/Argengine/src)
 add_subdirectory(contrib/range-v3-0.11.0 EXCLUDE_FROM_ALL)
 include_directories(contrib/range-v3-0.11.0/include)
 
-set(DIALOGS_LIB_NAME DialogLib)
+set(DIALOG_LIB_NAME Dialogs)
 add_subdirectory(dialogs)
 
-set(IO_LIB_NAME IOLib)
+set(IO_LIB_NAME IO)
 add_subdirectory(io)
 
-set(MENU_LIB_NAME MenuLib)
+set(MENU_LIB_NAME Menus)
 add_subdirectory(menus)
 
 # Translation files in src/translations (without .ts)
@@ -28,7 +28,7 @@ endforeach()
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_BINARY_DIR}/data/translations)
 
 # Set sources for the lib
-set(LIB_SRC
+set(HEIMER_LIB_SRC
     application.cpp
     constants.hpp
     control_strategy.cpp
@@ -132,10 +132,10 @@ if(UNIX)
 endif()
 
 # Add the library
-add_library(${LIBRARY_NAME} STATIC ${LIB_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
-target_link_libraries(${LIBRARY_NAME} ${IO_LIB_NAME} ${DIALOGS_LIB_NAME} ${MENU_LIB_NAME} Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Network SimpleLogger_static Argengine_static)
+add_library(${HEIMER_LIB_NAME} STATIC ${HEIMER_LIB_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
+target_link_libraries(${HEIMER_LIB_NAME} ${IO_LIB_NAME} ${DIALOG_LIB_NAME} ${MENU_LIB_NAME} Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Network SimpleLogger_static Argengine_static)
 
 # Add the executable
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 add_executable(${BINARY_NAME} WIN32 ${APP_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
-target_link_libraries(${BINARY_NAME} Qt${QT_VERSION_MAJOR}::Widgets ${LIBRARY_NAME})
+target_link_libraries(${BINARY_NAME} Qt${QT_VERSION_MAJOR}::Widgets ${HEIMER_LIB_NAME})

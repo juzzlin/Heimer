@@ -16,6 +16,6 @@ set(LIB_SRC
 )
 
 # Add the library
-add_library(${DIALOGS_LIB_NAME} STATIC ${LIB_SRC})
-target_link_libraries(${DIALOGS_LIB_NAME} Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Svg)
+add_library(${DIALOG_LIB_NAME} STATIC ${LIB_SRC})
+target_link_libraries(${DIALOG_LIB_NAME} Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Svg)
 

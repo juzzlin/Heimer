@@ -18,9 +18,10 @@
 
 #include "constants.hpp"
 #include "grid.hpp"
-#include "main_context_menu.hpp"
 #include "state_machine.hpp"
 #include "types.hpp"
+
+#include "menus/main_context_menu.hpp"
 
 #include <QColor>
 #include <QGraphicsView>

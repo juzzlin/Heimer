@@ -15,12 +15,13 @@
 
 #include "main_context_menu.hpp"
 
-#include "contrib/SimpleLogger/src/simple_logger.hpp"
-#include "grid.hpp"
-#include "mediator.hpp"
-#include "mouse_action.hpp"
-#include "node.hpp"
-#include "node_action.hpp"
+#include "../grid.hpp"
+#include "../mediator.hpp"
+#include "../mouse_action.hpp"
+#include "../node.hpp"
+#include "../node_action.hpp"
+
+#include "simple_logger.hpp"
 
 #include <QShortcut>
 

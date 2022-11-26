@@ -15,8 +15,8 @@
 
 #include "edge_context_menu.hpp"
 
-#include "edge.hpp"
-#include "mediator.hpp"
+#include "../edge.hpp"
+#include "../mediator.hpp"
 
 #include <cassert>
 

@@ -19,15 +19,17 @@
 #include "mediator.hpp"
 #include "node_action.hpp"
 #include "recent_files_manager.hpp"
-#include "recent_files_menu.hpp"
 #include "settings.hpp"
-#include "simple_logger.hpp"
-#include "tool_bar.hpp"
 #include "widget_factory.hpp"
+
+#include "simple_logger.hpp"
 
 #include "dialogs/about_dialog.hpp"
 #include "dialogs/settings_dialog.hpp"
 #include "dialogs/whats_new_dialog.hpp"
+
+#include "menus/recent_files_menu.hpp"
+#include "menus/tool_bar.hpp"
 
 #include <QAction>
 #include <QApplication>

@@ -12,6 +12,7 @@ set(LIB_SRC
     settings_dialog.cpp
     svg_export_dialog.cpp
     whats_new_dialog.cpp
+    widget_factory.cpp
 )
 
 # Add the library

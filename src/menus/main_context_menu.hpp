@@ -21,8 +21,8 @@
 
 #include <QMenu>
 
-#include "state_machine.hpp"
-#include "types.hpp"
+#include "../state_machine.hpp"
+#include "../types.hpp"
 
 class Grid;
 class Node;

@@ -14,7 +14,7 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "recent_files_menu.hpp"
-#include "recent_files_manager.hpp"
+#include "../recent_files_manager.hpp"
 
 #include <functional>
 

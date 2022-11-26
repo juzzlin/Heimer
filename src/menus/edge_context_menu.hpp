@@ -18,7 +18,7 @@
 
 #include <QMenu>
 
-#include "types.hpp"
+#include "../types.hpp"
 
 class Edge;
 class Mediator;

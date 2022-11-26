@@ -15,10 +15,11 @@
 
 #include "tool_bar.hpp"
 
-#include "constants.hpp"
-#include "settings.hpp"
+#include "../constants.hpp"
+#include "../settings.hpp"
+#include "../widget_factory.hpp"
+
 #include "simple_logger.hpp"
-#include "widget_factory.hpp"
 
 #include <QCheckBox>
 #include <QDoubleSpinBox>

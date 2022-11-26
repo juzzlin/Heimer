@@ -14,6 +14,9 @@ add_subdirectory(dialogs)
 set(IO_LIB_NAME IOLib)
 add_subdirectory(io)
 
+set(MENU_LIB_NAME MenuLib)
+add_subdirectory(menus)
+
 # Translation files in src/translations (without .ts)
 set(TS heimer_de heimer_en heimer_es heimer_fi heimer_fr heimer_it heimer_nl heimer_zh)
 set(TS_FILES)
@@ -31,7 +34,6 @@ set(LIB_SRC
     control_strategy.cpp
     copy_context.cpp
     edge.cpp
-    edge_context_menu.cpp
     edge_dot.cpp
     edge_model.hpp
     edge_point.hpp
@@ -49,7 +51,6 @@ set(LIB_SRC
     layers.hpp
     layout_optimizer.cpp
     magic_zoom.cpp
-    main_context_menu.cpp
     main_window.cpp
     mediator.cpp
     mind_map_data.cpp
@@ -60,7 +61,6 @@ set(LIB_SRC
     node_handle.cpp
     node_model.hpp
     recent_files_manager.cpp
-    recent_files_menu.cpp
     selection_group.cpp
     settings.cpp
     settings_proxy.cpp
@@ -68,14 +68,12 @@ set(LIB_SRC
     state_machine.cpp
     test_mode.cpp
     text_edit.cpp
-    tool_bar.cpp
     types.hpp
     undo_stack.cpp
     user_exception.hpp
     utils.cpp
     version.hpp
     version_checker.cpp
-    widget_factory.cpp
 )
 
 # Set sources for the app
@@ -135,7 +133,7 @@ endif()
 
 # Add the library
 add_library(${LIBRARY_NAME} STATIC ${LIB_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
-target_link_libraries(${LIBRARY_NAME} ${IO_LIB_NAME} ${DIALOGS_LIB_NAME} Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Network SimpleLogger_static Argengine_static)
+target_link_libraries(${LIBRARY_NAME} ${IO_LIB_NAME} ${DIALOGS_LIB_NAME} ${MENU_LIB_NAME} Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Network SimpleLogger_static Argengine_static)
 
 # Add the executable
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})

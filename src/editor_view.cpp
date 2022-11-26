@@ -29,7 +29,6 @@
 #include "constants.hpp"
 #include "control_strategy.hpp"
 #include "edge.hpp"
-#include "edge_context_menu.hpp"
 #include "edge_text_edit.hpp"
 #include "graphics_factory.hpp"
 #include "item_filter.hpp"
@@ -40,9 +39,10 @@
 #include "node.hpp"
 #include "node_action.hpp"
 #include "node_handle.hpp"
+
 #include "simple_logger.hpp"
 
-#include "contrib/SimpleLogger/src/simple_logger.hpp"
+#include "menus/edge_context_menu.hpp"
 
 #include <cassert>
 #include <cstdlib>

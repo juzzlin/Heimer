@@ -31,9 +31,12 @@ class ImageManager;
 class MainWindow;
 class Mediator;
 class Node;
+class VersionChecker;
+
+namespace Dialogs {
 class PngExportDialog;
 class SvgExportDialog;
-class VersionChecker;
+} // namespace Dialogs
 
 class Application : public QObject
 {
@@ -113,9 +116,9 @@ private:
 
     EditorView * m_editorView = nullptr;
 
-    std::unique_ptr<PngExportDialog> m_pngExportDialog;
+    std::unique_ptr<Dialogs::PngExportDialog> m_pngExportDialog;
 
-    std::unique_ptr<SvgExportDialog> m_svgExportDialog;
+    std::unique_ptr<Dialogs::SvgExportDialog> m_svgExportDialog;
 
     std::unique_ptr<VersionChecker> m_versionChecker;
 };

@@ -32,6 +32,8 @@
 #include <QTimer>
 #include <QVBoxLayout>
 
+namespace Dialogs {
+
 SvgExportDialog::SvgExportDialog(QWidget & parent)
   : QDialog(&parent)
 {
@@ -125,3 +127,5 @@ void SvgExportDialog::initWidgets()
 
     setLayout(mainLayout);
 }
+
+} // namespace Dialogs

@@ -18,6 +18,8 @@
 
 #include <QDialog>
 
+namespace Dialogs {
+
 //! Dialog that shows the latest changes from CHANGELOG.
 class WhatsNewDialog : public QDialog
 {
@@ -30,5 +32,7 @@ public:
 private:
     void initWidgets();
 };
+
+} // namespace Dialogs
 
 #endif // WHATS_NEW_DIALOG_HPP

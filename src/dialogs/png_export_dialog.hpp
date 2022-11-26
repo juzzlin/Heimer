@@ -25,6 +25,8 @@ class QProgressBar;
 class QPushButton;
 class QSpinBox;
 
+namespace Dialogs {
+
 class PngExportDialog : public QDialog
 {
     Q_OBJECT
@@ -72,5 +74,7 @@ private:
 
     float m_aspectRatio = 1.0;
 };
+
+} // namespace Dialogs
 
 #endif // PNG_EXPORT_DIALOG_HPP

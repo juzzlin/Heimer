@@ -30,6 +30,7 @@
 namespace Dialogs {
 class AboutDialog;
 class SettingsDialog;
+class WhatsNewDialog;
 } // namespace Dialogs
 
 class EditorData;
@@ -46,7 +47,6 @@ class QSpinBox;
 class QTextEdit;
 class QWidgetAction;
 class ToolBar;
-class WhatsNewDialog;
 struct ShadowEffectParams;
 
 class MainWindow : public QMainWindow
@@ -170,7 +170,7 @@ private:
 
     ToolBar * m_toolBar;
 
-    WhatsNewDialog * m_whatsNewDlg;
+    Dialogs::WhatsNewDialog * m_whatsNewDlg;
 
     QAction * m_connectSelectedNodesAction = nullptr;
 

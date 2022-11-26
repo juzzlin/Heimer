@@ -147,8 +147,8 @@ Application::Application(int & argc, char ** argv)
     m_mediator = std::make_unique<Mediator>(*m_mainWindow);
     m_editorData = std::make_unique<EditorData>();
     m_editorView = new EditorView(*m_mediator);
-    m_pngExportDialog = std::make_unique<PngExportDialog>(*m_mainWindow);
-    m_svgExportDialog = std::make_unique<SvgExportDialog>(*m_mainWindow);
+    m_pngExportDialog = std::make_unique<Dialogs::PngExportDialog>(*m_mainWindow);
+    m_svgExportDialog = std::make_unique<Dialogs::SvgExportDialog>(*m_mainWindow);
 
     m_mainWindow->setMediator(m_mediator);
     m_stateMachine->setMediator(m_mediator);
@@ -168,11 +168,11 @@ Application::Application(int & argc, char ** argv)
         m_mainWindow->enableSave(isModified || m_mediator->canBeSaved());
     });
 
-    connect(m_pngExportDialog.get(), &PngExportDialog::pngExportRequested, m_mediator.get(), &Mediator::exportToPng);
-    connect(m_svgExportDialog.get(), &SvgExportDialog::svgExportRequested, m_mediator.get(), &Mediator::exportToSvg);
+    connect(m_pngExportDialog.get(), &Dialogs::PngExportDialog::pngExportRequested, m_mediator.get(), &Mediator::exportToPng);
+    connect(m_svgExportDialog.get(), &Dialogs::SvgExportDialog::svgExportRequested, m_mediator.get(), &Mediator::exportToSvg);
 
-    connect(m_mediator.get(), &Mediator::pngExportFinished, m_pngExportDialog.get(), &PngExportDialog::finishExport);
-    connect(m_mediator.get(), &Mediator::svgExportFinished, m_svgExportDialog.get(), &SvgExportDialog::finishExport);
+    connect(m_mediator.get(), &Mediator::pngExportFinished, m_pngExportDialog.get(), &Dialogs::PngExportDialog::finishExport);
+    connect(m_mediator.get(), &Mediator::svgExportFinished, m_svgExportDialog.get(), &Dialogs::SvgExportDialog::finishExport);
 
     connect(m_mainWindow.get(), &MainWindow::arrowSizeChanged, m_mediator.get(), &Mediator::setArrowSize);
     connect(m_mainWindow.get(), &MainWindow::autosaveEnabled, m_mediator.get(), &Mediator::enableAutosave);
@@ -432,8 +432,8 @@ void Application::showSvgExportDialog()
 void Application::showLayoutOptimizationDialog()
 {
     LayoutOptimizer layoutOptimizer { m_mediator->mindMapData(), m_editorView->grid() };
-    LayoutOptimizationDialog dialog { *m_mainWindow, *m_mediator->mindMapData(), layoutOptimizer };
-    connect(&dialog, &LayoutOptimizationDialog::undoPointRequested, m_mediator.get(), &Mediator::saveUndoPoint);
+    Dialogs::LayoutOptimizationDialog dialog { *m_mainWindow, *m_mediator->mindMapData(), layoutOptimizer };
+    connect(&dialog, &Dialogs::LayoutOptimizationDialog::undoPointRequested, m_mediator.get(), &Mediator::saveUndoPoint);
 
     if (dialog.exec() == QDialog::Accepted) {
         m_mediator->zoomToFit();

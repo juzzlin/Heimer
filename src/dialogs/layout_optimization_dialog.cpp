@@ -32,6 +32,8 @@
 #include <QTimer>
 #include <QVBoxLayout>
 
+namespace Dialogs {
+
 LayoutOptimizationDialog::LayoutOptimizationDialog(QWidget & parent, MindMapData & mindMapData, LayoutOptimizer & layoutOptimizer)
   : QDialog(&parent)
   , m_mindMapData(mindMapData)
@@ -125,3 +127,5 @@ void LayoutOptimizationDialog::initWidgets(const MindMapData & mindMapData)
 
     setLayout(mainLayout);
 }
+
+} // namespace Dialogs

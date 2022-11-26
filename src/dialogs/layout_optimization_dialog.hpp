@@ -23,6 +23,8 @@ class MindMapData;
 class QDoubleSpinBox;
 class QProgressBar;
 
+namespace Dialogs {
+
 class LayoutOptimizationDialog : public QDialog
 {
     Q_OBJECT
@@ -54,5 +56,7 @@ private:
 
     QProgressBar * m_progressBar = nullptr;
 };
+
+} // namespace Dialogs
 
 #endif // LAYOUT_OPTIMIZATION_DIALOG_HPP

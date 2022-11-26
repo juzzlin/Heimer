@@ -33,6 +33,8 @@
 #include <QTimer>
 #include <QVBoxLayout>
 
+namespace Dialogs {
+
 PngExportDialog::PngExportDialog(QWidget & parent)
   : QDialog(&parent)
 {
@@ -199,3 +201,5 @@ void PngExportDialog::initWidgets()
 
     setLayout(mainLayout);
 }
+
+} // namespace Dialogs

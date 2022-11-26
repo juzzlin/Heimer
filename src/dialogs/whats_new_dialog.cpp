@@ -23,6 +23,8 @@
 #include <QTextEdit>
 #include <QVBoxLayout>
 
+namespace Dialogs {
+
 WhatsNewDialog::WhatsNewDialog(QWidget * parent)
   : QDialog(parent)
 {
@@ -71,3 +73,5 @@ void WhatsNewDialog::initWidgets()
 
     vLayout->addWidget(buttonBox);
 }
+
+} // namespace Dialogs

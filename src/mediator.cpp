@@ -568,9 +568,13 @@ bool Mediator::openMindMap(QString fileName)
         connectGraphToImageManager();
         zoomToFit();
     } catch (const IO::FileException & e) {
+        // Initialize a new mind map to avoid an undefined state.
+        initializeNewMindMap();
         m_mainWindow.showErrorDialog(e.message());
         return false;
     } catch (const std::runtime_error & e) {
+        // Initialize a new mind map to avoid an undefined state.
+        initializeNewMindMap();
         m_mainWindow.showErrorDialog(e.what());
         return false;
     }

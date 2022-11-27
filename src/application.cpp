@@ -25,6 +25,7 @@
 #include "node_action.hpp"
 #include "recent_files_manager.hpp"
 #include "settings.hpp"
+#include "settings_proxy.hpp"
 #include "state_machine.hpp"
 #include "user_exception.hpp"
 #include "version_checker.hpp"
@@ -191,8 +192,15 @@ Application::Application(int & argc, char ** argv)
     m_mainWindow->initialize();
     m_mainWindow->appear();
 
+    // Open mind map according to CLI argument (if exists) or autoload the recent mind map (if enabled)
     if (!m_mindMapFile.isEmpty()) {
         QTimer::singleShot(0, this, &Application::openArgMindMap);
+    } else if (SettingsProxy::instance().autoload()) {
+        if (const auto recentFile = RecentFilesManager::instance().recentFile(); recentFile.has_value()) {
+            // Exploit same code as used to open arg mind map
+            m_mindMapFile = recentFile.value();
+            QTimer::singleShot(0, this, &Application::openArgMindMap);
+        }
     }
 
     connect(m_versionChecker.get(), &VersionChecker::newVersionFound, this, [this](Version version, QString downloadUrl) {

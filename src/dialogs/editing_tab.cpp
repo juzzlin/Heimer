@@ -36,6 +36,7 @@ void EditingTab::apply()
     SettingsProxy::instance().setSelectNodeGroupByIntersection(m_selectNodeGroupByIntersectionCheckBox->isChecked());
 
     SettingsProxy::instance().setAutosave(m_autosaveCheckBox->isChecked());
+    SettingsProxy::instance().setAutoload(m_autoloadCheckBox->isChecked());
 }
 
 void EditingTab::initWidgets()
@@ -53,6 +54,13 @@ void EditingTab::initWidgets()
     m_autosaveCheckBox = new QCheckBox(tr("Enable autosave"));
     autosaveGroup.second->addWidget(m_autosaveCheckBox);
 
+    const auto autoloadGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Autoload"), *mainLayout);
+    const auto autoloadHelp = new QLabel(tr("Autoload feature will automatically load your recent mind map on application start."));
+    autoloadHelp->setWordWrap(true);
+    autoloadGroup.second->addWidget(autoloadHelp);
+    m_autoloadCheckBox = new QCheckBox(tr("Enable autoload"));
+    autoloadGroup.second->addWidget(m_autoloadCheckBox);
+
     setLayout(mainLayout);
 
     setActiveSettings();
@@ -67,6 +75,8 @@ void EditingTab::setActiveSettings()
     m_selectNodeGroupByIntersectionCheckBox->setChecked(SettingsProxy::instance().selectNodeGroupByIntersection());
 
     m_autosaveCheckBox->setChecked(SettingsProxy::instance().autosave());
+
+    m_autoloadCheckBox->setChecked(SettingsProxy::instance().autoload());
 }
 
 } // namespace Dialogs

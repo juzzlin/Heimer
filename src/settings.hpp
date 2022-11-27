@@ -24,6 +24,10 @@ namespace Settings {
 
 namespace V1 {
 
+bool loadAutoload();
+
+void saveAutoload(bool autoload);
+
 bool loadAutosave();
 
 void saveAutosave(bool autosave);

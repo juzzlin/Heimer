@@ -19,7 +19,8 @@
 std::unique_ptr<SettingsProxy> SettingsProxy::m_instance;
 
 SettingsProxy::SettingsProxy()
-  : m_autosave(Settings::V1::loadAutosave())
+  : m_autoload(Settings::V1::loadAutoload())
+  , m_autosave(Settings::V1::loadAutosave())
   , m_backgroundColor(Settings::V2::getColor(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::BACKGROUND_COLOR_SETTINGS_KEY, Constants::MindMap::Defaults::BACKGROUND_COLOR))
   , m_edgeColor(Settings::V2::getColor(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::EDGE_COLOR_SETTINGS_KEY, Constants::MindMap::Defaults::EDGE_COLOR))
   , m_gridColor(Settings::V2::getColor(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::GRID_COLOR_SETTINGS_KEY, Constants::MindMap::Defaults::GRID_COLOR))
@@ -43,6 +44,19 @@ SettingsProxy & SettingsProxy::instance()
         SettingsProxy::m_instance = std::make_unique<SettingsProxy>();
     }
     return *SettingsProxy::m_instance;
+}
+
+bool SettingsProxy::autoload() const
+{
+    return m_autoload;
+}
+
+void SettingsProxy::setAutoload(bool autoload)
+{
+    if (m_autoload != autoload) {
+        m_autoload = autoload;
+        Settings::V1::saveAutoload(autoload);
+    }
 }
 
 bool SettingsProxy::autosave() const

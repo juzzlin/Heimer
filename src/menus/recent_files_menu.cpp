@@ -28,7 +28,7 @@ RecentFilesMenu::RecentFilesMenu(QWidget * parent)
             removeAction(action);
         }
         // clang-format off
-        for (auto && filePath : RecentFilesManager::instance().getRecentFiles()) {
+        for (auto && filePath : RecentFilesManager::instance().recentFiles()) {
             const auto action = addAction(filePath);
             const auto handler = std::bind([=](QString filePath) {
                 RecentFilesManager::instance().setSelectedFile(filePath);

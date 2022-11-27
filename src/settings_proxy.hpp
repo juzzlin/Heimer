@@ -29,6 +29,10 @@ public:
 
     static SettingsProxy & instance();
 
+    bool autoload() const;
+
+    void setAutoload(bool autoload);
+
     bool autosave() const;
 
     void setAutosave(bool autosave);
@@ -70,6 +74,8 @@ public:
     void setShadowEffect(const ShadowEffectParams & params);
 
 private:
+    bool m_autoload = false;
+
     bool m_autosave = false;
 
     QColor m_backgroundColor;

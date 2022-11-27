@@ -32,6 +32,8 @@ const auto settingsGroupMainWindow = "MainWindow";
 
 const auto recentImagePathKey = "recentImagePath";
 
+const auto autoloadKey = "autoload";
+
 const auto autosaveKey = "autosave";
 
 const auto autoSnapStateKey = "autoSnap";
@@ -57,6 +59,23 @@ const auto windowSizeKey = "size";
 namespace Settings {
 
 namespace V1 {
+
+bool loadAutoload()
+{
+    QSettings settings;
+    settings.beginGroup(settingsGroupEditing);
+    const auto autoload = settings.value(autoloadKey, false).toBool();
+    settings.endGroup();
+    return autoload;
+}
+
+void saveAutoload(bool autoload)
+{
+    QSettings settings;
+    settings.beginGroup(settingsGroupEditing);
+    settings.setValue(autoloadKey, autoload);
+    settings.endGroup();
+}
 
 bool loadAutosave()
 {

@@ -5,6 +5,9 @@ Release date:
 
 New features:
 
+* Fix GitHub Issue #229: Add option to automatically open the last used file on application start
+  - Autoload can be now enabled in edit settings
+
 Bug fixes:
 
 Other:

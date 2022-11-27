@@ -36,6 +36,9 @@ void EditingTab::apply()
     SettingsProxy::instance().setSelectNodeGroupByIntersection(m_selectNodeGroupByIntersectionCheckBox->isChecked());
 
     SettingsProxy::instance().setAutosave(m_autosaveCheckBox->isChecked());
+
+    emit autosaveEnabled(m_autosaveCheckBox->isChecked());
+
     SettingsProxy::instance().setAutoload(m_autoloadCheckBox->isChecked());
 }
 
@@ -64,10 +67,6 @@ void EditingTab::initWidgets()
     setLayout(mainLayout);
 
     setActiveSettings();
-
-    connect(m_autosaveCheckBox, &QCheckBox::stateChanged, this, [=](auto state) {
-        emit autosaveEnabled(state == Qt::CheckState::Checked);
-    });
 }
 
 void EditingTab::setActiveSettings()

@@ -260,8 +260,8 @@ void Mediator::deleteEdge(EdgeR edge)
 
 void Mediator::enableAutosave(bool enable)
 {
-    if (enable) {
-        L().info() << "Try saving mind map due to autosave enabled";
+    if (enable && m_editorData->isModified()) {
+        L().info() << "Try saving modified mind map due to autosave enabled";
         m_editorData->saveMindMap();
     }
 }

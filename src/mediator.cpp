@@ -260,9 +260,8 @@ void Mediator::deleteEdge(EdgeR edge)
 
 void Mediator::enableAutosave(bool enable)
 {
-    if (enable && m_editorData->isModified()) {
-        L().info() << "Try saving modified mind map due to autosave enabled";
-        m_editorData->saveMindMap();
+    if (enable) {
+        m_editorData->requestAutosave(true);
     }
 }
 
@@ -607,12 +606,12 @@ void Mediator::toggleNodeInSelectionGroup(NodeR node, bool updateNodeConnectionA
 
 bool Mediator::saveMindMapAs(QString fileName)
 {
-    return m_editorData->saveMindMapAs(fileName);
+    return m_editorData->saveMindMapAs(fileName, true);
 }
 
 bool Mediator::saveMindMap()
 {
-    return m_editorData->saveMindMap();
+    return m_editorData->saveMindMap(true);
 }
 
 void Mediator::saveUndoPoint()

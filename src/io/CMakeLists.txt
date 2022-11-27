@@ -1,6 +1,7 @@
 # Set sources for the lib
 set(LIB_SRC
     alz_file_io.cpp
+    alz_file_io_worker.cpp
     file_exception.hpp
     file_io.hpp
     xml_reader.cpp

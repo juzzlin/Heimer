@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2022 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,36 +13,36 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "mind_map_data_base.hpp"
+#ifndef ALZ_FILE_IO_WORKER_HPP
+#define ALZ_FILE_IO_WORKER_HPP
 
-MindMapDataBase::MindMapDataBase(QString name)
-  : m_name(name)
+#include <QObject>
+#include <QString>
+
+#include <memory>
+
+#include "../mind_map_data.hpp"
+
+namespace IO {
+
+class AlzFileIOWorker : public QObject
 {
-}
+    Q_OBJECT
 
-MindMapDataBase::MindMapDataBase(const MindMapDataBase & other)
-  : m_name(other.m_name)
-{
-}
+public:
+    ~AlzFileIOWorker();
 
-QString MindMapDataBase::name() const
-{
-    return m_name;
-}
+public slots:
 
-unsigned int MindMapDataBase::index() const
-{
-    return m_index;
-}
+    std::unique_ptr<MindMapData> fromFile(QString path) const;
 
-void MindMapDataBase::setName(QString name)
-{
-    m_name = name;
-}
+    bool toFile(std::shared_ptr<MindMapData> mindMapData, QString path) const;
 
-void MindMapDataBase::setIndex(unsigned int index)
-{
-    m_index = index;
-}
+    std::unique_ptr<MindMapData> fromXml(QString xml) const;
 
-MindMapDataBase::~MindMapDataBase() = default;
+    QString toXml(std::shared_ptr<MindMapData> mindMapData) const;
+};
+
+} // namespace IO
+
+#endif // ALZ_FILE_IO_WORKER_HPP

@@ -27,9 +27,11 @@ namespace IO {
 class FileIO
 {
 public:
+    virtual void finish() = 0;
+
     virtual std::unique_ptr<MindMapData> fromFile(QString path) const = 0;
 
-    virtual bool toFile(MindMapData & mindMapData, QString path) const = 0;
+    virtual bool toFile(std::shared_ptr<MindMapData> mindMapData, QString path, bool async) const = 0;
 };
 
 } // namespace IO

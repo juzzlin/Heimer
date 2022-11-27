@@ -22,8 +22,6 @@
 
 #include <memory>
 
-ImageManager MindMapData::m_imageManager {};
-
 MindMapData::MindMapData(QString name)
   : MindMapDataBase(name)
   , m_backgroundColor(SettingsProxy::instance().backgroundColor())
@@ -44,6 +42,7 @@ MindMapData::MindMapData(const MindMapData & other)
   , m_font(other.m_font)
   , m_textSize(other.m_textSize)
   , m_cornerRadius(other.m_cornerRadius)
+  , m_imageManager(other.m_imageManager)
 {
     copyGraph(other);
 }

@@ -8,6 +8,9 @@ New features:
 * Fix GitHub Issue #229: Add option to automatically open the last used file on application start
   - Autoload can be now enabled in edit settings
 
+* Implement asynchronous file save for autosave
+  - Fixes stuttering user experience on large files
+
 Bug fixes:
 
 Other:

@@ -18,18 +18,36 @@
 
 #include "file_io.hpp"
 
+#include <memory>
+
+class MindMapData;
+class QThread;
+
 namespace IO {
+
+class AlzFileIOWorker;
 
 class AlzFileIO : public FileIO
 {
 public:
+    AlzFileIO();
+
+    ~AlzFileIO();
+
+    void finish() override;
+
     std::unique_ptr<MindMapData> fromFile(QString path) const override;
 
-    bool toFile(MindMapData & mindMapData, QString path) const override;
+    bool toFile(std::shared_ptr<MindMapData> mindMapData, QString path, bool async) const override;
 
     std::unique_ptr<MindMapData> fromXml(QString xml) const;
 
-    QString toXml(MindMapData & mindMapData) const;
+    QString toXml(std::shared_ptr<MindMapData> mindMapData) const;
+
+private:
+    std::unique_ptr<AlzFileIOWorker> m_worker;
+
+    std::unique_ptr<QThread> m_workerThread;
 };
 
 } // namespace IO

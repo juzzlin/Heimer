@@ -28,165 +28,165 @@ AlzFileIOTest::AlzFileIOTest()
 
 void AlzFileIOTest::testEmptyDesign()
 {
-    MindMapData outData;
+    const auto outData = std::make_shared<MindMapData>();
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(QString(inData->version()), QString(VERSION));
 }
 
 void AlzFileIOTest::testArrowSize()
 {
-    MindMapData outData;
-    outData.setArrowSize(42.42);
+    const auto outData = std::make_shared<MindMapData>();
+    outData->setArrowSize(42.42);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
-    QCOMPARE(inData->arrowSize(), outData.arrowSize());
+    QCOMPARE(inData->arrowSize(), outData->arrowSize());
 }
 
 void AlzFileIOTest::testBackgroundColor()
 {
-    MindMapData outData;
-    outData.setBackgroundColor(QColor(1, 2, 3));
+    const auto outData = std::make_shared<MindMapData>();
+    outData->setBackgroundColor(QColor(1, 2, 3));
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
-    QCOMPARE(inData->backgroundColor(), outData.backgroundColor());
+    QCOMPARE(inData->backgroundColor(), outData->backgroundColor());
 }
 
 void AlzFileIOTest::testCornerRadius()
 {
-    MindMapData outData;
-    outData.setCornerRadius(Constants::Node::Defaults::CORNER_RADIUS + 1);
+    const auto outData = std::make_shared<MindMapData>();
+    outData->setCornerRadius(Constants::Node::Defaults::CORNER_RADIUS + 1);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
-    QCOMPARE(inData->cornerRadius(), outData.cornerRadius());
+    QCOMPARE(inData->cornerRadius(), outData->cornerRadius());
 }
 
 void AlzFileIOTest::testEdgeColor()
 {
-    MindMapData outData;
-    outData.setEdgeColor(QColor(1, 2, 3));
+    const auto outData = std::make_shared<MindMapData>();
+    outData->setEdgeColor(QColor(1, 2, 3));
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
-    QCOMPARE(inData->edgeColor(), outData.edgeColor());
+    QCOMPARE(inData->edgeColor(), outData->edgeColor());
 }
 
 void AlzFileIOTest::testEdgeWidth()
 {
-    MindMapData outData;
-    outData.setEdgeWidth(666.42);
+    const auto outData = std::make_shared<MindMapData>();
+    outData->setEdgeWidth(666.42);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
-    QCOMPARE(inData->edgeWidth(), outData.edgeWidth());
+    QCOMPARE(inData->edgeWidth(), outData->edgeWidth());
 }
 
 void AlzFileIOTest::testFontItalic()
 {
-    MindMapData outData;
+    const auto outData = std::make_shared<MindMapData>();
     QFont font("Foobar", 42, 666, true);
-    outData.changeFont(font);
-    outData.setTextSize(24);
+    outData->changeFont(font);
+    outData->setTextSize(24);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
-    QCOMPARE(inData->font().family(), outData.font().family());
+    QCOMPARE(inData->font().family(), outData->font().family());
     QCOMPARE(inData->font().italic(), true);
-    QCOMPARE(inData->font().weight(), outData.font().weight());
-    QCOMPARE(inData->textSize(), outData.textSize()); // Font shouldn't change text size
+    QCOMPARE(inData->font().weight(), outData->font().weight());
+    QCOMPARE(inData->textSize(), outData->textSize()); // Font shouldn't change text size
 }
 
 void AlzFileIOTest::testFontNonItalic()
 {
-    MindMapData outData;
+    const auto outData = std::make_shared<MindMapData>();
     QFont font;
-    outData.changeFont(font);
+    outData->changeFont(font);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().italic(), false);
 }
 
 void AlzFileIOTest::testFontBold()
 {
-    MindMapData outData;
+    const auto outData = std::make_shared<MindMapData>();
     QFont font;
     font.setBold(true);
-    outData.changeFont(font);
+    outData->changeFont(font);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().bold(), true);
 }
 
 void AlzFileIOTest::testFontNonBold()
 {
-    MindMapData outData;
+    const auto outData = std::make_shared<MindMapData>();
     QFont font;
-    outData.changeFont(font);
+    outData->changeFont(font);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().bold(), false);
 }
 
 void AlzFileIOTest::testFontOverline()
 {
-    MindMapData outData;
+    const auto outData = std::make_shared<MindMapData>();
     QFont font;
     font.setOverline(true);
-    outData.changeFont(font);
+    outData->changeFont(font);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().overline(), true);
 }
 
 void AlzFileIOTest::testFontNonOverline()
 {
-    MindMapData outData;
+    const auto outData = std::make_shared<MindMapData>();
     QFont font;
-    outData.changeFont(font);
+    outData->changeFont(font);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().overline(), false);
 }
 
 void AlzFileIOTest::testFontStrikeOut()
 {
-    MindMapData outData;
+    const auto outData = std::make_shared<MindMapData>();
     QFont font;
     font.setStrikeOut(true);
-    outData.changeFont(font);
+    outData->changeFont(font);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().strikeOut(), true);
 }
 
 void AlzFileIOTest::testFontNonStrikeOut()
 {
-    MindMapData outData;
+    const auto outData = std::make_shared<MindMapData>();
     QFont font;
-    outData.changeFont(font);
+    outData->changeFont(font);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().strikeOut(), false);
 }
 
 void AlzFileIOTest::testFontUnderline()
 {
-    MindMapData outData;
+    const auto outData = std::make_shared<MindMapData>();
     QFont font("Foobar");
     font.setUnderline(true);
-    outData.changeFont(font);
+    outData->changeFont(font);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().underline(), true);
 }
 
 void AlzFileIOTest::testFontNonUnderline()
 {
-    MindMapData outData;
+    const auto outData = std::make_shared<MindMapData>();
     QFont font("Foobar");
-    outData.changeFont(font);
+    outData->changeFont(font);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().underline(), false);
 }
 
 void AlzFileIOTest::testGridColor()
 {
-    MindMapData outData;
-    outData.setGridColor(QColor(1, 2, 3));
+    const auto outData = std::make_shared<MindMapData>();
+    outData->setGridColor(QColor(1, 2, 3));
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
-    QCOMPARE(inData->gridColor(), outData.gridColor());
+    QCOMPARE(inData->gridColor(), outData->gridColor());
 }
 
 void AlzFileIOTest::testLayoutOptimizer()
 {
-    MindMapData outData;
-    outData.setAspectRatio(3.14);
-    outData.setMinEdgeLength(42.666);
+    const auto outData = std::make_shared<MindMapData>();
+    outData->setAspectRatio(3.14);
+    outData->setMinEdgeLength(42.666);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
-    QCOMPARE(inData->aspectRatio(), outData.aspectRatio());
-    QCOMPARE(inData->minEdgeLength(), outData.minEdgeLength());
+    QCOMPARE(inData->aspectRatio(), outData->aspectRatio());
+    QCOMPARE(inData->minEdgeLength(), outData->minEdgeLength());
 }
 
 void AlzFileIOTest::testLoadJpg()
@@ -235,62 +235,60 @@ void AlzFileIOTest::testLoadPng()
 
 void AlzFileIOTest::testNotUsedImages()
 {
-    MindMapData outData;
-    outData.imageManager().addImage(Image {});
-    outData.imageManager().addImage(Image {});
+    const auto outData = std::make_shared<MindMapData>();
+    outData->imageManager().addImage(Image {});
+    outData->imageManager().addImage(Image {});
     const auto outXml = IO::AlzFileIO().toXml(outData);
-    outData.imageManager().clear(); // ImageManager is a static class
-    QCOMPARE(outData.imageManager().images().size(), size_t { 0 });
+    QCOMPARE(outData->imageManager().images().size(), size_t { 2 });
     const auto inData = IO::AlzFileIO().fromXml(outXml);
     // No nodes are using the added images, so nothing should have been serialized
-    QCOMPARE(outData.imageManager().images().size(), size_t { 0 });
+    QCOMPARE(inData->imageManager().images().size(), size_t { 0 });
 }
 
 void AlzFileIOTest::testUsedImages()
 {
-    MindMapData outData;
-    const auto id1 = outData.imageManager().addImage(Image {});
-    const auto id2 = outData.imageManager().addImage(Image {});
+    const auto outData = std::make_shared<MindMapData>();
+    const auto id1 = outData->imageManager().addImage(Image {});
+    const auto id2 = outData->imageManager().addImage(Image {});
     auto node1 = std::make_shared<Node>();
-    outData.graph().addNode(node1);
+    outData->graph().addNode(node1);
     node1->setImageRef(id1);
     auto node2 = std::make_shared<Node>();
-    outData.graph().addNode(node2);
+    outData->graph().addNode(node2);
     node2->setImageRef(id2);
 
     const auto outXml = IO::AlzFileIO().toXml(outData);
-    outData.imageManager().clear(); // ImageManager is a static class
-    QCOMPARE(outData.imageManager().images().size(), size_t { 0 });
+    QCOMPARE(outData->imageManager().images().size(), size_t { 2 });
     const auto inData = IO::AlzFileIO().fromXml(outXml);
-    QCOMPARE(outData.imageManager().images().size(), size_t { 2 });
+    QCOMPARE(inData->imageManager().images().size(), size_t { 2 });
 }
 
 void AlzFileIOTest::testTextSize()
 {
-    MindMapData outData;
-    outData.setTextSize(42);
+    const auto outData = std::make_shared<MindMapData>();
+    outData->setTextSize(42);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
-    QCOMPARE(inData->textSize(), outData.textSize());
+    QCOMPARE(inData->textSize(), outData->textSize());
 }
 
 void AlzFileIOTest::testNodeDeletion()
 {
-    MindMapData outData;
+    const auto outData = std::make_shared<MindMapData>();
 
     auto outNode0 = std::make_shared<Node>();
-    outData.graph().addNode(outNode0);
+    outData->graph().addNode(outNode0);
 
     auto outNode1 = std::make_shared<Node>();
-    outData.graph().addNode(outNode1);
+    outData->graph().addNode(outNode1);
 
     auto outNode2 = std::make_shared<Node>();
-    outData.graph().addNode(outNode2);
+    outData->graph().addNode(outNode2);
 
-    outData.graph().addEdge(std::make_shared<Edge>(outNode0, outNode1));
+    outData->graph().addEdge(std::make_shared<Edge>(outNode0, outNode1));
 
-    outData.graph().addEdge(std::make_shared<Edge>(outNode0, outNode2));
+    outData->graph().addEdge(std::make_shared<Edge>(outNode0, outNode2));
 
-    outData.graph().deleteNode(outNode1->index()); // Delete node in between
+    outData->graph().deleteNode(outNode1->index()); // Delete node in between
 
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     const auto edges = inData->graph().getEdgesFromNode(outNode0);
@@ -299,11 +297,11 @@ void AlzFileIOTest::testNodeDeletion()
 
 void AlzFileIOTest::testSingleEdge()
 {
-    MindMapData outData;
+    const auto outData = std::make_shared<MindMapData>();
     const auto outNode0 = std::make_shared<Node>();
-    outData.graph().addNode(outNode0);
+    outData->graph().addNode(outNode0);
     const auto outNode1 = std::make_shared<Node>();
-    outData.graph().addNode(outNode1);
+    outData->graph().addNode(outNode1);
 
     const auto edge = std::make_shared<Edge>(outNode0, outNode1);
     const QString text = "Lorem ipsum";
@@ -311,7 +309,7 @@ void AlzFileIOTest::testSingleEdge()
     edge->setDashedLine(true);
     edge->setReversed(true);
     edge->setText(text);
-    outData.graph().addEdge(edge);
+    outData->graph().addEdge(edge);
 
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     const auto edges = inData->graph().getEdgesFromNode(outNode0);
@@ -324,17 +322,17 @@ void AlzFileIOTest::testSingleEdge()
 
 void AlzFileIOTest::testSingleNode()
 {
-    MindMapData outData;
+    const auto outData = std::make_shared<MindMapData>();
 
     const auto outNode = std::make_shared<Node>();
     outNode->setColor(QColor(1, 2, 3));
-    const auto imageRef = outData.imageManager().addImage(Image {});
+    const auto imageRef = outData->imageManager().addImage(Image {});
     outNode->setImageRef(imageRef);
     outNode->setLocation(QPointF(333.333, 666.666));
     outNode->setSize(QSize(123, 321));
     outNode->setText("Lorem ipsum");
     outNode->setTextColor(QColor(4, 5, 6));
-    outData.graph().addNode(outNode);
+    outData->graph().addNode(outNode);
 
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QVERIFY(inData->graph().numNodes() == 1);

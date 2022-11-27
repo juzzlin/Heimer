@@ -43,6 +43,10 @@ class MindMapTile;
 class SelectionGroup;
 class QGraphicsLineItem;
 
+namespace IO {
+class AlzFileIO;
+}
+
 class EditorData : public QObject
 {
     Q_OBJECT
@@ -121,9 +125,11 @@ public:
 
     void removeImageRefsOfSelectedNodes();
 
-    bool saveMindMap();
+    void requestAutosave(bool async);
 
-    bool saveMindMapAs(QString fileName);
+    bool saveMindMap(bool async);
+
+    bool saveMindMapAs(QString fileName, bool async);
 
     void saveUndoPoint(bool dontClearRedoStack = false);
 
@@ -169,8 +175,6 @@ private:
     EditorData(const EditorData & e) = delete;
     EditorData & operator=(const EditorData & e) = delete;
 
-    void clearImages();
-
     using NodePairVector = std::vector<std::pair<NodeP, NodeP>>;
     NodePairVector getConnectableNodes() const;
 
@@ -180,8 +184,6 @@ private:
 
     void removeNodeFromScene(NodeR node);
 
-    void requestAutosave();
-
     void sendUndoAndRedoSignals();
 
     void setIsModified(bool isModified);
@@ -189,6 +191,8 @@ private:
     MouseAction m_mouseAction;
 
     MindMapDataPtr m_mindMapData;
+
+    std::unique_ptr<IO::AlzFileIO> m_alzFileIO;
 
     std::unique_ptr<CopyContext> m_copyContext;
 

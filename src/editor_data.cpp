@@ -36,7 +36,8 @@ using juzzlin::L;
 using std::make_shared;
 
 EditorData::EditorData()
-  : m_copyContext(std::make_unique<CopyContext>())
+  : m_alzFileIO(std::make_unique<IO::AlzFileIO>())
+  , m_copyContext(std::make_unique<CopyContext>())
   , m_selectionGroup(std::make_unique<SelectionGroup>())
 {
     m_undoTimer.setSingleShot(true);
@@ -50,11 +51,11 @@ void EditorData::addNodeToSelectionGroup(NodeR node)
     m_selectionGroup->addSelectedNode(node);
 }
 
-void EditorData::requestAutosave()
+void EditorData::requestAutosave(bool async)
 {
     if (SettingsProxy::instance().autosave() && !m_fileName.isEmpty()) {
         L().debug() << "Autosaving to '" << m_fileName.toStdString() << "'";
-        saveMindMapAs(m_fileName);
+        saveMindMapAs(m_fileName, async);
     }
 }
 
@@ -76,15 +77,13 @@ QString EditorData::fileName() const
 
 void EditorData::loadMindMapData(QString fileName)
 {
-    requestAutosave();
-
-    clearImages();
+    requestAutosave(false);
     clearSelectionGroup();
 
     m_selectedEdge = nullptr;
 
     if (!TestMode::enabled()) {
-        setMindMapData(IO::AlzFileIO().fromFile(fileName));
+        setMindMapData(m_alzFileIO->fromFile(fileName));
     } else {
         TestMode::logDisabledCode("setMindMapData");
     }
@@ -116,7 +115,7 @@ void EditorData::undo()
         m_mindMapData = m_undoStack.undo();
         setIsModified(true);
         sendUndoAndRedoSignals();
-        requestAutosave();
+        requestAutosave(true);
     }
 }
 
@@ -142,7 +141,7 @@ void EditorData::redo()
         m_mindMapData = m_undoStack.redo();
         setIsModified(true);
         sendUndoAndRedoSignals();
-        requestAutosave();
+        requestAutosave(true);
     }
 }
 
@@ -153,10 +152,10 @@ void EditorData::removeImageRefsOfSelectedNodes()
     }
 }
 
-bool EditorData::saveMindMap()
+bool EditorData::saveMindMap(bool async)
 {
     if (m_mindMapData && !m_fileName.isEmpty()) {
-        return saveMindMapAs(m_fileName);
+        return saveMindMapAs(m_fileName, async);
     }
     return false;
 }
@@ -180,7 +179,7 @@ void EditorData::saveUndoPoint(bool dontClearRedoStack)
     }
     setIsModified(true);
     sendUndoAndRedoSignals();
-    requestAutosave();
+    requestAutosave(true);
 }
 
 void EditorData::saveRedoPoint()
@@ -193,11 +192,11 @@ void EditorData::saveRedoPoint()
     sendUndoAndRedoSignals();
 }
 
-bool EditorData::saveMindMapAs(QString fileName)
+bool EditorData::saveMindMapAs(QString fileName, bool async)
 {
     assert(m_mindMapData);
 
-    if (IO::AlzFileIO().toFile(*m_mindMapData, fileName)) {
+    if (m_alzFileIO->toFile(m_mindMapData, fileName, async)) {
         m_fileName = fileName;
         setIsModified(false);
         RecentFilesManager::instance().addRecentFile(fileName);
@@ -446,11 +445,6 @@ void EditorData::clearCopyStack()
     m_copyContext->clear();
 }
 
-void EditorData::clearImages()
-{
-    m_mindMapData->imageManager().clear();
-}
-
 void EditorData::clearSelectionGroup()
 {
     L().trace() << "Clearing selection group..";
@@ -467,9 +461,7 @@ NodeS EditorData::getNodeByIndex(int index)
 
 void EditorData::initializeNewMindMap()
 {
-    requestAutosave();
-
-    clearImages();
+    requestAutosave(false);
     setMindMapData(std::make_shared<MindMapData>());
 }
 
@@ -552,7 +544,7 @@ void EditorData::setIsModified(bool isModified)
 
 EditorData::~EditorData()
 {
-    requestAutosave();
+    requestAutosave(false);
 
     L().debug() << "EditorData deleted";
 }

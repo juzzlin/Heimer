@@ -188,7 +188,6 @@ void EditorDataTest::testLoadState()
 
     editorData.toggleNodeInSelectionGroup(*node0);
     editorData.setSelectedEdge(edge01.get());
-    editorData.mindMapData()->imageManager().addImage({});
     editorData.saveUndoPoint();
 
     QCOMPARE(editorData.isUndoable(), true);
@@ -198,7 +197,6 @@ void EditorDataTest::testLoadState()
     QCOMPARE(editorData.isUndoable(), false);
     QCOMPARE(editorData.selectionGroupSize(), size_t(0));
     QCOMPARE(editorData.selectedEdge(), nullptr);
-    QCOMPARE(editorData.mindMapData()->imageManager().images().size(), size_t { 0 });
     QCOMPARE(editorData.selectedNode(), nullptr);
 }
 

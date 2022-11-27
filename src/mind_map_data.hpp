@@ -126,7 +126,7 @@ private:
 
     Graph m_graph;
 
-    static ImageManager m_imageManager;
+    ImageManager m_imageManager;
 };
 
 typedef std::shared_ptr<MindMapData> MindMapDataPtr;

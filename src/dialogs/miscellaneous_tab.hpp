@@ -17,8 +17,10 @@
 #define EDITING_TAB_HPP
 
 #include <QWidget>
+#include <map>
 
 class QCheckBox;
+class QRadioButton;
 
 namespace Dialogs {
 

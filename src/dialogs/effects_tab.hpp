@@ -17,7 +17,6 @@
 #define EFFECTS_TAB_HPP
 
 #include <QWidget>
-#include <map>
 
 class QSpinBox;
 struct ShadowEffectParams;

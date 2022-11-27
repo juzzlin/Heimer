@@ -24,7 +24,7 @@ fi
 echo "Updating files for ${LANG}"
 
 TS_FILE=src/translations/heimer_${LANG}.ts
-${LUPDATE} src/*.cpp src/dialogs/*.cpp -ts ${TS_FILE}
+${LUPDATE} src/*.cpp src/dialogs/*.cpp src/menus/*.cpp src/io/*.cpp -ts ${TS_FILE}
 
 echo "Opening ${LINGUIST}.."
 

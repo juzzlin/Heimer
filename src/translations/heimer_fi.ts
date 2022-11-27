@@ -1106,6 +1106,172 @@
     </message>
 </context>
 <context>
+    <name>Menus::EdgeContextMenu</name>
+    <message>
+        <location filename="../menus/edge_context_menu.cpp" line="29"/>
+        <source>Change direction</source>
+        <translation>Vaihda suuntaa</translation>
+    </message>
+    <message>
+        <location filename="../menus/edge_context_menu.cpp" line="35"/>
+        <source>Show arrow</source>
+        <translation>Näytä nuoli</translation>
+    </message>
+    <message>
+        <location filename="../menus/edge_context_menu.cpp" line="42"/>
+        <source>Double arrow</source>
+        <translation>Kaksi nuolta</translation>
+    </message>
+    <message>
+        <location filename="../menus/edge_context_menu.cpp" line="49"/>
+        <source>Dashed line</source>
+        <translation>Katkoviiva</translation>
+    </message>
+    <message>
+        <location filename="../menus/edge_context_menu.cpp" line="56"/>
+        <source>Delete edge</source>
+        <translation>Poista kaari</translation>
+    </message>
+</context>
+<context>
+    <name>Menus::MainContextMenu</name>
+    <message>
+        <location filename="../menus/main_context_menu.cpp" line="32"/>
+        <location filename="../menus/main_context_menu.cpp" line="169"/>
+        <source>Copy node</source>
+        <translation>Kopioi solmu</translation>
+    </message>
+    <message>
+        <location filename="../menus/main_context_menu.cpp" line="33"/>
+        <location filename="../menus/main_context_menu.cpp" line="172"/>
+        <source>Paste node</source>
+        <translation>Liimaa solmu</translation>
+    </message>
+    <message>
+        <location filename="../menus/main_context_menu.cpp" line="60"/>
+        <source>Set background color</source>
+        <translation>Aseta taustaväri</translation>
+    </message>
+    <message>
+        <location filename="../menus/main_context_menu.cpp" line="66"/>
+        <source>Set edge color</source>
+        <translation>Aseta kaaren väri</translation>
+    </message>
+    <message>
+        <location filename="../menus/main_context_menu.cpp" line="72"/>
+        <source>Set grid color</source>
+        <translation>Aseta ruudukon väri</translation>
+    </message>
+    <message>
+        <location filename="../menus/main_context_menu.cpp" line="78"/>
+        <source>Create floating node</source>
+        <translation>Luo kelluva solmu</translation>
+    </message>
+    <message>
+        <location filename="../menus/main_context_menu.cpp" line="92"/>
+        <source>Set node color</source>
+        <translation>Aseta solmun väri</translation>
+    </message>
+    <message>
+        <location filename="../menus/main_context_menu.cpp" line="98"/>
+        <source>Set text color</source>
+        <translation>Tekstin väri</translation>
+    </message>
+    <message>
+        <location filename="../menus/main_context_menu.cpp" line="104"/>
+        <source>Delete node</source>
+        <translation>Poista solmu</translation>
+    </message>
+    <message>
+        <location filename="../menus/main_context_menu.cpp" line="119"/>
+        <source>Attach image...</source>
+        <translation>Liitä kuva...</translation>
+    </message>
+    <message>
+        <location filename="../menus/main_context_menu.cpp" line="126"/>
+        <source>Remove attached image</source>
+        <translation>Poista liitetty kuva</translation>
+    </message>
+    <message>
+        <location filename="../menus/main_context_menu.cpp" line="166"/>
+        <source>Node &amp;colors</source>
+        <translation>Solmun &amp;värit</translation>
+    </message>
+    <message>
+        <location filename="../menus/main_context_menu.cpp" line="166"/>
+        <source>General &amp;colors</source>
+        <translation>Yleiset &amp;värit</translation>
+    </message>
+    <message>
+        <location filename="../menus/main_context_menu.cpp" line="169"/>
+        <source>Copy nodes</source>
+        <translation>Kopioi solmut</translation>
+    </message>
+    <message>
+        <location filename="../menus/main_context_menu.cpp" line="172"/>
+        <source>Paste nodes</source>
+        <translation>Liimaa solmut</translation>
+    </message>
+</context>
+<context>
+    <name>Menus::ToolBar</name>
+    <message>
+        <location filename="../menus/tool_bar.cpp" line="37"/>
+        <source>Auto snap</source>
+        <translation>Automaattinen napsautus</translation>
+    </message>
+    <message>
+        <location filename="../menus/tool_bar.cpp" line="38"/>
+        <source>Copy on drag</source>
+        <translation>Kopioi raahatessa</translation>
+    </message>
+    <message>
+        <location filename="../menus/tool_bar.cpp" line="45"/>
+        <source>Show grid</source>
+        <translation>Näytä ruudukko</translation>
+    </message>
+    <message>
+        <location filename="../menus/tool_bar.cpp" line="87"/>
+        <source>Automatically snap existing nodes to the grid when grid size changes</source>
+        <translation>Napsauta olemassaolevat solmut automaattisesti ruudukkoon ruudukon koon vaihtuessa</translation>
+    </message>
+    <message>
+        <location filename="../menus/tool_bar.cpp" line="118"/>
+        <source>Corner radius:</source>
+        <translation>Kulman pyöreys:</translation>
+    </message>
+    <message>
+        <location filename="../menus/tool_bar.cpp" line="135"/>
+        <source>Arrow size:</source>
+        <translation>Nuolen koko:</translation>
+    </message>
+    <message>
+        <location filename="../menus/tool_bar.cpp" line="152"/>
+        <source>Edge width:</source>
+        <translation>Kaaren leveys:</translation>
+    </message>
+    <message>
+        <location filename="../menus/tool_bar.cpp" line="157"/>
+        <source>Font</source>
+        <translation>Kirjasintyyppi</translation>
+    </message>
+    <message>
+        <location filename="../menus/tool_bar.cpp" line="192"/>
+        <source>Grid size:</source>
+        <translation>Ruudukko:</translation>
+    </message>
+    <message>
+        <location filename="../menus/tool_bar.cpp" line="214"/>
+        <source>Search:</source>
+        <translation>Haku:</translation>
+    </message>
+    <message>
+        <location filename="../menus/tool_bar.cpp" line="230"/>
+        <source>Text size:</source>
+        <translation>Tekstin koko:</translation>
+    </message>
+</context>
+<context>
     <name>NodeHandle</name>
     <message>
         <location filename="../node_handle.cpp" line="58"/>
@@ -1191,12 +1357,14 @@
 <context>
     <name>QObject</name>
     <message>
+        <location filename="../io/xml_reader.cpp" line="29"/>
         <source>Cannot open file: &apos;</source>
-        <translation type="vanished">Tiedoston avaaminen epäonnistui: &apos;</translation>
+        <translation>Tiedoston avaaminen epäonnistui: &apos;</translation>
     </message>
     <message>
+        <location filename="../io/xml_reader.cpp" line="35"/>
         <source>Corrupted file: &apos;</source>
-        <translation type="vanished">Korruptoitunut tiedosto: &apos;</translation>
+        <translation>Korruptoitunut tiedosto: &apos;</translation>
     </message>
     <message>
         <location filename="../dialogs/widget_factory.cpp" line="45"/>

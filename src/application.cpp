@@ -33,6 +33,7 @@
 #include "core/user_exception.hpp"
 #include "core/version_checker.hpp"
 
+#include "dialogs/image_file_dialog.hpp"
 #include "dialogs/layout_optimization_dialog.hpp"
 #include "dialogs/png_export_dialog.hpp"
 #include "dialogs/scene_color_dialog.hpp"
@@ -41,7 +42,6 @@
 #include "argengine.hpp"
 #include "simple_logger.hpp"
 
-#include <QFileDialog>
 #include <QLibraryInfo>
 #include <QLocale>
 #include <QMessageBox>
@@ -437,16 +437,9 @@ void Application::showTextColorDialog()
 
 void Application::showImageFileDialog()
 {
-    const auto path = Settings::V1::loadRecentImagePath();
-    const auto extensions = "(*.jpg *.jpeg *.JPG *.JPEG *.png *.PNG)";
-    const auto fileName = QFileDialog::getOpenFileName(
-      m_mainWindow.get(), tr("Open an image"), path, tr("Image Files") + " " + extensions);
-
-    if (QImage image; image.load(fileName)) {
-        m_mediator->performNodeAction({ NodeAction::Type::AttachImage, image, fileName });
-        Settings::V1::saveRecentImagePath(fileName);
-    } else if (fileName != "") {
-        QMessageBox::critical(m_mainWindow.get(), tr("Load image"), tr("Failed to load image '") + fileName + "'");
+    Dialogs::ImageFileDialog dialog(m_mainWindow.get());
+    if (const auto image = dialog.loadImage(); image.has_value()) {
+        m_mediator->performNodeAction({ NodeAction::Type::AttachImage, image->image(), image->path().c_str() });
     }
 }
 

@@ -13,6 +13,10 @@ New features:
 
 Bug fixes:
 
+* Fix Heimer Snap on Ubuntu 22.04
+  - Didn't launch due to Wayland issues
+  - Forced to X11 for now
+
 Other:
 
 3.6.2

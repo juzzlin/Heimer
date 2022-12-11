@@ -12,6 +12,8 @@ icon: data/icons/heimer.png
 apps:
   heimer:
     command: desktop-launch heimer
+    environment: 
+      DISABLE_WAYLAND: 1 # UI completely broken on Ubuntu 22.04 without this
     desktop: usr/share/applications/heimer.desktop
     plugs: [home, desktop, desktop-legacy, removable-media, unity7, x11, wayland, opengl]
 
@@ -47,6 +49,7 @@ parts:
       - xdg-user-dirs
       - fcitx-frontend-qt5
       - qt5-style-plugins # for mouse cursor theme fix
+      - qtwayland5 # Needed in Ubuntu 22.04
   gnu-heimer:
     source: .
     plugin: cmake

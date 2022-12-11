@@ -1,7 +1,9 @@
-x.y.z
+3.6.3
 =====
 
 Release date:
+
+Sun, 11 Dec 2022 18:28:24 -0000
 
 New features:
 
@@ -18,6 +20,14 @@ Bug fixes:
   - Forced to X11 for now
 
 Other:
+
+* Initialize a new mind map to avoid an undefined state if the mind map fails to load
+
+* Apply autosave only when settings dialog is accepted
+
+* Increase edge with step to 0.25
+
+* Update Dutch and Italian translations
 
 3.6.2
 =====

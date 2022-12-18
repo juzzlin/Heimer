@@ -115,6 +115,12 @@ void Application::parseArgs(int argc, char ** argv)
       false, "Show debug logging.");
 
     ae.addOption(
+      { "-t", "--trace" }, [] {
+          L::setLoggingLevel(L::Level::Trace);
+      },
+      false, "Show trace logging.");
+
+    ae.addOption(
       { "--lang" }, [this, languages](std::string value) {
           if (!languages.count(value)) {
               L().error() << "Unsupported language: " << value;

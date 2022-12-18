@@ -208,10 +208,11 @@ void Edge::setArrowHeadPen(const QPen & pen)
 void Edge::setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason vcr)
 {
     if (m_enableLabel) {
-        const bool isEnoughSpaceForLabel = !m_label->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && //
+        // Note: We need to test for scene(), because sceneBoundingRect() will crash if the item has not been added to any scene (yet).
+        const bool isEnoughSpaceForLabel = m_label->scene() && !m_label->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && //
           !m_label->sceneBoundingRect().intersects(targetNode().sceneBoundingRect());
         const bool dummyLabelTextIsShoterThanLabelText = m_dummyLabel->text().length() < m_label->text().length();
-        const bool isEnoughSpaceForDummyLabel = !m_dummyLabel->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && //
+        const bool isEnoughSpaceForDummyLabel = m_dummyLabel->scene() && !m_dummyLabel->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && //
           !m_dummyLabel->sceneBoundingRect().intersects(targetNode().sceneBoundingRect());
         switch (vcr) {
         case EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged: {
@@ -288,13 +289,9 @@ void Edge::setDashedLine(bool enable)
 void Edge::setText(const QString & text)
 {
     m_edgeModel->text = text;
-    if (!TestMode::enabled()) {
-        if (m_enableLabel) {
-            m_label->setText(text);
-            setLabelVisible(!text.isEmpty());
-        }
-    } else {
-        TestMode::logDisabledCode("Set label text");
+    if (m_enableLabel) {
+        m_label->setText(text);
+        setLabelVisible(!text.isEmpty());
     }
 }
 

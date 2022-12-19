@@ -1,3 +1,18 @@
+3.6.4
+=====
+
+Release date:
+
+Mon, 19 Dec 2022 19:49:40 -0000
+
+Bug fixes:
+
+* Fix crash when trying to copy a group of connected nodes
+
+Other
+
+* Update Italian translations
+
 3.6.3
 =====
 

@@ -59,7 +59,7 @@ void Mediator::addExistingGraphToScene()
             node->setCornerRadius(m_editorData->mindMapData()->cornerRadius());
             node->setTextSize(m_editorData->mindMapData()->textSize());
             node->changeFont(m_editorData->mindMapData()->font());
-            L().debug() << "Added existing node " << node->index() << " to scene";
+            L().trace() << "Added existing node id=" << node->index() << " to scene";
         }
     }
 
@@ -76,7 +76,7 @@ void Mediator::addExistingGraphToScene()
             node0->addGraphicsEdge(*edge);
             node1->addGraphicsEdge(*edge);
             edge->updateLine();
-            L().debug() << "Added existing edge " << node0->index() << " -> " << node1->index() << " to scene";
+            L().trace() << "Added existing edge (" << node0->index() << ", " << node1->index() << ") to scene";
         }
     }
 
@@ -556,7 +556,7 @@ void Mediator::performNodeAction(const NodeAction & action)
 
 bool Mediator::openMindMap(QString fileName)
 {
-    assert(m_editorData);
+    juzzlin::L().info() << "Loading '" << fileName.toStdString() << "'";
 
     try {
         m_editorData->loadMindMapData(fileName);

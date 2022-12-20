@@ -499,8 +499,8 @@ void Edge::updateLine()
 
 Edge::~Edge()
 {
-    juzzlin::L().debug() << "Deleting edge " << (m_sourceNode ? std::to_string(m_sourceNode->index()) : "nullptr") << " -> " //
-                         << (m_targetNode ? std::to_string(m_targetNode->index()) : "nullptr");
+    juzzlin::L().trace() << "Deleting edge (" << (m_sourceNode ? std::to_string(m_sourceNode->index()) : "(none)") << ", " //
+                         << (m_targetNode ? std::to_string(m_targetNode->index()) : "(none)") << ")";
 
     if (!TestMode::enabled()) {
         if (m_enableAnimations) {

@@ -587,11 +587,11 @@ Node::~Node()
         Node::m_lastHoveredNode = nullptr;
     }
 
-    juzzlin::L().debug() << "Deleting handles of node " << index();
+    juzzlin::L().trace() << "Deleting handles of node id=" << index();
 
     for (auto && handle : m_handles) {
         delete handle.second;
     }
 
-    juzzlin::L().debug() << "Deleting Node " << index();
+    juzzlin::L().trace() << "Deleting Node id=" << index();
 }

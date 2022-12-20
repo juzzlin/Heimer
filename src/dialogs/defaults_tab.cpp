@@ -121,11 +121,9 @@ void DefaultsTab::createColorWidgets(QVBoxLayout & mainLayout)
 
 void DefaultsTab::setActiveDefaults()
 {
-    const auto defaultArrowStyle = SettingsProxy::instance().edgeArrowMode();
-    if (m_edgeArrowStyleRadioMap.count(defaultArrowStyle)) {
+    if (const auto defaultArrowStyle = SettingsProxy::instance().edgeArrowMode(); m_edgeArrowStyleRadioMap.count(defaultArrowStyle)) {
         const auto radio = m_edgeArrowStyleRadioMap[defaultArrowStyle];
         radio->setChecked(true);
-        juzzlin::L().info() << "'" << radio->text().toStdString() << "' set as active default";
     } else {
         juzzlin::L().error() << "Invalid arrow style: " << static_cast<int>(defaultArrowStyle);
     }

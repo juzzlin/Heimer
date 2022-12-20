@@ -66,14 +66,14 @@ static void initTranslations(QTranslator & appTranslator, QTranslator & qtTransl
 
     // Qt's built-in translations
     for (auto && lang : langs) {
-        L().info() << "Trying Qt translations for '" << lang.toStdString() << "'";
+        L().debug() << "Trying Qt translations for '" << lang.toStdString() << "'";
 #if QT_VERSION >= 0x60000
         if (qtTranslator.load("qt_" + lang, QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
 #else
         if (qtTranslator.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
 #endif
             app.installTranslator(&qtTranslator);
-            L().info() << "Loaded Qt translations for '" << lang.toStdString() << "'";
+            L().debug() << "Loaded Qt translations for '" << lang.toStdString() << "'";
             break;
         } else {
             L().warning() << "Failed to load Qt translations for '" << lang.toStdString() << "'";
@@ -82,10 +82,10 @@ static void initTranslations(QTranslator & appTranslator, QTranslator & qtTransl
 
     // Application's translations
     for (auto && lang : langs) {
-        L().info() << "Trying application translations for '" << lang.toStdString() << "'";
+        L().debug() << "Trying application translations for '" << lang.toStdString() << "'";
         if (appTranslator.load(Constants::Application::TRANSLATIONS_RESOURCE_BASE + lang)) {
             app.installTranslator(&appTranslator);
-            L().info() << "Loaded application translations for '" << lang.toStdString() << "'";
+            L().debug() << "Loaded application translations for '" << lang.toStdString() << "'";
             break;
         } else {
             L().warning() << "Failed to load application translations for '" << lang.toStdString() << "'";

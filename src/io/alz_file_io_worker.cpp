@@ -245,14 +245,14 @@ static QString getBase64Data(std::string path)
 
 static QImage base64ToQImage(const std::string & base64, size_t imageId, std::string imagePath)
 {
-    juzzlin::L().info() << "Extracting embedded Image id=" << imageId << ", path=" << imagePath;
+    juzzlin::L().debug() << "Extracting embedded Image id=" << imageId << ", path=" << imagePath;
     const auto ba = QByteArray::fromBase64(base64.c_str(), QByteArray::Base64Encoding);
     QImage in;
     if (!in.loadFromData(ba)) {
         juzzlin::L().error() << "Could not load embedded Image id=" << imageId << ", path=" << imagePath;
     }
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    juzzlin::L().info() << "Image size: " << in.sizeInBytes() << " bytes";
+    juzzlin::L().debug() << "Image size: " << in.sizeInBytes() << " bytes";
 #endif
     return in;
 }
@@ -263,7 +263,7 @@ static void writeImages(std::shared_ptr<MindMapData> mindMapData, QDomElement & 
     for (auto && node : mindMapData->graph().getNodes()) {
         if (node->imageRef()) {
             if (writtenImageRefs.count(node->imageRef())) {
-                juzzlin::L().info() << "Image id=" << node->imageRef() << " already written";
+                juzzlin::L().debug() << "Image id=" << node->imageRef() << " already written";
             } else {
                 if (const auto image = mindMapData->imageManager().getImage(node->imageRef()); image.has_value()) {
                     auto imageElement = doc.createElement(DataKeywords::MindMap::IMAGE);

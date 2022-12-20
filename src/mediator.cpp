@@ -592,6 +592,8 @@ void Mediator::performNodeAction(const NodeAction & action)
 
 bool Mediator::openMindMap(QString fileName)
 {
+    juzzlin::L().info() << "Loading '" << fileName.toStdString() << "'";
+
     try {
         juzzlin::L().info() << "Loading '" << fileName.toStdString() << "'";
         Core::SingleInstanceContainer::instance().progressManager().setEnabled(true);

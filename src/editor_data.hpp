@@ -58,7 +58,7 @@ public:
 
     EdgeS addEdge(EdgeS edge);
 
-    void addNodeToSelectionGroup(NodeR node);
+    void addNodeToSelectionGroup(NodeR node, bool isImplicit = false);
 
     //! \return true if at least one selected node pair can be connected.
     bool areSelectedNodesConnectable() const;
@@ -78,7 +78,7 @@ public:
 
     void clearCopyStack();
 
-    void clearSelectionGroup();
+    void clearSelectionGroup(bool onlyImplicitNodes = false);
 
     //! Connects selected nodes in the order they were selected.
     //! \return the new edge objects.

@@ -44,11 +44,11 @@ EditorData::EditorData()
     m_undoTimer.setInterval(Constants::View::TOO_QUICK_ACTION_DELAY_MS);
 }
 
-void EditorData::addNodeToSelectionGroup(NodeR node)
+void EditorData::addNodeToSelectionGroup(NodeR node, bool isImplicit)
 {
     L().debug() << "Adding node " << node.index() << " to selection group..";
 
-    m_selectionGroup->addSelectedNode(node);
+    m_selectionGroup->addNode(node, isImplicit);
 }
 
 void EditorData::requestAutosave(bool async)
@@ -445,11 +445,11 @@ void EditorData::clearCopyStack()
     m_copyContext->clear();
 }
 
-void EditorData::clearSelectionGroup()
+void EditorData::clearSelectionGroup(bool onlyImplicitNodes)
 {
-    L().trace() << "Clearing selection group..";
+    L().trace() << "Clearing selection group: onlyImplicitNodes == " << onlyImplicitNodes;
 
-    m_selectionGroup->clear();
+    m_selectionGroup->clear(onlyImplicitNodes);
 }
 
 NodeS EditorData::getNodeByIndex(int index)

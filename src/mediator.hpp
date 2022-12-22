@@ -55,7 +55,7 @@ public:
 
     void addItem(QGraphicsItem & item);
 
-    void addNodeToSelectionGroup(NodeR node);
+    void addNodeToSelectionGroup(NodeR node, bool isImplicit = false);
 
     void adjustSceneRect();
 
@@ -71,7 +71,7 @@ public:
 
     void clearSelectedNode();
 
-    void clearSelectionGroup();
+    void clearSelectionGroup(bool onlyImplicitNodes = false);
 
     void connectEdgeToUndoMechanism(EdgeS edge);
 

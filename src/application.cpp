@@ -401,13 +401,19 @@ void Application::showGridColorDialog()
 
 void Application::showNodeColorDialog()
 {
-    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Node, m_mediator).exec();
+    if (Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Node, m_mediator).exec() != QDialog::Accepted) {
+        // Clear implicitly selected nodes on cancel
+        m_mediator->clearSelectionGroup(true);
+    }
     emit actionTriggered(StateMachine::Action::NodeColorChanged);
 }
 
 void Application::showTextColorDialog()
 {
-    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Text, m_mediator).exec();
+    if (Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Text, m_mediator).exec() != QDialog::Accepted) {
+        // Clear implicitly selected nodes on cancel
+        m_mediator->clearSelectionGroup(true);
+    }
     emit actionTriggered(StateMachine::Action::TextColorChanged);
 }
 

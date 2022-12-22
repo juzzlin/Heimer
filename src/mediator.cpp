@@ -112,9 +112,9 @@ void Mediator::addItem(QGraphicsItem & item)
     adjustSceneRect();
 }
 
-void Mediator::addNodeToSelectionGroup(NodeR node)
+void Mediator::addNodeToSelectionGroup(NodeR node, bool isImplicit)
 {
-    m_editorData->addNodeToSelectionGroup(node);
+    m_editorData->addNodeToSelectionGroup(node, isImplicit);
     updateNodeConnectionActions();
 }
 
@@ -123,9 +123,9 @@ void Mediator::adjustSceneRect()
     m_editorScene->adjustSceneRect();
 }
 
-void Mediator::clearSelectionGroup()
+void Mediator::clearSelectionGroup(bool onlyImplicitNodes)
 {
-    m_editorData->clearSelectionGroup();
+    m_editorData->clearSelectionGroup(onlyImplicitNodes);
     updateNodeConnectionActions();
 }
 

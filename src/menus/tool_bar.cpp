@@ -242,9 +242,7 @@ void ToolBar::enableWidgetSignals(bool enable)
 void ToolBar::loadSettings()
 {
     m_autoSnapCheckBox->setCheckState(Settings::V1::loadAutoSnapState());
-
     m_gridSizeSpinBox->setValue(Settings::V1::loadGridSize());
-
     m_showGridCheckBox->setCheckState(Settings::V1::loadGridVisibleState());
 }
 

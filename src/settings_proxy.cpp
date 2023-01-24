@@ -27,6 +27,8 @@ SettingsProxy::SettingsProxy()
   , m_nodeColor(Settings::V2::getColor(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::NODE_COLOR_SETTINGS_KEY, Constants::MindMap::Defaults::NODE_COLOR))
   , m_nodeTextColor(Settings::V2::getColor(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::NODE_TEXT_COLOR_SETTINGS_KEY, Constants::MindMap::Defaults::NODE_TEXT_COLOR))
   , m_edgeArrowMode(Settings::V1::loadEdgeArrowMode(EdgeModel::ArrowMode::Single))
+  , m_arrowSize(Settings::V2::getNumber(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::ARROW_SIZE_SETTINGS_KEY, Constants::Edge::Defaults::ARROW_SIZE))
+  , m_edgeWidth(Settings::V2::getNumber(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::EDGE_WIDTH_SETTINGS_KEY, Constants::MindMap::Defaults::EDGE_WIDTH))
   , m_reversedEdgeDirection(Settings::V1::loadReversedEdgeDirection(false))
   , m_selectNodeGroupByIntersection(Settings::V1::loadSelectNodeGroupByIntersection())
   , m_shadowEffectParams(
@@ -147,6 +149,32 @@ void SettingsProxy::setEdgeArrowMode(EdgeModel::ArrowMode mode)
     if (m_edgeArrowMode != mode) {
         m_edgeArrowMode = mode;
         Settings::V1::saveEdgeArrowMode(mode);
+    }
+}
+
+double SettingsProxy::arrowSize() const
+{
+    return m_arrowSize;
+}
+
+void SettingsProxy::setArrowSize(double arrowSize)
+{
+    if (!qFuzzyCompare(m_arrowSize, arrowSize)) {
+        m_arrowSize = arrowSize;
+        Settings::V2::setNumber(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::ARROW_SIZE_SETTINGS_KEY, arrowSize);
+    }
+}
+
+double SettingsProxy::edgeWidth() const
+{
+    return m_edgeWidth;
+}
+
+void SettingsProxy::setEdgeWidth(double edgeWidth)
+{
+    if (!qFuzzyCompare(m_edgeWidth, edgeWidth)) {
+        m_edgeWidth = edgeWidth;
+        Settings::V2::setNumber(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::EDGE_WIDTH_SETTINGS_KEY, edgeWidth);
     }
 }
 

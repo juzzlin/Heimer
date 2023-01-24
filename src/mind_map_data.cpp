@@ -25,8 +25,10 @@
 MindMapData::MindMapData(QString name)
   : MindMapDataBase(name)
   , m_backgroundColor(SettingsProxy::instance().backgroundColor())
+  , m_arrowSize(SettingsProxy::instance().arrowSize())
   , m_edgeColor(SettingsProxy::instance().edgeColor())
   , m_gridColor(SettingsProxy::instance().gridColor())
+  , m_edgeWidth(SettingsProxy::instance().edgeWidth())
 {
 }
 

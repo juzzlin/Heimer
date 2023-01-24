@@ -106,13 +106,13 @@ private:
 
     QColor m_backgroundColor;
 
-    double m_arrowSize = Constants::Edge::Defaults::ARROW_SIZE;
+    double m_arrowSize;
 
     QColor m_edgeColor;
 
     QColor m_gridColor;
 
-    double m_edgeWidth = Constants::MindMap::Defaults::EDGE_WIDTH;
+    double m_edgeWidth;
 
     QFont m_font;
 

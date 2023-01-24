@@ -23,6 +23,8 @@
 
 #include <QButtonGroup>
 #include <QCheckBox>
+#include <QDoubleSpinBox>
+#include <QFrame>
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -35,6 +37,8 @@ namespace Dialogs {
 DefaultsTab::DefaultsTab(QWidget * parent)
   : QWidget(parent)
   , m_edgeDirectionCheckBox(new QCheckBox(tr("Reversed direction"), this))
+  , m_arrowSizeSpinBox(new QDoubleSpinBox(this))
+  , m_edgeWidthSpinBox(new QDoubleSpinBox(this))
   , m_backgroundColorButton(new ColorSettingButton(tr("Background"), ColorDialog::Role::Background, this))
   , m_edgeColorButton(new ColorSettingButton(tr("Edge color"), ColorDialog::Role::Edge, this))
   , m_gridColorButton(new ColorSettingButton(tr("Grid color"), ColorDialog::Role::Grid, this))
@@ -54,6 +58,13 @@ void DefaultsTab::apply()
     }
 
     SettingsProxy::instance().setReversedEdgeDirection(m_edgeDirectionCheckBox->isChecked());
+    SettingsProxy::instance().setArrowSize(m_arrowSizeSpinBox->value());
+    SettingsProxy::instance().setEdgeWidth(m_edgeWidthSpinBox->value());
+}
+
+void DefaultsTab::reject()
+{
+    setActiveDefaults();
 }
 
 void DefaultsTab::initWidgets()
@@ -75,6 +86,16 @@ void DefaultsTab::initWidgets()
 
 void DefaultsTab::createEdgeWidgets(QVBoxLayout & mainLayout)
 {
+    m_arrowSizeSpinBox->setSingleStep(Constants::Edge::ARROW_SIZE_STEP);
+    m_arrowSizeSpinBox->setMinimum(Constants::Edge::MIN_ARROW_SIZE);
+    m_arrowSizeSpinBox->setMaximum(Constants::Edge::MAX_ARROW_SIZE);
+    m_arrowSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
+    m_edgeWidthSpinBox->setSingleStep(Constants::Edge::EDGE_WIDTH_STEP);
+    m_edgeWidthSpinBox->setMinimum(Constants::Edge::MIN_EDGE_WIDTH);
+    m_edgeWidthSpinBox->setMaximum(Constants::Edge::MAX_EDGE_WIDTH);
+    m_edgeWidthSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
     const auto edgeGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Edge Arrow Style"), mainLayout);
 
     m_edgeArrowStyleRadioMap = {
@@ -92,6 +113,30 @@ void DefaultsTab::createEdgeWidgets(QVBoxLayout & mainLayout)
     }
     edgeArrowRadioLayout->addWidget(m_edgeDirectionCheckBox);
     edgeGroup.second->addLayout(edgeArrowRadioLayout);
+
+    const auto line = new QFrame;
+    line->setFrameShape(QFrame::HLine);
+    line->setFrameShadow(QFrame::Sunken);
+
+    edgeArrowRadioLayout->addWidget(line);
+    const auto arrowSizeEdgeWidthLayout = new QHBoxLayout;
+    arrowSizeEdgeWidthLayout->addWidget(new QLabel(tr("Arrow size:")));
+    arrowSizeEdgeWidthLayout->addWidget(m_arrowSizeSpinBox);
+    arrowSizeEdgeWidthLayout->addSpacing(10);
+    arrowSizeEdgeWidthLayout->addWidget(new QLabel(tr("Edge width:")));
+    arrowSizeEdgeWidthLayout->addWidget(m_edgeWidthSpinBox);
+    arrowSizeEdgeWidthLayout->addStretch();
+    edgeGroup.second->addLayout(arrowSizeEdgeWidthLayout);
+
+    // Reset to defaults button for edge style
+    const auto resetToDefaultsButton = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
+    arrowSizeEdgeWidthLayout->addLayout(resetToDefaultsButton.second);
+    connect(resetToDefaultsButton.first, &QPushButton::clicked, this, [=] {
+        m_edgeArrowStyleRadioMap.at(EdgeModel::ArrowMode::Single)->setChecked(true);
+        m_edgeDirectionCheckBox->setChecked(false);
+        m_arrowSizeSpinBox->setValue(Constants::Edge::Defaults::ARROW_SIZE);
+        m_edgeWidthSpinBox->setValue(Constants::MindMap::Defaults::EDGE_WIDTH);
+    });
 }
 
 void DefaultsTab::createColorWidgets(QVBoxLayout & mainLayout)
@@ -109,7 +154,9 @@ void DefaultsTab::createColorWidgets(QVBoxLayout & mainLayout)
     colorButtonLayout->addWidget(m_nodeTextColorButton);
     m_colorSettingButtons.push_back(m_nodeTextColorButton);
     colorsGroup.second->addLayout(colorButtonLayout);
+    colorButtonLayout->addSpacing(3);
 
+    // Reset to defaults button for colors
     const auto resetToDefaultsButton = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
     colorsGroup.second->addLayout(resetToDefaultsButton.second);
     connect(resetToDefaultsButton.first, &QPushButton::clicked, this, [=] {
@@ -129,6 +176,9 @@ void DefaultsTab::setActiveDefaults()
     }
 
     m_edgeDirectionCheckBox->setChecked(SettingsProxy::instance().reversedEdgeDirection());
+
+    m_arrowSizeSpinBox->setValue(SettingsProxy::instance().arrowSize());
+    m_edgeWidthSpinBox->setValue(SettingsProxy::instance().edgeWidth());
 }
 
 } // namespace Dialogs

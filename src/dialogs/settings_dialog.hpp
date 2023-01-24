@@ -41,6 +41,8 @@ signals:
 private:
     void accept() override;
 
+    void reject() override;
+
     void initWidgets();
 
     DefaultsTab * m_defaultsTab;

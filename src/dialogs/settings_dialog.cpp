@@ -51,6 +51,13 @@ void SettingsDialog::accept()
     QDialog::accept();
 }
 
+void SettingsDialog::reject()
+{
+    m_defaultsTab->reject();
+
+    QDialog::reject();
+}
+
 void SettingsDialog::initWidgets()
 {
     const auto tabWidget = new QTabWidget;

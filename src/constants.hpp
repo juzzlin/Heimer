@@ -129,6 +129,8 @@ namespace Defaults {
 
 const auto SETTINGS_GROUP = "Defaults";
 
+static const auto ARROW_SIZE_SETTINGS_KEY = "arrowSize";
+
 static const QColor BACKGROUND_COLOR { 0xba, 0xbd, 0xb6 };
 
 static const auto BACKGROUND_COLOR_SETTINGS_KEY = "backgroundColor";
@@ -136,6 +138,8 @@ static const auto BACKGROUND_COLOR_SETTINGS_KEY = "backgroundColor";
 static const QColor EDGE_COLOR { 0, 0, 0, 200 };
 
 static const auto EDGE_COLOR_SETTINGS_KEY = "edgeColor";
+
+static const auto EDGE_WIDTH_SETTINGS_KEY = "edgeWidth";
 
 static const QColor GRID_COLOR { Qt::gray };
 

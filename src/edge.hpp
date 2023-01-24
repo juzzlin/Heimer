@@ -22,7 +22,6 @@
 #include <map>
 #include <memory>
 
-#include "constants.hpp"
 #include "edge_model.hpp"
 #include "edge_point.hpp"
 #include "edge_text_edit.hpp"
@@ -140,10 +139,6 @@ private:
     NodeP m_sourceNode = nullptr;
 
     NodeP m_targetNode = nullptr;
-
-    double m_arrowSize = Constants::Edge::Defaults::ARROW_SIZE;
-
-    double m_edgeWidth = Constants::MindMap::Defaults::EDGE_WIDTH;
 
     int m_textSize = 11; // Not sure if we should set yet another default value here..
 

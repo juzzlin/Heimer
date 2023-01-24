@@ -61,6 +61,14 @@ public:
 
     void setEdgeArrowMode(EdgeModel::ArrowMode mode);
 
+    double arrowSize() const;
+
+    void setArrowSize(double arrowSize);
+
+    double edgeWidth() const;
+
+    void setEdgeWidth(double edgeWidth);
+
     bool reversedEdgeDirection() const;
 
     void setReversedEdgeDirection(bool reversedEdgeDirection);
@@ -89,6 +97,10 @@ private:
     QColor m_nodeTextColor;
 
     EdgeModel::ArrowMode m_edgeArrowMode;
+
+    double m_arrowSize;
+
+    double m_edgeWidth;
 
     bool m_reversedEdgeDirection = false;
 

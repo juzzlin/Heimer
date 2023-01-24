@@ -18,6 +18,8 @@
 
 #include <QString>
 
+#include "constants.hpp"
+
 struct EdgeModel
 {
     enum class ArrowMode
@@ -27,17 +29,33 @@ struct EdgeModel
         Hidden = 2
     };
 
-    EdgeModel(bool reversed, ArrowMode arrowMode)
-      : arrowMode(arrowMode)
-      , reversed(reversed)
+    struct Style
+    {
+        Style(ArrowMode arrowMode)
+          : arrowMode(arrowMode)
+          , arrowSize(Constants::Edge::Defaults::ARROW_SIZE)
+          , edgeWidth(Constants::MindMap::Defaults::EDGE_WIDTH)
+        {
+        }
+
+        ArrowMode arrowMode;
+
+        double arrowSize;
+
+        bool dashedLine = false;
+
+        double edgeWidth;
+    };
+
+    EdgeModel(bool reversed, Style style)
+      : reversed(reversed)
+      , style(style)
     {
     }
 
-    ArrowMode arrowMode;
-
-    bool dashedLine = false;
-
     bool reversed;
+
+    Style style;
 
     QString text;
 };

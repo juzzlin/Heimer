@@ -23,6 +23,7 @@
 #include "../edge_model.hpp"
 
 class QCheckBox;
+class QDoubleSpinBox;
 class QRadioButton;
 class QVBoxLayout;
 
@@ -39,6 +40,8 @@ public:
 
     void apply();
 
+    void reject();
+
 private:
     void createColorWidgets(QVBoxLayout & mainLayout);
 
@@ -51,6 +54,10 @@ private:
     std::map<EdgeModel::ArrowMode, QRadioButton *> m_edgeArrowStyleRadioMap;
 
     QCheckBox * m_edgeDirectionCheckBox = nullptr;
+
+    QDoubleSpinBox * m_arrowSizeSpinBox = nullptr;
+
+    QDoubleSpinBox * m_edgeWidthSpinBox = nullptr;
 
     ColorSettingButton * m_backgroundColorButton = nullptr;
 

@@ -23,6 +23,7 @@
 #include "graph.hpp"
 #include "image_manager.hpp"
 #include "mind_map_data_base.hpp"
+#include "settings_proxy.hpp"
 
 class Grid;
 class ObjectModelLoader;
@@ -100,33 +101,52 @@ public:
 private:
     void copyGraph(const MindMapData & other);
 
+    struct Style
+    {
+        Style(SettingsProxy & settingsProxy)
+          : arrowSize(settingsProxy.arrowSize())
+          , backgroundColor(settingsProxy.backgroundColor())
+          , edgeColor(settingsProxy.edgeColor())
+          , edgeWidth(settingsProxy.edgeWidth())
+          , gridColor(settingsProxy.gridColor())
+        {
+        }
+
+        double arrowSize;
+
+        QColor backgroundColor;
+
+        QColor edgeColor;
+
+        double edgeWidth;
+
+        QFont font;
+
+        QColor gridColor;
+
+        int textSize = Constants::MindMap::Defaults::TEXT_SIZE;
+
+        int cornerRadius = Constants::Node::Defaults::CORNER_RADIUS;
+    };
+
+    struct LayoutOptimizerParameters
+    {
+        double aspectRatio = Constants::LayoutOptimizer::Defaults::ASPECT_RATIO;
+
+        double minEdgeLength = Constants::LayoutOptimizer::Defaults::MIN_EDGE_LENGTH;
+    };
+
     QString m_fileName;
 
     QString m_version;
 
-    QColor m_backgroundColor;
-
-    double m_arrowSize;
-
-    QColor m_edgeColor;
-
-    QColor m_gridColor;
-
-    double m_edgeWidth;
-
-    QFont m_font;
-
-    int m_textSize = Constants::MindMap::Defaults::TEXT_SIZE;
-
-    int m_cornerRadius = Constants::Node::Defaults::CORNER_RADIUS;
-
-    double m_aspectRatio = Constants::LayoutOptimizer::Defaults::ASPECT_RATIO;
-
-    double m_minEdgeLength = Constants::LayoutOptimizer::Defaults::MIN_EDGE_LENGTH;
+    Style m_style;
 
     Graph m_graph;
 
     ImageManager m_imageManager;
+
+    LayoutOptimizerParameters m_layoutOptimizerParameters;
 };
 
 typedef std::shared_ptr<MindMapData> MindMapDataPtr;

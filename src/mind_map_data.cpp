@@ -17,18 +17,13 @@
 
 #include "grid.hpp"
 #include "node.hpp"
-#include "settings_proxy.hpp"
 #include "shadow_effect_params.hpp"
 
 #include <memory>
 
 MindMapData::MindMapData(QString name)
   : MindMapDataBase(name)
-  , m_backgroundColor(SettingsProxy::instance().backgroundColor())
-  , m_arrowSize(SettingsProxy::instance().arrowSize())
-  , m_edgeColor(SettingsProxy::instance().edgeColor())
-  , m_gridColor(SettingsProxy::instance().gridColor())
-  , m_edgeWidth(SettingsProxy::instance().edgeWidth())
+  , m_style(SettingsProxy::instance())
 {
 }
 
@@ -36,15 +31,9 @@ MindMapData::MindMapData(const MindMapData & other)
   : MindMapDataBase(other)
   , m_fileName(other.m_fileName)
   , m_version(other.m_version)
-  , m_backgroundColor(other.m_backgroundColor)
-  , m_arrowSize(other.m_arrowSize)
-  , m_edgeColor(other.m_edgeColor)
-  , m_gridColor(other.m_gridColor)
-  , m_edgeWidth(other.m_edgeWidth)
-  , m_font(other.m_font)
-  , m_textSize(other.m_textSize)
-  , m_cornerRadius(other.m_cornerRadius)
+  , m_style(other.m_style)
   , m_imageManager(other.m_imageManager)
+  , m_layoutOptimizerParameters(other.m_layoutOptimizerParameters)
 {
     copyGraph(other);
 }
@@ -73,32 +62,32 @@ void MindMapData::applyGrid(const Grid & grid)
 
 double MindMapData::aspectRatio() const
 {
-    return m_aspectRatio;
+    return m_layoutOptimizerParameters.aspectRatio;
 }
 
 void MindMapData::setAspectRatio(double aspectRatio)
 {
-    m_aspectRatio = aspectRatio;
+    m_layoutOptimizerParameters.aspectRatio = aspectRatio;
 }
 
 QColor MindMapData::backgroundColor() const
 {
-    return m_backgroundColor;
+    return m_style.backgroundColor;
 }
 
 void MindMapData::setBackgroundColor(const QColor & backgroundColor)
 {
-    m_backgroundColor = backgroundColor;
+    m_style.backgroundColor = backgroundColor;
 }
 
 int MindMapData::cornerRadius() const
 {
-    return m_cornerRadius;
+    return m_style.cornerRadius;
 }
 
 void MindMapData::setCornerRadius(int cornerRadius)
 {
-    m_cornerRadius = cornerRadius;
+    m_style.cornerRadius = cornerRadius;
 
     for (auto && node : m_graph.getNodes()) {
         node->setCornerRadius(cornerRadius);
@@ -107,12 +96,12 @@ void MindMapData::setCornerRadius(int cornerRadius)
 
 QColor MindMapData::edgeColor() const
 {
-    return m_edgeColor;
+    return m_style.edgeColor;
 }
 
 void MindMapData::setEdgeColor(const QColor & edgeColor)
 {
-    m_edgeColor = edgeColor;
+    m_style.edgeColor = edgeColor;
 
     for (auto && edge : m_graph.getEdges()) {
         edge->setColor(edgeColor);
@@ -121,22 +110,22 @@ void MindMapData::setEdgeColor(const QColor & edgeColor)
 
 QColor MindMapData::gridColor() const
 {
-    return m_gridColor;
+    return m_style.gridColor;
 }
 
 void MindMapData::setGridColor(const QColor & gridColor)
 {
-    m_gridColor = gridColor;
+    m_style.gridColor = gridColor;
 }
 
 double MindMapData::arrowSize() const
 {
-    return m_arrowSize;
+    return m_style.arrowSize;
 }
 
 void MindMapData::setArrowSize(double arrowSize)
 {
-    m_arrowSize = arrowSize;
+    m_style.arrowSize = arrowSize;
 
     for (auto && edge : m_graph.getEdges()) {
         edge->setArrowSize(arrowSize);
@@ -145,12 +134,12 @@ void MindMapData::setArrowSize(double arrowSize)
 
 double MindMapData::edgeWidth() const
 {
-    return m_edgeWidth;
+    return m_style.edgeWidth;
 }
 
 void MindMapData::setEdgeWidth(double edgeWidth)
 {
-    m_edgeWidth = edgeWidth;
+    m_style.edgeWidth = edgeWidth;
 
     for (auto && edge : m_graph.getEdges()) {
         edge->setEdgeWidth(edgeWidth);
@@ -189,22 +178,22 @@ const ImageManager & MindMapData::imageManager() const
 
 double MindMapData::minEdgeLength() const
 {
-    return m_minEdgeLength;
+    return m_layoutOptimizerParameters.minEdgeLength;
 }
 
 void MindMapData::setMinEdgeLength(double minEdgeLength)
 {
-    m_minEdgeLength = minEdgeLength;
+    m_layoutOptimizerParameters.minEdgeLength = minEdgeLength;
 }
 
 QFont MindMapData::font() const
 {
-    return m_font;
+    return m_style.font;
 }
 
 void MindMapData::changeFont(QFont font)
 {
-    m_font = font;
+    m_style.font = font;
 
     for (auto && edge : m_graph.getEdges()) {
         edge->changeFont(font);
@@ -228,12 +217,12 @@ void MindMapData::setShadowEffect(const ShadowEffectParams & params)
 
 int MindMapData::textSize() const
 {
-    return m_textSize;
+    return m_style.textSize;
 }
 
 void MindMapData::setTextSize(int textSize)
 {
-    m_textSize = textSize;
+    m_style.textSize = textSize;
 
     for (auto && edge : m_graph.getEdges()) {
         edge->setTextSize(textSize);

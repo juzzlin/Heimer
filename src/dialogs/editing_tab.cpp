@@ -25,8 +25,8 @@
 
 namespace Dialogs {
 
-EditingTab::EditingTab(QWidget * parent)
-  : QWidget(parent)
+EditingTab::EditingTab(QString name, QWidget * parent)
+  : SettingsTabBase(name, parent)
 {
     initWidgets();
 }

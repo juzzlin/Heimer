@@ -16,11 +16,11 @@
 #ifndef DEFAULTS_TAB_HPP
 #define DEFAULTS_TAB_HPP
 
-#include <QWidget>
 #include <map>
 #include <vector>
 
 #include "../edge_model.hpp"
+#include "settings_tab_base.hpp"
 
 class QCheckBox;
 class QDoubleSpinBox;
@@ -31,16 +31,16 @@ namespace Dialogs {
 
 class ColorSettingButton;
 
-class DefaultsTab : public QWidget
+class DefaultsTab : public SettingsTabBase
 {
     Q_OBJECT
 
 public:
-    explicit DefaultsTab(QWidget * parent = nullptr);
+    explicit DefaultsTab(QString name, QWidget * parent = nullptr);
 
-    void apply();
+    void apply() override;
 
-    void reject();
+    void reject() override;
 
 private:
     void createColorWidgets(QVBoxLayout & mainLayout);

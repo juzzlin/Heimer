@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2021 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2023 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,41 +13,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SETTINGS_DIALOG_HPP
-#define SETTINGS_DIALOG_HPP
-
-#include <QDialog>
-
-#include <vector>
-
-struct ShadowEffectParams;
+#include "settings_tab_base.hpp"
 
 namespace Dialogs {
 
-class SettingsTabBase;
-
-class SettingsDialog : public QDialog
+SettingsTabBase::SettingsTabBase(QString name, QWidget * parent)
+  : QWidget(parent)
+  , m_name(name)
 {
-    Q_OBJECT
+}
 
-public:
-    explicit SettingsDialog(QWidget * parent = nullptr);
+void SettingsTabBase::apply()
+{
+}
 
-signals:
-    void autosaveEnabled(bool enabled);
+void SettingsTabBase::reject()
+{
+}
 
-    void shadowEffectChanged(const ShadowEffectParams & params);
-
-private:
-    void accept() override;
-
-    void reject() override;
-
-    void initWidgets();
-
-    std::vector<SettingsTabBase *> m_tabs;
-};
+QString SettingsTabBase::name() const
+{
+    return m_name;
+}
 
 } // namespace Dialogs
-
-#endif // SETTINGS_DIALOG_HPP

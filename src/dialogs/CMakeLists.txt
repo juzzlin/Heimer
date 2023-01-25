@@ -10,6 +10,7 @@ set(LIB_SRC
     png_export_dialog.cpp
     scene_color_dialog.cpp
     settings_dialog.cpp
+    settings_tab_base.cpp
     svg_export_dialog.cpp
     whats_new_dialog.cpp
     widget_factory.cpp

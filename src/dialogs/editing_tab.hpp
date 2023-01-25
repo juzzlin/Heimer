@@ -16,20 +16,20 @@
 #ifndef EDITING_TAB_HPP
 #define EDITING_TAB_HPP
 
-#include <QWidget>
+#include "settings_tab_base.hpp"
 
 class QCheckBox;
 
 namespace Dialogs {
 
-class EditingTab : public QWidget
+class EditingTab : public SettingsTabBase
 {
     Q_OBJECT
 
 public:
-    explicit EditingTab(QWidget * parent = nullptr);
+    explicit EditingTab(QString name, QWidget * parent = nullptr);
 
-    void apply();
+    void apply() override;
 
 signals:
     void autosaveEnabled(bool enabled);

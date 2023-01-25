@@ -34,8 +34,8 @@
 
 namespace Dialogs {
 
-DefaultsTab::DefaultsTab(QWidget * parent)
-  : QWidget(parent)
+DefaultsTab::DefaultsTab(QString name, QWidget * parent)
+  : SettingsTabBase(name, parent)
   , m_edgeDirectionCheckBox(new QCheckBox(tr("Reversed direction"), this))
   , m_arrowSizeSpinBox(new QDoubleSpinBox(this))
   , m_edgeWidthSpinBox(new QDoubleSpinBox(this))

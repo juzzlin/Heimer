@@ -28,43 +28,48 @@ namespace Dialogs {
 
 SettingsDialog::SettingsDialog(QWidget * parent)
   : QDialog(parent)
-  , m_defaultsTab(new DefaultsTab(this))
-  , m_editingTab(new EditingTab(this))
-  , m_effectsTab(new EffectsTab(this))
 {
     setWindowTitle(tr("Settings"));
     setMinimumWidth(640);
 
     initWidgets();
-
-    connect(m_effectsTab, &EffectsTab::shadowEffectChanged, this, &SettingsDialog::shadowEffectChanged);
-
-    connect(m_editingTab, &EditingTab::autosaveEnabled, this, &SettingsDialog::autosaveEnabled);
 }
 
 void SettingsDialog::accept()
 {
-    m_defaultsTab->apply();
-    m_editingTab->apply();
-    m_effectsTab->apply();
+    for (auto && tab : m_tabs) {
+        tab->apply();
+    }
 
     QDialog::accept();
 }
 
 void SettingsDialog::reject()
 {
-    m_defaultsTab->reject();
+    for (auto && tab : m_tabs) {
+        tab->reject();
+    }
 
     QDialog::reject();
 }
 
 void SettingsDialog::initWidgets()
 {
+    m_tabs.push_back(new DefaultsTab(tr("Defaults"), this));
+
+    const auto editingTab = new EditingTab(tr("Editing"), this);
+    connect(editingTab, &EditingTab::autosaveEnabled, this, &SettingsDialog::autosaveEnabled);
+    m_tabs.push_back(editingTab);
+
+    const auto effectsTab = new EffectsTab(tr("Effects"), this);
+    connect(effectsTab, &EffectsTab::shadowEffectChanged, this, &SettingsDialog::shadowEffectChanged);
+    m_tabs.push_back(effectsTab);
+
     const auto tabWidget = new QTabWidget;
 
-    tabWidget->addTab(m_defaultsTab, tr("Defaults"));
-    tabWidget->addTab(m_editingTab, tr("Editing"));
-    tabWidget->addTab(m_effectsTab, tr("Effects"));
+    for (auto && tab : m_tabs) {
+        tabWidget->addTab(tab, tab->name());
+    }
 
     const auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
                                                 | QDialogButtonBox::Cancel);

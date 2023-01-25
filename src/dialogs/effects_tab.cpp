@@ -30,8 +30,8 @@
 
 namespace Dialogs {
 
-EffectsTab::EffectsTab(QWidget * parent)
-  : QWidget(parent)
+EffectsTab::EffectsTab(QString name, QWidget * parent)
+  : SettingsTabBase(name, parent)
   , m_shadowOffsetSpinBox(new QSpinBox(this))
   , m_shadowBlurRadiusSpinBox(new QSpinBox(this))
   , m_selectedItemShadowBlurRadiusSpinBox(new QSpinBox(this))

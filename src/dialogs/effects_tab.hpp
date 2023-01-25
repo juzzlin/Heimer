@@ -16,7 +16,7 @@
 #ifndef EFFECTS_TAB_HPP
 #define EFFECTS_TAB_HPP
 
-#include <QWidget>
+#include "settings_tab_base.hpp"
 
 class QSpinBox;
 struct ShadowEffectParams;
@@ -25,14 +25,14 @@ namespace Dialogs {
 
 class ColorSettingButton;
 
-class EffectsTab : public QWidget
+class EffectsTab : public SettingsTabBase
 {
     Q_OBJECT
 
 public:
-    explicit EffectsTab(QWidget * parent = nullptr);
+    explicit EffectsTab(QString name, QWidget * parent = nullptr);
 
-    void apply();
+    void apply() override;
 
 signals:
     void shadowEffectChanged(const ShadowEffectParams & params);

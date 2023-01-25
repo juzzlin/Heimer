@@ -5,6 +5,8 @@ Release date:
 
 New features:
 
+* Add default settings for arrow size and edge width
+
 Bug fixes:
 
 * Fix node left selected on canceled node/text color dialog

@@ -58,72 +58,72 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application.cpp" line="207"/>
+        <location filename="../application.cpp" line="213"/>
         <source>A new version %1 available at &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="214"/>
+        <location filename="../application.cpp" line="220"/>
         <source>Heimer Files</source>
         <translation>Archivos heimer</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="308"/>
+        <location filename="../application.cpp" line="314"/>
         <source>Open File</source>
         <translation>Abrir archivo</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="334"/>
+        <location filename="../application.cpp" line="340"/>
         <source>Failed to save file.</source>
         <translation>No se pudo guardar el archivo.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="351"/>
+        <location filename="../application.cpp" line="357"/>
         <source>Save File As</source>
         <translation>Guardar archivo como</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="365"/>
+        <location filename="../application.cpp" line="371"/>
         <source>File &apos;</source>
         <translation>Archivo &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="365"/>
+        <location filename="../application.cpp" line="371"/>
         <source>&apos; saved.</source>
         <translation>&apos; guardado.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="371"/>
+        <location filename="../application.cpp" line="377"/>
         <source>Failed to save file as &apos;</source>
         <translation>No se pudo guardar el archivo como &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="413"/>
+        <location filename="../application.cpp" line="425"/>
         <source>Open an image</source>
         <translation>Abrir imagen</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="413"/>
+        <location filename="../application.cpp" line="425"/>
         <source>Image Files</source>
         <translation>Archivos de imagen</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="419"/>
+        <location filename="../application.cpp" line="431"/>
         <source>Load image</source>
         <translation>Cargar imagen</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="419"/>
+        <location filename="../application.cpp" line="431"/>
         <source>Failed to load image &apos;</source>
         <translation>No se pudo cargar la imagen &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="463"/>
+        <location filename="../application.cpp" line="475"/>
         <source>The mind map has been modified.</source>
         <translation>El mapa mental se ha modificado.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="464"/>
+        <location filename="../application.cpp" line="476"/>
         <source>Do you want to save your changes?</source>
         <translation>¿Quiere guardar los cambios?</translation>
     </message>
@@ -191,62 +191,72 @@
 <context>
     <name>Dialogs::DefaultsTab</name>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="37"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="39"/>
         <source>Reversed direction</source>
         <translation type="unfinished">Dirección contraria</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="38"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="42"/>
         <source>Background</source>
         <translation type="unfinished">Fondo</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="39"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="43"/>
         <source>Edge color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="40"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="44"/>
         <source>Grid color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="41"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="45"/>
         <source>Node color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="42"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="46"/>
         <source>Node text color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="63"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="74"/>
         <source>These default settings will be applied each time a new mind map is created.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="78"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="99"/>
         <source>Edge Arrow Style</source>
         <translation type="unfinished">Estilo de flecha</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="81"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="102"/>
         <source>No arrow</source>
         <translation type="unfinished">Sin flecha</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="82"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="103"/>
         <source>Single arrow</source>
         <translation type="unfinished">Flecha única</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="83"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="104"/>
         <source>Double arrow</source>
         <translation type="unfinished">Flecha doble</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="99"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="123"/>
+        <source>Arrow size:</source>
+        <translation type="unfinished">Tamaño de la flecha:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/defaults_tab.cpp" line="126"/>
+        <source>Edge width:</source>
+        <translation type="unfinished">Ancho de línea:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/defaults_tab.cpp" line="144"/>
         <source>Colors</source>
         <translation type="unfinished"></translation>
     </message>
@@ -255,31 +265,26 @@
     <name>Dialogs::EditingTab</name>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="49"/>
-        <location filename="../dialogs/miscellaneous_tab.cpp" line="45"/>
         <source>Selecting Nodes</source>
         <translation type="unfinished">Selección de nodos</translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="50"/>
-        <location filename="../dialogs/miscellaneous_tab.cpp" line="46"/>
         <source>Select node group by intersection</source>
         <translation type="unfinished">Seleccionar grupo de nodos por intersección</translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="53"/>
-        <location filename="../dialogs/miscellaneous_tab.cpp" line="49"/>
         <source>Autosave</source>
         <translation type="unfinished">Autoguardado</translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="54"/>
-        <location filename="../dialogs/miscellaneous_tab.cpp" line="50"/>
         <source>Autosave feature will automatically save your mind map on every modification after it has been initially saved once.</source>
         <translation type="unfinished">Tras haber sido guardado el mapa mental por primera vez, la función de autoguardado lo volverá a guardar de manera automática cada vez que se modifique.</translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="57"/>
-        <location filename="../dialogs/miscellaneous_tab.cpp" line="53"/>
         <source>Enable autosave</source>
         <translation type="unfinished">Activar autoguardado</translation>
     </message>
@@ -421,17 +426,17 @@
         <translation type="unfinished">Ajustes</translation>
     </message>
     <message>
-        <location filename="../dialogs/settings_dialog.cpp" line="58"/>
+        <location filename="../dialogs/settings_dialog.cpp" line="65"/>
         <source>Defaults</source>
         <translation type="unfinished">Por defecto</translation>
     </message>
     <message>
-        <location filename="../dialogs/settings_dialog.cpp" line="59"/>
+        <location filename="../dialogs/settings_dialog.cpp" line="66"/>
         <source>Editing</source>
         <translation type="unfinished">Edición</translation>
     </message>
     <message>
-        <location filename="../dialogs/settings_dialog.cpp" line="60"/>
+        <location filename="../dialogs/settings_dialog.cpp" line="67"/>
         <source>Effects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -480,7 +485,7 @@
 <context>
     <name>Edge</name>
     <message>
-        <location filename="../edge.cpp" line="82"/>
+        <location filename="../edge.cpp" line="83"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>

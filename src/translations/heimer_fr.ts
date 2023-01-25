@@ -26,72 +26,72 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application.cpp" line="207"/>
+        <location filename="../application.cpp" line="213"/>
         <source>A new version %1 available at &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="214"/>
+        <location filename="../application.cpp" line="220"/>
         <source>Heimer Files</source>
         <translation>Heimer Fichiers</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="308"/>
+        <location filename="../application.cpp" line="314"/>
         <source>Open File</source>
         <translation>Ouvrir un fichier</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="334"/>
+        <location filename="../application.cpp" line="340"/>
         <source>Failed to save file.</source>
         <translation>Erreur lors de la sauvegarde.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="351"/>
+        <location filename="../application.cpp" line="357"/>
         <source>Save File As</source>
         <translation>Enregistrer sous</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="365"/>
+        <location filename="../application.cpp" line="371"/>
         <source>File &apos;</source>
         <translation>Fichier.&apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="365"/>
+        <location filename="../application.cpp" line="371"/>
         <source>&apos; saved.</source>
         <translation>&apos;sauvegarder.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="371"/>
+        <location filename="../application.cpp" line="377"/>
         <source>Failed to save file as &apos;</source>
         <translation>Erreur d&apos;enregistrement sous&apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="413"/>
+        <location filename="../application.cpp" line="425"/>
         <source>Open an image</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="413"/>
+        <location filename="../application.cpp" line="425"/>
         <source>Image Files</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="419"/>
+        <location filename="../application.cpp" line="431"/>
         <source>Load image</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="419"/>
+        <location filename="../application.cpp" line="431"/>
         <source>Failed to load image &apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="463"/>
+        <location filename="../application.cpp" line="475"/>
         <source>The mind map has been modified.</source>
         <translation>La carte heuristique a été modifié.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="464"/>
+        <location filename="../application.cpp" line="476"/>
         <source>Do you want to save your changes?</source>
         <translation>Voulez-vous enregistrer vos modifications?</translation>
     </message>
@@ -155,143 +155,148 @@
     <message>
         <location filename="../dialogs/about_dialog.cpp" line="33"/>
         <source>About </source>
-        <translation type="unfinished">Aide </translation>
+        <translation>Aide </translation>
     </message>
     <message>
         <location filename="../dialogs/about_dialog.cpp" line="51"/>
         <source> is licenced under </source>
-        <translation type="unfinished"> est sous licence </translation>
+        <translation> est sous licence </translation>
     </message>
     <message>
         <location filename="../dialogs/about_dialog.cpp" line="53"/>
         <source>Package type: </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dialogs/about_dialog.cpp" line="54"/>
         <source>Project website: </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dialogs/about_dialog.cpp" line="56"/>
         <source>Support </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dialogs/about_dialog.cpp" line="56"/>
         <source> via PayPal: </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
     <name>Dialogs::DefaultsTab</name>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="37"/>
-        <source>Reversed direction</source>
-        <translation type="unfinished">Direction inversée</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="38"/>
-        <source>Background</source>
-        <translation type="unfinished">Arrière-plan</translation>
-    </message>
-    <message>
         <location filename="../dialogs/defaults_tab.cpp" line="39"/>
-        <source>Edge color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="40"/>
-        <source>Grid color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="41"/>
-        <source>Node color</source>
-        <translation type="unfinished"></translation>
+        <source>Reversed direction</source>
+        <translation>Direction inversée</translation>
     </message>
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="42"/>
+        <source>Background</source>
+        <translation>Arrière-plan</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/defaults_tab.cpp" line="43"/>
+        <source>Edge color</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/defaults_tab.cpp" line="44"/>
+        <source>Grid color</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/defaults_tab.cpp" line="45"/>
+        <source>Node color</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/defaults_tab.cpp" line="46"/>
         <source>Node text color</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="63"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="74"/>
         <source>These default settings will be applied each time a new mind map is created.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="78"/>
-        <source>Edge Arrow Style</source>
-        <translation type="unfinished">Style de flèche de bord</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="81"/>
-        <source>No arrow</source>
-        <translation type="unfinished">Pas de flèche</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="82"/>
-        <source>Single arrow</source>
-        <translation type="unfinished">Flèche simple</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="83"/>
-        <source>Double arrow</source>
-        <translation type="unfinished">Double flèche</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="99"/>
+        <source>Edge Arrow Style</source>
+        <translation>Style de flèche de bord</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/defaults_tab.cpp" line="102"/>
+        <source>No arrow</source>
+        <translation>Pas de flèche</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/defaults_tab.cpp" line="103"/>
+        <source>Single arrow</source>
+        <translation>Flèche simple</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/defaults_tab.cpp" line="104"/>
+        <source>Double arrow</source>
+        <translation>Double flèche</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/defaults_tab.cpp" line="123"/>
+        <source>Arrow size:</source>
+        <translation>Taille de la flèche:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/defaults_tab.cpp" line="126"/>
+        <source>Edge width:</source>
+        <translation>Taille du contour:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/defaults_tab.cpp" line="144"/>
         <source>Colors</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
     <name>Dialogs::EditingTab</name>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="49"/>
-        <location filename="../dialogs/miscellaneous_tab.cpp" line="45"/>
         <source>Selecting Nodes</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="50"/>
-        <location filename="../dialogs/miscellaneous_tab.cpp" line="46"/>
         <source>Select node group by intersection</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="53"/>
-        <location filename="../dialogs/miscellaneous_tab.cpp" line="49"/>
         <source>Autosave</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="54"/>
-        <location filename="../dialogs/miscellaneous_tab.cpp" line="50"/>
         <source>Autosave feature will automatically save your mind map on every modification after it has been initially saved once.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="57"/>
-        <location filename="../dialogs/miscellaneous_tab.cpp" line="53"/>
         <source>Enable autosave</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="60"/>
         <source>Autoload</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="61"/>
         <source>Autoload feature will automatically load your recent mind map on application start.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="64"/>
         <source>Enable autoload</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -299,32 +304,32 @@
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="38"/>
         <source>Shadow color</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="39"/>
         <source>Selected item shadow color</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="89"/>
         <source>Shadows</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="92"/>
         <source>Shadow effect offset:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="100"/>
         <source>Shadow blur radius:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="110"/>
         <source>Selected item shadow blur radius:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -332,22 +337,22 @@
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="43"/>
         <source>Optimize Layout</source>
-        <translation type="unfinished">Optimiser la mise en page</translation>
+        <translation>Optimiser la mise en page</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="75"/>
         <source>Parameters</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="78"/>
         <source>Aspect Ratio:</source>
-        <translation type="unfinished">Ratio d&apos;aspect:</translation>
+        <translation>Ratio d&apos;aspect:</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="89"/>
         <source>Minimum Edge Length:</source>
-        <translation type="unfinished">Longueur d&apos;arête minimale:</translation>
+        <translation>Longueur d&apos;arête minimale:</translation>
     </message>
 </context>
 <context>
@@ -355,57 +360,57 @@
     <message>
         <location filename="../dialogs/png_export_dialog.cpp" line="42"/>
         <source>Export to PNG Image</source>
-        <translation type="unfinished">Exporter au format PNG</translation>
+        <translation>Exporter au format PNG</translation>
     </message>
     <message>
         <location filename="../dialogs/png_export_dialog.cpp" line="49"/>
         <source>Export As</source>
-        <translation type="unfinished">Exporter vers</translation>
+        <translation>Exporter vers</translation>
     </message>
     <message>
         <location filename="../dialogs/png_export_dialog.cpp" line="51"/>
         <source>PNG Files</source>
-        <translation type="unfinished">Fichiers PNG</translation>
+        <translation>Fichiers PNG</translation>
     </message>
     <message>
         <location filename="../dialogs/png_export_dialog.cpp" line="124"/>
         <source>Couldn&apos;t write to</source>
-        <translation type="unfinished">Impossible d&apos;écrire</translation>
+        <translation>Impossible d&apos;écrire</translation>
     </message>
     <message>
         <location filename="../dialogs/png_export_dialog.cpp" line="154"/>
         <source>Filename</source>
-        <translation type="unfinished">Nom de fichier</translation>
+        <translation>Nom de fichier</translation>
     </message>
     <message>
         <location filename="../dialogs/png_export_dialog.cpp" line="160"/>
         <source>Export as..</source>
-        <translation type="unfinished">Exporter vers..</translation>
+        <translation>Exporter vers..</translation>
     </message>
     <message>
         <location filename="../dialogs/png_export_dialog.cpp" line="164"/>
         <source>Image Size</source>
-        <translation type="unfinished">Taille de l&apos;image</translation>
+        <translation>Taille de l&apos;image</translation>
     </message>
     <message>
         <location filename="../dialogs/png_export_dialog.cpp" line="167"/>
         <source>Width (px):</source>
-        <translation type="unfinished">Largeur (px):</translation>
+        <translation>Largeur (px):</translation>
     </message>
     <message>
         <location filename="../dialogs/png_export_dialog.cpp" line="173"/>
         <source>Height (px):</source>
-        <translation type="unfinished">Hauteur (px):</translation>
+        <translation>Hauteur (px):</translation>
     </message>
     <message>
         <location filename="../dialogs/png_export_dialog.cpp" line="181"/>
         <source>Background</source>
-        <translation type="unfinished">Arrière-plan</translation>
+        <translation>Arrière-plan</translation>
     </message>
     <message>
         <location filename="../dialogs/png_export_dialog.cpp" line="185"/>
         <source>Transparent background</source>
-        <translation type="unfinished">Transparence de l&apos;arrière-plan</translation>
+        <translation>Transparence de l&apos;arrière-plan</translation>
     </message>
 </context>
 <context>
@@ -413,22 +418,22 @@
     <message>
         <location filename="../dialogs/settings_dialog.cpp" line="35"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings_dialog.cpp" line="58"/>
+        <location filename="../dialogs/settings_dialog.cpp" line="65"/>
         <source>Defaults</source>
-        <translation type="unfinished">Par défaut</translation>
+        <translation>Par défaut</translation>
     </message>
     <message>
-        <location filename="../dialogs/settings_dialog.cpp" line="59"/>
+        <location filename="../dialogs/settings_dialog.cpp" line="66"/>
         <source>Editing</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings_dialog.cpp" line="60"/>
+        <location filename="../dialogs/settings_dialog.cpp" line="67"/>
         <source>Effects</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -436,32 +441,32 @@
     <message>
         <location filename="../dialogs/svg_export_dialog.cpp" line="41"/>
         <source>Export to an SVG File</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dialogs/svg_export_dialog.cpp" line="47"/>
         <source>Export As</source>
-        <translation type="unfinished">Exporter vers</translation>
+        <translation>Exporter vers</translation>
     </message>
     <message>
         <location filename="../dialogs/svg_export_dialog.cpp" line="49"/>
         <source>SVG Files</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dialogs/svg_export_dialog.cpp" line="80"/>
         <source>Couldn&apos;t write to</source>
-        <translation type="unfinished">Impossible d&apos;écrire</translation>
+        <translation>Impossible d&apos;écrire</translation>
     </message>
     <message>
         <location filename="../dialogs/svg_export_dialog.cpp" line="105"/>
         <source>Filename</source>
-        <translation type="unfinished">Nom de fichier</translation>
+        <translation>Nom de fichier</translation>
     </message>
     <message>
         <location filename="../dialogs/svg_export_dialog.cpp" line="111"/>
         <source>Export as..</source>
-        <translation type="unfinished">Exporter vers..</translation>
+        <translation>Exporter vers..</translation>
     </message>
 </context>
 <context>
@@ -469,15 +474,15 @@
     <message>
         <location filename="../dialogs/whats_new_dialog.cpp" line="31"/>
         <source>What&apos;s New</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
     <name>Edge</name>
     <message>
-        <location filename="../edge.cpp" line="82"/>
+        <location filename="../edge.cpp" line="83"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -801,27 +806,27 @@
     <message>
         <location filename="../menus/edge_context_menu.cpp" line="29"/>
         <source>Change direction</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../menus/edge_context_menu.cpp" line="35"/>
         <source>Show arrow</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../menus/edge_context_menu.cpp" line="42"/>
         <source>Double arrow</source>
-        <translation type="unfinished">Double flèche</translation>
+        <translation>Double flèche</translation>
     </message>
     <message>
         <location filename="../menus/edge_context_menu.cpp" line="49"/>
         <source>Dashed line</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../menus/edge_context_menu.cpp" line="56"/>
         <source>Delete edge</source>
-        <translation type="unfinished">Supprimer le contour</translation>
+        <translation>Supprimer le contour</translation>
     </message>
 </context>
 <context>
@@ -830,78 +835,78 @@
         <location filename="../menus/main_context_menu.cpp" line="32"/>
         <location filename="../menus/main_context_menu.cpp" line="169"/>
         <source>Copy node</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../menus/main_context_menu.cpp" line="33"/>
         <location filename="../menus/main_context_menu.cpp" line="172"/>
         <source>Paste node</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../menus/main_context_menu.cpp" line="60"/>
         <source>Set background color</source>
-        <translation type="unfinished">Affichage de la couleur d&apos;arrière-plan</translation>
+        <translation>Affichage de la couleur d&apos;arrière-plan</translation>
     </message>
     <message>
         <location filename="../menus/main_context_menu.cpp" line="66"/>
         <source>Set edge color</source>
-        <translation type="unfinished">Affichage de la couleur du bord</translation>
+        <translation>Affichage de la couleur du bord</translation>
     </message>
     <message>
         <location filename="../menus/main_context_menu.cpp" line="72"/>
         <source>Set grid color</source>
-        <translation type="unfinished">Définir la couleur de la grille</translation>
+        <translation>Définir la couleur de la grille</translation>
     </message>
     <message>
         <location filename="../menus/main_context_menu.cpp" line="78"/>
         <source>Create floating node</source>
-        <translation type="unfinished">Création d&apos;un noeud déplacable</translation>
+        <translation>Création d&apos;un noeud déplacable</translation>
     </message>
     <message>
         <location filename="../menus/main_context_menu.cpp" line="92"/>
         <source>Set node color</source>
-        <translation type="unfinished">Affichage de la couleur du noeud</translation>
+        <translation>Affichage de la couleur du noeud</translation>
     </message>
     <message>
         <location filename="../menus/main_context_menu.cpp" line="98"/>
         <source>Set text color</source>
-        <translation type="unfinished">Affichage de la couleur du texte</translation>
+        <translation>Affichage de la couleur du texte</translation>
     </message>
     <message>
         <location filename="../menus/main_context_menu.cpp" line="104"/>
         <source>Delete node</source>
-        <translation type="unfinished">Supprimer un noeud</translation>
+        <translation>Supprimer un noeud</translation>
     </message>
     <message>
         <location filename="../menus/main_context_menu.cpp" line="119"/>
         <source>Attach image...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../menus/main_context_menu.cpp" line="126"/>
         <source>Remove attached image</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../menus/main_context_menu.cpp" line="166"/>
         <source>Node &amp;colors</source>
-        <translation type="unfinished">&amp;Couleurs des noeuds</translation>
+        <translation>&amp;Couleurs des noeuds</translation>
     </message>
     <message>
         <location filename="../menus/main_context_menu.cpp" line="166"/>
         <source>General &amp;colors</source>
-        <translation type="unfinished">&amp;Couleurs générales</translation>
+        <translation>&amp;Couleurs générales</translation>
     </message>
     <message>
         <location filename="../menus/main_context_menu.cpp" line="169"/>
         <source>Copy nodes</source>
-        <translation type="unfinished">Copier les noeuds</translation>
+        <translation>Copier les noeuds</translation>
     </message>
     <message>
         <location filename="../menus/main_context_menu.cpp" line="172"/>
         <source>Paste nodes</source>
-        <translation type="unfinished">Coller les noeuds</translation>
+        <translation>Coller les noeuds</translation>
     </message>
 </context>
 <context>
@@ -909,57 +914,57 @@
     <message>
         <location filename="../menus/tool_bar.cpp" line="37"/>
         <source>Auto snap</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../menus/tool_bar.cpp" line="38"/>
         <source>Copy on drag</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../menus/tool_bar.cpp" line="45"/>
         <source>Show grid</source>
-        <translation type="unfinished">Afficher la grille</translation>
+        <translation>Afficher la grille</translation>
     </message>
     <message>
         <location filename="../menus/tool_bar.cpp" line="87"/>
         <source>Automatically snap existing nodes to the grid when grid size changes</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../menus/tool_bar.cpp" line="118"/>
         <source>Corner radius:</source>
-        <translation type="unfinished">Rayon de coin:</translation>
+        <translation>Rayon de coin:</translation>
     </message>
     <message>
         <location filename="../menus/tool_bar.cpp" line="135"/>
         <source>Arrow size:</source>
-        <translation type="unfinished">Taille de la flèche:</translation>
+        <translation>Taille de la flèche:</translation>
     </message>
     <message>
         <location filename="../menus/tool_bar.cpp" line="152"/>
         <source>Edge width:</source>
-        <translation type="unfinished">Taille du contour:</translation>
+        <translation>Taille du contour:</translation>
     </message>
     <message>
         <location filename="../menus/tool_bar.cpp" line="157"/>
         <source>Font</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../menus/tool_bar.cpp" line="192"/>
         <source>Grid size:</source>
-        <translation type="unfinished">Taille de la grille:</translation>
+        <translation>Taille de la grille:</translation>
     </message>
     <message>
         <location filename="../menus/tool_bar.cpp" line="214"/>
         <source>Search:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../menus/tool_bar.cpp" line="230"/>
         <source>Text size:</source>
-        <translation type="unfinished">Taille du texte:</translation>
+        <translation>Taille du texte:</translation>
     </message>
 </context>
 <context>
@@ -967,27 +972,27 @@
     <message>
         <location filename="../node_handle.cpp" line="58"/>
         <source>Drag to connect or create a child node</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../node_handle.cpp" line="60"/>
         <source>Move the node</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../node_handle.cpp" line="62"/>
         <source>Select node color</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../node_handle.cpp" line="64"/>
         <source>Select text color</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../node_handle.cpp" line="302"/>
         <source>A</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1061,7 +1066,7 @@
     <message>
         <location filename="../dialogs/widget_factory.cpp" line="45"/>
         <source>Reset to defaults</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>

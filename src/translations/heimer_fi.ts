@@ -62,72 +62,72 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application.cpp" line="207"/>
+        <location filename="../application.cpp" line="213"/>
         <source>A new version %1 available at &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</source>
         <translation>Uusi versio %1 ladattavissa osoitteessa &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="214"/>
+        <location filename="../application.cpp" line="220"/>
         <source>Heimer Files</source>
         <translation>Heimer -tiedostot</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="308"/>
+        <location filename="../application.cpp" line="314"/>
         <source>Open File</source>
         <translation>Avaa tiedosto</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="334"/>
+        <location filename="../application.cpp" line="340"/>
         <source>Failed to save file.</source>
         <translation>Tiedoston tallentaminen epäonnistui</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="351"/>
+        <location filename="../application.cpp" line="357"/>
         <source>Save File As</source>
         <translation>Tallenna Nimellä</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="365"/>
+        <location filename="../application.cpp" line="371"/>
         <source>File &apos;</source>
         <translation>Tiedosto &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="365"/>
+        <location filename="../application.cpp" line="371"/>
         <source>&apos; saved.</source>
         <translation>&apos; tallennettu.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="371"/>
+        <location filename="../application.cpp" line="377"/>
         <source>Failed to save file as &apos;</source>
         <translation>Tietoston tallentaminen epäonnistui nimellä &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="413"/>
+        <location filename="../application.cpp" line="425"/>
         <source>Open an image</source>
         <translation>Avaa kuvatiedosto</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="413"/>
+        <location filename="../application.cpp" line="425"/>
         <source>Image Files</source>
         <translation>Kuvatiedostot</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="419"/>
+        <location filename="../application.cpp" line="431"/>
         <source>Load image</source>
         <translation>Kuvanlataus</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="419"/>
+        <location filename="../application.cpp" line="431"/>
         <source>Failed to load image &apos;</source>
         <translation>Kuvan lataaminen epäonnistui: &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="463"/>
+        <location filename="../application.cpp" line="475"/>
         <source>The mind map has been modified.</source>
         <translation>Käsitekarttaa on muokattu.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="464"/>
+        <location filename="../application.cpp" line="476"/>
         <source>Do you want to save your changes?</source>
         <translation>Haluatko tallentaa muutokset?</translation>
     </message>
@@ -254,62 +254,72 @@
 <context>
     <name>Dialogs::DefaultsTab</name>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="37"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="39"/>
         <source>Reversed direction</source>
         <translation>Käännetty suunta</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="38"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="42"/>
         <source>Background</source>
         <translation>Tausta</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="39"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="43"/>
         <source>Edge color</source>
         <translation>Kaaren väri</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="40"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="44"/>
         <source>Grid color</source>
         <translation>Ruudukon väri</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="41"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="45"/>
         <source>Node color</source>
         <translation>Solmun väri</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="42"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="46"/>
         <source>Node text color</source>
         <translation>Solmun tekstin väri</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="63"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="74"/>
         <source>These default settings will be applied each time a new mind map is created.</source>
         <translation>Nämä oletusasetukset tulevat voimaan aina kun uusi käsitekartta luodaan.</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="78"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="99"/>
         <source>Edge Arrow Style</source>
         <translation>Kaaren Nuolen Tyyli</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="81"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="102"/>
         <source>No arrow</source>
         <translation>Ei nuolta</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="82"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="103"/>
         <source>Single arrow</source>
         <translation>Yksi nuoli</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="83"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="104"/>
         <source>Double arrow</source>
         <translation>Kaksi nuolta</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="99"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="123"/>
+        <source>Arrow size:</source>
+        <translation>Nuolen koko:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/defaults_tab.cpp" line="126"/>
+        <source>Edge width:</source>
+        <translation>Kaaren leveys:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/defaults_tab.cpp" line="144"/>
         <source>Colors</source>
         <translation>Värit</translation>
     </message>
@@ -318,31 +328,26 @@
     <name>Dialogs::EditingTab</name>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="49"/>
-        <location filename="../dialogs/miscellaneous_tab.cpp" line="45"/>
         <source>Selecting Nodes</source>
         <translation>Solmujen Valitseminen</translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="50"/>
-        <location filename="../dialogs/miscellaneous_tab.cpp" line="46"/>
         <source>Select node group by intersection</source>
         <translation>Valitse joukko solmuja leikaten</translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="53"/>
-        <location filename="../dialogs/miscellaneous_tab.cpp" line="49"/>
         <source>Autosave</source>
         <translation>Automaattinen tallennus</translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="54"/>
-        <location filename="../dialogs/miscellaneous_tab.cpp" line="50"/>
         <source>Autosave feature will automatically save your mind map on every modification after it has been initially saved once.</source>
         <translation>Automaattinen tallennus tallentaa käsitekarttasi jokaisen muutoksen jälkeen siitä lähtien kun käsitekartta on ensimmäisen kerran tallennettu.</translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="57"/>
-        <location filename="../dialogs/miscellaneous_tab.cpp" line="53"/>
         <source>Enable autosave</source>
         <translation>Aktivoi automaattinen tallennus</translation>
     </message>
@@ -484,17 +489,17 @@
         <translation>Asetukset</translation>
     </message>
     <message>
-        <location filename="../dialogs/settings_dialog.cpp" line="58"/>
+        <location filename="../dialogs/settings_dialog.cpp" line="65"/>
         <source>Defaults</source>
         <translation>Oletusarvot</translation>
     </message>
     <message>
-        <location filename="../dialogs/settings_dialog.cpp" line="59"/>
+        <location filename="../dialogs/settings_dialog.cpp" line="66"/>
         <source>Editing</source>
         <translation>Editointi</translation>
     </message>
     <message>
-        <location filename="../dialogs/settings_dialog.cpp" line="60"/>
+        <location filename="../dialogs/settings_dialog.cpp" line="67"/>
         <source>Effects</source>
         <translation>Tehosteet</translation>
     </message>
@@ -543,7 +548,7 @@
 <context>
     <name>Edge</name>
     <message>
-        <location filename="../edge.cpp" line="82"/>
+        <location filename="../edge.cpp" line="83"/>
         <source>...</source>
         <translation></translation>
     </message>

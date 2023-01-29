@@ -254,74 +254,84 @@
 <context>
     <name>Dialogs::DefaultsTab</name>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="39"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="41"/>
         <source>Reversed direction</source>
         <translation>Käännetty suunta</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="42"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="44"/>
         <source>Background</source>
         <translation>Tausta</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="43"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="45"/>
         <source>Edge color</source>
         <translation>Kaaren väri</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="44"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="46"/>
         <source>Grid color</source>
         <translation>Ruudukon väri</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="45"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="47"/>
         <source>Node color</source>
         <translation>Solmun väri</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="46"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="48"/>
         <source>Node text color</source>
         <translation>Solmun tekstin väri</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="74"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="83"/>
         <source>These default settings will be applied each time a new mind map is created.</source>
         <translation>Nämä oletusasetukset tulevat voimaan aina kun uusi käsitekartta luodaan.</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="99"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="110"/>
         <source>Edge Arrow Style</source>
         <translation>Kaaren Nuolen Tyyli</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="102"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="113"/>
         <source>No arrow</source>
         <translation>Ei nuolta</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="103"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="114"/>
         <source>Single arrow</source>
         <translation>Yksi nuoli</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="104"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="115"/>
         <source>Double arrow</source>
         <translation>Kaksi nuolta</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="123"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="134"/>
         <source>Arrow size:</source>
         <translation>Nuolen koko:</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="126"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="137"/>
         <source>Edge width:</source>
         <translation>Kaaren leveys:</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="144"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="155"/>
         <source>Colors</source>
         <translation>Värit</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/defaults_tab.cpp" line="182"/>
+        <source>Text Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/defaults_tab.cpp" line="188"/>
+        <source>Text size:</source>
+        <translation type="unfinished">Tekstin koko:</translation>
     </message>
 </context>
 <context>
@@ -484,22 +494,22 @@
 <context>
     <name>Dialogs::SettingsDialog</name>
     <message>
-        <location filename="../dialogs/settings_dialog.cpp" line="35"/>
+        <location filename="../dialogs/settings_dialog.cpp" line="32"/>
         <source>Settings</source>
         <translation>Asetukset</translation>
     </message>
     <message>
-        <location filename="../dialogs/settings_dialog.cpp" line="65"/>
+        <location filename="../dialogs/settings_dialog.cpp" line="58"/>
         <source>Defaults</source>
         <translation>Oletusarvot</translation>
     </message>
     <message>
-        <location filename="../dialogs/settings_dialog.cpp" line="66"/>
+        <location filename="../dialogs/settings_dialog.cpp" line="60"/>
         <source>Editing</source>
         <translation>Editointi</translation>
     </message>
     <message>
-        <location filename="../dialogs/settings_dialog.cpp" line="67"/>
+        <location filename="../dialogs/settings_dialog.cpp" line="64"/>
         <source>Effects</source>
         <translation>Tehosteet</translation>
     </message>
@@ -1221,57 +1231,56 @@
 <context>
     <name>Menus::ToolBar</name>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="37"/>
+        <location filename="../menus/tool_bar.cpp" line="38"/>
         <source>Auto snap</source>
         <translation>Automaattinen napsautus</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="38"/>
+        <location filename="../menus/tool_bar.cpp" line="39"/>
         <source>Copy on drag</source>
         <translation>Kopioi raahatessa</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="45"/>
+        <location filename="../menus/tool_bar.cpp" line="46"/>
         <source>Show grid</source>
         <translation>Näytä ruudukko</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="87"/>
+        <location filename="../menus/tool_bar.cpp" line="88"/>
         <source>Automatically snap existing nodes to the grid when grid size changes</source>
         <translation>Napsauta olemassaolevat solmut automaattisesti ruudukkoon ruudukon koon vaihtuessa</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="118"/>
+        <location filename="../menus/tool_bar.cpp" line="119"/>
         <source>Corner radius:</source>
         <translation>Kulman pyöreys:</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="135"/>
+        <location filename="../menus/tool_bar.cpp" line="136"/>
         <source>Arrow size:</source>
         <translation>Nuolen koko:</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="152"/>
+        <location filename="../menus/tool_bar.cpp" line="153"/>
         <source>Edge width:</source>
         <translation>Kaaren leveys:</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="157"/>
         <source>Font</source>
-        <translation>Kirjasintyyppi</translation>
+        <translation type="vanished">Kirjasintyyppi</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="192"/>
+        <location filename="../menus/tool_bar.cpp" line="185"/>
         <source>Grid size:</source>
         <translation>Ruudukko:</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="214"/>
+        <location filename="../menus/tool_bar.cpp" line="207"/>
         <source>Search:</source>
         <translation>Haku:</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="230"/>
+        <location filename="../menus/tool_bar.cpp" line="223"/>
         <source>Text size:</source>
         <translation>Tekstin koko:</translation>
     </message>
@@ -1490,6 +1499,14 @@
     <message>
         <source>What&apos;s New</source>
         <translation type="vanished">Uutta Tässä Versiossa</translation>
+    </message>
+</context>
+<context>
+    <name>Widgets::FontButton</name>
+    <message>
+        <location filename="../widgets/font_button.cpp" line="30"/>
+        <source>Font</source>
+        <translation type="unfinished">Kirjasintyyppi</translation>
     </message>
 </context>
 </TS>

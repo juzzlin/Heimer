@@ -187,74 +187,84 @@
 <context>
     <name>Dialogs::DefaultsTab</name>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="39"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="41"/>
         <source>Reversed direction</source>
         <translation>Umgekehrte Richtung</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="42"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="44"/>
         <source>Background</source>
         <translation>Hintergrund</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="43"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="45"/>
         <source>Edge color</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="44"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="46"/>
         <source>Grid color</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="45"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="47"/>
         <source>Node color</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="46"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="48"/>
         <source>Node text color</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="74"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="83"/>
         <source>These default settings will be applied each time a new mind map is created.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="99"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="110"/>
         <source>Edge Arrow Style</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="102"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="113"/>
         <source>No arrow</source>
         <translation>Kein Pfeil</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="103"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="114"/>
         <source>Single arrow</source>
         <translation>Einzelner Pfeil</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="104"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="115"/>
         <source>Double arrow</source>
         <translation>Doppelter Pfeil</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="123"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="134"/>
         <source>Arrow size:</source>
         <translation>Pfeilgröße:</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="126"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="137"/>
         <source>Edge width:</source>
         <translation>Verbindungsweite:</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="144"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="155"/>
         <source>Colors</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/defaults_tab.cpp" line="182"/>
+        <source>Text Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/defaults_tab.cpp" line="188"/>
+        <source>Text size:</source>
+        <translation type="unfinished">textgröße:</translation>
     </message>
 </context>
 <context>
@@ -417,22 +427,22 @@
 <context>
     <name>Dialogs::SettingsDialog</name>
     <message>
-        <location filename="../dialogs/settings_dialog.cpp" line="35"/>
+        <location filename="../dialogs/settings_dialog.cpp" line="32"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../dialogs/settings_dialog.cpp" line="65"/>
+        <location filename="../dialogs/settings_dialog.cpp" line="58"/>
         <source>Defaults</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings_dialog.cpp" line="66"/>
+        <location filename="../dialogs/settings_dialog.cpp" line="60"/>
         <source>Editing</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../dialogs/settings_dialog.cpp" line="67"/>
+        <location filename="../dialogs/settings_dialog.cpp" line="64"/>
         <source>Effects</source>
         <translation></translation>
     </message>
@@ -924,57 +934,56 @@
 <context>
     <name>Menus::ToolBar</name>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="37"/>
+        <location filename="../menus/tool_bar.cpp" line="38"/>
         <source>Auto snap</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="38"/>
+        <location filename="../menus/tool_bar.cpp" line="39"/>
         <source>Copy on drag</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="45"/>
+        <location filename="../menus/tool_bar.cpp" line="46"/>
         <source>Show grid</source>
         <translation>Gitter anzeigen</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="87"/>
+        <location filename="../menus/tool_bar.cpp" line="88"/>
         <source>Automatically snap existing nodes to the grid when grid size changes</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="118"/>
+        <location filename="../menus/tool_bar.cpp" line="119"/>
         <source>Corner radius:</source>
         <translation>Eckenradius:</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="135"/>
+        <location filename="../menus/tool_bar.cpp" line="136"/>
         <source>Arrow size:</source>
         <translation>Pfeilgröße:</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="152"/>
+        <location filename="../menus/tool_bar.cpp" line="153"/>
         <source>Edge width:</source>
         <translation>Verbindungsweite:</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="157"/>
         <source>Font</source>
-        <translation>Schrift</translation>
+        <translation type="vanished">Schrift</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="192"/>
+        <location filename="../menus/tool_bar.cpp" line="185"/>
         <source>Grid size:</source>
         <translation>Gittergröße:</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="214"/>
+        <location filename="../menus/tool_bar.cpp" line="207"/>
         <source>Search:</source>
         <translation>Suche:</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="230"/>
+        <location filename="../menus/tool_bar.cpp" line="223"/>
         <source>Text size:</source>
         <translation>textgröße:</translation>
     </message>
@@ -1145,6 +1154,14 @@
     <message>
         <source>What&apos;s New</source>
         <translation type="vanished">Was ist neu</translation>
+    </message>
+</context>
+<context>
+    <name>Widgets::FontButton</name>
+    <message>
+        <location filename="../widgets/font_button.cpp" line="30"/>
+        <source>Font</source>
+        <translation type="unfinished">Schrift</translation>
     </message>
 </context>
 </TS>

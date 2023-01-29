@@ -26,6 +26,11 @@ class QCheckBox;
 class QDoubleSpinBox;
 class QRadioButton;
 class QVBoxLayout;
+class QSpinBox;
+
+namespace Widgets {
+class FontButton;
+}
 
 namespace Dialogs {
 
@@ -46,6 +51,8 @@ private:
     void createColorWidgets(QVBoxLayout & mainLayout);
 
     void createEdgeWidgets(QVBoxLayout & mainLayout);
+
+    void createTextWidgets(QVBoxLayout & mainLayout);
 
     void initWidgets();
 
@@ -70,6 +77,10 @@ private:
     ColorSettingButton * m_nodeTextColorButton = nullptr;
 
     std::vector<ColorSettingButton *> m_colorSettingButtons;
+
+    Widgets::FontButton * m_fontButton = nullptr;
+
+    QSpinBox * m_textSizeSpinBox = nullptr;
 };
 
 } // namespace Dialogs

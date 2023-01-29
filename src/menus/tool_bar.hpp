@@ -28,6 +28,10 @@ class QPushButton;
 class QSpinBox;
 class QWidgetAction;
 
+namespace Widgets {
+class FontButton;
+}
+
 namespace Menus {
 
 class ToolBar : public QToolBar
@@ -73,8 +77,6 @@ signals:
     void textSizeChanged(int value);
 
 private:
-    void updateFontButtonFont(const QFont & font);
-
     QWidgetAction * createCornerRadiusAction();
 
     QWidgetAction * createArrowSizeAction();
@@ -99,7 +101,7 @@ private:
 
     QDoubleSpinBox * m_edgeWidthSpinBox = nullptr;
 
-    QPushButton * m_fontButton = nullptr;
+    Widgets::FontButton * m_fontButton = nullptr;
 
     QSpinBox * m_gridSizeSpinBox = nullptr;
 

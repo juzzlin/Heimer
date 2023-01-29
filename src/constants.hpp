@@ -141,6 +141,8 @@ static const auto EDGE_COLOR_SETTINGS_KEY = "edgeColor";
 
 static const auto EDGE_WIDTH_SETTINGS_KEY = "edgeWidth";
 
+static const auto FONT_SETTINGS_KEY = "font";
+
 static const QColor GRID_COLOR { Qt::gray };
 
 static const auto GRID_COLOR_SETTINGS_KEY = "gridColor";
@@ -156,6 +158,8 @@ static const auto NODE_TEXT_COLOR_SETTINGS_KEY = "nodeTextColor";
 static const double EDGE_WIDTH = 2.0;
 
 static const int TEXT_SIZE = 11;
+
+static const auto TEXT_SIZE_SETTINGS_KEY = "textSize";
 
 } // namespace Defaults
 

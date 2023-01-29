@@ -24,14 +24,6 @@
 
 namespace {
 
-const auto settingsGroupApplication = "Application";
-
-const auto settingsGroupEditing = "Editing";
-
-const auto settingsGroupMainWindow = "MainWindow";
-
-const auto recentImagePathKey = "recentImagePath";
-
 const auto autoloadKey = "autoload";
 
 const auto autosaveKey = "autosave";
@@ -40,15 +32,37 @@ const auto autoSnapStateKey = "autoSnap";
 
 const auto edgeArrowModeKey = "edgeArrowMode";
 
+const auto fontFamilyPostfix = "_family";
+
+const auto fontBoldPostfix = "_bold";
+
+const auto fontItalicPostfix = "_italic";
+
+const auto fontOverlinePostfix = "_overline";
+
+const auto fontStrikeOutPostfix = "_strikeOut";
+
+const auto fontUnderlinePostfix = "_underline";
+
+const auto fontWeightPostfix = "_weight";
+
 const auto gridSizeKey = "gridSize";
 
 const auto gridVisibleStateKey = "gridVisibleState";
+
+const auto recentImagePathKey = "recentImagePath";
 
 const auto recentPathKey = "recentPath";
 
 const auto reversedEdgeDirectionKey = "reversedEdgeDirection";
 
 const auto selectNodeGroupByIntersectionKey = "selectNodeGroupByIntersection";
+
+const auto settingsGroupApplication = "Application";
+
+const auto settingsGroupEditing = "Editing";
+
+const auto settingsGroupMainWindow = "MainWindow";
 
 const auto windowFullScreenKey = "fullScreen";
 
@@ -330,6 +344,36 @@ void setNumber(QString group, QString key, double value)
     QSettings settings;
     settings.beginGroup(group);
     settings.setValue(key, value);
+    settings.endGroup();
+}
+
+QFont getFont(QString group, QString key, QFont defaultValue)
+{
+    QSettings settings;
+    settings.beginGroup(group);
+    auto font = defaultValue;
+    font.setFamily(settings.value(key + fontFamilyPostfix, defaultValue.family()).toString());
+    font.setBold(settings.value(key + fontBoldPostfix, defaultValue.bold()).toBool());
+    font.setItalic(settings.value(key + fontItalicPostfix, defaultValue.italic()).toBool());
+    font.setOverline(settings.value(key + fontOverlinePostfix, defaultValue.overline()).toBool());
+    font.setStrikeOut(settings.value(key + fontStrikeOutPostfix, defaultValue.strikeOut()).toBool());
+    font.setUnderline(settings.value(key + fontUnderlinePostfix, defaultValue.underline()).toBool());
+    font.setWeight(settings.value(key + fontWeightPostfix, defaultValue.weight()).toInt());
+    settings.endGroup();
+    return font;
+}
+
+void setFont(QString group, QString key, QFont value)
+{
+    QSettings settings;
+    settings.beginGroup(group);
+    settings.setValue(key + fontFamilyPostfix, value.family());
+    settings.setValue(key + fontBoldPostfix, value.bold());
+    settings.setValue(key + fontItalicPostfix, value.italic());
+    settings.setValue(key + fontOverlinePostfix, value.overline());
+    settings.setValue(key + fontStrikeOutPostfix, value.strikeOut());
+    settings.setValue(key + fontUnderlinePostfix, value.underline());
+    settings.setValue(key + fontWeightPostfix, value.weight());
     settings.endGroup();
 }
 

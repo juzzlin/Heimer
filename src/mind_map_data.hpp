@@ -108,7 +108,9 @@ private:
           , backgroundColor(settingsProxy.backgroundColor())
           , edgeColor(settingsProxy.edgeColor())
           , edgeWidth(settingsProxy.edgeWidth())
+          , font(settingsProxy.font())
           , gridColor(settingsProxy.gridColor())
+          , textSize(settingsProxy.textSize())
         {
         }
 
@@ -124,7 +126,7 @@ private:
 
         QColor gridColor;
 
-        int textSize = Constants::MindMap::Defaults::TEXT_SIZE;
+        int textSize;
 
         int cornerRadius = Constants::Node::Defaults::CORNER_RADIUS;
     };

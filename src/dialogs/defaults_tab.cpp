@@ -16,6 +16,7 @@
 #include "defaults_tab.hpp"
 
 #include "../settings_proxy.hpp"
+#include "../widgets/font_button.hpp"
 #include "color_setting_button.hpp"
 #include "widget_factory.hpp"
 
@@ -30,6 +31,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QRadioButton>
+#include <QSpinBox>
 #include <QVBoxLayout>
 
 namespace Dialogs {
@@ -44,22 +46,29 @@ DefaultsTab::DefaultsTab(QString name, QWidget * parent)
   , m_gridColorButton(new ColorSettingButton(tr("Grid color"), ColorDialog::Role::Grid, this))
   , m_nodeColorButton(new ColorSettingButton(tr("Node color"), ColorDialog::Role::Node, this))
   , m_nodeTextColorButton(new ColorSettingButton(tr("Node text color"), ColorDialog::Role::Text, this))
+  , m_fontButton(new Widgets::FontButton(this))
+  , m_textSizeSpinBox(new QSpinBox(this))
 {
     initWidgets();
 }
 
 void DefaultsTab::apply()
 {
+    auto && settings = SettingsProxy::instance();
+
     for (auto && iter : m_edgeArrowStyleRadioMap) {
         if (iter.second->isChecked()) {
-            SettingsProxy::instance().setEdgeArrowMode(iter.first);
+            settings.setEdgeArrowMode(iter.first);
             juzzlin::L().info() << "'" << iter.second->text().toStdString() << "' set as new default";
         }
     }
 
-    SettingsProxy::instance().setReversedEdgeDirection(m_edgeDirectionCheckBox->isChecked());
-    SettingsProxy::instance().setArrowSize(m_arrowSizeSpinBox->value());
-    SettingsProxy::instance().setEdgeWidth(m_edgeWidthSpinBox->value());
+    settings.setReversedEdgeDirection(m_edgeDirectionCheckBox->isChecked());
+    settings.setArrowSize(m_arrowSizeSpinBox->value());
+    settings.setEdgeWidth(m_edgeWidthSpinBox->value());
+
+    settings.setTextSize(m_textSizeSpinBox->value());
+    settings.setFont(m_fontButton->font());
 }
 
 void DefaultsTab::reject()
@@ -76,6 +85,8 @@ void DefaultsTab::initWidgets()
     mainLayout->addWidget(defaultsHelp);
 
     createEdgeWidgets(*mainLayout);
+
+    createTextWidgets(*mainLayout);
 
     createColorWidgets(*mainLayout);
 
@@ -166,19 +177,56 @@ void DefaultsTab::createColorWidgets(QVBoxLayout & mainLayout)
     });
 }
 
+void DefaultsTab::createTextWidgets(QVBoxLayout & mainLayout)
+{
+    const auto textGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Text Style"), mainLayout);
+    const auto textLayout = new QHBoxLayout;
+
+    m_textSizeSpinBox->setMinimum(Constants::Text::MIN_SIZE);
+    m_textSizeSpinBox->setMaximum(Constants::Text::MAX_SIZE);
+
+    textLayout->addWidget(new QLabel(tr("Text size:")));
+    textLayout->addWidget(m_textSizeSpinBox);
+    textLayout->addSpacing(10);
+    textLayout->addWidget(m_fontButton);
+    textLayout->addStretch();
+
+    // Reset to defaults button for text styles
+    const auto resetToDefaultsButton = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
+    connect(resetToDefaultsButton.first, &QPushButton::clicked, this, [=] {
+        m_fontButton->setFont({});
+        m_textSizeSpinBox->setValue(Constants::MindMap::Defaults::TEXT_SIZE);
+    });
+
+    connect(m_fontButton, &Widgets::FontButton::defaultFontSizeRequested, this, [=] {
+        m_fontButton->setDefaultPointSize(m_textSizeSpinBox->value());
+    });
+
+    connect(m_fontButton, &Widgets::FontButton::fontSizeChanged, m_textSizeSpinBox, &QSpinBox::setValue);
+
+    textLayout->addLayout(resetToDefaultsButton.second);
+
+    textGroup.second->addLayout(textLayout);
+}
+
 void DefaultsTab::setActiveDefaults()
 {
-    if (const auto defaultArrowStyle = SettingsProxy::instance().edgeArrowMode(); m_edgeArrowStyleRadioMap.count(defaultArrowStyle)) {
+    const auto & settings = SettingsProxy::instance();
+
+    if (const auto defaultArrowStyle = settings.edgeArrowMode(); m_edgeArrowStyleRadioMap.count(defaultArrowStyle)) {
         const auto radio = m_edgeArrowStyleRadioMap[defaultArrowStyle];
         radio->setChecked(true);
     } else {
         juzzlin::L().error() << "Invalid arrow style: " << static_cast<int>(defaultArrowStyle);
     }
 
-    m_edgeDirectionCheckBox->setChecked(SettingsProxy::instance().reversedEdgeDirection());
+    m_edgeDirectionCheckBox->setChecked(settings.reversedEdgeDirection());
 
-    m_arrowSizeSpinBox->setValue(SettingsProxy::instance().arrowSize());
-    m_edgeWidthSpinBox->setValue(SettingsProxy::instance().edgeWidth());
+    m_arrowSizeSpinBox->setValue(settings.arrowSize());
+    m_edgeWidthSpinBox->setValue(settings.edgeWidth());
+
+    m_textSizeSpinBox->setValue(settings.textSize());
+    m_fontButton->setFont(settings.font());
 }
 
 } // namespace Dialogs

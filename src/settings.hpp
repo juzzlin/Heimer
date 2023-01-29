@@ -18,7 +18,10 @@
 
 #include "edge.hpp"
 
+#include <QColor>
+#include <QFont>
 #include <QSize>
+#include <QString>
 
 namespace Settings {
 
@@ -87,6 +90,10 @@ void setColor(QString group, QString key, QColor value);
 double getNumber(QString group, QString key, double defaultValue);
 
 void setNumber(QString group, QString key, double value);
+
+QFont getFont(QString group, QString key, QFont defaultValue);
+
+void setFont(QString group, QString key, QFont value);
 
 } // namespace V2
 

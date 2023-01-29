@@ -22,6 +22,8 @@
 
 #include <memory>
 
+#include <QFont>
+
 class SettingsProxy
 {
 public:
@@ -81,7 +83,19 @@ public:
 
     void setShadowEffect(const ShadowEffectParams & params);
 
+    int textSize() const;
+
+    void setTextSize(int textSize);
+
+    QFont font() const;
+
+    void setFont(const QFont & font);
+
 private:
+    SettingsProxy(const SettingsProxy & other) = delete;
+
+    SettingsProxy & operator=(const SettingsProxy & other) = delete;
+
     bool m_autoload = false;
 
     bool m_autosave = false;
@@ -105,6 +119,10 @@ private:
     bool m_reversedEdgeDirection = false;
 
     bool m_selectNodeGroupByIntersection = false;
+
+    int m_textSize;
+
+    QFont m_font;
 
     ShadowEffectParams m_shadowEffectParams;
 

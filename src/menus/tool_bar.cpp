@@ -17,6 +17,7 @@
 
 #include "../constants.hpp"
 #include "../settings.hpp"
+#include "../widgets/font_button.hpp"
 #include "widget_factory.hpp"
 
 #include "simple_logger.hpp"
@@ -39,7 +40,7 @@ ToolBar::ToolBar(QWidget * parent)
   , m_cornerRadiusSpinBox(new QSpinBox(this))
   , m_arrowSizeSpinBox(new QDoubleSpinBox(this))
   , m_edgeWidthSpinBox(new QDoubleSpinBox(this))
-  , m_fontButton(new QPushButton(this))
+  , m_fontButton(new Widgets::FontButton(this))
   , m_gridSizeSpinBox(new QSpinBox(this))
   , m_searchLineEdit(new QLineEdit(this))
   , m_showGridCheckBox(new QCheckBox(tr("Show grid"), this))
@@ -94,7 +95,7 @@ bool ToolBar::autoSnapEnabled() const
 
 void ToolBar::changeFont(const QFont & font)
 {
-    updateFontButtonFont(font);
+    m_fontButton->setFont(font);
 }
 
 bool ToolBar::copyOnDragEnabled() const
@@ -154,22 +155,14 @@ QWidgetAction * ToolBar::createEdgeWidthAction()
 
 QWidgetAction * ToolBar::createFontAction()
 {
-    m_fontButton->setText(tr("Font") + Constants::Misc::THREE_DOTS);
-    connect(m_fontButton, &QPushButton::clicked, this, [=] {
-        bool ok;
-        QFont defaultFont = m_fontButton->font();
-        defaultFont.setPointSize(m_textSizeSpinBox->value());
-        const auto font = QFontDialog::getFont(&ok, defaultFont, this);
-        if (ok) {
-            // Note: Support for multiple families implemented in Qt 5.13 =>
-            juzzlin::L().debug() << "Font family selected: '" << font.family().toStdString() << "'";
-            juzzlin::L().debug() << "Font weight selected: " << font.weight();
-            updateFontButtonFont(font);
-            m_textSizeSpinBox->setValue(font.pointSize());
-            emit textSizeChanged(font.pointSize());
-            emit fontChanged(font);
-        }
+    connect(m_fontButton, &Widgets::FontButton::defaultFontSizeRequested, this, [=] {
+        m_fontButton->setDefaultPointSize(m_textSizeSpinBox->value());
     });
+
+    connect(m_fontButton, &Widgets::FontButton::fontSizeChanged, m_textSizeSpinBox, &QSpinBox::setValue);
+
+    connect(m_fontButton, &Widgets::FontButton::fontChanged, this, &ToolBar::fontChanged);
+
     return WidgetFactory::buildToolBarWidgetAction(*m_fontButton, *this).second;
 }
 
@@ -276,13 +269,6 @@ void ToolBar::setTextSize(int textSize)
     if (m_textSizeSpinBox->value() != textSize) {
         m_textSizeSpinBox->setValue(textSize);
     }
-}
-
-void ToolBar::updateFontButtonFont(const QFont & font)
-{
-    QFont newFont(font);
-    newFont.setPointSize(m_fontButton->font().pointSize());
-    m_fontButton->setFont(newFont);
 }
 
 } // namespace Menus

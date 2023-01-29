@@ -31,6 +31,8 @@ SettingsProxy::SettingsProxy()
   , m_edgeWidth(Settings::V2::getNumber(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::EDGE_WIDTH_SETTINGS_KEY, Constants::MindMap::Defaults::EDGE_WIDTH))
   , m_reversedEdgeDirection(Settings::V1::loadReversedEdgeDirection(false))
   , m_selectNodeGroupByIntersection(Settings::V1::loadSelectNodeGroupByIntersection())
+  , m_textSize(Settings::V2::getNumber(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::TEXT_SIZE_SETTINGS_KEY, Constants::MindMap::Defaults::TEXT_SIZE))
+  , m_font(Settings::V2::getFont(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::FONT_SETTINGS_KEY, {}))
   , m_shadowEffectParams(
       static_cast<int>(Settings::V2::getNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_OFFSET_SETTINGS_KEY, Constants::Effects::Defaults::SHADOW_EFFECT_OFFSET)),
       static_cast<int>(Settings::V2::getNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_NORMAL_BLUR_RADIUS_SETTINGS_KEY, Constants::Effects::Defaults::SHADOW_EFFECT_BLUR_RADIUS)),
@@ -175,6 +177,32 @@ void SettingsProxy::setEdgeWidth(double edgeWidth)
     if (!qFuzzyCompare(m_edgeWidth, edgeWidth)) {
         m_edgeWidth = edgeWidth;
         Settings::V2::setNumber(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::EDGE_WIDTH_SETTINGS_KEY, edgeWidth);
+    }
+}
+
+int SettingsProxy::textSize() const
+{
+    return m_textSize;
+}
+
+void SettingsProxy::setTextSize(int textSize)
+{
+    if (m_textSize != textSize) {
+        m_textSize = textSize;
+        Settings::V2::setNumber(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::TEXT_SIZE_SETTINGS_KEY, textSize);
+    }
+}
+
+QFont SettingsProxy::font() const
+{
+    return m_font;
+}
+
+void SettingsProxy::setFont(const QFont & font)
+{
+    if (m_font != font) {
+        m_font = font;
+        Settings::V2::setFont(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::FONT_SETTINGS_KEY, font);
     }
 }
 

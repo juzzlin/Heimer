@@ -17,6 +17,9 @@ add_subdirectory(io)
 set(MENU_LIB_NAME Menus)
 add_subdirectory(menus)
 
+set(WIDGET_LIB_NAME Widgets)
+add_subdirectory(widgets)
+
 # Translation files in src/translations (without .ts)
 set(TS heimer_de heimer_en heimer_es heimer_fi heimer_fr heimer_it heimer_nl heimer_zh)
 set(TS_FILES)
@@ -133,7 +136,7 @@ endif()
 
 # Add the library
 add_library(${HEIMER_LIB_NAME} STATIC ${HEIMER_LIB_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
-target_link_libraries(${HEIMER_LIB_NAME} ${IO_LIB_NAME} ${DIALOG_LIB_NAME} ${MENU_LIB_NAME} Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Network SimpleLogger_static Argengine_static)
+target_link_libraries(${HEIMER_LIB_NAME} ${IO_LIB_NAME} ${DIALOG_LIB_NAME} ${MENU_LIB_NAME} ${WIDGET_LIB_NAME} Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Network SimpleLogger_static Argengine_static)
 
 # Add the executable
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})

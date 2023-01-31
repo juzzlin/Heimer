@@ -117,6 +117,8 @@ public:
 
     MindMapDataPtr mindMapData();
 
+    void mirror(bool vertically);
+
     void moveSelectionGroup(NodeR reference, QPointF location);
 
     bool nodeHasImageAttached() const;

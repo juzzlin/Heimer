@@ -186,6 +186,32 @@ void MindMapData::setMinEdgeLength(double minEdgeLength)
     m_layoutOptimizerParameters.minEdgeLength = minEdgeLength;
 }
 
+void MindMapData::mirror(bool vertically)
+{
+    if (!m_graph.getNodes().size()) {
+        return;
+    }
+
+    const auto firstNode = m_graph.getNodes().at(0);
+    QRectF rect = firstNode->placementBoundingRect().translated(firstNode->location());
+    for (auto && node : m_graph.getNodes()) {
+        const auto pbr = node->placementBoundingRect().translated(node->location());
+        rect = rect.united(pbr);
+    }
+
+    if (vertically) {
+        for (auto && node : m_graph.getNodes()) {
+            const auto centerY = (rect.y() + rect.height() / 2);
+            node->setLocation({ node->location().x(), centerY * 2 - node->location().y() });
+        }
+    } else {
+        for (auto && node : m_graph.getNodes()) {
+            const auto centerX = (rect.x() + rect.width() / 2);
+            node->setLocation({ centerX * 2 - node->location().x(), node->location().y() });
+        }
+    }
+}
+
 QFont MindMapData::font() const
 {
     return m_style.font;

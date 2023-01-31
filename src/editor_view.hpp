@@ -210,7 +210,7 @@ private:
 
     std::optional<ZoomParameters> m_savedZoom;
 
-    std::unique_ptr<ControlStrategy> m_controlStrategy;
+    ControlStrategy & m_controlStrategy;
 };
 
 #endif // EDITOR_VIEW_HPP

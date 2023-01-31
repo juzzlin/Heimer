@@ -431,6 +431,11 @@ bool Mediator::isUndoable() const
     return m_editorData->isUndoable();
 }
 
+void Mediator::mirror(bool vertically)
+{
+    m_editorData->mirror(vertically);
+}
+
 void Mediator::moveSelectionGroup(NodeR reference, QPointF location)
 {
     m_editorData->moveSelectionGroup(reference, location);
@@ -529,6 +534,14 @@ void Mediator::performNodeAction(const NodeAction & action)
         break;
     case NodeAction::Type::DisconnectSelected:
         disconnectSelectedNodes();
+        break;
+    case NodeAction::Type::MirrorLayoutHorizontally:
+        saveUndoPoint();
+        mirror(false);
+        break;
+    case NodeAction::Type::MirrorLayoutVertically:
+        saveUndoPoint();
+        mirror(true);
         break;
     case NodeAction::Type::Paste:
         paste();

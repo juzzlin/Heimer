@@ -9,6 +9,8 @@ New features:
 
 * Add default settings for text size and font
 
+* Add edit option to mirror the layout horizontally or vertically
+
 Bug fixes:
 
 * Fix node left selected on canceled node/text color dialog

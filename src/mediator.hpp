@@ -178,6 +178,8 @@ public slots:
 
     void exportToSvg(QString filename);
 
+    void mirror(bool vertically);
+
     void saveUndoPoint();
 
     void setArrowSize(double arrowSize);

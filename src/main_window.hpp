@@ -37,6 +37,7 @@ namespace Menus {
 class ToolBar;
 } // namespace Menus
 
+class ControlStrategy;
 class EditorData;
 class EditorView;
 class Mediator;
@@ -155,6 +156,8 @@ private:
 
     std::pair<QSize, QSize> calculateDefaultWindowSize() const;
 
+    void createColorSubMenu(QMenu & editMenu);
+
     void createEditMenu();
 
     void createExportSubMenu(QMenu & fileMenu);
@@ -162,6 +165,8 @@ private:
     void createFileMenu();
 
     void createHelpMenu();
+
+    void createMirrorSubMenu(QMenu & editMenu);
 
     void connectToolBar();
 
@@ -198,6 +203,8 @@ private:
     bool m_closeNow = false;
 
     QLabel * m_statusText;
+
+    ControlStrategy & m_controlStrategy;
 
     static MainWindow * m_instance;
 };

@@ -68,6 +68,7 @@ set(HEIMER_LIB_SRC
     settings.cpp
     settings_proxy.cpp
     shadow_effect_params.hpp
+    single_instance_container.cpp
     state_machine.cpp
     test_mode.cpp
     text_edit.cpp

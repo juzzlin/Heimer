@@ -16,10 +16,12 @@
 #include "main_window.hpp"
 
 #include "constants.hpp"
+#include "control_strategy.hpp"
 #include "mediator.hpp"
 #include "node_action.hpp"
 #include "recent_files_manager.hpp"
 #include "settings.hpp"
+#include "single_instance_container.hpp"
 
 #include "dialogs/about_dialog.hpp"
 #include "dialogs/settings_dialog.hpp"
@@ -62,6 +64,7 @@ MainWindow::MainWindow()
   , m_undoAction(new QAction(tr("Undo"), this))
   , m_redoAction(new QAction(tr("Redo"), this))
   , m_statusText(new QLabel(this))
+  , m_controlStrategy(SingleInstanceContainer::instance().controlStrategy())
 {
     if (!m_instance) {
         m_instance = this;
@@ -154,24 +157,10 @@ void MainWindow::connectToolBar()
     connect(m_toolBar, &Menus::ToolBar::textSizeChanged, this, &MainWindow::textSizeChanged);
 }
 
-void MainWindow::createEditMenu()
+void MainWindow::createColorSubMenu(QMenu & editMenu)
 {
-    const auto editMenu = menuBar()->addMenu(tr("&Edit"));
-
-    addUndoAction(*editMenu);
-
-    addRedoAction(*editMenu);
-
-    editMenu->addSeparator();
-
-    addConnectSelectedNodesAction(*editMenu);
-
-    addDisconnectSelectedNodesAction(*editMenu);
-
-    editMenu->addSeparator();
-
     const auto colorMenu = new QMenu;
-    const auto colorMenuAction = editMenu->addMenu(colorMenu);
+    const auto colorMenuAction = editMenu.addMenu(colorMenu);
     colorMenuAction->setText(tr("General &colors"));
 
     const auto backgroundColorAction = new QAction(tr("Set background color") + Constants::Misc::THREE_DOTS, this);
@@ -204,6 +193,51 @@ void MainWindow::createEditMenu()
     });
 
     colorMenu->addAction(gridColorAction);
+}
+
+void MainWindow::createMirrorSubMenu(QMenu & editMenu)
+{
+    const auto mirrorMenu = new QMenu;
+    auto mirrorAction = editMenu.addMenu(mirrorMenu);
+    mirrorAction->setText(tr("&Mirror layout"));
+
+    const auto mirrorHorizontallyAction = new QAction(tr("Horizontally"), this);
+    mirrorHorizontallyAction->setShortcut(QKeySequence(m_controlStrategy.mirrorLayoutHorizontallyShortcut()));
+    mirrorMenu->addAction(mirrorHorizontallyAction);
+    connect(mirrorHorizontallyAction, &QAction::triggered, this, [=] {
+        m_mediator->performNodeAction(NodeAction::Type::MirrorLayoutHorizontally);
+    });
+    mirrorMenu->addSeparator();
+
+    const auto mirrorVerticallyAction = new QAction(tr("Vertically"), this);
+    mirrorVerticallyAction->setShortcut(QKeySequence(m_controlStrategy.mirrorLayoutVerticallyShortcut()));
+    mirrorMenu->addAction(mirrorVerticallyAction);
+    connect(mirrorVerticallyAction, &QAction::triggered, this, [=] {
+        m_mediator->performNodeAction(NodeAction::Type::MirrorLayoutVertically);
+    });
+}
+
+void MainWindow::createEditMenu()
+{
+    const auto editMenu = menuBar()->addMenu(tr("&Edit"));
+
+    addUndoAction(*editMenu);
+
+    addRedoAction(*editMenu);
+
+    editMenu->addSeparator();
+
+    addConnectSelectedNodesAction(*editMenu);
+
+    addDisconnectSelectedNodesAction(*editMenu);
+
+    editMenu->addSeparator();
+
+    createColorSubMenu(*editMenu);
+
+    editMenu->addSeparator();
+
+    createMirrorSubMenu(*editMenu);
 
     editMenu->addSeparator();
 

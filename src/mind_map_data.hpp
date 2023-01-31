@@ -80,6 +80,8 @@ public:
 
     void setMinEdgeLength(double minEdgeLength);
 
+    void mirror(bool vertically);
+
     QFont font() const;
 
     void changeFont(QFont font);

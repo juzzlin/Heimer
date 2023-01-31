@@ -475,6 +475,11 @@ MindMapDataPtr EditorData::mindMapData()
     return m_mindMapData;
 }
 
+void EditorData::mirror(bool vertically)
+{
+    m_mindMapData->mirror(vertically);
+}
+
 void EditorData::moveSelectionGroup(NodeR reference, QPointF location)
 {
     m_selectionGroup->move(reference, location);

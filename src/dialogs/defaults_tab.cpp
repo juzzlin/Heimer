@@ -54,21 +54,19 @@ DefaultsTab::DefaultsTab(QString name, QWidget * parent)
 
 void DefaultsTab::apply()
 {
-    auto && settings = SettingsProxy::instance();
-
     for (auto && iter : m_edgeArrowStyleRadioMap) {
         if (iter.second->isChecked()) {
-            settings.setEdgeArrowMode(iter.first);
+            settingsProxy().setEdgeArrowMode(iter.first);
             juzzlin::L().info() << "'" << iter.second->text().toStdString() << "' set as new default";
         }
     }
 
-    settings.setReversedEdgeDirection(m_edgeDirectionCheckBox->isChecked());
-    settings.setArrowSize(m_arrowSizeSpinBox->value());
-    settings.setEdgeWidth(m_edgeWidthSpinBox->value());
+    settingsProxy().setReversedEdgeDirection(m_edgeDirectionCheckBox->isChecked());
+    settingsProxy().setArrowSize(m_arrowSizeSpinBox->value());
+    settingsProxy().setEdgeWidth(m_edgeWidthSpinBox->value());
 
-    settings.setTextSize(m_textSizeSpinBox->value());
-    settings.setFont(m_fontButton->font());
+    settingsProxy().setTextSize(m_textSizeSpinBox->value());
+    settingsProxy().setFont(m_fontButton->font());
 }
 
 void DefaultsTab::reject()
@@ -211,22 +209,20 @@ void DefaultsTab::createTextWidgets(QVBoxLayout & mainLayout)
 
 void DefaultsTab::setActiveDefaults()
 {
-    const auto & settings = SettingsProxy::instance();
-
-    if (const auto defaultArrowStyle = settings.edgeArrowMode(); m_edgeArrowStyleRadioMap.count(defaultArrowStyle)) {
+    if (const auto defaultArrowStyle = settingsProxy().edgeArrowMode(); m_edgeArrowStyleRadioMap.count(defaultArrowStyle)) {
         const auto radio = m_edgeArrowStyleRadioMap[defaultArrowStyle];
         radio->setChecked(true);
     } else {
         juzzlin::L().error() << "Invalid arrow style: " << static_cast<int>(defaultArrowStyle);
     }
 
-    m_edgeDirectionCheckBox->setChecked(settings.reversedEdgeDirection());
+    m_edgeDirectionCheckBox->setChecked(settingsProxy().reversedEdgeDirection());
 
-    m_arrowSizeSpinBox->setValue(settings.arrowSize());
-    m_edgeWidthSpinBox->setValue(settings.edgeWidth());
+    m_arrowSizeSpinBox->setValue(settingsProxy().arrowSize());
+    m_edgeWidthSpinBox->setValue(settingsProxy().edgeWidth());
 
-    m_textSizeSpinBox->setValue(settings.textSize());
-    m_fontButton->setFont(settings.font());
+    m_textSizeSpinBox->setValue(settingsProxy().textSize());
+    m_fontButton->setFont(settingsProxy().font());
 }
 
 } // namespace Dialogs

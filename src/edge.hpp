@@ -33,6 +33,7 @@ class Node;
 class QFont;
 class QGraphicsEllipseItem;
 class QPropertyAnimation;
+class SettingsProxy;
 
 struct ShadowEffectParams;
 
@@ -133,6 +134,8 @@ private:
     };
 
     void updateLabel(LabelUpdateReason lur = LabelUpdateReason::Default);
+
+    SettingsProxy & m_settingsProxy;
 
     std::unique_ptr<EdgeModel> m_edgeModel;
 

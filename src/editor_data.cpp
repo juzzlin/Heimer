@@ -21,6 +21,7 @@
 #include "recent_files_manager.hpp"
 #include "selection_group.hpp"
 #include "settings_proxy.hpp"
+#include "single_instance_container.hpp"
 #include "test_mode.hpp"
 
 #include "io/alz_file_io.hpp"
@@ -53,7 +54,7 @@ void EditorData::addNodeToSelectionGroup(NodeR node, bool isImplicit)
 
 void EditorData::requestAutosave(bool async)
 {
-    if (SettingsProxy::instance().autosave() && !m_fileName.isEmpty()) {
+    if (SingleInstanceContainer::instance().settingsProxy().autosave() && !m_fileName.isEmpty()) {
         L().debug() << "Autosaving to '" << m_fileName.toStdString() << "'";
         saveMindMapAs(m_fileName, async);
     }

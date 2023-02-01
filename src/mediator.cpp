@@ -25,6 +25,7 @@
 #include "node_handle.hpp"
 #include "settings_proxy.hpp"
 #include "shadow_effect_params.hpp"
+#include "single_instance_container.hpp"
 
 #include "simple_logger.hpp"
 
@@ -733,7 +734,7 @@ void Mediator::setEditorView(EditorView & editorView)
 size_t Mediator::setRectagleSelection(QRectF rect)
 {
     size_t nodesInRectangle = 0;
-    for (auto && item : m_editorScene->items(rect, SettingsProxy::instance().selectNodeGroupByIntersection() ? Qt::IntersectsItemShape : Qt::ContainsItemShape)) {
+    for (auto && item : m_editorScene->items(rect, SingleInstanceContainer::instance().settingsProxy().selectNodeGroupByIntersection() ? Qt::IntersectsItemShape : Qt::ContainsItemShape)) {
         if (const auto node = dynamic_cast<NodeP>(item)) {
             toggleNodeInSelectionGroup(*node, false);
             nodesInRectangle++;

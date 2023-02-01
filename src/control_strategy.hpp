@@ -24,6 +24,8 @@ class ControlStrategy
 public:
     ControlStrategy();
 
+    virtual ~ControlStrategy();
+
     bool backgroundDragInitiated(QMouseEvent & event) const;
 
     bool rubberBandInitiated(QMouseEvent & event) const;

@@ -23,6 +23,7 @@
 #include "node_model.hpp"
 #include "settings_proxy.hpp"
 #include "shadow_effect_params.hpp"
+#include "single_instance_container.hpp"
 #include "test_mode.hpp"
 #include "text_edit.hpp"
 #include "utils.hpp"
@@ -45,12 +46,13 @@
 NodeP Node::m_lastHoveredNode = nullptr;
 
 Node::Node()
-  : m_nodeModel(std::make_unique<NodeModel>(SettingsProxy::instance().nodeColor(), SettingsProxy::instance().nodeTextColor()))
+  : m_settingsProxy(SingleInstanceContainer::instance().settingsProxy())
+  , m_nodeModel(std::make_unique<NodeModel>(m_settingsProxy.nodeColor(), m_settingsProxy.nodeTextColor()))
   , m_textEdit(new TextEdit(this))
 {
     setAcceptHoverEvents(true);
 
-    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(false, SettingsProxy::instance().shadowEffect()));
+    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(false, m_settingsProxy.shadowEffect()));
 
     m_nodeModel->size = QSize(Constants::Node::MIN_WIDTH, Constants::Node::MIN_HEIGHT);
 
@@ -424,7 +426,7 @@ bool Node::selected() const
 void Node::setSelected(bool selected)
 {
     m_selected = selected;
-    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), selected, SettingsProxy::instance().shadowEffect());
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), selected, m_settingsProxy.shadowEffect());
     update();
 }
 

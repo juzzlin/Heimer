@@ -20,6 +20,8 @@
 #include <QColor>
 #include <QPushButton>
 
+class SettingsProxy;
+
 namespace Dialogs {
 
 class ColorSettingButton : public QPushButton
@@ -44,6 +46,8 @@ private:
     ColorDialog::Role m_role;
 
     QColor m_selectedColor;
+
+    SettingsProxy & m_settingsProxy;
 };
 
 } // namespace Dialogs

@@ -33,13 +33,13 @@ EditingTab::EditingTab(QString name, QWidget * parent)
 
 void EditingTab::apply()
 {
-    SettingsProxy::instance().setSelectNodeGroupByIntersection(m_selectNodeGroupByIntersectionCheckBox->isChecked());
+    settingsProxy().setSelectNodeGroupByIntersection(m_selectNodeGroupByIntersectionCheckBox->isChecked());
 
-    SettingsProxy::instance().setAutosave(m_autosaveCheckBox->isChecked());
+    settingsProxy().setAutosave(m_autosaveCheckBox->isChecked());
 
     emit autosaveEnabled(m_autosaveCheckBox->isChecked());
 
-    SettingsProxy::instance().setAutoload(m_autoloadCheckBox->isChecked());
+    settingsProxy().setAutoload(m_autoloadCheckBox->isChecked());
 }
 
 void EditingTab::initWidgets()
@@ -71,11 +71,11 @@ void EditingTab::initWidgets()
 
 void EditingTab::setActiveSettings()
 {
-    m_selectNodeGroupByIntersectionCheckBox->setChecked(SettingsProxy::instance().selectNodeGroupByIntersection());
+    m_selectNodeGroupByIntersectionCheckBox->setChecked(settingsProxy().selectNodeGroupByIntersection());
 
-    m_autosaveCheckBox->setChecked(SettingsProxy::instance().autosave());
+    m_autosaveCheckBox->setChecked(settingsProxy().autosave());
 
-    m_autoloadCheckBox->setChecked(SettingsProxy::instance().autoload());
+    m_autoloadCheckBox->setChecked(settingsProxy().autoload());
 }
 
 } // namespace Dialogs

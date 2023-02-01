@@ -40,15 +40,15 @@ EffectsTab::EffectsTab(QString name, QWidget * parent)
 {
     m_shadowOffsetSpinBox->setMinimum(Constants::Effects::SHADOW_EFFECT_MIN_OFFSET);
     m_shadowOffsetSpinBox->setMaximum(Constants::Effects::SHADOW_EFFECT_MAX_OFFSET);
-    m_shadowOffsetSpinBox->setValue(SettingsProxy::instance().shadowEffect().offset);
+    m_shadowOffsetSpinBox->setValue(settingsProxy().shadowEffect().offset);
 
     m_shadowBlurRadiusSpinBox->setMinimum(Constants::Effects::SHADOW_EFFECT_MIN_BLUR_RADIUS);
     m_shadowBlurRadiusSpinBox->setMaximum(Constants::Effects::SHADOW_EFFECT_MAX_BLUR_RADIUS);
-    m_shadowBlurRadiusSpinBox->setValue(SettingsProxy::instance().shadowEffect().blurRadius);
+    m_shadowBlurRadiusSpinBox->setValue(settingsProxy().shadowEffect().blurRadius);
 
     m_selectedItemShadowBlurRadiusSpinBox->setMinimum(Constants::Effects::SHADOW_EFFECT_MIN_BLUR_RADIUS);
     m_selectedItemShadowBlurRadiusSpinBox->setMaximum(Constants::Effects::SHADOW_EFFECT_MAX_BLUR_RADIUS);
-    m_selectedItemShadowBlurRadiusSpinBox->setValue(SettingsProxy::instance().shadowEffect().selectedItemBlurRadius);
+    m_selectedItemShadowBlurRadiusSpinBox->setValue(settingsProxy().shadowEffect().selectedItemBlurRadius);
 
     initWidgets();
 
@@ -77,8 +77,8 @@ void EffectsTab::apply()
 
 void EffectsTab::apply(const ShadowEffectParams & params)
 {
-    if (SettingsProxy::instance().shadowEffect() != params) {
-        SettingsProxy::instance().setShadowEffect(params);
+    if (settingsProxy().shadowEffect() != params) {
+        settingsProxy().setShadowEffect(params);
         emit shadowEffectChanged(params);
     }
 }

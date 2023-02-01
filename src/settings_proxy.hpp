@@ -29,7 +29,7 @@ class SettingsProxy
 public:
     SettingsProxy();
 
-    static SettingsProxy & instance();
+    ~SettingsProxy();
 
     bool autoload() const;
 
@@ -125,8 +125,6 @@ private:
     QFont m_font;
 
     ShadowEffectParams m_shadowEffectParams;
-
-    static std::unique_ptr<SettingsProxy> m_instance;
 };
 
 #endif // SETTINGS_PROXY_HPP

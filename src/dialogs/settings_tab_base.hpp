@@ -17,6 +17,8 @@
 
 #include <QWidget>
 
+class SettingsProxy;
+
 namespace Dialogs {
 
 class SettingsTabBase : public QWidget
@@ -31,6 +33,9 @@ public:
     virtual void reject();
 
     QString name() const;
+
+protected:
+    SettingsProxy & settingsProxy() const;
 
 private:
     QString m_name;

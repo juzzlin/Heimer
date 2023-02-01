@@ -16,8 +16,6 @@
 #include "settings.hpp"
 #include "settings_proxy.hpp"
 
-std::unique_ptr<SettingsProxy> SettingsProxy::m_instance;
-
 SettingsProxy::SettingsProxy()
   : m_autoload(Settings::V1::loadAutoload())
   , m_autosave(Settings::V1::loadAutosave())
@@ -40,14 +38,6 @@ SettingsProxy::SettingsProxy()
       Settings::V2::getColor(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_SHADOW_COLOR_SETTINGS_KEY, Constants::Effects::Defaults::SHADOW_EFFECT_SHADOW_COLOR),
       Settings::V2::getColor(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR_SETTINGS_KEY, Constants::Effects::Defaults::SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR))
 {
-}
-
-SettingsProxy & SettingsProxy::instance()
-{
-    if (!SettingsProxy::m_instance) {
-        SettingsProxy::m_instance = std::make_unique<SettingsProxy>();
-    }
-    return *SettingsProxy::m_instance;
 }
 
 bool SettingsProxy::autoload() const
@@ -248,3 +238,5 @@ void SettingsProxy::setShadowEffect(const ShadowEffectParams & params)
         Settings::V2::setColor(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR_SETTINGS_KEY, params.selectedItemShadowColor);
     }
 }
+
+SettingsProxy::~SettingsProxy() = default;

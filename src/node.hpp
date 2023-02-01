@@ -32,6 +32,7 @@
 
 class Image;
 class QGraphicsTextItem;
+class SettingsProxy;
 class TextEdit;
 
 struct NodeModel;
@@ -149,6 +150,8 @@ private:
     void updateEdgeLines();
 
     void updateHandlePositions();
+
+    SettingsProxy & m_settingsProxy;
 
     std::unique_ptr<NodeModel> m_nodeModel;
 

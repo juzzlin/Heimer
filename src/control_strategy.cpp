@@ -61,3 +61,5 @@ QString ControlStrategy::mirrorLayoutVerticallyShortcut() const
 {
     return "Ctrl+Shift+V";
 }
+
+ControlStrategy::~ControlStrategy() = default;

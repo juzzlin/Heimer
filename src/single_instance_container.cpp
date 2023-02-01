@@ -16,6 +16,7 @@
 #include "single_instance_container.hpp"
 
 #include "control_strategy.hpp"
+#include "settings_proxy.hpp"
 
 #include <stdexcept>
 
@@ -23,6 +24,7 @@ std::unique_ptr<SingleInstanceContainer> SingleInstanceContainer::m_instance;
 
 SingleInstanceContainer::SingleInstanceContainer()
   : m_controlStrategy(std::make_unique<ControlStrategy>())
+  , m_settingsProxy(std::make_unique<SettingsProxy>())
 {
     if (SingleInstanceContainer::m_instance) {
         throw std::runtime_error("SingleInstanceContainer already instantiated!");
@@ -34,6 +36,11 @@ ControlStrategy & SingleInstanceContainer::controlStrategy() const
     return *m_controlStrategy;
 }
 
+SettingsProxy & SingleInstanceContainer::settingsProxy() const
+{
+    return *m_settingsProxy;
+}
+
 SingleInstanceContainer & SingleInstanceContainer::instance()
 {
     if (!SingleInstanceContainer::m_instance) {
@@ -41,3 +48,5 @@ SingleInstanceContainer & SingleInstanceContainer::instance()
     }
     return *SingleInstanceContainer::m_instance;
 }
+
+SingleInstanceContainer::~SingleInstanceContainer() = default;

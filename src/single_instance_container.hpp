@@ -19,6 +19,7 @@
 #include <memory>
 
 class ControlStrategy;
+class SettingsProxy;
 
 //! A poor man's single instance DI.
 class SingleInstanceContainer
@@ -26,9 +27,13 @@ class SingleInstanceContainer
 public:
     SingleInstanceContainer();
 
+    ~SingleInstanceContainer();
+
     static SingleInstanceContainer & instance();
 
     ControlStrategy & controlStrategy() const;
+
+    SettingsProxy & settingsProxy() const;
 
 private:
     SingleInstanceContainer(const SingleInstanceContainer & other) = delete;
@@ -36,6 +41,8 @@ private:
     SingleInstanceContainer & operator=(const SingleInstanceContainer & other) = delete;
 
     std::unique_ptr<ControlStrategy> m_controlStrategy;
+
+    std::unique_ptr<SettingsProxy> m_settingsProxy;
 
     static std::unique_ptr<SingleInstanceContainer> m_instance;
 };

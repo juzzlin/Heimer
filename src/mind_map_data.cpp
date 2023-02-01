@@ -18,12 +18,13 @@
 #include "grid.hpp"
 #include "node.hpp"
 #include "shadow_effect_params.hpp"
+#include "single_instance_container.hpp"
 
 #include <memory>
 
 MindMapData::MindMapData(QString name)
   : MindMapDataBase(name)
-  , m_style(SettingsProxy::instance())
+  , m_style(SingleInstanceContainer::instance().settingsProxy())
 {
 }
 

@@ -16,7 +16,6 @@
 #ifndef EDGE_HPP
 #define EDGE_HPP
 
-#include <QGraphicsLineItem>
 #include <QTimer>
 
 #include <map>
@@ -25,6 +24,7 @@
 #include "edge_model.hpp"
 #include "edge_point.hpp"
 #include "edge_text_edit.hpp"
+#include "scene_item_base.hpp"
 #include "types.hpp"
 
 class EdgeDot;
@@ -32,13 +32,14 @@ class Graph;
 class Node;
 class QFont;
 class QGraphicsEllipseItem;
+class QGraphicsLineItem;
 class QPropertyAnimation;
 class SettingsProxy;
 
 struct ShadowEffectParams;
 
 //! A graphic representation of a graph edge between nodes.
-class Edge : public QObject, public QGraphicsLineItem
+class Edge : public SceneItemBase
 {
     Q_OBJECT
 
@@ -62,7 +63,11 @@ public:
 
     EdgeModel::ArrowMode arrowMode() const;
 
+    QRectF boundingRect() const override;
+
     bool dashedLine() const;
+
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
 
     bool reversed() const;
 
@@ -164,6 +169,8 @@ private:
     EdgeTextEdit * m_label;
 
     EdgeTextEdit * m_dummyLabel;
+
+    QGraphicsLineItem * m_line;
 
     QGraphicsLineItem * m_arrowheadL0;
 

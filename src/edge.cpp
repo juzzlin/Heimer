@@ -32,6 +32,7 @@
 #include <QBrush>
 #include <QFont>
 #include <QGraphicsEllipseItem>
+#include <QGraphicsLineItem>
 #include <QPen>
 #include <QPropertyAnimation>
 #include <QTimer>
@@ -54,6 +55,7 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
   , m_targetDot(enableAnimations ? new EdgeDot(this) : nullptr)
   , m_label(enableLabel ? new EdgeTextEdit(this) : nullptr)
   , m_dummyLabel(enableLabel ? new EdgeTextEdit(this) : nullptr)
+  , m_line(new QGraphicsLineItem(this))
   , m_arrowheadL0(new QGraphicsLineItem(this))
   , m_arrowheadR0(new QGraphicsLineItem(this))
   , m_arrowheadL1(new QGraphicsLineItem(this))
@@ -347,10 +349,10 @@ void Edge::updateArrowhead()
     setArrowHeadPen(buildPen(true));
 
     const auto reversed = m_edgeModel->reversed;
-    const auto point0 = reversed ? this->line().p1() : this->line().p2();
-    const auto angle0 = reversed ? -this->line().angle() + 180 : -this->line().angle();
-    const auto point1 = reversed ? this->line().p2() : this->line().p1();
-    const auto angle1 = reversed ? -this->line().angle() : -this->line().angle() + 180;
+    const auto point0 = reversed ? m_line->line().p1() : m_line->line().p2();
+    const auto angle0 = reversed ? -m_line->line().angle() + 180 : -m_line->line().angle();
+    const auto point1 = reversed ? m_line->line().p2() : m_line->line().p1();
+    const auto angle1 = reversed ? -m_line->line().angle() : -m_line->line().angle() + 180;
 
     QLineF lineL0;
     QLineF lineR0;
@@ -409,7 +411,7 @@ void Edge::updateDots()
 {
     if (m_enableAnimations) {
         // Trigger new animation if relative connection location has changed
-        const auto newRelativeSourcePos = line().p1() - sourceNode().pos();
+        const auto newRelativeSourcePos = m_line->line().p1() - sourceNode().pos();
         if (m_previousRelativeSourcePos != newRelativeSourcePos) {
             m_previousRelativeSourcePos = newRelativeSourcePos;
             m_sourceDotSizeAnimation->stop();
@@ -417,10 +419,10 @@ void Edge::updateDots()
         }
 
         // Update location of possibly active animation
-        m_sourceDot->setPos(line().p1());
+        m_sourceDot->setPos(m_line->line().p1());
 
         // Trigger new animation if relative connection location has changed
-        const auto newRelativeTargetPos = line().p2() - targetNode().pos();
+        const auto newRelativeTargetPos = m_line->line().p2() - targetNode().pos();
         if (m_previousRelativeTargetPos != newRelativeTargetPos) {
             m_previousRelativeTargetPos = newRelativeTargetPos;
             m_targetDotSizeAnimation->stop();
@@ -428,15 +430,15 @@ void Edge::updateDots()
         }
 
         // Update location of possibly active animation
-        m_targetDot->setPos(line().p2());
+        m_targetDot->setPos(m_line->line().p2());
     }
 }
 
 void Edge::updateLabel(LabelUpdateReason lur)
 {
     if (m_enableLabel) {
-        m_label->setPos((line().p1() + line().p2()) * 0.5 - QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()) * 0.5);
-        m_dummyLabel->setPos((line().p1() + line().p2()) * 0.5 - QPointF(m_dummyLabel->boundingRect().width(), m_dummyLabel->boundingRect().height()) * 0.5);
+        m_label->setPos((m_line->line().p1() + m_line->line().p2()) * 0.5 - QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()) * 0.5);
+        m_dummyLabel->setPos((m_line->line().p1() + m_line->line().p2()) * 0.5 - QPointF(m_dummyLabel->boundingRect().width(), m_dummyLabel->boundingRect().height()) * 0.5);
         // Toggle visibility according to space available if geometry changed
         if (lur == LabelUpdateReason::EdgeGeometryChanged) {
             setLabelVisible(m_label->isVisible(), EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged);
@@ -452,6 +454,14 @@ void Edge::setTargetNode(NodeR targetNode)
 void Edge::setSourceNode(NodeR sourceNode)
 {
     m_sourceNode = &sourceNode;
+}
+
+void Edge::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
+{
+    // Nothing to do as Edge is just a composite object
+    Q_UNUSED(painter)
+    Q_UNUSED(option)
+    Q_UNUSED(widget)
 }
 
 bool Edge::reversed() const
@@ -471,6 +481,11 @@ EdgeModel::ArrowMode Edge::arrowMode() const
     return m_edgeModel->style.arrowMode;
 }
 
+QRectF Edge::boundingRect() const
+{
+    return m_line->boundingRect();
+}
+
 QString Edge::text() const
 {
     return m_edgeModel->text;
@@ -478,7 +493,7 @@ QString Edge::text() const
 
 void Edge::updateLine()
 {
-    setPen(buildPen());
+    m_line->setPen(buildPen());
 
     const auto nearestPoints = Node::getNearestEdgePoints(sourceNode(), targetNode());
 
@@ -490,7 +505,7 @@ void Edge::updateLine()
     QVector2D direction2(targetNode().pos() - p2);
     direction2.normalize();
 
-    setLine(QLineF(
+    m_line->setLine(QLineF(
       p1 + (nearestPoints.first.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction1 * static_cast<float>(sourceNode().cornerRadius())).toPointF() : QPointF { 0, 0 }),
       p2 + (nearestPoints.second.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction2 * static_cast<float>(targetNode().cornerRadius())).toPointF() : QPointF { 0, 0 }) - //
         (direction2 * static_cast<float>(m_edgeModel->style.edgeWidth)).toPointF() * Constants::Edge::WIDTH_SCALE));

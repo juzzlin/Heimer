@@ -304,7 +304,7 @@ void EditorData::deleteNode(NodeR node)
 
     const auto deletionInfo = m_mindMapData->graph().deleteNode(node.index());
     if (deletionInfo.first) {
-        removeNodeFromScene(*deletionInfo.first);
+        deletionInfo.first->hideWithAnimation();
     }
     for (auto && deletedEdge : deletionInfo.second) {
         if (deletedEdge) {
@@ -522,15 +522,6 @@ void EditorData::removeEdgeFromScene(EdgeR edge)
     edge.hide();
     if (const auto scene = edge.scene()) {
         scene->removeItem(&edge);
-    }
-}
-
-void EditorData::removeNodeFromScene(NodeR node)
-{
-    node.hide();
-    node.removeHandles();
-    if (const auto scene = node.scene()) {
-        scene->removeItem(&node);
     }
 }
 

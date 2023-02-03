@@ -64,6 +64,7 @@ set(HEIMER_LIB_SRC
     node_handle.cpp
     node_model.hpp
     recent_files_manager.cpp
+    scene_item_base.cpp
     selection_group.cpp
     settings.cpp
     settings_proxy.cpp

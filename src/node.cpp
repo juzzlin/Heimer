@@ -125,12 +125,21 @@ void Node::removeGraphicsEdge(EdgeR edge)
     }
 }
 
+void Node::removeFromScene()
+{
+    hide();
+    removeHandles();
+    if (scene()) {
+        scene()->removeItem(this);
+    }
+}
+
 void Node::removeHandles()
 {
     for (auto && handle : m_handles) {
         if (handle.second->scene()) {
             handle.second->hide();
-            scene()->removeItem(handle.second);
+            handle.second->scene()->removeItem(handle.second);
         }
     }
 }

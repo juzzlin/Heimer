@@ -184,8 +184,6 @@ private:
 
     void removeEdgeFromScene(EdgeR edge);
 
-    void removeNodeFromScene(NodeR node);
-
     void sendUndoAndRedoSignals();
 
     void setIsModified(bool isModified);

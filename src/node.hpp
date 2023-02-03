@@ -29,6 +29,7 @@
 #include "edge.hpp"
 #include "edge_point.hpp"
 #include "node_handle.hpp"
+#include "scene_item_base.hpp"
 
 class Image;
 class QGraphicsTextItem;
@@ -39,11 +40,9 @@ struct NodeModel;
 struct ShadowEffectParams;
 
 //! Freely placeable target node.
-class Node : public QObject, public QGraphicsItem
+class Node : public SceneItemBase
 {
     Q_OBJECT
-
-    Q_INTERFACES(QGraphicsItem)
 
 public:
     //! Constructor.
@@ -92,7 +91,7 @@ public:
 
     void removeGraphicsEdge(EdgeR edge);
 
-    void removeHandles();
+    void removeFromScene() override;
 
     bool selected() const;
 
@@ -146,6 +145,8 @@ private:
     QRectF expandedTextEditRect() const;
 
     void initTextField();
+
+    void removeHandles();
 
     void updateEdgeLines();
 

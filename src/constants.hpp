@@ -179,6 +179,8 @@ static const int CORNER_RADIUS = 5;
 
 } // namespace Defaults
 
+static const int SCALE_ANIMATION_DURATION = 75;
+
 static const int HANDLE_ANIMATION_DURATION = 150;
 
 static const int HANDLE_VISIBILITY_DURATION = 2500;

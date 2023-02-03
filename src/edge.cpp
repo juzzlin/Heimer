@@ -33,6 +33,7 @@
 #include <QFont>
 #include <QGraphicsEllipseItem>
 #include <QGraphicsLineItem>
+#include <QGraphicsScene>
 #include <QPen>
 #include <QPropertyAnimation>
 #include <QTimer>
@@ -464,6 +465,15 @@ void Edge::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
     Q_UNUSED(widget)
 }
 
+void Edge::removeFromScene()
+{
+    restoreLabelParent();
+    hide();
+    if (scene()) {
+        scene()->removeItem(this);
+    }
+}
+
 bool Edge::reversed() const
 {
     return m_edgeModel->reversed;
@@ -513,6 +523,9 @@ void Edge::updateLine()
     updateDots();
     updateLabel(LabelUpdateReason::EdgeGeometryChanged);
     updateArrowhead();
+
+    // Set correct origin for scale animations
+    setTransformOriginPoint(m_line->line().center());
 }
 
 Edge::~Edge()

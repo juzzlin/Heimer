@@ -182,8 +182,6 @@ private:
 
     NodePairVector getDisconnectableNodes() const;
 
-    void removeEdgeFromScene(EdgeR edge);
-
     void sendUndoAndRedoSignals();
 
     void setIsModified(bool isModified);

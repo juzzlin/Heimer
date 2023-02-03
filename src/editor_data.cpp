@@ -294,7 +294,7 @@ void EditorData::deleteEdge(int index0, int index1)
     assert(m_mindMapData);
 
     if (const auto deletedEdge = m_mindMapData->graph().deleteEdge(index0, index1)) {
-        removeEdgeFromScene(*deletedEdge);
+        deletedEdge->hideWithAnimation();
     }
 }
 
@@ -308,7 +308,7 @@ void EditorData::deleteNode(NodeR node)
     }
     for (auto && deletedEdge : deletionInfo.second) {
         if (deletedEdge) {
-            removeEdgeFromScene(*deletedEdge);
+            deletedEdge->hideWithAnimation();
         }
     }
 }
@@ -514,15 +514,6 @@ NodeP EditorData::selectedNode() const
 size_t EditorData::selectionGroupSize() const
 {
     return m_selectionGroup->size();
-}
-
-void EditorData::removeEdgeFromScene(EdgeR edge)
-{
-    edge.restoreLabelParent();
-    edge.hide();
-    if (const auto scene = edge.scene()) {
-        scene->removeItem(&edge);
-    }
 }
 
 void EditorData::sendUndoAndRedoSignals()

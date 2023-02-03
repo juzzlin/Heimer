@@ -11,6 +11,10 @@ New features:
 
 * Add edit option to mirror the layout horizontally or vertically
 
+* Animate edge deletion
+
+* Animate node deletion
+
 Bug fixes:
 
 * Fix node left selected on canceled node/text color dialog

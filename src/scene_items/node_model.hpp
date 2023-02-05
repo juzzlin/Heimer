@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2023 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2022 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,30 +13,39 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SCENE_ITEM_BASE_HPP
-#define SCENE_ITEM_BASE_HPP
+#ifndef NODE_MODEL_HPP
+#define NODE_MODEL_HPP
 
-#include <QGraphicsItem>
-#include <QObject>
-#include <QPropertyAnimation>
+#include <QColor>
+#include <QPointF>
+#include <QSizeF>
+#include <QString>
 
-class SceneItemBase : public QObject, public QGraphicsItem
+namespace SceneItems {
+
+struct NodeModel
 {
-    Q_OBJECT
-    Q_INTERFACES(QGraphicsItem)
-    Q_PROPERTY(qreal scale READ scale WRITE setScale)
+    NodeModel(QColor color, QColor textColor)
+      : color(color)
+      , textColor(textColor)
+    {
+    }
 
-public:
-    SceneItemBase();
+    QColor color;
 
-    virtual ~SceneItemBase();
+    int index = -1;
 
-    virtual void hideWithAnimation();
+    size_t imageRef = 0;
 
-    virtual void removeFromScene();
+    QPointF location;
 
-private:
-    QPropertyAnimation m_scaleAnimation;
+    QSizeF size;
+
+    QColor textColor;
+
+    QString text;
 };
 
-#endif // SCENE_ITEM_BASE_HPP
+} // namespace SceneItems
+
+#endif // NODE_MODEL_HPP

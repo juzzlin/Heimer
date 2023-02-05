@@ -22,10 +22,13 @@
 #include "main_window.hpp"
 #include "mouse_action.hpp"
 #include "node_action.hpp"
-#include "node_handle.hpp"
-#include "settings_proxy.hpp"
-#include "shadow_effect_params.hpp"
-#include "single_instance_container.hpp"
+
+#include "core/settings_proxy.hpp"
+#include "core/shadow_effect_params.hpp"
+#include "core/single_instance_container.hpp"
+
+#include "core/graph.hpp"
+#include "scene_items/node_handle.hpp"
 
 #include "simple_logger.hpp"
 
@@ -101,7 +104,7 @@ void Mediator::addExistingGraphToScene()
 void Mediator::addEdge(NodeR node1, NodeR node2)
 {
     // Add edge from node1 to node2
-    connectEdgeToUndoMechanism(m_editorData->addEdge(std::make_shared<Edge>(&node1, &node2)));
+    connectEdgeToUndoMechanism(m_editorData->addEdge(std::make_shared<SceneItems::Edge>(&node1, &node2)));
     L().debug() << "Created a new edge " << node1.index() << " -> " << node2.index();
 
     addExistingGraphToScene();
@@ -137,17 +140,17 @@ bool Mediator::canBeSaved() const
 
 void Mediator::connectEdgeToUndoMechanism(EdgeS edge)
 {
-    connect(edge.get(), &Edge::undoPointRequested, this, &Mediator::saveUndoPoint, Qt::UniqueConnection);
+    connect(edge.get(), &SceneItems::Edge::undoPointRequested, this, &Mediator::saveUndoPoint, Qt::UniqueConnection);
 }
 
 void Mediator::connectNodeToUndoMechanism(NodeS node)
 {
-    connect(node.get(), &Node::undoPointRequested, this, &Mediator::saveUndoPoint, Qt::UniqueConnection);
+    connect(node.get(), &SceneItems::Node::undoPointRequested, this, &Mediator::saveUndoPoint, Qt::UniqueConnection);
 }
 
 void Mediator::connectNodeToImageManager(NodeS node)
 {
-    connect(node.get(), &Node::imageRequested, &m_editorData->mindMapData()->imageManager(), &ImageManager::handleImageRequest, Qt::UniqueConnection);
+    connect(node.get(), &SceneItems::Node::imageRequested, &m_editorData->mindMapData()->imageManager(), &ImageManager::handleImageRequest, Qt::UniqueConnection);
     node->setImageRef(node->imageRef()); // This effectively results in a fetch from ImageManager
 }
 
@@ -212,7 +215,7 @@ NodeS Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
     L().debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
 
     // Add edge from the parent node.
-    connectEdgeToUndoMechanism(m_editorData->addEdge(std::make_shared<Edge>(node0.get(), node1.get())));
+    connectEdgeToUndoMechanism(m_editorData->addEdge(std::make_shared<SceneItems::Edge>(node0.get(), node1.get())));
     L().debug() << "Created a new edge " << node0->index() << " -> " << node1->index();
 
     addExistingGraphToScene();
@@ -338,7 +341,7 @@ void Mediator::initializeNewMindMap()
     m_mainWindow.initializeNewMindMap();
 }
 
-void Mediator::initiateNewNodeDrag(NodeHandle & nodeHandle)
+void Mediator::initiateNewNodeDrag(SceneItems::NodeHandle & nodeHandle)
 {
     L().debug() << "Initiating new node drag";
 
@@ -488,7 +491,7 @@ void Mediator::paste()
             }
             juzzlin::L().debug() << "Pasting edges";
             for (auto && copiedEdge : m_editorData->copiedData().edges) {
-                const auto pastedEdge = std::make_shared<Edge>(*copiedEdge.edge);
+                const auto pastedEdge = std::make_shared<SceneItems::Edge>(*copiedEdge.edge);
                 pastedEdge->setSourceNode(*nodeMapping[copiedEdge.sourceNodeIndex]);
                 pastedEdge->setTargetNode(*nodeMapping[copiedEdge.targetNodeIndex]);
                 connectEdgeToUndoMechanism(m_editorData->addEdge(pastedEdge));

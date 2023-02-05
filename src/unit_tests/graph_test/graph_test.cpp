@@ -15,14 +15,19 @@
 
 #include "graph_test.hpp"
 
-#include "graph.hpp"
-#include "node.hpp"
-#include "test_mode.hpp"
+#include "../../test_mode.hpp"
+
+#include "../../core/graph.hpp"
+
+#include "../../scene_items/node.hpp"
 
 #include <stdexcept>
 #include <string>
 
 using std::make_shared;
+
+using SceneItems::Edge;
+using SceneItems::Node;
 
 GraphTest::GraphTest()
 {

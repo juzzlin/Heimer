@@ -18,8 +18,8 @@
 #include "../grid.hpp"
 #include "../mediator.hpp"
 #include "../mouse_action.hpp"
-#include "../node.hpp"
 #include "../node_action.hpp"
+#include "../scene_items/node.hpp"
 
 #include "simple_logger.hpp"
 

@@ -15,9 +15,16 @@
 
 #include "editor_data_test.hpp"
 
-#include "editor_data.hpp"
-#include "mind_map_data.hpp"
-#include "test_mode.hpp"
+#include "../../editor_data.hpp"
+#include "../../mind_map_data.hpp"
+#include "../../test_mode.hpp"
+
+#include "../../core/graph.hpp"
+
+using SceneItems::Edge;
+using SceneItems::EdgeModel;
+using SceneItems::Node;
+using SceneItems::NodeModel;
 
 EditorDataTest::EditorDataTest()
 {

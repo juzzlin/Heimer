@@ -16,7 +16,7 @@
 #ifndef SHADOW_EFFECT_PARAMS_HPP
 #define SHADOW_EFFECT_PARAMS_HPP
 
-#include "constants.hpp"
+#include "../constants.hpp"
 
 #include <QColor>
 

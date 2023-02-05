@@ -32,9 +32,6 @@
 #include <set>
 
 class ControlStrategy;
-class Edge;
-class Node;
-class NodeHandle;
 class Mediator;
 class MindMapTile;
 class Object;
@@ -49,6 +46,12 @@ class QRubberBand;
 namespace Menus {
 class EdgeContextMenu;
 }
+
+namespace SceneItems {
+class Edge;
+class Node;
+class NodeHandle;
+} // namespace SceneItems
 
 class EditorView : public QGraphicsView
 {
@@ -117,11 +120,11 @@ private:
 
     void handleMousePressEventOnNode(QMouseEvent & event, NodeR node);
 
-    void handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHandle & nodeHandle);
+    void handleMousePressEventOnNodeHandle(QMouseEvent & event, SceneItems::NodeHandle & nodeHandle);
 
     void handlePrimaryButtonClickOnNode(NodeR node);
 
-    void handlePrimaryButtonClickOnNodeHandle(NodeHandle & nodeHandle);
+    void handlePrimaryButtonClickOnNodeHandle(SceneItems::NodeHandle & nodeHandle);
 
     void handleSecondaryButtonClickOnEdge(EdgeR edge);
 

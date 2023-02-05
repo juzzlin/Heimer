@@ -24,7 +24,8 @@
 #include "types.hpp"
 
 #include "mind_map_data.hpp"
-#include "node.hpp"
+
+#include "scene_items/node.hpp"
 
 class MouseAction;
 class EditorData;
@@ -33,9 +34,12 @@ class EditorView;
 class Graph;
 class MainWindow;
 class NodeAction;
-class NodeHandle;
 class QGraphicsItem;
 struct ShadowEffectParams;
+
+namespace SceneItems {
+class NodeHandle;
+}
 
 /*! Acts as a communication channel between MainWindow and editor components:
  *
@@ -101,7 +105,7 @@ public:
 
     void initializeNewMindMap();
 
-    void initiateNewNodeDrag(NodeHandle & nodeHandle);
+    void initiateNewNodeDrag(SceneItems::NodeHandle & nodeHandle);
 
     void initiateNodeDrag(NodeR node);
 

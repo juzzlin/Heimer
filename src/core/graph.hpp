@@ -16,9 +16,10 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 
-#include "edge.hpp"
-#include "node.hpp"
-#include "types.hpp"
+#include "../scene_items/edge.hpp"
+#include "../scene_items/node.hpp"
+
+#include "../types.hpp"
 
 #include <cstdint>
 #include <unordered_map>

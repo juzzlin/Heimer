@@ -15,7 +15,7 @@
 
 #include "selection_group.hpp"
 
-#include "node.hpp"
+#include "scene_items/node.hpp"
 
 #include <algorithm>
 

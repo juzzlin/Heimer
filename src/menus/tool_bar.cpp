@@ -16,7 +16,7 @@
 #include "tool_bar.hpp"
 
 #include "../constants.hpp"
-#include "../settings.hpp"
+#include "../core/settings.hpp"
 #include "../widgets/font_button.hpp"
 #include "widget_factory.hpp"
 

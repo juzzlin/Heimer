@@ -16,8 +16,9 @@
 #include "magic_zoom.hpp"
 
 #include "constants.hpp"
-#include "node.hpp"
 #include "types.hpp"
+
+#include "scene_items/node.hpp"
 
 #include <cmath>
 

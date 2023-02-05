@@ -20,8 +20,6 @@
 
 #include "types.hpp"
 
-class Node;
-
 class MouseAction
 {
 public:

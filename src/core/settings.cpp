@@ -14,7 +14,7 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "settings.hpp"
-#include "constants.hpp"
+#include "../constants.hpp"
 
 #include <QSettings>
 #include <QStandardPaths>
@@ -125,16 +125,16 @@ void saveAutoSnapState(int state)
     settings.endGroup();
 }
 
-EdgeModel::ArrowMode loadEdgeArrowMode(EdgeModel::ArrowMode defaultMode)
+SceneItems::EdgeModel::ArrowMode loadEdgeArrowMode(SceneItems::EdgeModel::ArrowMode defaultMode)
 {
     QSettings settings;
     settings.beginGroup(Constants::MindMap::Defaults::SETTINGS_GROUP);
-    const auto mode = static_cast<EdgeModel::ArrowMode>(settings.value(edgeArrowModeKey, static_cast<int>(defaultMode)).toInt());
+    const auto mode = static_cast<SceneItems::EdgeModel::ArrowMode>(settings.value(edgeArrowModeKey, static_cast<int>(defaultMode)).toInt());
     settings.endGroup();
     return mode;
 }
 
-void saveEdgeArrowMode(EdgeModel::ArrowMode mode)
+void saveEdgeArrowMode(SceneItems::EdgeModel::ArrowMode mode)
 {
     QSettings settings;
     settings.beginGroup(Constants::MindMap::Defaults::SETTINGS_GROUP);

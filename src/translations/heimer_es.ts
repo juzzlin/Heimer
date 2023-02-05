@@ -58,72 +58,72 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application.cpp" line="213"/>
+        <location filename="../application.cpp" line="214"/>
         <source>A new version %1 available at &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="220"/>
+        <location filename="../application.cpp" line="221"/>
         <source>Heimer Files</source>
         <translation>Archivos heimer</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="314"/>
+        <location filename="../application.cpp" line="315"/>
         <source>Open File</source>
         <translation>Abrir archivo</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="340"/>
+        <location filename="../application.cpp" line="341"/>
         <source>Failed to save file.</source>
         <translation>No se pudo guardar el archivo.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="357"/>
+        <location filename="../application.cpp" line="358"/>
         <source>Save File As</source>
         <translation>Guardar archivo como</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="371"/>
+        <location filename="../application.cpp" line="372"/>
         <source>File &apos;</source>
         <translation>Archivo &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="371"/>
+        <location filename="../application.cpp" line="372"/>
         <source>&apos; saved.</source>
         <translation>&apos; guardado.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="377"/>
+        <location filename="../application.cpp" line="378"/>
         <source>Failed to save file as &apos;</source>
         <translation>No se pudo guardar el archivo como &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="425"/>
+        <location filename="../application.cpp" line="426"/>
         <source>Open an image</source>
         <translation>Abrir imagen</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="425"/>
+        <location filename="../application.cpp" line="426"/>
         <source>Image Files</source>
         <translation>Archivos de imagen</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="431"/>
+        <location filename="../application.cpp" line="432"/>
         <source>Load image</source>
         <translation>Cargar imagen</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="431"/>
+        <location filename="../application.cpp" line="432"/>
         <source>Failed to load image &apos;</source>
         <translation>No se pudo cargar la imagen &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="475"/>
+        <location filename="../application.cpp" line="476"/>
         <source>The mind map has been modified.</source>
         <translation>El mapa mental se ha modificado.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="476"/>
+        <location filename="../application.cpp" line="477"/>
         <source>Do you want to save your changes?</source>
         <translation>¿Quiere guardar los cambios?</translation>
     </message>
@@ -221,52 +221,52 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="83"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="81"/>
         <source>These default settings will be applied each time a new mind map is created.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="110"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="108"/>
         <source>Edge Arrow Style</source>
         <translation type="unfinished">Estilo de flecha</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="113"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="111"/>
         <source>No arrow</source>
         <translation type="unfinished">Sin flecha</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="114"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="112"/>
         <source>Single arrow</source>
         <translation type="unfinished">Flecha única</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="115"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="113"/>
         <source>Double arrow</source>
         <translation type="unfinished">Flecha doble</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="134"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="132"/>
         <source>Arrow size:</source>
         <translation type="unfinished">Tamaño de la flecha:</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="137"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="135"/>
         <source>Edge width:</source>
         <translation type="unfinished">Ancho de línea:</translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="155"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="153"/>
         <source>Colors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="182"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="180"/>
         <source>Text Style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/defaults_tab.cpp" line="188"/>
+        <location filename="../dialogs/defaults_tab.cpp" line="186"/>
         <source>Text size:</source>
         <translation type="unfinished">Tamaño de texto:</translation>
     </message>
@@ -495,7 +495,7 @@
 <context>
     <name>Edge</name>
     <message>
-        <location filename="../edge.cpp" line="83"/>
+        <location filename="../scene_items/edge.cpp" line="89"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1022,27 +1022,27 @@
 <context>
     <name>NodeHandle</name>
     <message>
-        <location filename="../node_handle.cpp" line="58"/>
+        <location filename="../scene_items/node_handle.cpp" line="58"/>
         <source>Drag to connect or create a child node</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../node_handle.cpp" line="60"/>
+        <location filename="../scene_items/node_handle.cpp" line="60"/>
         <source>Move the node</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../node_handle.cpp" line="62"/>
+        <location filename="../scene_items/node_handle.cpp" line="62"/>
         <source>Select node color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../node_handle.cpp" line="64"/>
+        <location filename="../scene_items/node_handle.cpp" line="64"/>
         <source>Select text color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../node_handle.cpp" line="302"/>
+        <location filename="../scene_items/node_handle.cpp" line="302"/>
         <source>A</source>
         <translation type="unfinished"></translation>
     </message>

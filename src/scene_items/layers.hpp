@@ -13,9 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "edge_dot.hpp"
+#ifndef LAYERS_HPP
+#define LAYERS_HPP
 
-EdgeDot::EdgeDot(QGraphicsItem * parentItem)
-  : QGraphicsEllipseItem(parentItem)
+namespace SceneItems {
+
+enum class Layers
 {
-}
+    Edge = 1,
+    EdgeDot = 20,
+    EdgeDummyLabel = 24,
+    EdgeLabel = 45,
+    NodeHandle = 30,
+    Node = 10
+};
+
+} // namespace SceneItems
+
+#endif // LAYERS_HPP

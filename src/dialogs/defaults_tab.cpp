@@ -15,10 +15,12 @@
 
 #include "defaults_tab.hpp"
 
-#include "../settings_proxy.hpp"
-#include "../widgets/font_button.hpp"
 #include "color_setting_button.hpp"
 #include "widget_factory.hpp"
+
+#include "../core/settings_proxy.hpp"
+
+#include "../widgets/font_button.hpp"
 
 #include "simple_logger.hpp"
 
@@ -106,6 +108,8 @@ void DefaultsTab::createEdgeWidgets(QVBoxLayout & mainLayout)
     m_edgeWidthSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
     const auto edgeGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Edge Arrow Style"), mainLayout);
+
+    using SceneItems::EdgeModel;
 
     m_edgeArrowStyleRadioMap = {
         { EdgeModel::ArrowMode::Hidden, new QRadioButton(tr("No arrow")) },

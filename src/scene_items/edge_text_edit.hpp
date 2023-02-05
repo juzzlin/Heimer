@@ -16,11 +16,13 @@
 #ifndef EDGE_TEXT_EDIT_HPP
 #define EDGE_TEXT_EDIT_HPP
 
+#include "../types.hpp"
 #include "text_edit.hpp"
-#include "types.hpp"
 
 #include <QPropertyAnimation>
 #include <QTimer>
+
+namespace SceneItems {
 
 class Edge;
 
@@ -64,5 +66,7 @@ private:
 
     QTimer m_visibilityTimer;
 };
+
+} // namespace SceneItems
 
 #endif // EDGE_TEXT_EDIT_HPP

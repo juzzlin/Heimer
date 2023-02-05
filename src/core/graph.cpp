@@ -14,10 +14,11 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "graph.hpp"
-#include "node.hpp"
-#include "test_mode.hpp"
+
+#include "../test_mode.hpp"
 
 #include "simple_logger.hpp"
+
 #include <range/v3/view.hpp>
 
 #include <algorithm>

@@ -15,11 +15,13 @@
 
 #include "effects_tab.hpp"
 
-#include "../constants.hpp"
-#include "../settings_proxy.hpp"
-#include "../shadow_effect_params.hpp"
 #include "color_setting_button.hpp"
 #include "widget_factory.hpp"
+
+#include "../constants.hpp"
+
+#include "../core/settings_proxy.hpp"
+#include "../core/shadow_effect_params.hpp"
 
 #include <QGroupBox>
 #include <QHBoxLayout>

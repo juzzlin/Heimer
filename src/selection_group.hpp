@@ -22,8 +22,6 @@
 
 #include "types.hpp"
 
-class Node;
-
 class SelectionGroup
 {
 public:

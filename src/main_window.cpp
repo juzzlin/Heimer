@@ -20,8 +20,9 @@
 #include "mediator.hpp"
 #include "node_action.hpp"
 #include "recent_files_manager.hpp"
-#include "settings.hpp"
-#include "single_instance_container.hpp"
+
+#include "core/settings.hpp"
+#include "core/single_instance_container.hpp"
 
 #include "dialogs/about_dialog.hpp"
 #include "dialogs/settings_dialog.hpp"

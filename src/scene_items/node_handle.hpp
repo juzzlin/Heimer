@@ -20,7 +20,9 @@
 #include <QPropertyAnimation>
 #include <QTimer>
 
-#include "types.hpp"
+#include "../types.hpp"
+
+namespace SceneItems {
 
 class Node;
 
@@ -113,5 +115,7 @@ private:
     // Logical state
     bool m_visible = false;
 };
+
+} // namespace SceneItems
 
 #endif // NODE_HANDLE_HPP

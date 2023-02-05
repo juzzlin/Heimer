@@ -14,7 +14,8 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "text_edit.hpp"
-#include "test_mode.hpp"
+
+#include "../test_mode.hpp"
 
 #include <QKeyEvent>
 #include <QMouseEvent>
@@ -22,6 +23,8 @@
 #include <QStyleOptionGraphicsItem>
 #include <QTextDocument>
 #include <QTextOption>
+
+namespace SceneItems {
 
 TextEdit::TextEdit(QGraphicsItem * parentItem)
   : QGraphicsTextItem(parentItem)
@@ -111,3 +114,5 @@ void TextEdit::setTextSize(int textSize)
 }
 
 TextEdit::~TextEdit() = default;
+
+} // namespace SceneItems

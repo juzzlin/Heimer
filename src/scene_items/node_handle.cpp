@@ -14,15 +14,17 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "node_handle.hpp"
-#include "node.hpp"
-
-#include "constants.hpp"
 #include "graphics_factory.hpp"
 #include "layers.hpp"
-#include "utils.hpp"
+#include "node.hpp"
+
+#include "../constants.hpp"
+#include "../utils.hpp"
 
 #include <QPainter>
 #include <QPen>
+
+namespace SceneItems {
 
 NodeHandle::NodeHandle(NodeR parentNode, NodeHandle::Role role, int radius)
   : m_parentNode(parentNode)
@@ -354,3 +356,5 @@ void NodeHandle::setVisible(bool visible)
 }
 
 NodeHandle::~NodeHandle() = default;
+
+} // namespace SceneItems

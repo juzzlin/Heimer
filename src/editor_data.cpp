@@ -17,14 +17,18 @@
 #include "editor_scene.hpp"
 
 #include "constants.hpp"
-#include "node.hpp"
 #include "recent_files_manager.hpp"
 #include "selection_group.hpp"
-#include "settings_proxy.hpp"
-#include "single_instance_container.hpp"
 #include "test_mode.hpp"
 
+#include "core/settings_proxy.hpp"
+#include "core/single_instance_container.hpp"
+
 #include "io/alz_file_io.hpp"
+
+#include "core/graph.hpp"
+#include "scene_items/edge.hpp"
+#include "scene_items/node.hpp"
 
 #include "simple_logger.hpp"
 
@@ -282,7 +286,7 @@ EdgeS EditorData::addEdge(EdgeS edge)
     return edge;
 }
 
-void EditorData::deleteEdge(Edge & edge)
+void EditorData::deleteEdge(EdgeR edge)
 {
     assert(m_mindMapData);
 
@@ -319,8 +323,8 @@ void EditorData::deleteSelectedNodes()
 
     const auto selectedNodes = m_selectionGroup->nodes();
     if (selectedNodes.empty()) {
-        if (Node::lastHoveredNode()) {
-            deleteNode(*Node::lastHoveredNode());
+        if (SceneItems::Node::lastHoveredNode()) {
+            deleteNode(*SceneItems::Node::lastHoveredNode());
         }
     } else {
         m_selectionGroup->clear();
@@ -334,7 +338,7 @@ NodeS EditorData::addNodeAt(QPointF pos)
 {
     assert(m_mindMapData);
 
-    const auto node = make_shared<Node>();
+    const auto node = make_shared<SceneItems::Node>();
     node->setLocation(pos);
     m_mindMapData->graph().addNode(node);
     return node;
@@ -399,7 +403,7 @@ std::vector<EdgeS> EditorData::connectSelectedNodes()
     const auto connectableNodes = getConnectableNodes();
     std::vector<EdgeS> edges;
     std::transform(std::begin(connectableNodes), std::end(connectableNodes), std::back_inserter(edges),
-                   [this](auto && nodePair) { return addEdge(std::make_shared<Edge>(nodePair.first, nodePair.second)); });
+                   [this](auto && nodePair) { return addEdge(std::make_shared<SceneItems::Edge>(nodePair.first, nodePair.second)); });
     return edges;
 }
 
@@ -420,7 +424,7 @@ NodeS EditorData::copyNodeAt(NodeCR source, QPointF pos)
 {
     assert(m_mindMapData);
 
-    const auto node = std::make_shared<Node>(source);
+    const auto node = std::make_shared<SceneItems::Node>(source);
     node->setIndex(-1); // Results in new index to be assigned
     node->setLocation(pos);
     m_mindMapData->graph().addNode(node);

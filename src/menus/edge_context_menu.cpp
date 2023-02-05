@@ -15,8 +15,8 @@
 
 #include "edge_context_menu.hpp"
 
-#include "../edge.hpp"
 #include "../mediator.hpp"
+#include "../scene_items/edge.hpp"
 
 #include <cassert>
 
@@ -31,6 +31,8 @@ EdgeContextMenu::EdgeContextMenu(QWidget * parent, Mediator & mediator)
         m_mediator.saveUndoPoint();
         m_mediator.selectedEdge()->setReversed(!m_mediator.selectedEdge()->reversed());
     });
+
+    using SceneItems::EdgeModel;
 
     const auto showEdgeArrowAction(new QAction(tr("Show arrow"), this));
     QObject::connect(showEdgeArrowAction, &QAction::triggered, this, [=] {

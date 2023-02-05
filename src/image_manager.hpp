@@ -24,8 +24,6 @@
 #include "image.hpp"
 #include "types.hpp"
 
-class Node;
-
 class ImageManager : public QObject
 {
     Q_OBJECT

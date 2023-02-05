@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2023 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,19 +13,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef EDGE_DOT_HPP
-#define EDGE_DOT_HPP
+#include "scene_item_base.hpp"
 
-#include <QGraphicsEllipseItem>
-#include <QObject>
+#include "../constants.hpp"
 
-class EdgeDot : public QObject, public QGraphicsEllipseItem
+namespace SceneItems {
+
+SceneItemBase::SceneItemBase()
+  : m_scaleAnimation(this, "scale")
 {
-    Q_OBJECT
-    Q_PROPERTY(qreal scale READ scale WRITE setScale)
+    m_scaleAnimation.setDuration(Constants::Node::SCALE_ANIMATION_DURATION);
+    m_scaleAnimation.setEndValue(0.0);
 
-public:
-    explicit EdgeDot(QGraphicsItem * parentItem = nullptr);
-};
+    connect(&m_scaleAnimation, &QPropertyAnimation::finished, this, &SceneItemBase::removeFromScene);
+}
 
-#endif // EDGE_DOT_HPP
+void SceneItemBase::hideWithAnimation()
+{
+    m_scaleAnimation.setStartValue(scale());
+    m_scaleAnimation.start();
+}
+
+void SceneItemBase::removeFromScene()
+{
+}
+
+SceneItemBase::~SceneItemBase() = default;
+
+} // namespace SceneItems

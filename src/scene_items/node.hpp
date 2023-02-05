@@ -24,7 +24,7 @@
 #include <map>
 #include <vector>
 
-#include "types.hpp"
+#include "../types.hpp"
 
 #include "edge.hpp"
 #include "edge_point.hpp"
@@ -36,8 +36,11 @@ class QGraphicsTextItem;
 class SettingsProxy;
 class TextEdit;
 
-struct NodeModel;
 struct ShadowEffectParams;
+
+namespace SceneItems {
+
+struct NodeModel;
 
 //! Freely placeable target node.
 class Node : public SceneItemBase
@@ -178,5 +181,7 @@ private:
 
     static NodeP m_lastHoveredNode;
 };
+
+} // namespace SceneItems
 
 #endif // NODE_HPP

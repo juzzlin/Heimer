@@ -27,25 +27,27 @@
 #include <QTimer>
 
 #include "copy_context.hpp"
-#include "edge.hpp"
 #include "grid.hpp"
 #include "mind_map_data.hpp"
 #include "mouse_action.hpp"
-#include "node.hpp"
 #include "types.hpp"
 #include "undo_stack.hpp"
 
 #include "io/file_exception.hpp"
 
-class Node;
-class NodeBase;
 class MindMapTile;
 class SelectionGroup;
 class QGraphicsLineItem;
 
+namespace SceneItems {
+class Edge;
+class Node;
+class NodeBase;
+} // namespace SceneItems
+
 namespace IO {
 class AlzFileIO;
-}
+} // namespace IO
 
 class EditorData : public QObject
 {

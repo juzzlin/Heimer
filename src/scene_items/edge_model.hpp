@@ -18,7 +18,9 @@
 
 #include <QString>
 
-#include "constants.hpp"
+#include "../constants.hpp"
+
+namespace SceneItems {
 
 struct EdgeModel
 {
@@ -59,5 +61,7 @@ struct EdgeModel
 
     QString text;
 };
+
+} // namespace SceneItems
 
 #endif // EDGE_MODEL_HPP

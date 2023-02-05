@@ -19,6 +19,8 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsTextItem>
 
+namespace SceneItems {
+
 class TextEdit : public QGraphicsTextItem
 {
     Q_OBJECT
@@ -62,5 +64,7 @@ private:
 
     int m_textSize = 0;
 };
+
+} // namespace SceneItems
 
 #endif // TEXT_EDIT_HPP

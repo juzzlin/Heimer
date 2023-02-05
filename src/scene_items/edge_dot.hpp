@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2019 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,22 +13,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef EDGE_POINT_HPP
-#define EDGE_POINT_HPP
+#ifndef EDGE_DOT_HPP
+#define EDGE_DOT_HPP
 
-#include <QPointF>
+#include <QGraphicsEllipseItem>
+#include <QObject>
 
-struct EdgePoint
+namespace SceneItems {
+
+class EdgeDot : public QObject, public QGraphicsEllipseItem
 {
-    EdgePoint(QPointF location = { 0, 0 }, bool isCorner = false)
-      : location(location)
-      , isCorner(isCorner)
-    {
-    }
+    Q_OBJECT
+    Q_PROPERTY(qreal scale READ scale WRITE setScale)
 
-    QPointF location;
-
-    bool isCorner = false;
+public:
+    explicit EdgeDot(QGraphicsItem * parentItem = nullptr);
 };
 
-#endif // EDGE_POINT_HPP
+} // namespace SceneItems
+
+#endif // EDGE_DOT_HPP

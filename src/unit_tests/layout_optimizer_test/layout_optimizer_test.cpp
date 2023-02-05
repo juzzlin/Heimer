@@ -14,14 +14,21 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "layout_optimizer_test.hpp"
-#include "contrib/SimpleLogger/src/simple_logger.hpp"
-#include "grid.hpp"
-#include "layout_optimizer.hpp"
-#include "mind_map_data.hpp"
-#include "test_mode.hpp"
+
+#include "../../grid.hpp"
+#include "../../layout_optimizer.hpp"
+#include "../../mind_map_data.hpp"
+#include "../../test_mode.hpp"
+
+#include "../../core/graph.hpp"
+
+#include "simple_logger.hpp"
 
 #include <iostream>
 #include <random>
+
+using SceneItems::Edge;
+using SceneItems::Node;
 
 LayoutOptimizerTest::LayoutOptimizerTest()
 {

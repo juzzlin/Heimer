@@ -15,16 +15,20 @@
 
 #include "alz_file_io_worker.hpp"
 
+#include "xml_reader.hpp"
+#include "xml_writer.hpp"
+
 #include "../constants.hpp"
-#include "../graph.hpp"
-#include "../node.hpp"
+#include "../image_manager.hpp"
 #include "../test_mode.hpp"
 #include "../types.hpp"
 
-#include "simple_logger.hpp"
+#include "../core/graph.hpp"
 
-#include "xml_reader.hpp"
-#include "xml_writer.hpp"
+#include "../scene_items/edge.hpp"
+#include "../scene_items/node.hpp"
+
+#include "simple_logger.hpp"
 
 #include <cassert>
 #include <functional>
@@ -351,7 +355,7 @@ static void readChildren(const QDomElement & root, std::map<QString, std::functi
 static NodeU readNode(const QDomElement & element)
 {
     // Init a new node. QGraphicsScene will take the ownership eventually.
-    auto node = std::make_unique<Node>();
+    auto node = std::make_unique<SceneItems::Node>();
 
     node->setIndex(element.attribute(DataKeywords::MindMap::Graph::Node::INDEX, "-1").toInt());
     node->setLocation(QPointF(
@@ -389,8 +393,8 @@ static EdgeU readEdge(const QDomElement & element, MindMapData & data)
     const bool reversed = element.attribute(DataKeywords::MindMap::Graph::Edge::REVERSED, "0").toInt();
 
     // Initialize a new edge. QGraphicsScene will take the ownership eventually.
-    auto edge = std::make_unique<Edge>(data.graph().getNode(index0), data.graph().getNode(index1));
-    edge->setArrowMode(static_cast<EdgeModel::ArrowMode>(arrowMode));
+    auto edge = std::make_unique<SceneItems::Edge>(data.graph().getNode(index0), data.graph().getNode(index1));
+    edge->setArrowMode(static_cast<SceneItems::EdgeModel::ArrowMode>(arrowMode));
     edge->setDashedLine(dashedLine);
     edge->setReversed(reversed);
 

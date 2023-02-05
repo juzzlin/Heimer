@@ -15,9 +15,13 @@
 
 #include "selection_group_test.hpp"
 
-#include "node.hpp"
 #include "selection_group.hpp"
 #include "test_mode.hpp"
+
+#include "../../scene_items/node.hpp"
+
+using SceneItems::Edge;
+using SceneItems::Node;
 
 SelectionGroupTest::SelectionGroupTest()
 {

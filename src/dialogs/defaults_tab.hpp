@@ -19,7 +19,7 @@
 #include <map>
 #include <vector>
 
-#include "../edge_model.hpp"
+#include "../scene_items/edge_model.hpp"
 #include "settings_tab_base.hpp"
 
 class QCheckBox;
@@ -58,7 +58,7 @@ private:
 
     void setActiveDefaults();
 
-    std::map<EdgeModel::ArrowMode, QRadioButton *> m_edgeArrowStyleRadioMap;
+    std::map<SceneItems::EdgeModel::ArrowMode, QRadioButton *> m_edgeArrowStyleRadioMap;
 
     QCheckBox * m_edgeDirectionCheckBox = nullptr;
 

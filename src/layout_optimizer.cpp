@@ -14,12 +14,14 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "layout_optimizer.hpp"
+
 #include "constants.hpp"
 #include "contrib/SimpleLogger/src/simple_logger.hpp"
-#include "graph.hpp"
 #include "grid.hpp"
 #include "mind_map_data.hpp"
-#include "node.hpp"
+
+#include "core/graph.hpp"
+#include "scene_items/node.hpp"
 
 #include <cassert>
 #include <cmath>
@@ -405,7 +407,7 @@ private:
             return rect.y + rect.h / 2;
         }
 
-        std::weak_ptr<Node> node;
+        std::weak_ptr<SceneItems::Node> node;
 
         CellVector all;
 

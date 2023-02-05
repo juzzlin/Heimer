@@ -28,22 +28,24 @@
 
 #include "constants.hpp"
 #include "control_strategy.hpp"
-#include "edge.hpp"
-#include "edge_text_edit.hpp"
-#include "graphics_factory.hpp"
 #include "item_filter.hpp"
 #include "magic_zoom.hpp"
 #include "mediator.hpp"
 #include "mind_map_data.hpp"
 #include "mouse_action.hpp"
-#include "node.hpp"
 #include "node_action.hpp"
-#include "node_handle.hpp"
-#include "single_instance_container.hpp"
 
-#include "simple_logger.hpp"
+#include "core/single_instance_container.hpp"
 
 #include "menus/edge_context_menu.hpp"
+
+#include "scene_items/edge.hpp"
+#include "scene_items/edge_text_edit.hpp"
+#include "scene_items/graphics_factory.hpp"
+#include "scene_items/node.hpp"
+#include "scene_items/node_handle.hpp"
+
+#include "simple_logger.hpp"
 
 #include <cassert>
 #include <cstdlib>
@@ -113,7 +115,7 @@ void EditorView::handleMousePressEventOnNode(QMouseEvent & event, NodeR node)
     }
 }
 
-void EditorView::handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHandle & nodeHandle)
+void EditorView::handleMousePressEventOnNodeHandle(QMouseEvent & event, SceneItems::NodeHandle & nodeHandle)
 {
     if (isModifierPressed()) {
         return;
@@ -140,24 +142,24 @@ void EditorView::handlePrimaryButtonClickOnNode(NodeR node)
     }
 }
 
-void EditorView::handlePrimaryButtonClickOnNodeHandle(NodeHandle & nodeHandle)
+void EditorView::handlePrimaryButtonClickOnNodeHandle(SceneItems::NodeHandle & nodeHandle)
 {
     if (!nodeHandle.parentNode().selected()) {
         m_mediator.clearSelectionGroup();
     }
 
     switch (nodeHandle.role()) {
-    case NodeHandle::Role::ConnectOrCreate:
+    case SceneItems::NodeHandle::Role::ConnectOrCreate:
         m_mediator.initiateNewNodeDrag(nodeHandle);
         break;
-    case NodeHandle::Role::Move:
+    case SceneItems::NodeHandle::Role::Move:
         m_mediator.initiateNodeDrag(nodeHandle.parentNode());
         break;
-    case NodeHandle::Role::NodeColor:
+    case SceneItems::NodeHandle::Role::NodeColor:
         m_mediator.addNodeToSelectionGroup(nodeHandle.parentNode(), true);
         emit actionTriggered(StateMachine::Action::NodeColorChangeRequested);
         break;
-    case NodeHandle::Role::TextColor:
+    case SceneItems::NodeHandle::Role::TextColor:
         m_mediator.addNodeToSelectionGroup(nodeHandle.parentNode(), true);
         emit actionTriggered(StateMachine::Action::TextColorChangeRequested);
         break;
@@ -233,6 +235,8 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
     m_pos = event->pos();
     m_mappedPos = mapToScene(event->pos());
     m_mediator.mouseAction().setMappedPos(m_mappedPos);
+
+    using SceneItems::Node;
 
     if (Node::lastHoveredNode()) {
         const auto hhd = Constants::Node::HIDE_HANDLES_DISTANCE;
@@ -410,7 +414,7 @@ void EditorView::showDummyDragEdge(bool show)
     if (const auto sourceNode = m_mediator.mouseAction().sourceNode()) {
         if (!m_dummyDragEdge) {
             L().debug() << "Creating a new dummy drag edge";
-            m_dummyDragEdge = std::make_unique<Edge>(sourceNode, m_dummyDragNode.get(), false, false);
+            m_dummyDragEdge = std::make_unique<SceneItems::Edge>(sourceNode, m_dummyDragNode.get(), false, false);
             m_dummyDragEdge->setOpacity(0.5);
             scene()->addItem(m_dummyDragEdge.get());
         } else {
@@ -429,7 +433,7 @@ void EditorView::showDummyDragNode(bool show)
 {
     if (!m_dummyDragNode) {
         L().debug() << "Creating a new dummy drag node";
-        m_dummyDragNode = std::make_unique<Node>();
+        m_dummyDragNode = std::make_unique<SceneItems::Node>();
         scene()->addItem(m_dummyDragNode.get());
     }
 

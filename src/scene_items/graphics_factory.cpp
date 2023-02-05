@@ -15,7 +15,7 @@
 
 #include "graphics_factory.hpp"
 
-#include "shadow_effect_params.hpp"
+#include "../core/shadow_effect_params.hpp"
 
 #include <QGraphicsDropShadowEffect>
 

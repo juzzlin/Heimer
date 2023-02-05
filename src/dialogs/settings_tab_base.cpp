@@ -14,8 +14,9 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "settings_tab_base.hpp"
-#include "../settings_proxy.hpp"
-#include "../single_instance_container.hpp"
+
+#include "../core/settings_proxy.hpp"
+#include "../core/single_instance_container.hpp"
 
 namespace Dialogs {
 

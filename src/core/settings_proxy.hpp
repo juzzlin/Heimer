@@ -16,8 +16,8 @@
 #ifndef SETTINGS_PROXY_HPP
 #define SETTINGS_PROXY_HPP
 
-#include "constants.hpp"
-#include "edge.hpp"
+#include "../constants.hpp"
+#include "../scene_items/edge_model.hpp"
 #include "shadow_effect_params.hpp"
 
 #include <memory>
@@ -59,9 +59,9 @@ public:
 
     void setNodeTextColor(const QColor & nodeTextColor);
 
-    EdgeModel::ArrowMode edgeArrowMode() const;
+    SceneItems::EdgeModel::ArrowMode edgeArrowMode() const;
 
-    void setEdgeArrowMode(EdgeModel::ArrowMode mode);
+    void setEdgeArrowMode(SceneItems::EdgeModel::ArrowMode mode);
 
     double arrowSize() const;
 
@@ -110,7 +110,7 @@ private:
 
     QColor m_nodeTextColor;
 
-    EdgeModel::ArrowMode m_edgeArrowMode;
+    SceneItems::EdgeModel::ArrowMode m_edgeArrowMode;
 
     double m_arrowSize;
 

@@ -15,18 +15,20 @@
 
 #include "node.hpp"
 
-#include "constants.hpp"
 #include "edge.hpp"
 #include "graphics_factory.hpp"
-#include "image.hpp"
 #include "layers.hpp"
 #include "node_model.hpp"
-#include "settings_proxy.hpp"
-#include "shadow_effect_params.hpp"
-#include "single_instance_container.hpp"
-#include "test_mode.hpp"
 #include "text_edit.hpp"
-#include "utils.hpp"
+
+#include "../constants.hpp"
+#include "../image.hpp"
+#include "../test_mode.hpp"
+#include "../utils.hpp"
+
+#include "../core/settings_proxy.hpp"
+#include "../core/shadow_effect_params.hpp"
+#include "../core/single_instance_container.hpp"
 
 #include "simple_logger.hpp"
 
@@ -42,6 +44,8 @@
 
 #include <algorithm>
 #include <cmath>
+
+namespace SceneItems {
 
 NodeP Node::m_lastHoveredNode = nullptr;
 
@@ -606,3 +610,5 @@ Node::~Node()
 
     juzzlin::L().trace() << "Deleting Node id=" << index();
 }
+
+} // namespace SceneItems

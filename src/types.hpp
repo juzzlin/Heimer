@@ -18,17 +18,19 @@
 
 #include <memory>
 
+namespace SceneItems {
 class Edge;
+}
 
-using EdgeCR = const Edge &;
+using EdgeCR = const SceneItems::Edge &;
 
-using EdgeP = Edge *;
+using EdgeP = SceneItems::Edge *;
 
-using EdgeR = Edge &;
+using EdgeR = SceneItems::Edge &;
 
-using EdgeS = std::shared_ptr<Edge>;
+using EdgeS = std::shared_ptr<SceneItems::Edge>;
 
-using EdgeU = std::unique_ptr<Edge>;
+using EdgeU = std::unique_ptr<SceneItems::Edge>;
 
 class Graph;
 
@@ -36,16 +38,18 @@ using GraphCR = const Graph &;
 
 using GraphR = Graph &;
 
+namespace SceneItems {
 class Node;
+}
 
-using NodeCR = const Node &;
+using NodeCR = const SceneItems::Node &;
 
-using NodeP = Node *;
+using NodeP = SceneItems::Node *;
 
-using NodeR = Node &;
+using NodeR = SceneItems::Node &;
 
-using NodeS = std::shared_ptr<Node>;
+using NodeS = std::shared_ptr<SceneItems::Node>;
 
-using NodeU = std::unique_ptr<Node>;
+using NodeU = std::unique_ptr<SceneItems::Node>;
 
 #endif // TYPES_HPP

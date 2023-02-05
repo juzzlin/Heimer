@@ -15,8 +15,11 @@
 
 #include "edge_text_edit.hpp"
 
-#include "constants.hpp"
 #include "edge.hpp"
+
+#include "../constants.hpp"
+
+namespace SceneItems {
 
 EdgeTextEdit::EdgeTextEdit(EdgeP parentItem)
   : TextEdit(parentItem)
@@ -84,3 +87,5 @@ void EdgeTextEdit::updateDueToLostFocus()
 {
     m_visibilityTimer.start();
 }
+
+} // namespace SceneItems

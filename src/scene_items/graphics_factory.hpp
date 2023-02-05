@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2022 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,35 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef NODE_MODEL_HPP
-#define NODE_MODEL_HPP
+#ifndef GRAPHICS_FACTORY_HPP
+#define GRAPHICS_FACTORY_HPP
+
+#include "../constants.hpp"
 
 #include <QColor>
-#include <QPointF>
-#include <QSizeF>
-#include <QString>
 
-struct NodeModel
-{
-    NodeModel(QColor color, QColor textColor)
-      : color(color)
-      , textColor(textColor)
-    {
-    }
+class QGraphicsEffect;
+struct ShadowEffectParams;
 
-    QColor color;
+namespace GraphicsFactory {
 
-    int index = -1;
+QGraphicsEffect * createDropShadowEffect(bool selected, const ShadowEffectParams & params);
 
-    size_t imageRef = 0;
+void updateDropShadowEffect(QGraphicsEffect * effect, bool selected, const ShadowEffectParams & params);
+} // namespace GraphicsFactory
 
-    QPointF location;
-
-    QSizeF size;
-
-    QColor textColor;
-
-    QString text;
-};
-
-#endif // NODE_MODEL_HPP
+#endif // GRAPHICS_FACTORY_HPP

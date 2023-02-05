@@ -15,8 +15,9 @@
 
 #include "single_instance_container.hpp"
 
-#include "control_strategy.hpp"
 #include "settings_proxy.hpp"
+
+#include "../control_strategy.hpp"
 
 #include <stdexcept>
 

@@ -16,7 +16,7 @@
 #ifndef SETTINGS_HPP
 #define SETTINGS_HPP
 
-#include "edge.hpp"
+#include "../scene_items/edge_model.hpp"
 
 #include <QColor>
 #include <QFont>
@@ -39,9 +39,9 @@ Qt::CheckState loadAutoSnapState();
 
 void saveAutoSnapState(int state);
 
-EdgeModel::ArrowMode loadEdgeArrowMode(EdgeModel::ArrowMode defaultMode);
+SceneItems::EdgeModel::ArrowMode loadEdgeArrowMode(SceneItems::EdgeModel::ArrowMode defaultMode);
 
-void saveEdgeArrowMode(EdgeModel::ArrowMode mode);
+void saveEdgeArrowMode(SceneItems::EdgeModel::ArrowMode mode);
 
 bool loadReversedEdgeDirection(bool defaultDirection);
 

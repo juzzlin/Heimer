@@ -19,13 +19,14 @@
 #include <QFont>
 #include <QString>
 
-#include "constants.hpp"
-#include "graph.hpp"
-#include "image_manager.hpp"
-#include "mind_map_data_base.hpp"
-#include "settings_proxy.hpp"
+#include <memory>
 
+#include "constants.hpp"
+#include "mind_map_data_base.hpp"
+
+class Graph;
 class Grid;
+class ImageManager;
 class ObjectModelLoader;
 struct ShadowEffectParams;
 
@@ -103,36 +104,6 @@ public:
 private:
     void copyGraph(const MindMapData & other);
 
-    struct Style
-    {
-        Style(SettingsProxy & settingsProxy)
-          : arrowSize(settingsProxy.arrowSize())
-          , backgroundColor(settingsProxy.backgroundColor())
-          , edgeColor(settingsProxy.edgeColor())
-          , edgeWidth(settingsProxy.edgeWidth())
-          , font(settingsProxy.font())
-          , gridColor(settingsProxy.gridColor())
-          , textSize(settingsProxy.textSize())
-        {
-        }
-
-        double arrowSize;
-
-        QColor backgroundColor;
-
-        QColor edgeColor;
-
-        double edgeWidth;
-
-        QFont font;
-
-        QColor gridColor;
-
-        int textSize;
-
-        int cornerRadius = Constants::Node::Defaults::CORNER_RADIUS;
-    };
-
     struct LayoutOptimizerParameters
     {
         double aspectRatio = Constants::LayoutOptimizer::Defaults::ASPECT_RATIO;
@@ -144,11 +115,12 @@ private:
 
     QString m_version;
 
-    Style m_style;
+    struct Style;
+    std::unique_ptr<Style> m_style;
 
-    Graph m_graph;
+    std::unique_ptr<Graph> m_graph;
 
-    ImageManager m_imageManager;
+    std::unique_ptr<ImageManager> m_imageManager;
 
     LayoutOptimizerParameters m_layoutOptimizerParameters;
 };

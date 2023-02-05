@@ -21,15 +21,12 @@
 #include <map>
 #include <memory>
 
+#include "../types.hpp"
 #include "edge_model.hpp"
 #include "edge_point.hpp"
 #include "edge_text_edit.hpp"
 #include "scene_item_base.hpp"
-#include "types.hpp"
 
-class EdgeDot;
-class Graph;
-class Node;
 class QFont;
 class QGraphicsEllipseItem;
 class QGraphicsLineItem;
@@ -37,6 +34,12 @@ class QPropertyAnimation;
 class SettingsProxy;
 
 struct ShadowEffectParams;
+
+namespace SceneItems {
+
+class EdgeDot;
+class Graph;
+class Node;
 
 //! A graphic representation of a graph edge between nodes.
 class Edge : public SceneItemBase
@@ -188,5 +191,7 @@ private:
 
     QTimer m_labelVisibilityTimer;
 };
+
+} // namespace SceneItems
 
 #endif // EDGE_HPP

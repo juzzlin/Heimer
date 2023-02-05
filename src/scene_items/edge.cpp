@@ -15,17 +15,20 @@
 
 #include "edge.hpp"
 
-#include "constants.hpp"
 #include "edge_dot.hpp"
 #include "edge_text_edit.hpp"
-#include "graph.hpp"
 #include "graphics_factory.hpp"
 #include "layers.hpp"
 #include "node.hpp"
-#include "settings_proxy.hpp"
-#include "shadow_effect_params.hpp"
-#include "single_instance_container.hpp"
-#include "test_mode.hpp"
+
+#include "../constants.hpp"
+
+#include "../core/graph.hpp"
+#include "../core/settings_proxy.hpp"
+#include "../core/shadow_effect_params.hpp"
+#include "../core/single_instance_container.hpp"
+
+#include "../test_mode.hpp"
 
 #include "simple_logger.hpp"
 
@@ -43,6 +46,8 @@
 
 #include <cassert>
 #include <cmath>
+
+namespace SceneItems {
 
 Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enableLabel)
   : m_settingsProxy(SingleInstanceContainer::instance().settingsProxy())
@@ -548,3 +553,5 @@ Edge::~Edge()
         TestMode::logDisabledCode("Edge destructor");
     }
 }
+
+} // namespace SceneItems

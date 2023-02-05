@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2019 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,21 +13,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef GRAPHICS_FACTORY_HPP
-#define GRAPHICS_FACTORY_HPP
+#ifndef EDGE_POINT_HPP
+#define EDGE_POINT_HPP
 
-#include "constants.hpp"
+#include <QPointF>
 
-#include <QColor>
+namespace SceneItems {
 
-class QGraphicsEffect;
-struct ShadowEffectParams;
+struct EdgePoint
+{
+    EdgePoint(QPointF location = { 0, 0 }, bool isCorner = false)
+      : location(location)
+      , isCorner(isCorner)
+    {
+    }
 
-namespace GraphicsFactory {
+    QPointF location;
 
-QGraphicsEffect * createDropShadowEffect(bool selected, const ShadowEffectParams & params);
+    bool isCorner = false;
+};
 
-void updateDropShadowEffect(QGraphicsEffect * effect, bool selected, const ShadowEffectParams & params);
-} // namespace GraphicsFactory
+} // namespace SceneItems
 
-#endif // GRAPHICS_FACTORY_HPP
+#endif // EDGE_POINT_HPP

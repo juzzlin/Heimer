@@ -15,8 +15,8 @@
 
 #include "copy_context.hpp"
 
-#include "graph.hpp"
-#include "node.hpp"
+#include "core/graph.hpp"
+#include "scene_items/node.hpp"
 
 #include "simple_logger.hpp"
 
@@ -43,13 +43,13 @@ void CopyContext::pushEdges(NodePVector nodes, GraphCR graph)
             int i0 = nodes.at(i)->index();
             int i1 = nodes.at(j)->index();
             if (const auto edge = graph.getEdge(i0, i1)) {
-                m_copiedData.edges.push_back({ std::make_shared<Edge>(*edge), i0, i1 });
+                m_copiedData.edges.push_back({ std::make_shared<SceneItems::Edge>(*edge), i0, i1 });
             }
             // Same as above, but to the other direction
             i0 = nodes.at(j)->index();
             i1 = nodes.at(i)->index();
             if (const auto edge = graph.getEdge(i0, i1)) {
-                m_copiedData.edges.push_back({ std::make_shared<Edge>(*edge), i0, i1 });
+                m_copiedData.edges.push_back({ std::make_shared<SceneItems::Edge>(*edge), i0, i1 });
             }
         }
     }
@@ -69,7 +69,7 @@ void CopyContext::push(NodePVector nodes, GraphCR graph)
 
 void CopyContext::push(NodeCR node)
 {
-    m_copiedData.nodes.push_back(std::make_shared<Node>(node));
+    m_copiedData.nodes.push_back(std::make_shared<SceneItems::Node>(node));
     m_copiedData.copyReferencePoint *= static_cast<qreal>(m_copiedData.nodes.size() - 1);
     m_copiedData.copyReferencePoint += node.pos();
     m_copiedData.copyReferencePoint /= static_cast<qreal>(m_copiedData.nodes.size());

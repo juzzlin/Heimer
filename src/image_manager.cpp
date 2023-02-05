@@ -14,8 +14,11 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "image_manager.hpp"
-#include "contrib/SimpleLogger/src/simple_logger.hpp"
-#include "node.hpp"
+
+#include "scene_items/node.hpp"
+
+#include "simple_logger.hpp"
+
 #include <algorithm>
 
 ImageManager::ImageManager() = default;

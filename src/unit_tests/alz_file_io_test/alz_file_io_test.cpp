@@ -14,12 +14,21 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "alz_file_io_test.hpp"
-#include "mind_map_data.hpp"
-#include "test_mode.hpp"
 
-#include "../io/alz_file_io.hpp"
-#include "../io/xml_reader.hpp"
-#include "../io/xml_writer.hpp"
+#include "../../image_manager.hpp"
+#include "../../mind_map_data.hpp"
+#include "../../test_mode.hpp"
+
+#include "../../io/alz_file_io.hpp"
+#include "../../io/xml_reader.hpp"
+#include "../../io/xml_writer.hpp"
+
+#include "../../core/graph.hpp"
+
+using SceneItems::Edge;
+using SceneItems::EdgeModel;
+using SceneItems::Node;
+using SceneItems::NodeModel;
 
 AlzFileIOTest::AlzFileIOTest()
 {

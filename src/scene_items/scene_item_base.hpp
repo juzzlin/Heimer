@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2023 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,17 +13,34 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef LAYERS_HPP
-#define LAYERS_HPP
+#ifndef SCENE_ITEM_BASE_HPP
+#define SCENE_ITEM_BASE_HPP
 
-enum class Layers
+#include <QGraphicsItem>
+#include <QObject>
+#include <QPropertyAnimation>
+
+namespace SceneItems {
+
+class SceneItemBase : public QObject, public QGraphicsItem
 {
-    Edge = 1,
-    EdgeDot = 20,
-    EdgeDummyLabel = 24,
-    EdgeLabel = 45,
-    NodeHandle = 30,
-    Node = 10
+    Q_OBJECT
+    Q_INTERFACES(QGraphicsItem)
+    Q_PROPERTY(qreal scale READ scale WRITE setScale)
+
+public:
+    SceneItemBase();
+
+    virtual ~SceneItemBase();
+
+    virtual void hideWithAnimation();
+
+    virtual void removeFromScene();
+
+private:
+    QPropertyAnimation m_scaleAnimation;
 };
 
-#endif // LAYERS_HPP
+} // namespace SceneItems
+
+#endif // SCENE_ITEM_BASE_HPP

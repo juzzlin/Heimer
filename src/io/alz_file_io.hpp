@@ -17,10 +17,10 @@
 #define ALZ_FILE_IO_HPP
 
 #include "file_io.hpp"
+#include "types.hpp"
 
 #include <memory>
 
-class MindMapData;
 class QThread;
 
 namespace IO {
@@ -36,13 +36,13 @@ public:
 
     void finish() override;
 
-    std::unique_ptr<MindMapData> fromFile(QString path) const override;
+    MindMapDataU fromFile(QString path) const override;
 
-    bool toFile(std::shared_ptr<MindMapData> mindMapData, QString path, bool async) const override;
+    bool toFile(MindMapDataS mindMapData, QString path, bool async) const override;
 
-    std::unique_ptr<MindMapData> fromXml(QString xml) const;
+    MindMapDataU fromXml(QString xml) const;
 
-    QString toXml(std::shared_ptr<MindMapData> mindMapData) const;
+    QString toXml(MindMapDataS mindMapData) const;
 
 private:
     std::unique_ptr<AlzFileIOWorker> m_worker;

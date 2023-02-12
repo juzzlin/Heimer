@@ -14,7 +14,10 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "test_mode.hpp"
+
 #include "simple_logger.hpp"
+
+namespace Core {
 
 bool TestMode::m_enabled = false;
 
@@ -32,3 +35,5 @@ void TestMode::logDisabledCode(const std::string & message)
 {
     juzzlin::L().debug() << "TestMode: '" << message << "' disabled";
 }
+
+} // namespace Core

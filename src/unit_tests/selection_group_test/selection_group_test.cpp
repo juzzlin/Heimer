@@ -16,7 +16,8 @@
 #include "selection_group_test.hpp"
 
 #include "selection_group.hpp"
-#include "test_mode.hpp"
+
+#include "../../core/test_mode.hpp"
 
 #include "../../scene_items/node.hpp"
 
@@ -25,7 +26,7 @@ using SceneItems::Node;
 
 SelectionGroupTest::SelectionGroupTest()
 {
-    TestMode::setEnabled(true);
+    Core::TestMode::setEnabled(true);
 }
 
 void SelectionGroupTest::testAddNodes_Explicit()

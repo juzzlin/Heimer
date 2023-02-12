@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2020 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,22 +13,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef TEST_MODE_HPP
-#define TEST_MODE_HPP
+#ifndef USER_EXCEPTION_HPP
+#define USER_EXCEPTION_HPP
 
+#include <stdexcept>
 #include <string>
 
-class TestMode
+namespace Core {
+
+class UserException : public std::runtime_error
 {
 public:
-    static bool enabled();
-
-    static void setEnabled(bool enabled);
-
-    static void logDisabledCode(const std::string & message);
-
-private:
-    static bool m_enabled;
+    explicit UserException(std::string msg)
+      : runtime_error(msg)
+    {
+    }
 };
 
-#endif // TEST_MODE_HPP
+} // namespace Core
+
+#endif // USER_EXCEPTION_HPP

@@ -30,8 +30,10 @@ class EditorView;
 class ImageManager;
 class MainWindow;
 class Mediator;
-class Node;
+
+namespace Core {
 class VersionChecker;
+}
 
 namespace Dialogs {
 class PngExportDialog;
@@ -120,7 +122,7 @@ private:
 
     std::unique_ptr<Dialogs::SvgExportDialog> m_svgExportDialog;
 
-    std::unique_ptr<VersionChecker> m_versionChecker;
+    std::unique_ptr<Core::VersionChecker> m_versionChecker;
 };
 
 #endif // APPLICATION_HPP

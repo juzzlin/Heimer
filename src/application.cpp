@@ -25,12 +25,12 @@
 #include "node_action.hpp"
 #include "recent_files_manager.hpp"
 #include "state_machine.hpp"
-#include "user_exception.hpp"
-#include "version_checker.hpp"
 
 #include "core/settings.hpp"
 #include "core/settings_proxy.hpp"
 #include "core/single_instance_container.hpp"
+#include "core/user_exception.hpp"
+#include "core/version_checker.hpp"
 
 #include "dialogs/layout_optimization_dialog.hpp"
 #include "dialogs/png_export_dialog.hpp"
@@ -144,7 +144,7 @@ void Application::parseArgs(int argc, char ** argv)
 Application::Application(int & argc, char ** argv)
   : m_app(argc, argv)
   , m_stateMachine(std::make_unique<StateMachine>())
-  , m_versionChecker(std::make_unique<VersionChecker>())
+  , m_versionChecker(std::make_unique<Core::VersionChecker>())
 {
     parseArgs(argc, argv);
 
@@ -211,7 +211,7 @@ Application::Application(int & argc, char ** argv)
         }
     }
 
-    connect(m_versionChecker.get(), &VersionChecker::newVersionFound, this, [this](Version version, QString downloadUrl) {
+    connect(m_versionChecker.get(), &Core::VersionChecker::newVersionFound, this, [this](Core::Version version, QString downloadUrl) {
         m_mainWindow->showStatusText(QString(tr("A new version %1 available at <a href='%2'>%2</a>")).arg(version.toString(), downloadUrl));
     });
     m_versionChecker->checkForNewReleases();

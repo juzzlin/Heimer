@@ -15,15 +15,17 @@
 
 #include "mind_map_data.hpp"
 
-#include "grid.hpp"
-#include "image_manager.hpp"
+#include "graph.hpp"
+#include "settings_proxy.hpp"
+#include "shadow_effect_params.hpp"
+#include "single_instance_container.hpp"
 
-#include "core/settings_proxy.hpp"
-#include "core/shadow_effect_params.hpp"
-#include "core/single_instance_container.hpp"
+#include "../grid.hpp"
+#include "../image_manager.hpp"
 
-#include "core/graph.hpp"
-#include "scene_items/node.hpp"
+#include "../scene_items/node.hpp"
+
+namespace Core {
 
 struct MindMapData::Style
 {
@@ -307,3 +309,5 @@ void MindMapData::setVersion(const QString & version)
 }
 
 MindMapData::~MindMapData() = default;
+
+} // namespace Core

@@ -445,7 +445,7 @@ void Mediator::moveSelectionGroup(NodeR reference, QPointF location)
     m_editorData->moveSelectionGroup(reference, location);
 }
 
-MindMapDataPtr Mediator::mindMapData() const
+MindMapDataS Mediator::mindMapData() const
 {
     return m_editorData->mindMapData();
 }

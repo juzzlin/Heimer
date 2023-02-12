@@ -16,12 +16,12 @@
 #include "alz_file_io.hpp"
 #include "alz_file_io_worker.hpp"
 
-#include "../mind_map_data.hpp"
+#include "../core/mind_map_data.hpp"
 
 #include <QApplication>
 #include <QThread>
 
-Q_DECLARE_METATYPE(std::shared_ptr<MindMapData>)
+Q_DECLARE_METATYPE(MindMapDataS)
 
 namespace IO {
 
@@ -29,7 +29,7 @@ AlzFileIO::AlzFileIO()
   : m_worker(std::make_unique<AlzFileIOWorker>())
   , m_workerThread(std::make_unique<QThread>())
 {
-    qRegisterMetaType<std::shared_ptr<MindMapData>>();
+    qRegisterMetaType<MindMapDataS>();
 
     if (!m_workerThread->isRunning()) {
         m_workerThread->start();
@@ -43,26 +43,26 @@ void AlzFileIO::finish()
     m_workerThread->wait();
 }
 
-std::unique_ptr<MindMapData> AlzFileIO::fromFile(QString path) const
+MindMapDataU AlzFileIO::fromFile(QString path) const
 {
     return m_worker->fromFile(path);
 }
 
-bool AlzFileIO::toFile(std::shared_ptr<MindMapData> mindMapData, QString path, bool async) const
+bool AlzFileIO::toFile(MindMapDataS mindMapData, QString path, bool async) const
 {
     const auto connectionType = async ? Qt::QueuedConnection : Qt::BlockingQueuedConnection;
 
     return QMetaObject::invokeMethod(m_worker.get(), "toFile", connectionType,
-                                     Q_ARG(std::shared_ptr<MindMapData>, mindMapData),
+                                     Q_ARG(MindMapDataS, mindMapData),
                                      Q_ARG(QString, path));
 }
 
-std::unique_ptr<MindMapData> AlzFileIO::fromXml(QString xml) const
+MindMapDataU AlzFileIO::fromXml(QString xml) const
 {
     return m_worker->fromXml(xml);
 }
 
-QString AlzFileIO::toXml(std::shared_ptr<MindMapData> mindMapData) const
+QString AlzFileIO::toXml(MindMapDataS mindMapData) const
 {
     return m_worker->toXml(mindMapData);
 }

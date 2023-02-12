@@ -27,8 +27,7 @@
 #include "../core/settings_proxy.hpp"
 #include "../core/shadow_effect_params.hpp"
 #include "../core/single_instance_container.hpp"
-
-#include "../test_mode.hpp"
+#include "../core/test_mode.hpp"
 
 #include "simple_logger.hpp"
 
@@ -46,6 +45,8 @@
 
 #include <cassert>
 #include <cmath>
+
+using Core::TestMode;
 
 namespace SceneItems {
 

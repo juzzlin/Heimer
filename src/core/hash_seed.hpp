@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2022 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,24 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef VERSION_CHECKER_HPP
-#define VERSION_CHECKER_HPP
+#ifndef HASH_SEED_HPP
+#define HASH_SEED_HPP
 
-#include <QObject>
+#include <QtCore>
 
-#include "version.hpp"
+#if QT_VERSION < 0x50600
+extern Q_CORE_EXPORT QBasicAtomicInt qt_qhash_seed;
+#endif
 
-class VersionChecker : public QObject
-{
-    Q_OBJECT
+namespace Core::HashSeed {
 
-public:
-    explicit VersionChecker(QObject * parent = nullptr);
+void init();
 
-    void checkForNewReleases();
+} // namespace Core::HashSeed
 
-signals:
-    void newVersionFound(Version version, QString downloadUrl);
-};
-
-#endif // VERSION_CHECKER_HPP
+#endif // HASH_SEED_HPP

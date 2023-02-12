@@ -16,10 +16,12 @@
 #include "editor_data_test.hpp"
 
 #include "../../editor_data.hpp"
-#include "../../mind_map_data.hpp"
-#include "../../test_mode.hpp"
 
 #include "../../core/graph.hpp"
+#include "../../core/mind_map_data.hpp"
+#include "../../core/test_mode.hpp"
+
+using Core::MindMapData;
 
 using SceneItems::Edge;
 using SceneItems::EdgeModel;
@@ -28,7 +30,7 @@ using SceneItems::NodeModel;
 
 EditorDataTest::EditorDataTest()
 {
-    TestMode::setEnabled(true);
+    Core::TestMode::setEnabled(true);
 }
 
 void EditorDataTest::testAddAndDeleteEdge()

@@ -23,7 +23,7 @@
 
 #include "types.hpp"
 
-#include "mind_map_data.hpp"
+#include "core/mind_map_data.hpp"
 
 #include "scene_items/node.hpp"
 
@@ -131,7 +131,7 @@ public:
 
     NodeS pasteNodeAt(NodeR source, QPointF pos);
 
-    MindMapDataPtr mindMapData() const;
+    MindMapDataS mindMapData() const;
 
     bool openMindMap(QString fileName);
 

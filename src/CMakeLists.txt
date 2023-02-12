@@ -28,7 +28,6 @@ set(HEIMER_LIB_SRC
     editor_scene.cpp
     editor_view.cpp
     grid.cpp
-    hash_seed.cpp
     image.cpp
     image_manager.cpp
     item_filter.cpp
@@ -36,26 +35,27 @@ set(HEIMER_LIB_SRC
     magic_zoom.cpp
     main_window.cpp
     mediator.cpp
-    mind_map_data.cpp
-    mind_map_data_base.cpp
     mouse_action.cpp
     node_action.hpp
     recent_files_manager.cpp
     selection_group.cpp
     state_machine.cpp
-    test_mode.cpp
     types.hpp
     undo_stack.cpp
-    user_exception.hpp
     utils.cpp
-    version.hpp
-    version_checker.cpp
 
     core/graph.cpp
+    core/hash_seed.cpp
+    core/mind_map_data.cpp
+    core/mind_map_data_base.cpp
     core/settings.cpp
     core/settings_proxy.cpp
     core/shadow_effect_params.hpp
     core/single_instance_container.cpp
+    core/test_mode.cpp
+    core/user_exception.hpp
+    core/version.hpp
+    core/version_checker.cpp
 
     dialogs/about_dialog.cpp
     dialogs/color_dialog.cpp

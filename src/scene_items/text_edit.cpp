@@ -15,7 +15,7 @@
 
 #include "text_edit.hpp"
 
-#include "../test_mode.hpp"
+#include "../core/test_mode.hpp"
 
 #include <QKeyEvent>
 #include <QMouseEvent>
@@ -23,6 +23,8 @@
 #include <QStyleOptionGraphicsItem>
 #include <QTextDocument>
 #include <QTextOption>
+
+using Core::TestMode;
 
 namespace SceneItems {
 

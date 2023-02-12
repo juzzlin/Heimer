@@ -24,11 +24,14 @@
 #include "constants.hpp"
 #include "mind_map_data_base.hpp"
 
-class Graph;
 class Grid;
 class ImageManager;
 class ObjectModelLoader;
 struct ShadowEffectParams;
+
+namespace Core {
+
+class Graph;
 
 class MindMapData : public MindMapDataBase
 {
@@ -125,6 +128,6 @@ private:
     LayoutOptimizerParameters m_layoutOptimizerParameters;
 };
 
-typedef std::shared_ptr<MindMapData> MindMapDataPtr;
+} // namespace Core
 
 #endif // MIND_MAP_DATA_HPP

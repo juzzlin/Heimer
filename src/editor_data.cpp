@@ -19,14 +19,15 @@
 #include "constants.hpp"
 #include "recent_files_manager.hpp"
 #include "selection_group.hpp"
-#include "test_mode.hpp"
 
+#include "core/graph.hpp"
+#include "core/mind_map_data.hpp"
 #include "core/settings_proxy.hpp"
 #include "core/single_instance_container.hpp"
+#include "core/test_mode.hpp"
 
 #include "io/alz_file_io.hpp"
 
-#include "core/graph.hpp"
 #include "scene_items/edge.hpp"
 #include "scene_items/node.hpp"
 
@@ -87,10 +88,10 @@ void EditorData::loadMindMapData(QString fileName)
 
     m_selectedEdge = nullptr;
 
-    if (!TestMode::enabled()) {
+    if (!Core::TestMode::enabled()) {
         setMindMapData(m_alzFileIO->fromFile(fileName));
     } else {
-        TestMode::logDisabledCode("setMindMapData");
+        Core::TestMode::logDisabledCode("setMindMapData");
     }
 
     m_fileName = fileName;
@@ -167,7 +168,7 @@ bool EditorData::saveMindMap(bool async)
 
 void EditorData::saveUndoPoint(bool dontClearRedoStack)
 {
-    if (!TestMode::enabled()) {
+    if (!Core::TestMode::enabled()) {
         if (m_undoTimer.isActive()) {
             L().debug() << "Saving undo point skipped..";
             m_undoTimer.start();
@@ -250,7 +251,7 @@ void EditorData::setTextColorForSelectedNodes(QColor color)
     }
 }
 
-void EditorData::setMindMapData(MindMapDataPtr mindMapData)
+void EditorData::setMindMapData(MindMapDataS mindMapData)
 {
     m_mindMapData = mindMapData;
 
@@ -467,7 +468,7 @@ NodeS EditorData::getNodeByIndex(int index)
 void EditorData::initializeNewMindMap()
 {
     requestAutosave(false);
-    setMindMapData(std::make_shared<MindMapData>());
+    setMindMapData(std::make_shared<Core::MindMapData>());
 }
 
 bool EditorData::isInSelectionGroup(NodeR node)
@@ -475,7 +476,7 @@ bool EditorData::isInSelectionGroup(NodeR node)
     return m_selectionGroup->hasNode(node);
 }
 
-MindMapDataPtr EditorData::mindMapData()
+MindMapDataS EditorData::mindMapData()
 {
     return m_mindMapData;
 }

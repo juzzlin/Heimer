@@ -32,11 +32,22 @@ using EdgeS = std::shared_ptr<SceneItems::Edge>;
 
 using EdgeU = std::unique_ptr<SceneItems::Edge>;
 
+namespace Core {
 class Graph;
+class MindMapData;
+} // namespace Core
 
-using GraphCR = const Graph &;
+using GraphCR = const Core::Graph &;
 
-using GraphR = Graph &;
+using GraphR = Core::Graph &;
+
+using MindMapDataR = Core::MindMapData &;
+
+using MindMapDataCR = const Core::MindMapData &;
+
+using MindMapDataS = std::shared_ptr<Core::MindMapData>;
+
+using MindMapDataU = std::unique_ptr<Core::MindMapData>;
 
 namespace SceneItems {
 class Node;

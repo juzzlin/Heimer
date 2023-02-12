@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2020 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,13 +13,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "hash_seed.hpp"
+#ifndef TEST_MODE_HPP
+#define TEST_MODE_HPP
 
-void HashSeed::init()
+#include <string>
+
+namespace Core {
+
+class TestMode
 {
-#if QT_VERSION >= 0x50600
-    qSetGlobalQHashSeed(0);
-#else
-    qt_qhash_seed.store(0);
-#endif
-}
+public:
+    static bool enabled();
+
+    static void setEnabled(bool enabled);
+
+    static void logDisabledCode(const std::string & message);
+
+private:
+    static bool m_enabled;
+};
+
+} // namespace Core
+
+#endif // TEST_MODE_HPP

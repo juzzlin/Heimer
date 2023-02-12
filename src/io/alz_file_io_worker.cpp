@@ -20,10 +20,11 @@
 
 #include "../constants.hpp"
 #include "../image_manager.hpp"
-#include "../test_mode.hpp"
 #include "../types.hpp"
 
 #include "../core/graph.hpp"
+#include "../core/mind_map_data.hpp"
+#include "../core/test_mode.hpp"
 
 #include "../scene_items/edge.hpp"
 #include "../scene_items/node.hpp"
@@ -39,6 +40,8 @@
 #include <QDomElement>
 #include <QFile>
 #include <QTemporaryDir>
+
+using Core::TestMode;
 
 namespace IO {
 
@@ -175,7 +178,7 @@ static void writeImageRef(QDomElement & parent, QDomDocument & doc, size_t image
     parent.appendChild(colorElement);
 }
 
-static void writeNodes(std::shared_ptr<MindMapData> mindMapData, QDomElement & root, QDomDocument & doc)
+static void writeNodes(MindMapDataS mindMapData, QDomElement & root, QDomDocument & doc)
 {
     for (auto && node : mindMapData->graph().getNodes()) {
         auto nodeElement = doc.createElement(DataKeywords::MindMap::Graph::NODE);
@@ -206,7 +209,7 @@ static void writeNodes(std::shared_ptr<MindMapData> mindMapData, QDomElement & r
     }
 }
 
-static void writeEdges(std::shared_ptr<MindMapData> mindMapData, QDomElement & root, QDomDocument & doc)
+static void writeEdges(MindMapDataS mindMapData, QDomElement & root, QDomDocument & doc)
 {
     for (auto && node : mindMapData->graph().getNodes()) {
         for (auto && edge : mindMapData->graph().getEdgesFromNode(node)) {
@@ -261,7 +264,7 @@ static QImage base64ToQImage(const std::string & base64, size_t imageId, std::st
     return in;
 }
 
-static void writeImages(std::shared_ptr<MindMapData> mindMapData, QDomElement & root, QDomDocument & doc)
+static void writeImages(MindMapDataS mindMapData, QDomElement & root, QDomDocument & doc)
 {
     std::set<size_t> writtenImageRefs;
     for (auto && node : mindMapData->graph().getNodes()) {
@@ -294,7 +297,7 @@ static void writeImages(std::shared_ptr<MindMapData> mindMapData, QDomElement & 
     }
 }
 
-static void writeLayoutOptimizer(std::shared_ptr<MindMapData> mindMapData, QDomElement & root, QDomDocument & doc)
+static void writeLayoutOptimizer(MindMapDataS mindMapData, QDomElement & root, QDomDocument & doc)
 {
     auto layoutOptimizerElement = doc.createElement(DataKeywords::MindMap::LayoutOptimizer::LAYOUT_OPTIMIZER);
     layoutOptimizerElement.setAttribute(DataKeywords::MindMap::LayoutOptimizer::ASPECT_RATIO, mindMapData->aspectRatio() * SCALE);
@@ -384,7 +387,7 @@ static NodeU readNode(const QDomElement & element)
     return node;
 }
 
-static EdgeU readEdge(const QDomElement & element, MindMapData & data)
+static EdgeU readEdge(const QDomElement & element, Core::MindMapData & data)
 {
     const int arrowMode = element.attribute(DataKeywords::MindMap::Graph::Edge::ARROW_MODE, "0").toInt();
     const bool dashedLine = element.attribute(DataKeywords::MindMap::Graph::Edge::DASHED_LINE, "0").toInt();
@@ -405,7 +408,7 @@ static EdgeU readEdge(const QDomElement & element, MindMapData & data)
     return edge;
 }
 
-static void readLayoutOptimizer(const QDomElement & element, MindMapData & data)
+static void readLayoutOptimizer(const QDomElement & element, Core::MindMapData & data)
 {
     double aspectRatio = element.attribute(DataKeywords::MindMap::LayoutOptimizer::ASPECT_RATIO, "-1").toDouble() / SCALE;
     aspectRatio = std::min(aspectRatio, Constants::LayoutOptimizer::MAX_ASPECT_RATIO);
@@ -418,7 +421,7 @@ static void readLayoutOptimizer(const QDomElement & element, MindMapData & data)
     data.setMinEdgeLength(minEdgeLength);
 }
 
-static void readGraph(const QDomElement & graph, MindMapData & data)
+static void readGraph(const QDomElement & graph, Core::MindMapData & data)
 {
     readChildren(graph, {
                           { QString(DataKeywords::MindMap::Graph::NODE), [&data](const QDomElement & e) {
@@ -430,10 +433,10 @@ static void readGraph(const QDomElement & graph, MindMapData & data)
                         });
 }
 
-std::unique_ptr<MindMapData> fromXml(QDomDocument document)
+MindMapDataU fromXml(QDomDocument document)
 {
     const auto root = document.documentElement();
-    auto data = std::make_unique<MindMapData>();
+    auto data = std::make_unique<Core::MindMapData>();
     data->setVersion(root.attribute(DataKeywords::MindMap::APPLICATION_VERSION, "UNDEFINED"));
 
     readChildren(root, { { QString(DataKeywords::MindMap::GRAPH), [&data](const QDomElement & e) {
@@ -485,7 +488,7 @@ std::unique_ptr<MindMapData> fromXml(QDomDocument document)
     return data;
 }
 
-QDomDocument toXml(std::shared_ptr<MindMapData> mindMapData)
+QDomDocument toXml(MindMapDataS mindMapData)
 {
     QDomDocument doc;
 
@@ -543,24 +546,24 @@ QDomDocument toXml(std::shared_ptr<MindMapData> mindMapData)
 
 AlzFileIOWorker::~AlzFileIOWorker() = default;
 
-std::unique_ptr<MindMapData> AlzFileIOWorker::fromFile(QString path) const
+MindMapDataU AlzFileIOWorker::fromFile(QString path) const
 {
     return IO::fromXml(XmlReader::readFromFile(path));
 }
 
-bool AlzFileIOWorker::toFile(std::shared_ptr<MindMapData> mindMapData, QString path) const
+bool AlzFileIOWorker::toFile(MindMapDataS mindMapData, QString path) const
 {
     return XmlWriter::writeToFile(IO::toXml(mindMapData), path);
 }
 
-std::unique_ptr<MindMapData> AlzFileIOWorker::fromXml(QString xml) const
+MindMapDataU AlzFileIOWorker::fromXml(QString xml) const
 {
     QDomDocument document;
     document.setContent(xml, false);
     return IO::fromXml(document);
 }
 
-QString AlzFileIOWorker::toXml(std::shared_ptr<MindMapData> mindMapData) const
+QString AlzFileIOWorker::toXml(MindMapDataS mindMapData) const
 {
     return IO::toXml(mindMapData).toString();
 }

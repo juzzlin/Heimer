@@ -17,7 +17,8 @@
 
 #include "../constants.hpp"
 #include "../layout_optimizer.hpp"
-#include "../mind_map_data.hpp"
+
+#include "../core/mind_map_data.hpp"
 
 #include "widget_factory.hpp"
 
@@ -35,7 +36,7 @@
 
 namespace Dialogs {
 
-LayoutOptimizationDialog::LayoutOptimizationDialog(QWidget & parent, MindMapData & mindMapData, LayoutOptimizer & layoutOptimizer)
+LayoutOptimizationDialog::LayoutOptimizationDialog(QWidget & parent, MindMapDataR mindMapData, LayoutOptimizer & layoutOptimizer)
   : QDialog(&parent)
   , m_mindMapData(mindMapData)
   , m_layoutOptimizer(layoutOptimizer)
@@ -68,7 +69,7 @@ void LayoutOptimizationDialog::finishOptimization()
     QTimer::singleShot(500, this, &QDialog::accept);
 }
 
-void LayoutOptimizationDialog::initWidgets(const MindMapData & mindMapData)
+void LayoutOptimizationDialog::initWidgets(MindMapDataCR mindMapData)
 {
     const auto mainLayout = new QVBoxLayout(this);
 

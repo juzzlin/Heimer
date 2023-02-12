@@ -15,7 +15,7 @@
 
 #include "graph.hpp"
 
-#include "../test_mode.hpp"
+#include "test_mode.hpp"
 
 #include "simple_logger.hpp"
 
@@ -26,6 +26,8 @@
 #include <cmath>
 #include <stdexcept>
 #include <string>
+
+namespace Core {
 
 namespace rv = ranges::views;
 
@@ -180,3 +182,5 @@ Graph::~Graph()
 
     juzzlin::L().debug() << "Graph deleted";
 }
+
+} // namespace Core

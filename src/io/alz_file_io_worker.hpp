@@ -21,7 +21,7 @@
 
 #include <memory>
 
-#include "../mind_map_data.hpp"
+#include "../types.hpp"
 
 namespace IO {
 
@@ -34,13 +34,13 @@ public:
 
 public slots:
 
-    std::unique_ptr<MindMapData> fromFile(QString path) const;
+    MindMapDataU fromFile(QString path) const;
 
-    bool toFile(std::shared_ptr<MindMapData> mindMapData, QString path) const;
+    bool toFile(MindMapDataS mindMapData, QString path) const;
 
-    std::unique_ptr<MindMapData> fromXml(QString xml) const;
+    MindMapDataU fromXml(QString xml) const;
 
-    QString toXml(std::shared_ptr<MindMapData> mindMapData) const;
+    QString toXml(MindMapDataS mindMapData) const;
 };
 
 } // namespace IO

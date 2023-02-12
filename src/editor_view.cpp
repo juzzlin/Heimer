@@ -31,10 +31,10 @@
 #include "item_filter.hpp"
 #include "magic_zoom.hpp"
 #include "mediator.hpp"
-#include "mind_map_data.hpp"
 #include "mouse_action.hpp"
 #include "node_action.hpp"
 
+#include "core/mind_map_data.hpp"
 #include "core/single_instance_container.hpp"
 
 #include "menus/edge_context_menu.hpp"

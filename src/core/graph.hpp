@@ -25,6 +25,8 @@
 #include <unordered_map>
 #include <vector>
 
+namespace Core {
+
 class Graph
 {
 public:
@@ -94,5 +96,7 @@ private:
 
     int m_count = 0;
 };
+
+} // namespace Core
 
 #endif // GRAPH_HPP

@@ -15,7 +15,7 @@
 
 #include "node_test.hpp"
 
-#include "../../test_mode.hpp"
+#include "../../core/test_mode.hpp"
 
 #include "../../scene_items/node.hpp"
 
@@ -23,7 +23,7 @@ using SceneItems::Node;
 
 NodeTest::NodeTest()
 {
-    TestMode::setEnabled(true);
+    Core::TestMode::setEnabled(true);
 }
 
 void NodeTest::testContainsText()

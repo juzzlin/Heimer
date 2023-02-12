@@ -28,7 +28,6 @@
 
 #include "copy_context.hpp"
 #include "grid.hpp"
-#include "mind_map_data.hpp"
 #include "mouse_action.hpp"
 #include "types.hpp"
 #include "undo_stack.hpp"
@@ -117,7 +116,7 @@ public:
 
     void loadMindMapData(QString fileName);
 
-    MindMapDataPtr mindMapData();
+    MindMapDataS mindMapData();
 
     void mirror(bool vertically);
 
@@ -143,7 +142,7 @@ public:
 
     void setGridSize(int size, bool autoSnap);
 
-    void setMindMapData(MindMapDataPtr newMindMapData);
+    void setMindMapData(MindMapDataS newMindMapData);
 
     void setSelectedEdge(EdgeP edge);
 
@@ -190,7 +189,7 @@ private:
 
     MouseAction m_mouseAction;
 
-    MindMapDataPtr m_mindMapData;
+    MindMapDataS m_mindMapData;
 
     std::unique_ptr<IO::AlzFileIO> m_alzFileIO;
 

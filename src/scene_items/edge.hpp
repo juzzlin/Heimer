@@ -38,7 +38,6 @@ struct ShadowEffectParams;
 namespace SceneItems {
 
 class EdgeDot;
-class Graph;
 class Node;
 
 //! A graphic representation of a graph edge between nodes.

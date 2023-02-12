@@ -14,9 +14,10 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "version_test.hpp"
-#include "test_mode.hpp"
 
-#include "../../version.hpp"
+#include "../../core/version.hpp"
+
+using Core::Version;
 
 void VersionTest::testInitialization_defaultShouldNotBeValid()
 {

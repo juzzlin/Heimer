@@ -20,7 +20,7 @@
 
 #include <QString>
 
-class MindMapData;
+#include "types.hpp"
 
 namespace IO {
 
@@ -29,9 +29,9 @@ class FileIO
 public:
     virtual void finish() = 0;
 
-    virtual std::unique_ptr<MindMapData> fromFile(QString path) const = 0;
+    virtual MindMapDataU fromFile(QString path) const = 0;
 
-    virtual bool toFile(std::shared_ptr<MindMapData> mindMapData, QString path, bool async) const = 0;
+    virtual bool toFile(MindMapDataS mindMapData, QString path, bool async) const = 0;
 };
 
 } // namespace IO

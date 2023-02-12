@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2022 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,19 +13,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef USER_EXCEPTION_HPP
-#define USER_EXCEPTION_HPP
+#ifndef VERSION_CHECKER_HPP
+#define VERSION_CHECKER_HPP
 
-#include <stdexcept>
-#include <string>
+#include <QObject>
 
-class UserException : public std::runtime_error
+#include "version.hpp"
+
+namespace Core {
+
+class VersionChecker : public QObject
 {
+    Q_OBJECT
+
 public:
-    explicit UserException(std::string msg)
-      : runtime_error(msg)
-    {
-    }
+    explicit VersionChecker(QObject * parent = nullptr);
+
+    void checkForNewReleases();
+
+signals:
+    void newVersionFound(Version version, QString downloadUrl);
 };
 
-#endif // USER_EXCEPTION_HPP
+} // namespace Core
+
+#endif // VERSION_CHECKER_HPP

@@ -13,19 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef HASH_SEED_HPP
-#define HASH_SEED_HPP
+#include "hash_seed.hpp"
 
-#include <QtCore>
+namespace Core {
 
-#if QT_VERSION < 0x50600
-extern Q_CORE_EXPORT QBasicAtomicInt qt_qhash_seed;
+void HashSeed::init()
+{
+#if QT_VERSION >= 0x50600
+    qSetGlobalQHashSeed(0);
+#else
+    qt_qhash_seed.store(0);
 #endif
-
-namespace HashSeed {
-
-void init();
-
 }
 
-#endif // HASH_SEED_HPP
+} // namespace Core

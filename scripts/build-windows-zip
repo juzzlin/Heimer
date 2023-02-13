@@ -19,7 +19,7 @@ CMD="export LANG=en_US.UTF-8 && \
      cp -v ../COPYING . && \
      cp -v ../README.md . && \
      cp -v ../heimer.exe . && \
-     zip -r heimer-${VERSION}_win32.zip *"
+     zip -r heimer-${VERSION}-win32.zip *"
 
 if [ -f /.dockerenv ]; then
     echo "Script inside Docker"

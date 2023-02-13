@@ -222,6 +222,13 @@ void MainWindow::createEditMenu()
 {
     const auto editMenu = menuBar()->addMenu(tr("&Edit"));
 
+    // Add "settings"-action
+    const auto settingsAct = new QAction(tr("Settings") + Constants::Misc::THREE_DOTS, this);
+    connect(settingsAct, &QAction::triggered, m_settingsDlg, &Dialogs::SettingsDialog::exec);
+    editMenu->addAction(settingsAct);
+
+    editMenu->addSeparator();
+
     addUndoAction(*editMenu);
 
     addRedoAction(*editMenu);
@@ -329,13 +336,6 @@ void MainWindow::createFileMenu()
     fileMenu->addSeparator();
 
     createExportSubMenu(*fileMenu);
-
-    fileMenu->addSeparator();
-
-    // Add "settings"-action
-    const auto settingsAct = new QAction(tr("Settings") + Constants::Misc::THREE_DOTS, this);
-    connect(settingsAct, &QAction::triggered, m_settingsDlg, &Dialogs::SettingsDialog::exec);
-    fileMenu->addAction(settingsAct);
 
     fileMenu->addSeparator();
 

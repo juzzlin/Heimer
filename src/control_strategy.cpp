@@ -15,6 +15,9 @@
 
 #include "control_strategy.hpp"
 
+#include "core/settings_proxy.hpp"
+#include "core/single_instance_container.hpp"
+
 #include <QGuiApplication>
 #include <QMouseEvent>
 
@@ -24,17 +27,22 @@ ControlStrategy::ControlStrategy()
 
 bool ControlStrategy::isModifierPressed() const
 {
-    return QGuiApplication::queryKeyboardModifiers().testFlag(Qt::ControlModifier) || QGuiApplication::queryKeyboardModifiers().testFlag(Qt::ShiftModifier);
+    return (QGuiApplication::queryKeyboardModifiers().testFlag(Qt::ControlModifier) || //
+            QGuiApplication::queryKeyboardModifiers().testFlag(Qt::ShiftModifier));
 }
 
 bool ControlStrategy::backgroundDragInitiated(QMouseEvent & event) const
 {
-    return event.button() == Qt::LeftButton;
+    const bool invertedControls = SingleInstanceContainer::instance().settingsProxy().invertedControls();
+
+    return (invertedControls == isModifierPressed()) && event.button() == Qt::LeftButton;
 }
 
 bool ControlStrategy::rubberBandInitiated(QMouseEvent & event) const
 {
-    return (event.button() == Qt::LeftButton && isModifierPressed()) || event.button() == Qt::MiddleButton;
+    const bool invertedControls = SingleInstanceContainer::instance().settingsProxy().invertedControls();
+
+    return ((!invertedControls ^ !isModifierPressed()) && (event.button() == Qt::LeftButton)) || event.button() == Qt::MiddleButton;
 }
 
 bool ControlStrategy::primaryButtonClicked(QMouseEvent & event) const

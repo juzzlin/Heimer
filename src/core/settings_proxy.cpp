@@ -27,6 +27,7 @@ SettingsProxy::SettingsProxy()
   , m_edgeArrowMode(Settings::V1::loadEdgeArrowMode(SceneItems::EdgeModel::ArrowMode::Single))
   , m_arrowSize(Settings::V2::getNumber(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::ARROW_SIZE_SETTINGS_KEY, Constants::Edge::Defaults::ARROW_SIZE))
   , m_edgeWidth(Settings::V2::getNumber(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::EDGE_WIDTH_SETTINGS_KEY, Constants::MindMap::Defaults::EDGE_WIDTH))
+  , m_invertedControls(Settings::V2::getBoolean(Constants::View::EDITING_SETTINGS_GROUP, Constants::View::INVERTED_CONTROLS_SETTINGS_KEY, false))
   , m_reversedEdgeDirection(Settings::V1::loadReversedEdgeDirection(false))
   , m_selectNodeGroupByIntersection(Settings::V1::loadSelectNodeGroupByIntersection())
   , m_textSize(Settings::V2::getNumber(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::TEXT_SIZE_SETTINGS_KEY, Constants::MindMap::Defaults::TEXT_SIZE))
@@ -167,6 +168,19 @@ void SettingsProxy::setEdgeWidth(double edgeWidth)
     if (!qFuzzyCompare(m_edgeWidth, edgeWidth)) {
         m_edgeWidth = edgeWidth;
         Settings::V2::setNumber(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::EDGE_WIDTH_SETTINGS_KEY, edgeWidth);
+    }
+}
+
+bool SettingsProxy::invertedControls() const
+{
+    return m_invertedControls;
+}
+
+void SettingsProxy::setInvertedControls(bool invertedControls)
+{
+    if (m_invertedControls != invertedControls) {
+        m_invertedControls = invertedControls;
+        Settings::V2::setBoolean(Constants::View::EDITING_SETTINGS_GROUP, Constants::View::INVERTED_CONTROLS_SETTINGS_KEY, invertedControls);
     }
 }
 

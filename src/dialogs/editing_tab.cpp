@@ -42,6 +42,8 @@ void EditingTab::apply()
     emit autosaveEnabled(m_autosaveCheckBox->isChecked());
 
     settingsProxy().setAutoload(m_autoloadCheckBox->isChecked());
+
+    settingsProxy().setInvertedControls(m_invertedControlsCheckBox->isChecked());
 }
 
 void EditingTab::initWidgets()
@@ -66,6 +68,13 @@ void EditingTab::initWidgets()
     m_autoloadCheckBox = new QCheckBox(tr("Enable autoload"));
     autoloadGroup.second->addWidget(m_autoloadCheckBox);
 
+    const auto controlsGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Controls"), *mainLayout);
+    const auto controlsHelp = new QLabel(tr("Scroll the view with a modifier key pressed and select a group of items without a modifier key being pressed."));
+    controlsHelp->setWordWrap(true);
+    controlsGroup.second->addWidget(controlsHelp);
+    m_invertedControlsCheckBox = new QCheckBox(tr("Inverted controls"));
+    controlsGroup.second->addWidget(m_invertedControlsCheckBox);
+
     setLayout(mainLayout);
 
     setActiveSettings();
@@ -78,6 +87,8 @@ void EditingTab::setActiveSettings()
     m_autosaveCheckBox->setChecked(settingsProxy().autosave());
 
     m_autoloadCheckBox->setChecked(settingsProxy().autoload());
+
+    m_invertedControlsCheckBox->setChecked(settingsProxy().invertedControls());
 }
 
 } // namespace Dialogs

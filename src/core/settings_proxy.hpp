@@ -71,6 +71,10 @@ public:
 
     void setEdgeWidth(double edgeWidth);
 
+    bool invertedControls() const;
+
+    void setInvertedControls(bool invertedControls);
+
     bool reversedEdgeDirection() const;
 
     void setReversedEdgeDirection(bool reversedEdgeDirection);
@@ -115,6 +119,8 @@ private:
     double m_arrowSize;
 
     double m_edgeWidth;
+
+    bool m_invertedControls = false;
 
     bool m_reversedEdgeDirection = false;
 

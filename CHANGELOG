@@ -5,6 +5,9 @@ Release date:
 
 New features:
 
+* Add setting for 'inverted controls'
+  - Pan the view with a modifier key (Ctrl) and select a group of items without a modifier key being pressed.
+
 Bug fixes:
 
 Other:

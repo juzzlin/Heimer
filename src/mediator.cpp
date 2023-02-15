@@ -839,7 +839,7 @@ void Mediator::zoomOut()
 
 QSize Mediator::zoomForExport(bool dryRun)
 {
-    clearSelectedNode();
+    unselectSelectedNode();
     clearSelectionGroup();
     const auto zoomToFitRectangle = m_editorScene->calculateZoomToFitRectangle(true);
     if (!dryRun) {
@@ -876,7 +876,12 @@ double Mediator::calculateNodeOverlapScore(NodeCR node1, NodeCR node2) const
     return 0;
 }
 
-void Mediator::clearSelectedNode()
+void Mediator::unselectImplicitlySelectedNodes()
+{
+    m_editorData->clearSelectionGroup(true);
+}
+
+void Mediator::unselectSelectedNode()
 {
     for (auto && node : m_editorData->mindMapData()->graph().getNodes()) {
         node->setSelected(false);

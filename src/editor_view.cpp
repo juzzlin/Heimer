@@ -179,9 +179,11 @@ void EditorView::handleSecondaryButtonClickOnNode(NodeR node)
         m_mediator.clearSelectionGroup();
     }
 
-    m_mediator.addNodeToSelectionGroup(node);
+    m_mediator.addNodeToSelectionGroup(node, true);
 
     openMainContextMenu(Menus::MainContextMenu::Mode::Node);
+
+    m_mediator.unselectImplicitlySelectedNodes();
 }
 
 void EditorView::initiateBackgroundDrag()
@@ -269,7 +271,7 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
         m_mediator.mouseAction().sourceNode()->setHandlesVisible(false);
 
         // This is needed to clear implicitly "selected" connection candidate nodes when hovering the dummy drag node on other nodes
-        m_mediator.clearSelectedNode();
+        m_mediator.unselectSelectedNode();
         m_mediator.clearSelectionGroup();
 
         m_connectionTargetNode = nullptr;

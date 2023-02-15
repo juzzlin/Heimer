@@ -73,8 +73,6 @@ public:
 
     void changeFont(const QFont & font);
 
-    void clearSelectedNode();
-
     void clearSelectionGroup(bool onlyImplicitNodes = false);
 
     void connectEdgeToUndoMechanism(EdgeS edge);
@@ -167,6 +165,10 @@ public:
     void toggleNodeInSelectionGroup(NodeR node, bool updateNodeConnectionActions = true);
 
     void undo();
+
+    void unselectImplicitlySelectedNodes();
+
+    void unselectSelectedNode();
 
     void unselectText();
 

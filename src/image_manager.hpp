@@ -24,8 +24,6 @@
 #include "image.hpp"
 #include "types.hpp"
 
-class Node;
-
 class ImageManager : public QObject
 {
     Q_OBJECT
@@ -33,7 +31,9 @@ class ImageManager : public QObject
 public:
     ImageManager();
 
-    void clear();
+    ImageManager(const ImageManager & other);
+
+    ImageManager & operator=(const ImageManager & other);
 
     size_t addImage(const Image & image);
 

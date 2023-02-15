@@ -25,6 +25,8 @@ class QProgressBar;
 class QPushButton;
 class QSpinBox;
 
+namespace Dialogs {
+
 class SvgExportDialog : public QDialog
 {
     Q_OBJECT
@@ -62,5 +64,7 @@ private:
 
     QString m_filenameWithExtension;
 };
+
+} // namespace Dialogs
 
 #endif // SVG_EXPORT_DIALOG_HPP

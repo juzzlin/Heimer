@@ -18,6 +18,8 @@
 
 #include <QColorDialog>
 
+namespace Dialogs {
+
 class ColorDialog : public QColorDialog
 {
 public:
@@ -43,5 +45,7 @@ private:
 
     QColor m_color;
 };
+
+} // namespace Dialogs
 
 #endif // COLOR_DIALOG_HPP

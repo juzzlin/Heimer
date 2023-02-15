@@ -10,7 +10,7 @@ fi
 
 for TS_FILE in src/translations/*.ts; do
     echo "Updating translation source ${TS_FILE}"
-    ${LUPDATE} src/*.cpp src/dialogs/*.cpp -ts ${TS_FILE}
+    ${LUPDATE} src/*.cpp src/dialogs/*.cpp src/io/*.cpp src/menus/*.cpp src/scene_items/*.cpp src/widgets/*.cpp -ts ${TS_FILE}
 done
 
 echo "Done."

@@ -19,62 +19,44 @@ endforeach()
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_BINARY_DIR}/data/translations)
 
 # Set sources for the lib
-set(LIB_SRC
-    alz_file_io.cpp
+set(HEIMER_LIB_SRC
     application.cpp
     constants.hpp
     control_strategy.cpp
     copy_context.cpp
-    edge.cpp
-    edge_context_menu.cpp
-    edge_dot.cpp
-    edge_model.hpp
-    edge_point.hpp
-    edge_text_edit.cpp
     editor_data.cpp
     editor_scene.cpp
     editor_view.cpp
-    file_exception.hpp
-    file_io.hpp
-    graph.cpp
-    graphics_factory.cpp
     grid.cpp
-    hash_seed.cpp
     image.cpp
     image_manager.cpp
     item_filter.cpp
-    layers.hpp
     layout_optimizer.cpp
     magic_zoom.cpp
-    main_context_menu.cpp
     main_window.cpp
     mediator.cpp
-    mind_map_data.cpp
-    mind_map_data_base.cpp
     mouse_action.cpp
-    node.cpp
     node_action.hpp
-    node_handle.cpp
-    node_model.hpp
     recent_files_manager.cpp
-    recent_files_menu.cpp
     selection_group.cpp
-    settings.cpp
-    settings_proxy.cpp
-    shadow_effect_params.hpp
     state_machine.cpp
-    test_mode.cpp
-    text_edit.cpp
-    tool_bar.cpp
     types.hpp
     undo_stack.cpp
-    user_exception.hpp
     utils.cpp
-    version.hpp
-    version_checker.cpp
-    widget_factory.cpp
-    xml_reader.cpp
-    xml_writer.cpp
+
+    core/graph.cpp
+    core/hash_seed.cpp
+    core/mind_map_data.cpp
+    core/mind_map_data_base.cpp
+    core/settings.cpp
+    core/settings_proxy.cpp
+    core/shadow_effect_params.hpp
+    core/single_instance_container.cpp
+    core/test_mode.cpp
+    core/user_exception.hpp
+    core/version.hpp
+    core/version_checker.cpp
+
     dialogs/about_dialog.cpp
     dialogs/color_dialog.cpp
     dialogs/color_setting_button.cpp
@@ -85,8 +67,38 @@ set(LIB_SRC
     dialogs/png_export_dialog.cpp
     dialogs/scene_color_dialog.cpp
     dialogs/settings_dialog.cpp
+    dialogs/settings_tab_base.cpp
     dialogs/svg_export_dialog.cpp
     dialogs/whats_new_dialog.cpp
+    dialogs/widget_factory.cpp
+
+    io/alz_file_io.cpp
+    io/alz_file_io_worker.cpp
+    io/file_exception.hpp
+    io/file_io.hpp
+    io/xml_reader.cpp
+    io/xml_writer.cpp
+
+    menus/edge_context_menu.cpp
+    menus/main_context_menu.cpp
+    menus/recent_files_menu.cpp
+    menus/tool_bar.cpp
+    menus/widget_factory.cpp
+
+    scene_items/edge.cpp
+    scene_items/edge_dot.cpp
+    scene_items/edge_model.hpp
+    scene_items/edge_point.hpp
+    scene_items/edge_text_edit.cpp
+    scene_items/graphics_factory.cpp
+    scene_items/layers.hpp
+    scene_items/node.cpp
+    scene_items/node_handle.cpp
+    scene_items/node_model.hpp
+    scene_items/scene_item_base.cpp
+    scene_items/text_edit.cpp
+
+    widgets/font_button.cpp
 )
 
 # Set sources for the app
@@ -145,10 +157,10 @@ if(UNIX)
 endif()
 
 # Add the library
-add_library(${LIBRARY_NAME} STATIC ${LIB_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
-target_link_libraries(${LIBRARY_NAME} Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Svg Qt${QT_VERSION_MAJOR}::Xml Qt${QT_VERSION_MAJOR}::Network SimpleLogger_static Argengine_static)
+add_library(${HEIMER_LIB_NAME} STATIC ${HEIMER_LIB_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
+target_link_libraries(${HEIMER_LIB_NAME} Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Svg Qt${QT_VERSION_MAJOR}::Xml SimpleLogger_static Argengine_static)
 
 # Add the executable
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 add_executable(${BINARY_NAME} WIN32 ${APP_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
-target_link_libraries(${BINARY_NAME} Qt${QT_VERSION_MAJOR}::Widgets ${LIBRARY_NAME})
+target_link_libraries(${BINARY_NAME} ${HEIMER_LIB_NAME})

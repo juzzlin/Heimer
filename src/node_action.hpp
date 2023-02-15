@@ -29,6 +29,8 @@ struct NodeAction
         Copy,
         Delete,
         DisconnectSelected,
+        MirrorLayoutHorizontally,
+        MirrorLayoutVertically,
         Paste,
         RemoveAttachedImage,
         SetNodeColor,

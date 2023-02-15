@@ -22,6 +22,7 @@
 
 class Mediator;
 
+//! State machine mainly for application logic involving user actions (show dialog, load mind map, etc ... )
 class StateMachine : public QObject
 {
     Q_OBJECT

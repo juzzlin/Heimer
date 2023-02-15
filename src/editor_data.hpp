@@ -27,20 +27,26 @@
 #include <QTimer>
 
 #include "copy_context.hpp"
-#include "edge.hpp"
-#include "file_exception.hpp"
 #include "grid.hpp"
-#include "mind_map_data.hpp"
 #include "mouse_action.hpp"
-#include "node.hpp"
 #include "types.hpp"
 #include "undo_stack.hpp"
 
-class Node;
-class NodeBase;
+#include "io/file_exception.hpp"
+
 class MindMapTile;
 class SelectionGroup;
 class QGraphicsLineItem;
+
+namespace SceneItems {
+class Edge;
+class Node;
+class NodeBase;
+} // namespace SceneItems
+
+namespace IO {
+class AlzFileIO;
+} // namespace IO
 
 class EditorData : public QObject
 {
@@ -53,7 +59,7 @@ public:
 
     EdgeS addEdge(EdgeS edge);
 
-    void addNodeToSelectionGroup(NodeR node);
+    void addNodeToSelectionGroup(NodeR node, bool isImplicit = false);
 
     //! \return true if at least one selected node pair can be connected.
     bool areSelectedNodesConnectable() const;
@@ -73,7 +79,7 @@ public:
 
     void clearCopyStack();
 
-    void clearSelectionGroup();
+    void clearSelectionGroup(bool onlyImplicitNodes = false);
 
     //! Connects selected nodes in the order they were selected.
     //! \return the new edge objects.
@@ -110,7 +116,9 @@ public:
 
     void loadMindMapData(QString fileName);
 
-    MindMapDataPtr mindMapData();
+    MindMapDataS mindMapData();
+
+    void mirror(bool vertically);
 
     void moveSelectionGroup(NodeR reference, QPointF location);
 
@@ -120,9 +128,11 @@ public:
 
     void removeImageRefsOfSelectedNodes();
 
-    bool saveMindMap();
+    void requestAutosave(bool async);
 
-    bool saveMindMapAs(QString fileName);
+    bool saveMindMap(bool async);
+
+    bool saveMindMapAs(QString fileName, bool async);
 
     void saveUndoPoint(bool dontClearRedoStack = false);
 
@@ -132,7 +142,7 @@ public:
 
     void setGridSize(int size, bool autoSnap);
 
-    void setMindMapData(MindMapDataPtr newMindMapData);
+    void setMindMapData(MindMapDataS newMindMapData);
 
     void setSelectedEdge(EdgeP edge);
 
@@ -168,18 +178,10 @@ private:
     EditorData(const EditorData & e) = delete;
     EditorData & operator=(const EditorData & e) = delete;
 
-    void clearImages();
-
     using NodePairVector = std::vector<std::pair<NodeP, NodeP>>;
     NodePairVector getConnectableNodes() const;
 
     NodePairVector getDisconnectableNodes() const;
-
-    void removeEdgeFromScene(EdgeR edge);
-
-    void removeNodeFromScene(NodeR node);
-
-    void requestAutosave();
 
     void sendUndoAndRedoSignals();
 
@@ -187,7 +189,9 @@ private:
 
     MouseAction m_mouseAction;
 
-    MindMapDataPtr m_mindMapData;
+    MindMapDataS m_mindMapData;
+
+    std::unique_ptr<IO::AlzFileIO> m_alzFileIO;
 
     std::unique_ptr<CopyContext> m_copyContext;
 

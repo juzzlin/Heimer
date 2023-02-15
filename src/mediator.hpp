@@ -23,8 +23,9 @@
 
 #include "types.hpp"
 
-#include "mind_map_data.hpp"
-#include "node.hpp"
+#include "core/mind_map_data.hpp"
+
+#include "scene_items/node.hpp"
 
 class MouseAction;
 class EditorData;
@@ -33,9 +34,12 @@ class EditorView;
 class Graph;
 class MainWindow;
 class NodeAction;
-class NodeHandle;
 class QGraphicsItem;
 struct ShadowEffectParams;
+
+namespace SceneItems {
+class NodeHandle;
+}
 
 /*! Acts as a communication channel between MainWindow and editor components:
  *
@@ -55,7 +59,7 @@ public:
 
     void addItem(QGraphicsItem & item);
 
-    void addNodeToSelectionGroup(NodeR node);
+    void addNodeToSelectionGroup(NodeR node, bool isImplicit = false);
 
     void adjustSceneRect();
 
@@ -71,7 +75,7 @@ public:
 
     void clearSelectedNode();
 
-    void clearSelectionGroup();
+    void clearSelectionGroup(bool onlyImplicitNodes = false);
 
     void connectEdgeToUndoMechanism(EdgeS edge);
 
@@ -101,7 +105,7 @@ public:
 
     void initializeNewMindMap();
 
-    void initiateNewNodeDrag(NodeHandle & nodeHandle);
+    void initiateNewNodeDrag(SceneItems::NodeHandle & nodeHandle);
 
     void initiateNodeDrag(NodeR node);
 
@@ -127,7 +131,7 @@ public:
 
     NodeS pasteNodeAt(NodeR source, QPointF pos);
 
-    MindMapDataPtr mindMapData() const;
+    MindMapDataS mindMapData() const;
 
     bool openMindMap(QString fileName);
 
@@ -177,6 +181,8 @@ public slots:
     void exportToPng(QString filename, QSize size, bool transparentBackground);
 
     void exportToSvg(QString filename);
+
+    void mirror(bool vertically);
 
     void saveUndoPoint();
 

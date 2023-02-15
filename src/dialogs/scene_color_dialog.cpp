@@ -18,6 +18,8 @@
 #include "../mediator.hpp"
 #include "../node_action.hpp"
 
+namespace Dialogs {
+
 SceneColorDialog::SceneColorDialog(Role role, std::shared_ptr<Mediator> mediator)
   : ColorDialog(role)
 {
@@ -47,3 +49,5 @@ SceneColorDialog::SceneColorDialog(Role role, std::shared_ptr<Mediator> mediator
         }
     });
 }
+
+} // namespace Dialogs

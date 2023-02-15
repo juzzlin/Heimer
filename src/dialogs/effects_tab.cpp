@@ -15,11 +15,13 @@
 
 #include "effects_tab.hpp"
 
-#include "../constants.hpp"
-#include "../settings_proxy.hpp"
-#include "../shadow_effect_params.hpp"
-#include "../widget_factory.hpp"
 #include "color_setting_button.hpp"
+#include "widget_factory.hpp"
+
+#include "../constants.hpp"
+
+#include "../core/settings_proxy.hpp"
+#include "../core/shadow_effect_params.hpp"
 
 #include <QGroupBox>
 #include <QHBoxLayout>
@@ -28,8 +30,10 @@
 #include <QSpinBox>
 #include <QVBoxLayout>
 
-EffectsTab::EffectsTab(QWidget * parent)
-  : QWidget(parent)
+namespace Dialogs {
+
+EffectsTab::EffectsTab(QString name, QWidget * parent)
+  : SettingsTabBase(name, parent)
   , m_shadowOffsetSpinBox(new QSpinBox(this))
   , m_shadowBlurRadiusSpinBox(new QSpinBox(this))
   , m_selectedItemShadowBlurRadiusSpinBox(new QSpinBox(this))
@@ -38,15 +42,15 @@ EffectsTab::EffectsTab(QWidget * parent)
 {
     m_shadowOffsetSpinBox->setMinimum(Constants::Effects::SHADOW_EFFECT_MIN_OFFSET);
     m_shadowOffsetSpinBox->setMaximum(Constants::Effects::SHADOW_EFFECT_MAX_OFFSET);
-    m_shadowOffsetSpinBox->setValue(SettingsProxy::instance().shadowEffect().offset);
+    m_shadowOffsetSpinBox->setValue(settingsProxy().shadowEffect().offset);
 
     m_shadowBlurRadiusSpinBox->setMinimum(Constants::Effects::SHADOW_EFFECT_MIN_BLUR_RADIUS);
     m_shadowBlurRadiusSpinBox->setMaximum(Constants::Effects::SHADOW_EFFECT_MAX_BLUR_RADIUS);
-    m_shadowBlurRadiusSpinBox->setValue(SettingsProxy::instance().shadowEffect().blurRadius);
+    m_shadowBlurRadiusSpinBox->setValue(settingsProxy().shadowEffect().blurRadius);
 
     m_selectedItemShadowBlurRadiusSpinBox->setMinimum(Constants::Effects::SHADOW_EFFECT_MIN_BLUR_RADIUS);
     m_selectedItemShadowBlurRadiusSpinBox->setMaximum(Constants::Effects::SHADOW_EFFECT_MAX_BLUR_RADIUS);
-    m_selectedItemShadowBlurRadiusSpinBox->setValue(SettingsProxy::instance().shadowEffect().selectedItemBlurRadius);
+    m_selectedItemShadowBlurRadiusSpinBox->setValue(settingsProxy().shadowEffect().selectedItemBlurRadius);
 
     initWidgets();
 
@@ -75,8 +79,8 @@ void EffectsTab::apply()
 
 void EffectsTab::apply(const ShadowEffectParams & params)
 {
-    if (SettingsProxy::instance().shadowEffect() != params) {
-        SettingsProxy::instance().setShadowEffect(params);
+    if (settingsProxy().shadowEffect() != params) {
+        settingsProxy().setShadowEffect(params);
         emit shadowEffectChanged(params);
     }
 }
@@ -127,3 +131,5 @@ void EffectsTab::initWidgets()
 
     setLayout(mainLayout);
 }
+
+} // namespace Dialogs

@@ -26,8 +26,8 @@ endif()
 
 # Global version
 set(VERSION_MAJOR 3)
-set(VERSION_MINOR 6)
-set(VERSION_PATCH 2)
+set(VERSION_MINOR 7)
+set(VERSION_PATCH 0)
 set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 # Some common CPack variables
@@ -88,7 +88,7 @@ elseif(MSVC)
 endif()
 
 set(BINARY_NAME "heimer")
-set(LIBRARY_NAME "HeimerLib")
+set(HEIMER_LIB_NAME "Heimer")
 
 add_definitions(-DVERSION="${VERSION}")
 

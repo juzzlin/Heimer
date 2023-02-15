@@ -16,7 +16,7 @@
 #ifndef UNDO_STACK_HPP
 #define UNDO_STACK_HPP
 
-#include "mind_map_data.hpp"
+#include "types.hpp"
 
 #include <list>
 #include <memory>
@@ -27,9 +27,9 @@ public:
     //! \param maxHistorySize The size of undo stack or 0 for "unlimited".
     UndoStack(size_t maxHistorySize = 0);
 
-    void pushUndoPoint(const MindMapData & mindMapData);
+    void pushUndoPoint(MindMapDataCR mindMapData);
 
-    void pushRedoPoint(const MindMapData & mindMapData);
+    void pushRedoPoint(MindMapDataCR mindMapData);
 
     void clear();
 
@@ -37,14 +37,14 @@ public:
 
     bool isUndoable() const;
 
-    std::unique_ptr<MindMapData> undo();
+    MindMapDataU undo();
 
     bool isRedoable() const;
 
-    std::unique_ptr<MindMapData> redo();
+    MindMapDataU redo();
 
 private:
-    using MindMapDataVector = std::list<std::unique_ptr<MindMapData>>;
+    using MindMapDataVector = std::list<MindMapDataU>;
 
     MindMapDataVector m_undoStack;
 

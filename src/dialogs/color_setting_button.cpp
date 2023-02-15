@@ -14,21 +14,26 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "color_setting_button.hpp"
-#include "../settings_proxy.hpp"
+
+#include "../core/settings_proxy.hpp"
+#include "../core/single_instance_container.hpp"
+
+namespace Dialogs {
 
 ColorSettingButton::ColorSettingButton(QString text, ColorDialog::Role role, QWidget * parent)
   : QPushButton(text, parent)
   , m_role(role)
+  , m_settingsProxy(SingleInstanceContainer::instance().settingsProxy())
 {
     // Set current default color
     if (const std::map<ColorDialog::Role, QColor> roleToColorMap = {
-          { ColorDialog::Role::Background, SettingsProxy::instance().backgroundColor() },
-          { ColorDialog::Role::Edge, SettingsProxy::instance().edgeColor() },
-          { ColorDialog::Role::Grid, SettingsProxy::instance().gridColor() },
-          { ColorDialog::Role::Node, SettingsProxy::instance().nodeColor() },
-          { ColorDialog::Role::Text, SettingsProxy::instance().nodeTextColor() },
-          { ColorDialog::Role::ShadowColor, SettingsProxy::instance().shadowEffect().shadowColor },
-          { ColorDialog::Role::SelectedItemShadowColor, SettingsProxy::instance().shadowEffect().selectedItemShadowColor } };
+          { ColorDialog::Role::Background, m_settingsProxy.backgroundColor() },
+          { ColorDialog::Role::Edge, m_settingsProxy.edgeColor() },
+          { ColorDialog::Role::Grid, m_settingsProxy.gridColor() },
+          { ColorDialog::Role::Node, m_settingsProxy.nodeColor() },
+          { ColorDialog::Role::Text, m_settingsProxy.nodeTextColor() },
+          { ColorDialog::Role::ShadowColor, m_settingsProxy.shadowEffect().shadowColor },
+          { ColorDialog::Role::SelectedItemShadowColor, m_settingsProxy.shadowEffect().selectedItemShadowColor } };
         roleToColorMap.count(role)) {
         setColor(roleToColorMap.at(role));
     }
@@ -52,19 +57,19 @@ void ColorSettingButton::apply(QColor color)
         setColor(color);
         switch (m_role) {
         case ColorDialog::Role::Background:
-            SettingsProxy::instance().setBackgroundColor(color);
+            m_settingsProxy.setBackgroundColor(color);
             break;
         case ColorDialog::Role::Edge:
-            SettingsProxy::instance().setEdgeColor(color);
+            m_settingsProxy.setEdgeColor(color);
             break;
         case ColorDialog::Role::Grid:
-            SettingsProxy::instance().setGridColor(color);
+            m_settingsProxy.setGridColor(color);
             break;
         case ColorDialog::Role::Node:
-            SettingsProxy::instance().setNodeColor(color);
+            m_settingsProxy.setNodeColor(color);
             break;
         case ColorDialog::Role::Text:
-            SettingsProxy::instance().setNodeTextColor(color);
+            m_settingsProxy.setNodeTextColor(color);
             break;
         case ColorDialog::Role::ShadowColor:
             // Saving shadow effect handled in effects_tab.cpp
@@ -103,3 +108,5 @@ void ColorSettingButton::setColor(QColor backgroundColor)
     const QColor textColor = { getTextColorComponent(backgroundColor.red()), getTextColorComponent(backgroundColor.green()), getTextColorComponent(backgroundColor.blue()) };
     setStyleSheet(QString("color: %1; background-color: %2").arg(textColor.name(), backgroundColor.name()));
 }
+
+} // namespace Dialogs

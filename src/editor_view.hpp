@@ -18,9 +18,10 @@
 
 #include "constants.hpp"
 #include "grid.hpp"
-#include "main_context_menu.hpp"
 #include "state_machine.hpp"
 #include "types.hpp"
+
+#include "menus/main_context_menu.hpp"
 
 #include <QColor>
 #include <QGraphicsView>
@@ -31,10 +32,6 @@
 #include <set>
 
 class ControlStrategy;
-class Edge;
-class EdgeContextMenu;
-class Node;
-class NodeHandle;
 class Mediator;
 class MindMapTile;
 class Object;
@@ -45,6 +42,16 @@ class QPaintEvent;
 class QWheelEvent;
 class QGraphicsSimpleTextItem;
 class QRubberBand;
+
+namespace Menus {
+class EdgeContextMenu;
+}
+
+namespace SceneItems {
+class Edge;
+class Node;
+class NodeHandle;
+} // namespace SceneItems
 
 class EditorView : public QGraphicsView
 {
@@ -113,11 +120,11 @@ private:
 
     void handleMousePressEventOnNode(QMouseEvent & event, NodeR node);
 
-    void handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHandle & nodeHandle);
+    void handleMousePressEventOnNodeHandle(QMouseEvent & event, SceneItems::NodeHandle & nodeHandle);
 
     void handlePrimaryButtonClickOnNode(NodeR node);
 
-    void handlePrimaryButtonClickOnNodeHandle(NodeHandle & nodeHandle);
+    void handlePrimaryButtonClickOnNodeHandle(SceneItems::NodeHandle & nodeHandle);
 
     void handleSecondaryButtonClickOnEdge(EdgeR edge);
 
@@ -133,7 +140,7 @@ private:
 
     void openEdgeContextMenu();
 
-    void openMainContextMenu(MainContextMenu::Mode mode);
+    void openMainContextMenu(Menus::MainContextMenu::Mode mode);
 
     void showDummyDragEdge(bool show);
 
@@ -187,9 +194,9 @@ private:
 
     QRubberBand * m_rubberBand = nullptr;
 
-    EdgeContextMenu * m_edgeContextMenu;
+    Menus::EdgeContextMenu * m_edgeContextMenu;
 
-    MainContextMenu * m_mainContextMenu;
+    Menus::MainContextMenu * m_mainContextMenu;
 
     bool m_gridVisible = false;
 
@@ -206,7 +213,7 @@ private:
 
     std::optional<ZoomParameters> m_savedZoom;
 
-    std::unique_ptr<ControlStrategy> m_controlStrategy;
+    ControlStrategy & m_controlStrategy;
 };
 
 #endif // EDITOR_VIEW_HPP

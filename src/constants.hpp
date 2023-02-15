@@ -33,7 +33,7 @@ static constexpr auto APPLICATION_PACKAGE_TYPE = PACKAGE_TYPE;
 
 static constexpr auto APPLICATION_VERSION = VERSION;
 
-static constexpr auto COPYRIGHT = "Copyright (c) 2018-2022 Jussi Lind";
+static constexpr auto COPYRIGHT = "Copyright (c) 2018-2023 Jussi Lind";
 
 static constexpr auto FILE_EXTENSION = ".alz";
 
@@ -85,7 +85,7 @@ static const double MIN_EDGE_WIDTH = 0.1;
 
 static const double MAX_EDGE_WIDTH = 5.0;
 
-static const double EDGE_WIDTH_STEP = 0.1;
+static const double EDGE_WIDTH_STEP = 0.25;
 
 static const int TEXT_EDIT_ANIMATION_DURATION = 150;
 
@@ -129,6 +129,8 @@ namespace Defaults {
 
 const auto SETTINGS_GROUP = "Defaults";
 
+static const auto ARROW_SIZE_SETTINGS_KEY = "arrowSize";
+
 static const QColor BACKGROUND_COLOR { 0xba, 0xbd, 0xb6 };
 
 static const auto BACKGROUND_COLOR_SETTINGS_KEY = "backgroundColor";
@@ -136,6 +138,10 @@ static const auto BACKGROUND_COLOR_SETTINGS_KEY = "backgroundColor";
 static const QColor EDGE_COLOR { 0, 0, 0, 200 };
 
 static const auto EDGE_COLOR_SETTINGS_KEY = "edgeColor";
+
+static const auto EDGE_WIDTH_SETTINGS_KEY = "edgeWidth";
+
+static const auto FONT_SETTINGS_KEY = "font";
 
 static const QColor GRID_COLOR { Qt::gray };
 
@@ -152,6 +158,8 @@ static const auto NODE_TEXT_COLOR_SETTINGS_KEY = "nodeTextColor";
 static const double EDGE_WIDTH = 2.0;
 
 static const int TEXT_SIZE = 11;
+
+static const auto TEXT_SIZE_SETTINGS_KEY = "textSize";
 
 } // namespace Defaults
 
@@ -170,6 +178,8 @@ namespace Defaults {
 static const int CORNER_RADIUS = 5;
 
 } // namespace Defaults
+
+static const int SCALE_ANIMATION_DURATION = 75;
 
 static const int HANDLE_ANIMATION_DURATION = 150;
 

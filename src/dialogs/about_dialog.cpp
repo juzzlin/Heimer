@@ -23,9 +23,9 @@
 #include <QTextBrowser>
 #include <QVBoxLayout>
 
-namespace {
+namespace Dialogs {
+
 const int logoSize = 256;
-}
 
 AboutDialog::AboutDialog(QWidget * parent)
   : QDialog(parent)
@@ -65,3 +65,5 @@ void AboutDialog::initWidgets()
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     vLayout->addWidget(buttonBox);
 }
+
+} // namespace Dialogs

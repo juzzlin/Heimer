@@ -14,20 +14,29 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "image_manager.hpp"
-#include "contrib/SimpleLogger/src/simple_logger.hpp"
-#include "node.hpp"
+
+#include "scene_items/node.hpp"
+
+#include "simple_logger.hpp"
+
 #include <algorithm>
 
-ImageManager::ImageManager()
+ImageManager::ImageManager() = default;
+
+ImageManager::ImageManager(const ImageManager & other)
+  : QObject()
 {
+    m_images = other.m_images;
+    m_count = other.m_count;
 }
 
-void ImageManager::clear()
+ImageManager & ImageManager::operator=(const ImageManager & other)
 {
-    juzzlin::L().debug() << "Clearing ImageManager";
-
-    m_images.clear();
-    m_count = 0;
+    if (this != &other) {
+        m_images = other.m_images;
+        m_count = other.m_count;
+    }
+    return *this;
 }
 
 size_t ImageManager::addImage(const Image & image)

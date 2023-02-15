@@ -15,18 +15,24 @@
 
 #include "graph_test.hpp"
 
-#include "graph.hpp"
-#include "node.hpp"
-#include "test_mode.hpp"
+#include "../../core/graph.hpp"
+#include "../../core/test_mode.hpp"
+
+#include "../../scene_items/node.hpp"
 
 #include <stdexcept>
 #include <string>
 
 using std::make_shared;
 
+using Core::Graph;
+
+using SceneItems::Edge;
+using SceneItems::Node;
+
 GraphTest::GraphTest()
 {
-    TestMode::setEnabled(true);
+    Core::TestMode::setEnabled(true);
 }
 
 void GraphTest::testAddEdge()

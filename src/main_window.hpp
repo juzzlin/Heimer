@@ -27,12 +27,22 @@
 #include <map>
 #include <memory>
 
+namespace Dialogs {
 class AboutDialog;
 class SettingsDialog;
+class WhatsNewDialog;
+} // namespace Dialogs
+
+namespace Menus {
+class ToolBar;
+} // namespace Menus
+
+class ControlStrategy;
 class EditorData;
 class EditorView;
 class Mediator;
 class Node;
+
 class QAction;
 class QCheckBox;
 class QFont;
@@ -42,8 +52,7 @@ class QSlider;
 class QSpinBox;
 class QTextEdit;
 class QWidgetAction;
-class ToolBar;
-class WhatsNewDialog;
+
 struct ShadowEffectParams;
 
 class MainWindow : public QMainWindow
@@ -147,6 +156,8 @@ private:
 
     std::pair<QSize, QSize> calculateDefaultWindowSize() const;
 
+    void createColorSubMenu(QMenu & editMenu);
+
     void createEditMenu();
 
     void createExportSubMenu(QMenu & fileMenu);
@@ -155,19 +166,21 @@ private:
 
     void createHelpMenu();
 
+    void createMirrorSubMenu(QMenu & editMenu);
+
     void connectToolBar();
 
     void createViewMenu();
 
     void populateMenuBar();
 
-    AboutDialog * m_aboutDlg;
+    Dialogs::AboutDialog * m_aboutDlg;
 
-    SettingsDialog * m_settingsDlg;
+    Dialogs::SettingsDialog * m_settingsDlg;
 
-    ToolBar * m_toolBar;
+    Menus::ToolBar * m_toolBar;
 
-    WhatsNewDialog * m_whatsNewDlg;
+    Dialogs::WhatsNewDialog * m_whatsNewDlg;
 
     QAction * m_connectSelectedNodesAction = nullptr;
 
@@ -190,6 +203,8 @@ private:
     bool m_closeNow = false;
 
     QLabel * m_statusText;
+
+    ControlStrategy & m_controlStrategy;
 
     static MainWindow * m_instance;
 };

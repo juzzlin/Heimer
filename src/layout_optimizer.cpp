@@ -14,12 +14,15 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "layout_optimizer.hpp"
+
 #include "constants.hpp"
 #include "contrib/SimpleLogger/src/simple_logger.hpp"
-#include "graph.hpp"
 #include "grid.hpp"
-#include "mind_map_data.hpp"
-#include "node.hpp"
+
+#include "core/graph.hpp"
+#include "core/mind_map_data.hpp"
+
+#include "scene_items/node.hpp"
 
 #include <cassert>
 #include <cmath>
@@ -46,7 +49,7 @@ inline double dot(double x1, double y1, double x2, double y2)
 class LayoutOptimizer::Impl
 {
 public:
-    Impl(MindMapDataPtr mindMapData, const Grid & grid)
+    Impl(MindMapDataS mindMapData, const Grid & grid)
       : m_mindMapData(mindMapData)
       , m_grid(grid)
     {
@@ -218,7 +221,7 @@ public:
     }
 
 private:
-    QRectF calculateLayoutDimensions(const Graph::NodeVector & nodes) const
+    QRectF calculateLayoutDimensions(const Core::Graph::NodeVector & nodes) const
     {
         if (nodes.empty()) {
             return {};
@@ -347,7 +350,7 @@ private:
         return change;
     }
 
-    MindMapDataPtr m_mindMapData;
+    MindMapDataS m_mindMapData;
 
     const Grid & m_grid;
 
@@ -405,7 +408,7 @@ private:
             return rect.y + rect.h / 2;
         }
 
-        std::weak_ptr<Node> node;
+        std::weak_ptr<SceneItems::Node> node;
 
         CellVector all;
 
@@ -593,7 +596,7 @@ private:
 
 size_t LayoutOptimizer::Impl::Cell::globalMoveId = 0;
 
-LayoutOptimizer::LayoutOptimizer(MindMapDataPtr mindMapData, const Grid & grid)
+LayoutOptimizer::LayoutOptimizer(MindMapDataS mindMapData, const Grid & grid)
   : m_impl(std::make_unique<Impl>(mindMapData, grid))
 {
 }

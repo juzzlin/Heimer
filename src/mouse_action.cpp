@@ -15,7 +15,7 @@
 
 #include "mouse_action.hpp"
 
-#include "node.hpp"
+#include "scene_items/node.hpp"
 
 MouseAction::MouseAction()
 {

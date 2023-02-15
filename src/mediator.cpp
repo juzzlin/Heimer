@@ -22,9 +22,13 @@
 #include "main_window.hpp"
 #include "mouse_action.hpp"
 #include "node_action.hpp"
-#include "node_handle.hpp"
-#include "settings_proxy.hpp"
-#include "shadow_effect_params.hpp"
+
+#include "core/settings_proxy.hpp"
+#include "core/shadow_effect_params.hpp"
+#include "core/single_instance_container.hpp"
+
+#include "core/graph.hpp"
+#include "scene_items/node_handle.hpp"
 
 #include "simple_logger.hpp"
 
@@ -59,7 +63,7 @@ void Mediator::addExistingGraphToScene()
             node->setCornerRadius(m_editorData->mindMapData()->cornerRadius());
             node->setTextSize(m_editorData->mindMapData()->textSize());
             node->changeFont(m_editorData->mindMapData()->font());
-            L().debug() << "Added existing node " << node->index() << " to scene";
+            L().trace() << "Added existing node id=" << node->index() << " to scene";
         }
     }
 
@@ -76,7 +80,7 @@ void Mediator::addExistingGraphToScene()
             node0->addGraphicsEdge(*edge);
             node1->addGraphicsEdge(*edge);
             edge->updateLine();
-            L().debug() << "Added existing edge " << node0->index() << " -> " << node1->index() << " to scene";
+            L().trace() << "Added existing edge (" << node0->index() << ", " << node1->index() << ") to scene";
         }
     }
 
@@ -100,7 +104,7 @@ void Mediator::addExistingGraphToScene()
 void Mediator::addEdge(NodeR node1, NodeR node2)
 {
     // Add edge from node1 to node2
-    connectEdgeToUndoMechanism(m_editorData->addEdge(std::make_shared<Edge>(&node1, &node2)));
+    connectEdgeToUndoMechanism(m_editorData->addEdge(std::make_shared<SceneItems::Edge>(&node1, &node2)));
     L().debug() << "Created a new edge " << node1.index() << " -> " << node2.index();
 
     addExistingGraphToScene();
@@ -112,9 +116,9 @@ void Mediator::addItem(QGraphicsItem & item)
     adjustSceneRect();
 }
 
-void Mediator::addNodeToSelectionGroup(NodeR node)
+void Mediator::addNodeToSelectionGroup(NodeR node, bool isImplicit)
 {
-    m_editorData->addNodeToSelectionGroup(node);
+    m_editorData->addNodeToSelectionGroup(node, isImplicit);
     updateNodeConnectionActions();
 }
 
@@ -123,9 +127,9 @@ void Mediator::adjustSceneRect()
     m_editorScene->adjustSceneRect();
 }
 
-void Mediator::clearSelectionGroup()
+void Mediator::clearSelectionGroup(bool onlyImplicitNodes)
 {
-    m_editorData->clearSelectionGroup();
+    m_editorData->clearSelectionGroup(onlyImplicitNodes);
     updateNodeConnectionActions();
 }
 
@@ -136,17 +140,17 @@ bool Mediator::canBeSaved() const
 
 void Mediator::connectEdgeToUndoMechanism(EdgeS edge)
 {
-    connect(edge.get(), &Edge::undoPointRequested, this, &Mediator::saveUndoPoint, Qt::UniqueConnection);
+    connect(edge.get(), &SceneItems::Edge::undoPointRequested, this, &Mediator::saveUndoPoint, Qt::UniqueConnection);
 }
 
 void Mediator::connectNodeToUndoMechanism(NodeS node)
 {
-    connect(node.get(), &Node::undoPointRequested, this, &Mediator::saveUndoPoint, Qt::UniqueConnection);
+    connect(node.get(), &SceneItems::Node::undoPointRequested, this, &Mediator::saveUndoPoint, Qt::UniqueConnection);
 }
 
 void Mediator::connectNodeToImageManager(NodeS node)
 {
-    connect(node.get(), &Node::imageRequested, &m_editorData->mindMapData()->imageManager(), &ImageManager::handleImageRequest, Qt::UniqueConnection);
+    connect(node.get(), &SceneItems::Node::imageRequested, &m_editorData->mindMapData()->imageManager(), &ImageManager::handleImageRequest, Qt::UniqueConnection);
     node->setImageRef(node->imageRef()); // This effectively results in a fetch from ImageManager
 }
 
@@ -211,7 +215,7 @@ NodeS Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
     L().debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
 
     // Add edge from the parent node.
-    connectEdgeToUndoMechanism(m_editorData->addEdge(std::make_shared<Edge>(node0.get(), node1.get())));
+    connectEdgeToUndoMechanism(m_editorData->addEdge(std::make_shared<SceneItems::Edge>(node0.get(), node1.get())));
     L().debug() << "Created a new edge " << node0->index() << " -> " << node1->index();
 
     addExistingGraphToScene();
@@ -261,8 +265,7 @@ void Mediator::deleteEdge(EdgeR edge)
 void Mediator::enableAutosave(bool enable)
 {
     if (enable) {
-        L().info() << "Try saving mind map due to autosave enabled";
-        m_editorData->saveMindMap();
+        m_editorData->requestAutosave(true);
     }
 }
 
@@ -338,7 +341,7 @@ void Mediator::initializeNewMindMap()
     m_mainWindow.initializeNewMindMap();
 }
 
-void Mediator::initiateNewNodeDrag(NodeHandle & nodeHandle)
+void Mediator::initiateNewNodeDrag(SceneItems::NodeHandle & nodeHandle)
 {
     L().debug() << "Initiating new node drag";
 
@@ -432,12 +435,17 @@ bool Mediator::isUndoable() const
     return m_editorData->isUndoable();
 }
 
+void Mediator::mirror(bool vertically)
+{
+    m_editorData->mirror(vertically);
+}
+
 void Mediator::moveSelectionGroup(NodeR reference, QPointF location)
 {
     m_editorData->moveSelectionGroup(reference, location);
 }
 
-MindMapDataPtr Mediator::mindMapData() const
+MindMapDataS Mediator::mindMapData() const
 {
     return m_editorData->mindMapData();
 }
@@ -483,7 +491,7 @@ void Mediator::paste()
             }
             juzzlin::L().debug() << "Pasting edges";
             for (auto && copiedEdge : m_editorData->copiedData().edges) {
-                const auto pastedEdge = std::make_shared<Edge>(*copiedEdge.edge);
+                const auto pastedEdge = std::make_shared<SceneItems::Edge>(*copiedEdge.edge);
                 pastedEdge->setSourceNode(*nodeMapping[copiedEdge.sourceNodeIndex]);
                 pastedEdge->setTargetNode(*nodeMapping[copiedEdge.targetNodeIndex]);
                 connectEdgeToUndoMechanism(m_editorData->addEdge(pastedEdge));
@@ -531,6 +539,14 @@ void Mediator::performNodeAction(const NodeAction & action)
     case NodeAction::Type::DisconnectSelected:
         disconnectSelectedNodes();
         break;
+    case NodeAction::Type::MirrorLayoutHorizontally:
+        saveUndoPoint();
+        mirror(false);
+        break;
+    case NodeAction::Type::MirrorLayoutVertically:
+        saveUndoPoint();
+        mirror(true);
+        break;
     case NodeAction::Type::Paste:
         paste();
         break;
@@ -557,7 +573,7 @@ void Mediator::performNodeAction(const NodeAction & action)
 
 bool Mediator::openMindMap(QString fileName)
 {
-    assert(m_editorData);
+    juzzlin::L().info() << "Loading '" << fileName.toStdString() << "'";
 
     try {
         m_editorData->loadMindMapData(fileName);
@@ -567,10 +583,14 @@ bool Mediator::openMindMap(QString fileName)
         connectGraphToUndoMechanism();
         connectGraphToImageManager();
         zoomToFit();
-    } catch (const FileException & e) {
+    } catch (const IO::FileException & e) {
+        // Initialize a new mind map to avoid an undefined state.
+        initializeNewMindMap();
         m_mainWindow.showErrorDialog(e.message());
         return false;
     } catch (const std::runtime_error & e) {
+        // Initialize a new mind map to avoid an undefined state.
+        initializeNewMindMap();
         m_mainWindow.showErrorDialog(e.what());
         return false;
     }
@@ -603,12 +623,12 @@ void Mediator::toggleNodeInSelectionGroup(NodeR node, bool updateNodeConnectionA
 
 bool Mediator::saveMindMapAs(QString fileName)
 {
-    return m_editorData->saveMindMapAs(fileName);
+    return m_editorData->saveMindMapAs(fileName, true);
 }
 
 bool Mediator::saveMindMap()
 {
-    return m_editorData->saveMindMap();
+    return m_editorData->saveMindMap(true);
 }
 
 void Mediator::saveUndoPoint()
@@ -717,7 +737,7 @@ void Mediator::setEditorView(EditorView & editorView)
 size_t Mediator::setRectagleSelection(QRectF rect)
 {
     size_t nodesInRectangle = 0;
-    for (auto && item : m_editorScene->items(rect, SettingsProxy::instance().selectNodeGroupByIntersection() ? Qt::IntersectsItemShape : Qt::ContainsItemShape)) {
+    for (auto && item : m_editorScene->items(rect, SingleInstanceContainer::instance().settingsProxy().selectNodeGroupByIntersection() ? Qt::IntersectsItemShape : Qt::ContainsItemShape)) {
         if (const auto node = dynamic_cast<NodeP>(item)) {
             toggleNodeInSelectionGroup(*node, false);
             nodesInRectangle++;

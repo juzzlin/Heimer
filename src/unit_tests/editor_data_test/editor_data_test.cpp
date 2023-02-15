@@ -15,13 +15,22 @@
 
 #include "editor_data_test.hpp"
 
-#include "editor_data.hpp"
-#include "mind_map_data.hpp"
-#include "test_mode.hpp"
+#include "../../editor_data.hpp"
+
+#include "../../core/graph.hpp"
+#include "../../core/mind_map_data.hpp"
+#include "../../core/test_mode.hpp"
+
+using Core::MindMapData;
+
+using SceneItems::Edge;
+using SceneItems::EdgeModel;
+using SceneItems::Node;
+using SceneItems::NodeModel;
 
 EditorDataTest::EditorDataTest()
 {
-    TestMode::setEnabled(true);
+    Core::TestMode::setEnabled(true);
 }
 
 void EditorDataTest::testAddAndDeleteEdge()
@@ -188,7 +197,6 @@ void EditorDataTest::testLoadState()
 
     editorData.toggleNodeInSelectionGroup(*node0);
     editorData.setSelectedEdge(edge01.get());
-    editorData.mindMapData()->imageManager().addImage({});
     editorData.saveUndoPoint();
 
     QCOMPARE(editorData.isUndoable(), true);
@@ -198,7 +206,6 @@ void EditorDataTest::testLoadState()
     QCOMPARE(editorData.isUndoable(), false);
     QCOMPARE(editorData.selectionGroupSize(), size_t(0));
     QCOMPARE(editorData.selectedEdge(), nullptr);
-    QCOMPARE(editorData.mindMapData()->imageManager().images().size(), size_t { 0 });
     QCOMPARE(editorData.selectedNode(), nullptr);
 }
 

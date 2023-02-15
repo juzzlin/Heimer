@@ -17,11 +17,14 @@
 #define CONTROL_STRATEGY_HPP
 
 class QMouseEvent;
+class QString;
 
 class ControlStrategy
 {
 public:
     ControlStrategy();
+
+    virtual ~ControlStrategy();
 
     bool backgroundDragInitiated(QMouseEvent & event) const;
 
@@ -32,6 +35,10 @@ public:
     bool secondaryButtonClicked(QMouseEvent & event) const;
 
     void setInvertedMode(bool invertedMode);
+
+    QString mirrorLayoutHorizontallyShortcut() const;
+
+    QString mirrorLayoutVerticallyShortcut() const;
 
 private:
     bool isModifierPressed() const;

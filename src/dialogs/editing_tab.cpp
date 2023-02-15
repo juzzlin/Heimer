@@ -14,8 +14,10 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "editing_tab.hpp"
-#include "../settings_proxy.hpp"
-#include "../widget_factory.hpp"
+
+#include "widget_factory.hpp"
+
+#include "../core/settings_proxy.hpp"
 
 #include <QButtonGroup>
 #include <QCheckBox>
@@ -23,17 +25,23 @@
 #include <QLabel>
 #include <QVBoxLayout>
 
-EditingTab::EditingTab(QWidget * parent)
-  : QWidget(parent)
+namespace Dialogs {
+
+EditingTab::EditingTab(QString name, QWidget * parent)
+  : SettingsTabBase(name, parent)
 {
     initWidgets();
 }
 
 void EditingTab::apply()
 {
-    SettingsProxy::instance().setSelectNodeGroupByIntersection(m_selectNodeGroupByIntersectionCheckBox->isChecked());
+    settingsProxy().setSelectNodeGroupByIntersection(m_selectNodeGroupByIntersectionCheckBox->isChecked());
 
-    SettingsProxy::instance().setAutosave(m_autosaveCheckBox->isChecked());
+    settingsProxy().setAutosave(m_autosaveCheckBox->isChecked());
+
+    emit autosaveEnabled(m_autosaveCheckBox->isChecked());
+
+    settingsProxy().setAutoload(m_autoloadCheckBox->isChecked());
 }
 
 void EditingTab::initWidgets()
@@ -51,18 +59,25 @@ void EditingTab::initWidgets()
     m_autosaveCheckBox = new QCheckBox(tr("Enable autosave"));
     autosaveGroup.second->addWidget(m_autosaveCheckBox);
 
+    const auto autoloadGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Autoload"), *mainLayout);
+    const auto autoloadHelp = new QLabel(tr("Autoload feature will automatically load your recent mind map on application start."));
+    autoloadHelp->setWordWrap(true);
+    autoloadGroup.second->addWidget(autoloadHelp);
+    m_autoloadCheckBox = new QCheckBox(tr("Enable autoload"));
+    autoloadGroup.second->addWidget(m_autoloadCheckBox);
+
     setLayout(mainLayout);
 
     setActiveSettings();
-
-    connect(m_autosaveCheckBox, &QCheckBox::stateChanged, this, [=](auto state) {
-        emit autosaveEnabled(state == Qt::CheckState::Checked);
-    });
 }
 
 void EditingTab::setActiveSettings()
 {
-    m_selectNodeGroupByIntersectionCheckBox->setChecked(SettingsProxy::instance().selectNodeGroupByIntersection());
+    m_selectNodeGroupByIntersectionCheckBox->setChecked(settingsProxy().selectNodeGroupByIntersection());
 
-    m_autosaveCheckBox->setChecked(SettingsProxy::instance().autosave());
+    m_autosaveCheckBox->setChecked(settingsProxy().autosave());
+
+    m_autoloadCheckBox->setChecked(settingsProxy().autoload());
 }
+
+} // namespace Dialogs

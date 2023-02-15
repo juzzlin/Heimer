@@ -17,19 +17,22 @@
 #define SELECTION_GROUP_HPP
 
 #include <QPointF>
-#include <unordered_set>
+#include <unordered_map>
 #include <vector>
 
 #include "types.hpp"
 
-class Node;
-
 class SelectionGroup
 {
 public:
-    void addSelectedNode(NodeR node);
+    //! Adds node to the selection group.
+    //! \param node Node to be added.
+    //! \param isImplicit Tells if the node is implicitly added e.g. due to some user action.
+    void addNode(NodeR node, bool isImplicit = false);
 
-    void clear();
+    //! Clears the selection group.
+    //! \param onlyImplicitNodes If true, only implicitly added nodes are removed from the group.
+    void clear(bool onlyImplicitNodes = false);
 
     bool hasNode(NodeR node) const;
 
@@ -46,9 +49,15 @@ public:
     void toggleNode(NodeR node);
 
 private:
+    void clearAll();
+
+    void clearOnlyImplicitNodes();
+
     // Use vector because we want to keep the order
     std::vector<NodeP> m_nodes;
-    std::unordered_set<NodeP> m_nodeSet;
+
+    // Map from node -> is implicitly added
+    std::unordered_map<NodeP, bool> m_nodeMap;
 };
 
 #endif // SELECTION_GROUP_HPP

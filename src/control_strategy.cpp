@@ -51,3 +51,15 @@ void ControlStrategy::setInvertedMode(bool invertedMode)
 {
     m_invertedMode = invertedMode;
 }
+
+QString ControlStrategy::mirrorLayoutHorizontallyShortcut() const
+{
+    return "Ctrl+Shift+H";
+}
+
+QString ControlStrategy::mirrorLayoutVerticallyShortcut() const
+{
+    return "Ctrl+Shift+V";
+}
+
+ControlStrategy::~ControlStrategy() = default;

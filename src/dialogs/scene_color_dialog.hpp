@@ -22,10 +22,14 @@
 
 class Mediator;
 
+namespace Dialogs {
+
 class SceneColorDialog : public ColorDialog
 {
 public:
     SceneColorDialog(Role role, std::shared_ptr<Mediator> mediator);
 };
+
+} // namespace Dialogs
 
 #endif // SCENE_COLOR_DIALOG_HPP

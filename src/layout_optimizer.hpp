@@ -19,13 +19,14 @@
 #include <functional>
 #include <memory>
 
+#include "types.hpp"
+
 class Grid;
-class MindMapData;
 
 class LayoutOptimizer
 {
 public:
-    LayoutOptimizer(std::shared_ptr<MindMapData> mindMapData, const Grid & grid);
+    LayoutOptimizer(MindMapDataS mindMapData, const Grid & grid);
 
     ~LayoutOptimizer();
 

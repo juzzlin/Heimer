@@ -18,10 +18,13 @@
 
 #include <QDialog>
 
+#include "../types.hpp"
+
 class LayoutOptimizer;
-class MindMapData;
 class QDoubleSpinBox;
 class QProgressBar;
+
+namespace Dialogs {
 
 class LayoutOptimizationDialog : public QDialog
 {
@@ -29,7 +32,7 @@ class LayoutOptimizationDialog : public QDialog
 
 public:
     //! Constructor.
-    explicit LayoutOptimizationDialog(QWidget & parent, MindMapData & mindMapData, LayoutOptimizer & layoutOptimizer);
+    explicit LayoutOptimizationDialog(QWidget & parent, MindMapDataR mindMapData, LayoutOptimizer & layoutOptimizer);
 
     int exec() override;
 
@@ -42,9 +45,9 @@ private slots:
     void finishOptimization();
 
 private:
-    void initWidgets(const MindMapData & mindMapData);
+    void initWidgets(MindMapDataCR mindMapData);
 
-    MindMapData & m_mindMapData;
+    MindMapDataR m_mindMapData;
 
     LayoutOptimizer & m_layoutOptimizer;
 
@@ -54,5 +57,7 @@ private:
 
     QProgressBar * m_progressBar = nullptr;
 };
+
+} // namespace Dialogs
 
 #endif // LAYOUT_OPTIMIZATION_DIALOG_HPP

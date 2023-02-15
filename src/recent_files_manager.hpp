@@ -21,6 +21,7 @@
 #include <QString>
 
 #include <memory>
+#include <optional>
 
 class RecentFilesManager : public QObject
 {
@@ -29,7 +30,9 @@ public:
 
     static RecentFilesManager & instance();
 
-    const QList<QString> & getRecentFiles() const;
+    std::optional<QString> recentFile() const;
+
+    QList<QString> recentFiles() const;
 
     bool hasRecentFiles() const;
 

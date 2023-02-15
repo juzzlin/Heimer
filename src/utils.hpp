@@ -13,6 +13,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
+#ifndef UTILS_HPP
+#define UTILS_HPP
+
 #include <QColor>
 #include <cstddef>
 
@@ -23,3 +26,5 @@ size_t tsMs();
 bool isColorBright(QColor color);
 
 } // namespace Utils
+
+#endif // UTILS_HPP

@@ -18,10 +18,13 @@
 
 #include <QDialog>
 
-class DefaultsTab;
-class EditingTab;
-class EffectsTab;
+#include <vector>
+
 struct ShadowEffectParams;
+
+namespace Dialogs {
+
+class SettingsTabBase;
 
 class SettingsDialog : public QDialog
 {
@@ -38,13 +41,13 @@ signals:
 private:
     void accept() override;
 
+    void reject() override;
+
     void initWidgets();
 
-    DefaultsTab * m_defaultsTab;
-
-    EditingTab * m_editingTab;
-
-    EffectsTab * m_effectsTab;
+    std::vector<SettingsTabBase *> m_tabs;
 };
+
+} // namespace Dialogs
 
 #endif // SETTINGS_DIALOG_HPP

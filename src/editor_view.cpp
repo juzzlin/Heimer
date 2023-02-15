@@ -28,21 +28,24 @@
 
 #include "constants.hpp"
 #include "control_strategy.hpp"
-#include "edge.hpp"
-#include "edge_context_menu.hpp"
-#include "edge_text_edit.hpp"
-#include "graphics_factory.hpp"
 #include "item_filter.hpp"
 #include "magic_zoom.hpp"
 #include "mediator.hpp"
-#include "mind_map_data.hpp"
 #include "mouse_action.hpp"
-#include "node.hpp"
 #include "node_action.hpp"
-#include "node_handle.hpp"
-#include "simple_logger.hpp"
 
-#include "contrib/SimpleLogger/src/simple_logger.hpp"
+#include "core/mind_map_data.hpp"
+#include "core/single_instance_container.hpp"
+
+#include "menus/edge_context_menu.hpp"
+
+#include "scene_items/edge.hpp"
+#include "scene_items/edge_text_edit.hpp"
+#include "scene_items/graphics_factory.hpp"
+#include "scene_items/node.hpp"
+#include "scene_items/node_handle.hpp"
+
+#include "simple_logger.hpp"
 
 #include <cassert>
 #include <cstdlib>
@@ -51,9 +54,9 @@ using juzzlin::L;
 
 EditorView::EditorView(Mediator & mediator)
   : m_mediator(mediator)
-  , m_edgeContextMenu(new EdgeContextMenu(this, m_mediator))
-  , m_mainContextMenu(new MainContextMenu(this, m_mediator, m_grid))
-  , m_controlStrategy(std::make_unique<ControlStrategy>())
+  , m_edgeContextMenu(new Menus::EdgeContextMenu(this, m_mediator))
+  , m_mainContextMenu(new Menus::MainContextMenu(this, m_mediator, m_grid))
+  , m_controlStrategy(SingleInstanceContainer::instance().controlStrategy())
 {
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -64,8 +67,8 @@ EditorView::EditorView(Mediator & mediator)
     setRenderHint(QPainter::Antialiasing);
 
     // Forward signals from main context menu
-    connect(m_mainContextMenu, &MainContextMenu::actionTriggered, this, &EditorView::actionTriggered);
-    connect(m_mainContextMenu, &MainContextMenu::newNodeRequested, this, &EditorView::newNodeRequested);
+    connect(m_mainContextMenu, &Menus::MainContextMenu::actionTriggered, this, &EditorView::actionTriggered);
+    connect(m_mainContextMenu, &Menus::MainContextMenu::newNodeRequested, this, &EditorView::newNodeRequested);
 }
 
 const Grid & EditorView::grid() const
@@ -84,18 +87,18 @@ void EditorView::finishRubberBand()
 
 void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
 {
-    if (m_controlStrategy->rubberBandInitiated(event)) {
+    if (m_controlStrategy.rubberBandInitiated(event)) {
         initiateRubberBand();
-    } else if (m_controlStrategy->backgroundDragInitiated(event)) {
+    } else if (m_controlStrategy.backgroundDragInitiated(event)) {
         initiateBackgroundDrag();
-    } else if (m_controlStrategy->secondaryButtonClicked(event)) {
-        openMainContextMenu(MainContextMenu::Mode::Background);
+    } else if (m_controlStrategy.secondaryButtonClicked(event)) {
+        openMainContextMenu(Menus::MainContextMenu::Mode::Background);
     }
 }
 
 void EditorView::handleMousePressEventOnEdge(QMouseEvent & event, EdgeR edge)
 {
-    if (m_controlStrategy->secondaryButtonClicked(event)) {
+    if (m_controlStrategy.secondaryButtonClicked(event)) {
         handleSecondaryButtonClickOnEdge(edge);
     }
 }
@@ -104,21 +107,21 @@ void EditorView::handleMousePressEventOnNode(QMouseEvent & event, NodeR node)
 {
     if (node.index() != -1) // Prevent right-click on the drag node
     {
-        if (m_controlStrategy->secondaryButtonClicked(event)) {
+        if (m_controlStrategy.secondaryButtonClicked(event)) {
             handleSecondaryButtonClickOnNode(node);
-        } else if (m_controlStrategy->primaryButtonClicked(event)) {
+        } else if (m_controlStrategy.primaryButtonClicked(event)) {
             handlePrimaryButtonClickOnNode(node);
         }
     }
 }
 
-void EditorView::handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHandle & nodeHandle)
+void EditorView::handleMousePressEventOnNodeHandle(QMouseEvent & event, SceneItems::NodeHandle & nodeHandle)
 {
     if (isModifierPressed()) {
         return;
     }
 
-    if (m_controlStrategy->primaryButtonClicked(event)) {
+    if (m_controlStrategy.primaryButtonClicked(event)) {
         handlePrimaryButtonClickOnNodeHandle(nodeHandle);
     }
 }
@@ -139,25 +142,25 @@ void EditorView::handlePrimaryButtonClickOnNode(NodeR node)
     }
 }
 
-void EditorView::handlePrimaryButtonClickOnNodeHandle(NodeHandle & nodeHandle)
+void EditorView::handlePrimaryButtonClickOnNodeHandle(SceneItems::NodeHandle & nodeHandle)
 {
     if (!nodeHandle.parentNode().selected()) {
         m_mediator.clearSelectionGroup();
     }
 
     switch (nodeHandle.role()) {
-    case NodeHandle::Role::ConnectOrCreate:
+    case SceneItems::NodeHandle::Role::ConnectOrCreate:
         m_mediator.initiateNewNodeDrag(nodeHandle);
         break;
-    case NodeHandle::Role::Move:
+    case SceneItems::NodeHandle::Role::Move:
         m_mediator.initiateNodeDrag(nodeHandle.parentNode());
         break;
-    case NodeHandle::Role::NodeColor:
-        m_mediator.addNodeToSelectionGroup(nodeHandle.parentNode());
+    case SceneItems::NodeHandle::Role::NodeColor:
+        m_mediator.addNodeToSelectionGroup(nodeHandle.parentNode(), true);
         emit actionTriggered(StateMachine::Action::NodeColorChangeRequested);
         break;
-    case NodeHandle::Role::TextColor:
-        m_mediator.addNodeToSelectionGroup(nodeHandle.parentNode());
+    case SceneItems::NodeHandle::Role::TextColor:
+        m_mediator.addNodeToSelectionGroup(nodeHandle.parentNode(), true);
         emit actionTriggered(StateMachine::Action::TextColorChangeRequested);
         break;
     }
@@ -178,7 +181,7 @@ void EditorView::handleSecondaryButtonClickOnNode(NodeR node)
 
     m_mediator.addNodeToSelectionGroup(node);
 
-    openMainContextMenu(MainContextMenu::Mode::Node);
+    openMainContextMenu(Menus::MainContextMenu::Mode::Node);
 }
 
 void EditorView::initiateBackgroundDrag()
@@ -232,6 +235,8 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
     m_pos = event->pos();
     m_mappedPos = mapToScene(event->pos());
     m_mediator.mouseAction().setMappedPos(m_mappedPos);
+
+    using SceneItems::Node;
 
     if (Node::lastHoveredNode()) {
         const auto hhd = Constants::Node::HIDE_HANDLES_DISTANCE;
@@ -307,7 +312,7 @@ void EditorView::mousePressEvent(QMouseEvent * event)
             }
             // This hack enables edge context menu even if user clicks on the edge text edit.
         } else if (result.edgeTextEdit) {
-            if (m_controlStrategy->secondaryButtonClicked(*event)) {
+            if (m_controlStrategy.secondaryButtonClicked(*event)) {
                 if (const auto edge = result.edgeTextEdit->edge(); edge) {
                     juzzlin::L().debug() << "Edge text edit pressed";
                     handleMousePressEventOnEdge(*event, *edge);
@@ -316,7 +321,7 @@ void EditorView::mousePressEvent(QMouseEvent * event)
             }
             // This hack enables node context menu even if user clicks on the node text edit.
         } else if (result.nodeTextEdit) {
-            if (m_controlStrategy->secondaryButtonClicked(*event) || (m_controlStrategy->primaryButtonClicked(*event) && isModifierPressed())) {
+            if (m_controlStrategy.secondaryButtonClicked(*event) || (m_controlStrategy.primaryButtonClicked(*event) && isModifierPressed())) {
                 if (const auto node = dynamic_cast<NodeP>(result.nodeTextEdit->parentItem()); node) {
                     juzzlin::L().debug() << "Node text edit pressed";
                     handleMousePressEventOnNode(*event, *node);
@@ -343,7 +348,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
         default:
             break;
         }
-    } else if (m_controlStrategy->primaryButtonClicked(*event)) {
+    } else if (m_controlStrategy.primaryButtonClicked(*event)) {
         switch (m_mediator.mouseAction().action()) {
         case MouseAction::Action::None:
             // This can happen if the user deletes the drag node while connecting nodes or creating a new node.
@@ -389,7 +394,7 @@ void EditorView::openEdgeContextMenu()
     m_edgeContextMenu->exec(mapToGlobal(m_clickedPos));
 }
 
-void EditorView::openMainContextMenu(MainContextMenu::Mode mode)
+void EditorView::openMainContextMenu(Menus::MainContextMenu::Mode mode)
 {
     m_mainContextMenu->setMode(mode);
     m_mainContextMenu->exec(mapToGlobal(m_clickedPos));
@@ -409,7 +414,7 @@ void EditorView::showDummyDragEdge(bool show)
     if (const auto sourceNode = m_mediator.mouseAction().sourceNode()) {
         if (!m_dummyDragEdge) {
             L().debug() << "Creating a new dummy drag edge";
-            m_dummyDragEdge = std::make_unique<Edge>(sourceNode, m_dummyDragNode.get(), false, false);
+            m_dummyDragEdge = std::make_unique<SceneItems::Edge>(sourceNode, m_dummyDragNode.get(), false, false);
             m_dummyDragEdge->setOpacity(0.5);
             scene()->addItem(m_dummyDragEdge.get());
         } else {
@@ -428,7 +433,7 @@ void EditorView::showDummyDragNode(bool show)
 {
     if (!m_dummyDragNode) {
         L().debug() << "Creating a new dummy drag node";
-        m_dummyDragNode = std::make_unique<Node>();
+        m_dummyDragNode = std::make_unique<SceneItems::Node>();
         scene()->addItem(m_dummyDragNode.get());
     }
 

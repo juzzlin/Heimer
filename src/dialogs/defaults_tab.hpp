@@ -16,37 +16,55 @@
 #ifndef DEFAULTS_TAB_HPP
 #define DEFAULTS_TAB_HPP
 
-#include "settings_proxy.hpp"
-#include <QWidget>
 #include <map>
 #include <vector>
 
-class ColorSettingButton;
+#include "../scene_items/edge_model.hpp"
+#include "settings_tab_base.hpp"
+
 class QCheckBox;
+class QDoubleSpinBox;
 class QRadioButton;
 class QVBoxLayout;
+class QSpinBox;
 
-class DefaultsTab : public QWidget
+namespace Widgets {
+class FontButton;
+}
+
+namespace Dialogs {
+
+class ColorSettingButton;
+
+class DefaultsTab : public SettingsTabBase
 {
     Q_OBJECT
 
 public:
-    explicit DefaultsTab(QWidget * parent = nullptr);
+    explicit DefaultsTab(QString name, QWidget * parent = nullptr);
 
-    void apply();
+    void apply() override;
+
+    void reject() override;
 
 private:
     void createColorWidgets(QVBoxLayout & mainLayout);
 
     void createEdgeWidgets(QVBoxLayout & mainLayout);
 
+    void createTextWidgets(QVBoxLayout & mainLayout);
+
     void initWidgets();
 
     void setActiveDefaults();
 
-    std::map<EdgeModel::ArrowMode, QRadioButton *> m_edgeArrowStyleRadioMap;
+    std::map<SceneItems::EdgeModel::ArrowMode, QRadioButton *> m_edgeArrowStyleRadioMap;
 
     QCheckBox * m_edgeDirectionCheckBox = nullptr;
+
+    QDoubleSpinBox * m_arrowSizeSpinBox = nullptr;
+
+    QDoubleSpinBox * m_edgeWidthSpinBox = nullptr;
 
     ColorSettingButton * m_backgroundColorButton = nullptr;
 
@@ -59,6 +77,12 @@ private:
     ColorSettingButton * m_nodeTextColorButton = nullptr;
 
     std::vector<ColorSettingButton *> m_colorSettingButtons;
+
+    Widgets::FontButton * m_fontButton = nullptr;
+
+    QSpinBox * m_textSizeSpinBox = nullptr;
 };
+
+} // namespace Dialogs
 
 #endif // DEFAULTS_TAB_HPP

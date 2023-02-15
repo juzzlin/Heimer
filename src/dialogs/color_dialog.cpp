@@ -18,6 +18,8 @@
 
 #include <vector>
 
+namespace Dialogs {
+
 ColorDialog::ColorDialog(Role role)
   : m_role(role)
 {
@@ -118,3 +120,5 @@ const QColor & ColorDialog::color() const
 }
 
 ColorDialog::~ColorDialog() = default;
+
+} // namespace Dialogs

@@ -74,10 +74,6 @@ public:
 
     void highlightText(const QString & text);
 
-    void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
-
-    void hoverMoveEvent(QGraphicsSceneHoverEvent * event) override;
-
     size_t imageRef() const;
 
     int index() const;
@@ -85,10 +81,6 @@ public:
     static NodeP lastHoveredNode();
 
     QPointF location() const;
-
-    void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
-
-    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
 
     QRectF placementBoundingRect() const;
 
@@ -139,6 +131,15 @@ signals:
     void imageRequested(size_t imageRef, Node & node);
 
     void undoPointRequested();
+
+protected:
+    void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
+
+    void hoverMoveEvent(QGraphicsSceneHoverEvent * event) override;
+
+    void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
+
+    void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
 
 private:
     void createEdgePoints();

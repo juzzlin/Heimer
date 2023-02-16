@@ -318,12 +318,12 @@
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="180"/>
         <source>Text Style</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekststijl</translation>
     </message>
     <message>
         <location filename="../dialogs/defaults_tab.cpp" line="186"/>
         <source>Text size:</source>
-        <translation type="unfinished">Tekstgrootte:</translation>
+        <translation>Tekstgrootte:</translation>
     </message>
 </context>
 <context>
@@ -806,17 +806,17 @@
     <message>
         <location filename="../main_window.cpp" line="202"/>
         <source>&amp;Mirror layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Indeling spie&amp;gelen</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="204"/>
         <source>Horizontally</source>
-        <translation type="unfinished"></translation>
+        <translation>Horizontaal</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="212"/>
         <source>Vertically</source>
-        <translation type="unfinished"></translation>
+        <translation>Verticaal</translation>
     </message>
     <message>
         <location filename="../main_window.cpp" line="244"/>
@@ -1339,7 +1339,7 @@
     <message>
         <location filename="../widgets/font_button.cpp" line="30"/>
         <source>Font</source>
-        <translation type="unfinished">Lettertype</translation>
+        <translation>Lettertype</translation>
     </message>
 </context>
 </TS>

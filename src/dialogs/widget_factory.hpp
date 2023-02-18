@@ -34,6 +34,8 @@ std::pair<QGroupBox *, QVBoxLayout *> buildGroupBoxWithVLayout(QString title, QL
 
 std::pair<QPushButton *, QHBoxLayout *> buildResetToDefaultsButtonWithHLayout();
 
+QWidget * buildHorizontalLine();
+
 } // namespace Dialogs::WidgetFactory
 
 #endif // WIDGET_FACTORY_HPP

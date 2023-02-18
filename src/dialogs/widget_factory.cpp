@@ -15,6 +15,7 @@
 
 #include "widget_factory.hpp"
 
+#include <QFrame>
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -45,6 +46,15 @@ std::pair<QPushButton *, QHBoxLayout *> buildResetToDefaultsButtonWithHLayout()
     const auto button = new QPushButton(QObject::tr("Reset to defaults"));
     layout->addWidget(button);
     return { button, layout };
+}
+
+QWidget * buildHorizontalLine()
+{
+    const auto line = new QFrame;
+    line->setFrameShape(QFrame::HLine);
+    line->setFrameShadow(QFrame::Sunken);
+
+    return line;
 }
 
 } // namespace Dialogs::WidgetFactory

@@ -60,10 +60,7 @@ void EditingTab::initWidgets()
     fileOperationsGroup.second->addWidget(autosaveHelp);
     m_autosaveCheckBox = new QCheckBox(tr("Enable autosave"));
     fileOperationsGroup.second->addWidget(m_autosaveCheckBox);
-    const auto line = new QFrame;
-    line->setFrameShape(QFrame::HLine);
-    line->setFrameShadow(QFrame::Sunken);
-    fileOperationsGroup.second->addWidget(line);
+    fileOperationsGroup.second->addWidget(WidgetFactory::buildHorizontalLine());
     const auto autoloadHelp = new QLabel(tr("Autoload feature will automatically load your recent mind map on application start."));
     autoloadHelp->setWordWrap(true);
     fileOperationsGroup.second->addWidget(autoloadHelp);

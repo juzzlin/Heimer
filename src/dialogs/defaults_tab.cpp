@@ -127,11 +127,8 @@ void DefaultsTab::createEdgeWidgets(QVBoxLayout & mainLayout)
     edgeArrowRadioLayout->addWidget(m_edgeDirectionCheckBox);
     edgeGroup.second->addLayout(edgeArrowRadioLayout);
 
-    const auto line = new QFrame;
-    line->setFrameShape(QFrame::HLine);
-    line->setFrameShadow(QFrame::Sunken);
+    edgeArrowRadioLayout->addWidget(WidgetFactory::buildHorizontalLine());
 
-    edgeArrowRadioLayout->addWidget(line);
     const auto arrowSizeEdgeWidthLayout = new QHBoxLayout;
     arrowSizeEdgeWidthLayout->addWidget(new QLabel(tr("Arrow size:")));
     arrowSizeEdgeWidthLayout->addWidget(m_arrowSizeSpinBox);

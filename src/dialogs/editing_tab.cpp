@@ -54,19 +54,21 @@ void EditingTab::initWidgets()
     m_selectNodeGroupByIntersectionCheckBox = new QCheckBox(tr("Select node group by intersection"));
     editingGroup.second->addWidget(m_selectNodeGroupByIntersectionCheckBox);
 
-    const auto autosaveGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Autosave"), *mainLayout);
+    const auto fileOperationsGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("File Operations"), *mainLayout);
     const auto autosaveHelp = new QLabel(tr("Autosave feature will automatically save your mind map on every modification after it has been initially saved once."));
     autosaveHelp->setWordWrap(true);
-    autosaveGroup.second->addWidget(autosaveHelp);
+    fileOperationsGroup.second->addWidget(autosaveHelp);
     m_autosaveCheckBox = new QCheckBox(tr("Enable autosave"));
-    autosaveGroup.second->addWidget(m_autosaveCheckBox);
-
-    const auto autoloadGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Autoload"), *mainLayout);
+    fileOperationsGroup.second->addWidget(m_autosaveCheckBox);
+    const auto line = new QFrame;
+    line->setFrameShape(QFrame::HLine);
+    line->setFrameShadow(QFrame::Sunken);
+    fileOperationsGroup.second->addWidget(line);
     const auto autoloadHelp = new QLabel(tr("Autoload feature will automatically load your recent mind map on application start."));
     autoloadHelp->setWordWrap(true);
-    autoloadGroup.second->addWidget(autoloadHelp);
+    fileOperationsGroup.second->addWidget(autoloadHelp);
     m_autoloadCheckBox = new QCheckBox(tr("Enable autoload"));
-    autoloadGroup.second->addWidget(m_autoloadCheckBox);
+    fileOperationsGroup.second->addWidget(m_autoloadCheckBox);
 
     const auto controlsGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Controls"), *mainLayout);
     const auto controlsHelp = new QLabel(tr("Scroll the view with a modifier key pressed and select a group of items without a modifier key being pressed."));

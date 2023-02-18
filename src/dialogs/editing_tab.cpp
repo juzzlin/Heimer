@@ -52,6 +52,7 @@ void EditingTab::initWidgets()
 
     const auto editingGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Selecting Nodes"), *mainLayout);
     m_selectNodeGroupByIntersectionCheckBox = new QCheckBox(tr("Select node group by intersection"));
+    m_selectNodeGroupByIntersectionCheckBox->setToolTip(tr("The rectangle selection will select nodes also by intersection instead of inclusion only."));
     editingGroup.second->addWidget(m_selectNodeGroupByIntersectionCheckBox);
 
     const auto fileOperationsGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("File Operations"), *mainLayout);

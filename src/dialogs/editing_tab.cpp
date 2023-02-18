@@ -55,23 +55,19 @@ void EditingTab::initWidgets()
     editingGroup.second->addWidget(m_selectNodeGroupByIntersectionCheckBox);
 
     const auto fileOperationsGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("File Operations"), *mainLayout);
-    const auto autosaveHelp = new QLabel(tr("Autosave feature will automatically save your mind map on every modification after it has been initially saved once."));
-    autosaveHelp->setWordWrap(true);
-    fileOperationsGroup.second->addWidget(autosaveHelp);
     m_autosaveCheckBox = new QCheckBox(tr("Enable autosave"));
+    m_autosaveCheckBox->setToolTip(tr("Autosave feature will automatically save your mind map on every modification after it has been initially saved once."));
     fileOperationsGroup.second->addWidget(m_autosaveCheckBox);
+
     fileOperationsGroup.second->addWidget(WidgetFactory::buildHorizontalLine());
-    const auto autoloadHelp = new QLabel(tr("Autoload feature will automatically load your recent mind map on application start."));
-    autoloadHelp->setWordWrap(true);
-    fileOperationsGroup.second->addWidget(autoloadHelp);
+
     m_autoloadCheckBox = new QCheckBox(tr("Enable autoload"));
+    m_autoloadCheckBox->setToolTip(tr("Autoload feature will automatically load your recent mind map on application start."));
     fileOperationsGroup.second->addWidget(m_autoloadCheckBox);
 
     const auto controlsGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Controls"), *mainLayout);
-    const auto controlsHelp = new QLabel(tr("Scroll the view with a modifier key pressed and select a group of items without a modifier key being pressed."));
-    controlsHelp->setWordWrap(true);
-    controlsGroup.second->addWidget(controlsHelp);
     m_invertedControlsCheckBox = new QCheckBox(tr("Inverted controls"));
+    m_invertedControlsCheckBox->setToolTip(tr("Scroll the view with a modifier key pressed and select a group of items without a modifier key being pressed."));
     controlsGroup.second->addWidget(m_invertedControlsCheckBox);
 
     setLayout(mainLayout);

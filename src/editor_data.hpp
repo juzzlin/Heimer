@@ -30,13 +30,16 @@
 #include "grid.hpp"
 #include "mouse_action.hpp"
 #include "types.hpp"
-#include "undo_stack.hpp"
 
 #include "io/file_exception.hpp"
 
 class MindMapTile;
 class SelectionGroup;
 class QGraphicsLineItem;
+
+namespace Core {
+class UndoStack;
+}
 
 namespace SceneItems {
 class Edge;
@@ -197,7 +200,7 @@ private:
 
     std::unique_ptr<SelectionGroup> m_selectionGroup;
 
-    UndoStack m_undoStack;
+    std::unique_ptr<Core::UndoStack> m_undoStack;
 
     EdgeP m_selectedEdge = nullptr;
 

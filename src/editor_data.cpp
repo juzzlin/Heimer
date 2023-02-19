@@ -25,6 +25,7 @@
 #include "core/settings_proxy.hpp"
 #include "core/single_instance_container.hpp"
 #include "core/test_mode.hpp"
+#include "core/undo_stack.hpp"
 
 #include "io/alz_file_io.hpp"
 
@@ -45,6 +46,7 @@ EditorData::EditorData()
   : m_alzFileIO(std::make_unique<IO::AlzFileIO>())
   , m_copyContext(std::make_unique<CopyContext>())
   , m_selectionGroup(std::make_unique<SelectionGroup>())
+  , m_undoStack(std::make_unique<Core::UndoStack>())
 {
     m_undoTimer.setSingleShot(true);
     m_undoTimer.setInterval(Constants::View::TOO_QUICK_ACTION_DELAY_MS);
@@ -98,7 +100,7 @@ void EditorData::loadMindMapData(QString fileName)
     setIsModified(false);
     RecentFilesManager::instance().addRecentFile(fileName);
 
-    m_undoStack.clear();
+    m_undoStack->clear();
 }
 
 bool EditorData::isModified() const
@@ -108,17 +110,17 @@ bool EditorData::isModified() const
 
 bool EditorData::isUndoable() const
 {
-    return m_undoStack.isUndoable();
+    return m_undoStack->isUndoable();
 }
 
 void EditorData::undo()
 {
-    if (m_undoStack.isUndoable()) {
+    if (m_undoStack->isUndoable()) {
         clearSelectionGroup();
         m_selectedEdge = nullptr;
         m_dragAndDropNode = nullptr;
         saveRedoPoint();
-        m_mindMapData = m_undoStack.undo();
+        m_mindMapData = m_undoStack->undo();
         setIsModified(true);
         sendUndoAndRedoSignals();
         requestAutosave(true);
@@ -134,17 +136,17 @@ void EditorData::unselectText()
 
 bool EditorData::isRedoable() const
 {
-    return m_undoStack.isRedoable();
+    return m_undoStack->isRedoable();
 }
 
 void EditorData::redo()
 {
-    if (m_undoStack.isRedoable()) {
+    if (m_undoStack->isRedoable()) {
         clearSelectionGroup();
         m_selectedEdge = nullptr;
         m_dragAndDropNode = nullptr;
         saveUndoPoint(true);
-        m_mindMapData = m_undoStack.redo();
+        m_mindMapData = m_undoStack->redo();
         setIsModified(true);
         sendUndoAndRedoSignals();
         requestAutosave(true);
@@ -179,9 +181,9 @@ void EditorData::saveUndoPoint(bool dontClearRedoStack)
     }
 
     assert(m_mindMapData);
-    m_undoStack.pushUndoPoint(*m_mindMapData);
+    m_undoStack->pushUndoPoint(*m_mindMapData);
     if (!dontClearRedoStack) {
-        m_undoStack.clearRedoStack();
+        m_undoStack->clearRedoStack();
     }
     setIsModified(true);
     sendUndoAndRedoSignals();
@@ -193,7 +195,7 @@ void EditorData::saveRedoPoint()
     L().debug() << "Saving redo point..";
 
     assert(m_mindMapData);
-    m_undoStack.pushRedoPoint(*m_mindMapData);
+    m_undoStack->pushRedoPoint(*m_mindMapData);
     setIsModified(true);
     sendUndoAndRedoSignals();
 }
@@ -258,7 +260,7 @@ void EditorData::setMindMapData(MindMapDataS mindMapData)
     m_fileName = "";
     setIsModified(false);
 
-    m_undoStack.clear();
+    m_undoStack->clear();
 }
 
 void EditorData::selectNodesByText(QString text)
@@ -523,8 +525,8 @@ size_t EditorData::selectionGroupSize() const
 
 void EditorData::sendUndoAndRedoSignals()
 {
-    emit undoEnabled(m_undoStack.isUndoable());
-    emit redoEnabled(m_undoStack.isRedoable());
+    emit undoEnabled(m_undoStack->isUndoable());
+    emit redoEnabled(m_undoStack->isRedoable());
 }
 
 void EditorData::setIsModified(bool isModified)

@@ -21,6 +21,8 @@
 #include <list>
 #include <memory>
 
+namespace Core {
+
 class UndoStack
 {
 public:
@@ -52,5 +54,7 @@ private:
 
     size_t m_maxHistorySize;
 };
+
+} // namespace Core
 
 #endif // UNDO_STACK_HPP

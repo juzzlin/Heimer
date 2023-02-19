@@ -41,7 +41,6 @@ set(HEIMER_LIB_SRC
     selection_group.cpp
     state_machine.cpp
     types.hpp
-    undo_stack.cpp
     utils.cpp
 
     core/graph.cpp
@@ -53,6 +52,7 @@ set(HEIMER_LIB_SRC
     core/shadow_effect_params.hpp
     core/single_instance_container.cpp
     core/test_mode.cpp
+    core/undo_stack.cpp
     core/user_exception.hpp
     core/version.hpp
     core/version_checker.cpp

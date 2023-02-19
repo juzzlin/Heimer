@@ -15,7 +15,9 @@
 
 #include "undo_stack.hpp"
 
-#include "core/mind_map_data.hpp"
+#include "mind_map_data.hpp"
+
+namespace Core {
 
 UndoStack::UndoStack(size_t maxHistorySize)
   : m_maxHistorySize(maxHistorySize)
@@ -82,3 +84,5 @@ MindMapDataU UndoStack::redo()
 
     return {};
 }
+
+} // namespace Core

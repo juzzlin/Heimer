@@ -54,14 +54,12 @@ bool TextEdit::event(QEvent * event)
 
 void TextEdit::keyPressEvent(QKeyEvent * event)
 {
-    const auto prevText = m_text;
-
     // Don't mix the global undo and text edit's internal undo
     if (!event->matches(QKeySequence::Undo)) {
         QGraphicsTextItem::keyPressEvent(event);
-
+        const auto oldText = m_text;
         const auto newText = toPlainText();
-        if (prevText != newText) {
+        if (oldText != newText) {
             m_text = newText;
             emit textChanged(newText);
         }

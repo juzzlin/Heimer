@@ -10,6 +10,8 @@ New features:
 
 Bug fixes:
 
+* Fix tab key not working properly with node and edge text inputs.
+
 Other:
 
 3.7.0

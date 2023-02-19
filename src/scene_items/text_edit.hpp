@@ -47,6 +47,8 @@ signals:
     void undoPointRequested();
 
 protected:
+    virtual bool event(QEvent * event) override;
+
     virtual void keyPressEvent(QKeyEvent * event) override;
 
     virtual void mousePressEvent(QGraphicsSceneMouseEvent * event) override;

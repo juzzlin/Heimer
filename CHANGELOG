@@ -6,13 +6,23 @@ Release date:
 New features:
 
 * Add setting for 'inverted controls'
-  - Pan the view with a modifier key (Ctrl) and select a group of items without a modifier key being pressed.
+  - Pan the view with a modifier key (Ctrl) and select a group of items without a modifier key being pressed
 
 Bug fixes:
 
-* Fix tab key not working properly with node and edge text inputs.
+* Fix tab key not working properly with node and edge text inputs
+
+* Unselect implicitly selected node after context menu has closed
 
 Other:
+
+* Change help texts to tool tips in edit settings
+
+* Move settings action from file menu to edit menu
+
+* Update Italian translations
+
+* Update Dutch translations
 
 3.7.0
 =====

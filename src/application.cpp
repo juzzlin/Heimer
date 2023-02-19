@@ -26,6 +26,7 @@
 #include "recent_files_manager.hpp"
 #include "state_machine.hpp"
 
+#include "core/progress_manager.hpp"
 #include "core/settings.hpp"
 #include "core/settings_proxy.hpp"
 #include "core/single_instance_container.hpp"
@@ -45,9 +46,11 @@
 #include <QLocale>
 #include <QMessageBox>
 #include <QObject>
+#include <QProgressDialog>
 #include <QStandardPaths>
 
 #include <iostream>
+#include <thread>
 
 namespace {
 
@@ -141,6 +144,11 @@ void Application::parseArgs(int argc, char ** argv)
     ae.parse();
 }
 
+void Application::updateProgress()
+{
+    Core::SingleInstanceContainer::instance().progressManager().updateProgress();
+}
+
 Application::Application(int & argc, char ** argv)
   : m_app(argc, argv)
   , m_stateMachine(std::make_unique<StateMachine>())
@@ -203,7 +211,7 @@ Application::Application(int & argc, char ** argv)
     // Open mind map according to CLI argument (if exists) or autoload the recent mind map (if enabled)
     if (!m_mindMapFile.isEmpty()) {
         QTimer::singleShot(0, this, &Application::openArgMindMap);
-    } else if (SingleInstanceContainer::instance().settingsProxy().autoload()) {
+    } else if (Core::SingleInstanceContainer::instance().settingsProxy().autoload()) {
         if (const auto recentFile = RecentFilesManager::instance().recentFile(); recentFile.has_value()) {
             // Exploit same code as used to open arg mind map
             m_mindMapFile = recentFile.value();
@@ -323,13 +331,21 @@ void Application::openMindMap()
 void Application::doOpenMindMap(QString fileName)
 {
     L().debug() << "Opening '" << fileName.toStdString();
-
+    m_mainWindow->showSpinnerDialog(true, tr("Opening '%1'..").arg(fileName));
+    updateProgress();
     if (m_mediator->openMindMap(fileName)) {
         m_mainWindow->disableUndoAndRedo();
+        updateProgress();
         m_mainWindow->setSaveActionStatesOnOpenedMindMap();
+        updateProgress();
         Settings::V1::saveRecentPath(fileName);
+        updateProgress();
+        m_mainWindow->showSpinnerDialog(false);
+        updateProgress();
         emit actionTriggered(StateMachine::Action::MindMapOpened);
     } else {
+        m_mainWindow->showSpinnerDialog(false);
+        updateProgress();
         emit actionTriggered(StateMachine::Action::OpeningMindMapFailed);
     }
 }

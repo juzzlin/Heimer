@@ -98,6 +98,8 @@ private:
 
     void parseArgs(int argc, char ** argv);
 
+    void updateProgress();
+
     QApplication m_app;
 
     QTranslator m_appTranslator;

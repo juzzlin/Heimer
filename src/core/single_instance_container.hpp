@@ -19,6 +19,10 @@
 #include <memory>
 
 class ControlStrategy;
+
+namespace Core {
+
+class ProgressManager;
 class SettingsProxy;
 
 //! A poor man's single instance DI.
@@ -33,6 +37,8 @@ public:
 
     ControlStrategy & controlStrategy() const;
 
+    ProgressManager & progressManager() const;
+
     SettingsProxy & settingsProxy() const;
 
 private:
@@ -42,9 +48,13 @@ private:
 
     std::unique_ptr<ControlStrategy> m_controlStrategy;
 
+    std::unique_ptr<ProgressManager> m_progressManager;
+
     std::unique_ptr<SettingsProxy> m_settingsProxy;
 
     static std::unique_ptr<SingleInstanceContainer> m_instance;
 };
+
+} // namespace Core
 
 #endif // SINGLE_INSTANCE_CONTAINER_HPP

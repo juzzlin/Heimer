@@ -16,6 +16,8 @@
 #include "settings.hpp"
 #include "settings_proxy.hpp"
 
+namespace Core {
+
 SettingsProxy::SettingsProxy()
   : m_autoload(Settings::V1::loadAutoload())
   , m_autosave(Settings::V1::loadAutosave())
@@ -254,3 +256,5 @@ void SettingsProxy::setShadowEffect(const ShadowEffectParams & params)
 }
 
 SettingsProxy::~SettingsProxy() = default;
+
+} // namespace Core

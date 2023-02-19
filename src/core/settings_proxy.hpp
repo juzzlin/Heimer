@@ -24,6 +24,8 @@
 
 #include <QFont>
 
+namespace Core {
+
 class SettingsProxy
 {
 public:
@@ -132,5 +134,7 @@ private:
 
     ShadowEffectParams m_shadowEffectParams;
 };
+
+} // namespace Core
 
 #endif // SETTINGS_PROXY_HPP

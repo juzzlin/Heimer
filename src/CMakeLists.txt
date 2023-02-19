@@ -47,6 +47,7 @@ set(HEIMER_LIB_SRC
     core/hash_seed.cpp
     core/mind_map_data.cpp
     core/mind_map_data_base.cpp
+    core/progress_manager.cpp
     core/settings.cpp
     core/settings_proxy.cpp
     core/shadow_effect_params.hpp
@@ -68,6 +69,7 @@ set(HEIMER_LIB_SRC
     dialogs/scene_color_dialog.cpp
     dialogs/settings_dialog.cpp
     dialogs/settings_tab_base.cpp
+    dialogs/spinner_dialog.cpp
     dialogs/svg_export_dialog.cpp
     dialogs/whats_new_dialog.cpp
     dialogs/widget_factory.cpp

@@ -15,16 +15,19 @@
 
 #include "single_instance_container.hpp"
 
+#include "../control_strategy.hpp"
+#include "progress_manager.hpp"
 #include "settings_proxy.hpp"
 
-#include "../control_strategy.hpp"
-
 #include <stdexcept>
+
+namespace Core {
 
 std::unique_ptr<SingleInstanceContainer> SingleInstanceContainer::m_instance;
 
 SingleInstanceContainer::SingleInstanceContainer()
   : m_controlStrategy(std::make_unique<ControlStrategy>())
+  , m_progressManager(std::make_unique<ProgressManager>())
   , m_settingsProxy(std::make_unique<SettingsProxy>())
 {
     if (SingleInstanceContainer::m_instance) {
@@ -35,6 +38,11 @@ SingleInstanceContainer::SingleInstanceContainer()
 ControlStrategy & SingleInstanceContainer::controlStrategy() const
 {
     return *m_controlStrategy;
+}
+
+ProgressManager & SingleInstanceContainer::progressManager() const
+{
+    return *m_progressManager;
 }
 
 SettingsProxy & SingleInstanceContainer::settingsProxy() const
@@ -51,3 +59,5 @@ SingleInstanceContainer & SingleInstanceContainer::instance()
 }
 
 SingleInstanceContainer::~SingleInstanceContainer() = default;
+
+} // namespace Core

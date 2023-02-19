@@ -61,7 +61,7 @@ void EditorData::addNodeToSelectionGroup(NodeR node, bool isImplicit)
 
 void EditorData::requestAutosave(bool async)
 {
-    if (SingleInstanceContainer::instance().settingsProxy().autosave() && !m_fileName.isEmpty()) {
+    if (Core::SingleInstanceContainer::instance().settingsProxy().autosave() && !m_fileName.isEmpty()) {
         L().debug() << "Autosaving to '" << m_fileName.toStdString() << "'";
         saveMindMapAs(m_fileName, async);
     }

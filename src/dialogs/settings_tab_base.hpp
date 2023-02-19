@@ -17,7 +17,9 @@
 
 #include <QWidget>
 
+namespace Core {
 class SettingsProxy;
+}
 
 namespace Dialogs {
 
@@ -35,7 +37,7 @@ public:
     QString name() const;
 
 protected:
-    SettingsProxy & settingsProxy() const;
+    Core::SettingsProxy & settingsProxy() const;
 
 private:
     QString m_name;

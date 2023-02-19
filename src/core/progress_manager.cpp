@@ -13,35 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "settings_tab_base.hpp"
+#include "progress_manager.hpp"
 
-#include "../core/settings_proxy.hpp"
-#include "../core/single_instance_container.hpp"
+#include <QApplication>
 
-namespace Dialogs {
+namespace Core {
 
-SettingsTabBase::SettingsTabBase(QString name, QWidget * parent)
-  : QWidget(parent)
-  , m_name(name)
+ProgressManager::ProgressManager() = default;
+
+ProgressManager::~ProgressManager() = default;
+
+void ProgressManager::updateProgress()
 {
+    QApplication::processEvents();
 }
 
-void SettingsTabBase::apply()
-{
-}
-
-void SettingsTabBase::reject()
-{
-}
-
-QString SettingsTabBase::name() const
-{
-    return m_name;
-}
-
-Core::SettingsProxy & SettingsTabBase::settingsProxy() const
-{
-    return Core::SingleInstanceContainer::instance().settingsProxy();
-}
-
-} // namespace Dialogs
+} // namespace Core

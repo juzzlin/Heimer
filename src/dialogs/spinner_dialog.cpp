@@ -13,35 +13,37 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "settings_tab_base.hpp"
+#include "spinner_dialog.hpp"
 
-#include "../core/settings_proxy.hpp"
-#include "../core/single_instance_container.hpp"
+#include <QLabel>
+#include <QProgressBar>
+#include <QVBoxLayout>
 
 namespace Dialogs {
 
-SettingsTabBase::SettingsTabBase(QString name, QWidget * parent)
-  : QWidget(parent)
-  , m_name(name)
+SpinnerDialog::SpinnerDialog(QWidget * parent)
+  : QDialog(parent, Qt::Popup)
+  , m_messageLabel(new QLabel(this))
 {
+    setMinimumWidth(400);
+    initWidgets();
 }
 
-void SettingsTabBase::apply()
+void SpinnerDialog::initWidgets()
 {
+    const auto vLayout = new QVBoxLayout(this);
+    const auto spinner = new QProgressBar;
+    spinner->setMinimum(0);
+    spinner->setMaximum(0);
+    vLayout->addWidget(m_messageLabel);
+    vLayout->addWidget(spinner);
+    setLayout(vLayout);
 }
 
-void SettingsTabBase::reject()
+void SpinnerDialog::setMessage(QString message)
 {
-}
-
-QString SettingsTabBase::name() const
-{
-    return m_name;
-}
-
-Core::SettingsProxy & SettingsTabBase::settingsProxy() const
-{
-    return Core::SingleInstanceContainer::instance().settingsProxy();
+    m_messageLabel->setText(message);
+    update();
 }
 
 } // namespace Dialogs

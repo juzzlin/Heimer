@@ -24,6 +24,8 @@
 
 #include "../core/graph.hpp"
 #include "../core/mind_map_data.hpp"
+#include "../core/progress_manager.hpp"
+#include "../core/single_instance_container.hpp"
 #include "../core/test_mode.hpp"
 
 #include "../scene_items/edge.hpp"
@@ -36,6 +38,7 @@
 #include <map>
 #include <set>
 
+#include <QApplication>
 #include <QDebug>
 #include <QDomElement>
 #include <QFile>
@@ -341,6 +344,7 @@ static void readChildren(const QDomElement & root, std::map<QString, std::functi
 {
     auto domNode = root.firstChild();
     while (!domNode.isNull()) {
+        Core::SingleInstanceContainer::instance().progressManager().updateProgress();
         const auto element = domNode.toElement();
         if (!element.isNull()) {
             if (handlerMap.count(element.nodeName())) {
@@ -560,6 +564,7 @@ MindMapDataU AlzFileIOWorker::fromXml(QString xml) const
 {
     QDomDocument document;
     document.setContent(xml, false);
+    Core::SingleInstanceContainer::instance().progressManager().updateProgress();
     return IO::fromXml(document);
 }
 

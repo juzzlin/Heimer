@@ -13,35 +13,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "settings_tab_base.hpp"
+#ifndef SPINNER_DIALOG_HPP
+#define SPINNER_DIALOG_HPP
 
-#include "../core/settings_proxy.hpp"
-#include "../core/single_instance_container.hpp"
+#include <QDialog>
+
+class QLabel;
 
 namespace Dialogs {
 
-SettingsTabBase::SettingsTabBase(QString name, QWidget * parent)
-  : QWidget(parent)
-  , m_name(name)
+//! The spinner dialog.
+class SpinnerDialog : public QDialog
 {
-}
+    Q_OBJECT
 
-void SettingsTabBase::apply()
-{
-}
+public:
+    //! Constructor.
+    explicit SpinnerDialog(QWidget * parent = nullptr);
 
-void SettingsTabBase::reject()
-{
-}
+    void setMessage(QString message);
 
-QString SettingsTabBase::name() const
-{
-    return m_name;
-}
+private:
+    void initWidgets();
 
-Core::SettingsProxy & SettingsTabBase::settingsProxy() const
-{
-    return Core::SingleInstanceContainer::instance().settingsProxy();
-}
+    QLabel * m_messageLabel;
+};
 
 } // namespace Dialogs
+
+#endif // SPINNER_DIALOG_HPP

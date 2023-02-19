@@ -23,6 +23,7 @@
 #include "mouse_action.hpp"
 #include "node_action.hpp"
 
+#include "core/progress_manager.hpp"
 #include "core/settings_proxy.hpp"
 #include "core/shadow_effect_params.hpp"
 #include "core/single_instance_container.hpp"
@@ -55,7 +56,7 @@ Mediator::Mediator(MainWindow & mainWindow)
     connect(&m_mainWindow, &MainWindow::zoomOutTriggered, this, &Mediator::zoomOut);
 }
 
-void Mediator::addExistingGraphToScene()
+void Mediator::addExistingGraphToScene(bool zoomToFitAfterNodesLoaded)
 {
     for (auto && node : m_editorData->mindMapData()->graph().getNodes()) {
         if (node->scene() != m_editorScene.get()) {
@@ -67,6 +68,13 @@ void Mediator::addExistingGraphToScene()
         }
     }
 
+    if (zoomToFitAfterNodesLoaded) {
+        zoomToFit();
+    }
+
+    updateProgress();
+
+    size_t progressCounter = 0;
     for (auto && edge : m_editorData->mindMapData()->graph().getEdges()) {
         const auto node0 = getNodeByIndex(edge->sourceNode().index());
         const auto node1 = getNodeByIndex(edge->targetNode().index());
@@ -82,10 +90,17 @@ void Mediator::addExistingGraphToScene()
             edge->updateLine();
             L().trace() << "Added existing edge (" << node0->index() << ", " << node1->index() << ") to scene";
         }
+        if (++progressCounter % 100 == 0) {
+            updateProgress();
+        }
     }
+
+    updateProgress();
 
     // This is to prevent nasty updated loops like in https://github.com/juzzlin/Heimer/issues/96
     m_mainWindow.enableWidgetSignals(false);
+
+    updateProgress();
 
     m_mainWindow.setArrowSize(m_editorData->mindMapData()->arrowSize());
     m_mainWindow.setCornerRadius(m_editorData->mindMapData()->cornerRadius());
@@ -93,10 +108,14 @@ void Mediator::addExistingGraphToScene()
     m_mainWindow.setTextSize(m_editorData->mindMapData()->textSize());
     m_mainWindow.changeFont(m_editorData->mindMapData()->font());
 
+    updateProgress();
+
     m_editorView->setArrowSize(m_editorData->mindMapData()->arrowSize());
     m_editorView->setCornerRadius(m_editorData->mindMapData()->cornerRadius());
     m_editorView->setEdgeColor(m_editorData->mindMapData()->edgeColor());
     m_editorView->setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
+
+    updateProgress();
 
     m_mainWindow.enableWidgetSignals(true);
 }
@@ -577,12 +596,19 @@ bool Mediator::openMindMap(QString fileName)
 
     try {
         m_editorData->loadMindMapData(fileName);
+        updateProgress();
         m_editorScene = std::make_unique<EditorScene>();
+        updateProgress();
         initializeView();
-        addExistingGraphToScene();
+        updateProgress();
+        addExistingGraphToScene(true);
+        updateProgress();
         connectGraphToUndoMechanism();
+        updateProgress();
         connectGraphToImageManager();
+        updateProgress();
         zoomToFit();
+        updateProgress();
     } catch (const IO::FileException & e) {
         // Initialize a new mind map to avoid an undefined state.
         initializeNewMindMap();
@@ -737,7 +763,7 @@ void Mediator::setEditorView(EditorView & editorView)
 size_t Mediator::setRectagleSelection(QRectF rect)
 {
     size_t nodesInRectangle = 0;
-    for (auto && item : m_editorScene->items(rect, SingleInstanceContainer::instance().settingsProxy().selectNodeGroupByIntersection() ? Qt::IntersectsItemShape : Qt::ContainsItemShape)) {
+    for (auto && item : m_editorScene->items(rect, Core::SingleInstanceContainer::instance().settingsProxy().selectNodeGroupByIntersection() ? Qt::IntersectsItemShape : Qt::ContainsItemShape)) {
         if (const auto node = dynamic_cast<NodeP>(item)) {
             toggleNodeInSelectionGroup(*node, false);
             nodesInRectangle++;
@@ -810,6 +836,11 @@ void Mediator::updateNodeConnectionActions()
 {
     m_mainWindow.enableConnectSelectedNodesAction(areSelectedNodesConnectable());
     m_mainWindow.enableDisconnectSelectedNodesAction(areSelectedNodesDisconnectable());
+}
+
+void Mediator::updateProgress()
+{
+    Core::SingleInstanceContainer::instance().progressManager().updateProgress();
 }
 
 void Mediator::undo()

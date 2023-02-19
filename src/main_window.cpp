@@ -26,6 +26,7 @@
 
 #include "dialogs/about_dialog.hpp"
 #include "dialogs/settings_dialog.hpp"
+#include "dialogs/spinner_dialog.hpp"
 #include "dialogs/whats_new_dialog.hpp"
 
 #include "menus/recent_files_menu.hpp"
@@ -56,6 +57,7 @@ MainWindow * MainWindow::m_instance = nullptr;
 MainWindow::MainWindow()
   : m_aboutDlg(new Dialogs::AboutDialog(this))
   , m_settingsDlg(new Dialogs::SettingsDialog(this))
+  , m_spinnerDlg(new Dialogs::SpinnerDialog(this))
   , m_toolBar(new Menus::ToolBar(this))
   , m_whatsNewDlg(new Dialogs::WhatsNewDialog(this))
   , m_connectSelectedNodesAction(new QAction(tr("Connect selected nodes"), this))
@@ -65,7 +67,7 @@ MainWindow::MainWindow()
   , m_undoAction(new QAction(tr("Undo"), this))
   , m_redoAction(new QAction(tr("Redo"), this))
   , m_statusText(new QLabel(this))
-  , m_controlStrategy(SingleInstanceContainer::instance().controlStrategy())
+  , m_controlStrategy(Core::SingleInstanceContainer::instance().controlStrategy())
 {
     if (!m_instance) {
         m_instance = this;
@@ -588,6 +590,16 @@ void MainWindow::showErrorDialog(QString message)
                           Constants::Application::APPLICATION_NAME,
                           message,
                           "");
+}
+
+void MainWindow::showSpinnerDialog(bool show, QString message)
+{
+    if (show) {
+        m_spinnerDlg->setMessage(message);
+        m_spinnerDlg->show();
+    } else {
+        m_spinnerDlg->hide();
+    }
 }
 
 void MainWindow::showStatusText(QString message)

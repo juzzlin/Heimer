@@ -56,7 +56,7 @@ EditorView::EditorView(Mediator & mediator)
   : m_mediator(mediator)
   , m_edgeContextMenu(new Menus::EdgeContextMenu(this, m_mediator))
   , m_mainContextMenu(new Menus::MainContextMenu(this, m_mediator, m_grid))
-  , m_controlStrategy(SingleInstanceContainer::instance().controlStrategy())
+  , m_controlStrategy(Core::SingleInstanceContainer::instance().controlStrategy())
 {
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

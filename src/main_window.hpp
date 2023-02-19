@@ -30,6 +30,7 @@
 namespace Dialogs {
 class AboutDialog;
 class SettingsDialog;
+class SpinnerDialog;
 class WhatsNewDialog;
 } // namespace Dialogs
 
@@ -111,6 +112,8 @@ public slots:
 
     void showErrorDialog(QString message);
 
+    void showSpinnerDialog(bool show, QString message = {});
+
     void showStatusText(QString text);
 
 protected:
@@ -177,6 +180,8 @@ private:
     Dialogs::AboutDialog * m_aboutDlg;
 
     Dialogs::SettingsDialog * m_settingsDlg;
+
+    Dialogs::SpinnerDialog * m_spinnerDlg;
 
     Menus::ToolBar * m_toolBar;
 

@@ -20,7 +20,9 @@
 #include <QColor>
 #include <QPushButton>
 
+namespace Core {
 class SettingsProxy;
+}
 
 namespace Dialogs {
 
@@ -47,7 +49,7 @@ private:
 
     QColor m_selectedColor;
 
-    SettingsProxy & m_settingsProxy;
+    Core::SettingsProxy & m_settingsProxy;
 };
 
 } // namespace Dialogs

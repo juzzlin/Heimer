@@ -33,10 +33,13 @@
 
 class Image;
 class QGraphicsTextItem;
-class SettingsProxy;
 class TextEdit;
 
 struct ShadowEffectParams;
+
+namespace Core {
+class SettingsProxy;
+}
 
 namespace SceneItems {
 
@@ -156,7 +159,7 @@ private:
 
     void updateHandlePositions();
 
-    SettingsProxy & m_settingsProxy;
+    Core::SettingsProxy & m_settingsProxy;
 
     std::unique_ptr<NodeModel> m_nodeModel;
 

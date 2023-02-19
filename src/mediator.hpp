@@ -223,7 +223,7 @@ signals:
     void svgExportFinished(bool success);
 
 private:
-    void addExistingGraphToScene();
+    void addExistingGraphToScene(bool zoomToFitAfterNodesLoaded = false);
 
     double calculateNodeOverlapScore(NodeCR node1, NodeCR node2) const;
 
@@ -240,6 +240,8 @@ private:
     void setupMindMapAfterUndoOrRedo();
 
     void updateNodeConnectionActions();
+
+    void updateProgress();
 
     std::shared_ptr<EditorData> m_editorData;
 

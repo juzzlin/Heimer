@@ -42,7 +42,7 @@ TextEdit::TextEdit(QGraphicsItem * parentItem)
 bool TextEdit::event(QEvent * event)
 {
     // We need to add special handling for tab key as it won't trigger our keyPressEvent() by default.
-    if (auto keyEvent = dynamic_cast<QKeyEvent *>(event)) {
+    if (const auto keyEvent = dynamic_cast<QKeyEvent *>(event)) {
         if (keyEvent->key() == Qt::Key_Tab) {
             keyPressEvent(keyEvent);
             return true;

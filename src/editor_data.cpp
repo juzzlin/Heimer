@@ -188,6 +188,8 @@ void EditorData::saveUndoPoint(bool dontClearRedoStack)
     setIsModified(true);
     sendUndoAndRedoSignals();
     requestAutosave(true);
+
+    m_saveOnExit = true;
 }
 
 void EditorData::saveRedoPoint()
@@ -539,7 +541,9 @@ void EditorData::setIsModified(bool isModified)
 
 EditorData::~EditorData()
 {
-    requestAutosave(false);
+    if (m_saveOnExit) {
+        requestAutosave(false);
+    }
 
     L().debug() << "EditorData deleted";
 }

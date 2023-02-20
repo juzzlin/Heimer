@@ -14,6 +14,8 @@ Bug fixes:
 
 * Unselect implicitly selected node after context menu has closed
 
+* Don't autosave unmodified mind map on exit
+
 Other:
 
 * Change help texts to tool tips in edit settings

@@ -216,6 +216,8 @@ private:
 
     bool m_isModified = false;
 
+    bool m_saveOnExit = false;
+
     QString m_fileName;
 
     QTimer m_undoTimer;

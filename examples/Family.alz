@@ -1,108 +1,99 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<design version="1.2.0">
- <color r="211" b="207" g="215"/>
- <edge-width>2500</edge-width>
+<heimer-mind-map version="3.7.0">
+ <color g="215" r="211" b="207"/>
+ <edge-color g="0" r="0" b="0"/>
+ <grid-color g="160" r="160" b="164"/>
+ <arrow-size>20000</arrow-size>
+ <edge-width>1000</edge-width>
+ <font-family overline="0" strike-out="0" italic="0" weight="57" underline="0" bold="0">Ubuntu</font-family>
+ <text-size>14000</text-size>
+ <corner-radius>5000</corner-radius>
  <graph>
-  <node index="0" h="75000" x="4918" y="56557" w="200000">
-   <text>Me</text>
-   <color r="138" b="52" g="226"/>
-   <text-color r="238" b="236" g="238"/>
-  </node>
-  <node index="1" h="75000" x="-195734" y="-78020" w="200000">
-   <text>Father</text>
-   <color r="196" b="0" g="160"/>
-   <text-color r="252" b="79" g="233"/>
-  </node>
-  <node index="2" h="75000" x="122675" y="-78178" w="200000">
-   <text>Mother</text>
-   <color r="237" b="0" g="212"/>
-   <text-color r="0" b="0" g="0"/>
-  </node>
-  <node index="3" h="75000" x="268686" y="56944" w="200000">
-   <text>Brother</text>
-   <color r="32" b="135" g="74"/>
-   <text-color r="0" b="0" g="0"/>
-  </node>
-  <node index="4" h="75000" x="468145" y="-211117" w="200000">
-   <text>Grandfather</text>
-   <color r="0" b="0" g="0"/>
-   <text-color r="136" b="133" g="138"/>
-  </node>
-  <node index="5" h="75000" x="141218" y="-233748" w="200000">
-   <text>Grandmother</text>
-   <color r="0" b="0" g="0"/>
-   <text-color r="234" b="207" g="207"/>
-  </node>
-  <node index="6" h="75000" x="-344965" y="-206975" w="200000">
-   <text>Grandmother</text>
-   <color r="252" b="62" g="175"/>
-   <text-color r="234" b="207" g="207"/>
-  </node>
-  <node index="7" h="75000" x="-95119" y="-226869" w="200000">
-   <text>Grandfather</text>
-   <color r="0" b="0" g="0"/>
-   <text-color r="136" b="133" g="138"/>
-  </node>
-  <node index="8" h="75000" x="-319155" y="57142" w="200000">
-   <text>Her</text>
-   <color r="234" b="207" g="207"/>
-   <text-color r="0" b="0" g="0"/>
-  </node>
-  <node index="9" h="75000" x="509424" y="-35315" w="200000">
-   <text>Friend</text>
-   <color r="136" b="133" g="138"/>
-   <text-color r="0" b="0" g="0"/>
-  </node>
-  <node index="10" h="75000" x="-202895" y="186876" w="200000">
-   <text>Friend</text>
-   <color r="136" b="133" g="138"/>
-   <text-color r="0" b="0" g="0"/>
-  </node>
-  <node index="11" h="75000" x="35006" y="187500" w="200000">
-   <text>Friend</text>
-   <color r="136" b="133" g="138"/>
-   <text-color r="0" b="0" g="0"/>
-  </node>
-  <node index="12" h="75000" x="308540" y="186363" w="200000">
+  <node w="200000" x="368000" y="288000" h="75000" index="12">
    <text>Mrs. Friend</text>
-   <color r="238" b="236" g="238"/>
-   <text-color r="0" b="0" g="0"/>
+   <color g="238" r="238" b="236"/>
+   <text-color g="0" r="0" b="0"/>
   </node>
-  <edge index1="10" index0="0">
-   <text></text>
+  <node w="200000" x="48000" y="288000" h="75000" index="11">
+   <text>Friend</text>
+   <color g="138" r="136" b="133"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <node w="200000" x="-272000" y="288000" h="75000" index="10">
+   <text>Friend</text>
+   <color g="138" r="136" b="133"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <node w="200000" x="640000" y="48000" h="75000" index="9">
+   <text>Friend</text>
+   <color g="138" r="136" b="133"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <node w="200000" x="-416000" y="96000" h="75000" index="8">
+   <text>Her</text>
+   <color g="207" r="234" b="207"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <node w="200000" x="-144000" y="-336000" h="75000" index="7">
+   <text>Grandfather</text>
+   <color g="0" r="0" b="0"/>
+   <text-color g="138" r="136" b="133"/>
+  </node>
+  <node w="200000" x="-512000" y="-256000" h="75000" index="6">
+   <text>Grandmother</text>
+   <color g="175" r="252" b="62"/>
+   <text-color g="207" r="234" b="207"/>
+  </node>
+  <node w="200000" x="240000" y="-352000" h="75000" index="5">
+   <text>Grandmother</text>
+   <color g="0" r="0" b="0"/>
+   <text-color g="207" r="234" b="207"/>
+  </node>
+  <node w="200000" x="608000" y="-224000" h="75000" index="4">
+   <text>Grandfather</text>
+   <color g="0" r="0" b="0"/>
+   <text-color g="138" r="136" b="133"/>
+  </node>
+  <node w="200000" x="320000" y="48000" h="75000" index="3">
+   <text>Brother</text>
+   <color g="74" r="32" b="135"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <node w="200000" x="144000" y="-112000" h="75000" index="2">
+   <text>Mother</text>
+   <color g="212" r="237" b="0"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <node w="200000" x="-256000" y="-112000" h="75000" index="1">
+   <text>Father</text>
+   <color g="160" r="196" b="0"/>
+   <text-color g="233" r="252" b="79"/>
+  </node>
+  <node w="200000" x="0" y="48000" h="75000" index="0">
+   <text>Me</text>
+   <color g="226" r="138" b="52"/>
+   <text-color g="238" r="238" b="236"/>
+  </node>
+  <edge index0="11" index1="12" arrow-mode="0"/>
+  <edge index0="3" index1="9" arrow-mode="0"/>
+  <edge index0="2" index1="4" arrow-mode="0">
+   <text>Passed away</text>
   </edge>
-  <edge index1="1" index0="0">
-   <text></text>
+  <edge index0="2" index1="5" arrow-mode="0">
+   <text>Passed away</text>
   </edge>
-  <edge index1="8" index0="0">
+  <edge index0="1" index1="7" arrow-mode="0">
+   <text>Passed away</text>
+  </edge>
+  <edge index0="1" index1="6" arrow-mode="0"/>
+  <edge index0="0" index1="10" arrow-mode="0"/>
+  <edge index0="0" index1="3" arrow-mode="0"/>
+  <edge index0="0" index1="2" arrow-mode="0"/>
+  <edge index0="0" index1="11" arrow-mode="0"/>
+  <edge index0="0" index1="8" arrow-mode="0">
    <text>LOVES</text>
   </edge>
-  <edge index1="2" index0="0">
-   <text></text>
-  </edge>
-  <edge index1="3" index0="0">
-   <text></text>
-  </edge>
-  <edge index1="11" index0="0">
-   <text></text>
-  </edge>
-  <edge index1="6" index0="1">
-   <text></text>
-  </edge>
-  <edge index1="7" index0="1">
-   <text>Passed away</text>
-  </edge>
-  <edge index1="5" index0="2">
-   <text>Passed away</text>
-  </edge>
-  <edge index1="4" index0="2">
-   <text>Passed away</text>
-  </edge>
-  <edge index1="9" index0="3">
-   <text></text>
-  </edge>
-  <edge index1="12" index0="11">
-   <text></text>
-  </edge>
+  <edge index0="0" index1="1" arrow-mode="0"/>
  </graph>
-</design>
+ <layout-optimizer min-edge-length="100000" aspect-ratio="1000"/>
+</heimer-mind-map>

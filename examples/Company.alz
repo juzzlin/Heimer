@@ -1,76 +1,71 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<design version="1.2.0">
- <color r="128" b="255" g="200"/>
+<heimer-mind-map version="3.7.0">
+ <color g="200" r="128" b="255"/>
+ <edge-color g="0" r="0" b="0"/>
+ <grid-color g="160" r="160" b="164"/>
+ <arrow-size>25000</arrow-size>
  <edge-width>1500</edge-width>
+ <font-family overline="0" strike-out="0" italic="0" weight="57" underline="0" bold="0">Ubuntu</font-family>
+ <text-size>14000</text-size>
+ <corner-radius>5000</corner-radius>
  <graph>
-  <node index="0" h="75000" x="0" y="0" w="200000">
+  <node w="224000" x="0" y="0" h="75000" index="0">
    <text>Code Investments Ltd.</text>
-   <color r="78" b="6" g="154"/>
-   <text-color r="138" b="52" g="226"/>
+   <color g="154" r="78" b="6"/>
+   <text-color g="226" r="138" b="52"/>
   </node>
-  <node index="1" h="75000" x="-248089" y="-122861" w="200000">
+  <node w="200000" x="-272000" y="-144000" h="75000" index="1">
    <text>Me</text>
-   <color r="164" b="0" g="0"/>
-   <text-color r="238" b="236" g="238"/>
+   <color g="0" r="164" b="0"/>
+   <text-color g="238" r="238" b="236"/>
   </node>
-  <node index="2" h="75000" x="-1441" y="-160455" w="200000">
+  <node w="200000" x="0" y="-224000" h="75000" index="2">
    <text>Emily</text>
-   <color r="255" b="255" g="255"/>
-   <text-color r="0" b="0" g="0"/>
+   <color g="255" r="255" b="255"/>
+   <text-color g="0" r="0" b="0"/>
   </node>
-  <node index="3" h="75000" x="265498" y="-134316" w="200000">
+  <node w="200000" x="304000" y="-176000" h="75000" index="3">
    <text>Oliver</text>
-   <color r="255" b="255" g="255"/>
-   <text-color r="0" b="0" g="0"/>
+   <color g="255" r="255" b="255"/>
+   <text-color g="0" r="0" b="0"/>
   </node>
-  <node index="4" h="75000" x="278401" y="-1459" w="200000">
+  <node w="200000" x="336000" y="0" h="75000" index="4">
    <text>George</text>
-   <color r="255" b="255" g="255"/>
-   <text-color r="0" b="0" g="0"/>
+   <color g="255" r="255" b="255"/>
+   <text-color g="0" r="0" b="0"/>
   </node>
-  <node index="5" h="75000" x="969" y="150787" w="200000">
+  <node w="200000" x="0" y="176000" h="75000" index="5">
    <text>Jack</text>
-   <color r="255" b="255" g="255"/>
-   <text-color r="0" b="0" g="0"/>
+   <color g="255" r="255" b="255"/>
+   <text-color g="0" r="0" b="0"/>
   </node>
-  <node index="6" h="75000" x="-242070" y="118720" w="200000">
+  <node w="200000" x="-288000" y="160000" h="75000" index="6">
    <text>Jacob</text>
-   <color r="255" b="255" g="255"/>
-   <text-color r="0" b="0" g="0"/>
+   <color g="255" r="255" b="255"/>
+   <text-color g="0" r="0" b="0"/>
   </node>
-  <node index="7" h="75000" x="261185" y="119026" w="200000">
+  <node w="200000" x="288000" y="144000" h="75000" index="7">
    <text>Harry</text>
-   <color r="255" b="255" g="255"/>
-   <text-color r="0" b="0" g="0"/>
+   <color g="255" r="255" b="255"/>
+   <text-color g="0" r="0" b="0"/>
   </node>
-  <node index="8" h="75000" x="-271483" y="383" w="200000">
+  <node w="200000" x="-352000" y="0" h="75000" index="8">
    <text>Noah</text>
-   <color r="255" b="255" g="255"/>
-   <text-color r="0" b="0" g="0"/>
+   <color g="255" r="255" b="255"/>
+   <text-color g="0" r="0" b="0"/>
   </node>
-  <edge index1="4" index0="0">
-   <text></text>
-  </edge>
-  <edge index1="1" index0="0">
-   <text></text>
-  </edge>
-  <edge index1="8" index0="0">
-   <text></text>
-  </edge>
-  <edge index1="2" index0="0">
+  <edge index0="0" index1="4" arrow-mode="0"/>
+  <edge index0="0" index1="1" arrow-mode="0"/>
+  <edge index0="0" index1="8" arrow-mode="0"/>
+  <edge index0="0" index1="2" arrow-mode="0">
    <text>HR</text>
   </edge>
-  <edge index1="7" index0="0">
-   <text></text>
-  </edge>
-  <edge index1="5" index0="0">
-   <text></text>
-  </edge>
-  <edge index1="3" index0="0">
+  <edge index0="0" index1="7" arrow-mode="0"/>
+  <edge index0="0" index1="5" arrow-mode="0"/>
+  <edge index0="0" index1="3" arrow-mode="0">
    <text>CEO</text>
   </edge>
-  <edge index1="6" index0="0">
-   <text></text>
-  </edge>
+  <edge index0="0" index1="6" arrow-mode="0"/>
  </graph>
-</design>
+ <layout-optimizer min-edge-length="100000" aspect-ratio="1000"/>
+</heimer-mind-map>

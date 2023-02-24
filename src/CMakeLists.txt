@@ -101,6 +101,7 @@ set(HEIMER_LIB_SRC
     scene_items/text_edit.cpp
 
     widgets/font_button.cpp
+    widgets/status_label.cpp
 )
 
 # Set sources for the app

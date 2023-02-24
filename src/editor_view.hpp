@@ -70,6 +70,8 @@ public:
 
     void saveZoom();
 
+    void showStatusText(QString statusText);
+
     void zoom(double amount);
 
     void zoomToFit(QRectF nodeBoundingRect);

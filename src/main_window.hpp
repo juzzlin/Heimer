@@ -114,8 +114,6 @@ public slots:
 
     void showSpinnerDialog(bool show, QString message = {});
 
-    void showStatusText(QString text);
-
 protected:
     void closeEvent(QCloseEvent * event) override;
 

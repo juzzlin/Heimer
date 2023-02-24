@@ -602,13 +602,6 @@ void MainWindow::showSpinnerDialog(bool show, QString message)
     }
 }
 
-void MainWindow::showStatusText(QString message)
-{
-    statusBar()->addPermanentWidget(m_statusText, 1);
-    m_statusText->setAlignment(Qt::AlignRight);
-    m_statusText->setText(message);
-}
-
 void MainWindow::initializeNewMindMap()
 {
     disableUndoAndRedo();

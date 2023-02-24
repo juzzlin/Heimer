@@ -162,6 +162,8 @@ public:
 
     void setSelectedEdge(EdgeP edge);
 
+    void showStatusText(QString statusText);
+
     void toggleNodeInSelectionGroup(NodeR node, bool updateNodeConnectionActions = true);
 
     void undo();

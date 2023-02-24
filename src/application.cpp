@@ -220,7 +220,7 @@ Application::Application(int & argc, char ** argv)
     }
 
     connect(m_versionChecker.get(), &Core::VersionChecker::newVersionFound, this, [this](Core::Version version, QString downloadUrl) {
-        m_mainWindow->showStatusText(QString(tr("A new version %1 available at <a href='%2'>%2</a>")).arg(version.toString(), downloadUrl));
+        m_mediator->showStatusText(QString(tr("A new version %1 available at <a href='%2'>%2</a>")).arg(version.toString(), downloadUrl));
     });
     m_versionChecker->checkForNewReleases();
 }

@@ -832,6 +832,11 @@ void Mediator::setupMindMapAfterUndoOrRedo()
     m_editorView->centerOn(oldCenter);
 }
 
+void Mediator::showStatusText(QString statusText)
+{
+    m_editorView->showStatusText(statusText);
+}
+
 void Mediator::updateNodeConnectionActions()
 {
     m_mainWindow.enableConnectSelectedNodesAction(areSelectedNodesConnectable());

@@ -16,6 +16,7 @@
 #include <QApplication>
 #include <QGraphicsItem>
 #include <QGraphicsSimpleTextItem>
+#include <QLabel>
 #include <QMimeData>
 #include <QMouseEvent>
 #include <QRectF>
@@ -44,6 +45,8 @@
 #include "scene_items/graphics_factory.hpp"
 #include "scene_items/node.hpp"
 #include "scene_items/node_handle.hpp"
+
+#include "widgets/status_label.hpp"
 
 #include "simple_logger.hpp"
 
@@ -497,8 +500,9 @@ void EditorView::setEdgeWidth(double edgeWidth)
 void EditorView::setGridSize(int size)
 {
     m_grid.setSize(size);
-    if (scene())
+    if (scene()) {
         scene()->update();
+    }
 }
 
 void EditorView::setGridColor(const QColor & gridColor)
@@ -509,8 +513,16 @@ void EditorView::setGridColor(const QColor & gridColor)
 void EditorView::setGridVisible(bool visible)
 {
     m_gridVisible = visible;
-    if (scene())
+    if (scene()) {
         scene()->update();
+    }
+}
+
+void EditorView::showStatusText(QString statusText)
+{
+    const auto label = new Widgets::StatusLabel(*this, statusText);
+    label->show();
+    label->updateGeometryKakkaPissa();
 }
 
 void EditorView::wheelEvent(QWheelEvent * event)

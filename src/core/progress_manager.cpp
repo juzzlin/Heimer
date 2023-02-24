@@ -25,7 +25,14 @@ ProgressManager::~ProgressManager() = default;
 
 void ProgressManager::updateProgress()
 {
-    QApplication::processEvents();
+    if (m_enabled) {
+        QApplication::processEvents();
+    }
+}
+
+void ProgressManager::setEnabled(bool enabled)
+{
+    m_enabled = enabled;
 }
 
 } // namespace Core

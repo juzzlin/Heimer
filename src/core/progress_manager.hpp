@@ -28,10 +28,14 @@ public:
 
     void updateProgress();
 
+    void setEnabled(bool enabled);
+
 private:
     ProgressManager(const ProgressManager & other) = delete;
 
     ProgressManager & operator=(const ProgressManager & other) = delete;
+
+    bool m_enabled = false;
 };
 
 } // namespace Core

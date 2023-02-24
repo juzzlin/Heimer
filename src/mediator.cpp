@@ -592,9 +592,9 @@ void Mediator::performNodeAction(const NodeAction & action)
 
 bool Mediator::openMindMap(QString fileName)
 {
-    juzzlin::L().info() << "Loading '" << fileName.toStdString() << "'";
-
     try {
+        juzzlin::L().info() << "Loading '" << fileName.toStdString() << "'";
+        Core::SingleInstanceContainer::instance().progressManager().setEnabled(true);
         m_editorData->loadMindMapData(fileName);
         updateProgress();
         m_editorScene = std::make_unique<EditorScene>();
@@ -613,14 +613,16 @@ bool Mediator::openMindMap(QString fileName)
         // Initialize a new mind map to avoid an undefined state.
         initializeNewMindMap();
         m_mainWindow.showErrorDialog(e.message());
+        Core::SingleInstanceContainer::instance().progressManager().setEnabled(false);
         return false;
     } catch (const std::runtime_error & e) {
         // Initialize a new mind map to avoid an undefined state.
         initializeNewMindMap();
         m_mainWindow.showErrorDialog(e.what());
+        Core::SingleInstanceContainer::instance().progressManager().setEnabled(false);
         return false;
     }
-
+    Core::SingleInstanceContainer::instance().progressManager().setEnabled(false);
     return true;
 }
 

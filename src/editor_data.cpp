@@ -59,11 +59,26 @@ void EditorData::addNodeToSelectionGroup(NodeR node, bool isImplicit)
     m_selectionGroup->addNode(node, isImplicit);
 }
 
-void EditorData::requestAutosave(bool async)
+void EditorData::requestAutosave(AutosaveContext context, bool async)
 {
-    if (Core::SingleInstanceContainer::instance().settingsProxy().autosave() && !m_fileName.isEmpty()) {
-        L().debug() << "Autosaving to '" << m_fileName.toStdString() << "'";
-        saveMindMapAs(m_fileName, async);
+    const auto doRequestAutosave = [this](bool async) {
+        if (Core::SingleInstanceContainer::instance().settingsProxy().autosave() && !m_fileName.isEmpty()) {
+            L().debug() << "Autosaving to '" << m_fileName.toStdString() << "'";
+            saveMindMapAs(m_fileName, async);
+        }
+    };
+
+    switch (context) {
+    case AutosaveContext::Modification:
+        doRequestAutosave(async);
+        break;
+    case AutosaveContext::InitializeNewMindMap:
+    case AutosaveContext::OpenMindMap:
+    case AutosaveContext::QuitApplication:
+        if (m_touched) {
+            doRequestAutosave(async);
+        }
+        break;
     }
 }
 
@@ -85,7 +100,7 @@ QString EditorData::fileName() const
 
 void EditorData::loadMindMapData(QString fileName)
 {
-    requestAutosave(false);
+    requestAutosave(AutosaveContext::OpenMindMap, false);
     clearSelectionGroup();
 
     m_selectedEdge = nullptr;
@@ -123,7 +138,7 @@ void EditorData::undo()
         m_mindMapData = m_undoStack->undo();
         setIsModified(true);
         sendUndoAndRedoSignals();
-        requestAutosave(true);
+        requestAutosave(AutosaveContext::Modification, true);
     }
 }
 
@@ -149,7 +164,7 @@ void EditorData::redo()
         m_mindMapData = m_undoStack->redo();
         setIsModified(true);
         sendUndoAndRedoSignals();
-        requestAutosave(true);
+        requestAutosave(AutosaveContext::Modification, true);
     }
 }
 
@@ -187,9 +202,9 @@ void EditorData::saveUndoPoint(bool dontClearRedoStack)
     }
     setIsModified(true);
     sendUndoAndRedoSignals();
-    requestAutosave(true);
+    requestAutosave(AutosaveContext::Modification, true);
 
-    m_saveOnExit = true;
+    m_touched = true;
 }
 
 void EditorData::saveRedoPoint()
@@ -471,7 +486,7 @@ NodeS EditorData::getNodeByIndex(int index)
 
 void EditorData::initializeNewMindMap()
 {
-    requestAutosave(false);
+    requestAutosave(AutosaveContext::InitializeNewMindMap, false);
     setMindMapData(std::make_shared<Core::MindMapData>());
 }
 
@@ -541,9 +556,7 @@ void EditorData::setIsModified(bool isModified)
 
 EditorData::~EditorData()
 {
-    if (m_saveOnExit) {
-        requestAutosave(false);
-    }
+    requestAutosave(AutosaveContext::QuitApplication, false);
 
     L().debug() << "EditorData deleted";
 }

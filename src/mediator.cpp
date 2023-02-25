@@ -284,7 +284,7 @@ void Mediator::deleteEdge(EdgeR edge)
 void Mediator::enableAutosave(bool enable)
 {
     if (enable) {
-        m_editorData->requestAutosave(true);
+        m_editorData->requestAutosave(EditorData::AutosaveContext::Modification, true);
     }
 }
 

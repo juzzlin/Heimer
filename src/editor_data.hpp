@@ -131,7 +131,15 @@ public:
 
     void removeImageRefsOfSelectedNodes();
 
-    void requestAutosave(bool async);
+    enum class AutosaveContext
+    {
+        Modification,
+        InitializeNewMindMap,
+        OpenMindMap,
+        QuitApplication
+    };
+
+    void requestAutosave(AutosaveContext context, bool async);
 
     bool saveMindMap(bool async);
 
@@ -216,7 +224,7 @@ private:
 
     bool m_isModified = false;
 
-    bool m_saveOnExit = false;
+    bool m_touched = false;
 
     QString m_fileName;
 

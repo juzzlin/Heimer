@@ -16,6 +16,8 @@ Bug fixes:
 
 * Don't autosave unmodified mind map on exit
 
+* Don't autosave unmodified mind map on new file or open file
+
 Other:
 
 * Change help texts to tool tips in edit settings

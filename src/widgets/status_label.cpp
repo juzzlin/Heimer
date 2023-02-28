@@ -53,9 +53,10 @@ void StatusLabel::updateGeometryKakkaPissa()
     const auto gm = m_editorView.viewport()->geometry();
     const auto iw = m_initialSize->width();
     const auto ih = m_initialSize->height();
-    setGeometry(gm.x() + gm.width() - iw + (iw / 2) * (1 - m_scale), //
-                gm.y() + gm.height() - ih + (ih / 2) * (1 - m_scale), //
-                iw * m_scale, ih * m_scale);
+    setGeometry(static_cast<int>(gm.x() + gm.width() - iw + (iw / 2) * (1 - m_scale)), //
+                static_cast<int>(gm.y() + gm.height() - ih + (ih / 2) * (1 - m_scale)), //
+                static_cast<int>(iw * m_scale), //
+                static_cast<int>(ih * m_scale));
 }
 
 qreal StatusLabel::scale() const

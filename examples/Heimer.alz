@@ -9,105 +9,105 @@
  <text-size>13000</text-size>
  <corner-radius>5000</corner-radius>
  <graph>
-  <node w="251000" x="-352000" y="-240000" h="75000" index="11">
-   <text>Simplicity, speed, ease of use</text>
-   <color g="238" r="238" b="236"/>
-   <text-color g="0" r="0" b="0"/>
-  </node>
-  <node w="200000" x="624000" y="-64000" h="75000" index="8">
-   <text>Full undo/redo</text>
-   <color g="175" r="252" b="62"/>
-   <text-color g="0" r="0" b="0"/>
-  </node>
-  <node w="200000" x="624000" y="64000" h="75000" index="15">
-   <text>Adjustable grid</text>
-   <color g="215" r="211" b="207"/>
-   <text-color g="0" r="0" b="0"/>
-  </node>
-  <node w="224000" x="-352000" y="-64000" h="75000" index="2">
-   <text>A simple mind map editor</text>
-   <color g="255" r="255" b="255"/>
-   <text-color g="0" r="0" b="0"/>
-  </node>
-  <node w="237000" x="608000" y="-208000" h="75000" index="10">
-   <text>XML-based .ALZ-file format</text>
-   <color g="255" r="255" b="255"/>
-   <text-color g="0" r="0" b="0"/>
-  </node>
-  <node w="200000" x="16000" y="-256000" h="75000" index="14">
-   <text>PNG images</text>
-   <color g="255" r="255" b="255"/>
-   <text-color g="0" r="0" b="0"/>
-  </node>
-  <node w="200000" x="-352000" y="112000" h="75000" index="1">
-   <text>C++17 and Qt</text>
-   <color g="255" r="255" b="255"/>
-   <text-color g="0" r="0" b="0"/>
-  </node>
-  <node w="200000" x="16000" y="-64000" h="75000" index="0">
-   <text>Heimer</text>
-   <color g="154" r="78" b="6"/>
-   <text-color g="226" r="138" b="52"/>
-  </node>
-  <node w="391000" x="384000" y="256000" h="75000" index="13">
-   <text>Can be ported to all platforms that supports Qt</text>
-   <color g="255" r="255" b="255"/>
-   <text-color g="0" r="0" b="0"/>
-  </node>
-  <node w="200000" x="16000" y="112000" h="75000" index="3">
-   <text>A cross-platform app</text>
-   <color g="255" r="255" b="255"/>
-   <text-color g="0" r="0" b="0"/>
-  </node>
-  <node w="200000" x="16000" y="256000" h="75000" index="5">
-   <text>Windows desktop</text>
-   <color g="159" r="114" b="207"/>
-   <text-color g="0" r="0" b="0"/>
-  </node>
-  <node w="200000" x="-256000" y="256000" h="75000" index="4">
-   <text>Linux desktop</text>
-   <color g="159" r="114" b="207"/>
-   <text-color g="0" r="0" b="0"/>
-  </node>
-  <node w="200000" x="352000" y="80000" h="75000" index="7">
+  <node w="200000" x="352000" y="80000" h="75000" i="7">
    <text>Zoom in/out/fit</text>
    <color g="255" r="255" b="255"/>
    <text-color g="0" r="0" b="0"/>
   </node>
-  <node w="200000" x="352000" y="-64000" h="75000" index="6">
-   <text>Features</text>
-   <color g="233" r="252" b="79"/>
+  <node w="200000" x="-256000" y="256000" h="75000" i="4">
+   <text>Linux desktop</text>
+   <color g="159" r="114" b="207"/>
    <text-color g="0" r="0" b="0"/>
   </node>
-  <node w="200000" x="352000" y="-208000" h="75000" index="9">
+  <node w="200000" x="352000" y="-208000" h="75000" i="9">
    <text>Edge labels</text>
    <color g="255" r="255" b="255"/>
    <text-color g="0" r="0" b="0"/>
   </node>
-  <edge index0="2" index1="11" arrow-mode="0">
+  <node w="200000" x="352000" y="-64000" h="75000" i="6">
+   <text>Features</text>
+   <color g="233" r="252" b="79"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <node w="251000" x="-352000" y="-240000" h="75000" i="11">
+   <text>Simplicity, speed, ease of use</text>
+   <color g="238" r="238" b="236"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <node w="200000" x="624000" y="-64000" h="75000" i="8">
+   <text>Full undo/redo</text>
+   <color g="175" r="252" b="62"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <node w="200000" x="624000" y="64000" h="75000" i="15">
+   <text>Adjustable grid</text>
+   <color g="215" r="211" b="207"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <node w="224000" x="-352000" y="-64000" h="75000" i="2">
+   <text>A simple mind map editor</text>
+   <color g="255" r="255" b="255"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <node w="237000" x="608000" y="-208000" h="75000" i="10">
+   <text>XML-based .ALZ-file format</text>
+   <color g="255" r="255" b="255"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <node w="200000" x="16000" y="-256000" h="75000" i="14">
+   <text>PNG images</text>
+   <color g="255" r="255" b="255"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <node w="200000" x="-352000" y="112000" h="75000" i="1">
+   <text>C++17 and Qt</text>
+   <color g="255" r="255" b="255"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <node w="200000" x="16000" y="-64000" h="75000" i="0">
+   <text>Heimer</text>
+   <color g="154" r="78" b="6"/>
+   <text-color g="226" r="138" b="52"/>
+  </node>
+  <node w="391000" x="384000" y="256000" h="75000" i="13">
+   <text>Can be ported to all platforms that supports Qt</text>
+   <color g="255" r="255" b="255"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <node w="200000" x="16000" y="112000" h="75000" i="3">
+   <text>A cross-platform app</text>
+   <color g="255" r="255" b="255"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <node w="200000" x="16000" y="256000" h="75000" i="5">
+   <text>Windows desktop</text>
+   <color g="159" r="114" b="207"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <edge i0="6" i1="9" arrow-mode="0"/>
+  <edge i0="6" i1="10" arrow-mode="0"/>
+  <edge i0="6" i1="7" arrow-mode="0"/>
+  <edge i0="6" i1="15" arrow-mode="0"/>
+  <edge i0="6" i1="8" arrow-mode="0"/>
+  <edge i0="2" i1="11" arrow-mode="0">
    <text>emphasis on</text>
   </edge>
-  <edge index0="0" index1="6" arrow-mode="0"/>
-  <edge index0="0" index1="1" arrow-mode="0">
+  <edge i0="0" i1="6" arrow-mode="0"/>
+  <edge i0="0" i1="1" arrow-mode="0">
    <text>written in</text>
   </edge>
-  <edge index0="0" index1="14" arrow-mode="0">
+  <edge i0="0" i1="14" arrow-mode="0">
    <text>exports</text>
   </edge>
-  <edge index0="0" index1="3" arrow-mode="0">
+  <edge i0="0" i1="3" arrow-mode="0">
    <text>is</text>
   </edge>
-  <edge index0="0" index1="2" arrow-mode="0">
+  <edge i0="0" i1="2" arrow-mode="0">
    <text>is</text>
   </edge>
-  <edge dashed-line="1" index0="3" index1="13" arrow-mode="2"/>
-  <edge index0="3" index1="4" arrow-mode="0"/>
-  <edge index0="3" index1="5" arrow-mode="0"/>
-  <edge index0="6" index1="7" arrow-mode="0"/>
-  <edge index0="6" index1="15" arrow-mode="0"/>
-  <edge index0="6" index1="8" arrow-mode="0"/>
-  <edge index0="6" index1="9" arrow-mode="0"/>
-  <edge index0="6" index1="10" arrow-mode="0"/>
+  <edge i0="3" i1="13" dashed-line="1" arrow-mode="2"/>
+  <edge i0="3" i1="4" arrow-mode="0"/>
+  <edge i0="3" i1="5" arrow-mode="0"/>
  </graph>
  <layout-optimizer min-edge-length="100000" aspect-ratio="1000"/>
 </heimer-mind-map>

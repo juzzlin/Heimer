@@ -9,63 +9,63 @@
  <text-size>14000</text-size>
  <corner-radius>5000</corner-radius>
  <graph>
-  <node w="224000" x="0" y="0" h="75000" index="0">
+  <node w="224000" x="0" y="0" h="75000" i="0">
    <text>Code Investments Ltd.</text>
    <color g="154" r="78" b="6"/>
    <text-color g="226" r="138" b="52"/>
   </node>
-  <node w="200000" x="-272000" y="-144000" h="75000" index="1">
+  <node w="200000" x="-272000" y="-144000" h="75000" i="1">
    <text>Me</text>
    <color g="0" r="164" b="0"/>
    <text-color g="238" r="238" b="236"/>
   </node>
-  <node w="200000" x="0" y="-224000" h="75000" index="2">
+  <node w="200000" x="0" y="-224000" h="75000" i="2">
    <text>Emily</text>
    <color g="255" r="255" b="255"/>
    <text-color g="0" r="0" b="0"/>
   </node>
-  <node w="200000" x="304000" y="-176000" h="75000" index="3">
+  <node w="200000" x="304000" y="-176000" h="75000" i="3">
    <text>Oliver</text>
    <color g="255" r="255" b="255"/>
    <text-color g="0" r="0" b="0"/>
   </node>
-  <node w="200000" x="336000" y="0" h="75000" index="4">
+  <node w="200000" x="336000" y="0" h="75000" i="4">
    <text>George</text>
    <color g="255" r="255" b="255"/>
    <text-color g="0" r="0" b="0"/>
   </node>
-  <node w="200000" x="0" y="176000" h="75000" index="5">
+  <node w="200000" x="0" y="176000" h="75000" i="5">
    <text>Jack</text>
    <color g="255" r="255" b="255"/>
    <text-color g="0" r="0" b="0"/>
   </node>
-  <node w="200000" x="-288000" y="160000" h="75000" index="6">
+  <node w="200000" x="-288000" y="160000" h="75000" i="6">
    <text>Jacob</text>
    <color g="255" r="255" b="255"/>
    <text-color g="0" r="0" b="0"/>
   </node>
-  <node w="200000" x="288000" y="144000" h="75000" index="7">
+  <node w="200000" x="288000" y="144000" h="75000" i="7">
    <text>Harry</text>
    <color g="255" r="255" b="255"/>
    <text-color g="0" r="0" b="0"/>
   </node>
-  <node w="200000" x="-352000" y="0" h="75000" index="8">
+  <node w="200000" x="-352000" y="0" h="75000" i="8">
    <text>Noah</text>
    <color g="255" r="255" b="255"/>
    <text-color g="0" r="0" b="0"/>
   </node>
-  <edge index0="0" index1="4" arrow-mode="0"/>
-  <edge index0="0" index1="1" arrow-mode="0"/>
-  <edge index0="0" index1="8" arrow-mode="0"/>
-  <edge index0="0" index1="2" arrow-mode="0">
+  <edge i0="0" i1="4" arrow-mode="0"/>
+  <edge i0="0" i1="1" arrow-mode="0"/>
+  <edge i0="0" i1="8" arrow-mode="0"/>
+  <edge i0="0" i1="2" arrow-mode="0">
    <text>HR</text>
   </edge>
-  <edge index0="0" index1="7" arrow-mode="0"/>
-  <edge index0="0" index1="5" arrow-mode="0"/>
-  <edge index0="0" index1="3" arrow-mode="0">
+  <edge i0="0" i1="7" arrow-mode="0"/>
+  <edge i0="0" i1="5" arrow-mode="0"/>
+  <edge i0="0" i1="3" arrow-mode="0">
    <text>CEO</text>
   </edge>
-  <edge index0="0" index1="6" arrow-mode="0"/>
+  <edge i0="0" i1="6" arrow-mode="0"/>
  </graph>
  <layout-optimizer min-edge-length="100000" aspect-ratio="1000"/>
 </heimer-mind-map>

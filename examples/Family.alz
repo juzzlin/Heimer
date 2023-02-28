@@ -9,91 +9,91 @@
  <text-size>14000</text-size>
  <corner-radius>5000</corner-radius>
  <graph>
-  <node w="200000" x="368000" y="288000" h="75000" index="12">
+  <node w="200000" x="368000" y="288000" h="75000" i="12">
    <text>Mrs. Friend</text>
    <color g="238" r="238" b="236"/>
    <text-color g="0" r="0" b="0"/>
   </node>
-  <node w="200000" x="48000" y="288000" h="75000" index="11">
+  <node w="200000" x="48000" y="288000" h="75000" i="11">
    <text>Friend</text>
    <color g="138" r="136" b="133"/>
    <text-color g="0" r="0" b="0"/>
   </node>
-  <node w="200000" x="-272000" y="288000" h="75000" index="10">
+  <node w="200000" x="-272000" y="288000" h="75000" i="10">
    <text>Friend</text>
    <color g="138" r="136" b="133"/>
    <text-color g="0" r="0" b="0"/>
   </node>
-  <node w="200000" x="640000" y="48000" h="75000" index="9">
+  <node w="200000" x="640000" y="48000" h="75000" i="9">
    <text>Friend</text>
    <color g="138" r="136" b="133"/>
    <text-color g="0" r="0" b="0"/>
   </node>
-  <node w="200000" x="-416000" y="96000" h="75000" index="8">
+  <node w="200000" x="-416000" y="96000" h="75000" i="8">
    <text>Her</text>
    <color g="207" r="234" b="207"/>
    <text-color g="0" r="0" b="0"/>
   </node>
-  <node w="200000" x="-144000" y="-336000" h="75000" index="7">
+  <node w="200000" x="-144000" y="-336000" h="75000" i="7">
    <text>Grandfather</text>
    <color g="0" r="0" b="0"/>
    <text-color g="138" r="136" b="133"/>
   </node>
-  <node w="200000" x="-512000" y="-256000" h="75000" index="6">
+  <node w="200000" x="-512000" y="-256000" h="75000" i="6">
    <text>Grandmother</text>
    <color g="175" r="252" b="62"/>
    <text-color g="207" r="234" b="207"/>
   </node>
-  <node w="200000" x="240000" y="-352000" h="75000" index="5">
+  <node w="200000" x="240000" y="-352000" h="75000" i="5">
    <text>Grandmother</text>
    <color g="0" r="0" b="0"/>
    <text-color g="207" r="234" b="207"/>
   </node>
-  <node w="200000" x="608000" y="-224000" h="75000" index="4">
+  <node w="200000" x="608000" y="-224000" h="75000" i="4">
    <text>Grandfather</text>
    <color g="0" r="0" b="0"/>
    <text-color g="138" r="136" b="133"/>
   </node>
-  <node w="200000" x="320000" y="48000" h="75000" index="3">
+  <node w="200000" x="320000" y="48000" h="75000" i="3">
    <text>Brother</text>
    <color g="74" r="32" b="135"/>
    <text-color g="0" r="0" b="0"/>
   </node>
-  <node w="200000" x="144000" y="-112000" h="75000" index="2">
+  <node w="200000" x="144000" y="-112000" h="75000" i="2">
    <text>Mother</text>
    <color g="212" r="237" b="0"/>
    <text-color g="0" r="0" b="0"/>
   </node>
-  <node w="200000" x="-256000" y="-112000" h="75000" index="1">
+  <node w="200000" x="-256000" y="-112000" h="75000" i="1">
    <text>Father</text>
    <color g="160" r="196" b="0"/>
    <text-color g="233" r="252" b="79"/>
   </node>
-  <node w="200000" x="0" y="48000" h="75000" index="0">
+  <node w="200000" x="0" y="48000" h="75000" i="0">
    <text>Me</text>
    <color g="226" r="138" b="52"/>
    <text-color g="238" r="238" b="236"/>
   </node>
-  <edge index0="11" index1="12" arrow-mode="0"/>
-  <edge index0="3" index1="9" arrow-mode="0"/>
-  <edge index0="2" index1="4" arrow-mode="0">
+  <edge i0="11" i1="12" arrow-mode="0"/>
+  <edge i0="3" i1="9" arrow-mode="0"/>
+  <edge i0="2" i1="5" arrow-mode="0">
    <text>Passed away</text>
   </edge>
-  <edge index0="2" index1="5" arrow-mode="0">
+  <edge i0="2" i1="4" arrow-mode="0">
    <text>Passed away</text>
   </edge>
-  <edge index0="1" index1="7" arrow-mode="0">
+  <edge i0="1" i1="7" arrow-mode="0">
    <text>Passed away</text>
   </edge>
-  <edge index0="1" index1="6" arrow-mode="0"/>
-  <edge index0="0" index1="10" arrow-mode="0"/>
-  <edge index0="0" index1="3" arrow-mode="0"/>
-  <edge index0="0" index1="2" arrow-mode="0"/>
-  <edge index0="0" index1="11" arrow-mode="0"/>
-  <edge index0="0" index1="8" arrow-mode="0">
+  <edge i0="1" i1="6" arrow-mode="0"/>
+  <edge i0="0" i1="10" arrow-mode="0"/>
+  <edge i0="0" i1="3" arrow-mode="0"/>
+  <edge i0="0" i1="2" arrow-mode="0"/>
+  <edge i0="0" i1="11" arrow-mode="0"/>
+  <edge i0="0" i1="8" arrow-mode="0">
    <text>LOVES</text>
   </edge>
-  <edge index0="0" index1="1" arrow-mode="0"/>
+  <edge i0="0" i1="1" arrow-mode="0"/>
  </graph>
  <layout-optimizer min-edge-length="100000" aspect-ratio="1000"/>
 </heimer-mind-map>

@@ -124,6 +124,13 @@ namespace Image {
 
 const auto REF = "ref";
 } // namespace Image
+
+namespace V2 {
+
+const auto INDEX = "i";
+
+}
+
 } // namespace Node
 
 const auto EDGE = "edge";
@@ -139,6 +146,14 @@ const auto INDEX0 = "index0";
 const auto INDEX1 = "index1";
 
 const auto REVERSED = "reversed";
+
+namespace V2 {
+
+const auto INDEX0 = "i0";
+
+const auto INDEX1 = "i1";
+
+} // namespace V2
 
 } // namespace Edge
 } // namespace Graph
@@ -184,30 +199,33 @@ static void writeImageRef(QDomElement & parent, QDomDocument & doc, size_t image
 static void writeNodes(MindMapDataS mindMapData, QDomElement & root, QDomDocument & doc)
 {
     for (auto && node : mindMapData->graph().getNodes()) {
-        auto nodeElement = doc.createElement(DataKeywords::MindMap::Graph::NODE);
-        nodeElement.setAttribute(DataKeywords::MindMap::Graph::Node::INDEX, node->index());
-        nodeElement.setAttribute(DataKeywords::MindMap::Graph::Node::X, static_cast<int>(node->location().x() * SCALE));
-        nodeElement.setAttribute(DataKeywords::MindMap::Graph::Node::Y, static_cast<int>(node->location().y() * SCALE));
-        nodeElement.setAttribute(DataKeywords::MindMap::Graph::Node::W, static_cast<int>(node->size().width() * SCALE));
-        nodeElement.setAttribute(DataKeywords::MindMap::Graph::Node::H, static_cast<int>(node->size().height() * SCALE));
+
+        using namespace DataKeywords::MindMap::Graph;
+
+        auto nodeElement = doc.createElement(NODE);
+        nodeElement.setAttribute(Node::V2::INDEX, node->index());
+        nodeElement.setAttribute(Node::X, static_cast<int>(node->location().x() * SCALE));
+        nodeElement.setAttribute(Node::Y, static_cast<int>(node->location().y() * SCALE));
+        nodeElement.setAttribute(Node::W, static_cast<int>(node->size().width() * SCALE));
+        nodeElement.setAttribute(Node::H, static_cast<int>(node->size().height() * SCALE));
         root.appendChild(nodeElement);
 
         // Create a child node for the text content
         if (!node->text().isEmpty()) {
-            auto textElement = doc.createElement(DataKeywords::MindMap::Graph::Node::TEXT);
+            auto textElement = doc.createElement(Node::TEXT);
             textElement.appendChild(doc.createTextNode(node->text()));
             nodeElement.appendChild(textElement);
         }
 
         // Create a child node for color
-        writeColor(nodeElement, doc, node->color(), DataKeywords::MindMap::Graph::Node::COLOR);
+        writeColor(nodeElement, doc, node->color(), Node::COLOR);
 
         // Create a child node for text color
-        writeColor(nodeElement, doc, node->textColor(), DataKeywords::MindMap::Graph::Node::TEXT_COLOR);
+        writeColor(nodeElement, doc, node->textColor(), Node::TEXT_COLOR);
 
         // Create a child node for image ref
         if (node->imageRef()) {
-            writeImageRef(nodeElement, doc, node->imageRef(), DataKeywords::MindMap::Graph::Node::IMAGE);
+            writeImageRef(nodeElement, doc, node->imageRef(), Node::IMAGE);
         }
     }
 }
@@ -216,21 +234,22 @@ static void writeEdges(MindMapDataS mindMapData, QDomElement & root, QDomDocumen
 {
     for (auto && node : mindMapData->graph().getNodes()) {
         for (auto && edge : mindMapData->graph().getEdgesFromNode(node)) {
-            auto edgeElement = doc.createElement(DataKeywords::MindMap::Graph::EDGE);
-            edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::ARROW_MODE, static_cast<int>(edge->arrowMode()));
+            using namespace DataKeywords::MindMap::Graph;
+            auto edgeElement = doc.createElement(EDGE);
+            edgeElement.setAttribute(Edge::ARROW_MODE, static_cast<int>(edge->arrowMode()));
             if (edge->dashedLine()) {
-                edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::DASHED_LINE, edge->dashedLine());
+                edgeElement.setAttribute(Edge::DASHED_LINE, edge->dashedLine());
             }
-            edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::INDEX0, edge->sourceNode().index());
-            edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::INDEX1, edge->targetNode().index());
+            edgeElement.setAttribute(Edge::V2::INDEX0, edge->sourceNode().index());
+            edgeElement.setAttribute(Edge::V2::INDEX1, edge->targetNode().index());
             if (edge->reversed()) {
-                edgeElement.setAttribute(DataKeywords::MindMap::Graph::Edge::REVERSED, edge->reversed());
+                edgeElement.setAttribute(Edge::REVERSED, edge->reversed());
             }
             root.appendChild(edgeElement);
 
             // Create a child node for the text content
             if (!edge->text().isEmpty()) {
-                auto textElement = doc.createElement(DataKeywords::MindMap::Graph::Node::TEXT);
+                auto textElement = doc.createElement(Node::TEXT);
                 edgeElement.appendChild(textElement);
                 const auto textNode = doc.createTextNode(edge->text());
                 textElement.appendChild(textNode);
@@ -358,33 +377,38 @@ static void readChildren(const QDomElement & root, std::map<QString, std::functi
     }
 }
 
-// The purpose of this #ifdef is to build GUILESS unit tests so that QTEST_GUILESS_MAIN can be used
 static NodeU readNode(const QDomElement & element)
 {
     // Init a new node. QGraphicsScene will take the ownership eventually.
+    using namespace DataKeywords::MindMap::Graph;
     auto node = std::make_unique<SceneItems::Node>();
-
-    node->setIndex(element.attribute(DataKeywords::MindMap::Graph::Node::INDEX, "-1").toInt());
-    node->setLocation(QPointF(
-      element.attribute(DataKeywords::MindMap::Graph::Node::X, "0").toInt() / SCALE,
-      element.attribute(DataKeywords::MindMap::Graph::Node::Y, "0").toInt() / SCALE));
-
-    if (element.hasAttribute(DataKeywords::MindMap::Graph::Node::W) && element.hasAttribute(DataKeywords::MindMap::Graph::Node::H)) {
-        node->setSize(QSizeF(
-          element.attribute(DataKeywords::MindMap::Graph::Node::W).toInt() / SCALE,
-          element.attribute(DataKeywords::MindMap::Graph::Node::H).toInt() / SCALE));
+    const auto noIndex = "-1";
+    if (element.hasAttribute(Node::V2::INDEX)) {
+        node->setIndex(element.attribute(Node::V2::INDEX, noIndex).toInt());
+    } else {
+        node->setIndex(element.attribute(Node::INDEX, noIndex).toInt());
     }
 
-    readChildren(element, { { QString(DataKeywords::MindMap::Graph::Node::TEXT), [&node](const QDomElement & e) {
+    node->setLocation(QPointF(
+      element.attribute(Node::X, "0").toInt() / SCALE,
+      element.attribute(Node::Y, "0").toInt() / SCALE));
+
+    if (element.hasAttribute(Node::W) && element.hasAttribute(Node::H)) {
+        node->setSize(QSizeF(
+          element.attribute(Node::W).toInt() / SCALE,
+          element.attribute(Node::H).toInt() / SCALE));
+    }
+
+    readChildren(element, { { QString(Node::TEXT), [&node](const QDomElement & e) {
                                  node->setText(readFirstTextNodeContent(e));
                              } },
-                            { QString(DataKeywords::MindMap::Graph::Node::COLOR), [&node](const QDomElement & e) {
+                            { QString(Node::COLOR), [&node](const QDomElement & e) {
                                  node->setColor(readColorElement(e));
                              } },
-                            { QString(DataKeywords::MindMap::Graph::Node::TEXT_COLOR), [&node](const QDomElement & e) {
+                            { QString(Node::TEXT_COLOR), [&node](const QDomElement & e) {
                                  node->setTextColor(readColorElement(e));
                              } },
-                            { QString(DataKeywords::MindMap::Graph::Node::IMAGE), [&node](const QDomElement & e) {
+                            { QString(Node::IMAGE), [&node](const QDomElement & e) {
                                  node->setImageRef(readImageElement(e));
                              } } });
 
@@ -393,11 +417,20 @@ static NodeU readNode(const QDomElement & element)
 
 static EdgeU readEdge(const QDomElement & element, Core::MindMapData & data)
 {
-    const int arrowMode = element.attribute(DataKeywords::MindMap::Graph::Edge::ARROW_MODE, "0").toInt();
-    const bool dashedLine = element.attribute(DataKeywords::MindMap::Graph::Edge::DASHED_LINE, "0").toInt();
-    const int index0 = element.attribute(DataKeywords::MindMap::Graph::Edge::INDEX0, "-1").toInt();
-    const int index1 = element.attribute(DataKeywords::MindMap::Graph::Edge::INDEX1, "-1").toInt();
-    const bool reversed = element.attribute(DataKeywords::MindMap::Graph::Edge::REVERSED, "0").toInt();
+    using namespace DataKeywords::MindMap::Graph;
+
+    const int arrowMode = element.attribute(Edge::ARROW_MODE, "0").toInt();
+    const bool dashedLine = element.attribute(Edge::DASHED_LINE, "0").toInt();
+
+    const auto noIndex = "-1";
+
+    const int index0 = element.hasAttribute(Edge::V2::INDEX0) ? element.attribute(Edge::V2::INDEX0, noIndex).toInt()
+                                                              : element.attribute(Edge::INDEX0, noIndex).toInt();
+
+    const int index1 = element.hasAttribute(Edge::V2::INDEX1) ? element.attribute(Edge::V2::INDEX1, noIndex).toInt()
+                                                              : element.attribute(Edge::INDEX1, noIndex).toInt();
+
+    const bool reversed = element.attribute(Edge::REVERSED, "0").toInt();
 
     // Initialize a new edge. QGraphicsScene will take the ownership eventually.
     auto edge = std::make_unique<SceneItems::Edge>(data.graph().getNode(index0), data.graph().getNode(index1));

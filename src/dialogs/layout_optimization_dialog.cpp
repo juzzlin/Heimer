@@ -77,6 +77,7 @@ void LayoutOptimizationDialog::initWidgets(MindMapDataCR mindMapData)
 
     const auto aspectRatioLayout = new QHBoxLayout;
     const auto imageWidthLabel = new QLabel(tr("Aspect Ratio:"));
+    imageWidthLabel->setToolTip(tr("Aspect ratio = layout width / layout height"));
     aspectRatioLayout->addWidget(imageWidthLabel);
     m_aspectRatioSpinBox = new QDoubleSpinBox;
     m_aspectRatioSpinBox->setMinimum(Constants::LayoutOptimizer::MIN_ASPECT_RATIO);
@@ -88,6 +89,7 @@ void LayoutOptimizationDialog::initWidgets(MindMapDataCR mindMapData)
 
     const auto minEdgeLengthLayout = new QHBoxLayout;
     const auto minEdgeLengthLabel = new QLabel(tr("Minimum Edge Length:"));
+    minEdgeLengthLabel->setToolTip(tr("Minimum edge length in the optimized layout"));
     minEdgeLengthLayout->addWidget(minEdgeLengthLabel);
     m_minEdgeLengthSpinBox = new QDoubleSpinBox;
     m_minEdgeLengthSpinBox->setMinimum(Constants::LayoutOptimizer::MIN_EDGE_LENGTH);

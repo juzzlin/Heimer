@@ -486,7 +486,6 @@ void Mediator::paste()
         saveUndoPoint();
         const auto node = createAndAddNode(m_editorView->grid().snapToGrid(mouseAction().mappedPos()));
         node->setText(QApplication::clipboard()->text());
-        QApplication::clipboard()->clear();
         m_editorData->clearCopyStack();
     } else if (!QApplication::clipboard()->image().isNull()) {
         saveUndoPoint();
@@ -497,7 +496,6 @@ void Mediator::paste()
         const Image image(QApplication::clipboard()->image(), "copy-pasted-image-data-" + std::to_string(ts) + ".png");
         const auto id = m_editorData->mindMapData()->imageManager().addImage(image);
         node->setImageRef(id);
-        QApplication::clipboard()->clear();
         m_editorData->clearCopyStack();
     } else { // Paste copied nodes
         if (m_editorData->copyStackSize()) {

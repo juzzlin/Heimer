@@ -107,6 +107,11 @@ void Graph::addEdge(EdgeS newEdge)
     }
 }
 
+size_t Graph::edgeCount() const
+{
+    return m_edges.size();
+}
+
 bool Graph::areDirectlyConnected(NodeS node0, NodeS node1) const
 {
     return areDirectlyConnected(node0->index(), node1->index());
@@ -117,7 +122,7 @@ bool Graph::areDirectlyConnected(int index0, int index1) const
     return m_edges.count(getKey(index0, index1)) || m_edges.count(getKey(index1, index0));
 }
 
-size_t Graph::numNodes() const
+size_t Graph::nodeCount() const
 {
     return m_nodes.size();
 }

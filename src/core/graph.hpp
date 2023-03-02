@@ -60,11 +60,13 @@ public:
     //! \returns The deleted edge.
     EdgeS deleteEdge(int index0, int index1);
 
+    size_t edgeCount() const;
+
     bool areDirectlyConnected(NodeS node0, NodeS node1) const;
 
     bool areDirectlyConnected(int index0, int index1) const;
 
-    size_t numNodes() const;
+    size_t nodeCount() const;
 
     EdgeS getEdge(int index0, int index1) const;
 

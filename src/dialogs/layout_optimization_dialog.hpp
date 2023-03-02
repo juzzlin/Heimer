@@ -20,6 +20,7 @@
 
 #include "../types.hpp"
 
+class EditorView;
 class LayoutOptimizer;
 class QDoubleSpinBox;
 class QProgressBar;
@@ -32,7 +33,7 @@ class LayoutOptimizationDialog : public QDialog
 
 public:
     //! Constructor.
-    explicit LayoutOptimizationDialog(QWidget & parent, MindMapDataR mindMapData, LayoutOptimizer & layoutOptimizer);
+    explicit LayoutOptimizationDialog(QWidget & parent, MindMapDataR mindMapData, LayoutOptimizer & layoutOptimizer, EditorView & editorView);
 
     int exec() override;
 
@@ -50,6 +51,8 @@ private:
     MindMapDataR m_mindMapData;
 
     LayoutOptimizer & m_layoutOptimizer;
+
+    EditorView & m_editorView;
 
     QDoubleSpinBox * m_aspectRatioSpinBox = nullptr;
 

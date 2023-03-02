@@ -470,7 +470,7 @@ void Application::showSvgExportDialog()
 void Application::showLayoutOptimizationDialog()
 {
     LayoutOptimizer layoutOptimizer { m_mediator->mindMapData(), m_editorView->grid() };
-    Dialogs::LayoutOptimizationDialog dialog { *m_mainWindow, *m_mediator->mindMapData(), layoutOptimizer };
+    Dialogs::LayoutOptimizationDialog dialog { *m_mainWindow, *m_mediator->mindMapData(), layoutOptimizer, *m_editorView };
     connect(&dialog, &Dialogs::LayoutOptimizationDialog::undoPointRequested, m_mediator.get(), &Mediator::saveUndoPoint);
 
     if (dialog.exec() == QDialog::Accepted) {

@@ -49,6 +49,8 @@ void GraphTest::testAddEdge()
     dut.addEdge(edge);
     dut.addEdge(edge); // Check that doubles are ignored
 
+    QCOMPARE(dut.edgeCount(), static_cast<size_t>(1));
+
     const auto edgesFrom0 = dut.getEdgesFromNode(node0);
     QCOMPARE(edgesFrom0.size(), static_cast<size_t>(1));
     QCOMPARE(edgesFrom0.at(0)->sourceNode().index(), node0->index());
@@ -71,7 +73,7 @@ void GraphTest::testAddNode()
 
     dut.addNode(node);
 
-    QCOMPARE(dut.numNodes(), static_cast<size_t>(1));
+    QCOMPARE(dut.nodeCount(), static_cast<size_t>(1));
     QCOMPARE(node->index(), 0); // Node index should be automatic
 
     node = make_shared<Node>();
@@ -79,14 +81,14 @@ void GraphTest::testAddNode()
 
     dut.addNode(node);
 
-    QCOMPARE(dut.numNodes(), static_cast<size_t>(2));
+    QCOMPARE(dut.nodeCount(), static_cast<size_t>(2));
     QCOMPARE(node->index(), 666); // Node index should be forced to 666
 
     node = make_shared<Node>();
 
     dut.addNode(node);
 
-    QCOMPARE(dut.numNodes(), static_cast<size_t>(3));
+    QCOMPARE(dut.nodeCount(), static_cast<size_t>(3));
     QCOMPARE(node->index(), 667); // Node index should be automatically 667
 }
 
@@ -97,12 +99,12 @@ void GraphTest::testAddTwoNodes()
     const auto node0 = make_shared<Node>();
     dut.addNode(node0);
 
-    QCOMPARE(dut.numNodes(), static_cast<size_t>(1));
+    QCOMPARE(dut.nodeCount(), static_cast<size_t>(1));
 
     const auto node1 = make_shared<Node>();
     dut.addNode(node1);
 
-    QCOMPARE(dut.numNodes(), static_cast<size_t>(2));
+    QCOMPARE(dut.nodeCount(), static_cast<size_t>(2));
     QCOMPARE(node0->index(), 0);
     QCOMPARE(node1->index(), 1);
 }
@@ -164,11 +166,11 @@ void GraphTest::testDeleteNode()
 
     dut.addNode(node);
 
-    QCOMPARE(dut.numNodes(), static_cast<size_t>(1));
+    QCOMPARE(dut.nodeCount(), static_cast<size_t>(1));
 
     dut.deleteNode(node->index());
 
-    QCOMPARE(dut.numNodes(), static_cast<size_t>(0));
+    QCOMPARE(dut.nodeCount(), static_cast<size_t>(0));
 }
 
 void GraphTest::testDeleteNodeInvolvingEdge()
@@ -181,7 +183,7 @@ void GraphTest::testDeleteNodeInvolvingEdge()
     const auto node1 = make_shared<Node>();
     dut.addNode(node1);
 
-    QCOMPARE(dut.numNodes(), static_cast<size_t>(2));
+    QCOMPARE(dut.nodeCount(), static_cast<size_t>(2));
 
     dut.addEdge(make_shared<Edge>(node0, node1));
 
@@ -191,7 +193,7 @@ void GraphTest::testDeleteNodeInvolvingEdge()
 
     dut.deleteNode(node0->index());
 
-    QCOMPARE(dut.numNodes(), static_cast<size_t>(1));
+    QCOMPARE(dut.nodeCount(), static_cast<size_t>(1));
 
     QCOMPARE(dut.getEdgesToNode(node1).size(), static_cast<size_t>(0));
 }

@@ -335,7 +335,7 @@ NodeS Mediator::getNodeByIndex(int index)
 
 bool Mediator::hasNodes() const
 {
-    return m_editorData->mindMapData() && m_editorData->mindMapData()->graph().numNodes();
+    return m_editorData->mindMapData() && m_editorData->mindMapData()->graph().nodeCount();
 }
 
 void Mediator::initializeNewMindMap()
@@ -471,7 +471,7 @@ MindMapDataS Mediator::mindMapData() const
 
 size_t Mediator::nodeCount() const
 {
-    return m_editorData->mindMapData() ? m_editorData->mindMapData()->graph().numNodes() : 0;
+    return m_editorData->mindMapData() ? m_editorData->mindMapData()->graph().nodeCount() : 0;
 }
 
 bool Mediator::nodeHasImageAttached() const

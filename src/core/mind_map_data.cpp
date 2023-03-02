@@ -308,6 +308,46 @@ void MindMapData::setVersion(const QString & version)
     m_version = version;
 }
 
+MindMapStats MindMapData::stats() const
+{
+    MindMapStats mms;
+
+    if (m_graph->edgeCount()) {
+
+        // Calculate average edge length
+        double averageEdgeLength = 0;
+        for (auto && edge : m_graph->getEdges()) {
+            averageEdgeLength += edge->length();
+        }
+        averageEdgeLength /= m_graph->edgeCount();
+        mms.averageEdgeLength = averageEdgeLength;
+
+        // Calculate minimum edge length
+        double minimumEdgeLength = m_graph->getEdges().at(0)->length();
+        for (auto && edge : m_graph->getEdges()) {
+            minimumEdgeLength = std::min(minimumEdgeLength, edge->length());
+        }
+        mms.minimumEdgeLength = minimumEdgeLength;
+
+        // Calculate maximum edge length
+        double maximumEdgeLength = m_graph->getEdges().at(0)->length();
+        for (auto && edge : m_graph->getEdges()) {
+            maximumEdgeLength = std::max(maximumEdgeLength, edge->length());
+        }
+        mms.maximumEdgeLength = maximumEdgeLength;
+    }
+
+    // Calculate layout aspect ratio
+    QRectF rect;
+    for (auto && node : m_graph->getNodes()) {
+        const auto nodeRect = node->placementBoundingRect();
+        rect = rect.united(nodeRect.translated(node->pos().x(), node->pos().y()));
+    }
+    mms.layoutAspectRatio = rect.width() / rect.height();
+
+    return mms;
+}
+
 MindMapData::~MindMapData() = default;
 
 } // namespace Core

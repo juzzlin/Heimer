@@ -228,19 +228,19 @@ void EditorDataTest::testUndoAddNodes()
     QCOMPARE(editorData.isModified(), true); // Currently saveUndoPoint() triggers isModified
 
     editorData.addNodeAt(QPointF(1, 1));
-    QCOMPARE(editorData.mindMapData()->graph().numNodes(), static_cast<size_t>(2));
+    QCOMPARE(editorData.mindMapData()->graph().nodeCount(), static_cast<size_t>(2));
 
     editorData.undo();
     QCOMPARE(editorData.isUndoable(), true);
-    QCOMPARE(editorData.mindMapData()->graph().numNodes(), static_cast<size_t>(1));
+    QCOMPARE(editorData.mindMapData()->graph().nodeCount(), static_cast<size_t>(1));
 
     editorData.undo();
     QCOMPARE(editorData.isUndoable(), false);
-    QCOMPARE(editorData.mindMapData()->graph().numNodes(), static_cast<size_t>(0));
+    QCOMPARE(editorData.mindMapData()->graph().nodeCount(), static_cast<size_t>(0));
 
     editorData.undo();
     QCOMPARE(editorData.isUndoable(), false);
-    QCOMPARE(editorData.mindMapData()->graph().numNodes(), static_cast<size_t>(0));
+    QCOMPARE(editorData.mindMapData()->graph().nodeCount(), static_cast<size_t>(0));
 }
 
 void EditorDataTest::testRedoAddNodes()
@@ -251,15 +251,15 @@ void EditorDataTest::testRedoAddNodes()
     editorData.addNodeAt(QPointF(0, 0));
     editorData.saveUndoPoint();
     editorData.addNodeAt(QPointF(1, 1));
-    QCOMPARE(editorData.mindMapData()->graph().numNodes(), static_cast<size_t>(2));
+    QCOMPARE(editorData.mindMapData()->graph().nodeCount(), static_cast<size_t>(2));
 
     editorData.undo();
     QCOMPARE(editorData.isUndoable(), false);
-    QCOMPARE(editorData.mindMapData()->graph().numNodes(), static_cast<size_t>(1));
+    QCOMPARE(editorData.mindMapData()->graph().nodeCount(), static_cast<size_t>(1));
 
     editorData.redo();
     QCOMPARE(editorData.isUndoable(), true);
-    QCOMPARE(editorData.mindMapData()->graph().numNodes(), static_cast<size_t>(2));
+    QCOMPARE(editorData.mindMapData()->graph().nodeCount(), static_cast<size_t>(2));
 }
 
 void EditorDataTest::testTextSearch()

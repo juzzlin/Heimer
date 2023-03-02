@@ -179,6 +179,11 @@ bool Edge::dashedLine() const
     return m_edgeModel->style.dashedLine;
 }
 
+double Edge::length() const
+{
+    return m_line->line().length();
+}
+
 void Edge::initDots()
 {
     if (m_enableAnimations) {

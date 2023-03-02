@@ -47,6 +47,7 @@ set(HEIMER_LIB_SRC
     core/hash_seed.cpp
     core/mind_map_data.cpp
     core/mind_map_data_base.cpp
+    core/mind_map_stats.hpp
     core/progress_manager.cpp
     core/settings.cpp
     core/settings_proxy.cpp

@@ -23,6 +23,7 @@
 
 #include "constants.hpp"
 #include "mind_map_data_base.hpp"
+#include "mind_map_stats.hpp"
 
 class Grid;
 class ImageManager;
@@ -99,6 +100,8 @@ public:
     QString version() const;
 
     void setVersion(const QString & version);
+
+    MindMapStats stats() const;
 
     ImageManager & imageManager();
 

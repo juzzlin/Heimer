@@ -347,7 +347,7 @@ void AlzFileIOTest::testSingleNode()
     outData->graph().addNode(outNode);
 
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
-    QVERIFY(inData->graph().numNodes() == 1);
+    QVERIFY(inData->graph().nodeCount() == 1);
 
     const auto node = inData->graph().getNode(0);
     QVERIFY(node != nullptr);

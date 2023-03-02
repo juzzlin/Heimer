@@ -250,7 +250,6 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
             m_mappedPos.y() > Node::lastHoveredNode()->pos().y() + hhd + Node::lastHoveredNode()->boundingRect().height() / 2 || //
             m_mappedPos.y() < Node::lastHoveredNode()->pos().y() - hhd - Node::lastHoveredNode()->boundingRect().height() / 2) {
             Node::lastHoveredNode()->setHandlesVisible(false);
-            Node::lastHoveredNode()->setTextInputActive(false);
         }
     }
 

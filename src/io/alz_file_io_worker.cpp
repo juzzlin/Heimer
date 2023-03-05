@@ -52,6 +52,14 @@ namespace DataKeywords::MindMap {
 
 const auto APPLICATION_VERSION = "version";
 
+namespace V2 {
+
+const auto APPLICATION_VERSION = "application-version";
+
+const auto ALZ_FORMAT_VERSION = "alz-format-version";
+
+} // namespace V2
+
 const auto ARROW_SIZE = "arrow-size";
 
 const auto COLOR = "color";
@@ -196,14 +204,14 @@ static void writeImageRef(QDomElement & parent, QDomDocument & doc, size_t image
     parent.appendChild(colorElement);
 }
 
-static void writeNodes(MindMapDataS mindMapData, QDomElement & root, QDomDocument & doc)
+static void writeNodes(MindMapDataS mindMapData, QDomElement & root, QDomDocument & doc, AlzFormatVersion outputVersion)
 {
     for (auto && node : mindMapData->graph().getNodes()) {
 
         using namespace DataKeywords::MindMap::Graph;
 
         auto nodeElement = doc.createElement(NODE);
-        nodeElement.setAttribute(Node::V2::INDEX, node->index());
+        nodeElement.setAttribute(outputVersion == AlzFormatVersion::V1 ? Node::INDEX : Node::V2::INDEX, node->index());
         nodeElement.setAttribute(Node::X, static_cast<int>(node->location().x() * SCALE));
         nodeElement.setAttribute(Node::Y, static_cast<int>(node->location().y() * SCALE));
         nodeElement.setAttribute(Node::W, static_cast<int>(node->size().width() * SCALE));
@@ -230,7 +238,7 @@ static void writeNodes(MindMapDataS mindMapData, QDomElement & root, QDomDocumen
     }
 }
 
-static void writeEdges(MindMapDataS mindMapData, QDomElement & root, QDomDocument & doc)
+static void writeEdges(MindMapDataS mindMapData, QDomElement & root, QDomDocument & doc, AlzFormatVersion outputVersion)
 {
     for (auto && node : mindMapData->graph().getNodes()) {
         for (auto && edge : mindMapData->graph().getEdgesFromNode(node)) {
@@ -240,8 +248,8 @@ static void writeEdges(MindMapDataS mindMapData, QDomElement & root, QDomDocumen
             if (edge->dashedLine()) {
                 edgeElement.setAttribute(Edge::DASHED_LINE, edge->dashedLine());
             }
-            edgeElement.setAttribute(Edge::V2::INDEX0, edge->sourceNode().index());
-            edgeElement.setAttribute(Edge::V2::INDEX1, edge->targetNode().index());
+            edgeElement.setAttribute(outputVersion == AlzFormatVersion::V1 ? Edge::INDEX0 : Edge::V2::INDEX0, edge->sourceNode().index());
+            edgeElement.setAttribute(outputVersion == AlzFormatVersion::V1 ? Edge::INDEX1 : Edge::V2::INDEX1, edge->targetNode().index());
             if (edge->reversed()) {
                 edgeElement.setAttribute(Edge::REVERSED, edge->reversed());
             }
@@ -470,11 +478,21 @@ static void readGraph(const QDomElement & graph, Core::MindMapData & data)
                         });
 }
 
+// Import always assumes the newest ALZ-format version, but it's backwards compatible
 MindMapDataU fromXml(QDomDocument document)
 {
-    const auto root = document.documentElement();
     auto data = std::make_unique<Core::MindMapData>();
-    data->setVersion(root.attribute(DataKeywords::MindMap::APPLICATION_VERSION, "UNDEFINED"));
+
+    const auto root = document.documentElement();
+    const auto undefinedVersion = "UNDEFINED";
+    data->setApplicationVersion(root.hasAttribute(DataKeywords::MindMap::V2::APPLICATION_VERSION) ? //
+                                  root.attribute(DataKeywords::MindMap::V2::APPLICATION_VERSION, undefinedVersion)
+                                                                                                  : //
+                                  root.attribute(DataKeywords::MindMap::APPLICATION_VERSION, undefinedVersion));
+
+    data->setAlzFormatVersion(
+      static_cast<IO::AlzFormatVersion>(
+        root.attribute(DataKeywords::MindMap::V2::ALZ_FORMAT_VERSION, "1").toInt()));
 
     readChildren(root, { { QString(DataKeywords::MindMap::GRAPH), [&data](const QDomElement & e) {
                               readGraph(e, *data);
@@ -525,14 +543,20 @@ MindMapDataU fromXml(QDomDocument document)
     return data;
 }
 
-QDomDocument toXml(MindMapDataS mindMapData)
+QDomDocument toXml(MindMapDataS mindMapData, AlzFormatVersion outputVersion)
 {
     QDomDocument doc;
 
     doc.appendChild(doc.createProcessingInstruction("xml", "version='1.0' encoding='UTF-8'"));
 
+    // Parse version attiributes
     auto root = doc.createElement(DataKeywords::MindMap::HEIMER_MIND_MAP);
-    root.setAttribute(DataKeywords::MindMap::APPLICATION_VERSION, Constants::Application::APPLICATION_VERSION);
+    if (outputVersion == AlzFormatVersion::V1) {
+        root.setAttribute(DataKeywords::MindMap::APPLICATION_VERSION, Constants::Application::APPLICATION_VERSION);
+    } else {
+        root.setAttribute(DataKeywords::MindMap::V2::APPLICATION_VERSION, Constants::Application::APPLICATION_VERSION);
+        root.setAttribute(DataKeywords::MindMap::V2::ALZ_FORMAT_VERSION, static_cast<int>(Constants::Application::ALZ_FORMAT_VERSION));
+    }
     doc.appendChild(root);
 
     writeColor(root, doc, mindMapData->backgroundColor(), DataKeywords::MindMap::COLOR);
@@ -570,15 +594,20 @@ QDomDocument toXml(MindMapDataS mindMapData)
     auto graph = doc.createElement(DataKeywords::MindMap::GRAPH);
     root.appendChild(graph);
 
-    writeNodes(mindMapData, graph, doc);
+    writeNodes(mindMapData, graph, doc, outputVersion);
 
-    writeEdges(mindMapData, graph, doc);
+    writeEdges(mindMapData, graph, doc, outputVersion);
 
     writeImages(mindMapData, root, doc);
 
     writeLayoutOptimizer(mindMapData, root, doc);
 
     return doc;
+}
+
+AlzFileIOWorker::AlzFileIOWorker(AlzFormatVersion outputVersion)
+  : m_outputVersion(outputVersion)
+{
 }
 
 AlzFileIOWorker::~AlzFileIOWorker() = default;
@@ -590,7 +619,7 @@ MindMapDataU AlzFileIOWorker::fromFile(QString path) const
 
 bool AlzFileIOWorker::toFile(MindMapDataS mindMapData, QString path) const
 {
-    return XmlWriter::writeToFile(IO::toXml(mindMapData), path);
+    return XmlWriter::writeToFile(IO::toXml(mindMapData, m_outputVersion), path);
 }
 
 MindMapDataU AlzFileIOWorker::fromXml(QString xml) const
@@ -603,7 +632,7 @@ MindMapDataU AlzFileIOWorker::fromXml(QString xml) const
 
 QString AlzFileIOWorker::toXml(MindMapDataS mindMapData) const
 {
-    return IO::toXml(mindMapData).toString();
+    return IO::toXml(mindMapData, m_outputVersion).toString();
 }
 
 } // namespace IO

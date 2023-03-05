@@ -25,6 +25,8 @@
 #include "mind_map_data_base.hpp"
 #include "mind_map_stats.hpp"
 
+#include "io/alz_file_io_version.hpp"
+
 class Grid;
 class ImageManager;
 class ObjectModelLoader;
@@ -97,9 +99,13 @@ public:
 
     void setTextSize(int textSize);
 
-    QString version() const;
+    QString applicationVersion() const;
 
-    void setVersion(const QString & version);
+    void setApplicationVersion(const QString & applicationVersion);
+
+    std::optional<IO::AlzFormatVersion> alzFormatVersion() const;
+
+    void setAlzFormatVersion(IO::AlzFormatVersion alzFormatVersion);
 
     MindMapStats stats() const;
 
@@ -119,7 +125,9 @@ private:
 
     QString m_fileName;
 
-    QString m_version;
+    QString m_applicationVersion;
+
+    std::optional<IO::AlzFormatVersion> m_alzFormatVersion;
 
     struct Style;
     std::unique_ptr<Style> m_style;

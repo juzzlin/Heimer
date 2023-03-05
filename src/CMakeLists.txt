@@ -76,6 +76,7 @@ set(HEIMER_LIB_SRC
     dialogs/widget_factory.cpp
 
     io/alz_file_io.cpp
+    io/alz_file_io_version.hpp
     io/alz_file_io_worker.cpp
     io/file_exception.hpp
     io/file_io.hpp

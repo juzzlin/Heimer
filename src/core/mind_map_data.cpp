@@ -68,7 +68,7 @@ MindMapData::MindMapData(QString name)
 MindMapData::MindMapData(const MindMapData & other)
   : MindMapDataBase(other)
   , m_fileName(other.m_fileName)
-  , m_version(other.m_version)
+  , m_applicationVersion(other.m_applicationVersion)
   , m_style(std::make_unique<Style>(*other.m_style))
   , m_graph(std::make_unique<Graph>())
   , m_imageManager(std::make_unique<ImageManager>(*other.m_imageManager))
@@ -90,6 +90,26 @@ void MindMapData::copyGraph(const MindMapData & other)
     for (auto && otherEdge : other.m_graph->getEdges()) {
         m_graph->addEdge(std::make_unique<SceneItems::Edge>(*otherEdge, *m_graph));
     }
+}
+
+std::optional<IO::AlzFormatVersion> MindMapData::alzFormatVersion() const
+{
+    return m_alzFormatVersion;
+}
+
+void MindMapData::setAlzFormatVersion(IO::AlzFormatVersion alzFormatVersion)
+{
+    m_alzFormatVersion = alzFormatVersion;
+}
+
+QString MindMapData::applicationVersion() const
+{
+    return m_applicationVersion;
+}
+
+void MindMapData::setApplicationVersion(const QString & version)
+{
+    m_applicationVersion = version;
 }
 
 void MindMapData::applyGrid(const Grid & grid)
@@ -296,16 +316,6 @@ void MindMapData::setTextSize(int textSize)
     for (auto && node : m_graph->getNodes()) {
         node->setTextSize(textSize);
     }
-}
-
-QString MindMapData::version() const
-{
-    return m_version;
-}
-
-void MindMapData::setVersion(const QString & version)
-{
-    m_version = version;
 }
 
 MindMapStats MindMapData::stats() const

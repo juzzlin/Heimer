@@ -78,6 +78,14 @@ private slots:
     void testTextSize();
 
     void testUsedImages();
+
+    void testV1SingleEdge();
+
+    void testV1SingleNode();
+
+    void testV1Version();
+
+    void testV2Version();
 };
 
 #endif // ALZ_FILE_IO_TEST_HPP

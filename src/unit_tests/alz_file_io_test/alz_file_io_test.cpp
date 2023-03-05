@@ -21,6 +21,7 @@
 #include "../../core/test_mode.hpp"
 
 #include "../../io/alz_file_io.hpp"
+#include "../../io/alz_file_io_version.hpp"
 #include "../../io/xml_reader.hpp"
 #include "../../io/xml_writer.hpp"
 
@@ -42,7 +43,7 @@ void AlzFileIOTest::testEmptyDesign()
 {
     const auto outData = std::make_shared<MindMapData>();
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
-    QCOMPARE(QString(inData->version()), QString(VERSION));
+    QCOMPARE(QString(inData->applicationVersion()), QString(VERSION));
 }
 
 void AlzFileIOTest::testArrowSize()
@@ -212,7 +213,7 @@ void AlzFileIOTest::testLoadJpg()
       "  </node>"
       " </graph>"
       " <image path=\"test.jpg\" id=\"1\">/9j/4AAQSkZJRgABAQEASABIAAD//gAgRGVzY3JpcHRpb246IENyZWF0ZWQgd2l0aCBHSU1Q/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8AAEQgABAAEAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/aAAwDAQACEQMRAD8A9/ooooA//9k=</image>"
-      " </heimer-mind-map>";
+      "</heimer-mind-map>";
     const auto inData = IO::AlzFileIO().fromXml(xml);
     QCOMPARE(inData->imageManager().images().size(), size_t { 1 });
     const auto image = inData->imageManager().getImage(1);
@@ -234,7 +235,7 @@ void AlzFileIOTest::testLoadPng()
       "  </node>"
       " </graph>"
       " <image path=\"test.png\" id=\"1\">iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAIAAAAmkwkpAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAABRJREFUCJlj/P//PwMMMDEgAdwcAJZuAwUDbWh7AAAAAElFTkSuQmCC</image>"
-      " </heimer-mind-map>";
+      "</heimer-mind-map>";
     const auto inData = IO::AlzFileIO().fromXml(xml);
     QCOMPARE(inData->imageManager().images().size(), size_t { 1 });
     const auto image = inData->imageManager().getImage(1);
@@ -326,10 +327,10 @@ void AlzFileIOTest::testSingleEdge()
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     const auto edges = inData->graph().getEdgesFromNode(outNode0);
     QCOMPARE(edges.size(), static_cast<size_t>(1));
-    QCOMPARE((*edges.begin())->arrowMode(), edge->arrowMode());
-    QCOMPARE((*edges.begin())->dashedLine(), edge->dashedLine());
-    QCOMPARE((*edges.begin())->reversed(), edge->reversed());
-    QCOMPARE((*edges.begin())->text(), edge->text());
+    QCOMPARE(edges.at(0)->arrowMode(), edge->arrowMode());
+    QCOMPARE(edges.at(0)->dashedLine(), edge->dashedLine());
+    QCOMPARE(edges.at(0)->reversed(), edge->reversed());
+    QCOMPARE(edges.at(0)->text(), edge->text());
 }
 
 void AlzFileIOTest::testSingleNode()
@@ -358,6 +359,61 @@ void AlzFileIOTest::testSingleNode()
     QCOMPARE(node->size(), outNode->size());
     QCOMPARE(node->text(), outNode->text());
     QCOMPARE(node->textColor(), outNode->textColor());
+}
+
+void AlzFileIOTest::testV1SingleEdge()
+{
+    const auto outData = std::make_shared<MindMapData>();
+    const auto outNode0 = std::make_shared<Node>();
+    outData->graph().addNode(outNode0);
+    const auto outNode1 = std::make_shared<Node>();
+    outData->graph().addNode(outNode1);
+
+    const auto edge = std::make_shared<Edge>(outNode0, outNode1);
+    outData->graph().addEdge(edge);
+
+    // Only the index attributes have changed in V1 => V2
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO(IO::AlzFormatVersion::V1).toXml(outData));
+    QVERIFY(inData->alzFormatVersion() == IO::AlzFormatVersion::V1);
+    const auto edges = inData->graph().getEdgesFromNode(outNode0);
+    QCOMPARE(edges.size(), static_cast<size_t>(1));
+    QCOMPARE(edges.at(0)->sourceNode().index(), outNode0->index());
+    QCOMPARE(edges.at(0)->targetNode().index(), outNode1->index());
+}
+
+void AlzFileIOTest::testV1SingleNode()
+{
+    const auto outData = std::make_shared<MindMapData>();
+
+    const auto outNode = std::make_shared<Node>();
+    outData->graph().addNode(outNode);
+
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO(IO::AlzFormatVersion::V1).toXml(outData));
+    QVERIFY(inData->alzFormatVersion() == IO::AlzFormatVersion::V1);
+    QVERIFY(inData->graph().nodeCount() == 1);
+
+    // Only the index attribute has changed in V1 => V2
+    const auto node = inData->graph().getNode(0);
+    QVERIFY(node != nullptr);
+    QCOMPARE(node->index(), outNode->index());
+}
+
+void AlzFileIOTest::testV1Version()
+{
+    const auto outData = std::make_shared<MindMapData>();
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO(IO::AlzFormatVersion::V1).toXml(outData));
+
+    QVERIFY(inData->applicationVersion() == Constants::Application::APPLICATION_VERSION);
+    QVERIFY(inData->alzFormatVersion() == IO::AlzFormatVersion::V1);
+}
+
+void AlzFileIOTest::testV2Version()
+{
+    const auto outData = std::make_shared<MindMapData>();
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
+
+    QVERIFY(inData->applicationVersion() == Constants::Application::APPLICATION_VERSION);
+    QVERIFY(inData->alzFormatVersion() == Constants::Application::ALZ_FORMAT_VERSION);
 }
 
 QTEST_GUILESS_MAIN(AlzFileIOTest)

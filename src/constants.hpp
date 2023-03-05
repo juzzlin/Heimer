@@ -19,6 +19,8 @@
 #include <QColor>
 #include <QVector>
 
+#include "io/alz_file_io_version.hpp"
+
 namespace Constants {
 
 namespace Application {
@@ -32,6 +34,8 @@ static constexpr auto APPLICATION_PACKAGE_TYPE = PACKAGE_TYPE;
 #endif
 
 static constexpr auto APPLICATION_VERSION = VERSION;
+
+static constexpr auto ALZ_FORMAT_VERSION = IO::AlzFormatVersion::V2;
 
 static constexpr auto COPYRIGHT = "Copyright (c) 2018-2023 Jussi Lind";
 

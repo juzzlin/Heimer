@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2022 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2023 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,43 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef ALZ_FILE_IO_WORKER_HPP
-#define ALZ_FILE_IO_WORKER_HPP
-
-#include <QObject>
-#include <QString>
-
-#include <memory>
-
-#include "alz_file_io_version.hpp"
-
-#include "../types.hpp"
+#ifndef ALZ_FILE_IO_VERSION_HPP
+#define ALZ_FILE_IO_VERSION_HPP
 
 namespace IO {
 
-class AlzFileIOWorker : public QObject
+enum class AlzFormatVersion
 {
-    Q_OBJECT
-
-public:
-    explicit AlzFileIOWorker(AlzFormatVersion outputVersion);
-
-    ~AlzFileIOWorker();
-
-public slots:
-
-    MindMapDataU fromFile(QString path) const;
-
-    bool toFile(MindMapDataS mindMapData, QString path) const;
-
-    MindMapDataU fromXml(QString xml) const;
-
-    QString toXml(MindMapDataS mindMapData) const;
-
-private:
-    AlzFormatVersion m_outputVersion;
+    V1 = 1,
+    V2 = 2
 };
 
 } // namespace IO
 
-#endif // ALZ_FILE_IO_WORKER_HPP
+#endif // ALZ_FILE_IO_VERSION_HPP

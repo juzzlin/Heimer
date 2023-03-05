@@ -16,6 +16,7 @@
 #ifndef ALZ_FILE_IO_HPP
 #define ALZ_FILE_IO_HPP
 
+#include "alz_file_io_version.hpp"
 #include "file_io.hpp"
 #include "types.hpp"
 
@@ -30,7 +31,7 @@ class AlzFileIOWorker;
 class AlzFileIO : public FileIO
 {
 public:
-    AlzFileIO();
+    explicit AlzFileIO(AlzFormatVersion outputVersion = AlzFormatVersion::V2);
 
     ~AlzFileIO();
 

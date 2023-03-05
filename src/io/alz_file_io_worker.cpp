@@ -398,11 +398,15 @@ static void writeLayoutOptimizer(MindMapDataS mindMapData, QDomElement & root, Q
     root.appendChild(layoutOptimizerElement);
 }
 
-static void writeMetadata(MindMapDataS mindMapData, QDomElement & root, QDomDocument & doc)
+static void writeMetadata(MindMapDataS mindMapData, QDomElement & root, QDomDocument & doc, AlzFormatVersion outputVersion)
 {
-    auto metadataElement = doc.createElement(DataKeywords::MindMap::V2::Metadata::METADATA);
-    writeLayoutOptimizer(mindMapData, metadataElement, doc);
-    root.appendChild(metadataElement);
+    if (outputVersion == AlzFormatVersion::V1) {
+        writeLayoutOptimizer(mindMapData, root, doc);
+    } else {
+        auto metadataElement = doc.createElement(DataKeywords::MindMap::V2::Metadata::METADATA);
+        writeLayoutOptimizer(mindMapData, metadataElement, doc);
+        root.appendChild(metadataElement);
+    }
 }
 
 static QColor readColorElement(const QDomElement & element)
@@ -637,11 +641,7 @@ QDomDocument toXml(MindMapDataS mindMapData, AlzFormatVersion outputVersion)
 
     writeImages(mindMapData, root, doc);
 
-    if (outputVersion == AlzFormatVersion::V1) {
-        writeLayoutOptimizer(mindMapData, root, doc);
-    } else {
-        writeMetadata(mindMapData, root, doc);
-    }
+    writeMetadata(mindMapData, root, doc, outputVersion);
 
     return doc;
 }

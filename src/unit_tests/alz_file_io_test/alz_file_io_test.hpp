@@ -79,6 +79,8 @@ private slots:
 
     void testUsedImages();
 
+    void testV1LayoutOptimizer();
+
     void testV1SingleEdge();
 
     void testV1SingleNode();

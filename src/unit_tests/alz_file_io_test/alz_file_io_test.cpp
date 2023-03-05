@@ -361,6 +361,17 @@ void AlzFileIOTest::testSingleNode()
     QCOMPARE(node->textColor(), outNode->textColor());
 }
 
+void AlzFileIOTest::testV1LayoutOptimizer()
+{
+    const auto outData = std::make_shared<MindMapData>();
+    outData->setAspectRatio(3.14);
+    outData->setMinEdgeLength(42.666);
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO(IO::AlzFormatVersion::V1).toXml(outData));
+    QVERIFY(inData->alzFormatVersion() == IO::AlzFormatVersion::V1);
+    QCOMPARE(inData->aspectRatio(), outData->aspectRatio());
+    QCOMPARE(inData->minEdgeLength(), outData->minEdgeLength());
+}
+
 void AlzFileIOTest::testV1SingleEdge()
 {
     const auto outData = std::make_shared<MindMapData>();

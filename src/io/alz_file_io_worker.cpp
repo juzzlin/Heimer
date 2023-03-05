@@ -58,6 +58,12 @@ const auto APPLICATION_VERSION = "application-version";
 
 const auto ALZ_FORMAT_VERSION = "alz-format-version";
 
+namespace Metadata {
+
+const auto METADATA = "metadata";
+
+}
+
 } // namespace V2
 
 const auto ARROW_SIZE = "arrow-size";
@@ -174,6 +180,7 @@ const auto PATH = "path";
 
 } // namespace Image
 
+// Note!!: Moved into metadata element in V2
 namespace LayoutOptimizer {
 
 const auto ASPECT_RATIO = "aspect-ratio";
@@ -335,6 +342,13 @@ static void writeLayoutOptimizer(MindMapDataS mindMapData, QDomElement & root, Q
     root.appendChild(layoutOptimizerElement);
 }
 
+static void writeMetadata(MindMapDataS mindMapData, QDomElement & root, QDomDocument & doc)
+{
+    auto metadataElement = doc.createElement(DataKeywords::MindMap::V2::Metadata::METADATA);
+    writeLayoutOptimizer(mindMapData, metadataElement, doc);
+    root.appendChild(metadataElement);
+}
+
 static QColor readColorElement(const QDomElement & element)
 {
     return {
@@ -466,6 +480,13 @@ static void readLayoutOptimizer(const QDomElement & element, Core::MindMapData &
     data.setMinEdgeLength(minEdgeLength);
 }
 
+static void readMetadata(const QDomElement & element, Core::MindMapData & data)
+{
+    readChildren(element, { { QString(DataKeywords::MindMap::LayoutOptimizer::LAYOUT_OPTIMIZER), [&](const QDomElement & e) {
+                                 readLayoutOptimizer(e, data);
+                             } } });
+}
+
 static void readGraph(const QDomElement & graph, Core::MindMapData & data)
 {
     readChildren(graph, {
@@ -538,6 +559,9 @@ MindMapDataU fromXml(QDomDocument document)
                           } },
                          { QString(DataKeywords::MindMap::LayoutOptimizer::LAYOUT_OPTIMIZER), [&data](const QDomElement & e) {
                               readLayoutOptimizer(e, *data);
+                          } },
+                         { QString(DataKeywords::MindMap::V2::Metadata::METADATA), [&data](const QDomElement & e) {
+                              readMetadata(e, *data);
                           } } });
 
     return data;
@@ -600,7 +624,11 @@ QDomDocument toXml(MindMapDataS mindMapData, AlzFormatVersion outputVersion)
 
     writeImages(mindMapData, root, doc);
 
-    writeLayoutOptimizer(mindMapData, root, doc);
+    if (outputVersion == AlzFormatVersion::V1) {
+        writeLayoutOptimizer(mindMapData, root, doc);
+    } else {
+        writeMetadata(mindMapData, root, doc);
+    }
 
     return doc;
 }

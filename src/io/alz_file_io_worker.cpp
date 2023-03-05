@@ -62,7 +62,13 @@ namespace Metadata {
 
 const auto METADATA = "metadata";
 
-}
+} // namespace Metadata
+
+namespace Style {
+
+const auto STYLE = "style";
+
+} // namespace Style
 
 } // namespace V2
 
@@ -283,39 +289,49 @@ static void writeGraph(MindMapDataS mindMapData, QDomElement & root, QDomDocumen
     writeEdges(mindMapData, graph, doc, outputVersion);
 }
 
-static void writeStyle(MindMapDataS mindMapData, QDomElement & root, QDomDocument & doc)
+static void writeStyle(MindMapDataS mindMapData, QDomElement & root, QDomDocument & doc, AlzFormatVersion outputVersion)
 {
-    writeColor(root, doc, mindMapData->backgroundColor(), DataKeywords::MindMap::COLOR);
+    const auto doWriteStyle = [](MindMapDataS mindMapData, QDomElement & root, QDomDocument & doc) {
+        writeColor(root, doc, mindMapData->backgroundColor(), DataKeywords::MindMap::COLOR);
 
-    writeColor(root, doc, mindMapData->edgeColor(), DataKeywords::MindMap::EDGE_COLOR);
+        writeColor(root, doc, mindMapData->edgeColor(), DataKeywords::MindMap::EDGE_COLOR);
 
-    writeColor(root, doc, mindMapData->gridColor(), DataKeywords::MindMap::GRID_COLOR);
+        writeColor(root, doc, mindMapData->gridColor(), DataKeywords::MindMap::GRID_COLOR);
 
-    auto arrowSizeElement = doc.createElement(DataKeywords::MindMap::ARROW_SIZE);
-    arrowSizeElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData->arrowSize() * SCALE))));
-    root.appendChild(arrowSizeElement);
+        auto arrowSizeElement = doc.createElement(DataKeywords::MindMap::ARROW_SIZE);
+        arrowSizeElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData->arrowSize() * SCALE))));
+        root.appendChild(arrowSizeElement);
 
-    auto edgeWidthElement = doc.createElement(DataKeywords::MindMap::EDGE_THICKNESS);
-    edgeWidthElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData->edgeWidth() * SCALE))));
-    root.appendChild(edgeWidthElement);
+        auto edgeWidthElement = doc.createElement(DataKeywords::MindMap::EDGE_THICKNESS);
+        edgeWidthElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData->edgeWidth() * SCALE))));
+        root.appendChild(edgeWidthElement);
 
-    auto fontFamilyElement = doc.createElement(DataKeywords::MindMap::FONT_FAMILY);
-    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_BOLD, mindMapData->font().bold());
-    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_ITALIC, mindMapData->font().italic());
-    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_OVERLINE, mindMapData->font().overline());
-    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_STRIKE_OUT, mindMapData->font().strikeOut());
-    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_UNDERLINE, mindMapData->font().underline());
-    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_WEIGHT, mindMapData->font().weight());
-    fontFamilyElement.appendChild(doc.createTextNode(mindMapData->font().family()));
-    root.appendChild(fontFamilyElement);
+        auto fontFamilyElement = doc.createElement(DataKeywords::MindMap::FONT_FAMILY);
+        fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_BOLD, mindMapData->font().bold());
+        fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_ITALIC, mindMapData->font().italic());
+        fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_OVERLINE, mindMapData->font().overline());
+        fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_STRIKE_OUT, mindMapData->font().strikeOut());
+        fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_UNDERLINE, mindMapData->font().underline());
+        fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_WEIGHT, mindMapData->font().weight());
+        fontFamilyElement.appendChild(doc.createTextNode(mindMapData->font().family()));
+        root.appendChild(fontFamilyElement);
 
-    auto textSizeElement = doc.createElement(DataKeywords::MindMap::TEXT_SIZE);
-    textSizeElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData->textSize() * SCALE))));
-    root.appendChild(textSizeElement);
+        auto textSizeElement = doc.createElement(DataKeywords::MindMap::TEXT_SIZE);
+        textSizeElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData->textSize() * SCALE))));
+        root.appendChild(textSizeElement);
 
-    auto cornerRadiusElement = doc.createElement(DataKeywords::MindMap::CORNER_RADIUS);
-    cornerRadiusElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData->cornerRadius() * SCALE))));
-    root.appendChild(cornerRadiusElement);
+        auto cornerRadiusElement = doc.createElement(DataKeywords::MindMap::CORNER_RADIUS);
+        cornerRadiusElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData->cornerRadius() * SCALE))));
+        root.appendChild(cornerRadiusElement);
+    };
+
+    if (outputVersion == AlzFormatVersion::V1) {
+        doWriteStyle(mindMapData, root, doc);
+    } else {
+        auto styleElement = doc.createElement(DataKeywords::MindMap::V2::Style::STYLE);
+        doWriteStyle(mindMapData, styleElement, doc);
+        root.appendChild(styleElement);
+    }
 }
 
 static void writeVersion(QDomElement & root, QDomDocument & doc, AlzFormatVersion outputVersion)
@@ -547,6 +563,42 @@ static void readMetadata(const QDomElement & element, Core::MindMapData & data)
                              } } });
 }
 
+static void readStyle(const QDomElement & element, Core::MindMapData & data)
+{
+    readChildren(element, { { QString(DataKeywords::MindMap::ARROW_SIZE), [&data](const QDomElement & e) {
+                                 data.setArrowSize(readFirstTextNodeContent(e).toDouble() / SCALE);
+                             } },
+                            { QString(DataKeywords::MindMap::COLOR), [&data](const QDomElement & e) {
+                                 data.setBackgroundColor(readColorElement(e));
+                             } },
+                            { QString(DataKeywords::MindMap::EDGE_COLOR), [&data](const QDomElement & e) {
+                                 data.setEdgeColor(readColorElement(e));
+                             } },
+                            { QString(DataKeywords::MindMap::FONT_FAMILY), [&data](const QDomElement & e) {
+                                 QFont font;
+                                 font.setFamily(readFirstTextNodeContent(e));
+                                 font.setBold(e.attribute(DataKeywords::MindMap::FONT_BOLD).toInt());
+                                 font.setItalic(e.attribute(DataKeywords::MindMap::FONT_ITALIC).toUInt());
+                                 font.setOverline(e.attribute(DataKeywords::MindMap::FONT_OVERLINE).toInt());
+                                 font.setUnderline(e.attribute(DataKeywords::MindMap::FONT_UNDERLINE).toInt());
+                                 font.setStrikeOut(e.attribute(DataKeywords::MindMap::FONT_STRIKE_OUT).toInt());
+                                 font.setWeight(e.attribute(DataKeywords::MindMap::FONT_WEIGHT).toInt());
+                                 data.changeFont(font);
+                             } },
+                            { QString(DataKeywords::MindMap::GRID_COLOR), [&data](const QDomElement & e) {
+                                 data.setGridColor(readColorElement(e));
+                             } },
+                            { QString(DataKeywords::MindMap::EDGE_THICKNESS), [&data](const QDomElement & e) {
+                                 data.setEdgeWidth(readFirstTextNodeContent(e).toDouble() / SCALE);
+                             } },
+                            { QString(DataKeywords::MindMap::TEXT_SIZE), [&data](const QDomElement & e) {
+                                 data.setTextSize(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
+                             } },
+                            { QString(DataKeywords::MindMap::CORNER_RADIUS), [&data](const QDomElement & e) {
+                                 data.setCornerRadius(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
+                             } } });
+}
+
 static void readGraph(const QDomElement & graph, Core::MindMapData & data)
 {
     readChildren(graph, {
@@ -622,6 +674,9 @@ MindMapDataU fromXml(QDomDocument document)
                           } },
                          { QString(DataKeywords::MindMap::V2::Metadata::METADATA), [&data](const QDomElement & e) {
                               readMetadata(e, *data);
+                          } },
+                         { QString(DataKeywords::MindMap::V2::Style::STYLE), [&data](const QDomElement & e) {
+                              readStyle(e, *data);
                           } } });
 
     return data;
@@ -635,7 +690,7 @@ QDomDocument toXml(MindMapDataS mindMapData, AlzFormatVersion outputVersion)
 
     writeVersion(root, doc, outputVersion);
 
-    writeStyle(mindMapData, root, doc);
+    writeStyle(mindMapData, root, doc, outputVersion);
 
     writeGraph(mindMapData, root, doc, outputVersion);
 

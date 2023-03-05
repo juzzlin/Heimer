@@ -29,39 +29,47 @@ private slots:
 
     void testEmptyDesign();
 
-    void testArrowSize();
+    void testStyle_ArrowSize();
 
-    void testBackgroundColor();
+    void testStyle_BackgroundColor();
 
-    void testCornerRadius();
+    void testStyle_CornerRadius();
 
-    void testEdgeColor();
+    void testStyle_EdgeColor();
 
-    void testEdgeWidth();
+    void testStyle_EdgeWidth();
 
-    void testFontItalic();
+    void testStyle_FontItalic();
 
-    void testFontNonItalic();
+    void testStyle_FontNonItalic();
 
-    void testFontBold();
+    void testStyle_FontBold();
 
-    void testFontNonBold();
+    void testStyle_FontNonBold();
 
-    void testFontOverline();
+    void testStyle_FontOverline();
 
-    void testFontNonOverline();
+    void testStyle_FontNonOverline();
 
-    void testFontStrikeOut();
+    void testStyle_FontStrikeOut();
 
-    void testFontNonStrikeOut();
+    void testStyle_FontNonStrikeOut();
 
-    void testFontUnderline();
+    void testStyle_FontUnderline();
 
-    void testFontNonUnderline();
+    void testStyle_FontNonUnderline();
 
-    void testGridColor();
+    void testStyle_GridColor();
 
-    void testLayoutOptimizer();
+    void testStyle_TextSize();
+
+    void testMetadata_LayoutOptimizer();
+
+    void testGraph_NodeDeletion();
+
+    void testGraph_SingleEdge();
+
+    void testGraph_SingleNode();
 
     void testLoadJpg();
 
@@ -69,25 +77,51 @@ private slots:
 
     void testNotUsedImages();
 
-    void testNodeDeletion();
-
-    void testSingleEdge();
-
-    void testSingleNode();
-
-    void testTextSize();
-
     void testUsedImages();
 
-    void testV1LayoutOptimizer();
+    void testV1_ArrowSize();
 
-    void testV1SingleEdge();
+    void testV1_BackgroundColor();
 
-    void testV1SingleNode();
+    void testV1_CornerRadius();
 
-    void testV1Version();
+    void testV1_EdgeColor();
 
-    void testV2Version();
+    void testV1_EdgeWidth();
+
+    void testV1_FontItalic();
+
+    void testV1_FontNonItalic();
+
+    void testV1_FontBold();
+
+    void testV1_FontNonBold();
+
+    void testV1_FontOverline();
+
+    void testV1_FontNonOverline();
+
+    void testV1_FontStrikeOut();
+
+    void testV1_FontNonStrikeOut();
+
+    void testV1_FontUnderline();
+
+    void testV1_FontNonUnderline();
+
+    void testV1_GridColor();
+
+    void testV1_TextSize();
+
+    void testV1_LayoutOptimizer();
+
+    void testV1_Graph_SingleEdge();
+
+    void testV1_Graph_SingleNode();
+
+    void testV1_Version();
+
+    void testV2_Version();
 };
 
 #endif // ALZ_FILE_IO_TEST_HPP

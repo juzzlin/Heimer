@@ -318,6 +318,17 @@ static void writeStyle(MindMapDataS mindMapData, QDomElement & root, QDomDocumen
     root.appendChild(cornerRadiusElement);
 }
 
+static void writeVersion(QDomElement & root, QDomDocument & doc, AlzFormatVersion outputVersion)
+{
+    if (outputVersion == AlzFormatVersion::V1) {
+        root.setAttribute(DataKeywords::MindMap::APPLICATION_VERSION, Constants::Application::APPLICATION_VERSION);
+    } else {
+        root.setAttribute(DataKeywords::MindMap::V2::APPLICATION_VERSION, Constants::Application::APPLICATION_VERSION);
+        root.setAttribute(DataKeywords::MindMap::V2::ALZ_FORMAT_VERSION, static_cast<int>(Constants::Application::ALZ_FORMAT_VERSION));
+    }
+    doc.appendChild(root);
+}
+
 static QString getBase64Data(std::string path)
 {
     if (!TestMode::enabled()) {
@@ -615,18 +626,10 @@ MindMapDataU fromXml(QDomDocument document)
 QDomDocument toXml(MindMapDataS mindMapData, AlzFormatVersion outputVersion)
 {
     QDomDocument doc;
-
     doc.appendChild(doc.createProcessingInstruction("xml", "version='1.0' encoding='UTF-8'"));
-
-    // Write version attributes
     auto root = doc.createElement(DataKeywords::MindMap::HEIMER_MIND_MAP);
-    if (outputVersion == AlzFormatVersion::V1) {
-        root.setAttribute(DataKeywords::MindMap::APPLICATION_VERSION, Constants::Application::APPLICATION_VERSION);
-    } else {
-        root.setAttribute(DataKeywords::MindMap::V2::APPLICATION_VERSION, Constants::Application::APPLICATION_VERSION);
-        root.setAttribute(DataKeywords::MindMap::V2::ALZ_FORMAT_VERSION, static_cast<int>(Constants::Application::ALZ_FORMAT_VERSION));
-    }
-    doc.appendChild(root);
+
+    writeVersion(root, doc, outputVersion);
 
     writeStyle(mindMapData, root, doc);
 

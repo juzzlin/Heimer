@@ -273,6 +273,16 @@ static void writeEdges(MindMapDataS mindMapData, QDomElement & root, QDomDocumen
     }
 }
 
+static void writeGraph(MindMapDataS mindMapData, QDomElement & root, QDomDocument & doc, AlzFormatVersion outputVersion)
+{
+    auto graph = doc.createElement(DataKeywords::MindMap::GRAPH);
+    root.appendChild(graph);
+
+    writeNodes(mindMapData, graph, doc, outputVersion);
+
+    writeEdges(mindMapData, graph, doc, outputVersion);
+}
+
 static QString getBase64Data(std::string path)
 {
     if (!TestMode::enabled()) {
@@ -615,12 +625,7 @@ QDomDocument toXml(MindMapDataS mindMapData, AlzFormatVersion outputVersion)
     cornerRadiusElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData->cornerRadius() * SCALE))));
     root.appendChild(cornerRadiusElement);
 
-    auto graph = doc.createElement(DataKeywords::MindMap::GRAPH);
-    root.appendChild(graph);
-
-    writeNodes(mindMapData, graph, doc, outputVersion);
-
-    writeEdges(mindMapData, graph, doc, outputVersion);
+    writeGraph(mindMapData, root, doc, outputVersion);
 
     writeImages(mindMapData, root, doc);
 

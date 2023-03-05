@@ -583,7 +583,7 @@ QDomDocument toXml(MindMapDataS mindMapData, AlzFormatVersion outputVersion)
 
     doc.appendChild(doc.createProcessingInstruction("xml", "version='1.0' encoding='UTF-8'"));
 
-    // Parse version attiributes
+    // Write version attributes
     auto root = doc.createElement(DataKeywords::MindMap::HEIMER_MIND_MAP);
     if (outputVersion == AlzFormatVersion::V1) {
         root.setAttribute(DataKeywords::MindMap::APPLICATION_VERSION, Constants::Application::APPLICATION_VERSION);

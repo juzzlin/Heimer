@@ -283,6 +283,41 @@ static void writeGraph(MindMapDataS mindMapData, QDomElement & root, QDomDocumen
     writeEdges(mindMapData, graph, doc, outputVersion);
 }
 
+static void writeStyle(MindMapDataS mindMapData, QDomElement & root, QDomDocument & doc)
+{
+    writeColor(root, doc, mindMapData->backgroundColor(), DataKeywords::MindMap::COLOR);
+
+    writeColor(root, doc, mindMapData->edgeColor(), DataKeywords::MindMap::EDGE_COLOR);
+
+    writeColor(root, doc, mindMapData->gridColor(), DataKeywords::MindMap::GRID_COLOR);
+
+    auto arrowSizeElement = doc.createElement(DataKeywords::MindMap::ARROW_SIZE);
+    arrowSizeElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData->arrowSize() * SCALE))));
+    root.appendChild(arrowSizeElement);
+
+    auto edgeWidthElement = doc.createElement(DataKeywords::MindMap::EDGE_THICKNESS);
+    edgeWidthElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData->edgeWidth() * SCALE))));
+    root.appendChild(edgeWidthElement);
+
+    auto fontFamilyElement = doc.createElement(DataKeywords::MindMap::FONT_FAMILY);
+    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_BOLD, mindMapData->font().bold());
+    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_ITALIC, mindMapData->font().italic());
+    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_OVERLINE, mindMapData->font().overline());
+    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_STRIKE_OUT, mindMapData->font().strikeOut());
+    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_UNDERLINE, mindMapData->font().underline());
+    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_WEIGHT, mindMapData->font().weight());
+    fontFamilyElement.appendChild(doc.createTextNode(mindMapData->font().family()));
+    root.appendChild(fontFamilyElement);
+
+    auto textSizeElement = doc.createElement(DataKeywords::MindMap::TEXT_SIZE);
+    textSizeElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData->textSize() * SCALE))));
+    root.appendChild(textSizeElement);
+
+    auto cornerRadiusElement = doc.createElement(DataKeywords::MindMap::CORNER_RADIUS);
+    cornerRadiusElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData->cornerRadius() * SCALE))));
+    root.appendChild(cornerRadiusElement);
+}
+
 static QString getBase64Data(std::string path)
 {
     if (!TestMode::enabled()) {
@@ -593,37 +628,7 @@ QDomDocument toXml(MindMapDataS mindMapData, AlzFormatVersion outputVersion)
     }
     doc.appendChild(root);
 
-    writeColor(root, doc, mindMapData->backgroundColor(), DataKeywords::MindMap::COLOR);
-
-    writeColor(root, doc, mindMapData->edgeColor(), DataKeywords::MindMap::EDGE_COLOR);
-
-    writeColor(root, doc, mindMapData->gridColor(), DataKeywords::MindMap::GRID_COLOR);
-
-    auto arrowSizeElement = doc.createElement(DataKeywords::MindMap::ARROW_SIZE);
-    arrowSizeElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData->arrowSize() * SCALE))));
-    root.appendChild(arrowSizeElement);
-
-    auto edgeWidthElement = doc.createElement(DataKeywords::MindMap::EDGE_THICKNESS);
-    edgeWidthElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData->edgeWidth() * SCALE))));
-    root.appendChild(edgeWidthElement);
-
-    auto fontFamilyElement = doc.createElement(DataKeywords::MindMap::FONT_FAMILY);
-    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_BOLD, mindMapData->font().bold());
-    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_ITALIC, mindMapData->font().italic());
-    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_OVERLINE, mindMapData->font().overline());
-    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_STRIKE_OUT, mindMapData->font().strikeOut());
-    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_UNDERLINE, mindMapData->font().underline());
-    fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_WEIGHT, mindMapData->font().weight());
-    fontFamilyElement.appendChild(doc.createTextNode(mindMapData->font().family()));
-    root.appendChild(fontFamilyElement);
-
-    auto textSizeElement = doc.createElement(DataKeywords::MindMap::TEXT_SIZE);
-    textSizeElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData->textSize() * SCALE))));
-    root.appendChild(textSizeElement);
-
-    auto cornerRadiusElement = doc.createElement(DataKeywords::MindMap::CORNER_RADIUS);
-    cornerRadiusElement.appendChild(doc.createTextNode(QString::number(static_cast<int>(mindMapData->cornerRadius() * SCALE))));
-    root.appendChild(cornerRadiusElement);
+    writeStyle(mindMapData, root, doc);
 
     writeGraph(mindMapData, root, doc, outputVersion);
 

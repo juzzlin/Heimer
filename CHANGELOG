@@ -5,8 +5,31 @@ Release date:
 
 New features:
 
+Bug fixes:
+
+Other:
+
+4.0.0
+=====
+
+Release date:
+
+Fri, 10 Mar 2023 17:28:44 -0000
+
+New features:
+
 * Add setting for 'inverted controls'
   - Pan the view with a modifier key (Ctrl) and select a group of items without a modifier key being pressed
+
+* Add parameter initialization options to layout optimization dialog
+
+* Add progress indicator when opening a mind map
+
+* Add tool tips for optimizer parameters
+
+* Add tool tip text for selecting node group by intersection
+
+* Change help texts into tool tips
 
 Bug fixes:
 
@@ -20,11 +43,23 @@ Bug fixes:
 
 Other:
 
+* More subtle new version indicator with a timeout
+
 * Change help texts to tool tips in edit settings
 
 * Update Italian translations
 
 * Update Dutch translations
+
+* Breaking changes to ALZ-format (old files can still be opened normally)
+
+  * Move style data into style element
+
+  * Move layout optimizer config into metadata element
+
+  * Save and load application and format versions separately
+
+  * Rename index => i, index0 => i0, index1 => i1
 
 3.7.0
 =====

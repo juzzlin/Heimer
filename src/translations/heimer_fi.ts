@@ -466,32 +466,32 @@
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="84"/>
         <source>Aspect ratio = layout width / layout height</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuvasuhde = leveys / korkeus</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="93"/>
         <source>&lt;--</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;--</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="96"/>
         <source>From layout</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sijoittelusta</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="97"/>
         <source>Calculate aspect ratio from current layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Laske kuvasuhde nykyisestä sijoittelusta</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="103"/>
         <source>From view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Näkymästä</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="104"/>
         <source>Calculate aspect ratio from current view geometry</source>
-        <translation type="unfinished"></translation>
+        <translation>Laske kuvasuhde nykyisen näkymän geometriasta</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="111"/>
@@ -501,37 +501,37 @@
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="112"/>
         <source>Minimum edge length in the optimized layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Pienen mahdollinen kaaren pituus optimoidussa sijoittelussa</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="123"/>
         <source>Min from layout</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Minimi</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="127"/>
         <source>Calculate minimum edge length from current layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Laske pienin kaaren pituus nykyisestä sijoittelusta</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="130"/>
         <source>Max from layout</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Maksimi</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="134"/>
         <source>Calculate maximum edge length from current layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Laske pisin kaaren pituus nykyisestä sijoittelusta</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="137"/>
         <source>Avg from layout</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Keskipituus</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="141"/>
         <source>Calculate average edge length from current layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Laske kaarien keskipituus nykyisestä sijoittelusta</translation>
     </message>
 </context>
 <context>

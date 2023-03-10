@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<heimer-mind-map alz-format-version="2" application-version="3.7.0">
+<heimer-mind-map alz-format-version="2" application-version="4.0.0">
  <style>
   <color g="215" r="211" b="207"/>
   <edge-color g="0" r="0" b="0"/>
@@ -88,10 +88,10 @@
   <edge i0="1" i1="7" arrow-mode="0">
    <text>Passed away</text>
   </edge>
-  <edge i0="2" i1="4" arrow-mode="0">
+  <edge i0="2" i1="5" arrow-mode="0">
    <text>Passed away</text>
   </edge>
-  <edge i0="2" i1="5" arrow-mode="0">
+  <edge i0="2" i1="4" arrow-mode="0">
    <text>Passed away</text>
   </edge>
   <edge i0="3" i1="9" arrow-mode="0"/>

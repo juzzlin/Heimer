@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<heimer-mind-map alz-format-version="2" application-version="3.7.0">
+<heimer-mind-map alz-format-version="2" application-version="4.0.0">
  <style>
   <color g="138" r="136" b="133"/>
   <edge-color g="0" r="0" b="0"/>
@@ -11,6 +11,26 @@
   <corner-radius>5000</corner-radius>
  </style>
  <graph>
+  <node w="200000" x="-352000" y="112000" h="75000" i="1">
+   <text>C++17 and Qt</text>
+   <color g="255" r="255" b="255"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <node w="200000" x="16000" y="-256000" h="75000" i="14">
+   <text>PNG images</text>
+   <color g="255" r="255" b="255"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <node w="391000" x="384000" y="256000" h="75000" i="13">
+   <text>Can be ported to all platforms that supports Qt</text>
+   <color g="255" r="255" b="255"/>
+   <text-color g="0" r="0" b="0"/>
+  </node>
+  <node w="200000" x="16000" y="-64000" h="75000" i="0">
+   <text>Heimer</text>
+   <color g="154" r="78" b="6"/>
+   <text-color g="226" r="138" b="52"/>
+  </node>
   <node w="200000" x="16000" y="256000" h="75000" i="5">
    <text>Windows desktop</text>
    <color g="159" r="114" b="207"/>
@@ -66,29 +86,22 @@
    <color g="255" r="255" b="255"/>
    <text-color g="0" r="0" b="0"/>
   </node>
-  <node w="200000" x="16000" y="-256000" h="75000" i="14">
-   <text>PNG images</text>
-   <color g="255" r="255" b="255"/>
-   <text-color g="0" r="0" b="0"/>
-  </node>
-  <node w="200000" x="-352000" y="112000" h="75000" i="1">
-   <text>C++17 and Qt</text>
-   <color g="255" r="255" b="255"/>
-   <text-color g="0" r="0" b="0"/>
-  </node>
-  <node w="200000" x="16000" y="-64000" h="75000" i="0">
-   <text>Heimer</text>
-   <color g="154" r="78" b="6"/>
-   <text-color g="226" r="138" b="52"/>
-  </node>
-  <node w="391000" x="384000" y="256000" h="75000" i="13">
-   <text>Can be ported to all platforms that supports Qt</text>
-   <color g="255" r="255" b="255"/>
-   <text-color g="0" r="0" b="0"/>
-  </node>
-  <edge i0="3" i1="5" arrow-mode="0"/>
+  <edge i0="0" i1="2" arrow-mode="0">
+   <text>is</text>
+  </edge>
+  <edge i0="0" i1="6" arrow-mode="0"/>
+  <edge i0="0" i1="1" arrow-mode="0">
+   <text>written in</text>
+  </edge>
+  <edge i0="0" i1="3" arrow-mode="0">
+   <text>is</text>
+  </edge>
+  <edge i0="0" i1="14" arrow-mode="0">
+   <text>exports</text>
+  </edge>
   <edge i0="3" i1="13" dashed-line="1" arrow-mode="2"/>
   <edge i0="3" i1="4" arrow-mode="0"/>
+  <edge i0="3" i1="5" arrow-mode="0"/>
   <edge i0="6" i1="9" arrow-mode="0"/>
   <edge i0="6" i1="10" arrow-mode="0"/>
   <edge i0="6" i1="7" arrow-mode="0"/>
@@ -96,19 +109,6 @@
   <edge i0="6" i1="8" arrow-mode="0"/>
   <edge i0="2" i1="11" arrow-mode="0">
    <text>emphasis on</text>
-  </edge>
-  <edge i0="0" i1="6" arrow-mode="0"/>
-  <edge i0="0" i1="1" arrow-mode="0">
-   <text>written in</text>
-  </edge>
-  <edge i0="0" i1="14" arrow-mode="0">
-   <text>exports</text>
-  </edge>
-  <edge i0="0" i1="3" arrow-mode="0">
-   <text>is</text>
-  </edge>
-  <edge i0="0" i1="2" arrow-mode="0">
-   <text>is</text>
   </edge>
  </graph>
  <metadata>

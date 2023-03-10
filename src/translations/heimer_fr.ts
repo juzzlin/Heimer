@@ -26,77 +26,77 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application.cpp" line="222"/>
+        <location filename="../application.cpp" line="223"/>
         <source>A new version %1 available at &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="229"/>
+        <location filename="../application.cpp" line="230"/>
         <source>Heimer Files</source>
         <translation>Heimer Fichiers</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="323"/>
+        <location filename="../application.cpp" line="324"/>
         <source>Open File</source>
         <translation>Ouvrir un fichier</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="333"/>
+        <location filename="../application.cpp" line="334"/>
         <source>Opening &apos;%1&apos;..</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="357"/>
+        <location filename="../application.cpp" line="358"/>
         <source>Failed to save file.</source>
         <translation>Erreur lors de la sauvegarde.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="374"/>
+        <location filename="../application.cpp" line="375"/>
         <source>Save File As</source>
         <translation>Enregistrer sous</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="388"/>
+        <location filename="../application.cpp" line="389"/>
         <source>File &apos;</source>
         <translation>Fichier.&apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="388"/>
+        <location filename="../application.cpp" line="389"/>
         <source>&apos; saved.</source>
         <translation>&apos;sauvegarder.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="394"/>
+        <location filename="../application.cpp" line="395"/>
         <source>Failed to save file as &apos;</source>
         <translation>Erreur d&apos;enregistrement sous&apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="442"/>
+        <location filename="../application.cpp" line="443"/>
         <source>Open an image</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="442"/>
+        <location filename="../application.cpp" line="443"/>
         <source>Image Files</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="448"/>
+        <location filename="../application.cpp" line="449"/>
         <source>Load image</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="448"/>
+        <location filename="../application.cpp" line="449"/>
         <source>Failed to load image &apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="492"/>
+        <location filename="../application.cpp" line="493"/>
         <source>The mind map has been modified.</source>
         <translation>La carte heuristique a été modifié.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="493"/>
+        <location filename="../application.cpp" line="494"/>
         <source>Do you want to save your changes?</source>
         <translation>Voulez-vous enregistrer vos modifications?</translation>
     </message>
@@ -365,24 +365,89 @@
 <context>
     <name>Dialogs::LayoutOptimizationDialog</name>
     <message>
-        <location filename="../dialogs/layout_optimization_dialog.cpp" line="44"/>
+        <location filename="../dialogs/layout_optimization_dialog.cpp" line="48"/>
         <source>Optimize Layout</source>
         <translation>Optimiser la mise en page</translation>
     </message>
     <message>
-        <location filename="../dialogs/layout_optimization_dialog.cpp" line="76"/>
+        <location filename="../dialogs/layout_optimization_dialog.cpp" line="79"/>
         <source>Parameters</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../dialogs/layout_optimization_dialog.cpp" line="79"/>
+        <location filename="../dialogs/layout_optimization_dialog.cpp" line="83"/>
         <source>Aspect Ratio:</source>
         <translation>Ratio d&apos;aspect:</translation>
     </message>
     <message>
-        <location filename="../dialogs/layout_optimization_dialog.cpp" line="90"/>
+        <location filename="../dialogs/layout_optimization_dialog.cpp" line="84"/>
+        <source>Aspect ratio = layout width / layout height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/layout_optimization_dialog.cpp" line="93"/>
+        <source>&lt;--</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/layout_optimization_dialog.cpp" line="96"/>
+        <source>From layout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/layout_optimization_dialog.cpp" line="97"/>
+        <source>Calculate aspect ratio from current layout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/layout_optimization_dialog.cpp" line="103"/>
+        <source>From view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/layout_optimization_dialog.cpp" line="104"/>
+        <source>Calculate aspect ratio from current view geometry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/layout_optimization_dialog.cpp" line="111"/>
         <source>Minimum Edge Length:</source>
         <translation>Longueur d&apos;arête minimale:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/layout_optimization_dialog.cpp" line="112"/>
+        <source>Minimum edge length in the optimized layout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/layout_optimization_dialog.cpp" line="123"/>
+        <source>Min from layout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/layout_optimization_dialog.cpp" line="127"/>
+        <source>Calculate minimum edge length from current layout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/layout_optimization_dialog.cpp" line="130"/>
+        <source>Max from layout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/layout_optimization_dialog.cpp" line="134"/>
+        <source>Calculate maximum edge length from current layout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/layout_optimization_dialog.cpp" line="137"/>
+        <source>Avg from layout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/layout_optimization_dialog.cpp" line="141"/>
+        <source>Calculate average edge length from current layout</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -690,7 +755,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="254"/>
+        <location filename="../main_window.cpp" line="247"/>
         <source>Optimize layout</source>
         <translation>Optimiser la mise en page</translation>
     </message>
@@ -711,42 +776,42 @@
         <translation type="vanished">Taille de la grille:</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="268"/>
+        <location filename="../main_window.cpp" line="261"/>
         <source>&amp;Export</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="271"/>
+        <location filename="../main_window.cpp" line="264"/>
         <source>&amp;PNG</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="280"/>
+        <location filename="../main_window.cpp" line="273"/>
         <source>&amp;SVG</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="294"/>
+        <location filename="../main_window.cpp" line="287"/>
         <source>&amp;File</source>
         <translation>&amp;Fichier</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="297"/>
+        <location filename="../main_window.cpp" line="290"/>
         <source>&amp;New</source>
         <translation>&amp;Nouveau</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="305"/>
+        <location filename="../main_window.cpp" line="298"/>
         <source>&amp;Open</source>
         <translation>&amp;Ouvrir</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="315"/>
+        <location filename="../main_window.cpp" line="308"/>
         <source>Recent &amp;Files</source>
         <translation>&amp;Fichiers récents</translation>
     </message>
     <message>
-        <location filename="../main_window.cpp" line="228"/>
+        <location filename="../main_window.cpp" line="338"/>
         <source>Settings</source>
         <translation></translation>
     </message>

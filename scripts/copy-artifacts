@@ -25,7 +25,7 @@ WIN_FILE_PATH=$(ls -t ${BUILD_PATH_BASE}/build-windows-nsis/heimer*win32.exe | h
 WIN_FILE_NAME=$(basename ${WIN_FILE_PATH})
 cp -v ${WIN_FILE_PATH} ./${WIN_FILE_NAME} || exit 1
 
-WIN_FILE_PATH=$(ls -t ${BUILD_PATH_BASE}/build-windows-zip/zip/heimer*_win32.zip | head -1)
+WIN_FILE_PATH=$(ls -t ${BUILD_PATH_BASE}/build-windows-zip/zip/heimer*-win32.zip | head -1)
 WIN_FILE_NAME=$(basename ${WIN_FILE_PATH})
 cp -v ${WIN_FILE_PATH} ./${WIN_FILE_NAME} || exit 1
 

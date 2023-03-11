@@ -75,7 +75,7 @@
     <message>
         <location filename="../application.cpp" line="334"/>
         <source>Opening &apos;%1&apos;..</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">In apertura &apos;%1&apos;..</translation>
     </message>
     <message>
         <location filename="../application.cpp" line="358"/>
@@ -370,27 +370,27 @@
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="55"/>
         <source>The rectangle selection will select nodes also by intersection instead of inclusion only.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">La selezione del rettangolo selezionerà i nodi anche per intersezione anziché solo per inclusione.</translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="58"/>
         <source>File Operations</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Operazioni sui file</translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="69"/>
         <source>Controls</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Controlli</translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="71"/>
         <source>Scroll the view with a modifier key pressed and select a group of items without a modifier key being pressed.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Scorri la vista con un tasto modificatore premuto e seleziona un gruppo di elementi senza che venga premuto un tasto modificatore.</translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="70"/>
         <source>Inverted controls</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Controlli invertiti</translation>
     </message>
 </context>
 <context>
@@ -446,32 +446,32 @@
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="84"/>
         <source>Aspect ratio = layout width / layout height</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Proporzioni = larghezza del layout / altezza del layout</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="93"/>
         <source>&lt;--</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;--</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="96"/>
         <source>From layout</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dal layout</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="97"/>
         <source>Calculate aspect ratio from current layout</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Calcola le proporzioni dal layout corrente</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="103"/>
         <source>From view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dalla vista</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="104"/>
         <source>Calculate aspect ratio from current view geometry</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Calcola le proporzioni dalla geometria della vista corrente</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="111"/>
@@ -481,37 +481,37 @@
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="112"/>
         <source>Minimum edge length in the optimized layout</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lunghezza minima del bordo nel layout ottimizzato</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="123"/>
         <source>Min from layout</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Min dal layout</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="127"/>
         <source>Calculate minimum edge length from current layout</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Calcola la lunghezza minima del bordo dal layout corrente</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="130"/>
         <source>Max from layout</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Max dal layout</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="134"/>
         <source>Calculate maximum edge length from current layout</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Calcola la lunghezza massima del bordo dal layout corrente</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="137"/>
         <source>Avg from layout</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Media dal layout</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="141"/>
         <source>Calculate average edge length from current layout</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Calcola la lunghezza media del bordo dal layout corrente</translation>
     </message>
 </context>
 <context>

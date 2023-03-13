@@ -79,7 +79,7 @@
     <message>
         <location filename="../application.cpp" line="334"/>
         <source>Opening &apos;%1&apos;..</source>
-        <translation type="unfinished"></translation>
+        <translation>Bezig met openen van ‘%1’…</translation>
     </message>
     <message>
         <location filename="../application.cpp" line="358"/>
@@ -370,27 +370,27 @@
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="55"/>
         <source>The rectangle selection will select nodes also by intersection instead of inclusion only.</source>
-        <translation type="unfinished"></translation>
+        <translation>De rechthoekselectie selecteert knopen per intersectie.</translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="58"/>
         <source>File Operations</source>
-        <translation type="unfinished"></translation>
+        <translation>Bestandsacties</translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="69"/>
         <source>Controls</source>
-        <translation type="unfinished"></translation>
+        <translation>Bediening</translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="71"/>
         <source>Scroll the view with a modifier key pressed and select a group of items without a modifier key being pressed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschuif de weergave door een bewerktoets ingedrukt te houden en selecteer een groep items zonder indrukken.</translation>
     </message>
     <message>
         <location filename="../dialogs/editing_tab.cpp" line="70"/>
         <source>Inverted controls</source>
-        <translation type="unfinished"></translation>
+        <translation>Omgekeerde bediening</translation>
     </message>
 </context>
 <context>
@@ -446,32 +446,32 @@
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="84"/>
         <source>Aspect ratio = layout width / layout height</source>
-        <translation type="unfinished"></translation>
+        <translation>Beeldverhouding = indelingsbreedte/-hoogte</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="93"/>
         <source>&lt;--</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;--</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="96"/>
         <source>From layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Uit indeling</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="97"/>
         <source>Calculate aspect ratio from current layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Beeldverhouding berekenen op basis van huidige indeling</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="103"/>
         <source>From view</source>
-        <translation type="unfinished"></translation>
+        <translation>Uit weergave</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="104"/>
         <source>Calculate aspect ratio from current view geometry</source>
-        <translation type="unfinished"></translation>
+        <translation>Beeldverhouding bereken op basis van huidige weergave-afmetingen</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="111"/>
@@ -481,37 +481,37 @@
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="112"/>
         <source>Minimum edge length in the optimized layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimaal randlengte van geoptimaliseerde indeling</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="123"/>
         <source>Min from layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Min. uit indeling</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="127"/>
         <source>Calculate minimum edge length from current layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimum randbreedte berekenen op basis van huidige indeling</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="130"/>
         <source>Max from layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Max. uit indeling</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="134"/>
         <source>Calculate maximum edge length from current layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximum randbreedte berekenen op basis van huidige indeling</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="137"/>
         <source>Avg from layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Gem. uit indeling</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="141"/>
         <source>Calculate average edge length from current layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Gemiddelde randbreedte berekenen op basis van huidige indeling</translation>
     </message>
 </context>
 <context>
@@ -1307,7 +1307,7 @@
     <message>
         <location filename="../scene_items/edge.cpp" line="94"/>
         <source>...</source>
-        <translation type="unfinished">…</translation>
+        <translation>…</translation>
     </message>
 </context>
 <context>
@@ -1315,27 +1315,27 @@
     <message>
         <location filename="../scene_items/node_handle.cpp" line="60"/>
         <source>Drag to connect or create a child node</source>
-        <translation type="unfinished">Versleep om een onderliggende knoop te maken of verbinden</translation>
+        <translation>Versleep om een onderliggende knoop te maken of verbinden</translation>
     </message>
     <message>
         <location filename="../scene_items/node_handle.cpp" line="62"/>
         <source>Move the node</source>
-        <translation type="unfinished">Knoop verplaatsen</translation>
+        <translation>Knoop verplaatsen</translation>
     </message>
     <message>
         <location filename="../scene_items/node_handle.cpp" line="64"/>
         <source>Select node color</source>
-        <translation type="unfinished">Knoopkleur instellen</translation>
+        <translation>Knoopkleur instellen</translation>
     </message>
     <message>
         <location filename="../scene_items/node_handle.cpp" line="66"/>
         <source>Select text color</source>
-        <translation type="unfinished">Tekstkleur instellen</translation>
+        <translation>Tekstkleur instellen</translation>
     </message>
     <message>
         <location filename="../scene_items/node_handle.cpp" line="304"/>
         <source>A</source>
-        <translation type="unfinished">A</translation>
+        <translation>A</translation>
     </message>
 </context>
 <context>

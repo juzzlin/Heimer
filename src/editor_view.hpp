@@ -26,6 +26,7 @@
 #include <QColor>
 #include <QGraphicsView>
 #include <QMenu>
+#include <QTimer>
 
 #include <memory>
 #include <optional>
@@ -151,6 +152,8 @@ private:
 
     void updateScale();
 
+    void updateShadowEffectsBasedOnItemVisiblity();
+
     void updateRubberBand();
 
     void drawBackground(QPainter * painter, const QRectF & rect) override;
@@ -217,6 +220,8 @@ private:
     std::optional<ZoomParameters> m_savedZoom;
 
     ControlStrategy & m_controlStrategy;
+
+    QTimer m_updateShadowEffectsOnZoomTimer;
 };
 
 #endif // EDITOR_VIEW_HPP

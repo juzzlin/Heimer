@@ -45,6 +45,7 @@
 #include "scene_items/graphics_factory.hpp"
 #include "scene_items/node.hpp"
 #include "scene_items/node_handle.hpp"
+#include "scene_items/scene_item_base.hpp"
 
 #include "widgets/status_label.hpp"
 
@@ -52,6 +53,7 @@
 
 #include <cassert>
 #include <cstdlib>
+#include <unordered_set>
 
 using juzzlin::L;
 
@@ -72,6 +74,10 @@ EditorView::EditorView(Mediator & mediator)
     // Forward signals from main context menu
     connect(m_mainContextMenu, &Menus::MainContextMenu::actionTriggered, this, &EditorView::actionTriggered);
     connect(m_mainContextMenu, &Menus::MainContextMenu::newNodeRequested, this, &EditorView::newNodeRequested);
+
+    m_updateShadowEffectsOnZoomTimer.setInterval(Constants::View::TOO_QUICK_ACTION_DELAY_MS);
+    m_updateShadowEffectsOnZoomTimer.setSingleShot(true);
+    connect(&m_updateShadowEffectsOnZoomTimer, &QTimer::timeout, this, &EditorView::updateShadowEffectsBasedOnItemVisiblity);
 }
 
 const Grid & EditorView::grid() const
@@ -387,6 +393,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
             break;
         case MouseAction::Action::Scroll:
             setDragMode(NoDrag);
+            updateShadowEffectsBasedOnItemVisiblity();
             break;
         }
 
@@ -456,6 +463,31 @@ void EditorView::updateScale()
     QTransform transform;
     transform.scale(m_scale, m_scale);
     setTransform(transform);
+
+    if (m_updateShadowEffectsOnZoomTimer.isActive()) {
+        m_updateShadowEffectsOnZoomTimer.stop();
+    }
+    m_updateShadowEffectsOnZoomTimer.start();
+}
+
+void EditorView::updateShadowEffectsBasedOnItemVisiblity()
+{
+    std::unordered_set<SceneItems::SceneItemBase *> enabledItems;
+
+    for (auto && item : scene()->items(mapToScene(rect()))) {
+        if (const auto sceneItem = dynamic_cast<SceneItems::SceneItemBase *>(item); sceneItem) {
+            sceneItem->enableShadowEffect(true);
+            enabledItems.insert(sceneItem);
+        }
+    }
+
+    for (auto && item : scene()->items()) {
+        if (const auto sceneItem = dynamic_cast<SceneItems::SceneItemBase *>(item); sceneItem) {
+            if (!enabledItems.count(sceneItem)) {
+                sceneItem->enableShadowEffect(false);
+            }
+        }
+    }
 }
 
 void EditorView::updateRubberBand()

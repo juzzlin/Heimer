@@ -72,6 +72,8 @@ public:
 
     bool dashedLine() const;
 
+    void enableShadowEffect(bool enable) override;
+
     double length() const;
 
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;

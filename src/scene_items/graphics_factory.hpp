@@ -26,11 +26,11 @@ struct ShadowEffectParams;
 
 namespace GraphicsFactory {
 
-QGraphicsEffect * createDropShadowEffect(bool selected, const ShadowEffectParams & params);
+QGraphicsEffect * createDropShadowEffect(const ShadowEffectParams & params, bool selected);
 
 QPen createOutlinePen(const QColor & backgroundColor, double brightness = 0.5);
 
-void updateDropShadowEffect(QGraphicsEffect * effect, bool selected, const ShadowEffectParams & params);
+void updateDropShadowEffect(QGraphicsEffect * effect, const ShadowEffectParams & params, bool selected, bool disabled = false);
 } // namespace GraphicsFactory
 
 #endif // GRAPHICS_FACTORY_HPP

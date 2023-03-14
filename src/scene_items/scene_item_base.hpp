@@ -37,6 +37,8 @@ public:
 
     virtual void removeFromScene();
 
+    virtual void enableShadowEffect(bool enable);
+
 private:
     QPropertyAnimation m_scaleAnimation;
 };

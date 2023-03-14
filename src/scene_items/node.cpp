@@ -58,7 +58,7 @@ Node::Node()
 {
     setAcceptHoverEvents(true);
 
-    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(false, m_settingsProxy.shadowEffect()));
+    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_settingsProxy.shadowEffect(), false));
 
     m_nodeModel->size = QSize(Constants::Node::MIN_WIDTH, Constants::Node::MIN_HEIGHT);
 
@@ -404,6 +404,12 @@ void Node::setCornerRadius(int value)
     update();
 }
 
+void Node::enableShadowEffect(bool enable)
+{
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_settingsProxy.shadowEffect(), m_selected, !enable);
+    update();
+}
+
 void Node::setHandlesVisible(bool visible)
 {
     for (auto && handle : m_handles) {
@@ -440,13 +446,13 @@ bool Node::selected() const
 void Node::setSelected(bool selected)
 {
     m_selected = selected;
-    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), selected, m_settingsProxy.shadowEffect());
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_settingsProxy.shadowEffect(), m_selected);
     update();
 }
 
 void Node::setShadowEffect(const ShadowEffectParams & params)
 {
-    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_selected, params);
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), params, m_selected);
     update();
 }
 

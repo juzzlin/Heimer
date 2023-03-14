@@ -118,7 +118,8 @@ private:
 
     void handleMousePressEventOnBackground(QMouseEvent & event);
 
-    void handleMousePressEventOnEdge(QMouseEvent & event, EdgeR edge);
+    //! \returns true if accepted.
+    bool handleMousePressEventOnEdge(QMouseEvent & event, EdgeR edge);
 
     void handleMousePressEventOnNode(QMouseEvent & event, NodeR node);
 

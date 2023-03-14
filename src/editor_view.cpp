@@ -99,11 +99,13 @@ void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
     }
 }
 
-void EditorView::handleMousePressEventOnEdge(QMouseEvent & event, EdgeR edge)
+bool EditorView::handleMousePressEventOnEdge(QMouseEvent & event, EdgeR edge)
 {
     if (m_controlStrategy.secondaryButtonClicked(event)) {
         handleSecondaryButtonClickOnEdge(edge);
+        return true;
     }
+    return false;
 }
 
 void EditorView::handleMousePressEventOnNode(QMouseEvent & event, NodeR node)
@@ -303,7 +305,10 @@ void EditorView::mousePressEvent(QMouseEvent * event)
     if (const auto result = ItemFilter::getFirstItemAtPosition(*scene(), clickedScenePos, Constants::View::CLICK_TOLERANCE); result.success) {
         if (result.edge) {
             juzzlin::L().debug() << "Edge pressed";
-            handleMousePressEventOnEdge(*event, *result.edge);
+            if (!handleMousePressEventOnEdge(*event, *result.edge)) {
+                juzzlin::L().debug() << "Background pressed via edge";
+                handleMousePressEventOnBackground(*event);
+            }
         } else if (result.nodeHandle) {
             juzzlin::L().debug() << "Node handle pressed";
             handleMousePressEventOnNodeHandle(*event, *result.nodeHandle);

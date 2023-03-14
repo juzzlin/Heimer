@@ -7,6 +7,8 @@ New features:
 
 Bug fixes:
 
+* Fix GitHub Issue #239: Cannot drag if the drag position is inside the virtual rectangle spanned by an edge
+
 Other:
 
 4.0.0

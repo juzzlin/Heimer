@@ -59,7 +59,7 @@ namespace Edge {
 
 namespace Defaults {
 
-static const double ARROW_SIZE = 10;
+static const double ARROW_SIZE = 20;
 
 } // namespace Defaults
 
@@ -159,9 +159,9 @@ static const QColor NODE_TEXT_COLOR { Qt::black };
 
 static const auto NODE_TEXT_COLOR_SETTINGS_KEY = "nodeTextColor";
 
-static const double EDGE_WIDTH = 2.0;
+static const double EDGE_WIDTH = 1.0;
 
-static const int TEXT_SIZE = 11;
+static const int TEXT_SIZE = 14;
 
 static const auto TEXT_SIZE_SETTINGS_KEY = "textSize";
 

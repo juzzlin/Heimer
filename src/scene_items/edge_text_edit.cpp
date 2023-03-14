@@ -16,8 +16,12 @@
 #include "edge_text_edit.hpp"
 
 #include "edge.hpp"
+#include "graphics_factory.hpp"
 
 #include "../constants.hpp"
+
+#include <QPainter>
+#include <QStyleOptionGraphicsItem>
 
 namespace SceneItems {
 
@@ -60,6 +64,17 @@ void EdgeTextEdit::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
     m_visibilityTimer.start();
 
     TextEdit::hoverLeaveEvent(event);
+}
+
+void EdgeTextEdit::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
+{
+    TextEdit::paint(painter, option, widget);
+
+    // Outline
+    QPainterPath path;
+    path.addRect(option->rect);
+    painter->setRenderHint(QPainter::Antialiasing);
+    painter->strokePath(path, GraphicsFactory::createOutlinePen(backgroundColor()));
 }
 
 void EdgeTextEdit::setAnimationConfig(bool visible)

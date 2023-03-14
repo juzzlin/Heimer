@@ -51,6 +51,8 @@ public:
 
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
 
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) override;
+
 signals:
 
     void hoverEntered();

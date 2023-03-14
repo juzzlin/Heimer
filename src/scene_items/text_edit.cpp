@@ -107,12 +107,18 @@ void TextEdit::paint(QPainter * painter, const QStyleOptionGraphicsItem * option
     QGraphicsTextItem::paint(painter, style, widget);
 }
 
+QColor TextEdit::backgroundColor() const
+{
+    return m_backgroundColor;
+}
+
 void TextEdit::setBackgroundColor(const QColor & backgroundColor)
 {
     m_backgroundColor = backgroundColor;
 
     update();
 }
+
 void TextEdit::setTextSize(int textSize)
 {
     m_textSize = textSize;

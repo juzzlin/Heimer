@@ -19,6 +19,7 @@
 #include "../constants.hpp"
 
 #include <QColor>
+#include <QPen>
 
 class QGraphicsEffect;
 struct ShadowEffectParams;
@@ -26,6 +27,8 @@ struct ShadowEffectParams;
 namespace GraphicsFactory {
 
 QGraphicsEffect * createDropShadowEffect(bool selected, const ShadowEffectParams & params);
+
+QPen createOutlinePen(const QColor & backgroundColor);
 
 void updateDropShadowEffect(QGraphicsEffect * effect, bool selected, const ShadowEffectParams & params);
 } // namespace GraphicsFactory

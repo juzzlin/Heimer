@@ -28,7 +28,7 @@ namespace GraphicsFactory {
 
 QGraphicsEffect * createDropShadowEffect(bool selected, const ShadowEffectParams & params);
 
-QPen createOutlinePen(const QColor & backgroundColor);
+QPen createOutlinePen(const QColor & backgroundColor, double brightness = 0.5);
 
 void updateDropShadowEffect(QGraphicsEffect * effect, bool selected, const ShadowEffectParams & params);
 } // namespace GraphicsFactory

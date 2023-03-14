@@ -26,9 +26,13 @@ QGraphicsEffect * GraphicsFactory::createDropShadowEffect(bool selected, const S
     return effect;
 }
 
-QPen GraphicsFactory::createOutlinePen(const QColor & backgroundColor)
+QPen GraphicsFactory::createOutlinePen(const QColor & backgroundColor, double brightness)
 {
-    return QPen { QColor { 2 * backgroundColor.red() / 3, 2 * backgroundColor.green() / 3, 2 * backgroundColor.blue() / 3 }, 1 };
+    const int width = 1;
+    return QPen { QColor { static_cast<int>(backgroundColor.red() * brightness),
+                           static_cast<int>(backgroundColor.green() * brightness),
+                           static_cast<int>(backgroundColor.blue() * brightness) },
+                  width };
 }
 
 void GraphicsFactory::updateDropShadowEffect(QGraphicsEffect * effect, bool selected, const ShadowEffectParams & params)

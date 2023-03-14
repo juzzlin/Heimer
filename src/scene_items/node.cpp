@@ -366,7 +366,7 @@ void Node::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
     } else {
         const auto color = m_nodeModel->color;
         painter->fillPath(path, QBrush(color));
-        painter->strokePath(path, GraphicsFactory::createOutlinePen(color));
+        painter->strokePath(path, GraphicsFactory::createOutlinePen(color, 0.33));
     }
 
     // Patch for TextEdit

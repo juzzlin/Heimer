@@ -146,6 +146,8 @@ private:
 
     void openMainContextMenu(Menus::MainContextMenu::Mode mode);
 
+    void removeShadowEffectsDuringDrag();
+
     void showDummyDragEdge(bool show);
 
     void showDummyDragNode(bool show);
@@ -205,6 +207,8 @@ private:
     Menus::MainContextMenu * m_mainContextMenu;
 
     bool m_gridVisible = false;
+
+    bool m_shadowEffectsDuringDragRemoved = false;
 
     QString m_dropFile {};
 

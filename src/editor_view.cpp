@@ -75,7 +75,7 @@ EditorView::EditorView(Mediator & mediator)
     connect(m_mainContextMenu, &Menus::MainContextMenu::actionTriggered, this, &EditorView::actionTriggered);
     connect(m_mainContextMenu, &Menus::MainContextMenu::newNodeRequested, this, &EditorView::newNodeRequested);
 
-    m_updateShadowEffectsOnZoomTimer.setInterval(Constants::View::TOO_QUICK_ACTION_DELAY_MS);
+    m_updateShadowEffectsOnZoomTimer.setInterval(Constants::View::SHADOW_EFFECT_OPTIMIZATION_UPDATE_DELAY_MS);
     m_updateShadowEffectsOnZoomTimer.setSingleShot(true);
     connect(&m_updateShadowEffectsOnZoomTimer, &QTimer::timeout, this, &EditorView::updateShadowEffectsBasedOnItemVisiblity);
 }
@@ -296,6 +296,7 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
         updateRubberBand();
         break;
     case MouseAction::Action::Scroll:
+        removeShadowEffectsDuringDrag();
         break;
     }
 
@@ -464,10 +465,23 @@ void EditorView::updateScale()
     transform.scale(m_scale, m_scale);
     setTransform(transform);
 
-    if (m_updateShadowEffectsOnZoomTimer.isActive()) {
-        m_updateShadowEffectsOnZoomTimer.stop();
-    }
+    m_updateShadowEffectsOnZoomTimer.stop();
     m_updateShadowEffectsOnZoomTimer.start();
+}
+
+void EditorView::removeShadowEffectsDuringDrag()
+{
+    if (!m_shadowEffectsDuringDragRemoved) {
+        m_shadowEffectsDuringDragRemoved = true;
+
+        // Remove shadow effects from edges as long edges can make dragging stutter
+        const int glitchMargin = rect().width() / Constants::View::SHADOW_EFFECT_OPTIMIZATION_MARGIN_FRACTION;
+        for (auto && item : scene()->items(mapToScene(rect().adjusted(-glitchMargin, -glitchMargin, glitchMargin, glitchMargin)))) {
+            if (const auto edge = dynamic_cast<SceneItems::Edge *>(item); edge) {
+                edge->enableShadowEffect(false);
+            }
+        }
+    }
 }
 
 void EditorView::updateShadowEffectsBasedOnItemVisiblity()
@@ -489,6 +503,8 @@ void EditorView::updateShadowEffectsBasedOnItemVisiblity()
             }
         }
     }
+
+    m_shadowEffectsDuringDragRemoved = false;
 }
 
 void EditorView::updateRubberBand()

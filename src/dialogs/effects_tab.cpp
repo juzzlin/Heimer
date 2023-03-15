@@ -118,6 +118,8 @@ void EffectsTab::initWidgets()
 
     shadowsGroup.second->addWidget(m_selectedItemShadowColorButton);
 
+    shadowsGroup.second->addWidget(WidgetFactory::buildHorizontalLine());
+
     const auto resetToDefaultsButton = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
     shadowsGroup.second->addLayout(resetToDefaultsButton.second);
     connect(resetToDefaultsButton.first, &QPushButton::clicked, this, [=] {

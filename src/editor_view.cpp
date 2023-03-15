@@ -474,7 +474,8 @@ void EditorView::updateShadowEffectsBasedOnItemVisiblity()
 {
     std::unordered_set<SceneItems::SceneItemBase *> enabledItems;
 
-    for (auto && item : scene()->items(mapToScene(rect()))) {
+    const int glitchMargin = rect().width() / Constants::View::SHADOW_EFFECT_OPTIMIZATION_MARGIN_FRACTION;
+    for (auto && item : scene()->items(mapToScene(rect().adjusted(-glitchMargin, -glitchMargin, glitchMargin, glitchMargin)))) {
         if (const auto sceneItem = dynamic_cast<SceneItems::SceneItemBase *>(item); sceneItem) {
             sceneItem->enableShadowEffect(true);
             enabledItems.insert(sceneItem);

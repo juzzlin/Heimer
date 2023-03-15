@@ -79,7 +79,7 @@ void Mediator::addExistingGraphToScene(bool zoomToFitAfterNodesLoaded)
         const auto node0 = getNodeByIndex(edge->sourceNode().index());
         const auto node1 = getNodeByIndex(edge->targetNode().index());
         if (!m_editorScene->hasEdge(*node0, *node1)) {
-            addItem(*edge);
+            addItem(*edge, false);
             edge->setArrowSize(m_editorData->mindMapData()->arrowSize());
             edge->setColor(m_editorData->mindMapData()->edgeColor());
             edge->setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
@@ -129,10 +129,12 @@ void Mediator::addEdge(NodeR node1, NodeR node2)
     addExistingGraphToScene();
 }
 
-void Mediator::addItem(QGraphicsItem & item)
+void Mediator::addItem(QGraphicsItem & item, bool adjustSceneRect)
 {
     m_editorScene->addItem(&item);
-    adjustSceneRect();
+    if (adjustSceneRect) {
+        this->adjustSceneRect();
+    }
 }
 
 void Mediator::addNodeToSelectionGroup(NodeR node, bool isImplicit)

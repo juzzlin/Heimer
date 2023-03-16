@@ -40,6 +40,7 @@ SettingsProxy::SettingsProxy()
       static_cast<int>(Settings::V2::getNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_SELECTED_ITEM_BLUR_RADIUS_SETTINGS_KEY, Constants::Effects::Defaults::SELECTED_ITEM_SHADOW_EFFECT_BLUR_RADIUS)),
       Settings::V2::getColor(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_SHADOW_COLOR_SETTINGS_KEY, Constants::Effects::Defaults::SHADOW_EFFECT_SHADOW_COLOR),
       Settings::V2::getColor(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR_SETTINGS_KEY, Constants::Effects::Defaults::SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR))
+  , m_optimizeShadowEffects(Settings::V2::getBoolean(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::OPTIMIZE_SHADOW_EFFECTS_SETTINGS_KEY, true))
 {
 }
 
@@ -252,6 +253,19 @@ void SettingsProxy::setShadowEffect(const ShadowEffectParams & params)
         Settings::V2::setNumber(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_SELECTED_ITEM_BLUR_RADIUS_SETTINGS_KEY, params.selectedItemBlurRadius);
         Settings::V2::setColor(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_SHADOW_COLOR_SETTINGS_KEY, params.shadowColor);
         Settings::V2::setColor(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR_SETTINGS_KEY, params.selectedItemShadowColor);
+    }
+}
+
+bool SettingsProxy::optimizeShadowEffects() const
+{
+    return m_optimizeShadowEffects;
+}
+
+void SettingsProxy::setOptimizeShadowEffects(bool optimizeShadowEffects)
+{
+    if (m_optimizeShadowEffects != optimizeShadowEffects) {
+        m_optimizeShadowEffects = optimizeShadowEffects;
+        Settings::V2::setBoolean(Constants::Effects::EFFECTS_SETTINGS_GROUP, Constants::Effects::OPTIMIZE_SHADOW_EFFECTS_SETTINGS_KEY, optimizeShadowEffects);
     }
 }
 

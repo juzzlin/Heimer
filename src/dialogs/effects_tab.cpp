@@ -23,6 +23,7 @@
 #include "../core/settings_proxy.hpp"
 #include "../core/shadow_effect_params.hpp"
 
+#include <QCheckBox>
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -39,6 +40,7 @@ EffectsTab::EffectsTab(QString name, QWidget * parent)
   , m_selectedItemShadowBlurRadiusSpinBox(new QSpinBox(this))
   , m_shadowColorButton(new ColorSettingButton(tr("Shadow color"), ColorDialog::Role::ShadowColor, this))
   , m_selectedItemShadowColorButton(new ColorSettingButton(tr("Selected item shadow color"), ColorDialog::Role::SelectedItemShadowColor, this))
+  , m_optimizeShadowsCheckBox(new QCheckBox(tr("Optimize shadow effects"), this))
 {
     m_shadowOffsetSpinBox->setMinimum(Constants::Effects::SHADOW_EFFECT_MIN_OFFSET);
     m_shadowOffsetSpinBox->setMaximum(Constants::Effects::SHADOW_EFFECT_MAX_OFFSET);
@@ -51,6 +53,8 @@ EffectsTab::EffectsTab(QString name, QWidget * parent)
     m_selectedItemShadowBlurRadiusSpinBox->setMinimum(Constants::Effects::SHADOW_EFFECT_MIN_BLUR_RADIUS);
     m_selectedItemShadowBlurRadiusSpinBox->setMaximum(Constants::Effects::SHADOW_EFFECT_MAX_BLUR_RADIUS);
     m_selectedItemShadowBlurRadiusSpinBox->setValue(settingsProxy().shadowEffect().selectedItemBlurRadius);
+
+    m_optimizeShadowsCheckBox->setChecked(settingsProxy().optimizeShadowEffects());
 
     initWidgets();
 
@@ -83,6 +87,8 @@ void EffectsTab::apply(const ShadowEffectParams & params)
         settingsProxy().setShadowEffect(params);
         emit shadowEffectChanged(params);
     }
+
+    settingsProxy().setOptimizeShadowEffects(m_optimizeShadowsCheckBox->isChecked());
 }
 
 void EffectsTab::initWidgets()
@@ -117,6 +123,11 @@ void EffectsTab::initWidgets()
     shadowsGroup.second->addLayout(selectedItemBlurRadiusLayout);
 
     shadowsGroup.second->addWidget(m_selectedItemShadowColorButton);
+
+    shadowsGroup.second->addWidget(WidgetFactory::buildHorizontalLine());
+
+    shadowsGroup.second->addWidget(m_optimizeShadowsCheckBox);
+    m_optimizeShadowsCheckBox->setToolTip(tr("Optimizing shadow effects makes the performance better, but might introduce some visual glitches."));
 
     shadowsGroup.second->addWidget(WidgetFactory::buildHorizontalLine());
 

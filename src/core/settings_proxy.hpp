@@ -89,6 +89,10 @@ public:
 
     void setShadowEffect(const ShadowEffectParams & params);
 
+    bool optimizeShadowEffects() const;
+
+    void setOptimizeShadowEffects(bool optimizeShadowEffects);
+
     int textSize() const;
 
     void setTextSize(int textSize);
@@ -133,6 +137,8 @@ private:
     QFont m_font;
 
     ShadowEffectParams m_shadowEffectParams;
+
+    bool m_optimizeShadowEffects = true;
 };
 
 } // namespace Core

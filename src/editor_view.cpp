@@ -36,6 +36,7 @@
 #include "node_action.hpp"
 
 #include "core/mind_map_data.hpp"
+#include "core/settings_proxy.hpp"
 #include "core/single_instance_container.hpp"
 
 #include "menus/edge_context_menu.hpp"
@@ -471,14 +472,17 @@ void EditorView::updateScale()
 
 void EditorView::removeShadowEffectsDuringDrag()
 {
-    if (!m_shadowEffectsDuringDragRemoved) {
-        m_shadowEffectsDuringDragRemoved = true;
+    if (Core::SingleInstanceContainer::instance().settingsProxy().optimizeShadowEffects()) {
 
-        // Remove shadow effects from edges as long edges can make dragging stutter
-        const int glitchMargin = rect().width() / Constants::View::SHADOW_EFFECT_OPTIMIZATION_MARGIN_FRACTION;
-        for (auto && item : scene()->items(mapToScene(rect().adjusted(-glitchMargin, -glitchMargin, glitchMargin, glitchMargin)))) {
-            if (const auto edge = dynamic_cast<SceneItems::Edge *>(item); edge) {
-                edge->enableShadowEffect(false);
+        if (!m_shadowEffectsDuringDragRemoved) {
+            m_shadowEffectsDuringDragRemoved = true;
+
+            // Remove shadow effects from edges as long edges can make dragging stutter
+            const int glitchMargin = rect().width() / Constants::View::SHADOW_EFFECT_OPTIMIZATION_MARGIN_FRACTION;
+            for (auto && item : scene()->items(mapToScene(rect().adjusted(-glitchMargin, -glitchMargin, glitchMargin, glitchMargin)))) {
+                if (const auto edge = dynamic_cast<SceneItems::Edge *>(item); edge) {
+                    edge->enableShadowEffect(false);
+                }
             }
         }
     }
@@ -496,10 +500,12 @@ void EditorView::updateShadowEffectsBasedOnItemVisiblity()
         }
     }
 
-    for (auto && item : scene()->items()) {
-        if (const auto sceneItem = dynamic_cast<SceneItems::SceneItemBase *>(item); sceneItem) {
-            if (!enabledItems.count(sceneItem)) {
-                sceneItem->enableShadowEffect(false);
+    if (Core::SingleInstanceContainer::instance().settingsProxy().optimizeShadowEffects()) {
+        for (auto && item : scene()->items()) {
+            if (const auto sceneItem = dynamic_cast<SceneItems::SceneItemBase *>(item); sceneItem) {
+                if (!enabledItems.count(sceneItem)) {
+                    sceneItem->enableShadowEffect(false);
+                }
             }
         }
     }

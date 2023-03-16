@@ -323,6 +323,8 @@ static const auto SHADOW_EFFECT_SHADOW_COLOR_SETTINGS_KEY = "shadowEffectShadowC
 
 static const auto SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR_SETTINGS_KEY = "shadowEffectSelectedItemShadowColor";
 
+static const auto OPTIMIZE_SHADOW_EFFECTS_SETTINGS_KEY = "optimizeShadowEffects";
+
 } // namespace Effects
 
 } // namespace Constants

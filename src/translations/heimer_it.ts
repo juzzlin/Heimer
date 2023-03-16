@@ -396,34 +396,44 @@
 <context>
     <name>Dialogs::EffectsTab</name>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="40"/>
+        <location filename="../dialogs/effects_tab.cpp" line="41"/>
         <source>Shadow color</source>
         <translation>Colore dell&apos;ombra</translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="41"/>
+        <location filename="../dialogs/effects_tab.cpp" line="42"/>
         <source>Selected item shadow color</source>
         <translation>Colore ombra oggetto selezionato</translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="91"/>
+        <location filename="../dialogs/effects_tab.cpp" line="43"/>
+        <source>Optimize shadow effects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/effects_tab.cpp" line="97"/>
         <source>Shadows</source>
         <translation>Ombre</translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="94"/>
+        <location filename="../dialogs/effects_tab.cpp" line="100"/>
         <source>Shadow effect offset:</source>
         <translation>Compensazione dell&apos;effetto ombra:</translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="102"/>
+        <location filename="../dialogs/effects_tab.cpp" line="108"/>
         <source>Shadow blur radius:</source>
         <translation>Raggio sfocatura ombra:</translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="112"/>
+        <location filename="../dialogs/effects_tab.cpp" line="118"/>
         <source>Selected item shadow blur radius:</source>
         <translation>Raggio di sfocatura dell&apos;ombra dell&apos;oggetto selezionato:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/effects_tab.cpp" line="130"/>
+        <source>Optimizing shadow effects makes the performance better, but might introduce some visual glitches.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

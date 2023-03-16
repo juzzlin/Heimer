@@ -428,7 +428,7 @@
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="43"/>
         <source>Optimize shadow effects</source>
-        <translation type="unfinished"></translation>
+        <translation>Optimoi varjoefektit</translation>
     </message>
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="97"/>
@@ -453,7 +453,7 @@
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="130"/>
         <source>Optimizing shadow effects makes the performance better, but might introduce some visual glitches.</source>
-        <translation type="unfinished"></translation>
+        <translation>Varjoefektien optimointi parantaa suorituskykyä, mutta saattaa aiheuttaa vääristymiä.</translation>
     </message>
 </context>
 <context>
@@ -486,7 +486,7 @@
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="96"/>
         <source>From layout</source>
-        <translation type="unfinished">Sijoittelusta</translation>
+        <translation>Sijoittelusta</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="97"/>
@@ -496,7 +496,7 @@
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="103"/>
         <source>From view</source>
-        <translation type="unfinished">Näkymästä</translation>
+        <translation>Näkymästä</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="104"/>
@@ -516,7 +516,7 @@
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="123"/>
         <source>Min from layout</source>
-        <translation type="unfinished">Minimi</translation>
+        <translation>Minimi</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="127"/>
@@ -526,7 +526,7 @@
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="130"/>
         <source>Max from layout</source>
-        <translation type="unfinished">Maksimi</translation>
+        <translation>Maksimi</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="134"/>
@@ -536,7 +536,7 @@
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="137"/>
         <source>Avg from layout</source>
-        <translation type="unfinished">Keskipituus</translation>
+        <translation>Keskipituus</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="141"/>

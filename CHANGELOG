@@ -1,9 +1,21 @@
-x.y.z
+4.1.0
 =====
 
 Release date:
 
+Fri, 17 Mar 2023 19:48:40 -0000
+
 New features:
+
+* Add setting for shadow effect optimization
+
+* Layout optimization
+  - Allow bigger aspect ratio
+  - Allow longer edges
+
+* Darker default outline for nodes
+
+* Add subtle outline for edge labels
 
 Bug fixes:
 
@@ -12,6 +24,14 @@ Bug fixes:
 * Fix GitHub Issue #239: Cannot drag if the drag position is inside the virtual rectangle spanned by an edge
 
 Other:
+
+* Update Italian translations
+
+* Update Dutch translations
+
+* Performance
+  - Don't update scene rect when adding edges
+  - Remove shadow effects from edges as long edges can make dragging stutter
 
 4.0.0
 =====

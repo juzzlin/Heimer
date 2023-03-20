@@ -477,11 +477,15 @@ void EditorView::removeShadowEffectsDuringDrag()
         if (!m_shadowEffectsDuringDragRemoved) {
             m_shadowEffectsDuringDragRemoved = true;
 
-            // Remove shadow effects from edges as long edges can make dragging stutter
-            const int glitchMargin = rect().width() / Constants::View::SHADOW_EFFECT_OPTIMIZATION_MARGIN_FRACTION;
-            for (auto && item : scene()->items(mapToScene(rect().adjusted(-glitchMargin, -glitchMargin, glitchMargin, glitchMargin)))) {
+            // Remove shadow effects from edges that are not completely visible while dragging.
+            // We can assume that the effects of off-screen items have already been removed in
+            // updateShadowEffectsBasedOnItemVisiblity().
+            const auto mappedViewRect = mapToScene(rect());
+            for (auto && item : scene()->items(mappedViewRect, Qt::IntersectsItemShape)) {
                 if (const auto edge = dynamic_cast<SceneItems::Edge *>(item); edge) {
-                    edge->enableShadowEffect(false);
+                    if (!mappedViewRect.boundingRect().contains(edge->sceneBoundingRect().toRect())) {
+                        edge->enableShadowEffect(false);
+                    }
                 }
             }
         }

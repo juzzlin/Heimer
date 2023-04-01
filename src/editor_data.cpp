@@ -535,6 +535,11 @@ NodeP EditorData::selectedNode() const
     return m_selectionGroup->selectedNode();
 }
 
+std::vector<NodeP> EditorData::selectedNodes() const
+{
+    return m_selectionGroup->nodes();
+}
+
 size_t EditorData::selectionGroupSize() const
 {
     return m_selectionGroup->size();

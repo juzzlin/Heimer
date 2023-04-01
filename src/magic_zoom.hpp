@@ -19,13 +19,19 @@
 #include <QList>
 #include <QRectF>
 
+#include <vector>
+
+#include "types.hpp"
+
 class QGraphicsItem;
 
 namespace MagicZoom {
 
 using ItemList = QList<QGraphicsItem *>;
+QRectF calculateRectangleByItems(const ItemList & items, bool isForExport = false);
 
-QRectF calculateRectangle(const ItemList & items, bool isForExport);
+using NodeList = std::vector<NodeP>;
+QRectF calculateRectangleByNodes(const NodeList & nodes, bool isForExport = false);
 
 } // namespace MagicZoom
 

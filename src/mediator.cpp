@@ -19,6 +19,7 @@
 #include "editor_scene.hpp"
 #include "editor_view.hpp"
 #include "image_manager.hpp"
+#include "magic_zoom.hpp"
 #include "main_window.hpp"
 #include "mouse_action.hpp"
 #include "node_action.hpp"
@@ -793,6 +794,11 @@ void Mediator::setSelectedEdge(EdgeP edge)
 void Mediator::setSearchText(QString text)
 {
     m_editorData->selectNodesByText(text);
+    if (const auto selectedNodes = m_editorData->selectedNodes(); selectedNodes.size()) {
+        m_editorView->zoomToFit(MagicZoom::calculateRectangleByNodes(selectedNodes));
+    } else {
+        zoomToFit();
+    }
     updateNodeConnectionActions();
 }
 

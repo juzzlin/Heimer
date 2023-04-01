@@ -22,16 +22,26 @@
 
 #include <cmath>
 
-QRectF MagicZoom::calculateRectangle(const ItemList & items, bool isForExport)
+QRectF MagicZoom::calculateRectangleByItems(const ItemList & items, bool isForExport)
+{
+    NodeList nodes;
+    for (auto && item : items) {
+        if (const auto node = dynamic_cast<NodeP>(item); node) {
+            nodes.push_back(node);
+        }
+    }
+
+    return calculateRectangleByNodes(nodes, isForExport);
+}
+
+QRectF MagicZoom::calculateRectangleByNodes(const NodeList & nodes, bool isForExport)
 {
     double nodeArea = 0;
     QRectF rect;
-    for (auto && item : items) {
-        if (const auto node = dynamic_cast<NodeP>(item)) {
-            const auto nodeRect = node->placementBoundingRect();
-            rect = rect.united(nodeRect.translated(node->pos().x(), node->pos().y()));
-            nodeArea += nodeRect.width() * nodeRect.height();
-        }
+    for (auto && node : nodes) {
+        const auto nodeRect = node->placementBoundingRect();
+        rect = rect.united(nodeRect.translated(node->pos().x(), node->pos().y()));
+        nodeArea += nodeRect.width() * nodeRect.height();
     }
 
     const int margin = 60;

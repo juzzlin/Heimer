@@ -232,11 +232,11 @@ void EditorView::mouseDoubleClickEvent(QMouseEvent * event)
     if (const auto result = ItemFilter::getFirstItemAtPosition(*scene(), clickedScenePos, Constants::View::CLICK_TOLERANCE); result.success) {
         if (result.node) {
             juzzlin::L().debug() << "Node double-clicked";
-            zoomToFit(MagicZoom::calculateRectangle({ result.node }, false));
+            zoomToFit(MagicZoom::calculateRectangleByItems({ result.node }, false));
         } else if (result.nodeTextEdit) {
             if (const auto node = dynamic_cast<NodeP>(result.nodeTextEdit->parentItem()); node) {
                 juzzlin::L().debug() << "Node text edit double-clicked";
-                zoomToFit(MagicZoom::calculateRectangle({ node }, false));
+                zoomToFit(MagicZoom::calculateRectangleByItems({ node }, false));
             }
         }
     } else {

@@ -13,6 +13,8 @@ Bug fixes:
 
 Other:
 
+* Don't zoom to fit on cleared search if used has unselected all nodes
+
 4.1.0
 =====
 

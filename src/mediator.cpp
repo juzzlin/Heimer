@@ -793,12 +793,19 @@ void Mediator::setSelectedEdge(EdgeP edge)
 
 void Mediator::setSearchText(QString text)
 {
-    m_editorData->selectNodesByText(text);
-    if (const auto selectedNodes = m_editorData->selectedNodes(); selectedNodes.size()) {
-        m_editorView->zoomToFit(MagicZoom::calculateRectangleByNodes(selectedNodes));
+    // Leave zoom setting as it is if user has cleared selected nodes and search field.
+    // Otherwise zoom in to search results and select matching texts.
+    if (text.isEmpty() && !m_editorData->selectionGroupSize()) {
+        m_editorData->selectNodesByText("");
     } else {
-        zoomToFit();
+        m_editorData->selectNodesByText(text);
+        if (const auto selectedNodes = m_editorData->selectedNodes(); selectedNodes.size()) {
+            m_editorView->zoomToFit(MagicZoom::calculateRectangleByNodes(selectedNodes));
+        } else {
+            zoomToFit();
+        }
     }
+
     updateNodeConnectionActions();
 }
 

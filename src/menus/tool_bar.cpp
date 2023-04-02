@@ -86,6 +86,8 @@ ToolBar::ToolBar(QWidget * parent)
     addWidget(m_copyOnDragCheckBox);
 
     m_autoSnapCheckBox->setToolTip(tr("Automatically snap existing nodes to the grid when grid size changes"));
+
+    m_searchLineEdit->setClearButtonEnabled(true);
 }
 
 bool ToolBar::autoSnapEnabled() const

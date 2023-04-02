@@ -14,13 +14,16 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "node_test.hpp"
-#include "test_mode.hpp"
 
-#include "../../node.hpp"
+#include "../../core/test_mode.hpp"
+
+#include "../../scene_items/node.hpp"
+
+using SceneItems::Node;
 
 NodeTest::NodeTest()
 {
-    TestMode::setEnabled(true);
+    Core::TestMode::setEnabled(true);
 }
 
 void NodeTest::testContainsText()

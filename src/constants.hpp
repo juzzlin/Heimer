@@ -19,6 +19,8 @@
 #include <QColor>
 #include <QVector>
 
+#include "io/alz_file_io_version.hpp"
+
 namespace Constants {
 
 namespace Application {
@@ -33,7 +35,9 @@ static constexpr auto APPLICATION_PACKAGE_TYPE = PACKAGE_TYPE;
 
 static constexpr auto APPLICATION_VERSION = VERSION;
 
-static constexpr auto COPYRIGHT = "Copyright (c) 2018-2021 Jussi Lind";
+static constexpr auto ALZ_FORMAT_VERSION = IO::AlzFormatVersion::V2;
+
+static constexpr auto COPYRIGHT = "Copyright (c) 2018-2023 Jussi Lind";
 
 static constexpr auto FILE_EXTENSION = ".alz";
 
@@ -43,6 +47,8 @@ static constexpr auto WEB_SITE_URL = "http://juzzlin.github.io/Heimer";
 
 static constexpr auto QSETTINGS_SOFTWARE_NAME = APPLICATION_NAME;
 
+static constexpr auto RELEASES_URL = "https://github.com/juzzlin/Heimer/releases";
+
 static constexpr auto SUPPORT_SITE_URL = "https://paypal.me/juzzlin";
 
 static constexpr auto TRANSLATIONS_RESOURCE_BASE = ":/translations/heimer_";
@@ -51,13 +57,19 @@ static constexpr auto TRANSLATIONS_RESOURCE_BASE = ":/translations/heimer_";
 
 namespace Edge {
 
-static const double ARROW_LENGTH = 10;
+namespace Defaults {
+
+static const double ARROW_SIZE = 20;
+
+} // namespace Defaults
+
+static const double ARROW_SIZE_STEP = 5;
 
 static const double ARROW_OPENING = 150;
 
 static const double CORNER_RADIUS_SCALE = 0.3;
 
-static const QVector DASH_PATTERN { qreal(5), qreal(5) };
+static const QVector<qreal> DASH_PATTERN { qreal(5), qreal(5) };
 
 static const QColor DOT_COLOR { 255, 0, 0, 192 };
 
@@ -69,11 +81,15 @@ static const QColor LABEL_COLOR { 0xff, 0xee, 0xaa };
 
 static const int LABEL_DURATION = 2000;
 
-static const double MIN_SIZE = 0.1;
+static const double MIN_ARROW_SIZE = 5;
 
-static const double MAX_SIZE = 5.0;
+static const double MAX_ARROW_SIZE = 99;
 
-static const double STEP = 0.1;
+static const double MIN_EDGE_WIDTH = 0.1;
+
+static const double MAX_EDGE_WIDTH = 5.0;
+
+static const double EDGE_WIDTH_STEP = 0.25;
 
 static const int TEXT_EDIT_ANIMATION_DURATION = 150;
 
@@ -87,7 +103,7 @@ namespace Export {
 
 namespace Png {
 
-static const QString FILE_EXTENSION = ".png";
+static const auto FILE_EXTENSION = ".png";
 
 static const int MIN_IMAGE_SIZE = 0;
 
@@ -97,7 +113,7 @@ static const int MAX_IMAGE_SIZE = 99999;
 
 namespace Svg {
 
-static const QString FILE_EXTENSION = ".svg";
+static const auto FILE_EXTENSION = ".svg";
 
 } // namespace Svg
 
@@ -113,15 +129,43 @@ static const int MAX_SIZE = 500;
 
 namespace MindMap {
 
-static const QColor DEFAULT_BACKGROUND_COLOR { 0xba, 0xbd, 0xb6 };
+namespace Defaults {
 
-static const QColor DEFAULT_EDGE_COLOR { 0, 0, 0, 200 };
+const auto SETTINGS_GROUP = "Defaults";
 
-static const QColor DEFAULT_GRID_COLOR { Qt::gray };
+static const auto ARROW_SIZE_SETTINGS_KEY = "arrowSize";
 
-static const double DEFAULT_EDGE_WIDTH = 2.0;
+static const QColor BACKGROUND_COLOR { 0xba, 0xbd, 0xb6 };
 
-static const int DEFAULT_TEXT_SIZE = 11;
+static const auto BACKGROUND_COLOR_SETTINGS_KEY = "backgroundColor";
+
+static const QColor EDGE_COLOR { 0, 0, 0, 200 };
+
+static const auto EDGE_COLOR_SETTINGS_KEY = "edgeColor";
+
+static const auto EDGE_WIDTH_SETTINGS_KEY = "edgeWidth";
+
+static const auto FONT_SETTINGS_KEY = "font";
+
+static const QColor GRID_COLOR { Qt::gray };
+
+static const auto GRID_COLOR_SETTINGS_KEY = "gridColor";
+
+static const QColor NODE_COLOR { Qt::white };
+
+static const auto NODE_COLOR_SETTINGS_KEY = "nodeColor";
+
+static const QColor NODE_TEXT_COLOR { Qt::black };
+
+static const auto NODE_TEXT_COLOR_SETTINGS_KEY = "nodeTextColor";
+
+static const double EDGE_WIDTH = 1.0;
+
+static const int TEXT_SIZE = 14;
+
+static const auto TEXT_SIZE_SETTINGS_KEY = "textSize";
+
+} // namespace Defaults
 
 } // namespace MindMap
 
@@ -133,7 +177,13 @@ static const auto THREE_DOTS = "...";
 
 namespace Node {
 
-static const int DEFAULT_CORNER_RADIUS = 5;
+namespace Defaults {
+
+static const int CORNER_RADIUS = 5;
+
+} // namespace Defaults
+
+static const int SCALE_ANIMATION_DURATION = 75;
 
 static const int HANDLE_ANIMATION_DURATION = 150;
 
@@ -157,7 +207,9 @@ static const int MIN_HEIGHT = 75;
 
 static const int MIN_WIDTH = 200;
 
-static const QColor TEXT_EDIT_BACKGROUND_COLOR { 0x00, 0x00, 0x00, 0x10 };
+static const QColor TEXT_EDIT_BACKGROUND_COLOR_DARK { 0x00, 0x00, 0x00, 0x10 };
+
+static const QColor TEXT_EDIT_BACKGROUND_COLOR_LIGHT { 0xff, 0xff, 0xff, 0x10 };
 
 } // namespace Node
 
@@ -165,25 +217,29 @@ namespace RecentFiles {
 
 static const int MAX_FILES = 8;
 
-static const QString QSETTINGS_ARRAY_KEY = "recentFilesArray";
+static const auto QSETTINGS_ARRAY_KEY = "recentFilesArray";
 
-static const QString QSETTINGS_FILE_PATH_KEY = "filePath";
+static const auto QSETTINGS_FILE_PATH_KEY = "filePath";
 
 } // namespace RecentFiles
 
 namespace LayoutOptimizer {
 
-static const int DEFAULT_MIN_EDGE_LENGTH = 100;
+namespace Defaults {
+
+static const int MIN_EDGE_LENGTH = 100;
+
+static const double ASPECT_RATIO = 1.0;
+
+} // namespace Defaults
 
 static const double MIN_EDGE_LENGTH = 10;
 
-static const double MAX_EDGE_LENGTH = 250;
+static const double MAX_EDGE_LENGTH = 1000;
 
-static const double DEFAULT_ASPECT_RATIO = 1.0;
+static const double MIN_ASPECT_RATIO = 0.01;
 
-static const double MIN_ASPECT_RATIO = 0.1;
-
-static const double MAX_ASPECT_RATIO = 10;
+static const double MAX_ASPECT_RATIO = 100;
 
 } // namespace LayoutOptimizer
 
@@ -207,9 +263,17 @@ static const int MAX_SIZE = 72;
 
 namespace View {
 
+const auto EDITING_SETTINGS_GROUP = "Editing";
+
+const auto INVERTED_CONTROLS_SETTINGS_KEY = "invertedControls";
+
 static const int CLICK_TOLERANCE = 5;
 
 static const double DRAG_NODE_OPACITY = 0.5;
+
+static const int SHADOW_EFFECT_OPTIMIZATION_MARGIN_FRACTION = 20;
+
+static const int SHADOW_EFFECT_OPTIMIZATION_UPDATE_DELAY_MS = 250;
 
 static const int TEXT_SEARCH_DELAY_MS = 250;
 
@@ -222,6 +286,46 @@ static const double ZOOM_MIN = .02;
 static const double ZOOM_SENSITIVITY = 1.1;
 
 } // namespace View
+
+namespace Effects {
+
+namespace Defaults {
+
+static const int SHADOW_EFFECT_OFFSET = 3;
+
+static const int SHADOW_EFFECT_BLUR_RADIUS = 5;
+
+static const int SELECTED_ITEM_SHADOW_EFFECT_BLUR_RADIUS = 50;
+
+static const QColor SHADOW_EFFECT_SHADOW_COLOR = { 96, 96, 96 };
+
+static const QColor SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR = { 255, 0, 0 };
+
+} // namespace Defaults
+
+static const auto EFFECTS_SETTINGS_GROUP = "Effects";
+
+static const int SHADOW_EFFECT_MAX_OFFSET = 10;
+
+static const int SHADOW_EFFECT_MIN_OFFSET = 0;
+
+static const int SHADOW_EFFECT_MAX_BLUR_RADIUS = 100;
+
+static const int SHADOW_EFFECT_MIN_BLUR_RADIUS = 0;
+
+static const auto SHADOW_EFFECT_OFFSET_SETTINGS_KEY = "shadowEffectOffset";
+
+static const auto SHADOW_EFFECT_NORMAL_BLUR_RADIUS_SETTINGS_KEY = "shadowEffectBlurRadius";
+
+static const auto SHADOW_EFFECT_SELECTED_ITEM_BLUR_RADIUS_SETTINGS_KEY = "shadowEffectSelectedItemBlurRadius";
+
+static const auto SHADOW_EFFECT_SHADOW_COLOR_SETTINGS_KEY = "shadowEffectShadowColor";
+
+static const auto SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR_SETTINGS_KEY = "shadowEffectSelectedItemShadowColor";
+
+static const auto OPTIMIZE_SHADOW_EFFECTS_SETTINGS_KEY = "optimizeShadowEffects";
+
+} // namespace Effects
 
 } // namespace Constants
 

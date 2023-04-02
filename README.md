@@ -2,9 +2,9 @@
 
 Heimer is a desktop application for creating mind maps and other suitable diagrams. It's written in Qt and targeted for Linux and Windows.
 
-Here is a simple mind map of Heimer itself running on Ubuntu 18.04:
+Here is a simple mind map of Heimer itself running on Ubuntu 20.04:
 
-![Heimer screenshot](/screenshots/1.14.0/Heimer.png?raw=true)
+![Heimer screenshot](/screenshots/3.6.2/Heimer.png?raw=true)
 
 <a href="https://www.youtube.com/watch?feature=player_embedded&v=NXJp6tmmZdE">A very short introduction video to Heimer 1.9.0</a>
 
@@ -12,7 +12,7 @@ Here is a simple mind map of Heimer itself running on Ubuntu 18.04:
 
 * Adjustable grid
 * <a href="https://www.youtube.com/watch?feature=player_embedded&v=acQ8CpaCayk">Automatic layout optimization</a>
-* Autosave
+* Autoload & Autosave
 * Easy-to-use UI
 * Export to PNG or SVG
 * Forever 100% free
@@ -20,7 +20,7 @@ Here is a simple mind map of Heimer itself running on Ubuntu 18.04:
 * Nice animations
 * Quickly add node text and edge labels
 * Save/load in XML-based .ALZ-files
-* Translations in English (default), Chinese, Dutch, Finnish, French, Italian, Spanish
+* Translations in English (default), Chinese, Dutch, Finnish, French, German, Italian, Spanish
 * Very fast
 * Zoom in/out/fit
 * Zoom with mouse wheel
@@ -31,7 +31,7 @@ It takes a lot of effort to develop and maintain Heimer, so if you find the appl
 
 It's easy to donate via PayPal:
 
-<a href="https://paypal.me/pools/c/8yvW5nEMmq">paypal.me/pools/c/8yvW5nEMmq</a>
+<a href="https://paypal.me/juzzlin">paypal.me/juzzlin</a>
 
 Thanks! :)
 
@@ -53,6 +53,10 @@ On Linux distributions that support universal Snap packages you can install Heim
 
 `$ snap install heimer`
 
+Run:
+
+`$ heimer`
+
 For more information see https://snapcraft.io/heimer and https://docs.snapcraft.io/core/install
 
 Snap is the recommended way to install Heimer on Linux.
@@ -62,6 +66,10 @@ Snap is the recommended way to install Heimer on Linux.
 There are Debian packages for Ubuntu/Debian. Use some graphical tool to install, or as an example on `Ubuntu 20.04`:
 
 `$ sudo apt install ./heimer-2.5.0-ubuntu-20.04_amd64.deb`
+
+Run:
+
+`$ heimer`
 
 ### Linux: AppImage
 
@@ -79,9 +87,25 @@ Run:
 
 For Windows there's an installer and alternatively a ZIP-archive that just contains the Heimer executable.
 
+## Setting the language
+
+You can set the language manually with `--lang` option. For example, Finnish:
+
+`$ heimer --lang fi`
+
+Show all available options:
+
+`$ heimer -h`
+
 ## Building the project
 
 Currently the build depends on `Qt 5` only (`qt5-default`, `qttools5-dev-tools`, `qttools5-dev`, `libqt5svg5-dev` packages on Ubuntu). Support for `Qt 6` is preliminary and should work with `CMake`.
+
+In the case of missing `qt5-default`, install these packages manually: `qtbase5-dev`, `qtchooser`, `qt5-qmake`, `qtbase5-dev-tools`.
+
+Command to install all (at least most) needed dev packages on Ubuntu:
+
+`$ sudo apt install build-essential cmake qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools qttools5-dev-tools qttools5-dev libqt5svg5-dev`
 
 ### Linux / Unix
 
@@ -119,7 +143,7 @@ This is so very cool! A Windowsless Windows build!
 
 Anyway, as the project depends only on Qt SDK you can use your favourite Qt setup to build the project on Windows.
 
-### Docker environments
+### Docker environment files
 
 Needed Dockerfiles can be found at https://github.com/juzzlin/Dockerfiles
 

@@ -27,22 +27,34 @@
 #include <map>
 #include <memory>
 
-class AboutDlg;
+namespace Dialogs {
+class AboutDialog;
 class SettingsDialog;
+class SpinnerDialog;
+class WhatsNewDialog;
+} // namespace Dialogs
+
+namespace Menus {
+class ToolBar;
+} // namespace Menus
+
+class ControlStrategy;
 class EditorData;
 class EditorView;
 class Mediator;
 class Node;
+
 class QAction;
 class QCheckBox;
 class QFont;
+class QLabel;
 class QLineEdit;
 class QSlider;
 class QSpinBox;
 class QTextEdit;
 class QWidgetAction;
-class ToolBar;
-class WhatsNewDlg;
+
+struct ShadowEffectParams;
 
 class MainWindow : public QMainWindow
 {
@@ -82,7 +94,6 @@ public:
     void setTitle();
 
 public slots:
-
     void changeFont(const QFont & font);
 
     void enableUndo(bool enable);
@@ -90,6 +101,8 @@ public slots:
     void enableRedo(bool enable);
 
     void enableSave(bool enable);
+
+    void setArrowSize(double value);
 
     void setCornerRadius(int value);
 
@@ -99,12 +112,17 @@ public slots:
 
     void showErrorDialog(QString message);
 
+    void showSpinnerDialog(bool show, QString message = {});
+
 protected:
     void closeEvent(QCloseEvent * event) override;
 
 signals:
-
     void actionTriggered(StateMachine::Action action);
+
+    void arrowSizeChanged(double arrowSize);
+
+    void autosaveEnabled(bool enabled);
 
     void cornerRadiusChanged(int size);
 
@@ -117,6 +135,8 @@ signals:
     void gridVisibleChanged(int state);
 
     void searchTextChanged(QString text);
+
+    void shadowEffectChanged(const ShadowEffectParams & params);
 
     void textSizeChanged(int value);
 
@@ -137,6 +157,8 @@ private:
 
     std::pair<QSize, QSize> calculateDefaultWindowSize() const;
 
+    void createColorSubMenu(QMenu & editMenu);
+
     void createEditMenu();
 
     void createExportSubMenu(QMenu & fileMenu);
@@ -145,19 +167,23 @@ private:
 
     void createHelpMenu();
 
+    void createMirrorSubMenu(QMenu & editMenu);
+
     void connectToolBar();
 
     void createViewMenu();
 
     void populateMenuBar();
 
-    AboutDlg * m_aboutDlg;
+    Dialogs::AboutDialog * m_aboutDlg;
 
-    SettingsDialog * m_settingsDlg;
+    Dialogs::SettingsDialog * m_settingsDlg;
 
-    ToolBar * m_toolBar;
+    Dialogs::SpinnerDialog * m_spinnerDlg;
 
-    WhatsNewDlg * m_whatsNewDlg;
+    Menus::ToolBar * m_toolBar;
+
+    Dialogs::WhatsNewDialog * m_whatsNewDlg;
 
     QAction * m_connectSelectedNodesAction = nullptr;
 
@@ -178,6 +204,10 @@ private:
     std::shared_ptr<Mediator> m_mediator;
 
     bool m_closeNow = false;
+
+    QLabel * m_statusText;
+
+    ControlStrategy & m_controlStrategy;
 
     static MainWindow * m_instance;
 };

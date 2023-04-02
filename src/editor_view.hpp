@@ -16,21 +16,23 @@
 #ifndef EDITOR_VIEW_HPP
 #define EDITOR_VIEW_HPP
 
+#include "constants.hpp"
 #include "grid.hpp"
-#include "main_context_menu.hpp"
 #include "state_machine.hpp"
+#include "types.hpp"
+
+#include "menus/main_context_menu.hpp"
 
 #include <QColor>
 #include <QGraphicsView>
 #include <QMenu>
+#include <QTimer>
 
+#include <memory>
 #include <optional>
 #include <set>
 
-class Edge;
-class EdgeContextMenu;
-class Node;
-class NodeHandle;
+class ControlStrategy;
 class Mediator;
 class MindMapTile;
 class Object;
@@ -41,6 +43,16 @@ class QPaintEvent;
 class QWheelEvent;
 class QGraphicsSimpleTextItem;
 class QRubberBand;
+
+namespace Menus {
+class EdgeContextMenu;
+}
+
+namespace SceneItems {
+class Edge;
+class Node;
+class NodeHandle;
+} // namespace SceneItems
 
 class EditorView : public QGraphicsView
 {
@@ -59,6 +71,8 @@ public:
 
     void saveZoom();
 
+    void showStatusText(QString statusText);
+
     void zoom(double amount);
 
     void zoomToFit(QRectF nodeBoundingRect);
@@ -66,14 +80,15 @@ public:
     QString dropFile() const;
 
 public slots:
+    void setArrowSize(double arrowSize);
 
     void setCornerRadius(int cornerRadius);
 
     void setEdgeColor(const QColor & edgeColor);
 
-    void setGridColor(const QColor & edgeColor);
-
     void setEdgeWidth(double edgeWidth);
+
+    void setGridColor(const QColor & edgeColor);
 
     void setGridSize(int size);
 
@@ -104,19 +119,22 @@ private:
 
     void handleMousePressEventOnBackground(QMouseEvent & event);
 
-    void handleMousePressEventOnEdge(QMouseEvent & event, Edge & edge);
+    //! \returns true if accepted.
+    bool handleMousePressEventOnEdge(QMouseEvent & event, EdgeR edge);
 
-    void handleMousePressEventOnNode(QMouseEvent & event, Node & node);
+    void handleMousePressEventOnNode(QMouseEvent & event, NodeR node);
 
-    void handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHandle & nodeHandle);
+    void handleMousePressEventOnNodeHandle(QMouseEvent & event, SceneItems::NodeHandle & nodeHandle);
 
-    void handleLeftButtonClickOnNode(Node & node);
+    void handlePrimaryButtonClickOnNode(NodeR node);
 
-    void handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle);
+    void handlePrimaryButtonClickOnNodeHandle(SceneItems::NodeHandle & nodeHandle);
 
-    void handleRightButtonClickOnEdge(Edge & edge);
+    void handleSecondaryButtonClickOnEdge(EdgeR edge);
 
-    void handleRightButtonClickOnNode(Node & node);
+    void handleSecondaryButtonClickOnNode(NodeR node);
+
+    void initiateBackgroundDrag();
 
     void initiateRubberBand();
 
@@ -126,13 +144,17 @@ private:
 
     void openEdgeContextMenu();
 
-    void openMainContextMenu(MainContextMenu::Mode mode);
+    void openMainContextMenu(Menus::MainContextMenu::Mode mode);
+
+    void removeShadowEffectsDuringDrag();
 
     void showDummyDragEdge(bool show);
 
     void showDummyDragNode(bool show);
 
     void updateScale();
+
+    void updateShadowEffectsBasedOnItemVisiblity();
 
     void updateRubberBand();
 
@@ -160,16 +182,19 @@ private:
 
     Mediator & m_mediator;
 
-    std::unique_ptr<Node> m_dummyDragNode;
+    NodeU m_dummyDragNode;
 
-    std::unique_ptr<Edge> m_dummyDragEdge;
+    EdgeU m_dummyDragEdge;
 
-    std::shared_ptr<Node> m_connectionTargetNode;
+    NodeS m_connectionTargetNode;
 
     int m_cornerRadius = 0;
 
+    // Arrow size for the dummy drag edge
+    double m_arrowSize = Constants::Edge::Defaults::ARROW_SIZE;
+
     // Width for the dummy drag edge
-    double m_edgeWidth = 1.5;
+    double m_edgeWidth = Constants::MindMap::Defaults::EDGE_WIDTH;
 
     QColor m_edgeColor;
 
@@ -177,11 +202,13 @@ private:
 
     QRubberBand * m_rubberBand = nullptr;
 
-    EdgeContextMenu * m_edgeContextMenu;
+    Menus::EdgeContextMenu * m_edgeContextMenu;
 
-    MainContextMenu * m_mainContextMenu;
+    Menus::MainContextMenu * m_mainContextMenu;
 
     bool m_gridVisible = false;
+
+    bool m_shadowEffectsDuringDragRemoved = false;
 
     QString m_dropFile {};
 
@@ -195,6 +222,10 @@ private:
     };
 
     std::optional<ZoomParameters> m_savedZoom;
+
+    ControlStrategy & m_controlStrategy;
+
+    QTimer m_updateShadowEffectsOnZoomTimer;
 };
 
 #endif // EDITOR_VIEW_HPP

@@ -1,0 +1,8 @@
+set(EDITOR_DIR ${CMAKE_SOURCE_DIR}/src)
+include_directories(${EDITOR_DIR} ${EDITOR_DIR}/contrib ${CMAKE_CURRENT_SOURCE_DIR})
+set(NAME alz_file_io_test)
+set(SRC ${NAME}.cpp)
+set(EXECUTABLE_OUTPUT_PATH ${UNIT_TEST_BASE_DIR})
+add_executable(${NAME} ${SRC} ${MOC_SRC})
+add_test(${NAME} ${UNIT_TEST_BASE_DIR}/${NAME})
+target_link_libraries(${NAME} ${HEIMER_LIB_NAME} Qt${QT_VERSION_MAJOR}::Xml Qt${QT_VERSION_MAJOR}::Test)

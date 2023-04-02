@@ -15,39 +15,69 @@
 
 #include "selection_group.hpp"
 
-#include "node.hpp"
+#include "scene_items/node.hpp"
 
 #include <algorithm>
 
-void SelectionGroup::addSelectedNode(Node & node)
+void SelectionGroup::addNode(NodeR node, bool isImplicit)
 {
-    if (!m_nodeSet.count(&node)) {
-        m_nodeSet.insert(&node);
+    if (!m_nodeMap.count(&node)) {
+        m_nodeMap[&node] = isImplicit;
         m_nodes.push_back(&node);
         node.setSelected(true);
     }
 }
 
-void SelectionGroup::clear()
+void SelectionGroup::clear(bool onlyImplicitNodes)
+{
+    if (onlyImplicitNodes) {
+        clearOnlyImplicitNodes();
+    } else {
+        clearAll();
+    }
+}
+
+void SelectionGroup::clearAll()
 {
     for (auto && node : m_nodes) {
         node->setSelected(false);
     }
-    m_nodeSet.clear();
+    m_nodeMap.clear();
     m_nodes.clear();
 }
 
-bool SelectionGroup::hasNode(Node & node) const
+void SelectionGroup::clearOnlyImplicitNodes()
 {
-    return m_nodeSet.count(&node);
+    for (auto && node : m_nodes) {
+        if (m_nodeMap.count(node) && m_nodeMap.at(node)) {
+            node->setSelected(false);
+        }
+    }
+    m_nodes.erase(std::remove_if(m_nodes.begin(), m_nodes.end(), [nodeMap = m_nodeMap](auto && node) {
+                      return nodeMap.count(node) && nodeMap.at(node);
+                  }),
+                  m_nodes.end());
+    // Note!!: std::remove_if will work on maps in C++20 ->
+    for (auto iter = m_nodeMap.begin(); iter != m_nodeMap.end();) {
+        if (iter->second) {
+            iter = m_nodeMap.erase(iter);
+        } else {
+            iter++;
+        }
+    }
+}
+
+bool SelectionGroup::hasNode(NodeR node) const
+{
+    return m_nodeMap.count(&node);
 }
 
 bool SelectionGroup::isEmpty() const
 {
-    return m_nodeSet.empty();
+    return m_nodeMap.empty();
 }
 
-void SelectionGroup::move(Node & reference, QPointF location)
+void SelectionGroup::move(NodeR reference, QPointF location)
 {
     std::map<int, QPointF> delta;
     for (auto && node : m_nodes) {
@@ -65,12 +95,12 @@ void SelectionGroup::move(Node & reference, QPointF location)
     }
 }
 
-const std::vector<Node *> SelectionGroup::nodes() const
+const std::vector<NodeP> SelectionGroup::nodes() const
 {
     return m_nodes;
 }
 
-Node * SelectionGroup::selectedNode() const
+NodeP SelectionGroup::selectedNode() const
 {
     return !m_nodes.empty() ? *m_nodes.begin() : nullptr;
 }
@@ -80,13 +110,13 @@ size_t SelectionGroup::size() const
     return m_nodes.size();
 }
 
-void SelectionGroup::toggleNode(Node & node)
+void SelectionGroup::toggleNode(NodeR node)
 {
     if (node.selected()) {
         m_nodes.erase(std::find(m_nodes.begin(), m_nodes.end(), &node));
         node.setSelected(false);
-        m_nodeSet.erase(&node);
+        m_nodeMap.erase(&node);
     } else {
-        addSelectedNode(node);
+        addNode(node);
     }
 }

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo iptables -I DOCKER-USER -j ACCEPT

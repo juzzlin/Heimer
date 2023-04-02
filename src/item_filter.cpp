@@ -15,11 +15,13 @@
 
 #include "item_filter.hpp"
 
-#include "edge.hpp"
-#include "edge_text_edit.hpp"
-#include "node.hpp"
-#include "node_handle.hpp"
-#include "text_edit.hpp"
+#include "types.hpp"
+
+#include "scene_items/edge.hpp"
+#include "scene_items/edge_text_edit.hpp"
+#include "scene_items/node.hpp"
+#include "scene_items/node_handle.hpp"
+#include "scene_items/text_edit.hpp"
 
 #include <QGraphicsScene>
 
@@ -33,19 +35,19 @@ Result getFirstItemAtPosition(QGraphicsScene & scene, QPointF scenePos, double t
     // Fetch all items at the location
     if (const auto items = scene.items(clickRect, Qt::IntersectsItemShape, Qt::DescendingOrder); items.size()) {
         const auto item = *items.begin();
-        if (const auto edge = dynamic_cast<Edge *>(item)) {
+        if (const auto edge = dynamic_cast<EdgeP>(item)) {
             result.edge = edge;
             result.success = true;
-        } else if (const auto nodeHandle = dynamic_cast<NodeHandle *>(item)) {
+        } else if (const auto nodeHandle = dynamic_cast<SceneItems::NodeHandle *>(item)) {
             result.nodeHandle = nodeHandle;
             result.success = true;
-        } else if (const auto node = dynamic_cast<Node *>(item)) {
+        } else if (const auto node = dynamic_cast<NodeP>(item)) {
             result.node = node;
             result.success = true;
-        } else if (const auto edgeTextEdit = dynamic_cast<EdgeTextEdit *>(item)) {
+        } else if (const auto edgeTextEdit = dynamic_cast<SceneItems::EdgeTextEdit *>(item)) {
             result.edgeTextEdit = edgeTextEdit;
             result.success = true;
-        } else if (const auto nodeTextEdit = dynamic_cast<TextEdit *>(item)) {
+        } else if (const auto nodeTextEdit = dynamic_cast<SceneItems::TextEdit *>(item)) {
             result.nodeTextEdit = nodeTextEdit;
             result.success = true;
         }

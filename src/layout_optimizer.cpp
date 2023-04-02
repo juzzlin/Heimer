@@ -14,17 +14,21 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "layout_optimizer.hpp"
+
 #include "constants.hpp"
 #include "contrib/SimpleLogger/src/simple_logger.hpp"
-#include "graph.hpp"
 #include "grid.hpp"
-#include "mind_map_data.hpp"
-#include "node.hpp"
+
+#include "core/graph.hpp"
+#include "core/mind_map_data.hpp"
+
+#include "scene_items/node.hpp"
 
 #include <cassert>
 #include <cmath>
 #include <cstddef>
 #include <memory>
+#include <numeric>
 #include <random>
 #include <vector>
 
@@ -45,7 +49,7 @@ inline double dot(double x1, double y1, double x2, double y2)
 class LayoutOptimizer::Impl
 {
 public:
-    Impl(MindMapDataPtr mindMapData, const Grid & grid)
+    Impl(MindMapDataS mindMapData, const Grid & grid)
       : m_mindMapData(mindMapData)
       , m_grid(grid)
     {
@@ -57,26 +61,28 @@ public:
     {
         juzzlin::L().info() << "Initializing LayoutOptimizer: aspectRatio=" << aspectRatio << ", minEdgeLength=" << minEdgeLength;
 
-        if (m_mindMapData->graph().numNodes() == 0) {
+        const auto nodes = m_mindMapData->graph().getNodes();
+        if (nodes.empty()) {
             juzzlin::L().info() << "No nodes";
             return false;
         }
 
         double area = 0;
-        for (auto && node : m_mindMapData->graph().getNodes()) {
+        for (auto && node : nodes) {
             area += (node->size().width() + minEdgeLength) * (node->size().height() + minEdgeLength);
         }
 
+        // Build initial layout
+
+        const auto originalLayoutDimensions = calculateLayoutDimensions(nodes);
+        juzzlin::L().info() << "Area: " << originalLayoutDimensions.height() * originalLayoutDimensions.width();
         const double height = std::sqrt(area / aspectRatio);
         const double width = area / height;
-
-        // Builds initial layout
-
-        auto nodes = m_mindMapData->graph().getNodes();
         m_layout = std::make_unique<Layout>();
         m_layout->cols = static_cast<size_t>(width / (Constants::Node::MIN_WIDTH + minEdgeLength)) + 1;
         m_layout->minEdgeLength = minEdgeLength;
         std::map<int, std::shared_ptr<Cell>> nodesToCells; // Used when building connections
+        std::vector<std::shared_ptr<Cell>> cells;
         const auto rows = static_cast<size_t>(height / (Constants::Node::MIN_HEIGHT + minEdgeLength)) + 1;
         for (size_t j = 0; j < rows; j++) {
             const auto row = std::make_shared<Row>();
@@ -85,19 +91,54 @@ public:
             for (size_t i = 0; i < m_layout->cols; i++) {
                 const auto cell = std::make_shared<Cell>();
                 row->cells.push_back(cell);
-                cell->rect.x = row->rect.x + static_cast<int>(i) * Constants::Node::MIN_WIDTH;
-                cell->rect.y = row->rect.y;
-                cell->rect.h = Constants::Node::MIN_HEIGHT;
-                cell->rect.w = Constants::Node::MIN_WIDTH;
-
-                if (!nodes.empty()) {
-                    m_layout->all.push_back(cell);
-                    cell->node = nodes.back();
-                    nodesToCells[cell->node.lock()->index()] = cell;
-                    nodes.pop_back();
-                }
+                cells.push_back(cell);
+                cell->rect = { row->rect.x + static_cast<int>(i) * Constants::Node::MIN_WIDTH,
+                               row->rect.y,
+                               Constants::Node::MIN_HEIGHT,
+                               Constants::Node::MIN_WIDTH };
             }
             m_layout->rows.push_back(row);
+        }
+
+        m_rowDist = std::uniform_int_distribution<size_t> { 0, m_layout->rows.size() - 1 };
+
+        // Assign nodes to nearest cells
+
+        double minX = std::numeric_limits<double>::max();
+        double maxX = -minX;
+        double minY = std::numeric_limits<double>::max();
+        double maxY = -minY;
+        for (auto && cell : cells) {
+            minX = std::min(minX, cell->x());
+            maxX = std::max(maxX, cell->x());
+            minY = std::min(minY, cell->y());
+            maxY = std::max(maxY, cell->y());
+        }
+        const double cellAreaW = maxX - minX;
+        const double cellAreaH = maxY - minY;
+
+        for (auto && node : nodes) {
+            if (!cells.empty()) {
+                size_t nearestCellIndex = 0;
+                double nearestDistance = std::numeric_limits<double>::max();
+                for (size_t i = 0; i < cells.size(); i++) {
+                    const auto cell = cells.at(i);
+                    const auto dx = (cell->x() - minX - cellAreaW / 2) / cellAreaW - (node->location().x() - originalLayoutDimensions.x() - originalLayoutDimensions.width() / 2) / originalLayoutDimensions.width();
+                    const auto dy = (cell->y() - minY - cellAreaH / 2) / cellAreaH - (node->location().y() - originalLayoutDimensions.y() - originalLayoutDimensions.height() / 2) / originalLayoutDimensions.height();
+                    if (double distance = dx * dx + dy * dy; distance < nearestDistance) {
+                        nearestDistance = distance;
+                        nearestCellIndex = i;
+                    }
+                }
+                const auto cell = cells.at(nearestCellIndex);
+                cell->node = node;
+                cells.at(nearestCellIndex) = cells.back();
+                cells.pop_back();
+                nodesToCells[node->index()] = cell;
+                m_layout->all.push_back(cell);
+            } else {
+                return false;
+            }
         }
 
         // Setup connections
@@ -121,73 +162,38 @@ public:
         }
 
         OptimizationInfo oi;
-        double cost = calculateCost();
-        oi.initialCost = cost;
+        oi.initialCost = calculateCost();
+        oi.currentCost = oi.initialCost;
+        oi.sliceSize = m_layout->all.size() * 200;
+        oi.t0 = 33;
+        oi.tC = oi.t0;
+
         juzzlin::L().info() << "Initial cost: " << oi.initialCost;
 
-        std::uniform_real_distribution<double> dist { 0, 1 };
-
-        // TODO: Automatically decide optimal t
-        const double t0 = 200;
-        double t = t0;
-        while (t > 0.05 && cost > 0) {
-            double acceptRatio = 0;
-            int stuck = 0;
+        while (oi.tC > oi.t1 && oi.currentCost > 0) {
+            oi.acceptRatio = 0;
+            size_t stuckCounter = 0;
             do {
-                double accepts = 0;
-                double rejects = 0;
-                double sliceCost = cost;
-                for (size_t i = 0; i < m_layout->all.size() * 200; i++) {
-                    const auto change = planChange();
-
-                    LayoutOptimizer::Impl::Cell::globalMoveId++;
-
-                    double newCost = cost;
-                    newCost -= change.sourceCell->getCost();
-                    newCost -= change.targetCell->getCost();
-
-                    doChange(change);
-                    oi.changes++;
-
-                    LayoutOptimizer::Impl::Cell::globalMoveId++;
-
-                    newCost += change.sourceCell->getCost();
-                    newCost += change.targetCell->getCost();
-
-                    const double delta = newCost - cost;
-                    if (delta <= 0) {
-                        cost = newCost;
-                        accepts++;
-                    } else {
-                        if (dist(m_engine) < std::exp(-delta / t)) {
-                            cost = newCost;
-                            accepts++;
-                        } else {
-                            undoChange(change);
-                            rejects++;
-                        }
-                    }
+                oi.accepts = 0;
+                oi.rejects = 0;
+                double sliceCost = oi.currentCost;
+                for (size_t i = 0; i < oi.sliceSize; i++) {
+                    changeLayoutAndUpdateCost(oi);
                 }
+                oi.acceptRatio = static_cast<double>(oi.accepts) / static_cast<double>(oi.rejects + 1);
+                const double gain = (oi.currentCost - sliceCost) / sliceCost;
+                juzzlin::L().debug() << "Cost: " << oi.currentCost << " (" << gain * 100 << "%)"
+                                     << " acc: " << oi.acceptRatio << " t: " << oi.tC;
+                stuckCounter = gain < oi.stuckTh ? stuckCounter + 1 : 0;
 
-                acceptRatio = accepts / (rejects + 1);
-                const double gain = (cost - sliceCost) / sliceCost;
-                juzzlin::L().debug() << "Cost: " << cost << " (" << gain * 100 << "%)"
-                                     << " acc: " << acceptRatio << " t: " << t;
+            } while (stuckCounter < oi.stuckLimit);
 
-                if (gain < 0.1) {
-                    stuck++;
-                } else {
-                    stuck = 0;
-                }
+            oi.tC *= oi.cS;
 
-            } while (stuck < 5);
-
-            t *= 0.7;
-
-            updateProgress(std::min(1.0, 1.0 - std::log(t) / std::log(t0)));
+            updateProgress(std::min(1.0, 1.0 - std::log(oi.tC) / std::log(oi.t0)));
         }
 
-        oi.finalCost = cost;
+        oi.finalCost = oi.currentCost;
 
         return oi;
     }
@@ -215,13 +221,24 @@ public:
     }
 
 private:
+    QRectF calculateLayoutDimensions(const Core::Graph::NodeVector & nodes) const
+    {
+        if (nodes.empty()) {
+            return {};
+        }
+        QRectF dimensions = nodes.at(0)->placementBoundingRect();
+        for (auto && node : nodes) {
+            dimensions = dimensions.united(node->placementBoundingRect().translated(node->location()));
+        }
+        return dimensions;
+    }
+
     double calculateCost() const
     {
-        double cost = 0;
-        for (auto cell : m_layout->all) {
-            cost += cell->getCost();
-        }
-        return cost;
+        return std::accumulate(std::begin(m_layout->all), std::end(m_layout->all), double {},
+                               [](auto totalCost, auto && cell) {
+                                   return totalCost + cell->getCost();
+                               });
     }
 
     struct Cell;
@@ -253,6 +270,32 @@ private:
         size_t targetIndex = 0;
     };
 
+    void changeLayoutAndUpdateCost(OptimizationInfo & oi)
+    {
+        const auto change = planChange();
+        LayoutOptimizer::Impl::Cell::globalMoveId++;
+        double newCost = oi.currentCost;
+        newCost -= change.sourceCell->getCost();
+        newCost -= change.targetCell->getCost();
+        doChange(change);
+        oi.changes++;
+        LayoutOptimizer::Impl::Cell::globalMoveId++;
+        newCost += change.sourceCell->getCost();
+        newCost += change.targetCell->getCost();
+        if (const double delta = newCost - oi.currentCost; delta <= 0) {
+            oi.currentCost = newCost;
+            oi.accepts++;
+        } else {
+            if (m_saDist(m_engine) < std::exp(-delta / oi.tC)) {
+                oi.currentCost = newCost;
+                oi.accepts++;
+            } else {
+                undoChange(change);
+                oi.rejects++;
+            }
+        }
+    }
+
     void doChange(const Change & change)
     {
         change.sourceRow->cells.at(change.sourceIndex) = change.targetCell;
@@ -273,17 +316,16 @@ private:
         change.targetCell->popRect();
     }
 
+    // Note: Here we plan only very local changes with a very small search radius as we assume that the nodes are already relatively well placed globally.
     Change planChange()
     {
-        std::uniform_int_distribution<size_t> rowDist { 0, m_layout->rows.size() - 1 };
-
         Change change;
         change.type = Change::Type::Swap;
         size_t sourceRowIndex = 0;
         size_t targetRowIndex = 0;
 
         do {
-            sourceRowIndex = rowDist(m_engine);
+            sourceRowIndex = m_rowDist(m_engine);
             change.sourceRow = m_layout->rows.at(sourceRowIndex);
             if (change.sourceRow->cells.empty()) {
                 continue;
@@ -292,13 +334,15 @@ private:
             change.sourceIndex = sourceCellDist(m_engine);
             change.sourceCell = change.sourceRow->cells.at(change.sourceIndex);
 
-            targetRowIndex = rowDist(m_engine);
+            const auto rowDelta = m_oneOrTwoDist(m_engine);
+            targetRowIndex = sourceRowIndex + rowDelta < m_layout->rows.size() ? sourceRowIndex + rowDelta : sourceRowIndex;
             change.targetRow = m_layout->rows.at(targetRowIndex);
             if (change.targetRow->cells.empty()) {
                 continue;
             }
-            std::uniform_int_distribution<size_t> targetCellDist { 0, change.targetRow->cells.size() - 1 };
-            change.targetIndex = targetCellDist(m_engine);
+
+            const auto cellDelta = m_oneOrTwoDist(m_engine);
+            change.targetIndex = change.sourceIndex + cellDelta < change.targetRow->cells.size() ? change.sourceIndex + cellDelta : change.sourceIndex;
             change.targetCell = change.targetRow->cells.at(change.targetIndex);
 
         } while (change.sourceCell == change.targetCell);
@@ -306,12 +350,24 @@ private:
         return change;
     }
 
-    MindMapDataPtr m_mindMapData;
+    MindMapDataS m_mindMapData;
 
     const Grid & m_grid;
 
     struct Rect
     {
+        Rect()
+        {
+        }
+
+        Rect(int x, int y, int w, int h)
+          : x(x)
+          , y(y)
+          , w(w)
+          , h(h)
+        {
+        }
+
         int x = 0;
 
         int y = 0;
@@ -352,7 +408,7 @@ private:
             return rect.y + rect.h / 2;
         }
 
-        std::weak_ptr<Node> node;
+        std::weak_ptr<SceneItems::Node> node;
 
         CellVector all;
 
@@ -385,12 +441,10 @@ private:
 
         inline double getConnectionCost()
         {
-            double cost = 0;
-            for (auto && cell : all) {
-                cost += distance(*cell);
-            }
-
-            return cost;
+            return std::accumulate(std::begin(all), std::end(all), double {},
+                                   [this](auto totalCost, auto && cell) {
+                                       return totalCost + distance(*cell);
+                                   });
         }
 
         inline double getOverlapCost()
@@ -530,12 +584,19 @@ private:
 
     std::mt19937 m_engine;
 
+    // Will be initialized once we now the row count after building the initial layout
+    std::uniform_int_distribution<size_t> m_rowDist;
+
+    std::uniform_int_distribution<size_t> m_oneOrTwoDist { 0, 1 };
+
+    std::uniform_real_distribution<double> m_saDist { 0, 1 };
+
     ProgressCallback m_progressCallback = nullptr;
 };
 
 size_t LayoutOptimizer::Impl::Cell::globalMoveId = 0;
 
-LayoutOptimizer::LayoutOptimizer(MindMapDataPtr mindMapData, const Grid & grid)
+LayoutOptimizer::LayoutOptimizer(MindMapDataS mindMapData, const Grid & grid)
   : m_impl(std::make_unique<Impl>(mindMapData, grid))
 {
 }

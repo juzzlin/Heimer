@@ -15,18 +15,24 @@
 
 #include "main_window.hpp"
 
-#include "about_dlg.hpp"
 #include "constants.hpp"
+#include "control_strategy.hpp"
 #include "mediator.hpp"
 #include "node_action.hpp"
 #include "recent_files_manager.hpp"
-#include "recent_files_menu.hpp"
-#include "settings.hpp"
-#include "settings_dialog.hpp"
+
+#include "core/settings.hpp"
+#include "core/single_instance_container.hpp"
+
+#include "dialogs/about_dialog.hpp"
+#include "dialogs/settings_dialog.hpp"
+#include "dialogs/spinner_dialog.hpp"
+#include "dialogs/whats_new_dialog.hpp"
+
+#include "menus/recent_files_menu.hpp"
+#include "menus/tool_bar.hpp"
+
 #include "simple_logger.hpp"
-#include "tool_bar.hpp"
-#include "whats_new_dlg.hpp"
-#include "widget_factory.hpp"
 
 #include <QAction>
 #include <QApplication>
@@ -40,6 +46,7 @@
 #include <QMessageBox>
 #include <QScreen>
 #include <QSpinBox>
+#include <QStatusBar>
 #include <QVBoxLayout>
 #include <QWidgetAction>
 
@@ -48,16 +55,19 @@
 MainWindow * MainWindow::m_instance = nullptr;
 
 MainWindow::MainWindow()
-  : m_aboutDlg(new AboutDlg(this))
-  , m_settingsDlg(new SettingsDialog(this))
-  , m_toolBar(new ToolBar(this))
-  , m_whatsNewDlg(new WhatsNewDlg(this))
+  : m_aboutDlg(new Dialogs::AboutDialog(this))
+  , m_settingsDlg(new Dialogs::SettingsDialog(this))
+  , m_spinnerDlg(new Dialogs::SpinnerDialog(this))
+  , m_toolBar(new Menus::ToolBar(this))
+  , m_whatsNewDlg(new Dialogs::WhatsNewDialog(this))
   , m_connectSelectedNodesAction(new QAction(tr("Connect selected nodes"), this))
   , m_disconnectSelectedNodesAction(new QAction(tr("Disconnect selected nodes"), this))
   , m_saveAction(new QAction(tr("&Save"), this))
   , m_saveAsAction(new QAction(tr("&Save as") + Constants::Misc::THREE_DOTS, this))
   , m_undoAction(new QAction(tr("Undo"), this))
   , m_redoAction(new QAction(tr("Redo"), this))
+  , m_statusText(new QLabel(this))
+  , m_controlStrategy(Core::SingleInstanceContainer::instance().controlStrategy())
 {
     if (!m_instance) {
         m_instance = this;
@@ -68,17 +78,23 @@ MainWindow::MainWindow()
     addToolBar(Qt::BottomToolBarArea, m_toolBar);
 
     connectToolBar();
+
+    connect(m_settingsDlg, &Dialogs::SettingsDialog::shadowEffectChanged, this, &MainWindow::shadowEffectChanged);
+
+    connect(m_settingsDlg, &Dialogs::SettingsDialog::autosaveEnabled, this, &MainWindow::autosaveEnabled);
+
+    m_statusText->setOpenExternalLinks(true);
 }
 
 void MainWindow::addConnectSelectedNodesAction(QMenu & menu)
 {
     m_connectSelectedNodesAction->setShortcut(QKeySequence("Ctrl+Shift+C"));
-    connect(m_connectSelectedNodesAction, &QAction::triggered, [this] {
+    connect(m_connectSelectedNodesAction, &QAction::triggered, this, [this] {
         juzzlin::L().debug() << "Connect selected triggered";
         m_mediator->performNodeAction({ NodeAction::Type::ConnectSelected });
     });
     menu.addAction(m_connectSelectedNodesAction);
-    connect(&menu, &QMenu::aboutToShow, [=] {
+    connect(&menu, &QMenu::aboutToShow, this, [=] {
         m_connectSelectedNodesAction->setEnabled(m_mediator->areSelectedNodesConnectable());
     });
 }
@@ -86,12 +102,12 @@ void MainWindow::addConnectSelectedNodesAction(QMenu & menu)
 void MainWindow::addDisconnectSelectedNodesAction(QMenu & menu)
 {
     m_disconnectSelectedNodesAction->setShortcut(QKeySequence("Ctrl+Shift+D"));
-    connect(m_disconnectSelectedNodesAction, &QAction::triggered, [this] {
+    connect(m_disconnectSelectedNodesAction, &QAction::triggered, this, [this] {
         juzzlin::L().debug() << "Disconnect selected triggered";
         m_mediator->performNodeAction({ NodeAction::Type::DisconnectSelected });
     });
     menu.addAction(m_disconnectSelectedNodesAction);
-    connect(&menu, &QMenu::aboutToShow, [=] {
+    connect(&menu, &QMenu::aboutToShow, this, [=] {
         m_disconnectSelectedNodesAction->setEnabled(m_mediator->areSelectedNodesDisconnectable());
     });
 }
@@ -100,9 +116,7 @@ void MainWindow::addRedoAction(QMenu & menu)
 {
     m_redoAction->setShortcut(QKeySequence(QKeySequence::Redo));
 
-    connect(m_redoAction, &QAction::triggered, [=] {
-        m_mediator->redo();
-    });
+    connect(m_redoAction, &QAction::triggered, m_mediator.get(), &Mediator::redo);
 
     m_redoAction->setEnabled(false);
 
@@ -113,9 +127,7 @@ void MainWindow::addUndoAction(QMenu & menu)
 {
     m_undoAction->setShortcut(QKeySequence(QKeySequence::Undo));
 
-    connect(m_undoAction, &QAction::triggered, [=] {
-        m_mediator->undo();
-    });
+    connect(m_undoAction, &QAction::triggered, m_mediator.get(), &Mediator::undo);
 
     m_undoAction->setEnabled(false);
 
@@ -129,21 +141,83 @@ void MainWindow::changeFont(const QFont & font)
 
 void MainWindow::connectToolBar()
 {
-    connect(m_toolBar, &ToolBar::gridVisibleChanged, this, &MainWindow::gridVisibleChanged);
+    connect(m_toolBar, &Menus::ToolBar::gridVisibleChanged, this, &MainWindow::gridVisibleChanged);
 
-    connect(m_toolBar, &ToolBar::cornerRadiusChanged, this, &MainWindow::cornerRadiusChanged);
+    connect(m_toolBar, &Menus::ToolBar::arrowSizeChanged, this, &MainWindow::arrowSizeChanged);
 
-    connect(m_toolBar, &ToolBar::edgeWidthChanged, this, &MainWindow::edgeWidthChanged);
+    connect(m_toolBar, &Menus::ToolBar::cornerRadiusChanged, this, &MainWindow::cornerRadiusChanged);
 
-    connect(m_toolBar, &ToolBar::fontChanged, this, &MainWindow::fontChanged);
+    connect(m_toolBar, &Menus::ToolBar::edgeWidthChanged, this, &MainWindow::edgeWidthChanged);
 
-    connect(m_toolBar, &ToolBar::gridSizeChanged, this, &MainWindow::gridSizeChanged);
+    connect(m_toolBar, &Menus::ToolBar::fontChanged, this, &MainWindow::fontChanged);
 
-    connect(m_toolBar, &ToolBar::gridVisibleChanged, this, &MainWindow::gridVisibleChanged);
+    connect(m_toolBar, &Menus::ToolBar::gridSizeChanged, this, &MainWindow::gridSizeChanged);
 
-    connect(m_toolBar, &ToolBar::searchTextChanged, this, &MainWindow::searchTextChanged);
+    connect(m_toolBar, &Menus::ToolBar::gridVisibleChanged, this, &MainWindow::gridVisibleChanged);
 
-    connect(m_toolBar, &ToolBar::textSizeChanged, this, &MainWindow::textSizeChanged);
+    connect(m_toolBar, &Menus::ToolBar::searchTextChanged, this, &MainWindow::searchTextChanged);
+
+    connect(m_toolBar, &Menus::ToolBar::textSizeChanged, this, &MainWindow::textSizeChanged);
+}
+
+void MainWindow::createColorSubMenu(QMenu & editMenu)
+{
+    const auto colorMenu = new QMenu;
+    const auto colorMenuAction = editMenu.addMenu(colorMenu);
+    colorMenuAction->setText(tr("General &colors"));
+
+    const auto backgroundColorAction = new QAction(tr("Set background color") + Constants::Misc::THREE_DOTS, this);
+    backgroundColorAction->setShortcut(QKeySequence("Ctrl+B"));
+
+    connect(backgroundColorAction, &QAction::triggered, this, [=] {
+        emit actionTriggered(StateMachine::Action::BackgroundColorChangeRequested);
+    });
+
+    colorMenu->addAction(backgroundColorAction);
+
+    colorMenu->addSeparator();
+
+    const auto edgeColorAction = new QAction(tr("Set edge color") + Constants::Misc::THREE_DOTS, this);
+    edgeColorAction->setShortcut(QKeySequence("Ctrl+E"));
+
+    connect(edgeColorAction, &QAction::triggered, this, [=] {
+        emit actionTriggered(StateMachine::Action::EdgeColorChangeRequested);
+    });
+
+    colorMenu->addAction(edgeColorAction);
+
+    colorMenu->addSeparator();
+
+    const auto gridColorAction = new QAction(tr("Set grid color") + Constants::Misc::THREE_DOTS, this);
+    gridColorAction->setShortcut(QKeySequence("Ctrl+G"));
+
+    connect(gridColorAction, &QAction::triggered, this, [=] {
+        emit actionTriggered(StateMachine::Action::GridColorChangeRequested);
+    });
+
+    colorMenu->addAction(gridColorAction);
+}
+
+void MainWindow::createMirrorSubMenu(QMenu & editMenu)
+{
+    const auto mirrorMenu = new QMenu;
+    auto mirrorAction = editMenu.addMenu(mirrorMenu);
+    mirrorAction->setText(tr("&Mirror layout"));
+
+    const auto mirrorHorizontallyAction = new QAction(tr("Horizontally"), this);
+    mirrorHorizontallyAction->setShortcut(QKeySequence(m_controlStrategy.mirrorLayoutHorizontallyShortcut()));
+    mirrorMenu->addAction(mirrorHorizontallyAction);
+    connect(mirrorHorizontallyAction, &QAction::triggered, this, [=] {
+        m_mediator->performNodeAction(NodeAction::Type::MirrorLayoutHorizontally);
+    });
+    mirrorMenu->addSeparator();
+
+    const auto mirrorVerticallyAction = new QAction(tr("Vertically"), this);
+    mirrorVerticallyAction->setShortcut(QKeySequence(m_controlStrategy.mirrorLayoutVerticallyShortcut()));
+    mirrorMenu->addAction(mirrorVerticallyAction);
+    connect(mirrorVerticallyAction, &QAction::triggered, this, [=] {
+        m_mediator->performNodeAction(NodeAction::Type::MirrorLayoutVertically);
+    });
 }
 
 void MainWindow::createEditMenu()
@@ -162,47 +236,18 @@ void MainWindow::createEditMenu()
 
     editMenu->addSeparator();
 
-    const auto colorMenu = new QMenu;
-    const auto colorMenuAction = editMenu->addMenu(colorMenu);
-    colorMenuAction->setText(tr("General &colors"));
+    createColorSubMenu(*editMenu);
 
-    const auto backgroundColorAction = new QAction(tr("Set background color") + Constants::Misc::THREE_DOTS, this);
-    backgroundColorAction->setShortcut(QKeySequence("Ctrl+B"));
+    editMenu->addSeparator();
 
-    connect(backgroundColorAction, &QAction::triggered, [=] {
-        emit actionTriggered(StateMachine::Action::BackgroundColorChangeRequested);
-    });
-
-    colorMenu->addAction(backgroundColorAction);
-
-    colorMenu->addSeparator();
-
-    const auto edgeColorAction = new QAction(tr("Set edge color") + Constants::Misc::THREE_DOTS, this);
-    edgeColorAction->setShortcut(QKeySequence("Ctrl+E"));
-
-    connect(edgeColorAction, &QAction::triggered, [=] {
-        emit actionTriggered(StateMachine::Action::EdgeColorChangeRequested);
-    });
-
-    colorMenu->addAction(edgeColorAction);
-
-    colorMenu->addSeparator();
-
-    const auto gridColorAction = new QAction(tr("Set grid color") + Constants::Misc::THREE_DOTS, this);
-    gridColorAction->setShortcut(QKeySequence("Ctrl+G"));
-
-    connect(gridColorAction, &QAction::triggered, [=] {
-        emit actionTriggered(StateMachine::Action::GridColorChangeRequested);
-    });
-
-    colorMenu->addAction(gridColorAction);
+    createMirrorSubMenu(*editMenu);
 
     editMenu->addSeparator();
 
     auto optimizeLayoutAction = new QAction(tr("Optimize layout") + Constants::Misc::THREE_DOTS, this);
     optimizeLayoutAction->setShortcut(QKeySequence("Ctrl+Shift+O"));
 
-    connect(optimizeLayoutAction, &QAction::triggered, [=] {
+    connect(optimizeLayoutAction, &QAction::triggered, this, [=] {
         emit actionTriggered(StateMachine::Action::LayoutOptimizationRequested);
     });
 
@@ -218,7 +263,7 @@ void MainWindow::createExportSubMenu(QMenu & fileMenu)
     // Add "export to PNG image"-action
     const auto exportToPngAction = new QAction(tr("&PNG"), this);
     exportMenu->addAction(exportToPngAction);
-    connect(exportToPngAction, &QAction::triggered, [=] {
+    connect(exportToPngAction, &QAction::triggered, this, [=] {
         emit actionTriggered(StateMachine::Action::PngExportSelected);
     });
 
@@ -227,11 +272,11 @@ void MainWindow::createExportSubMenu(QMenu & fileMenu)
     // Add "export to SVG file"-action
     const auto exportToSvgAction = new QAction(tr("&SVG"), this);
     exportMenu->addAction(exportToSvgAction);
-    connect(exportToSvgAction, &QAction::triggered, [=] {
+    connect(exportToSvgAction, &QAction::triggered, this, [=] {
         emit actionTriggered(StateMachine::Action::SvgExportSelected);
     });
 
-    connect(&fileMenu, &QMenu::aboutToShow, [=] {
+    connect(&fileMenu, &QMenu::aboutToShow, this, [=] {
         exportToPngAction->setEnabled(m_mediator->hasNodes());
         exportToSvgAction->setEnabled(m_mediator->hasNodes());
     });
@@ -245,7 +290,7 @@ void MainWindow::createFileMenu()
     const auto newAct = new QAction(tr("&New") + Constants::Misc::THREE_DOTS, this);
     newAct->setShortcut(QKeySequence(QKeySequence::New));
     fileMenu->addAction(newAct);
-    connect(newAct, &QAction::triggered, [=] {
+    connect(newAct, &QAction::triggered, this, [=] {
         emit actionTriggered(StateMachine::Action::NewSelected);
     });
 
@@ -253,15 +298,15 @@ void MainWindow::createFileMenu()
     const auto openAct = new QAction(tr("&Open") + Constants::Misc::THREE_DOTS, this);
     openAct->setShortcut(QKeySequence(QKeySequence::Open));
     fileMenu->addAction(openAct);
-    connect(openAct, &QAction::triggered, [=] {
+    connect(openAct, &QAction::triggered, this, [=] {
         emit actionTriggered(StateMachine::Action::OpenSelected);
     });
 
     // Add "Recent Files"-menu
-    const auto recentFilesMenu = new RecentFilesMenu;
+    const auto recentFilesMenu = new Menus::RecentFilesMenu;
     const auto recentFilesMenuAction = fileMenu->addMenu(recentFilesMenu);
     recentFilesMenuAction->setText(tr("Recent &Files"));
-    connect(recentFilesMenu, &RecentFilesMenu::fileSelected, [=] {
+    connect(recentFilesMenu, &Menus::RecentFilesMenu::fileSelected, this, [=] {
         emit actionTriggered(StateMachine::Action::RecentFileSelected);
     });
 
@@ -271,7 +316,7 @@ void MainWindow::createFileMenu()
     m_saveAction->setShortcut(QKeySequence(QKeySequence::Save));
     m_saveAction->setEnabled(false);
     fileMenu->addAction(m_saveAction);
-    connect(m_saveAction, &QAction::triggered, [=] {
+    connect(m_saveAction, &QAction::triggered, this, [=] {
         emit actionTriggered(StateMachine::Action::SaveSelected);
     });
 
@@ -279,7 +324,7 @@ void MainWindow::createFileMenu()
     m_saveAsAction->setShortcut(QKeySequence(QKeySequence::SaveAs));
     m_saveAsAction->setEnabled(false);
     fileMenu->addAction(m_saveAsAction);
-    connect(m_saveAsAction, &QAction::triggered, [=] {
+    connect(m_saveAsAction, &QAction::triggered, this, [=] {
         emit actionTriggered(StateMachine::Action::SaveAsSelected);
     });
 
@@ -291,7 +336,7 @@ void MainWindow::createFileMenu()
 
     // Add "settings"-action
     const auto settingsAct = new QAction(tr("Settings") + Constants::Misc::THREE_DOTS, this);
-    connect(settingsAct, &QAction::triggered, m_settingsDlg, &SettingsDialog::exec);
+    connect(settingsAct, &QAction::triggered, m_settingsDlg, &Dialogs::SettingsDialog::exec);
     fileMenu->addAction(settingsAct);
 
     fileMenu->addSeparator();
@@ -300,11 +345,11 @@ void MainWindow::createFileMenu()
     const auto quitAct = new QAction(tr("&Quit"), this);
     quitAct->setShortcut(QKeySequence(QKeySequence::Quit));
     fileMenu->addAction(quitAct);
-    connect(quitAct, &QAction::triggered, [=] {
+    connect(quitAct, &QAction::triggered, this, [=] {
         emit actionTriggered(StateMachine::Action::QuitSelected);
     });
 
-    connect(fileMenu, &QMenu::aboutToShow, [=] {
+    connect(fileMenu, &QMenu::aboutToShow, this, [=] {
         recentFilesMenuAction->setEnabled(RecentFilesManager::instance().hasRecentFiles());
     });
 }
@@ -316,14 +361,12 @@ void MainWindow::createHelpMenu()
     // Add "about"-action
     const auto aboutAct = new QAction(tr("&About"), this);
     helpMenu->addAction(aboutAct);
-    connect(aboutAct, &QAction::triggered, [=] {
-        m_aboutDlg->exec();
-    });
+    connect(aboutAct, &QAction::triggered, m_aboutDlg, &Dialogs::AboutDialog::exec);
 
     // Add "about Qt"-action
     const auto aboutQtAct = new QAction(tr("About &Qt"), this);
     helpMenu->addAction(aboutQtAct);
-    connect(aboutQtAct, &QAction::triggered, [=] {
+    connect(aboutQtAct, &QAction::triggered, this, [=] {
         QMessageBox::aboutQt(this, tr("About Qt"));
     });
 
@@ -332,7 +375,7 @@ void MainWindow::createHelpMenu()
     // Add "What's new"-action
     const auto whatsNewAct = new QAction(tr("What's New"), this);
     helpMenu->addAction(whatsNewAct);
-    connect(whatsNewAct, &QAction::triggered, [=] {
+    connect(whatsNewAct, &QAction::triggered, this, [=] {
         m_whatsNewDlg->resize(3 * width() / 5, 3 * height() / 5);
         m_whatsNewDlg->exec();
     });
@@ -348,14 +391,14 @@ void MainWindow::createViewMenu()
     m_fullScreenAction->setChecked(false);
     m_fullScreenAction->setShortcut(QKeySequence("F11"));
     viewMenu->addAction(m_fullScreenAction);
-    connect(m_fullScreenAction, &QAction::triggered, [=](bool checked) {
+    connect(m_fullScreenAction, &QAction::triggered, this, [=](bool checked) {
         if (checked) {
-            Settings::saveFullScreen(true);
+            Settings::V1::saveFullScreen(true);
             showFullScreen();
         } else {
-            Settings::saveFullScreen(false);
+            Settings::V1::saveFullScreen(false);
             showNormal();
-            resize(Settings::loadWindowSize(calculateDefaultWindowSize().second));
+            resize(Settings::V1::loadWindowSize(calculateDefaultWindowSize().second));
         }
     });
 
@@ -381,7 +424,7 @@ void MainWindow::createViewMenu()
     viewMenu->addAction(zoomToFit);
     connect(zoomToFit, &QAction::triggered, this, &MainWindow::zoomToFitTriggered);
 
-    connect(viewMenu, &QMenu::aboutToShow, [=] {
+    connect(viewMenu, &QMenu::aboutToShow, this, [=] {
         zoomToFit->setEnabled(m_mediator->hasNodes());
     });
 }
@@ -401,11 +444,11 @@ void MainWindow::initialize()
 {
     // Read dialog size data
     const auto screenAndWindow = calculateDefaultWindowSize();
-    const auto lastSize = Settings::loadWindowSize(screenAndWindow.second);
+    const auto lastSize = Settings::V1::loadWindowSize(screenAndWindow.second);
     if (screenAndWindow.first.width() < lastSize.width()
         || screenAndWindow.first.height() < lastSize.height()) {
         resize(screenAndWindow.second);
-        Settings::saveWindowSize(size());
+        Settings::V1::saveWindowSize(size());
     } else {
         resize(lastSize);
     }
@@ -464,7 +507,7 @@ void MainWindow::populateMenuBar()
 
 void MainWindow::appear()
 {
-    if (Settings::loadFullScreen()) {
+    if (Settings::V1::loadFullScreen()) {
         m_fullScreenAction->trigger();
     } else {
         show();
@@ -495,6 +538,11 @@ void MainWindow::enableDisconnectSelectedNodesAction(bool enable)
 void MainWindow::enableWidgetSignals(bool enable)
 {
     m_toolBar->enableWidgetSignals(enable);
+}
+
+void MainWindow::setArrowSize(double value)
+{
+    m_toolBar->setArrowSize(value);
 }
 
 void MainWindow::setCornerRadius(int value)
@@ -532,7 +580,7 @@ void MainWindow::enableSave(bool enable)
 void MainWindow::saveWindowSize()
 {
     if (!m_fullScreenAction->isChecked()) {
-        Settings::saveWindowSize(size());
+        Settings::V1::saveWindowSize(size());
     }
 }
 
@@ -542,6 +590,16 @@ void MainWindow::showErrorDialog(QString message)
                           Constants::Application::APPLICATION_NAME,
                           message,
                           "");
+}
+
+void MainWindow::showSpinnerDialog(bool show, QString message)
+{
+    if (show) {
+        m_spinnerDlg->setMessage(message);
+        m_spinnerDlg->show();
+    } else {
+        m_spinnerDlg->hide();
+    }
 }
 
 void MainWindow::initializeNewMindMap()

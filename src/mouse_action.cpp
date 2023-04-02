@@ -15,7 +15,7 @@
 
 #include "mouse_action.hpp"
 
-#include "node.hpp"
+#include "scene_items/node.hpp"
 
 MouseAction::MouseAction()
 {
@@ -34,13 +34,13 @@ void MouseAction::clear()
     m_action = Action::None;
 }
 
-void MouseAction::setSourceNode(Node * node, MouseAction::Action action)
+void MouseAction::setSourceNode(NodeP node, MouseAction::Action action)
 {
     m_sourceNode = node;
     m_action = action;
 }
 
-Node * MouseAction::sourceNode() const
+NodeP MouseAction::sourceNode() const
 {
     return m_sourceNode;
 }

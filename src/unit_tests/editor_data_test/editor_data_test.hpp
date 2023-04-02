@@ -53,6 +53,8 @@ private slots:
 
     void testUndoArrowMode();
 
+    void testUndoArrowSize();
+
     void testUndoDeleteEdge();
 
     void testUndoBackgroundColor();

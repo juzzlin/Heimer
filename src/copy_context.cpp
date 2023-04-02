@@ -15,7 +15,10 @@
 
 #include "copy_context.hpp"
 
-#include "node.hpp"
+#include "core/graph.hpp"
+#include "scene_items/node.hpp"
+
+#include "simple_logger.hpp"
 
 CopyContext::CopyContext()
 {
@@ -23,29 +26,56 @@ CopyContext::CopyContext()
 
 void CopyContext::clear()
 {
-    m_copiedNodes.clear();
-    m_copyReferencePoint = {};
+    m_copiedData = {};
 }
 
 size_t CopyContext::copyStackSize() const
 {
-    return m_copiedNodes.size();
+    return m_copiedData.nodes.size();
 }
 
-void CopyContext::push(Node & node)
+void CopyContext::pushEdges(NodePVector nodes, GraphCR graph)
 {
-    m_copiedNodes.push_back(std::make_shared<Node>(node));
-    m_copyReferencePoint *= static_cast<qreal>(m_copiedNodes.size() - 1);
-    m_copyReferencePoint += node.pos();
-    m_copyReferencePoint /= static_cast<qreal>(m_copiedNodes.size());
+    // Test all nodes against each other
+    for (size_t i = 0; i < nodes.size(); i++) {
+        for (size_t j = i + 1; j < nodes.size(); j++) {
+            // Check if the nodes are directly connected
+            int i0 = nodes.at(i)->index();
+            int i1 = nodes.at(j)->index();
+            if (const auto edge = graph.getEdge(i0, i1)) {
+                m_copiedData.edges.push_back({ std::make_shared<SceneItems::Edge>(*edge), i0, i1 });
+            }
+            // Same as above, but to the other direction
+            i0 = nodes.at(j)->index();
+            i1 = nodes.at(i)->index();
+            if (const auto edge = graph.getEdge(i0, i1)) {
+                m_copiedData.edges.push_back({ std::make_shared<SceneItems::Edge>(*edge), i0, i1 });
+            }
+        }
+    }
 }
 
-std::vector<std::shared_ptr<Node>> CopyContext::copiedNodes() const
+void CopyContext::push(NodePVector nodes, GraphCR graph)
 {
-    return m_copiedNodes;
+    pushEdges(nodes, graph);
+
+    for (auto && node : nodes) {
+        push(*node);
+    }
+
+    juzzlin::L().debug() << m_copiedData.edges.size() << " edge(s) in copy stack";
+    juzzlin::L().debug() << m_copiedData.nodes.size() << " node(s) in copy stack";
 }
 
-QPointF CopyContext::copyReferencePoint() const
+void CopyContext::push(NodeCR node)
 {
-    return m_copyReferencePoint;
+    m_copiedData.nodes.push_back(std::make_shared<SceneItems::Node>(node));
+    m_copiedData.copyReferencePoint *= static_cast<qreal>(m_copiedData.nodes.size() - 1);
+    m_copiedData.copyReferencePoint += node.pos();
+    m_copiedData.copyReferencePoint /= static_cast<qreal>(m_copiedData.nodes.size());
+}
+
+CopyContext::CopiedData CopyContext::copiedData() const
+{
+    return m_copiedData;
 }

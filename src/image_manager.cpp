@@ -14,19 +14,29 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "image_manager.hpp"
-#include "contrib/SimpleLogger/src/simple_logger.hpp"
-#include "node.hpp"
 
-ImageManager::ImageManager()
+#include "scene_items/node.hpp"
+
+#include "simple_logger.hpp"
+
+#include <algorithm>
+
+ImageManager::ImageManager() = default;
+
+ImageManager::ImageManager(const ImageManager & other)
+  : QObject()
 {
+    m_images = other.m_images;
+    m_count = other.m_count;
 }
 
-void ImageManager::clear()
+ImageManager & ImageManager::operator=(const ImageManager & other)
 {
-    juzzlin::L().debug() << "Clearing ImageManager";
-
-    m_images.clear();
-    m_count = 0;
+    if (this != &other) {
+        m_images = other.m_images;
+        m_count = other.m_count;
+    }
+    return *this;
 }
 
 size_t ImageManager::addImage(const Image & image)
@@ -42,29 +52,33 @@ size_t ImageManager::addImage(const Image & image)
 
 void ImageManager::setImage(const Image & image)
 {
+    juzzlin::L().debug() << "Setting image, path=" << image.path() << ", id=" << image.id();
+
     if (!image.id()) {
         throw std::runtime_error("Image must have id > 0 !");
     }
 
+    if (!image.image().size().height() || !image.image().size().width()) {
+        juzzlin::L().warning() << "QImage size is zero!";
+    }
+
     m_count = std::max(image.id(), m_count);
     m_images[image.id()] = image;
-
-    juzzlin::L().debug() << "Setting image, path=" << image.path() << ", id=" << image.id();
 }
 
-std::pair<Image, bool> ImageManager::getImage(size_t id)
+std::optional<Image> ImageManager::getImage(size_t id)
 {
     if (m_images.count(id)) {
-        return { m_images[id], true };
+        return { m_images[id] };
     }
     return {};
 }
 
-void ImageManager::handleImageRequest(size_t id, Node & node)
+void ImageManager::handleImageRequest(size_t id, NodeR node)
 {
-    if (const auto && imagePair = getImage(id); imagePair.second) {
+    if (const auto && imagePair = getImage(id); imagePair.has_value()) {
         juzzlin::L().debug() << "Applying image id=" << id << " to node " << node.index();
-        node.applyImage(imagePair.first);
+        node.applyImage(*imagePair);
     } else {
         juzzlin::L().warning() << "Cannot find image with id=" << id;
     }
@@ -73,8 +87,7 @@ void ImageManager::handleImageRequest(size_t id, Node & node)
 ImageManager::ImageVector ImageManager::images() const
 {
     ImageVector images;
-    for (auto && image : m_images) {
-        images.push_back(image.second);
-    }
+    std::transform(std::begin(m_images), std::end(m_images), std::back_inserter(images),
+                   [](auto && image) { return image.second; });
     return images;
 }

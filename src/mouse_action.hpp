@@ -18,7 +18,7 @@
 
 #include <QPointF>
 
-class Node;
+#include "types.hpp"
 
 class MouseAction
 {
@@ -36,8 +36,8 @@ public:
 
     void clear();
 
-    Node * sourceNode() const;
-    void setSourceNode(Node * node, Action action);
+    NodeP sourceNode() const;
+    void setSourceNode(NodeP node, Action action);
 
     Action action() const;
 
@@ -57,7 +57,7 @@ public:
     void setClickedScenePos(const QPointF & clickedScenePos);
 
 private:
-    Node * m_sourceNode = nullptr;
+    NodeP m_sourceNode = nullptr;
 
     QPointF m_clickedScenePos;
 

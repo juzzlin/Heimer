@@ -18,27 +18,31 @@
 
 #include <QPointF>
 
+#include "types.hpp"
+
 class QGraphicsScene;
 
+namespace SceneItems {
 class Node;
 class NodeHandle;
 class Edge;
 class EdgeTextEdit;
 class TextEdit;
+} // namespace SceneItems
 
 namespace ItemFilter {
 
 struct Result
 {
-    Edge * edge = nullptr;
+    EdgeP edge = nullptr;
 
-    EdgeTextEdit * edgeTextEdit = nullptr;
+    SceneItems::EdgeTextEdit * edgeTextEdit = nullptr;
 
-    Node * node = nullptr;
+    NodeP node = nullptr;
 
-    NodeHandle * nodeHandle = nullptr;
+    SceneItems::NodeHandle * nodeHandle = nullptr;
 
-    TextEdit * nodeTextEdit = nullptr;
+    SceneItems::TextEdit * nodeTextEdit = nullptr;
 
     bool success = false;
 };

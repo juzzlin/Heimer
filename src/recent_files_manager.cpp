@@ -74,7 +74,15 @@ void RecentFilesManager::addRecentFile(QString filePath)
     settings.endArray();
 }
 
-const QList<QString> & RecentFilesManager::getRecentFiles() const
+std::optional<QString> RecentFilesManager::recentFile() const
+{
+    if (!m_recentFiles.empty()) {
+        return m_recentFiles.at(0);
+    }
+    return {};
+}
+
+QList<QString> RecentFilesManager::recentFiles() const
 {
     return m_recentFiles;
 }

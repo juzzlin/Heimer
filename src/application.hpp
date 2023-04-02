@@ -30,9 +30,15 @@ class EditorView;
 class ImageManager;
 class MainWindow;
 class Mediator;
-class Node;
+
+namespace Core {
+class VersionChecker;
+}
+
+namespace Dialogs {
 class PngExportDialog;
 class SvgExportDialog;
+} // namespace Dialogs
 
 class Application : public QObject
 {
@@ -41,7 +47,7 @@ class Application : public QObject
 public:
     Application(int & argc, char ** argv);
 
-    ~Application();
+    ~Application() override;
 
     int run();
 
@@ -92,6 +98,8 @@ private:
 
     void parseArgs(int argc, char ** argv);
 
+    void updateProgress();
+
     QApplication m_app;
 
     QTranslator m_appTranslator;
@@ -112,9 +120,11 @@ private:
 
     EditorView * m_editorView = nullptr;
 
-    std::unique_ptr<PngExportDialog> m_pngExportDialog;
+    std::unique_ptr<Dialogs::PngExportDialog> m_pngExportDialog;
 
-    std::unique_ptr<SvgExportDialog> m_svgExportDialog;
+    std::unique_ptr<Dialogs::SvgExportDialog> m_svgExportDialog;
+
+    std::unique_ptr<Core::VersionChecker> m_versionChecker;
 };
 
 #endif // APPLICATION_HPP

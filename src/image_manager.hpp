@@ -19,10 +19,10 @@
 #include <QObject>
 
 #include <map>
+#include <optional>
 
 #include "image.hpp"
-
-class Node;
+#include "types.hpp"
 
 class ImageManager : public QObject
 {
@@ -31,15 +31,17 @@ class ImageManager : public QObject
 public:
     ImageManager();
 
-    void clear();
+    ImageManager(const ImageManager & other);
+
+    ImageManager & operator=(const ImageManager & other);
 
     size_t addImage(const Image & image);
 
     void setImage(const Image & image);
 
-    std::pair<Image, bool> getImage(size_t id);
+    std::optional<Image> getImage(size_t id);
 
-    void handleImageRequest(size_t id, Node & node);
+    void handleImageRequest(size_t id, NodeR node);
 
     using ImageVector = std::vector<Image>;
     ImageVector images() const;

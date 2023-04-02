@@ -16,9 +16,11 @@
 #include "editor_scene.hpp"
 
 #include "constants.hpp"
-#include "edge.hpp"
 #include "magic_zoom.hpp"
-#include "node.hpp"
+
+#include "scene_items/edge.hpp"
+#include "scene_items/edge_text_edit.hpp"
+#include "scene_items/node.hpp"
 
 #include "simple_logger.hpp"
 
@@ -33,6 +35,12 @@ EditorScene::EditorScene()
     const auto rW = Constants::Scene::INITIAL_SIZE;
     const auto rH = Constants::Scene::INITIAL_SIZE;
     setSceneRect(-rW, -rH, rW * 2, rH * 2);
+
+    connect(this, &QGraphicsScene::focusItemChanged, this, [](QGraphicsItem *, QGraphicsItem * oldFocus, Qt::FocusReason) {
+        if (const auto edgeTextEdit = dynamic_cast<SceneItems::EdgeTextEdit *>(oldFocus); edgeTextEdit) {
+            edgeTextEdit->updateDueToLostFocus();
+        }
+    });
 }
 
 void EditorScene::adjustSceneRect()
@@ -47,7 +55,7 @@ void EditorScene::adjustSceneRect()
 
 QRectF EditorScene::calculateZoomToFitRectangle(bool isForExport) const
 {
-    return MagicZoom::calculateRectangle(items(), isForExport);
+    return MagicZoom::calculateRectangleByItems(items(), isForExport);
 }
 
 bool EditorScene::containsAll() const
@@ -56,7 +64,7 @@ bool EditorScene::containsAll() const
     const auto testMarginY = sceneRect().height() * Constants::Scene::ADJUSTMENT_MARGIN;
     const auto testRect = sceneRect().adjusted(testMarginX, testMarginY, -testMarginX, -testMarginY);
     for (auto && item : items()) {
-        if (dynamic_cast<Node *>(item)) {
+        if (dynamic_cast<NodeP>(item)) {
             if (!testRect.contains(item->sceneBoundingRect())) {
                 return false;
             }
@@ -65,10 +73,10 @@ bool EditorScene::containsAll() const
     return true;
 }
 
-bool EditorScene::hasEdge(Node & node0, Node & node1)
+bool EditorScene::hasEdge(NodeR node0, NodeR node1)
 {
     for (auto && item : items()) {
-        if (auto edge = dynamic_cast<Edge *>(item)) {
+        if (auto edge = dynamic_cast<EdgeP>(item)) {
             if (edge->sourceNode().index() == node0.index() && edge->targetNode().index() == node1.index()) {
                 return true;
             }

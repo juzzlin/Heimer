@@ -16,53 +16,76 @@
 #include "editor_data.hpp"
 #include "editor_scene.hpp"
 
-#include "alz_serializer.hpp"
 #include "constants.hpp"
-#include "copy_context.hpp"
-#include "node.hpp"
 #include "recent_files_manager.hpp"
 #include "selection_group.hpp"
-#include "settings_proxy.hpp"
-#include "test_mode.hpp"
-#include "xml_reader.hpp"
-#include "xml_writer.hpp"
+
+#include "core/graph.hpp"
+#include "core/mind_map_data.hpp"
+#include "core/settings_proxy.hpp"
+#include "core/single_instance_container.hpp"
+#include "core/test_mode.hpp"
+#include "core/undo_stack.hpp"
+
+#include "io/alz_file_io.hpp"
+
+#include "scene_items/edge.hpp"
+#include "scene_items/node.hpp"
 
 #include "simple_logger.hpp"
 
 using juzzlin::L;
 
+#include <algorithm>
 #include <cassert>
 #include <memory>
 
 using std::make_shared;
 
 EditorData::EditorData()
-  : m_copyContext(std::make_unique<CopyContext>())
+  : m_alzFileIO(std::make_unique<IO::AlzFileIO>())
+  , m_copyContext(std::make_unique<CopyContext>())
   , m_selectionGroup(std::make_unique<SelectionGroup>())
+  , m_undoStack(std::make_unique<Core::UndoStack>())
 {
     m_undoTimer.setSingleShot(true);
     m_undoTimer.setInterval(Constants::View::TOO_QUICK_ACTION_DELAY_MS);
 }
 
-void EditorData::addNodeToSelectionGroup(Node & node)
+void EditorData::addNodeToSelectionGroup(NodeR node, bool isImplicit)
 {
     L().debug() << "Adding node " << node.index() << " to selection group..";
 
-    m_selectionGroup->addSelectedNode(node);
+    m_selectionGroup->addNode(node, isImplicit);
 }
 
-void EditorData::requestAutosave()
+void EditorData::requestAutosave(AutosaveContext context, bool async)
 {
-    if (SettingsProxy::instance().autosave() && !m_fileName.isEmpty()) {
-        L().debug() << "Autosaving to '" << m_fileName.toStdString() << "'";
-        saveMindMapAs(m_fileName);
+    const auto doRequestAutosave = [this](bool async) {
+        if (Core::SingleInstanceContainer::instance().settingsProxy().autosave() && !m_fileName.isEmpty()) {
+            L().debug() << "Autosaving to '" << m_fileName.toStdString() << "'";
+            saveMindMapAs(m_fileName, async);
+        }
+    };
+
+    switch (context) {
+    case AutosaveContext::Modification:
+        doRequestAutosave(async);
+        break;
+    case AutosaveContext::InitializeNewMindMap:
+    case AutosaveContext::OpenMindMap:
+    case AutosaveContext::QuitApplication:
+        if (m_touched) {
+            doRequestAutosave(async);
+        }
+        break;
     }
 }
 
 QColor EditorData::backgroundColor() const
 {
     // Background color of "empty" editor is not the same as default color of new design
-    return m_mindMapData ? m_mindMapData->backgroundColor() : Constants::MindMap::DEFAULT_BACKGROUND_COLOR;
+    return m_mindMapData ? m_mindMapData->backgroundColor() : Constants::MindMap::Defaults::BACKGROUND_COLOR;
 }
 
 MouseAction & EditorData::mouseAction()
@@ -77,24 +100,22 @@ QString EditorData::fileName() const
 
 void EditorData::loadMindMapData(QString fileName)
 {
-    requestAutosave();
-
-    clearImages();
+    requestAutosave(AutosaveContext::OpenMindMap, false);
     clearSelectionGroup();
 
     m_selectedEdge = nullptr;
 
-    if (!TestMode::enabled()) {
-        setMindMapData(AlzSerializer::fromXml(XmlReader::readFromFile(fileName)));
+    if (!Core::TestMode::enabled()) {
+        setMindMapData(m_alzFileIO->fromFile(fileName));
     } else {
-        TestMode::logDisabledCode("setMindMapData");
+        Core::TestMode::logDisabledCode("setMindMapData");
     }
 
     m_fileName = fileName;
     setIsModified(false);
     RecentFilesManager::instance().addRecentFile(fileName);
 
-    m_undoStack.clear();
+    m_undoStack->clear();
 }
 
 bool EditorData::isModified() const
@@ -104,20 +125,20 @@ bool EditorData::isModified() const
 
 bool EditorData::isUndoable() const
 {
-    return m_undoStack.isUndoable();
+    return m_undoStack->isUndoable();
 }
 
 void EditorData::undo()
 {
-    if (m_undoStack.isUndoable()) {
+    if (m_undoStack->isUndoable()) {
         clearSelectionGroup();
         m_selectedEdge = nullptr;
         m_dragAndDropNode = nullptr;
         saveRedoPoint();
-        m_mindMapData = m_undoStack.undo();
+        m_mindMapData = m_undoStack->undo();
         setIsModified(true);
         sendUndoAndRedoSignals();
-        requestAutosave();
+        requestAutosave(AutosaveContext::Modification, true);
     }
 }
 
@@ -130,20 +151,20 @@ void EditorData::unselectText()
 
 bool EditorData::isRedoable() const
 {
-    return m_undoStack.isRedoable();
+    return m_undoStack->isRedoable();
 }
 
 void EditorData::redo()
 {
-    if (m_undoStack.isRedoable()) {
+    if (m_undoStack->isRedoable()) {
         clearSelectionGroup();
         m_selectedEdge = nullptr;
         m_dragAndDropNode = nullptr;
         saveUndoPoint(true);
-        m_mindMapData = m_undoStack.redo();
+        m_mindMapData = m_undoStack->redo();
         setIsModified(true);
         sendUndoAndRedoSignals();
-        requestAutosave();
+        requestAutosave(AutosaveContext::Modification, true);
     }
 }
 
@@ -154,17 +175,17 @@ void EditorData::removeImageRefsOfSelectedNodes()
     }
 }
 
-bool EditorData::saveMindMap()
+bool EditorData::saveMindMap(bool async)
 {
-    assert(m_mindMapData);
-    assert(!m_fileName.isEmpty());
-
-    return saveMindMapAs(m_fileName);
+    if (m_mindMapData && !m_fileName.isEmpty()) {
+        return saveMindMapAs(m_fileName, async);
+    }
+    return false;
 }
 
 void EditorData::saveUndoPoint(bool dontClearRedoStack)
 {
-    if (!TestMode::enabled()) {
+    if (!Core::TestMode::enabled()) {
         if (m_undoTimer.isActive()) {
             L().debug() << "Saving undo point skipped..";
             m_undoTimer.start();
@@ -175,13 +196,15 @@ void EditorData::saveUndoPoint(bool dontClearRedoStack)
     }
 
     assert(m_mindMapData);
-    m_undoStack.pushUndoPoint(*m_mindMapData);
+    m_undoStack->pushUndoPoint(*m_mindMapData);
     if (!dontClearRedoStack) {
-        m_undoStack.clearRedoStack();
+        m_undoStack->clearRedoStack();
     }
     setIsModified(true);
     sendUndoAndRedoSignals();
-    requestAutosave();
+    requestAutosave(AutosaveContext::Modification, true);
+
+    m_touched = true;
 }
 
 void EditorData::saveRedoPoint()
@@ -189,16 +212,16 @@ void EditorData::saveRedoPoint()
     L().debug() << "Saving redo point..";
 
     assert(m_mindMapData);
-    m_undoStack.pushRedoPoint(*m_mindMapData);
+    m_undoStack->pushRedoPoint(*m_mindMapData);
     setIsModified(true);
     sendUndoAndRedoSignals();
 }
 
-bool EditorData::saveMindMapAs(QString fileName)
+bool EditorData::saveMindMapAs(QString fileName, bool async)
 {
     assert(m_mindMapData);
 
-    if (XmlWriter::writeToFile(AlzSerializer::toXml(*m_mindMapData), fileName)) {
+    if (m_alzFileIO->toFile(m_mindMapData, fileName, async)) {
         m_fileName = fileName;
         setIsModified(false);
         RecentFilesManager::instance().addRecentFile(fileName);
@@ -247,14 +270,14 @@ void EditorData::setTextColorForSelectedNodes(QColor color)
     }
 }
 
-void EditorData::setMindMapData(MindMapDataPtr mindMapData)
+void EditorData::setMindMapData(MindMapDataS mindMapData)
 {
     m_mindMapData = mindMapData;
 
     m_fileName = "";
     setIsModified(false);
 
-    m_undoStack.clear();
+    m_undoStack->clear();
 }
 
 void EditorData::selectNodesByText(QString text)
@@ -268,14 +291,14 @@ void EditorData::selectNodesByText(QString text)
     }
 }
 
-void EditorData::toggleNodeInSelectionGroup(Node & node)
+void EditorData::toggleNodeInSelectionGroup(NodeR node)
 {
     L().debug() << "Toggling node " << node.index() << " in selection group..";
 
     m_selectionGroup->toggleNode(node);
 }
 
-EdgePtr EditorData::addEdge(EdgePtr edge)
+EdgeS EditorData::addEdge(EdgeS edge)
 {
     assert(m_mindMapData);
 
@@ -283,7 +306,7 @@ EdgePtr EditorData::addEdge(EdgePtr edge)
     return edge;
 }
 
-void EditorData::deleteEdge(Edge & edge)
+void EditorData::deleteEdge(EdgeR edge)
 {
     assert(m_mindMapData);
 
@@ -295,21 +318,21 @@ void EditorData::deleteEdge(int index0, int index1)
     assert(m_mindMapData);
 
     if (const auto deletedEdge = m_mindMapData->graph().deleteEdge(index0, index1)) {
-        removeEdgeFromScene(*deletedEdge);
+        deletedEdge->hideWithAnimation();
     }
 }
 
-void EditorData::deleteNode(Node & node)
+void EditorData::deleteNode(NodeR node)
 {
     assert(m_mindMapData);
 
     const auto deletionInfo = m_mindMapData->graph().deleteNode(node.index());
     if (deletionInfo.first) {
-        removeNodeFromScene(*deletionInfo.first);
+        deletionInfo.first->hideWithAnimation();
     }
     for (auto && deletedEdge : deletionInfo.second) {
         if (deletedEdge) {
-            removeEdgeFromScene(*deletedEdge);
+            deletedEdge->hideWithAnimation();
         }
     }
 }
@@ -320,8 +343,8 @@ void EditorData::deleteSelectedNodes()
 
     const auto selectedNodes = m_selectionGroup->nodes();
     if (selectedNodes.empty()) {
-        if (Node::lastHoveredNode()) {
-            deleteNode(*Node::lastHoveredNode());
+        if (SceneItems::Node::lastHoveredNode()) {
+            deleteNode(*SceneItems::Node::lastHoveredNode());
         }
     } else {
         m_selectionGroup->clear();
@@ -331,11 +354,11 @@ void EditorData::deleteSelectedNodes()
     }
 }
 
-NodePtr EditorData::addNodeAt(QPointF pos)
+NodeS EditorData::addNodeAt(QPointF pos)
 {
     assert(m_mindMapData);
 
-    const auto node = make_shared<Node>();
+    const auto node = make_shared<SceneItems::Node>();
     node->setLocation(pos);
     m_mindMapData->graph().addNode(node);
     return node;
@@ -395,12 +418,12 @@ bool EditorData::areSelectedNodesDisconnectable() const
     return false;
 }
 
-std::vector<std::shared_ptr<Edge>> EditorData::connectSelectedNodes()
+std::vector<EdgeS> EditorData::connectSelectedNodes()
 {
-    std::vector<std::shared_ptr<Edge>> edges;
-    for (auto && nodePair : getConnectableNodes()) {
-        edges.push_back(addEdge(std::make_shared<Edge>(*nodePair.first, *nodePair.second)));
-    }
+    const auto connectableNodes = getConnectableNodes();
+    std::vector<EdgeS> edges;
+    std::transform(std::begin(connectableNodes), std::end(connectableNodes), std::back_inserter(edges),
+                   [this](auto && nodePair) { return addEdge(std::make_shared<SceneItems::Edge>(nodePair.first, nodePair.second)); });
     return edges;
 }
 
@@ -412,35 +435,28 @@ void EditorData::disconnectSelectedNodes()
     }
 }
 
-std::vector<std::shared_ptr<Node>> EditorData::copiedNodes() const
+CopyContext::CopiedData EditorData::copiedData() const
 {
-    return m_copyContext->copiedNodes();
+    return m_copyContext->copiedData();
 }
 
-NodePtr EditorData::copyNodeAt(Node & source, QPointF pos)
+NodeS EditorData::copyNodeAt(NodeCR source, QPointF pos)
 {
     assert(m_mindMapData);
 
-    const auto node = make_shared<Node>(source);
+    const auto node = std::make_shared<SceneItems::Node>(source);
     node->setIndex(-1); // Results in new index to be assigned
     node->setLocation(pos);
     m_mindMapData->graph().addNode(node);
     return node;
 }
 
-QPointF EditorData::copyReferencePoint() const
-{
-    return m_copyContext->copyReferencePoint();
-}
-
 void EditorData::copySelectedNodes()
 {
     if (m_selectionGroup->size()) {
         clearCopyStack();
-        for (auto && node : m_selectionGroup->nodes()) {
-            m_copyContext->push(*node);
-        }
-        L().debug() << m_selectionGroup->size() << " nodes copied. Reference point calculated at (" << m_copyContext->copyReferencePoint().x() << ", " << m_copyContext->copyReferencePoint().y() << ")";
+        m_copyContext->push(m_selectionGroup->nodes(), m_mindMapData->graph());
+        L().debug() << m_selectionGroup->size() << " nodes copied. Reference point calculated at (" << m_copyContext->copiedData().copyReferencePoint.x() << ", " << m_copyContext->copiedData().copyReferencePoint.y() << ")";
     }
 }
 
@@ -454,19 +470,14 @@ void EditorData::clearCopyStack()
     m_copyContext->clear();
 }
 
-void EditorData::clearImages()
+void EditorData::clearSelectionGroup(bool onlyImplicitNodes)
 {
-    m_mindMapData->imageManager().clear();
+    L().trace() << "Clearing selection group: onlyImplicitNodes == " << onlyImplicitNodes;
+
+    m_selectionGroup->clear(onlyImplicitNodes);
 }
 
-void EditorData::clearSelectionGroup()
-{
-    L().trace() << "Clearing selection group..";
-
-    m_selectionGroup->clear();
-}
-
-NodePtr EditorData::getNodeByIndex(int index)
+NodeS EditorData::getNodeByIndex(int index)
 {
     assert(m_mindMapData);
 
@@ -475,23 +486,26 @@ NodePtr EditorData::getNodeByIndex(int index)
 
 void EditorData::initializeNewMindMap()
 {
-    requestAutosave();
-
-    clearImages();
-    setMindMapData(std::make_shared<MindMapData>());
+    requestAutosave(AutosaveContext::InitializeNewMindMap, false);
+    setMindMapData(std::make_shared<Core::MindMapData>());
 }
 
-bool EditorData::isInSelectionGroup(Node & node)
+bool EditorData::isInSelectionGroup(NodeR node)
 {
     return m_selectionGroup->hasNode(node);
 }
 
-MindMapDataPtr EditorData::mindMapData()
+MindMapDataS EditorData::mindMapData()
 {
     return m_mindMapData;
 }
 
-void EditorData::moveSelectionGroup(Node & reference, QPointF location)
+void EditorData::mirror(bool vertically)
+{
+    m_mindMapData->mirror(vertically);
+}
+
+void EditorData::moveSelectionGroup(NodeR reference, QPointF location)
 {
     m_selectionGroup->move(reference, location);
 }
@@ -506,19 +520,24 @@ bool EditorData::nodeHasImageAttached() const
     return false;
 }
 
-void EditorData::setSelectedEdge(Edge * edge)
+void EditorData::setSelectedEdge(EdgeP edge)
 {
     m_selectedEdge = edge;
 }
 
-Edge * EditorData::selectedEdge() const
+EdgeP EditorData::selectedEdge() const
 {
     return m_selectedEdge;
 }
 
-Node * EditorData::selectedNode() const
+NodeP EditorData::selectedNode() const
 {
     return m_selectionGroup->selectedNode();
+}
+
+std::vector<NodeP> EditorData::selectedNodes() const
+{
+    return m_selectionGroup->nodes();
 }
 
 size_t EditorData::selectionGroupSize() const
@@ -526,27 +545,10 @@ size_t EditorData::selectionGroupSize() const
     return m_selectionGroup->size();
 }
 
-void EditorData::removeEdgeFromScene(Edge & edge)
-{
-    edge.hide();
-    if (const auto scene = edge.scene()) {
-        scene->removeItem(&edge);
-    }
-}
-
-void EditorData::removeNodeFromScene(Node & node)
-{
-    node.hide();
-    node.removeHandles();
-    if (const auto scene = node.scene()) {
-        scene->removeItem(&node);
-    }
-}
-
 void EditorData::sendUndoAndRedoSignals()
 {
-    emit undoEnabled(m_undoStack.isUndoable());
-    emit redoEnabled(m_undoStack.isRedoable());
+    emit undoEnabled(m_undoStack->isUndoable());
+    emit redoEnabled(m_undoStack->isRedoable());
 }
 
 void EditorData::setIsModified(bool isModified)
@@ -559,7 +561,7 @@ void EditorData::setIsModified(bool isModified)
 
 EditorData::~EditorData()
 {
-    requestAutosave();
+    requestAutosave(AutosaveContext::QuitApplication, false);
 
     L().debug() << "EditorData deleted";
 }

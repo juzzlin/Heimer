@@ -25,7 +25,7 @@ if(POLICY CMP0072)
 endif()
 
 # Global version
-set(VERSION_MAJOR 3)
+set(VERSION_MAJOR 4)
 set(VERSION_MINOR 1)
 set(VERSION_PATCH 0)
 set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
@@ -88,17 +88,23 @@ elseif(MSVC)
 endif()
 
 set(BINARY_NAME "heimer")
-set(LIBRARY_NAME "HeimerLib")
+set(HEIMER_LIB_NAME "Heimer")
 
 add_definitions(-DVERSION="${VERSION}")
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(QT_MIN_VER 5.5.1) # The version in Ubuntu 16.04
+set(QT_MIN_VER 5.9.5) # The version in Ubuntu 18.04 LTS
 # This is what Qt Creator 4.13.2 would generate
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Xml Widgets LinguistTools Svg Test REQUIRED)
-
+OPTION(WITH_QT6 "Enable Qt 6" OFF)
+if (WITH_QT6)
+    find_package(QT NAMES Qt6 COMPONENTS Core REQUIRED)
+    find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Xml Widgets LinguistTools Svg Test Network REQUIRED)
+else()
+    find_package(QT NAMES Qt5 COMPONENTS Core REQUIRED)
+    find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Xml Widgets LinguistTools Svg Test Network REQUIRED)
+endif()
+message(STATUS "Qt version found: ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_PATCH}")
 # Install paths depend on the build type and target platform
 setup_install_targets()
 

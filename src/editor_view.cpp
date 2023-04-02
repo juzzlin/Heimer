@@ -16,6 +16,7 @@
 #include <QApplication>
 #include <QGraphicsItem>
 #include <QGraphicsSimpleTextItem>
+#include <QLabel>
 #include <QMimeData>
 #include <QMouseEvent>
 #include <QRectF>
@@ -27,31 +28,41 @@
 #include "editor_view.hpp"
 
 #include "constants.hpp"
-#include "edge.hpp"
-#include "edge_context_menu.hpp"
-#include "edge_text_edit.hpp"
-#include "graphics_factory.hpp"
+#include "control_strategy.hpp"
 #include "item_filter.hpp"
 #include "magic_zoom.hpp"
 #include "mediator.hpp"
-#include "mind_map_data.hpp"
 #include "mouse_action.hpp"
-#include "node.hpp"
 #include "node_action.hpp"
-#include "node_handle.hpp"
-#include "simple_logger.hpp"
 
-#include "contrib/SimpleLogger/src/simple_logger.hpp"
+#include "core/mind_map_data.hpp"
+#include "core/settings_proxy.hpp"
+#include "core/single_instance_container.hpp"
+
+#include "menus/edge_context_menu.hpp"
+
+#include "scene_items/edge.hpp"
+#include "scene_items/edge_text_edit.hpp"
+#include "scene_items/graphics_factory.hpp"
+#include "scene_items/node.hpp"
+#include "scene_items/node_handle.hpp"
+#include "scene_items/scene_item_base.hpp"
+
+#include "widgets/status_label.hpp"
+
+#include "simple_logger.hpp"
 
 #include <cassert>
 #include <cstdlib>
+#include <unordered_set>
 
 using juzzlin::L;
 
 EditorView::EditorView(Mediator & mediator)
   : m_mediator(mediator)
-  , m_edgeContextMenu(new EdgeContextMenu(this, m_mediator))
-  , m_mainContextMenu(new MainContextMenu(this, m_mediator, m_grid))
+  , m_edgeContextMenu(new Menus::EdgeContextMenu(this, m_mediator))
+  , m_mainContextMenu(new Menus::MainContextMenu(this, m_mediator, m_grid))
+  , m_controlStrategy(Core::SingleInstanceContainer::instance().controlStrategy())
 {
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -62,8 +73,12 @@ EditorView::EditorView(Mediator & mediator)
     setRenderHint(QPainter::Antialiasing);
 
     // Forward signals from main context menu
-    connect(m_mainContextMenu, &MainContextMenu::actionTriggered, this, &EditorView::actionTriggered);
-    connect(m_mainContextMenu, &MainContextMenu::newNodeRequested, this, &EditorView::newNodeRequested);
+    connect(m_mainContextMenu, &Menus::MainContextMenu::actionTriggered, this, &EditorView::actionTriggered);
+    connect(m_mainContextMenu, &Menus::MainContextMenu::newNodeRequested, this, &EditorView::newNodeRequested);
+
+    m_updateShadowEffectsOnZoomTimer.setInterval(Constants::View::SHADOW_EFFECT_OPTIMIZATION_UPDATE_DELAY_MS);
+    m_updateShadowEffectsOnZoomTimer.setSingleShot(true);
+    connect(&m_updateShadowEffectsOnZoomTimer, &QTimer::timeout, this, &EditorView::updateShadowEffectsBasedOnItemVisiblity);
 }
 
 const Grid & EditorView::grid() const
@@ -82,49 +97,48 @@ void EditorView::finishRubberBand()
 
 void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
 {
-    if ((event.button() == Qt::LeftButton && isModifierPressed()) || event.button() == Qt::MiddleButton) {
+    if (m_controlStrategy.rubberBandInitiated(event)) {
         initiateRubberBand();
-    } else if (event.button() == Qt::LeftButton) {
-        m_mediator.setSelectedEdge(nullptr);
-        m_mediator.unselectText();
-        m_mediator.mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
-        setDragMode(ScrollHandDrag);
-    } else if (event.button() == Qt::RightButton) {
-        openMainContextMenu(MainContextMenu::Mode::Background);
+    } else if (m_controlStrategy.backgroundDragInitiated(event)) {
+        initiateBackgroundDrag();
+    } else if (m_controlStrategy.secondaryButtonClicked(event)) {
+        openMainContextMenu(Menus::MainContextMenu::Mode::Background);
     }
 }
 
-void EditorView::handleMousePressEventOnEdge(QMouseEvent & event, Edge & edge)
+bool EditorView::handleMousePressEventOnEdge(QMouseEvent & event, EdgeR edge)
 {
-    if (event.button() == Qt::RightButton) {
-        handleRightButtonClickOnEdge(edge);
+    if (m_controlStrategy.secondaryButtonClicked(event)) {
+        handleSecondaryButtonClickOnEdge(edge);
+        return true;
     }
+    return false;
 }
 
-void EditorView::handleMousePressEventOnNode(QMouseEvent & event, Node & node)
+void EditorView::handleMousePressEventOnNode(QMouseEvent & event, NodeR node)
 {
     if (node.index() != -1) // Prevent right-click on the drag node
     {
-        if (event.button() == Qt::RightButton) {
-            handleRightButtonClickOnNode(node);
-        } else if (event.button() == Qt::LeftButton) {
-            handleLeftButtonClickOnNode(node);
+        if (m_controlStrategy.secondaryButtonClicked(event)) {
+            handleSecondaryButtonClickOnNode(node);
+        } else if (m_controlStrategy.primaryButtonClicked(event)) {
+            handlePrimaryButtonClickOnNode(node);
         }
     }
 }
 
-void EditorView::handleMousePressEventOnNodeHandle(QMouseEvent & event, NodeHandle & nodeHandle)
+void EditorView::handleMousePressEventOnNodeHandle(QMouseEvent & event, SceneItems::NodeHandle & nodeHandle)
 {
     if (isModifierPressed()) {
         return;
     }
 
-    if (event.button() == Qt::LeftButton) {
-        handleLeftButtonClickOnNodeHandle(nodeHandle);
+    if (m_controlStrategy.primaryButtonClicked(event)) {
+        handlePrimaryButtonClickOnNodeHandle(nodeHandle);
     }
 }
 
-void EditorView::handleLeftButtonClickOnNode(Node & node)
+void EditorView::handlePrimaryButtonClickOnNode(NodeR node)
 {
     if (isModifierPressed()) {
         // User is selecting a node
@@ -140,46 +154,59 @@ void EditorView::handleLeftButtonClickOnNode(Node & node)
     }
 }
 
-void EditorView::handleLeftButtonClickOnNodeHandle(NodeHandle & nodeHandle)
+void EditorView::handlePrimaryButtonClickOnNodeHandle(SceneItems::NodeHandle & nodeHandle)
 {
     if (!nodeHandle.parentNode().selected()) {
         m_mediator.clearSelectionGroup();
     }
 
     switch (nodeHandle.role()) {
-    case NodeHandle::Role::Add:
+    case SceneItems::NodeHandle::Role::ConnectOrCreate:
         m_mediator.initiateNewNodeDrag(nodeHandle);
         break;
-    case NodeHandle::Role::Drag:
+    case SceneItems::NodeHandle::Role::Move:
         m_mediator.initiateNodeDrag(nodeHandle.parentNode());
         break;
-    case NodeHandle::Role::Color:
-        m_mediator.addNodeToSelectionGroup(nodeHandle.parentNode());
+    case SceneItems::NodeHandle::Role::NodeColor:
+        m_mediator.addNodeToSelectionGroup(nodeHandle.parentNode(), true);
         emit actionTriggered(StateMachine::Action::NodeColorChangeRequested);
         break;
-    case NodeHandle::Role::TextColor:
-        m_mediator.addNodeToSelectionGroup(nodeHandle.parentNode());
+    case SceneItems::NodeHandle::Role::TextColor:
+        m_mediator.addNodeToSelectionGroup(nodeHandle.parentNode(), true);
         emit actionTriggered(StateMachine::Action::TextColorChangeRequested);
         break;
     }
 }
 
-void EditorView::handleRightButtonClickOnEdge(Edge & edge)
+void EditorView::handleSecondaryButtonClickOnEdge(EdgeR edge)
 {
     m_mediator.setSelectedEdge(&edge);
 
     openEdgeContextMenu();
 }
 
-void EditorView::handleRightButtonClickOnNode(Node & node)
+void EditorView::handleSecondaryButtonClickOnNode(NodeR node)
 {
     if (!node.selected()) {
         m_mediator.clearSelectionGroup();
     }
 
-    m_mediator.addNodeToSelectionGroup(node);
+    m_mediator.addNodeToSelectionGroup(node, true);
 
-    openMainContextMenu(MainContextMenu::Mode::Node);
+    openMainContextMenu(Menus::MainContextMenu::Mode::Node);
+
+    m_mediator.unselectImplicitlySelectedNodes();
+}
+
+void EditorView::initiateBackgroundDrag()
+{
+    juzzlin::L().debug() << "Initiating background drag..";
+
+    m_mediator.setSelectedEdge(nullptr);
+    m_mediator.unselectText();
+    m_mediator.mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
+
+    setDragMode(ScrollHandDrag);
 }
 
 void EditorView::initiateRubberBand()
@@ -205,11 +232,11 @@ void EditorView::mouseDoubleClickEvent(QMouseEvent * event)
     if (const auto result = ItemFilter::getFirstItemAtPosition(*scene(), clickedScenePos, Constants::View::CLICK_TOLERANCE); result.success) {
         if (result.node) {
             juzzlin::L().debug() << "Node double-clicked";
-            zoomToFit(MagicZoom::calculateRectangle({ result.node }, false));
+            zoomToFit(MagicZoom::calculateRectangleByItems({ result.node }, false));
         } else if (result.nodeTextEdit) {
-            if (const auto node = dynamic_cast<Node *>(result.nodeTextEdit->parentItem()); node) {
+            if (const auto node = dynamic_cast<NodeP>(result.nodeTextEdit->parentItem()); node) {
                 juzzlin::L().debug() << "Node text edit double-clicked";
-                zoomToFit(MagicZoom::calculateRectangle({ node }, false));
+                zoomToFit(MagicZoom::calculateRectangleByItems({ node }, false));
             }
         }
     } else {
@@ -223,6 +250,8 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
     m_mappedPos = mapToScene(event->pos());
     m_mediator.mouseAction().setMappedPos(m_mappedPos);
 
+    using SceneItems::Node;
+
     if (Node::lastHoveredNode()) {
         const auto hhd = Constants::Node::HIDE_HANDLES_DISTANCE;
         if (m_mappedPos.x() > Node::lastHoveredNode()->pos().x() + hhd + Node::lastHoveredNode()->boundingRect().width() / 2 || //
@@ -230,7 +259,6 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
             m_mappedPos.y() > Node::lastHoveredNode()->pos().y() + hhd + Node::lastHoveredNode()->boundingRect().height() / 2 || //
             m_mappedPos.y() < Node::lastHoveredNode()->pos().y() - hhd - Node::lastHoveredNode()->boundingRect().height() / 2) {
             Node::lastHoveredNode()->setHandlesVisible(false);
-            Node::lastHoveredNode()->setTextInputActive(false);
         }
     }
 
@@ -254,7 +282,7 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
         m_mediator.mouseAction().sourceNode()->setHandlesVisible(false);
 
         // This is needed to clear implicitly "selected" connection candidate nodes when hovering the dummy drag node on other nodes
-        m_mediator.clearSelectedNode();
+        m_mediator.unselectSelectedNode();
         m_mediator.clearSelectionGroup();
 
         m_connectionTargetNode = nullptr;
@@ -269,6 +297,7 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
         updateRubberBand();
         break;
     case MouseAction::Action::Scroll:
+        removeShadowEffectsDuringDrag();
         break;
     }
 
@@ -284,7 +313,10 @@ void EditorView::mousePressEvent(QMouseEvent * event)
     if (const auto result = ItemFilter::getFirstItemAtPosition(*scene(), clickedScenePos, Constants::View::CLICK_TOLERANCE); result.success) {
         if (result.edge) {
             juzzlin::L().debug() << "Edge pressed";
-            handleMousePressEventOnEdge(*event, *result.edge);
+            if (!handleMousePressEventOnEdge(*event, *result.edge)) {
+                juzzlin::L().debug() << "Background pressed via edge";
+                handleMousePressEventOnBackground(*event);
+            }
         } else if (result.nodeHandle) {
             juzzlin::L().debug() << "Node handle pressed";
             handleMousePressEventOnNodeHandle(*event, *result.nodeHandle);
@@ -297,8 +329,8 @@ void EditorView::mousePressEvent(QMouseEvent * event)
             }
             // This hack enables edge context menu even if user clicks on the edge text edit.
         } else if (result.edgeTextEdit) {
-            if (event->button() == Qt::RightButton) {
-                if (const auto edge = dynamic_cast<Edge *>(result.edgeTextEdit->parentItem()); edge) {
+            if (m_controlStrategy.secondaryButtonClicked(*event)) {
+                if (const auto edge = result.edgeTextEdit->edge(); edge) {
                     juzzlin::L().debug() << "Edge text edit pressed";
                     handleMousePressEventOnEdge(*event, *edge);
                     return;
@@ -306,8 +338,8 @@ void EditorView::mousePressEvent(QMouseEvent * event)
             }
             // This hack enables node context menu even if user clicks on the node text edit.
         } else if (result.nodeTextEdit) {
-            if (event->button() == Qt::RightButton || (event->button() == Qt::LeftButton && isModifierPressed())) {
-                if (const auto node = dynamic_cast<Node *>(result.nodeTextEdit->parentItem()); node) {
+            if (m_controlStrategy.secondaryButtonClicked(*event) || (m_controlStrategy.primaryButtonClicked(*event) && isModifierPressed())) {
+                if (const auto node = dynamic_cast<NodeP>(result.nodeTextEdit->parentItem()); node) {
                     juzzlin::L().debug() << "Node text edit pressed";
                     handleMousePressEventOnNode(*event, *node);
                     node->setTextInputActive(false);
@@ -329,17 +361,21 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
         switch (m_mediator.mouseAction().action()) {
         case MouseAction::Action::RubberBand:
             finishRubberBand();
-            m_mediator.mouseAction().clear();
             break;
         default:
             break;
         }
-    } else if (event->button() == Qt::LeftButton) {
+    } else if (m_controlStrategy.primaryButtonClicked(*event)) {
         switch (m_mediator.mouseAction().action()) {
         case MouseAction::Action::None:
+            // This can happen if the user deletes the drag node while connecting nodes or creating a new node.
+            // In this case the action is just aborted.
+            if (m_connectionTargetNode) {
+                m_connectionTargetNode->setSelected(false);
+                m_connectionTargetNode = nullptr;
+            }
             break;
         case MouseAction::Action::MoveNode:
-            m_mediator.mouseAction().clear();
             m_mediator.adjustSceneRect();
             break;
         case MouseAction::Action::CreateOrConnectNode:
@@ -351,22 +387,22 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
                 } else {
                     m_mediator.createAndAddNode(sourceNode->index(), m_grid.snapToGrid(m_mappedPos - m_mediator.mouseAction().sourcePosOnNode()));
                 }
-
                 resetDummyDragItems();
-                m_mediator.mouseAction().clear();
             }
             break;
         case MouseAction::Action::RubberBand:
             finishRubberBand();
-            m_mediator.mouseAction().clear();
             break;
         case MouseAction::Action::Scroll:
             setDragMode(NoDrag);
+            updateShadowEffectsBasedOnItemVisiblity();
             break;
         }
 
         QApplication::restoreOverrideCursor();
     }
+
+    m_mediator.mouseAction().clear();
 
     QGraphicsView::mouseReleaseEvent(event);
 }
@@ -376,7 +412,7 @@ void EditorView::openEdgeContextMenu()
     m_edgeContextMenu->exec(mapToGlobal(m_clickedPos));
 }
 
-void EditorView::openMainContextMenu(MainContextMenu::Mode mode)
+void EditorView::openMainContextMenu(Menus::MainContextMenu::Mode mode)
 {
     m_mainContextMenu->setMode(mode);
     m_mainContextMenu->exec(mapToGlobal(m_clickedPos));
@@ -396,7 +432,7 @@ void EditorView::showDummyDragEdge(bool show)
     if (const auto sourceNode = m_mediator.mouseAction().sourceNode()) {
         if (!m_dummyDragEdge) {
             L().debug() << "Creating a new dummy drag edge";
-            m_dummyDragEdge = std::make_unique<Edge>(*sourceNode, *m_dummyDragNode, false, false);
+            m_dummyDragEdge = std::make_unique<SceneItems::Edge>(sourceNode, m_dummyDragNode.get(), false, false);
             m_dummyDragEdge->setOpacity(0.5);
             scene()->addItem(m_dummyDragEdge.get());
         } else {
@@ -405,8 +441,9 @@ void EditorView::showDummyDragEdge(bool show)
         }
     }
 
+    m_dummyDragEdge->setArrowSize(m_arrowSize);
     m_dummyDragEdge->setColor(m_edgeColor);
-    m_dummyDragEdge->setWidth(m_edgeWidth);
+    m_dummyDragEdge->setEdgeWidth(m_edgeWidth);
     m_dummyDragEdge->setVisible(show);
 }
 
@@ -414,7 +451,7 @@ void EditorView::showDummyDragNode(bool show)
 {
     if (!m_dummyDragNode) {
         L().debug() << "Creating a new dummy drag node";
-        m_dummyDragNode = std::make_unique<Node>();
+        m_dummyDragNode = std::make_unique<SceneItems::Node>();
         scene()->addItem(m_dummyDragNode.get());
     }
 
@@ -428,6 +465,56 @@ void EditorView::updateScale()
     QTransform transform;
     transform.scale(m_scale, m_scale);
     setTransform(transform);
+
+    m_updateShadowEffectsOnZoomTimer.stop();
+    m_updateShadowEffectsOnZoomTimer.start();
+}
+
+void EditorView::removeShadowEffectsDuringDrag()
+{
+    if (Core::SingleInstanceContainer::instance().settingsProxy().optimizeShadowEffects()) {
+
+        if (!m_shadowEffectsDuringDragRemoved) {
+            m_shadowEffectsDuringDragRemoved = true;
+
+            // Remove shadow effects from edges that are not completely visible while dragging.
+            // We can assume that the effects of off-screen items have already been removed in
+            // updateShadowEffectsBasedOnItemVisiblity().
+            const auto mappedViewRect = mapToScene(rect());
+            for (auto && item : scene()->items(mappedViewRect, Qt::IntersectsItemShape)) {
+                if (const auto edge = dynamic_cast<SceneItems::Edge *>(item); edge) {
+                    if (!mappedViewRect.boundingRect().contains(edge->sceneBoundingRect().toRect())) {
+                        edge->enableShadowEffect(false);
+                    }
+                }
+            }
+        }
+    }
+}
+
+void EditorView::updateShadowEffectsBasedOnItemVisiblity()
+{
+    std::unordered_set<SceneItems::SceneItemBase *> enabledItems;
+
+    const int glitchMargin = rect().width() / Constants::View::SHADOW_EFFECT_OPTIMIZATION_MARGIN_FRACTION;
+    for (auto && item : scene()->items(mapToScene(rect().adjusted(-glitchMargin, -glitchMargin, glitchMargin, glitchMargin)))) {
+        if (const auto sceneItem = dynamic_cast<SceneItems::SceneItemBase *>(item); sceneItem) {
+            sceneItem->enableShadowEffect(true);
+            enabledItems.insert(sceneItem);
+        }
+    }
+
+    if (Core::SingleInstanceContainer::instance().settingsProxy().optimizeShadowEffects()) {
+        for (auto && item : scene()->items()) {
+            if (const auto sceneItem = dynamic_cast<SceneItems::SceneItemBase *>(item); sceneItem) {
+                if (!enabledItems.count(sceneItem)) {
+                    sceneItem->enableShadowEffect(false);
+                }
+            }
+        }
+    }
+
+    m_shadowEffectsDuringDragRemoved = false;
 }
 
 void EditorView::updateRubberBand()
@@ -453,23 +540,14 @@ void EditorView::saveZoom()
     m_savedZoom = { scene()->sceneRect(), mapToScene(viewport()->rect().center()), m_scale };
 }
 
+void EditorView::setArrowSize(double arrowSize)
+{
+    m_arrowSize = arrowSize;
+}
+
 void EditorView::setCornerRadius(int cornerRadius)
 {
     m_cornerRadius = cornerRadius;
-}
-
-void EditorView::setGridSize(int size)
-{
-    m_grid.setSize(size);
-    if (scene())
-        scene()->update();
-}
-
-void EditorView::setGridVisible(bool visible)
-{
-    m_gridVisible = visible;
-    if (scene())
-        scene()->update();
 }
 
 void EditorView::setEdgeColor(const QColor & edgeColor)
@@ -477,14 +555,37 @@ void EditorView::setEdgeColor(const QColor & edgeColor)
     m_edgeColor = edgeColor;
 }
 
+void EditorView::setEdgeWidth(double edgeWidth)
+{
+    m_edgeWidth = edgeWidth;
+}
+
+void EditorView::setGridSize(int size)
+{
+    m_grid.setSize(size);
+    if (scene()) {
+        scene()->update();
+    }
+}
+
 void EditorView::setGridColor(const QColor & gridColor)
 {
     m_mediator.mindMapData()->setGridColor(gridColor);
 }
 
-void EditorView::setEdgeWidth(double edgeWidth)
+void EditorView::setGridVisible(bool visible)
 {
-    m_edgeWidth = edgeWidth;
+    m_gridVisible = visible;
+    if (scene()) {
+        scene()->update();
+    }
+}
+
+void EditorView::showStatusText(QString statusText)
+{
+    const auto label = new Widgets::StatusLabel(*this, statusText);
+    label->show();
+    label->updateGeometryKakkaPissa();
 }
 
 void EditorView::wheelEvent(QWheelEvent * event)

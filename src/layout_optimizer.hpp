@@ -19,13 +19,14 @@
 #include <functional>
 #include <memory>
 
+#include "types.hpp"
+
 class Grid;
-class MindMapData;
 
 class LayoutOptimizer
 {
 public:
-    LayoutOptimizer(std::shared_ptr<MindMapData> mindMapData, const Grid & grid);
+    LayoutOptimizer(MindMapDataS mindMapData, const Grid & grid);
 
     ~LayoutOptimizer();
 
@@ -33,11 +34,33 @@ public:
 
     struct OptimizationInfo
     {
-        double initialCost = 0;
+        double acceptRatio = 0;
+
+        double currentCost = 0;
 
         double finalCost = 0;
 
+        double initialCost = 0;
+
+        double tC = 0;
+
+        double t0 = 0;
+
+        double t1 = 0.05;
+
+        double cS = 0.7;
+
+        size_t accepts = 0;
+
         size_t changes = 0;
+
+        size_t rejects = 0;
+
+        size_t sliceSize = 0;
+
+        size_t stuckLimit = 5;
+
+        double stuckTh = 0.1;
     };
 
     OptimizationInfo optimize();

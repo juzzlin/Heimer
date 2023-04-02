@@ -5,11 +5,310 @@ Release date:
 
 New features:
 
+* Automatic zoom-to-fit on search
+
+* Enable clear button on search text edit
+
+Bug fixes:
+
+Other:
+
+* Don't zoom to fit on cleared search if used has unselected all nodes
+
+4.1.0
+=====
+
+Release date:
+
+Fri, 17 Mar 2023 19:48:40 -0000
+
+New features:
+
+* Add setting for shadow effect optimization
+
+* Layout optimization
+  - Allow bigger aspect ratio
+  - Allow longer edges
+
+* Darker default outline for nodes
+
+* Add subtle outline for edge labels
+
+Bug fixes:
+
+* Fix GitHub Issue #238: Shadow effects introduce performance issues
+
+* Fix GitHub Issue #239: Cannot drag if the drag position is inside the virtual rectangle spanned by an edge
+
+Other:
+
+* Update Italian translations
+
+* Update Dutch translations
+
+* Performance
+  - Don't update scene rect when adding edges
+  - Remove shadow effects from edges as long edges can make dragging stutter
+
+4.0.0
+=====
+
+Release date:
+
+Fri, 10 Mar 2023 17:28:44 -0000
+
+New features:
+
+* Add setting for 'inverted controls'
+  - Pan the view with a modifier key (Ctrl) and select a group of items without a modifier key being pressed
+
+* Add parameter initialization options to layout optimization dialog
+
+* Add progress indicator when opening a mind map
+
+* Add tool tips for optimizer parameters
+
+* Add tool tip text for selecting node group by intersection
+
+* Change help texts into tool tips
+
+Bug fixes:
+
+* Fix tab key not working properly with node and edge text inputs
+
+* Unselect implicitly selected node after context menu has closed
+
+* Don't autosave unmodified mind map on exit
+
+* Don't autosave unmodified mind map on new file or open file
+
+Other:
+
+* More subtle new version indicator with a timeout
+
+* Change help texts to tool tips in edit settings
+
+* Update Italian translations
+
+* Update Dutch translations
+
+* Breaking changes to ALZ-format (old files can still be opened normally)
+
+  * Move style data into style element
+
+  * Move layout optimizer config into metadata element
+
+  * Save and load application and format versions separately
+
+  * Rename index => i, index0 => i0, index1 => i1
+
+3.7.0
+=====
+
+Release date:
+
+Mon, 13 Feb 2023 19:21:18 -0000
+
+New features:
+
+* Add default settings for arrow size and edge width
+
+* Add default settings for text size and font
+
+* Add edit option to mirror the layout horizontally or vertically
+
+* Animate edge deletion
+
+* Animate node deletion
+
+Bug fixes:
+
+* Fix node left selected on canceled node/text color dialog
+
+3.6.4
+=====
+
+Release date:
+
+Mon, 19 Dec 2022 19:49:40 -0000
+
+Bug fixes:
+
+* Fix crash when trying to copy a group of connected nodes
+
+Other:
+
+* Update Italian translations
+
+3.6.3
+=====
+
+Release date:
+
+Sun, 11 Dec 2022 18:28:24 -0000
+
+New features:
+
+* Fix GitHub Issue #229: Add option to automatically open the last used file on application start
+  - Autoload can be now enabled in edit settings
+
+* Implement asynchronous file save for autosave
+  - Fixes stuttering user experience on large files
+
+Bug fixes:
+
+* Fix Heimer Snap on Ubuntu 22.04
+  - Didn't launch due to Wayland issues
+  - Forced to X11 for now
+
+Other:
+
+* Initialize a new mind map to avoid an undefined state if the mind map fails to load
+
+* Apply autosave only when settings dialog is accepted
+
+* Increase edge with step to 0.25
+
+* Update Dutch and Italian translations
+
+3.6.2
+=====
+
+Release date:
+
+Fri, 11 Nov 2022 16:22:10 -0000
+
+New features:
+
+* Add tooltips to node handles
+
+* Set handle background color based on node color
+
+* Light or dark text edit highlight based on node color
+
+Bug fixes:
+
+* Fix GitHub issue #224: Tests fail when compiled with UBSan
+
+* Fix GitHub Issue #226: Attached node background images not loading    
+  - Decode images in memory without exporting into a file first
+
+Other:
+
+* Add timestamp to log file name
+
+* Save immediately when autosave enabled
+
+3.6.1
+=====
+
+Release date:
+
+Wed, 21 Sep 2022 18:26:35 -0000
+
+Bug fixes:
+
+* Fix shadow effect of edge label when edge is selected
+
+* Fix edge label not deleted together with the edge
+
+* Fix edge context menu not opening when edge text edit right-clicked
+
+Other:
+
+* constants.hpp: added <qreal> to QVector so that the compiler wouldn't throw an error
+
+3.6.0
+=====
+
+Release date:
+
+Sat, 27 Aug 2022 19:03:46 +0300
+
+New features:
+
+* Usability improvements:
+  - Show a dummy edge label with '...' when the actual label won't fit
+  - Stack edge text edits on top of nodes
+
+3.5.0
+=====
+
+Release date:
+
+Sat, 30 Jul 2022 21:12:12 +0300
+
+New features:
+
+* Fix GitHub Issue #112: Optimizer: Take current node locations into account when building initial layout
+  - This change makes the optimizer way more stable with respect to the original global placement
+  - Tries to find the best possible initial locations for the nodes in a normalized coordinate space
+  - Makes only local changes within a very small search radius (row-wise and cell-wise)
+
+Other:
+
+* Update German translations
+
+* Update Dutch translations
+
+3.4.0
+=====
+
+Release date:
+
+Sun, 26 Jun 2022 21:42:11 +0300
+
+New features:
+
+* Fetch the newest version and show in status bar if newer version available
+
+* Fix GitHub Issue #210: Option to set shadow offset and disable shadows
+  - Adds effects tab to the settings dialog
+  - Shadow offset and blur radius can now be set
+
+* Fix GitHub Issue #211: Color defaults
+  - Default colors can now be set via the default settings tab
+
+* Make it possible to tune shadow colors via the effects tab
+
+3.3.0
+=====
+
+Release date:
+
+Thu, 12 May 2022 21:09:29 +0300
+
+New features:
+
+* Add German translations
+
+* Fix GitHub Issue #206: An option to change the size of the arrows
+  - Toolbar now includes a spinner widget to set the arrow size
+
+Bug fixes:
+
+* Fix GitHub Issue #205: Click dragging from an existing node, 
+  then pressing delete before dropping the node, crashes the program
+
+3.2.0
+=====
+
+Release date:
+
+Sat, 15 Jan 2022 20:42:13 +0200
+
+New features:
+
+* Fix GitHub Issue #181: Copy should copy also edges within the group
+  - When copying (and pasting) nodes, also the edges within the copy group are now copied
+
 Bug fixes:
 
 * Fix GitHub Issue #195: Decrease size of "About" dialog
 
 Other:
+
+* Updated Dutch & Italian translations
 
 3.1.0
 =====

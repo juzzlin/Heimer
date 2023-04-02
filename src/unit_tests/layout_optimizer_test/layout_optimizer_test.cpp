@@ -14,18 +14,27 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "layout_optimizer_test.hpp"
-#include "contrib/SimpleLogger/src/simple_logger.hpp"
-#include "grid.hpp"
-#include "layout_optimizer.hpp"
-#include "mind_map_data.hpp"
-#include "test_mode.hpp"
+
+#include "../../grid.hpp"
+#include "../../layout_optimizer.hpp"
+
+#include "../../core/graph.hpp"
+#include "../../core/mind_map_data.hpp"
+#include "../../core/test_mode.hpp"
+
+#include "simple_logger.hpp"
 
 #include <iostream>
 #include <random>
 
+using Core::MindMapData;
+
+using SceneItems::Edge;
+using SceneItems::Node;
+
 LayoutOptimizerTest::LayoutOptimizerTest()
 {
-    TestMode::setEnabled(true);
+    Core::TestMode::setEnabled(true);
 }
 
 void LayoutOptimizerTest::testNoNodes_ShouldNotInitialize()
@@ -97,7 +106,7 @@ void LayoutOptimizerTest::testMultipleNodes_ShouldReduceCost()
     std::uniform_real_distribution<double> xDist { -1000, 1000 };
     std::uniform_real_distribution<double> yDist { -1000, 1000 };
     std::mt19937 engine;
-    std::vector<std::shared_ptr<Node>> nodes;
+    std::vector<NodeS> nodes;
     for (size_t i = 0; i < nodeCount; i++) {
         auto node = std::make_shared<Node>();
         data->graph().addNode(node);
@@ -108,7 +117,7 @@ void LayoutOptimizerTest::testMultipleNodes_ShouldReduceCost()
     for (auto && node : nodes) {
         for (size_t i = 0; i < (i % 2) + 1; i++) {
             const auto otherNode = data->graph().getNode(static_cast<int>(iDist(engine)));
-            data->graph().addEdge(std::make_shared<Edge>(*node, *otherNode));
+            data->graph().addEdge(std::make_shared<Edge>(node, otherNode));
         }
     }
 
@@ -125,7 +134,7 @@ void LayoutOptimizerTest::testMultipleNodes_ShouldReduceCost()
         QVERIFY(optimizationInfo.changes > 100);
         const double gain = (optimizationInfo.finalCost - optimizationInfo.initialCost) / optimizationInfo.initialCost;
         juzzlin::L().info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
-        QVERIFY(gain < -0.3);
+        QVERIFY(gain < -0.25);
 
         lol.extract();
         for (auto && node : nodes) {

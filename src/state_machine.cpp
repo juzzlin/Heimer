@@ -45,6 +45,10 @@ void StateMachine::calculateState(StateMachine::Action action)
         m_state = State::ShowNodeColorDialog;
         break;
 
+    case Action::SpecialNodeStyleRequested:
+        m_state = State::ShowSpecialNodeStyleDialog;
+        break;
+
     case Action::PngExportSelected:
         m_state = State::ShowPngExportDialog;
         break;
@@ -107,6 +111,7 @@ void StateMachine::calculateState(StateMachine::Action action)
     case Action::OpeningMindMapFailed:
     case Action::PngExported:
     case Action::SvgExported:
+    case Action::SpecialNodeStyleChanged:
     case Action::TextColorChanged:
         m_quitType = QuitType::None;
         m_state = State::Edit;

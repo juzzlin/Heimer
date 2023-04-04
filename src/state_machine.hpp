@@ -47,6 +47,7 @@ public:
         ShowOpenDialog,
         ShowPngExportDialog,
         ShowSaveAsDialog,
+        ShowSpecialNodeStyleDialog,
         ShowSvgExportDialog,
         ShowTextColorDialog,
         TryCloseWindow
@@ -89,6 +90,8 @@ public:
         RedoSelected,
         SaveAsSelected,
         SaveSelected,
+        SpecialNodeStyleRequested,
+        SpecialNodeStyleChanged,
         SvgExported,
         SvgExportSelected,
         TextColorChanged,

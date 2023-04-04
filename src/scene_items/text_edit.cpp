@@ -90,6 +90,10 @@ void TextEdit::setText(const QString & text)
     if (m_text != text) {
         m_text = text;
         if (!TestMode::enabled()) {
+            QTextOption to;
+            to.setAlignment(Qt::AlignHCenter);
+            //document()->setTextWidth(textWidth());
+            document()->setDefaultTextOption(to);
             setPlainText(text);
         } else {
             TestMode::logDisabledCode("Set TextEdit plain text");

@@ -66,6 +66,7 @@ set(HEIMER_LIB_SRC
     dialogs/scene_color_dialog.cpp
     dialogs/settings_dialog.cpp
     dialogs/settings_tab_base.cpp
+    dialogs/special_node_style_dialog.cpp
     dialogs/spinner_dialog.cpp
     dialogs/svg_export_dialog.cpp
     dialogs/whats_new_dialog.cpp

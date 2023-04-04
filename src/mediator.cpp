@@ -581,6 +581,9 @@ void Mediator::performNodeAction(const NodeAction & action)
             m_editorData->clearSelectionGroup();
         }
         break;
+    case NodeAction::Type::SetSpecialNodeStyle:
+        // TODO
+        break;
     case NodeAction::Type::SetTextColor:
         saveUndoPoint();
         m_editorData->setTextColorForSelectedNodes(action.color);

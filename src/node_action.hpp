@@ -34,6 +34,7 @@ struct NodeAction
         Paste,
         RemoveAttachedImage,
         SetNodeColor,
+        SetSpecialNodeStyle,
         SetTextColor,
     };
 

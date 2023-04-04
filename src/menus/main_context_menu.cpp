@@ -130,6 +130,13 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
 
     m_mainContextMenuActions[Mode::Node].push_back(m_removeImageAction);
 
+    m_specialNodeStyleAction = new QAction(tr("Set special node style..."), this);
+    connect(m_specialNodeStyleAction, &QAction::triggered, this, [this] {
+        emit actionTriggered(StateMachine::Action::SpecialNodeStyleRequested);
+    });
+
+    m_mainContextMenuActions[Mode::Node].push_back(m_specialNodeStyleAction);
+
     // Populate the menu
     addAction(createNodeAction);
     addSeparator();
@@ -153,6 +160,8 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     addSeparator();
     addAction(attachImageAction);
     addAction(m_removeImageAction);
+    addSeparator();
+    addAction(m_specialNodeStyleAction);
 }
 
 void MainContextMenu::setMode(const Mode & mode)
@@ -172,6 +181,7 @@ void MainContextMenu::setMode(const Mode & mode)
     m_pasteNodeAction->setText(m_mediator.copyStackSize() > 1 ? tr("Paste nodes") : tr("Paste node"));
 
     m_removeImageAction->setEnabled(m_mediator.nodeHasImageAttached());
+    m_removeImageAction->setVisible(m_mediator.nodeHasImageAttached());
 }
 
 } // namespace Menus

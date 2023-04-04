@@ -63,6 +63,8 @@ private:
 
     QAction * m_removeImageAction = nullptr;
 
+    QAction * m_specialNodeStyleAction = nullptr;
+
     NodeP m_selectedNode = nullptr;
 
     std::map<Mode, std::vector<QAction *>> m_mainContextMenuActions;

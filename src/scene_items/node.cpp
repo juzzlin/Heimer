@@ -73,8 +73,8 @@ Node::Node()
     setSelected(false);
 
     connect(m_textEdit, &TextEdit::textChanged, this, [=](const QString & text) {
+        m_textEdit->setTextWidth(-1);
         setText(text);
-        adjustSize();
     });
 
     connect(m_textEdit, &TextEdit::undoPointRequested, this, &Node::undoPointRequested);
@@ -312,7 +312,8 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent * event)
 void Node::initTextField()
 {
     if (!TestMode::enabled()) {
-        m_textEdit->setTextWidth(-1);
+        const auto textEditWidth = size().width();
+        m_textEdit->setTextWidth(textEditWidth);
         const auto size = m_nodeModel->size;
         m_textEdit->setPos(-size.width() * 0.5 + Constants::Node::MARGIN, -size.height() * 0.5 + Constants::Node::MARGIN);
     } else {

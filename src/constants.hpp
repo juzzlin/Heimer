@@ -95,6 +95,10 @@ static const int TEXT_EDIT_ANIMATION_DURATION = 150;
 
 static const int TEXT_EDIT_DURATION = 2000;
 
+static const int TEXT_EDIT_HOR_PADDING = 3;
+
+static const int TEXT_EDIT_VER_PADDING = 1;
+
 static const double WIDTH_SCALE = 0.5;
 
 } // namespace Edge

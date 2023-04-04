@@ -53,6 +53,9 @@ public:
 
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) override;
 
+    //! Used to add some padding the the text field.
+    QRectF boundingRect() const override;
+
 signals:
 
     void hoverEntered();

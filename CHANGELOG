@@ -5,17 +5,30 @@ Release date:
 
 New features:
 
+Bug fixes:
+
+Other:
+
+4.2.0
+=====
+
+Release date:
+
+Thu, 18 May 2023 15:51:49 -0000
+
+New features:
+
 * Automatic zoom-to-fit on search
 
 * Enable clear button on search text edit
-
-Bug fixes:
 
 Other:
 
 * Add small padding on the edge label text field
 
 * Don't zoom to fit on cleared search if used has unselected all nodes
+
+* Remove shadow effects from edges that are not completely visible while dragging
 
 4.1.0
 =====

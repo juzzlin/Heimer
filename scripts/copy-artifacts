@@ -1,39 +1,45 @@
- #!/bin/bash
+#!/usr/bin/env python3
 
-BUILD_PATH_BASE=/home/jenkins/workspace/Heimer_master_2/
+import argparse
+import os
+import shutil
+import glob
 
-TARGET_DIR=artifacts
-rm -rf ${TARGET_DIR} && mkdir ${TARGET_DIR} && pushd ${TARGET_DIR} || exit 1
+# Define the file patterns to be copied
+filePatterns = ["build-deb-ubuntu-18.04/heimer*.deb",
+                "build-deb-ubuntu-20.04/heimer*.deb",
+                "build-deb-ubuntu-22.04/heimer*.deb",
+                "build-appimage/Heimer*.AppImage",
+                "build-windows-nsis/heimer*win32.exe",
+                "build-windows-zip/zip/heimer*-win32.zip",
+                "*.tar.gz"]
 
-DEB_FILE_PATH=$(ls -t ${BUILD_PATH_BASE}/build-deb-ubuntu-18.04/heimer*.deb | head -1)
-DEB_FILE_NAME=$(basename ${DEB_FILE_PATH})
-cp -v ${DEB_FILE_PATH} ./${DEB_FILE_NAME} || exit 1
+def copyFiles(sourceDir, targetDir):
 
-DEB_FILE_PATH=$(ls -t ${BUILD_PATH_BASE}/build-deb-ubuntu-20.04/heimer*.deb | head -1)
-DEB_FILE_NAME=$(basename ${DEB_FILE_PATH})
-cp -v ${DEB_FILE_PATH} ./${DEB_FILE_NAME} || exit 1
+    # Create the target directory if it doesn't exist
+    if not os.path.exists(targetDir):
+        os.makedirs(targetDir)
 
-DEB_FILE_PATH=$(ls -t ${BUILD_PATH_BASE}/build-deb-ubuntu-22.04/heimer*.deb | head -1)
-DEB_FILE_NAME=$(basename ${DEB_FILE_PATH})
-cp -v ${DEB_FILE_PATH} ./${DEB_FILE_NAME} || exit 1
+    # Copy files matching the patterns from the source directory to the target directory
+    for pattern in filePatterns:
+        files = glob.glob(os.path.join(sourceDir, pattern))
+        for filePath in files:
+            fileName = os.path.basename(filePath)
+            targetPath = os.path.join(targetDir, fileName)
+            shutil.copy2(filePath, targetPath)
+            print(f"Copied '{fileName}' to '{targetDir}'")
 
-APP_FILE_PATH=$(ls -t ${BUILD_PATH_BASE}/build-appimage/Heimer*.AppImage | head -1)
-APP_FILE_NAME=$(basename ${APP_FILE_PATH})
-cp -v ${APP_FILE_PATH} ./${APP_FILE_NAME} || exit 1
+def main():
 
-WIN_FILE_PATH=$(ls -t ${BUILD_PATH_BASE}/build-windows-nsis/heimer*win32.exe | head -1)
-WIN_FILE_NAME=$(basename ${WIN_FILE_PATH})
-cp -v ${WIN_FILE_PATH} ./${WIN_FILE_NAME} || exit 1
+    # Parse command-line arguments
+    parser = argparse.ArgumentParser(description="Copy files from source directory to target directory")
+    parser.add_argument("-s", "--source", required=True, help="Source directory path")
+    parser.add_argument("-t", "--target", required=True, help="Target directory path")
 
-WIN_FILE_PATH=$(ls -t ${BUILD_PATH_BASE}/build-windows-zip/zip/heimer*-win32.zip | head -1)
-WIN_FILE_NAME=$(basename ${WIN_FILE_PATH})
-cp -v ${WIN_FILE_PATH} ./${WIN_FILE_NAME} || exit 1
+    args = parser.parse_args()
+    copyFiles(args.source, args.target)
 
-SRC_FILE_PATH=$(ls -t ${BUILD_PATH_BASE}/*.tar.gz | head -1)
-SRC_FILE_NAME=$(basename ${SRC_FILE_PATH})
-cp -v ${SRC_FILE_PATH} ./${SRC_FILE_NAME} || exit 1
-
-popd
-
-echo "Done."
+if __name__ == "__main__":
+    main()
+    print("Done.")
 

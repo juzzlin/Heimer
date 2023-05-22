@@ -408,7 +408,7 @@
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="43"/>
         <source>Optimize shadow effects</source>
-        <translation type="unfinished"></translation>
+        <translation>Schaduweffecten optimaliseren</translation>
     </message>
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="97"/>
@@ -433,7 +433,7 @@
     <message>
         <location filename="../dialogs/effects_tab.cpp" line="130"/>
         <source>Optimizing shadow effects makes the performance better, but might introduce some visual glitches.</source>
-        <translation type="unfinished"></translation>
+        <translation>Optimaliseer schaduweffecten om de prestaties te verbeteren. Let op: er kunnen zichtbare storingen ontstaan.</translation>
     </message>
 </context>
 <context>

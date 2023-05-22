@@ -26,6 +26,7 @@
 #include <QColor>
 #include <QGraphicsView>
 #include <QMenu>
+#include <QTimer>
 
 #include <memory>
 #include <optional>
@@ -118,7 +119,8 @@ private:
 
     void handleMousePressEventOnBackground(QMouseEvent & event);
 
-    void handleMousePressEventOnEdge(QMouseEvent & event, EdgeR edge);
+    //! \returns true if accepted.
+    bool handleMousePressEventOnEdge(QMouseEvent & event, EdgeR edge);
 
     void handleMousePressEventOnNode(QMouseEvent & event, NodeR node);
 
@@ -144,11 +146,15 @@ private:
 
     void openMainContextMenu(Menus::MainContextMenu::Mode mode);
 
+    void removeShadowEffectsDuringDrag();
+
     void showDummyDragEdge(bool show);
 
     void showDummyDragNode(bool show);
 
     void updateScale();
+
+    void updateShadowEffectsBasedOnItemVisiblity();
 
     void updateRubberBand();
 
@@ -202,6 +208,8 @@ private:
 
     bool m_gridVisible = false;
 
+    bool m_shadowEffectsDuringDragRemoved = false;
+
     QString m_dropFile {};
 
     struct ZoomParameters
@@ -216,6 +224,8 @@ private:
     std::optional<ZoomParameters> m_savedZoom;
 
     ControlStrategy & m_controlStrategy;
+
+    QTimer m_updateShadowEffectsOnZoomTimer;
 };
 
 #endif // EDITOR_VIEW_HPP

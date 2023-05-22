@@ -55,7 +55,7 @@ void EditorScene::adjustSceneRect()
 
 QRectF EditorScene::calculateZoomToFitRectangle(bool isForExport) const
 {
-    return MagicZoom::calculateRectangle(items(), isForExport);
+    return MagicZoom::calculateRectangleByItems(items(), isForExport);
 }
 
 bool EditorScene::containsAll() const

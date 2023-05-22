@@ -167,6 +167,8 @@ public:
 
     NodeP selectedNode() const;
 
+    std::vector<NodeP> selectedNodes() const;
+
     size_t selectionGroupSize() const;
 
     void selectNodesByText(QString text);

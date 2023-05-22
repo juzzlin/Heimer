@@ -28,6 +28,8 @@ class TextEdit : public QGraphicsTextItem
 public:
     explicit TextEdit(QGraphicsItem * parentItem);
 
+    QColor backgroundColor() const;
+
     virtual void setBackgroundColor(const QColor & backgroundColor);
 
     virtual void setTextSize(int textSize);

@@ -1,7 +1,7 @@
 project(Heimer)
 
-cmake_minimum_required(VERSION 2.8.12)
-cmake_policy(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.10)
+cmake_policy(VERSION 3.10)
 
 if(POLICY CMP0005)
     cmake_policy(SET CMP0005 NEW)
@@ -26,9 +26,15 @@ endif()
 
 # Global version
 set(VERSION_MAJOR 4)
-set(VERSION_MINOR 0)
+set(VERSION_MINOR 2)
 set(VERSION_PATCH 0)
 set(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
+
+message("\n${CMAKE_PROJECT_NAME} ${VERSION}\n")
+message(STATUS "System name       : ${CMAKE_HOST_SYSTEM_NAME}")
+message(STATUS "System version    : ${CMAKE_SYSTEM_VERSION}")
+message(STATUS "Compiler identity : ${CMAKE_CXX_COMPILER_ID}")
+message(STATUS "Compiler version  : ${CMAKE_CXX_COMPILER_VERSION}")
 
 # Some common CPack variables
 set(CPACK_PACKAGE_VERSION_MAJOR ${VERSION_MAJOR})
@@ -71,11 +77,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(CMAKE_COMPILER_IS_GNUCXX OR MINGW OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
 
-    # CMAKE_CXX_STANDARD supported only by versions >= 3.1
-    if (CMAKE_VERSION VERSION_LESS "3.1")
-        set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
-    endif ()
-
     # Automatically use ccache if found
     find_program(CCACHE_FOUND ccache)
     if(CCACHE_FOUND)
@@ -87,8 +88,8 @@ elseif(MSVC)
     add_definitions(-DNOMINMAX)
 endif()
 
-set(BINARY_NAME "heimer")
-set(HEIMER_LIB_NAME "Heimer")
+string(TOLOWER ${CMAKE_PROJECT_NAME} BINARY_NAME)
+set(HEIMER_LIB_NAME ${CMAKE_PROJECT_NAME})
 
 add_definitions(-DVERSION="${VERSION}")
 
@@ -104,7 +105,7 @@ else()
     find_package(QT NAMES Qt5 COMPONENTS Core REQUIRED)
     find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Xml Widgets LinguistTools Svg Test Network REQUIRED)
 endif()
-message(STATUS "Qt version found: ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_PATCH}")
+message(STATUS "Qt version found  : ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_PATCH}\n")
 # Install paths depend on the build type and target platform
 setup_install_targets()
 

@@ -58,7 +58,7 @@ Node::Node()
 {
     setAcceptHoverEvents(true);
 
-    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(false, m_settingsProxy.shadowEffect()));
+    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_settingsProxy.shadowEffect(), false));
 
     m_nodeModel->size = QSize(Constants::Node::MIN_WIDTH, Constants::Node::MIN_HEIGHT);
 
@@ -365,9 +365,8 @@ void Node::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
         painter->drawPixmap(rect, scaledPixmap, scaledRect);
     } else {
         const auto color = m_nodeModel->color;
-        const QPen pen(QColor { 2 * color.red() / 3, 2 * color.green() / 3, 2 * color.blue() / 3 }, 1);
         painter->fillPath(path, QBrush(color));
-        painter->strokePath(path, pen);
+        painter->strokePath(path, GraphicsFactory::createOutlinePen(color, 0.33));
     }
 
     // Patch for TextEdit
@@ -402,6 +401,12 @@ void Node::setCornerRadius(int value)
     // the first mouse over, which is a bit weird.
     prepareGeometryChange();
 
+    update();
+}
+
+void Node::enableShadowEffect(bool enable)
+{
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_settingsProxy.shadowEffect(), m_selected, !enable);
     update();
 }
 
@@ -441,13 +446,13 @@ bool Node::selected() const
 void Node::setSelected(bool selected)
 {
     m_selected = selected;
-    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), selected, m_settingsProxy.shadowEffect());
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_settingsProxy.shadowEffect(), m_selected);
     update();
 }
 
 void Node::setShadowEffect(const ShadowEffectParams & params)
 {
-    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_selected, params);
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), params, m_selected);
     update();
 }
 

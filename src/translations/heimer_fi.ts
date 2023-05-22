@@ -416,34 +416,44 @@
 <context>
     <name>Dialogs::EffectsTab</name>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="40"/>
+        <location filename="../dialogs/effects_tab.cpp" line="41"/>
         <source>Shadow color</source>
         <translation>Varjon väri</translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="41"/>
+        <location filename="../dialogs/effects_tab.cpp" line="42"/>
         <source>Selected item shadow color</source>
         <translation>Valittujen objektien varjon väri</translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="91"/>
+        <location filename="../dialogs/effects_tab.cpp" line="43"/>
+        <source>Optimize shadow effects</source>
+        <translation>Optimoi varjoefektit</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/effects_tab.cpp" line="97"/>
         <source>Shadows</source>
         <translation>Varjot</translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="94"/>
+        <location filename="../dialogs/effects_tab.cpp" line="100"/>
         <source>Shadow effect offset:</source>
         <translation>Varjon siirros:</translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="102"/>
+        <location filename="../dialogs/effects_tab.cpp" line="108"/>
         <source>Shadow blur radius:</source>
         <translation>Varjon sumennuksen säde:</translation>
     </message>
     <message>
-        <location filename="../dialogs/effects_tab.cpp" line="112"/>
+        <location filename="../dialogs/effects_tab.cpp" line="118"/>
         <source>Selected item shadow blur radius:</source>
         <translation>Valittujen objektien varjon sumennuksen säde:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/effects_tab.cpp" line="130"/>
+        <source>Optimizing shadow effects makes the performance better, but might introduce some visual glitches.</source>
+        <translation>Varjoefektien optimointi parantaa suorituskykyä, mutta saattaa aiheuttaa vääristymiä.</translation>
     </message>
 </context>
 <context>
@@ -476,7 +486,7 @@
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="96"/>
         <source>From layout</source>
-        <translation type="unfinished">Sijoittelusta</translation>
+        <translation>Sijoittelusta</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="97"/>
@@ -486,7 +496,7 @@
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="103"/>
         <source>From view</source>
-        <translation type="unfinished">Näkymästä</translation>
+        <translation>Näkymästä</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="104"/>
@@ -506,7 +516,7 @@
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="123"/>
         <source>Min from layout</source>
-        <translation type="unfinished">Minimi</translation>
+        <translation>Minimi</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="127"/>
@@ -516,7 +526,7 @@
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="130"/>
         <source>Max from layout</source>
-        <translation type="unfinished">Maksimi</translation>
+        <translation>Maksimi</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="134"/>
@@ -526,7 +536,7 @@
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="137"/>
         <source>Avg from layout</source>
-        <translation type="unfinished">Keskipituus</translation>
+        <translation>Keskipituus</translation>
     </message>
     <message>
         <location filename="../dialogs/layout_optimization_dialog.cpp" line="141"/>

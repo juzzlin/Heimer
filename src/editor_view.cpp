@@ -36,6 +36,7 @@
 #include "node_action.hpp"
 
 #include "core/mind_map_data.hpp"
+#include "core/settings_proxy.hpp"
 #include "core/single_instance_container.hpp"
 
 #include "menus/edge_context_menu.hpp"
@@ -45,6 +46,7 @@
 #include "scene_items/graphics_factory.hpp"
 #include "scene_items/node.hpp"
 #include "scene_items/node_handle.hpp"
+#include "scene_items/scene_item_base.hpp"
 
 #include "widgets/status_label.hpp"
 
@@ -52,6 +54,7 @@
 
 #include <cassert>
 #include <cstdlib>
+#include <unordered_set>
 
 using juzzlin::L;
 
@@ -72,6 +75,10 @@ EditorView::EditorView(Mediator & mediator)
     // Forward signals from main context menu
     connect(m_mainContextMenu, &Menus::MainContextMenu::actionTriggered, this, &EditorView::actionTriggered);
     connect(m_mainContextMenu, &Menus::MainContextMenu::newNodeRequested, this, &EditorView::newNodeRequested);
+
+    m_updateShadowEffectsOnZoomTimer.setInterval(Constants::View::SHADOW_EFFECT_OPTIMIZATION_UPDATE_DELAY_MS);
+    m_updateShadowEffectsOnZoomTimer.setSingleShot(true);
+    connect(&m_updateShadowEffectsOnZoomTimer, &QTimer::timeout, this, &EditorView::updateShadowEffectsBasedOnItemVisiblity);
 }
 
 const Grid & EditorView::grid() const
@@ -99,11 +106,13 @@ void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
     }
 }
 
-void EditorView::handleMousePressEventOnEdge(QMouseEvent & event, EdgeR edge)
+bool EditorView::handleMousePressEventOnEdge(QMouseEvent & event, EdgeR edge)
 {
     if (m_controlStrategy.secondaryButtonClicked(event)) {
         handleSecondaryButtonClickOnEdge(edge);
+        return true;
     }
+    return false;
 }
 
 void EditorView::handleMousePressEventOnNode(QMouseEvent & event, NodeR node)
@@ -223,11 +232,11 @@ void EditorView::mouseDoubleClickEvent(QMouseEvent * event)
     if (const auto result = ItemFilter::getFirstItemAtPosition(*scene(), clickedScenePos, Constants::View::CLICK_TOLERANCE); result.success) {
         if (result.node) {
             juzzlin::L().debug() << "Node double-clicked";
-            zoomToFit(MagicZoom::calculateRectangle({ result.node }, false));
+            zoomToFit(MagicZoom::calculateRectangleByItems({ result.node }, false));
         } else if (result.nodeTextEdit) {
             if (const auto node = dynamic_cast<NodeP>(result.nodeTextEdit->parentItem()); node) {
                 juzzlin::L().debug() << "Node text edit double-clicked";
-                zoomToFit(MagicZoom::calculateRectangle({ node }, false));
+                zoomToFit(MagicZoom::calculateRectangleByItems({ node }, false));
             }
         }
     } else {
@@ -288,6 +297,7 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
         updateRubberBand();
         break;
     case MouseAction::Action::Scroll:
+        removeShadowEffectsDuringDrag();
         break;
     }
 
@@ -303,7 +313,10 @@ void EditorView::mousePressEvent(QMouseEvent * event)
     if (const auto result = ItemFilter::getFirstItemAtPosition(*scene(), clickedScenePos, Constants::View::CLICK_TOLERANCE); result.success) {
         if (result.edge) {
             juzzlin::L().debug() << "Edge pressed";
-            handleMousePressEventOnEdge(*event, *result.edge);
+            if (!handleMousePressEventOnEdge(*event, *result.edge)) {
+                juzzlin::L().debug() << "Background pressed via edge";
+                handleMousePressEventOnBackground(*event);
+            }
         } else if (result.nodeHandle) {
             juzzlin::L().debug() << "Node handle pressed";
             handleMousePressEventOnNodeHandle(*event, *result.nodeHandle);
@@ -382,6 +395,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
             break;
         case MouseAction::Action::Scroll:
             setDragMode(NoDrag);
+            updateShadowEffectsBasedOnItemVisiblity();
             break;
         }
 
@@ -451,6 +465,56 @@ void EditorView::updateScale()
     QTransform transform;
     transform.scale(m_scale, m_scale);
     setTransform(transform);
+
+    m_updateShadowEffectsOnZoomTimer.stop();
+    m_updateShadowEffectsOnZoomTimer.start();
+}
+
+void EditorView::removeShadowEffectsDuringDrag()
+{
+    if (Core::SingleInstanceContainer::instance().settingsProxy().optimizeShadowEffects()) {
+
+        if (!m_shadowEffectsDuringDragRemoved) {
+            m_shadowEffectsDuringDragRemoved = true;
+
+            // Remove shadow effects from edges that are not completely visible while dragging.
+            // We can assume that the effects of off-screen items have already been removed in
+            // updateShadowEffectsBasedOnItemVisiblity().
+            const auto mappedViewRect = mapToScene(rect());
+            for (auto && item : scene()->items(mappedViewRect, Qt::IntersectsItemShape)) {
+                if (const auto edge = dynamic_cast<SceneItems::Edge *>(item); edge) {
+                    if (!mappedViewRect.boundingRect().contains(edge->sceneBoundingRect().toRect())) {
+                        edge->enableShadowEffect(false);
+                    }
+                }
+            }
+        }
+    }
+}
+
+void EditorView::updateShadowEffectsBasedOnItemVisiblity()
+{
+    std::unordered_set<SceneItems::SceneItemBase *> enabledItems;
+
+    const int glitchMargin = rect().width() / Constants::View::SHADOW_EFFECT_OPTIMIZATION_MARGIN_FRACTION;
+    for (auto && item : scene()->items(mapToScene(rect().adjusted(-glitchMargin, -glitchMargin, glitchMargin, glitchMargin)))) {
+        if (const auto sceneItem = dynamic_cast<SceneItems::SceneItemBase *>(item); sceneItem) {
+            sceneItem->enableShadowEffect(true);
+            enabledItems.insert(sceneItem);
+        }
+    }
+
+    if (Core::SingleInstanceContainer::instance().settingsProxy().optimizeShadowEffects()) {
+        for (auto && item : scene()->items()) {
+            if (const auto sceneItem = dynamic_cast<SceneItems::SceneItemBase *>(item); sceneItem) {
+                if (!enabledItems.count(sceneItem)) {
+                    sceneItem->enableShadowEffect(false);
+                }
+            }
+        }
+    }
+
+    m_shadowEffectsDuringDragRemoved = false;
 }
 
 void EditorView::updateRubberBand()

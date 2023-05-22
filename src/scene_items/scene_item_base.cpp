@@ -38,6 +38,10 @@ void SceneItemBase::removeFromScene()
 {
 }
 
+void SceneItemBase::enableShadowEffect(bool)
+{
+}
+
 SceneItemBase::~SceneItemBase() = default;
 
 } // namespace SceneItems

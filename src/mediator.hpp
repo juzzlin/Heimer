@@ -57,7 +57,7 @@ public:
 
     void addEdge(NodeR node1, NodeR node2);
 
-    void addItem(QGraphicsItem & item);
+    void addItem(QGraphicsItem & item, bool adjustSceneRect = true);
 
     void addNodeToSelectionGroup(NodeR node, bool isImplicit = false);
 

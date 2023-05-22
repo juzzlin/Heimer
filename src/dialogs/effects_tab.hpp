@@ -18,6 +18,7 @@
 
 #include "settings_tab_base.hpp"
 
+class QCheckBox;
 class QSpinBox;
 struct ShadowEffectParams;
 
@@ -51,6 +52,8 @@ private:
     ColorSettingButton * m_shadowColorButton;
 
     ColorSettingButton * m_selectedItemShadowColorButton;
+
+    QCheckBox * m_optimizeShadowsCheckBox;
 };
 
 } // namespace Dialogs

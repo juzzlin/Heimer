@@ -73,6 +73,8 @@ public:
 
     int cornerRadius() const;
 
+    void enableShadowEffect(bool enable) override;
+
     static std::pair<EdgePoint, EdgePoint> getNearestEdgePoints(NodeCR node1, NodeCR node2);
 
     void highlightText(const QString & text);

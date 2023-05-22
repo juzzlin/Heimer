@@ -19,6 +19,7 @@
 #include "editor_scene.hpp"
 #include "editor_view.hpp"
 #include "image_manager.hpp"
+#include "magic_zoom.hpp"
 #include "main_window.hpp"
 #include "mouse_action.hpp"
 #include "node_action.hpp"
@@ -79,7 +80,7 @@ void Mediator::addExistingGraphToScene(bool zoomToFitAfterNodesLoaded)
         const auto node0 = getNodeByIndex(edge->sourceNode().index());
         const auto node1 = getNodeByIndex(edge->targetNode().index());
         if (!m_editorScene->hasEdge(*node0, *node1)) {
-            addItem(*edge);
+            addItem(*edge, false);
             edge->setArrowSize(m_editorData->mindMapData()->arrowSize());
             edge->setColor(m_editorData->mindMapData()->edgeColor());
             edge->setEdgeWidth(m_editorData->mindMapData()->edgeWidth());
@@ -129,10 +130,12 @@ void Mediator::addEdge(NodeR node1, NodeR node2)
     addExistingGraphToScene();
 }
 
-void Mediator::addItem(QGraphicsItem & item)
+void Mediator::addItem(QGraphicsItem & item, bool adjustSceneRect)
 {
     m_editorScene->addItem(&item);
-    adjustSceneRect();
+    if (adjustSceneRect) {
+        this->adjustSceneRect();
+    }
 }
 
 void Mediator::addNodeToSelectionGroup(NodeR node, bool isImplicit)
@@ -790,7 +793,19 @@ void Mediator::setSelectedEdge(EdgeP edge)
 
 void Mediator::setSearchText(QString text)
 {
-    m_editorData->selectNodesByText(text);
+    // Leave zoom setting as it is if user has cleared selected nodes and search field.
+    // Otherwise zoom in to search results and select matching texts.
+    if (text.isEmpty() && !m_editorData->selectionGroupSize()) {
+        m_editorData->selectNodesByText("");
+    } else {
+        m_editorData->selectNodesByText(text);
+        if (const auto selectedNodes = m_editorData->selectedNodes(); selectedNodes.size()) {
+            m_editorView->zoomToFit(MagicZoom::calculateRectangleByNodes(selectedNodes));
+        } else {
+            zoomToFit();
+        }
+    }
+
     updateNodeConnectionActions();
 }
 

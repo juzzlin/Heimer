@@ -1,12 +1,46 @@
-#!/bin/bash
+#!/usr/bin/env python3
 
-SNAP_BUILD_PATH=/home/jenkins/workspace/Heimer-Snap_master/
-SNAP_FILE_PATH=$(ls -t ${SNAP_BUILD_PATH}/heimer*.snap | head -1)
-SNAP_FILE_NAME=$(basename ${SNAP_FILE_PATH})
+import argparse
+import os
+import subprocess
 
-cp -v ${SNAP_FILE_PATH} ./${SNAP_FILE_NAME} || exit 1
+def copyAndUploadSnap(snapBuildPath):
 
-snapcraft upload --release=stable ${SNAP_FILE_NAME} || exit 1
+    # Find the latest SNAP file in the SNAP_BUILD_PATH directory
+    snapFiles = sorted([file for file in os.listdir(snapBuildPath) if file.startswith("heimer") and file.endswith(".snap")])
+    if not snapFiles:
+        print("No SNAP files found in the specified directory.")
+        exit(1)
 
-echo "Done."
+    latestSnapFile = os.path.join(snapBuildPath, snapFiles[-1])
+
+    # Copy the latest SNAP file to the current directory
+    try:
+        subprocess.check_output(["cp", "-v", latestSnapFile, "./"])
+    except subprocess.CalledProcessError:
+        print("Failed to copy the SNAP file.")
+        exit(1)
+
+    snapFileName = os.path.basename(latestSnapFile)
+
+    # Upload the SNAP file using snapcraft
+    try:
+        subprocess.check_output(["snapcraft", "upload", "--release=stable", snapFileName])
+    except subprocess.CalledProcessError:
+        print("Failed to upload the SNAP file.")
+        exit(1)
+
+def main():
+
+    # Parse command-line arguments
+    parser = argparse.ArgumentParser(description="Copy and upload the latest SNAP file")
+    parser.add_argument("-s", "--snap-build-path", required=True, help="SNAP build directory path")
+    args = parser.parse_args()
+
+    # Call the copyAndUploadSnap function with the provided SNAP build path
+    copyAndUploadSnap(args.snap_build_path)
+
+if __name__ == '__main__':
+    main()
+    print("Done.")
 

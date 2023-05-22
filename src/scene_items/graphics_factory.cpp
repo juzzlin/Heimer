@@ -19,28 +19,43 @@
 
 #include <QGraphicsDropShadowEffect>
 
-QGraphicsEffect * GraphicsFactory::createDropShadowEffect(bool selected, const ShadowEffectParams & params)
+QGraphicsEffect * GraphicsFactory::createDropShadowEffect(const ShadowEffectParams & params, bool selected)
 {
     const auto effect = new QGraphicsDropShadowEffect;
-    updateDropShadowEffect(effect, selected, params);
+    updateDropShadowEffect(effect, params, selected, false);
     return effect;
 }
 
-void GraphicsFactory::updateDropShadowEffect(QGraphicsEffect * effect, bool selected, const ShadowEffectParams & params)
+QPen GraphicsFactory::createOutlinePen(const QColor & backgroundColor, double brightness)
+{
+    const int width = 1;
+    return QPen { QColor { static_cast<int>(backgroundColor.red() * brightness),
+                           static_cast<int>(backgroundColor.green() * brightness),
+                           static_cast<int>(backgroundColor.blue() * brightness) },
+                  width };
+}
+
+void GraphicsFactory::updateDropShadowEffect(QGraphicsEffect * effect, const ShadowEffectParams & params, bool selected, bool disabled)
 {
     if (!effect) {
         return;
     }
 
     if (const auto shadow = qobject_cast<QGraphicsDropShadowEffect *>(effect)) {
-        if (!selected) {
-            shadow->setOffset(params.offset, params.offset);
-            shadow->setColor(params.shadowColor);
-            shadow->setBlurRadius(params.blurRadius);
+        if (!disabled) {
+            if (!selected) {
+                shadow->setOffset(params.offset, params.offset);
+                shadow->setColor(params.shadowColor);
+                shadow->setBlurRadius(params.blurRadius);
+            } else {
+                shadow->setOffset({});
+                shadow->setColor(params.selectedItemShadowColor);
+                shadow->setBlurRadius(params.selectedItemBlurRadius);
+            }
         } else {
             shadow->setOffset({});
-            shadow->setColor(params.selectedItemShadowColor);
-            shadow->setBlurRadius(params.selectedItemBlurRadius);
+            shadow->setColor({});
+            shadow->setBlurRadius({});
         }
     }
 }

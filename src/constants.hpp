@@ -59,7 +59,7 @@ namespace Edge {
 
 namespace Defaults {
 
-static const double ARROW_SIZE = 10;
+static const double ARROW_SIZE = 20;
 
 } // namespace Defaults
 
@@ -94,6 +94,10 @@ static const double EDGE_WIDTH_STEP = 0.25;
 static const int TEXT_EDIT_ANIMATION_DURATION = 150;
 
 static const int TEXT_EDIT_DURATION = 2000;
+
+static const int TEXT_EDIT_HOR_PADDING = 3;
+
+static const int TEXT_EDIT_VER_PADDING = 1;
 
 static const double WIDTH_SCALE = 0.5;
 
@@ -159,9 +163,9 @@ static const QColor NODE_TEXT_COLOR { Qt::black };
 
 static const auto NODE_TEXT_COLOR_SETTINGS_KEY = "nodeTextColor";
 
-static const double EDGE_WIDTH = 2.0;
+static const double EDGE_WIDTH = 1.0;
 
-static const int TEXT_SIZE = 11;
+static const int TEXT_SIZE = 14;
 
 static const auto TEXT_SIZE_SETTINGS_KEY = "textSize";
 
@@ -235,11 +239,11 @@ static const double ASPECT_RATIO = 1.0;
 
 static const double MIN_EDGE_LENGTH = 10;
 
-static const double MAX_EDGE_LENGTH = 250;
+static const double MAX_EDGE_LENGTH = 1000;
 
-static const double MIN_ASPECT_RATIO = 0.1;
+static const double MIN_ASPECT_RATIO = 0.01;
 
-static const double MAX_ASPECT_RATIO = 10;
+static const double MAX_ASPECT_RATIO = 100;
 
 } // namespace LayoutOptimizer
 
@@ -270,6 +274,10 @@ const auto INVERTED_CONTROLS_SETTINGS_KEY = "invertedControls";
 static const int CLICK_TOLERANCE = 5;
 
 static const double DRAG_NODE_OPACITY = 0.5;
+
+static const int SHADOW_EFFECT_OPTIMIZATION_MARGIN_FRACTION = 20;
+
+static const int SHADOW_EFFECT_OPTIMIZATION_UPDATE_DELAY_MS = 250;
 
 static const int TEXT_SEARCH_DELAY_MS = 250;
 
@@ -318,6 +326,8 @@ static const auto SHADOW_EFFECT_SELECTED_ITEM_BLUR_RADIUS_SETTINGS_KEY = "shadow
 static const auto SHADOW_EFFECT_SHADOW_COLOR_SETTINGS_KEY = "shadowEffectShadowColor";
 
 static const auto SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR_SETTINGS_KEY = "shadowEffectSelectedItemShadowColor";
+
+static const auto OPTIMIZE_SHADOW_EFFECTS_SETTINGS_KEY = "optimizeShadowEffects";
 
 } // namespace Effects
 

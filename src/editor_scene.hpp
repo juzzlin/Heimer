@@ -45,6 +45,8 @@ public:
 private:
     bool containsAll() const;
 
+    void enableGraphicsEffects(bool enable) const;
+
     void removeItems();
 
     using ItemPtr = std::unique_ptr<QGraphicsItem>;

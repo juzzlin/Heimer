@@ -73,6 +73,15 @@ bool EditorScene::containsAll() const
     return true;
 }
 
+void EditorScene::enableGraphicsEffects(bool enable) const
+{
+    for (auto && item : items()) {
+        if (item->graphicsEffect()) {
+            item->graphicsEffect()->setEnabled(enable);
+        }
+    }
+}
+
 bool EditorScene::hasEdge(NodeR node0, NodeR node1)
 {
     for (auto && item : items()) {
@@ -110,11 +119,7 @@ void EditorScene::toSvg(QString filename, QString title)
 {
     // Need to disable effects in order to get vectorized SVG.
     // Otherwise all items will be just bitmapped.
-    for (auto && item : items()) {
-        if (item->graphicsEffect()) {
-            item->graphicsEffect()->setEnabled(false);
-        }
-    }
+    enableGraphicsEffects(false);
 
     QSvgGenerator generator;
     generator.setFileName(filename);
@@ -128,11 +133,7 @@ void EditorScene::toSvg(QString filename, QString title)
     render(&painter);
     painter.end();
 
-    for (auto && item : items()) {
-        if (item->graphicsEffect()) {
-            item->graphicsEffect()->setEnabled(true);
-        }
-    }
+    enableGraphicsEffects(true);
 }
 
 EditorScene::~EditorScene()

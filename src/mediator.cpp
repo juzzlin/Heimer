@@ -319,8 +319,7 @@ void Mediator::exportToSvg(QString filename)
     zoomForExport();
 
     L().info() << "Exporting an SVG image to " << filename.toStdString();
-    const QFileInfo fi(filename);
-    m_editorScene->toSvg(filename, fi.fileName());
+    m_editorScene->toSvg(filename, QFileInfo { filename }.fileName());
     m_editorView->restoreZoom();
 
     emit svgExportFinished(true);

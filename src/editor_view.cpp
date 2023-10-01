@@ -664,23 +664,8 @@ void EditorView::drawBackground(QPainter * painter, const QRectF & rect)
     painter->save();
     painter->fillRect(rect, backgroundBrush());
 
-    if (const int gridSize = m_grid.size(); m_gridVisible && gridSize != 0) {
-        const qreal left = int(rect.left()) - (int(rect.left()) % gridSize);
-        const qreal top = int(rect.top()) - (int(rect.top()) % gridSize);
-
-        QVarLengthArray<QLineF, 100> lines;
-
-        auto x = left;
-        while (x < rect.right()) {
-            lines.append({ x, rect.top(), x, rect.bottom() });
-            x += gridSize;
-        }
-        auto y = top;
-        while (y < rect.bottom()) {
-            lines.append({ rect.left(), y, rect.right(), y });
-            y += gridSize;
-        }
-
+    if (m_gridVisible) {
+        const auto lines = m_grid.calculateLines(rect);
         painter->setPen(m_mediator.mindMapData()->gridColor());
         painter->drawLines(lines.data(), static_cast<int>(lines.size()));
     }

@@ -21,6 +21,30 @@ Grid::Grid()
 {
 }
 
+Grid::LineArray Grid::calculateLines(const QRectF & rect) const
+{
+    LineArray lines;
+
+    if (m_size) {
+        const qreal left = static_cast<int>(rect.left()) - static_cast<int>(rect.left()) % m_size;
+        const qreal top = static_cast<int>(rect.top()) - static_cast<int>(rect.top()) % m_size;
+
+        auto x = left;
+        while (x < rect.right()) {
+            lines.append({ x, rect.top(), x, rect.bottom() });
+            x += m_size;
+        }
+
+        auto y = top;
+        while (y < rect.bottom()) {
+            lines.append({ rect.left(), y, rect.right(), y });
+            y += m_size;
+        }
+    }
+
+    return lines;
+}
+
 void Grid::setSize(int size)
 {
     m_size = size;

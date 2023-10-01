@@ -16,12 +16,18 @@
 #ifndef GRID_HPP
 #define GRID_HPP
 
+#include <QLineF>
 #include <QPointF>
+#include <QRectF>
+#include <QVarLengthArray>
 
 class Grid
 {
 public:
     Grid();
+
+    using LineArray = QVarLengthArray<QLineF, 100>;
+    LineArray calculateLines(const QRectF & rect) const;
 
     void setSize(int gridSize);
 

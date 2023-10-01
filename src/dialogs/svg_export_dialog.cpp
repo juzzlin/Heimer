@@ -42,7 +42,7 @@ SvgExportDialog::SvgExportDialog(QWidget & parent)
     setMinimumWidth(480);
     initWidgets();
 
-    connect(m_filenameButton, &QPushButton::clicked, [=] {
+    connect(m_filenameButton, &QPushButton::clicked, this, [=] {
         const auto filename = QFileDialog::getSaveFileName(this,
                                                            tr("Export As"),
                                                            QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
@@ -52,7 +52,7 @@ SvgExportDialog::SvgExportDialog(QWidget & parent)
     });
 
     connect(m_buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
-    connect(m_buttonBox, &QDialogButtonBox::accepted, [=] {
+    connect(m_buttonBox, &QDialogButtonBox::accepted, this, [=] {
         m_buttonBox->setEnabled(false);
         m_progressBar->setValue(50);
         emit svgExportRequested(m_filenameWithExtension);

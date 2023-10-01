@@ -44,7 +44,7 @@ PngExportDialog::PngExportDialog(QWidget & parent)
 
     initWidgets();
 
-    connect(m_filenameButton, &QPushButton::clicked, [=] {
+    connect(m_filenameButton, &QPushButton::clicked, this, [=] {
         const auto filename = QFileDialog::getSaveFileName(this,
                                                            tr("Export As"),
                                                            QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
@@ -59,7 +59,7 @@ PngExportDialog::PngExportDialog(QWidget & parent)
     const auto spinBoxIntSignal = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
 #endif
 
-    connect(m_imageWidthSpinBox, spinBoxIntSignal, [&](int value) {
+    connect(m_imageWidthSpinBox, spinBoxIntSignal, this, [&](int value) {
         if (m_enableSpinBoxConnection) {
             m_enableSpinBoxConnection = false;
             m_imageHeightSpinBox->setValue(static_cast<int>(static_cast<float>(value) / m_aspectRatio));
@@ -67,7 +67,7 @@ PngExportDialog::PngExportDialog(QWidget & parent)
         }
     });
 
-    connect(m_imageHeightSpinBox, spinBoxIntSignal, [&](int value) {
+    connect(m_imageHeightSpinBox, spinBoxIntSignal, this, [&](int value) {
         if (m_enableSpinBoxConnection) {
             m_enableSpinBoxConnection = false;
             m_imageWidthSpinBox->setValue(static_cast<int>(static_cast<float>(value) * m_aspectRatio));

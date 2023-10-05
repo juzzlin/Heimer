@@ -17,6 +17,7 @@
 #define UTILS_HPP
 
 #include <QColor>
+#include <QFont>
 #include <cstddef>
 
 namespace Utils {
@@ -24,6 +25,12 @@ namespace Utils {
 size_t tsMs();
 
 bool isColorBright(QColor color);
+
+QFont::Weight intToFontWeight(int value);
+
+int fontWeightToInt(QFont::Weight value);
+
+int fontWeightToInt(int value);
 
 } // namespace Utils
 

@@ -15,6 +15,7 @@
 
 #include "settings.hpp"
 #include "../constants.hpp"
+#include "../utils.hpp"
 
 #include <QSettings>
 #include <QStandardPaths>
@@ -358,7 +359,7 @@ QFont getFont(QString group, QString key, QFont defaultValue)
     font.setOverline(settings.value(key + fontOverlinePostfix, defaultValue.overline()).toBool());
     font.setStrikeOut(settings.value(key + fontStrikeOutPostfix, defaultValue.strikeOut()).toBool());
     font.setUnderline(settings.value(key + fontUnderlinePostfix, defaultValue.underline()).toBool());
-    font.setWeight(settings.value(key + fontWeightPostfix, defaultValue.weight()).toInt());
+    font.setWeight(Utils::intToFontWeight(settings.value(key + fontWeightPostfix, defaultValue.weight()).toInt()));
     settings.endGroup();
     return font;
 }
@@ -373,7 +374,7 @@ void setFont(QString group, QString key, QFont value)
     settings.setValue(key + fontOverlinePostfix, value.overline());
     settings.setValue(key + fontStrikeOutPostfix, value.strikeOut());
     settings.setValue(key + fontUnderlinePostfix, value.underline());
-    settings.setValue(key + fontWeightPostfix, value.weight());
+    settings.setValue(key + fontWeightPostfix, Utils::fontWeightToInt(value.weight()));
     settings.endGroup();
 }
 

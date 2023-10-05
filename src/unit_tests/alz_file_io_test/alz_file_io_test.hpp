@@ -59,6 +59,12 @@ private slots:
 
     void testStyle_FontNonUnderline();
 
+    void testStyle_FontWeight_Light();
+
+    void testStyle_FontWeight_Medium();
+
+    void testStyle_FontWeight_Bold();
+
     void testStyle_GridColor();
 
     void testStyle_TextSize();
@@ -108,6 +114,12 @@ private slots:
     void testV1_FontUnderline();
 
     void testV1_FontNonUnderline();
+
+    void testV1_FontWeight_Light();
+
+    void testV1_FontWeight_Medium();
+
+    void testV1_FontWeight_Bold();
 
     void testV1_GridColor();
 

@@ -89,7 +89,8 @@ void AlzFileIOTest::testStyle_EdgeWidth()
 void AlzFileIOTest::testStyle_FontItalic()
 {
     const auto outData = std::make_shared<MindMapData>();
-    QFont font("Foobar", 42, 666, true);
+    QFont font("Foobar", 12, -1, true);
+    font.setWeight(QFont::Weight::Light);
     outData->changeFont(font);
     outData->setTextSize(24);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
@@ -182,6 +183,36 @@ void AlzFileIOTest::testStyle_FontNonUnderline()
     outData->changeFont(font);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->font().underline(), false);
+}
+
+void AlzFileIOTest::testStyle_FontWeight_Light()
+{
+    const auto outData = std::make_shared<MindMapData>();
+    QFont font("Foobar", 12);
+    font.setWeight(QFont::Weight::Light);
+    outData->changeFont(font);
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
+    QCOMPARE(inData->font().weight(), outData->font().weight());
+}
+
+void AlzFileIOTest::testStyle_FontWeight_Medium()
+{
+    const auto outData = std::make_shared<MindMapData>();
+    QFont font("Foobar", 12);
+    font.setWeight(QFont::Weight::Medium);
+    outData->changeFont(font);
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
+    QCOMPARE(inData->font().weight(), outData->font().weight());
+}
+
+void AlzFileIOTest::testStyle_FontWeight_Bold()
+{
+    const auto outData = std::make_shared<MindMapData>();
+    QFont font("Foobar", 12);
+    font.setWeight(QFont::Weight::Bold);
+    outData->changeFont(font);
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
+    QCOMPARE(inData->font().weight(), outData->font().weight());
 }
 
 void AlzFileIOTest::testStyle_GridColor()
@@ -409,7 +440,8 @@ void AlzFileIOTest::testV1_EdgeWidth()
 void AlzFileIOTest::testV1_FontItalic()
 {
     const auto outData = std::make_shared<MindMapData>();
-    QFont font("Foobar", 42, 666, true);
+    QFont font("Foobar", 12, -1, true);
+    font.setWeight(QFont::Weight::Light);
     outData->changeFont(font);
     outData->setTextSize(24);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO(IO::AlzFormatVersion::V1).toXml(outData));
@@ -512,6 +544,39 @@ void AlzFileIOTest::testV1_FontNonUnderline()
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO(IO::AlzFormatVersion::V1).toXml(outData));
     QVERIFY(inData->alzFormatVersion() == IO::AlzFormatVersion::V1);
     QCOMPARE(inData->font().underline(), false);
+}
+
+void AlzFileIOTest::testV1_FontWeight_Light()
+{
+    const auto outData = std::make_shared<MindMapData>();
+    QFont font("Foobar", 12);
+    font.setWeight(QFont::Weight::Light);
+    outData->changeFont(font);
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO(IO::AlzFormatVersion::V1).toXml(outData));
+    QVERIFY(inData->alzFormatVersion() == IO::AlzFormatVersion::V1);
+    QCOMPARE(inData->font().weight(), outData->font().weight());
+}
+
+void AlzFileIOTest::testV1_FontWeight_Medium()
+{
+    const auto outData = std::make_shared<MindMapData>();
+    QFont font("Foobar", 12);
+    font.setWeight(QFont::Weight::Medium);
+    outData->changeFont(font);
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO(IO::AlzFormatVersion::V1).toXml(outData));
+    QVERIFY(inData->alzFormatVersion() == IO::AlzFormatVersion::V1);
+    QCOMPARE(inData->font().weight(), outData->font().weight());
+}
+
+void AlzFileIOTest::testV1_FontWeight_Bold()
+{
+    const auto outData = std::make_shared<MindMapData>();
+    QFont font("Foobar", 12);
+    font.setWeight(QFont::Weight::Bold);
+    outData->changeFont(font);
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO(IO::AlzFormatVersion::V1).toXml(outData));
+    QVERIFY(inData->alzFormatVersion() == IO::AlzFormatVersion::V1);
+    QCOMPARE(inData->font().weight(), outData->font().weight());
 }
 
 void AlzFileIOTest::testV1_GridColor()

@@ -21,6 +21,7 @@
 #include "../constants.hpp"
 #include "../image_manager.hpp"
 #include "../types.hpp"
+#include "../utils.hpp"
 
 #include "../core/graph.hpp"
 #include "../core/mind_map_data.hpp"
@@ -312,7 +313,7 @@ static void writeStyle(MindMapDataS mindMapData, QDomElement & root, QDomDocumen
         fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_OVERLINE, mindMapData->font().overline());
         fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_STRIKE_OUT, mindMapData->font().strikeOut());
         fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_UNDERLINE, mindMapData->font().underline());
-        fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_WEIGHT, mindMapData->font().weight());
+        fontFamilyElement.setAttribute(DataKeywords::MindMap::FONT_WEIGHT, Utils::fontWeightToInt(mindMapData->font().weight()));
         fontFamilyElement.appendChild(doc.createTextNode(mindMapData->font().family()));
         root.appendChild(fontFamilyElement);
 
@@ -582,7 +583,7 @@ static void readStyle(const QDomElement & element, Core::MindMapData & data)
                                  font.setOverline(e.attribute(DataKeywords::MindMap::FONT_OVERLINE).toInt());
                                  font.setUnderline(e.attribute(DataKeywords::MindMap::FONT_UNDERLINE).toInt());
                                  font.setStrikeOut(e.attribute(DataKeywords::MindMap::FONT_STRIKE_OUT).toInt());
-                                 font.setWeight(e.attribute(DataKeywords::MindMap::FONT_WEIGHT).toInt());
+                                 font.setWeight(Utils::intToFontWeight(e.attribute(DataKeywords::MindMap::FONT_WEIGHT).toInt()));
                                  data.changeFont(font);
                              } },
                             { QString(DataKeywords::MindMap::GRID_COLOR), [&data](const QDomElement & e) {
@@ -647,7 +648,7 @@ MindMapDataU fromXml(QDomDocument document)
                               font.setOverline(e.attribute(DataKeywords::MindMap::FONT_OVERLINE).toInt());
                               font.setUnderline(e.attribute(DataKeywords::MindMap::FONT_UNDERLINE).toInt());
                               font.setStrikeOut(e.attribute(DataKeywords::MindMap::FONT_STRIKE_OUT).toInt());
-                              font.setWeight(e.attribute(DataKeywords::MindMap::FONT_WEIGHT).toInt());
+                              font.setWeight(Utils::intToFontWeight(e.attribute(DataKeywords::MindMap::FONT_WEIGHT).toInt()));
                               data->changeFont(font);
                           } },
                          { QString(DataKeywords::MindMap::GRID_COLOR), [&data](const QDomElement & e) {

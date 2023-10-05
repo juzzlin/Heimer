@@ -64,7 +64,7 @@ int main(int argc, char ** argv)
 {
     Core::HashSeed::init();
 
-#if QT_VERSION >= 0x50600 && QT_VERSION > 0x60000
+#if QT_VERSION >= 0x50600 && QT_VERSION < 0x60000
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     QApplication::setOrganizationName(Constants::Application::QSETTINGS_COMPANY_NAME);

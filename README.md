@@ -103,9 +103,13 @@ Currently the build depends on `Qt 5` only (`qt5-default`, `qttools5-dev-tools`,
 
 In the case of missing `qt5-default`, install these packages manually: `qtbase5-dev`, `qtchooser`, `qt5-qmake`, `qtbase5-dev-tools`.
 
-Command to install all (at least most) needed dev packages on Ubuntu:
+Command to install needed `Qt 5` dev packages on Ubuntu (>= 18.04):
 
 `$ sudo apt install build-essential cmake qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools qttools5-dev-tools qttools5-dev libqt5svg5-dev`
+
+Command to install needed `Qt 6` dev packages on Ubuntu (>= 22.04):
+
+`$ sudo apt install build-essential cmake libqt6svg6-dev libqt6uitools6 linguist-qt6 qt6-base-dev qt6-l10n-tools qt6-tools-dev-tools qt6-tools-private-dev qtchooser`
 
 ### Linux / Unix
 
@@ -118,6 +122,10 @@ Building for Linux in a nutshell:
 `$ cmake ..`
 
 `$ make -j4`
+
+`Qt 6` can be explicitly enabled by:
+
+`$ cmake -DWITH_QT6=ON ..`
 
 Run unit tests:
 

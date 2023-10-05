@@ -8,7 +8,8 @@ import glob
 # Define the file patterns to be copied
 filePatterns = ["build-deb-ubuntu-18.04/heimer*.deb",
                 "build-deb-ubuntu-20.04/heimer*.deb",
-                "build-deb-ubuntu-22.04/heimer*.deb",
+                "build-deb-ubuntu-22.04-qt5/heimer*.deb",
+                "build-deb-ubuntu-22.04-qt6/heimer*.deb",
                 "build-appimage/Heimer*.AppImage",
                 "build-windows-nsis/heimer*win32.exe",
                 "build-windows-zip/zip/heimer*-win32.zip",

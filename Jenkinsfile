@@ -50,21 +50,39 @@ pipeline {
                 }
             }
         }
-        stage('Debian package / Ubuntu 22.04') {
+        stage('Debian package / Ubuntu 22.04 / Qt 5') {
             agent {
                 docker {
-                    image 'juzzlin/qt5-22.04:latest'
+                    image 'juzzlin/qt6-22.04:latest'
                     args '--privileged -t -v $WORKSPACE:/heimer'
                 }
             }
             steps {
-                sh "mkdir -p build-deb-ubuntu-22.04"
-                sh "cd build-deb-ubuntu-22.04 && cmake -D DISTRO_VERSION=ubuntu-22.04  -D CMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -D PACKAGE_TYPE=Deb .. && cmake --build . --target all -- -j3"
-                sh "cd build-deb-ubuntu-22.04 && cpack -G DEB"
+                sh "mkdir -p build-deb-ubuntu-22.04-qt5"
+                sh "cd build-deb-ubuntu-22.04-qt5 && cmake -D DISTRO_VERSION=ubuntu-22.04  -D CMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DPACKAGE_TYPE=Deb .. && cmake --build . --target all -- -j3"
+                sh "cd build-deb-ubuntu-22.04-qt5 && cpack -G DEB"
             }
             post {
                 always {
-                    archiveArtifacts artifacts: 'build-deb-ubuntu-22.04/*.deb', fingerprint: true
+                    archiveArtifacts artifacts: 'build-deb-ubuntu-22.04-qt5/*.deb', fingerprint: true
+                }
+            }
+        }
+        stage('Debian package / Ubuntu 22.04 / Qt 6') {
+            agent {
+                docker {
+                    image 'juzzlin/qt6-22.04:latest'
+                    args '--privileged -t -v $WORKSPACE:/heimer'
+                }
+            }
+            steps {
+                sh "mkdir -p build-deb-ubuntu-22.04-qt6"
+                sh "cd build-deb-ubuntu-22.04-qt6 && cmake -DDISTRO_VERSION=ubuntu-22.04-qt6  -DCMAKE_BUILD_TYPE=Release -DWITH_QT6=ON -DBUILD_TESTS=OFF -DPACKAGE_TYPE=Deb .. && cmake --build . --target all -- -j3"
+                sh "cd build-deb-ubuntu-22.04-qt6 && cpack -G DEB"
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'build-deb-ubuntu-22.04-qt6/*.deb', fingerprint: true
                 }
             }
         }

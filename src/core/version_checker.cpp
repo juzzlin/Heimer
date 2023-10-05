@@ -21,6 +21,8 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 
+#include <QRegularExpression>
+
 using juzzlin::L;
 
 namespace Core {
@@ -34,9 +36,10 @@ Version parseLatestReleasedVersion(QString data)
 {
     Version newest;
     for (auto && line : data.split("\n")) {
-        QRegExp tagMatch("^*tag/(\\d.\\d.\\d).*$");
-        if (const auto index = tagMatch.indexIn(line); index != -1) {
-            const Version version(tagMatch.cap(1));
+        QRegularExpression tagMatch("^.*tag/(\\d.\\d.\\d).*$");
+        const auto match = tagMatch.match(line);
+        if (match.hasMatch()) {
+            const Version version(match.captured(1));
             if (version.isValid() && version > newest) {
                 newest = version;
             }

@@ -37,7 +37,7 @@ Thanks! :)
 
 ## License
 
-Heimer's source code is licensed under GNU GPLv3. 
+Heimer's source code is licensed under GNU GPLv3.
 See COPYING for the complete license text.
 
 All image files, except where otherwise noted, are licensed under
@@ -99,21 +99,21 @@ Show all available options:
 
 ## Building the project
 
-Currently the build depends on `Qt 5` only (`qt5-default`, `qttools5-dev-tools`, `qttools5-dev`, `libqt5svg5-dev` packages on Ubuntu). Support for `Qt 6` is preliminary and should work with `CMake`.
+Currently the build depends on `Qt 5` and `CMake` only. Support for `Qt 6` is preliminary and can be explicitly enabled.
 
-In the case of missing `qt5-default`, install these packages manually: `qtbase5-dev`, `qtchooser`, `qt5-qmake`, `qtbase5-dev-tools`.
-
-Command to install needed `Qt 5` dev packages on Ubuntu (>= 18.04):
-
-`$ sudo apt install build-essential cmake qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools qttools5-dev-tools qttools5-dev libqt5svg5-dev`
-
-Command to install needed `Qt 6` dev packages on Ubuntu (>= 22.04):
-
-`$ sudo apt install build-essential cmake libqt6svg6-dev libqt6uitools6 linguist-qt6 qt6-base-dev qt6-l10n-tools qt6-tools-dev-tools qt6-tools-private-dev qtchooser`
+Use the official `Qt SDK` or install the needed development tools from a package repository.
 
 ### Linux / Unix
 
-The "official" build system for Linux is `CMake`.
+`Heimer` is being developed on `Ubuntu`, but these instructions should work on any `Debian`-based distro with little or no modifications.
+
+Command to install needed `Qt 5` dev packages on `Ubuntu` (>= `18.04`):
+
+`$ sudo apt install build-essential cmake qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools qttools5-dev-tools qttools5-dev libqt5svg5-dev`
+
+Command to install needed `Qt 6` dev packages on `Ubuntu` (>= `22.04`):
+
+`$ sudo apt install build-essential cmake libqt6svg6-dev libqt6uitools6 linguist-qt6 qt6-base-dev qt6-l10n-tools qt6-tools-dev-tools qt6-tools-private-dev qtchooser`
 
 Building for Linux in a nutshell:
 
@@ -121,7 +121,7 @@ Building for Linux in a nutshell:
 
 `$ cmake ..`
 
-`$ make -j4`
+`$ cmake --build . -j4`
 
 `Qt 6` can be explicitly enabled by:
 
@@ -133,7 +133,7 @@ Run unit tests:
 
 Install locally:
 
-`$ sudo make install`
+`$ sudo cmake --install .`
 
 Debian package (`.deb`) can be created like this:
 
@@ -149,9 +149,9 @@ The NSIS installer for Windows is currently built in Docker with MXE (http://mxe
 
 This is so very cool! A Windowsless Windows build!
 
-Anyway, as the project depends only on Qt SDK you can use your favourite Qt setup to build the project on Windows.
+Anyway, as the project depends only on `Qt SDK` you can use your favourite `Qt` setup to build the project on `Windows`.
 
-### Docker environment files
+### Docker environment files for CI
 
-Needed Dockerfiles can be found at https://github.com/juzzlin/Dockerfiles
+Needed `Dockerfiles` can be found at https://github.com/juzzlin/Dockerfiles
 

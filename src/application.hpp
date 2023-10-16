@@ -66,6 +66,8 @@ private:
 
     QString getFileDialogFileText() const;
 
+    void initTranslations();
+
     void openArgMindMap();
 
     void openMindMap();
@@ -100,7 +102,7 @@ private:
 
     void updateProgress();
 
-    QApplication m_app;
+    QApplication m_application;
 
     QTranslator m_appTranslator;
 

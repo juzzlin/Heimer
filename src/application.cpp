@@ -52,111 +52,17 @@
 #include <iostream>
 #include <thread>
 
-namespace {
-
 using juzzlin::Argengine;
 using juzzlin::L;
 
-// Forces the language to the given one or chooses the best UI language
-static void initTranslations(QTranslator & appTranslator, QTranslator & qtTranslator, QGuiApplication & app, QString lang = "")
-{
-    // See https://doc.qt.io/qt-5/qtranslator.html#load-1
-    QStringList langs;
-    if (lang.isEmpty()) {
-        langs = QLocale().uiLanguages();
-    } else {
-        langs << lang;
-        L().info() << "Language forced to '" << lang.toStdString() << "'";
-    }
-
-    // Qt's built-in translations
-    for (auto && lang : langs) {
-        L().debug() << "Trying Qt translations for '" << lang.toStdString() << "'";
-#if QT_VERSION >= 0x60000
-        if (qtTranslator.load("qt_" + lang, QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
-#else
-        if (qtTranslator.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
-#endif
-            app.installTranslator(&qtTranslator);
-            L().debug() << "Loaded Qt translations for '" << lang.toStdString() << "'";
-            break;
-        } else {
-            L().warning() << "Failed to load Qt translations for '" << lang.toStdString() << "'";
-        }
-    }
-
-    // Application's translations
-    for (auto && lang : langs) {
-        L().debug() << "Trying application translations for '" << lang.toStdString() << "'";
-        if (appTranslator.load(Constants::Application::TRANSLATIONS_RESOURCE_BASE + lang)) {
-            app.installTranslator(&appTranslator);
-            L().debug() << "Loaded application translations for '" << lang.toStdString() << "'";
-            break;
-        } else {
-            L().warning() << "Failed to load application translations for '" << lang.toStdString() << "'";
-        }
-    }
-}
-
-} // namespace
-
-void Application::parseArgs(int argc, char ** argv)
-{
-    Argengine ae(argc, argv);
-
-    const std::set<std::string> languages = { "de", "en", "es", "fi", "fr", "it", "nl", "zh" };
-    std::string languageHelp;
-    for (auto && lang : languages) {
-        languageHelp += lang + ", ";
-    }
-    languageHelp.pop_back();
-    languageHelp.pop_back();
-    languageHelp += ".";
-
-    ae.addOption(
-      { "-d", "--debug" }, [] {
-          L::setLoggingLevel(L::Level::Debug);
-      },
-      false, "Show debug logging.");
-
-    ae.addOption(
-      { "-t", "--trace" }, [] {
-          L::setLoggingLevel(L::Level::Trace);
-      },
-      false, "Show trace logging.");
-
-    ae.addOption(
-      { "--lang" }, [this, languages](std::string value) {
-          if (!languages.count(value)) {
-              L().error() << "Unsupported language: " << value;
-          } else {
-              m_lang = value.c_str();
-          }
-      },
-      false, "Force language: " + languageHelp);
-
-    ae.setPositionalArgumentCallback([=](Argengine::ArgumentVector args) {
-        m_mindMapFile = args.at(0).c_str();
-    });
-
-    ae.setHelpText(std::string("\nUsage: ") + argv[0] + " [OPTIONS] [MIND_MAP_FILE]");
-
-    ae.parse();
-}
-
-void Application::updateProgress()
-{
-    Core::SingleInstanceContainer::instance().progressManager().updateProgress();
-}
-
 Application::Application(int & argc, char ** argv)
-  : m_app(argc, argv)
+  : m_application(argc, argv)
   , m_stateMachine(std::make_unique<StateMachine>())
   , m_versionChecker(std::make_unique<Core::VersionChecker>())
 {
     parseArgs(argc, argv);
 
-    initTranslations(m_appTranslator, m_qtTranslator, m_app, m_lang);
+    initTranslations();
 
     // Instantiate components here because the possible language given
     // in the command line must have been loaded before this
@@ -230,9 +136,94 @@ QString Application::getFileDialogFileText() const
     return tr("Heimer Files") + " (*" + Constants::Application::FILE_EXTENSION + ")";
 }
 
+// Forces the language to the given one or chooses the best UI language
+void Application::initTranslations()
+{
+    // See https://doc.qt.io/qt-5/qtranslator.html#load-1
+    QStringList langs;
+    if (m_lang.isEmpty()) {
+        langs = QLocale().uiLanguages();
+    } else {
+        langs << m_lang;
+        L().info() << "Language forced to '" << m_lang.toStdString() << "'";
+    }
+
+    // Qt's built-in translations
+    for (auto && lang : langs) {
+        L().debug() << "Trying Qt translations for '" << lang.toStdString() << "'";
+#if QT_VERSION >= 0x60000
+        if (m_qtTranslator.load("qt_" + lang, QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
+#else
+        if (m_qtTranslator.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
+#endif
+            m_application.installTranslator(&m_qtTranslator);
+            L().debug() << "Loaded Qt translations for '" << lang.toStdString() << "'";
+            break;
+        } else {
+            L().warning() << "Failed to load Qt translations for '" << lang.toStdString() << "'";
+        }
+    }
+
+    // Application's translations
+    for (auto && lang : langs) {
+        L().debug() << "Trying application translations for '" << lang.toStdString() << "'";
+        if (m_appTranslator.load(Constants::Application::TRANSLATIONS_RESOURCE_BASE + lang)) {
+            m_application.installTranslator(&m_appTranslator);
+            L().debug() << "Loaded application translations for '" << lang.toStdString() << "'";
+            break;
+        } else {
+            L().warning() << "Failed to load application translations for '" << lang.toStdString() << "'";
+        }
+    }
+}
+
+void Application::parseArgs(int argc, char ** argv)
+{
+    Argengine ae(argc, argv);
+
+    const std::set<std::string> languages = { "de", "en", "es", "fi", "fr", "it", "nl", "zh" };
+    std::string languageHelp;
+    for (auto && lang : languages) {
+        languageHelp += lang + ", ";
+    }
+    languageHelp.pop_back();
+    languageHelp.pop_back();
+    languageHelp += ".";
+
+    ae.addOption(
+      { "-d", "--debug" }, [] {
+          L::setLoggingLevel(L::Level::Debug);
+      },
+      false, "Show debug logging.");
+
+    ae.addOption(
+      { "-t", "--trace" }, [] {
+          L::setLoggingLevel(L::Level::Trace);
+      },
+      false, "Show trace logging.");
+
+    ae.addOption(
+      { "--lang" }, [this, languages](std::string value) {
+          if (!languages.count(value)) {
+              L().error() << "Unsupported language: " << value;
+          } else {
+              m_lang = value.c_str();
+          }
+      },
+      false, "Force language: " + languageHelp);
+
+    ae.setPositionalArgumentCallback([=](Argengine::ArgumentVector args) {
+        m_mindMapFile = args.at(0).c_str();
+    });
+
+    ae.setHelpText(std::string("\nUsage: ") + argv[0] + " [OPTIONS] [MIND_MAP_FILE]");
+
+    ae.parse();
+}
+
 int Application::run()
 {
-    return m_app.exec();
+    return m_application.exec();
 }
 
 void Application::runState(StateMachine::State state)
@@ -309,6 +300,11 @@ void Application::runState(StateMachine::State state)
         openMindMap();
         break;
     }
+}
+
+void Application::updateProgress()
+{
+    Core::SingleInstanceContainer::instance().progressManager().updateProgress();
 }
 
 void Application::openArgMindMap()

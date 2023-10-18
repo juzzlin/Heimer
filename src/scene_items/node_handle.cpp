@@ -159,6 +159,9 @@ QPen NodeHandle::getForegroundPen() const
 
 void NodeHandle::drawColorHandle(QPainter & painter) const
 {
+    painter.save();
+    drawBackground(painter);
+
     const std::vector<QColor> paletteColors = {
         { 255, 0, 255 },
         { 255, 0, 0 },
@@ -170,11 +173,6 @@ void NodeHandle::drawColorHandle(QPainter & painter) const
         { 0, 255, 255 },
         { 0, 0, 255 }
     };
-
-    painter.save();
-    painter.setBrush(calculateBackgroundColor());
-    painter.setPen(Qt::PenStyle::NoPen);
-    painter.drawEllipse(-m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height());
 
     const size_t paletteSize = 3;
     const auto paletteWidth = static_cast<float>(m_size.width()) * 0.7f;
@@ -217,9 +215,11 @@ void NodeHandle::drawArrow(QPainter & painter, QPointF arrowStart, QPointF arrow
 
 void NodeHandle::drawBackground(QPainter & painter) const
 {
-    painter.setBrush(calculateBackgroundColor());
-    painter.setPen(Qt::PenStyle::NoPen);
-    painter.drawEllipse(-m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height());
+    const auto backgroundColor = calculateBackgroundColor();
+    painter.setBrush(backgroundColor);
+    painter.setPen(GraphicsFactory::createOutlinePen(backgroundColor, 0.33));
+    const auto penWidth = painter.pen().width();
+    painter.drawEllipse(-m_size.width() / 2 + penWidth, -m_size.height() / 2 + penWidth, m_size.width() - penWidth * 2, m_size.height() - penWidth * 2);
 }
 
 void NodeHandle::drawConnectOrCreateHandle(QPainter & painter) const

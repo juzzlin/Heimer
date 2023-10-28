@@ -58,77 +58,77 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application.cpp" line="223"/>
+        <location filename="../application.cpp" line="129"/>
         <source>A new version %1 available at &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="230"/>
+        <location filename="../application.cpp" line="136"/>
         <source>Heimer Files</source>
         <translation>Archivos heimer</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="324"/>
+        <location filename="../application.cpp" line="320"/>
         <source>Open File</source>
         <translation>Abrir archivo</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="334"/>
+        <location filename="../application.cpp" line="330"/>
         <source>Opening &apos;%1&apos;..</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="358"/>
+        <location filename="../application.cpp" line="354"/>
         <source>Failed to save file.</source>
         <translation>No se pudo guardar el archivo.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="375"/>
+        <location filename="../application.cpp" line="371"/>
         <source>Save File As</source>
         <translation>Guardar archivo como</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="389"/>
+        <location filename="../application.cpp" line="385"/>
         <source>File &apos;</source>
         <translation>Archivo &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="389"/>
+        <location filename="../application.cpp" line="385"/>
         <source>&apos; saved.</source>
         <translation>&apos; guardado.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="395"/>
+        <location filename="../application.cpp" line="391"/>
         <source>Failed to save file as &apos;</source>
         <translation>No se pudo guardar el archivo como &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="443"/>
+        <location filename="../application.cpp" line="439"/>
         <source>Open an image</source>
         <translation>Abrir imagen</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="443"/>
+        <location filename="../application.cpp" line="439"/>
         <source>Image Files</source>
         <translation>Archivos de imagen</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="449"/>
+        <location filename="../application.cpp" line="445"/>
         <source>Load image</source>
         <translation>Cargar imagen</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="449"/>
+        <location filename="../application.cpp" line="445"/>
         <source>Failed to load image &apos;</source>
         <translation>No se pudo cargar la imagen &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="493"/>
+        <location filename="../application.cpp" line="489"/>
         <source>The mind map has been modified.</source>
         <translation>El mapa mental se ha modificado.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="494"/>
+        <location filename="../application.cpp" line="490"/>
         <source>Do you want to save your changes?</source>
         <translation>¿Quiere guardar los cambios?</translation>
     </message>
@@ -1071,22 +1071,27 @@
         <translation type="unfinished">Mostrar cuadrícula</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="88"/>
+        <location filename="../menus/tool_bar.cpp" line="87"/>
+        <source>Copy style from parent node on drag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menus/tool_bar.cpp" line="89"/>
         <source>Automatically snap existing nodes to the grid when grid size changes</source>
         <translation type="unfinished">Ajustar automáticamente los nodos a la cuadrícula cuando cambie el tamaño de esta. </translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="119"/>
+        <location filename="../menus/tool_bar.cpp" line="122"/>
         <source>Corner radius:</source>
         <translation type="unfinished">Radio de la esquina:</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="136"/>
+        <location filename="../menus/tool_bar.cpp" line="139"/>
         <source>Arrow size:</source>
         <translation type="unfinished">Tamaño de la flecha:</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="153"/>
+        <location filename="../menus/tool_bar.cpp" line="156"/>
         <source>Edge width:</source>
         <translation type="unfinished">Ancho de línea:</translation>
     </message>
@@ -1095,17 +1100,17 @@
         <translation type="obsolete">Fuente</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="185"/>
+        <location filename="../menus/tool_bar.cpp" line="188"/>
         <source>Grid size:</source>
         <translation type="unfinished">Tamaño de cuadrícula:</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="207"/>
+        <location filename="../menus/tool_bar.cpp" line="210"/>
         <source>Search:</source>
         <translation type="unfinished">Buscar:</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="223"/>
+        <location filename="../menus/tool_bar.cpp" line="226"/>
         <source>Text size:</source>
         <translation type="unfinished">Tamaño de texto:</translation>
     </message>

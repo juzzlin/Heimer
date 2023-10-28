@@ -58,77 +58,77 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application.cpp" line="223"/>
+        <location filename="../application.cpp" line="129"/>
         <source>A new version %1 available at &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="230"/>
+        <location filename="../application.cpp" line="136"/>
         <source>Heimer Files</source>
         <translation>Heimer 文件</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="324"/>
+        <location filename="../application.cpp" line="320"/>
         <source>Open File</source>
         <translation>打开文件</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="334"/>
+        <location filename="../application.cpp" line="330"/>
         <source>Opening &apos;%1&apos;..</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="358"/>
+        <location filename="../application.cpp" line="354"/>
         <source>Failed to save file.</source>
         <translation>保存失败。</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="375"/>
+        <location filename="../application.cpp" line="371"/>
         <source>Save File As</source>
         <translation>另存为</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="389"/>
+        <location filename="../application.cpp" line="385"/>
         <source>File &apos;</source>
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="389"/>
+        <location filename="../application.cpp" line="385"/>
         <source>&apos; saved.</source>
         <translation>保存。</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="395"/>
+        <location filename="../application.cpp" line="391"/>
         <source>Failed to save file as &apos;</source>
         <translation>另存为失败</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="443"/>
+        <location filename="../application.cpp" line="439"/>
         <source>Open an image</source>
         <translation>打开图片</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="443"/>
+        <location filename="../application.cpp" line="439"/>
         <source>Image Files</source>
         <translation>图片路径</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="449"/>
+        <location filename="../application.cpp" line="445"/>
         <source>Load image</source>
         <translation>加载图片</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="449"/>
+        <location filename="../application.cpp" line="445"/>
         <source>Failed to load image &apos;</source>
         <translation>加载图片失败</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="493"/>
+        <location filename="../application.cpp" line="489"/>
         <source>The mind map has been modified.</source>
         <translation>思维导图已被修改。</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="494"/>
+        <location filename="../application.cpp" line="490"/>
         <source>Do you want to save your changes?</source>
         <translation>是否要保存更改？</translation>
     </message>
@@ -1040,37 +1040,42 @@
         <translation type="unfinished">显示网格</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="88"/>
+        <location filename="../menus/tool_bar.cpp" line="87"/>
+        <source>Copy style from parent node on drag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../menus/tool_bar.cpp" line="89"/>
         <source>Automatically snap existing nodes to the grid when grid size changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="119"/>
+        <location filename="../menus/tool_bar.cpp" line="122"/>
         <source>Corner radius:</source>
         <translation type="unfinished">圆角：</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="136"/>
+        <location filename="../menus/tool_bar.cpp" line="139"/>
         <source>Arrow size:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="153"/>
+        <location filename="../menus/tool_bar.cpp" line="156"/>
         <source>Edge width:</source>
         <translation type="unfinished">边缘宽度：</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="185"/>
+        <location filename="../menus/tool_bar.cpp" line="188"/>
         <source>Grid size:</source>
         <translation type="unfinished">网格大小：</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="207"/>
+        <location filename="../menus/tool_bar.cpp" line="210"/>
         <source>Search:</source>
         <translation type="unfinished">搜索：</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="223"/>
+        <location filename="../menus/tool_bar.cpp" line="226"/>
         <source>Text size:</source>
         <translation type="unfinished">文本大小：</translation>
     </message>

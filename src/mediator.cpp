@@ -242,6 +242,7 @@ NodeS Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
 
     addExistingGraphToScene();
 
+    node1->setText("");
     node1->setTextInputActive(true);
 
     return node1;

@@ -84,6 +84,7 @@ ToolBar::ToolBar(QWidget * parent)
     addSeparator();
 
     addWidget(m_copyOnDragCheckBox);
+    m_copyOnDragCheckBox->setToolTip(tr("Copy style from parent node on drag"));
 
     m_autoSnapCheckBox->setToolTip(tr("Automatically snap existing nodes to the grid when grid size changes"));
 

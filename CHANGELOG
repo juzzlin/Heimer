@@ -5,6 +5,9 @@ Release date:
 
 New features:
 
+* Fix GitHub Issue #251: Feature request: child has same colors as parent
+  - Change "Copy on Drag" behavior so that only the style will be copied
+
 Bug fixes:
 
 Other:

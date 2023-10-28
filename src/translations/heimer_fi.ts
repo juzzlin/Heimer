@@ -62,77 +62,77 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application.cpp" line="223"/>
+        <location filename="../application.cpp" line="129"/>
         <source>A new version %1 available at &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</source>
         <translation>Uusi versio %1 ladattavissa osoitteessa &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="230"/>
+        <location filename="../application.cpp" line="136"/>
         <source>Heimer Files</source>
         <translation>Heimer -tiedostot</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="324"/>
+        <location filename="../application.cpp" line="320"/>
         <source>Open File</source>
         <translation>Avaa tiedosto</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="334"/>
+        <location filename="../application.cpp" line="330"/>
         <source>Opening &apos;%1&apos;..</source>
         <translation>Avataan &apos;%1&apos;..</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="358"/>
+        <location filename="../application.cpp" line="354"/>
         <source>Failed to save file.</source>
         <translation>Tiedoston tallentaminen epäonnistui</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="375"/>
+        <location filename="../application.cpp" line="371"/>
         <source>Save File As</source>
         <translation>Tallenna Nimellä</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="389"/>
+        <location filename="../application.cpp" line="385"/>
         <source>File &apos;</source>
         <translation>Tiedosto &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="389"/>
+        <location filename="../application.cpp" line="385"/>
         <source>&apos; saved.</source>
         <translation>&apos; tallennettu.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="395"/>
+        <location filename="../application.cpp" line="391"/>
         <source>Failed to save file as &apos;</source>
         <translation>Tietoston tallentaminen epäonnistui nimellä &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="443"/>
+        <location filename="../application.cpp" line="439"/>
         <source>Open an image</source>
         <translation>Avaa kuvatiedosto</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="443"/>
+        <location filename="../application.cpp" line="439"/>
         <source>Image Files</source>
         <translation>Kuvatiedostot</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="449"/>
+        <location filename="../application.cpp" line="445"/>
         <source>Load image</source>
         <translation>Kuvanlataus</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="449"/>
+        <location filename="../application.cpp" line="445"/>
         <source>Failed to load image &apos;</source>
         <translation>Kuvan lataaminen epäonnistui: &apos;</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="493"/>
+        <location filename="../application.cpp" line="489"/>
         <source>The mind map has been modified.</source>
         <translation>Käsitekarttaa on muokattu.</translation>
     </message>
     <message>
-        <location filename="../application.cpp" line="494"/>
+        <location filename="../application.cpp" line="490"/>
         <source>Do you want to save your changes?</source>
         <translation>Haluatko tallentaa muutokset?</translation>
     </message>
@@ -1364,22 +1364,31 @@
         <translation>Näytä ruudukko</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="88"/>
+        <source>Copy parent style from parent node on drag</source>
+        <translation type="vanished">Kopioi äitisolmun tyyli raahattaessa</translation>
+    </message>
+    <message>
+        <location filename="../menus/tool_bar.cpp" line="87"/>
+        <source>Copy style from parent node on drag</source>
+        <translation>Kopioi äitisolmun tyyli raahattaessa</translation>
+    </message>
+    <message>
+        <location filename="../menus/tool_bar.cpp" line="89"/>
         <source>Automatically snap existing nodes to the grid when grid size changes</source>
         <translation>Napsauta olemassaolevat solmut automaattisesti ruudukkoon ruudukon koon vaihtuessa</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="119"/>
+        <location filename="../menus/tool_bar.cpp" line="122"/>
         <source>Corner radius:</source>
         <translation>Kulman pyöreys:</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="136"/>
+        <location filename="../menus/tool_bar.cpp" line="139"/>
         <source>Arrow size:</source>
         <translation>Nuolen koko:</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="153"/>
+        <location filename="../menus/tool_bar.cpp" line="156"/>
         <source>Edge width:</source>
         <translation>Kaaren leveys:</translation>
     </message>
@@ -1388,17 +1397,17 @@
         <translation type="vanished">Kirjasintyyppi</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="185"/>
+        <location filename="../menus/tool_bar.cpp" line="188"/>
         <source>Grid size:</source>
         <translation>Ruudukko:</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="207"/>
+        <location filename="../menus/tool_bar.cpp" line="210"/>
         <source>Search:</source>
         <translation>Haku:</translation>
     </message>
     <message>
-        <location filename="../menus/tool_bar.cpp" line="223"/>
+        <location filename="../menus/tool_bar.cpp" line="226"/>
         <source>Text size:</source>
         <translation>Tekstin koko:</translation>
     </message>

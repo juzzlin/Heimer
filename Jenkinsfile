@@ -10,8 +10,8 @@ pipeline {
             }
             steps {
                 sh "mkdir -p build-debug"
-                sh "cd build-debug && cmake -DCMAKE_BUILD_TYPE=Debug .."
-                sh "cd build-debug && cmake --build . --target all -- -j3 && ctest"
+                sh "cd build-debug && cmake -GNinja -DCMAKE_BUILD_TYPE=Debug .."
+                sh "cd build-debug && cmake --build . && ctest"
             }
         }
         stage('Debian package / Ubuntu 18.04') {
@@ -23,7 +23,7 @@ pipeline {
             }
             steps {
                 sh "mkdir -p build-deb-ubuntu-18.04"
-                sh "cd build-deb-ubuntu-18.04 && cmake -D DISTRO_VERSION=ubuntu-18.04  -D CMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -D PACKAGE_TYPE=Deb .. && cmake --build . --target all -- -j3"
+                sh "cd build-deb-ubuntu-18.04 && cmake -GNinja  -DDISTRO_VERSION=ubuntu-18.04  -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DPACKAGE_TYPE=Deb .. && cmake --build ."
                 sh "cd build-deb-ubuntu-18.04 && cpack -G DEB"
             }
             post {
@@ -41,7 +41,7 @@ pipeline {
             }
             steps {
                 sh "mkdir -p build-deb-ubuntu-20.04"
-                sh "cd build-deb-ubuntu-20.04 && cmake -D DISTRO_VERSION=ubuntu-20.04  -D CMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -D PACKAGE_TYPE=Deb .. && cmake --build . --target all -- -j3"
+                sh "cd build-deb-ubuntu-20.04 && cmake -GNinja -DDISTRO_VERSION=ubuntu-20.04  -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DPACKAGE_TYPE=Deb .. && cmake --build ."
                 sh "cd build-deb-ubuntu-20.04 && cpack -G DEB"
             }
             post {
@@ -59,7 +59,7 @@ pipeline {
             }
             steps {
                 sh "mkdir -p build-deb-ubuntu-22.04-qt5"
-                sh "cd build-deb-ubuntu-22.04-qt5 && cmake -D DISTRO_VERSION=ubuntu-22.04  -D CMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DPACKAGE_TYPE=Deb .. && cmake --build . --target all -- -j3"
+                sh "cd build-deb-ubuntu-22.04-qt5 && cmake -GNinja -DDISTRO_VERSION=ubuntu-22.04  -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DPACKAGE_TYPE=Deb .. && cmake --build ."
                 sh "cd build-deb-ubuntu-22.04-qt5 && cpack -G DEB"
             }
             post {
@@ -77,7 +77,7 @@ pipeline {
             }
             steps {
                 sh "mkdir -p build-deb-ubuntu-22.04-qt6"
-                sh "cd build-deb-ubuntu-22.04-qt6 && cmake -DDISTRO_VERSION=ubuntu-22.04  -DCMAKE_BUILD_TYPE=Release -DWITH_QT6=ON -DBUILD_TESTS=OFF -DPACKAGE_TYPE=Deb .. && cmake --build . --target all -- -j3"
+                sh "cd build-deb-ubuntu-22.04-qt6 && cmake -GNinja -DDISTRO_VERSION=ubuntu-22.04  -DCMAKE_BUILD_TYPE=Release -DWITH_QT6=ON -DBUILD_TESTS=OFF -DPACKAGE_TYPE=Deb .. && cmake --build ."
                 sh "cd build-deb-ubuntu-22.04-qt6 && cpack -G DEB"
             }
             post {

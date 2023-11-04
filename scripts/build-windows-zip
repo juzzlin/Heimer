@@ -11,8 +11,8 @@ CMD="export LANG=en_US.UTF-8 && \
      export PATH='$PATH':/mxe/usr/bin && \
      cd /heimer && \
      rm -rf build-windows-zip && mkdir -p build-windows-zip && \
-     cd build-windows-zip && ${CMAKE} -DPACKAGE_TYPE=ZIP .. && \
-     make -j4 && \
+     cd build-windows-zip && ${CMAKE} -GNinja -DPACKAGE_TYPE=ZIP .. && \
+     ${CMAKE} --build . && \
      mkdir zip && cd zip && \
      cp -v ../AUTHORS . && \
      cp -v ../CHANGELOG . && \

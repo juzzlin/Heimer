@@ -115,12 +115,12 @@
     <message>
         <location filename="../application.cpp" line="445"/>
         <source>Load image</source>
-        <translation>Carica Immagine</translation>
+        <translation>Carica immagine</translation>
     </message>
     <message>
         <location filename="../application.cpp" line="445"/>
         <source>Failed to load image &apos;</source>
-        <translation>Impossibile caricare imagine &apos;</translation>
+        <translation>Impossibile caricare immagine &apos;</translation>
     </message>
     <message>
         <location filename="../application.cpp" line="489"/>
@@ -1183,7 +1183,7 @@
     <message>
         <location filename="../menus/tool_bar.cpp" line="87"/>
         <source>Copy style from parent node on drag</source>
-        <translation type="unfinished"></translation>
+        <translation>Copia lo stile dal nodo principale al trascinamento</translation>
     </message>
     <message>
         <location filename="../menus/tool_bar.cpp" line="89"/>

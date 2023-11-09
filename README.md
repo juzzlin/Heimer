@@ -51,11 +51,11 @@ See https://github.com/juzzlin/Heimer/releases for available pre-built packages.
 
 On Linux distributions that support universal Snap packages you can install Heimer like this:
 
-`$ snap install heimer`
+    $ snap install heimer
 
 Run:
 
-`$ heimer`
+    $ heimer
 
 For more information see https://snapcraft.io/heimer and https://docs.snapcraft.io/core/install
 
@@ -65,11 +65,11 @@ Snap is the recommended way to install Heimer on Linux.
 
 There are Debian packages for Ubuntu/Debian. Use some graphical tool to install, or as an example on `Ubuntu 20.04`:
 
-`$ sudo apt install ./heimer-2.5.0-ubuntu-20.04_amd64.deb`
+    $ sudo apt install ./heimer-2.5.0-ubuntu-20.04_amd64.deb
 
 Run:
 
-`$ heimer`
+    $ heimer
 
 ### Linux: AppImage
 
@@ -77,11 +77,11 @@ Run:
 
 Make the image executable e.g. like this:
 
-`$ chmod 755 Heimer-2.4.0-x86_64.AppImage`
+    $ chmod 755 Heimer-2.4.0-x86_64.AppImage
 
 Run:
 
-`$ ./Heimer-2.4.0-x86_64.AppImage`
+    $ ./Heimer-2.4.0-x86_64.AppImage
 
 ### Windows
 
@@ -91,11 +91,11 @@ For Windows there's an installer and alternatively a ZIP-archive that just conta
 
 You can set the language manually with `--lang` option. For example, Finnish:
 
-`$ heimer --lang fi`
+    $ heimer --lang fi
 
 Show all available options:
 
-`$ heimer -h`
+    $ heimer -h
 
 ## Building the project
 
@@ -109,35 +109,35 @@ Use the official `Qt SDK` or install the needed development tools from a package
 
 Command to install needed `Qt 5` dev packages on `Ubuntu` (>= `18.04`):
 
-`$ sudo apt install build-essential cmake qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools qttools5-dev-tools qttools5-dev libqt5svg5-dev`
+    $ sudo apt install build-essential cmake qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools qttools5-dev-tools qttools5-dev libqt5svg5-dev
 
 Command to install needed `Qt 6` dev packages on `Ubuntu` (>= `22.04`):
 
-`$ sudo apt install build-essential cmake libqt6svg6-dev libqt6uitools6 linguist-qt6 qt6-base-dev qt6-l10n-tools qt6-tools-dev-tools qt6-tools-private-dev qtchooser`
+    $ sudo apt install build-essential cmake libqt6svg6-dev libqt6uitools6 linguist-qt6 qt6-base-dev qt6-l10n-tools qt6-tools-dev-tools qt6-tools-private-dev qtchooser
 
 Building for Linux in a nutshell:
 
-`$ mkdir build && cd build`
+    $ mkdir build && cd build
 
-`$ cmake ..`
+    $ cmake ..
 
-`$ cmake --build . -j4`
+    $ cmake --build . -j4
 
 `Qt 6` can be explicitly enabled by:
 
-`$ cmake -DWITH_QT6=ON ..`
+    $ cmake -DWITH_QT6=ON ..
 
 Run unit tests:
 
-`$ ctest`
+    $ ctest
 
 Install locally:
 
-`$ sudo cmake --install .`
+    $ sudo cmake --install .
 
 Debian package (`.deb`) can be created like this:
 
-`$ cpack -G DEB`
+    $ cpack -G DEB
 
 See `Jenkinsfile` on how to build other packages in Docker.
 
@@ -145,7 +145,7 @@ See `Jenkinsfile` on how to build other packages in Docker.
 
 The NSIS installer for Windows is currently built in Docker with MXE (http://mxe.cc):
 
-`$ ./scripts/build-windows-nsis`
+    $ ./scripts/build-windows-nsis
 
 This is so very cool! A Windowsless Windows build!
 

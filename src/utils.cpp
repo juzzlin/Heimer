@@ -15,6 +15,10 @@
 
 #include "utils.hpp"
 
+#include "constants.hpp"
+
+#include <QDateTime>
+
 #include <chrono>
 
 size_t Utils::tsMs()
@@ -70,6 +74,12 @@ QFont::Weight Utils::intToFontWeight(int value)
     }
 #endif
     return QFont::Black;
+}
+
+QString Utils::exportFileName(QString mindMapFileName, QString exportExtension)
+{
+    const auto formattedDateTime = QDateTime::currentDateTime().toString("_yyyy-MM-dd_hh-mm-ss");
+    return mindMapFileName.replace(Constants::Application::FILE_EXTENSION, "") + formattedDateTime + exportExtension;
 }
 
 int Utils::fontWeightToInt(QFont::Weight value)

@@ -28,6 +28,8 @@ bool isColorBright(QColor color);
 
 QFont::Weight intToFontWeight(int value);
 
+QString exportFileName(QString mindMapFileName, QString exportExtension);
+
 int fontWeightToInt(QFont::Weight value);
 
 int fontWeightToInt(int value);

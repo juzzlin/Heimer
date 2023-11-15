@@ -450,6 +450,7 @@ void Application::showImageFileDialog()
 
 void Application::showPngExportDialog()
 {
+    m_pngExportDialog->setCurrentMindMapFileName(SingleInstanceContainer::instance().editorService().fileName());
     m_pngExportDialog->setImageSize(m_applicationService->zoomForExport(true));
     m_pngExportDialog->exec();
 
@@ -459,6 +460,7 @@ void Application::showPngExportDialog()
 
 void Application::showSvgExportDialog()
 {
+    m_svgExportDialog->setCurrentMindMapFileName(SingleInstanceContainer::instance().editorService().fileName());
     m_svgExportDialog->exec();
 
     // Doesn't matter if canceled or not

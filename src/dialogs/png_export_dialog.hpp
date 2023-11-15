@@ -35,6 +35,8 @@ public:
     //! Constructor.
     explicit PngExportDialog(QWidget & parent);
 
+    void setCurrentMindMapFileName(QString fileName);
+
     void setImageSize(QSize size);
 
     int exec() override;
@@ -54,13 +56,13 @@ private slots:
 private:
     void initWidgets();
 
-    QLineEdit * m_filenameLineEdit = nullptr;
+    QLineEdit * m_fileNameLineEdit = nullptr;
 
     QSpinBox * m_imageHeightSpinBox = nullptr;
 
     QSpinBox * m_imageWidthSpinBox = nullptr;
 
-    QPushButton * m_filenameButton = nullptr;
+    QPushButton * m_fileNameButton = nullptr;
 
     QDialogButtonBox * m_buttonBox = nullptr;
 
@@ -68,7 +70,7 @@ private:
 
     QCheckBox * m_transparentBackgroundCheckBox = nullptr;
 
-    QString m_filenameWithExtension;
+    QString m_fileNameWithExtension;
 
     bool m_enableSpinBoxConnection = true;
 

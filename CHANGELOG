@@ -8,6 +8,8 @@ New features:
 * Fix GitHub Issue #251: Feature request: child has same colors as parent
   - Change "Copy on Drag" behavior so that only the style will be copied
 
+* Set default filename with a timestamp in PNG and SVG export dialogs
+
 Bug fixes:
 
 Other:

@@ -17,6 +17,7 @@
 
 #include "../constants.hpp"
 
+#include "utils.hpp"
 #include "widget_factory.hpp"
 
 #include <QCheckBox>
@@ -42,23 +43,31 @@ SvgExportDialog::SvgExportDialog(QWidget & parent)
     setMinimumWidth(480);
     initWidgets();
 
-    connect(m_filenameButton, &QPushButton::clicked, this, [=] {
-        const auto filename = QFileDialog::getSaveFileName(this,
-                                                           tr("Export As"),
-                                                           QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
-                                                           tr("SVG Files") + " (*" + Constants::Export::Svg::FILE_EXTENSION + ")");
-
-        m_filenameLineEdit->setText(filename);
+    connect(m_fileNameButton, &QPushButton::clicked, this, [=] {
+        if (const auto fileName = QFileDialog::getSaveFileName(this,
+                                                               tr("Export As"),
+                                                               QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
+                                                               tr("SVG Files") + " (*" + Constants::Export::Svg::FILE_EXTENSION + ")");
+            !fileName.isEmpty()) {
+            m_fileNameLineEdit->setText(fileName);
+        }
     });
 
     connect(m_buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     connect(m_buttonBox, &QDialogButtonBox::accepted, this, [=] {
         m_buttonBox->setEnabled(false);
         m_progressBar->setValue(50);
-        emit svgExportRequested(m_filenameWithExtension);
+        emit svgExportRequested(m_fileNameWithExtension);
     });
 
-    connect(m_filenameLineEdit, &QLineEdit::textChanged, this, &SvgExportDialog::validate);
+    connect(m_fileNameLineEdit, &QLineEdit::textChanged, this, &SvgExportDialog::validate);
+}
+
+void SvgExportDialog::setCurrentMindMapFileName(QString fileName)
+{
+    if (!fileName.isEmpty()) {
+        m_fileNameLineEdit->setText(Utils::exportFileName(fileName, Constants::Export::Svg::FILE_EXTENSION));
+    }
 }
 
 int SvgExportDialog::exec()
@@ -77,7 +86,7 @@ void SvgExportDialog::finishExport(bool success)
         m_progressBar->setValue(100);
         QTimer::singleShot(500, this, &QDialog::accept);
     } else {
-        QMessageBox::critical(this, Constants::Application::APPLICATION_NAME, tr("Couldn't write to") + " '" + m_filenameLineEdit->text() + "'", QMessageBox::Ok);
+        QMessageBox::critical(this, Constants::Application::APPLICATION_NAME, tr("Couldn't write to") + " '" + m_fileNameLineEdit->text() + "'", QMessageBox::Ok);
     }
 }
 
@@ -85,16 +94,16 @@ void SvgExportDialog::validate()
 {
     m_progressBar->setValue(0);
 
-    m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!m_filenameLineEdit->text().isEmpty());
+    m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!m_fileNameLineEdit->text().isEmpty());
 
-    m_filenameWithExtension = m_filenameLineEdit->text();
+    m_fileNameWithExtension = m_fileNameLineEdit->text();
 
-    if (m_filenameWithExtension.isEmpty()) {
+    if (m_fileNameWithExtension.isEmpty()) {
         return;
     }
 
-    if (!m_filenameWithExtension.toLower().endsWith(Constants::Export::Svg::FILE_EXTENSION)) {
-        m_filenameWithExtension += Constants::Export::Svg::FILE_EXTENSION;
+    if (!m_fileNameWithExtension.toLower().endsWith(Constants::Export::Svg::FILE_EXTENSION)) {
+        m_fileNameWithExtension += Constants::Export::Svg::FILE_EXTENSION;
     }
 }
 
@@ -105,11 +114,11 @@ void SvgExportDialog::initWidgets()
     const auto filenameGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Filename"), *mainLayout);
 
     const auto filenameLayout = new QHBoxLayout;
-    m_filenameLineEdit = new QLineEdit;
-    filenameLayout->addWidget(m_filenameLineEdit);
-    m_filenameButton = new QPushButton;
-    m_filenameButton->setText(tr("Export as.."));
-    filenameLayout->addWidget(m_filenameButton);
+    m_fileNameLineEdit = new QLineEdit;
+    filenameLayout->addWidget(m_fileNameLineEdit);
+    m_fileNameButton = new QPushButton;
+    m_fileNameButton->setText(tr("Export as.."));
+    filenameLayout->addWidget(m_fileNameButton);
     filenameGroup.second->addLayout(filenameLayout);
 
     const auto progressBarLayout = new QHBoxLayout;

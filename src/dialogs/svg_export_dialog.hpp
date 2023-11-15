@@ -35,7 +35,7 @@ public:
     //! Constructor.
     explicit SvgExportDialog(QWidget & parent);
 
-    void setImageSize(QSize size);
+    void setCurrentMindMapFileName(QString fileName);
 
     int exec() override;
 
@@ -54,15 +54,15 @@ private slots:
 private:
     void initWidgets();
 
-    QLineEdit * m_filenameLineEdit = nullptr;
+    QLineEdit * m_fileNameLineEdit = nullptr;
 
-    QPushButton * m_filenameButton = nullptr;
+    QPushButton * m_fileNameButton = nullptr;
 
     QDialogButtonBox * m_buttonBox = nullptr;
 
     QProgressBar * m_progressBar = nullptr;
 
-    QString m_filenameWithExtension;
+    QString m_fileNameWithExtension;
 };
 
 } // namespace Dialogs

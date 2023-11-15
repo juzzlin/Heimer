@@ -151,6 +151,16 @@ void EditorServiceTest::testGroupMove()
     QCOMPARE(qFuzzyCompare(node1->location().y(), 2), true);
 }
 
+void EditorServiceTest::testInitializationResetsFileName()
+{
+    EditorService editorService;
+    const QString fileName = "dummy";
+    editorService.loadMindMapData(fileName); // Doesn't really load anything if in unit tests
+    QCOMPARE(editorService.fileName(), fileName);
+    editorService.initializeNewMindMap();
+    QCOMPARE(editorService.fileName(), QString { "" });
+}
+
 void EditorServiceTest::testGroupSelection()
 {
     EditorService editorService;
@@ -201,8 +211,10 @@ void EditorServiceTest::testLoadState()
 
     QCOMPARE(editorService.isUndoable(), true);
 
-    editorService.loadMindMapData(""); // Doesn't really load anything if in unit tests
+    const QString fileName = "dummy";
+    editorService.loadMindMapData(fileName); // Doesn't really load anything if in unit tests
 
+    QCOMPARE(editorService.fileName(), fileName);
     QCOMPARE(editorService.isUndoable(), false);
     QCOMPARE(editorService.selectionGroupSize(), size_t(0));
     QCOMPARE(editorService.selectedEdge(), nullptr);

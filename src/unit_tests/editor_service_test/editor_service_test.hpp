@@ -39,6 +39,8 @@ private slots:
 
     void testGroupSelection();
 
+    void testInitializationResetsFileName();
+
     void testLoadState();
 
     void testUndoAddNodes();

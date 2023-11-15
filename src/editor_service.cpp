@@ -274,7 +274,6 @@ void EditorService::setMindMapData(MindMapDataS mindMapData)
 {
     m_mindMapData = mindMapData;
 
-    m_fileName = "";
     setIsModified(false);
 
     m_undoStack->clear();
@@ -488,6 +487,7 @@ void EditorService::initializeNewMindMap()
 {
     requestAutosave(AutosaveContext::InitializeNewMindMap, false);
     setMindMapData(std::make_shared<Core::MindMapData>());
+    m_fileName = "";
 }
 
 bool EditorService::isInSelectionGroup(NodeR node)

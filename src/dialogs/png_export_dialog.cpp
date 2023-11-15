@@ -16,6 +16,7 @@
 #include "png_export_dialog.hpp"
 
 #include "../constants.hpp"
+#include "../utils.hpp"
 
 #include "widget_factory.hpp"
 
@@ -44,13 +45,14 @@ PngExportDialog::PngExportDialog(QWidget & parent)
 
     initWidgets();
 
-    connect(m_filenameButton, &QPushButton::clicked, this, [=] {
-        const auto filename = QFileDialog::getSaveFileName(this,
-                                                           tr("Export As"),
-                                                           QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
-                                                           tr("PNG Files") + " (*" + Constants::Export::Png::FILE_EXTENSION + ")");
-
-        m_filenameLineEdit->setText(filename);
+    connect(m_fileNameButton, &QPushButton::clicked, this, [=] {
+        if (const auto fileName = QFileDialog::getSaveFileName(this,
+                                                               tr("Export As"),
+                                                               QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
+                                                               tr("PNG Files") + " (*" + Constants::Export::Png::FILE_EXTENSION + ")");
+            !fileName.isEmpty()) {
+            m_fileNameLineEdit->setText(fileName);
+        }
     });
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
@@ -79,14 +81,21 @@ PngExportDialog::PngExportDialog(QWidget & parent)
 
     connect(m_imageHeightSpinBox, spinBoxIntSignal, this, &PngExportDialog::validate);
 
-    connect(m_filenameLineEdit, &QLineEdit::textChanged, this, &PngExportDialog::validate);
+    connect(m_fileNameLineEdit, &QLineEdit::textChanged, this, &PngExportDialog::validate);
 
     connect(m_buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     connect(m_buttonBox, &QDialogButtonBox::accepted, this, [=] {
         m_buttonBox->setEnabled(false);
         m_progressBar->setValue(50);
-        emit pngExportRequested(m_filenameWithExtension, QSize(m_imageWidthSpinBox->value(), m_imageHeightSpinBox->value()), m_transparentBackgroundCheckBox->isChecked());
+        emit pngExportRequested(m_fileNameWithExtension, QSize(m_imageWidthSpinBox->value(), m_imageHeightSpinBox->value()), m_transparentBackgroundCheckBox->isChecked());
     });
+}
+
+void PngExportDialog::setCurrentMindMapFileName(QString fileName)
+{
+    if (!fileName.isEmpty()) {
+        m_fileNameLineEdit->setText(Utils::exportFileName(fileName, Constants::Export::Png::FILE_EXTENSION));
+    }
 }
 
 void PngExportDialog::setImageSize(QSize size)
@@ -121,7 +130,7 @@ void PngExportDialog::finishExport(bool success)
         m_progressBar->setValue(100);
         QTimer::singleShot(500, this, &QDialog::accept);
     } else {
-        QMessageBox::critical(this, Constants::Application::APPLICATION_NAME, tr("Couldn't write to") + " '" + m_filenameLineEdit->text() + "'", QMessageBox::Ok);
+        QMessageBox::critical(this, Constants::Application::APPLICATION_NAME, tr("Couldn't write to") + " '" + m_fileNameLineEdit->text() + "'", QMessageBox::Ok);
     }
 }
 
@@ -134,16 +143,16 @@ void PngExportDialog::validate()
       m_imageHeightSpinBox->value() < Constants::Export::Png::MAX_IMAGE_SIZE && //
       m_imageWidthSpinBox->value() > Constants::Export::Png::MIN_IMAGE_SIZE && //
       m_imageWidthSpinBox->value() < Constants::Export::Png::MAX_IMAGE_SIZE && //
-      !m_filenameLineEdit->text().isEmpty());
+      !m_fileNameLineEdit->text().isEmpty());
 
-    m_filenameWithExtension = m_filenameLineEdit->text();
+    m_fileNameWithExtension = m_fileNameLineEdit->text();
 
-    if (m_filenameWithExtension.isEmpty()) {
+    if (m_fileNameWithExtension.isEmpty()) {
         return;
     }
 
-    if (!m_filenameWithExtension.toLower().endsWith(Constants::Export::Png::FILE_EXTENSION)) {
-        m_filenameWithExtension += Constants::Export::Png::FILE_EXTENSION;
+    if (!m_fileNameWithExtension.toLower().endsWith(Constants::Export::Png::FILE_EXTENSION)) {
+        m_fileNameWithExtension += Constants::Export::Png::FILE_EXTENSION;
     }
 }
 
@@ -154,11 +163,12 @@ void PngExportDialog::initWidgets()
     const auto nameGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Filename"), *mainLayout);
 
     const auto filenameLayout = new QHBoxLayout;
-    m_filenameLineEdit = new QLineEdit;
-    filenameLayout->addWidget(m_filenameLineEdit);
-    m_filenameButton = new QPushButton;
-    m_filenameButton->setText(tr("Export as.."));
-    filenameLayout->addWidget(m_filenameButton);
+    m_fileNameLineEdit = new QLineEdit;
+
+    filenameLayout->addWidget(m_fileNameLineEdit);
+    m_fileNameButton = new QPushButton;
+    m_fileNameButton->setText(tr("Export as.."));
+    filenameLayout->addWidget(m_fileNameButton);
     nameGroup.second->addLayout(filenameLayout);
 
     const auto sizeGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Image Size"), *mainLayout);

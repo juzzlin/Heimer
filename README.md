@@ -125,7 +125,7 @@ Building for Linux in a nutshell:
 
 `Qt 6` can be explicitly enabled by:
 
-    $ cmake -DWITH_QT6=ON ..
+    $ cmake -DBUILD_WITH_QT6=ON ..
 
 Run unit tests:
 

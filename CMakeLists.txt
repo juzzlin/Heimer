@@ -53,6 +53,8 @@ option(BIN_PATH "Optional BIN_PATH for Linux release build." "")
 
 option(BUILD_TESTS "Build unit tests." ON)
 
+option(BUILD_WITH_QT6 "Build with Qt 6 instead of Qt 5" OFF)
+
 # Default to release C++ flags if CMAKE_BUILD_TYPE not set
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING
@@ -96,9 +98,7 @@ add_definitions(-DVERSION="${VERSION}")
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(QT_MIN_VER 5.9.5) # The version in Ubuntu 18.04 LTS
-# This is what Qt Creator 4.13.2 would generate
-OPTION(WITH_QT6 "Enable Qt 6" OFF)
-if (WITH_QT6)
+if (BUILD_WITH_QT6)
     find_package(QT NAMES Qt6 COMPONENTS Core REQUIRED)
     find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Xml Widgets LinguistTools Svg Test Network REQUIRED)
 else()

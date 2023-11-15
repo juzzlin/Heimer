@@ -22,11 +22,11 @@
 #include "node.hpp"
 
 #include "../constants.hpp"
+#include "../single_instance_container.hpp"
 
 #include "../core/graph.hpp"
 #include "../core/settings_proxy.hpp"
 #include "../core/shadow_effect_params.hpp"
-#include "../core/single_instance_container.hpp"
 #include "../core/test_mode.hpp"
 
 #include "simple_logger.hpp"
@@ -51,7 +51,7 @@ using Core::TestMode;
 namespace SceneItems {
 
 Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enableLabel)
-  : m_settingsProxy(Core::SingleInstanceContainer::instance().settingsProxy())
+  : m_settingsProxy(SingleInstanceContainer::instance().settingsProxy())
   , m_edgeModel(std::make_unique<EdgeModel>(m_settingsProxy.reversedEdgeDirection(),
                                             EdgeModel::Style { m_settingsProxy.edgeArrowMode() }))
   , m_sourceNode(sourceNode)

@@ -18,12 +18,14 @@
 
 #include <memory>
 
+class ApplicationService;
+class EditorService;
 class ControlStrategy;
 
 namespace Core {
-
 class ProgressManager;
 class SettingsProxy;
+} // namespace Core
 
 //! A poor man's single instance DI.
 class SingleInstanceContainer
@@ -37,24 +39,26 @@ public:
 
     ControlStrategy & controlStrategy() const;
 
-    ProgressManager & progressManager() const;
+    EditorService & editorService() const;
 
-    SettingsProxy & settingsProxy() const;
+    Core::ProgressManager & progressManager() const;
+
+    Core::SettingsProxy & settingsProxy() const;
 
 private:
     SingleInstanceContainer(const SingleInstanceContainer & other) = delete;
 
     SingleInstanceContainer & operator=(const SingleInstanceContainer & other) = delete;
 
+    mutable std::unique_ptr<EditorService> m_editorService;
+
     std::unique_ptr<ControlStrategy> m_controlStrategy;
 
-    std::unique_ptr<ProgressManager> m_progressManager;
+    std::unique_ptr<Core::ProgressManager> m_progressManager;
 
-    std::unique_ptr<SettingsProxy> m_settingsProxy;
+    std::unique_ptr<Core::SettingsProxy> m_settingsProxy;
 
     static std::unique_ptr<SingleInstanceContainer> m_instance;
 };
-
-} // namespace Core
 
 #endif // SINGLE_INSTANCE_CONTAINER_HPP

@@ -14,22 +14,23 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "application.hpp"
+
+#include "application_service.hpp"
 #include "constants.hpp"
-#include "editor_service.hpp"
 #include "editor_scene.hpp"
+#include "editor_service.hpp"
 #include "editor_view.hpp"
 #include "image_manager.hpp"
 #include "layout_optimizer.hpp"
 #include "main_window.hpp"
-#include "application_service.hpp"
 #include "node_action.hpp"
 #include "recent_files_manager.hpp"
+#include "single_instance_container.hpp"
 #include "state_machine.hpp"
 
 #include "core/progress_manager.hpp"
 #include "core/settings.hpp"
 #include "core/settings_proxy.hpp"
-#include "core/single_instance_container.hpp"
 #include "core/user_exception.hpp"
 #include "core/version_checker.hpp"
 
@@ -68,7 +69,6 @@ Application::Application(int & argc, char ** argv)
     // in the command line must have been loaded before this
     m_mainWindow = std::make_unique<MainWindow>();
     m_applicationService = std::make_unique<ApplicationService>(*m_mainWindow);
-    m_editorService = std::make_unique<EditorService>();
     m_editorView = new EditorView(*m_applicationService);
     m_pngExportDialog = std::make_unique<Dialogs::PngExportDialog>(*m_mainWindow);
     m_svgExportDialog = std::make_unique<Dialogs::SvgExportDialog>(*m_mainWindow);
@@ -76,7 +76,9 @@ Application::Application(int & argc, char ** argv)
     m_mainWindow->setApplicationService(m_applicationService);
     m_stateMachine->setApplicationService(m_applicationService);
 
-    m_applicationService->setEditorService(m_editorService);
+    connect(&SingleInstanceContainer::instance().editorService(), &EditorService::undoEnabled, m_applicationService.get(), &ApplicationService::enableUndo);
+    connect(&SingleInstanceContainer::instance().editorService(), &EditorService::redoEnabled, m_applicationService.get(), &ApplicationService::enableRedo);
+
     m_applicationService->setEditorView(*m_editorView);
 
     // Connect views and StateMachine together
@@ -87,7 +89,7 @@ Application::Application(int & argc, char ** argv)
     connect(m_mainWindow.get(), &MainWindow::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
     connect(m_stateMachine.get(), &StateMachine::stateChanged, this, &Application::runState);
 
-    connect(m_editorService.get(), &EditorService::isModifiedChanged, m_mainWindow.get(), [=](bool isModified) {
+    connect(&SingleInstanceContainer::instance().editorService(), &EditorService::isModifiedChanged, m_mainWindow.get(), [=](bool isModified) {
         m_mainWindow->enableSave(isModified || m_applicationService->canBeSaved());
     });
 
@@ -117,7 +119,7 @@ Application::Application(int & argc, char ** argv)
     // Open mind map according to CLI argument (if exists) or autoload the recent mind map (if enabled)
     if (!m_mindMapFile.isEmpty()) {
         QTimer::singleShot(0, this, &Application::openArgMindMap);
-    } else if (Core::SingleInstanceContainer::instance().settingsProxy().autoload()) {
+    } else if (SingleInstanceContainer::instance().settingsProxy().autoload()) {
         if (const auto recentFile = RecentFilesManager::instance().recentFile(); recentFile.has_value()) {
             // Exploit same code as used to open arg mind map
             m_mindMapFile = recentFile.value();
@@ -304,7 +306,7 @@ void Application::runState(StateMachine::State state)
 
 void Application::updateProgress()
 {
-    Core::SingleInstanceContainer::instance().progressManager().updateProgress();
+    SingleInstanceContainer::instance().progressManager().updateProgress();
 }
 
 void Application::openArgMindMap()

@@ -23,11 +23,11 @@
 
 #include "../constants.hpp"
 #include "../image.hpp"
+#include "../single_instance_container.hpp"
 #include "../utils.hpp"
 
 #include "../core/settings_proxy.hpp"
 #include "../core/shadow_effect_params.hpp"
-#include "../core/single_instance_container.hpp"
 #include "../core/test_mode.hpp"
 
 #include "simple_logger.hpp"
@@ -52,7 +52,7 @@ namespace SceneItems {
 NodeP Node::m_lastHoveredNode = nullptr;
 
 Node::Node()
-  : m_settingsProxy(Core::SingleInstanceContainer::instance().settingsProxy())
+  : m_settingsProxy(SingleInstanceContainer::instance().settingsProxy())
   , m_nodeModel(std::make_unique<NodeModel>(m_settingsProxy.nodeColor(), m_settingsProxy.nodeTextColor()))
   , m_textEdit(new TextEdit(this))
 {

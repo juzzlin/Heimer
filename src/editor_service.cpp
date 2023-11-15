@@ -19,11 +19,11 @@
 #include "constants.hpp"
 #include "recent_files_manager.hpp"
 #include "selection_group.hpp"
+#include "single_instance_container.hpp"
 
 #include "core/graph.hpp"
 #include "core/mind_map_data.hpp"
 #include "core/settings_proxy.hpp"
-#include "core/single_instance_container.hpp"
 #include "core/test_mode.hpp"
 #include "core/undo_stack.hpp"
 
@@ -62,7 +62,7 @@ void EditorService::addNodeToSelectionGroup(NodeR node, bool isImplicit)
 void EditorService::requestAutosave(AutosaveContext context, bool async)
 {
     const auto doRequestAutosave = [this](bool async) {
-        if (Core::SingleInstanceContainer::instance().settingsProxy().autosave() && !m_fileName.isEmpty()) {
+        if (SingleInstanceContainer::instance().settingsProxy().autosave() && !m_fileName.isEmpty()) {
             L().debug() << "Autosaving to '" << m_fileName.toStdString() << "'";
             saveMindMapAs(m_fileName, async);
         }

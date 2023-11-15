@@ -15,20 +15,21 @@
 
 #include "single_instance_container.hpp"
 
-#include "../control_strategy.hpp"
-#include "progress_manager.hpp"
-#include "settings_proxy.hpp"
+#include "control_strategy.hpp"
+#include "core/progress_manager.hpp"
+#include "core/settings_proxy.hpp"
+#include "editor_service.hpp"
+
+#include "simple_logger.hpp"
 
 #include <stdexcept>
-
-namespace Core {
 
 std::unique_ptr<SingleInstanceContainer> SingleInstanceContainer::m_instance;
 
 SingleInstanceContainer::SingleInstanceContainer()
   : m_controlStrategy(std::make_unique<ControlStrategy>())
-  , m_progressManager(std::make_unique<ProgressManager>())
-  , m_settingsProxy(std::make_unique<SettingsProxy>())
+  , m_progressManager(std::make_unique<Core::ProgressManager>())
+  , m_settingsProxy(std::make_unique<Core::SettingsProxy>())
 {
     if (SingleInstanceContainer::m_instance) {
         throw std::runtime_error("SingleInstanceContainer already instantiated!");
@@ -40,12 +41,22 @@ ControlStrategy & SingleInstanceContainer::controlStrategy() const
     return *m_controlStrategy;
 }
 
-ProgressManager & SingleInstanceContainer::progressManager() const
+EditorService & SingleInstanceContainer::editorService() const
+{
+    if (!m_editorService) {
+        m_editorService = std::make_unique<EditorService>();
+        juzzlin::L().debug() << "EditorService instantiated";
+    }
+
+    return *m_editorService;
+}
+
+Core::ProgressManager & SingleInstanceContainer::progressManager() const
 {
     return *m_progressManager;
 }
 
-SettingsProxy & SingleInstanceContainer::settingsProxy() const
+Core::SettingsProxy & SingleInstanceContainer::settingsProxy() const
 {
     return *m_settingsProxy;
 }
@@ -59,5 +70,3 @@ SingleInstanceContainer & SingleInstanceContainer::instance()
 }
 
 SingleInstanceContainer::~SingleInstanceContainer() = default;
-
-} // namespace Core

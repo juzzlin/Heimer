@@ -25,11 +25,10 @@
 
 #include <memory>
 
-class EditorService;
+class ApplicationService;
 class EditorView;
 class ImageManager;
 class MainWindow;
-class ApplicationService;
 
 namespace Core {
 class VersionChecker;
@@ -117,8 +116,6 @@ private:
     std::unique_ptr<MainWindow> m_mainWindow;
 
     std::shared_ptr<ApplicationService> m_applicationService;
-
-    std::shared_ptr<EditorService> m_editorService;
 
     EditorView * m_editorView = nullptr;
 

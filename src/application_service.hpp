@@ -28,7 +28,6 @@
 #include "scene_items/node.hpp"
 
 class MouseAction;
-class EditorService;
 class EditorScene;
 class EditorView;
 class Graph;
@@ -151,8 +150,6 @@ public:
 
     size_t selectionGroupSize() const;
 
-    void setEditorService(std::shared_ptr<EditorService> editorService);
-
     void setEditorView(EditorView & editorView);
 
     void setGridSize(int size, bool autoSnap);
@@ -244,8 +241,6 @@ private:
     void updateNodeConnectionActions();
 
     void updateProgress();
-
-    std::shared_ptr<EditorService> m_editorService;
 
     std::unique_ptr<EditorScene> m_editorScene;
 

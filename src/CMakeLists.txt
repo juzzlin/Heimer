@@ -35,6 +35,7 @@ set(HEIMER_LIB_SRC
     node_action.hpp
     recent_files_manager.cpp
     selection_group.cpp
+    single_instance_container.cpp
     state_machine.cpp
     types.hpp
     utils.cpp
@@ -48,7 +49,6 @@ set(HEIMER_LIB_SRC
     core/settings.cpp
     core/settings_proxy.cpp
     core/shadow_effect_params.hpp
-    core/single_instance_container.cpp
     core/test_mode.cpp
     core/undo_stack.cpp
     core/user_exception.hpp

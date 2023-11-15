@@ -16,7 +16,7 @@
 #include "settings_tab_base.hpp"
 
 #include "../core/settings_proxy.hpp"
-#include "../core/single_instance_container.hpp"
+#include "../single_instance_container.hpp"
 
 namespace Dialogs {
 
@@ -41,7 +41,7 @@ QString SettingsTabBase::name() const
 
 Core::SettingsProxy & SettingsTabBase::settingsProxy() const
 {
-    return Core::SingleInstanceContainer::instance().settingsProxy();
+    return SingleInstanceContainer::instance().settingsProxy();
 }
 
 } // namespace Dialogs

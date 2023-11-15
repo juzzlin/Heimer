@@ -15,14 +15,14 @@
 
 #include "main_window.hpp"
 
+#include "application_service.hpp"
 #include "constants.hpp"
 #include "control_strategy.hpp"
-#include "application_service.hpp"
 #include "node_action.hpp"
 #include "recent_files_manager.hpp"
+#include "single_instance_container.hpp"
 
 #include "core/settings.hpp"
-#include "core/single_instance_container.hpp"
 
 #include "dialogs/about_dialog.hpp"
 #include "dialogs/settings_dialog.hpp"
@@ -67,7 +67,7 @@ MainWindow::MainWindow()
   , m_undoAction(new QAction(tr("Undo"), this))
   , m_redoAction(new QAction(tr("Redo"), this))
   , m_statusText(new QLabel(this))
-  , m_controlStrategy(Core::SingleInstanceContainer::instance().controlStrategy())
+  , m_controlStrategy(SingleInstanceContainer::instance().controlStrategy())
 {
     if (!m_instance) {
         m_instance = this;

@@ -16,14 +16,14 @@
 #include "color_setting_button.hpp"
 
 #include "../core/settings_proxy.hpp"
-#include "../core/single_instance_container.hpp"
+#include "../single_instance_container.hpp"
 
 namespace Dialogs {
 
 ColorSettingButton::ColorSettingButton(QString text, ColorDialog::Role role, QWidget * parent)
   : QPushButton(text, parent)
   , m_role(role)
-  , m_settingsProxy(Core::SingleInstanceContainer::instance().settingsProxy())
+  , m_settingsProxy(SingleInstanceContainer::instance().settingsProxy())
 {
     // Set current default color
     if (const std::map<ColorDialog::Role, QColor> roleToColorMap = {

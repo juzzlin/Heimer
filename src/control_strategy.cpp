@@ -16,7 +16,8 @@
 #include "control_strategy.hpp"
 
 #include "core/settings_proxy.hpp"
-#include "core/single_instance_container.hpp"
+
+#include "single_instance_container.hpp"
 
 #include <QGuiApplication>
 #include <QMouseEvent>
@@ -33,14 +34,14 @@ bool ControlStrategy::isModifierPressed() const
 
 bool ControlStrategy::backgroundDragInitiated(QMouseEvent & event) const
 {
-    const bool invertedControls = Core::SingleInstanceContainer::instance().settingsProxy().invertedControls();
+    const bool invertedControls = SingleInstanceContainer::instance().settingsProxy().invertedControls();
 
     return (invertedControls == isModifierPressed()) && event.button() == Qt::LeftButton;
 }
 
 bool ControlStrategy::rubberBandInitiated(QMouseEvent & event) const
 {
-    const bool invertedControls = Core::SingleInstanceContainer::instance().settingsProxy().invertedControls();
+    const bool invertedControls = SingleInstanceContainer::instance().settingsProxy().invertedControls();
 
     return ((!invertedControls ^ !isModifierPressed()) && (event.button() == Qt::LeftButton)) || event.button() == Qt::MiddleButton;
 }

@@ -27,17 +27,17 @@
 
 #include "editor_view.hpp"
 
+#include "application_service.hpp"
 #include "constants.hpp"
 #include "control_strategy.hpp"
 #include "item_filter.hpp"
 #include "magic_zoom.hpp"
-#include "application_service.hpp"
 #include "mouse_action.hpp"
 #include "node_action.hpp"
+#include "single_instance_container.hpp"
 
 #include "core/mind_map_data.hpp"
 #include "core/settings_proxy.hpp"
-#include "core/single_instance_container.hpp"
 
 #include "menus/edge_context_menu.hpp"
 
@@ -62,7 +62,7 @@ EditorView::EditorView(ApplicationService & applicationService)
   : m_applicationService(applicationService)
   , m_edgeContextMenu(new Menus::EdgeContextMenu(this, m_applicationService))
   , m_mainContextMenu(new Menus::MainContextMenu(this, m_applicationService, m_grid))
-  , m_controlStrategy(Core::SingleInstanceContainer::instance().controlStrategy())
+  , m_controlStrategy(SingleInstanceContainer::instance().controlStrategy())
 {
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -472,7 +472,7 @@ void EditorView::updateScale()
 
 void EditorView::removeShadowEffectsDuringDrag()
 {
-    if (Core::SingleInstanceContainer::instance().settingsProxy().optimizeShadowEffects()) {
+    if (SingleInstanceContainer::instance().settingsProxy().optimizeShadowEffects()) {
 
         if (!m_shadowEffectsDuringDragRemoved) {
             m_shadowEffectsDuringDragRemoved = true;
@@ -504,7 +504,7 @@ void EditorView::updateShadowEffectsBasedOnItemVisiblity()
         }
     }
 
-    if (Core::SingleInstanceContainer::instance().settingsProxy().optimizeShadowEffects()) {
+    if (SingleInstanceContainer::instance().settingsProxy().optimizeShadowEffects()) {
         for (auto && item : scene()->items()) {
             if (const auto sceneItem = dynamic_cast<SceneItems::SceneItemBase *>(item); sceneItem) {
                 if (!enabledItems.count(sceneItem)) {

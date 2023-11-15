@@ -16,6 +16,7 @@
 #include "png_export_dialog.hpp"
 
 #include "../constants.hpp"
+#include "../export_params.hpp"
 #include "../utils.hpp"
 
 #include "widget_factory.hpp"
@@ -87,7 +88,7 @@ PngExportDialog::PngExportDialog(QWidget & parent)
     connect(m_buttonBox, &QDialogButtonBox::accepted, this, [=] {
         m_buttonBox->setEnabled(false);
         m_progressBar->setValue(50);
-        emit pngExportRequested(m_fileNameWithExtension, QSize(m_imageWidthSpinBox->value(), m_imageHeightSpinBox->value()), m_transparentBackgroundCheckBox->isChecked());
+        emit pngExportRequested({ m_fileNameWithExtension, QSize(m_imageWidthSpinBox->value(), m_imageHeightSpinBox->value()), m_transparentBackgroundCheckBox->isChecked() });
     });
 }
 

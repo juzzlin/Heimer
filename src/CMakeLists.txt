@@ -102,6 +102,11 @@ set(HEIMER_LIB_SRC
     widgets/status_label.cpp
 )
 
+# Set sources for the lib (needed only for the IDE)
+set(HEIMER_LIB_HDR
+    export_params.hpp
+)
+
 # Set sources for the app
 set(APP_SRC
     main.cpp
@@ -158,7 +163,7 @@ if(UNIX)
 endif()
 
 # Add the library
-add_library(${HEIMER_LIB_NAME} STATIC ${HEIMER_LIB_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
+add_library(${HEIMER_LIB_NAME} STATIC ${HEIMER_LIB_HDR} ${HEIMER_LIB_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
 target_link_libraries(${HEIMER_LIB_NAME} Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Svg Qt${QT_VERSION_MAJOR}::Xml SimpleLogger_static Argengine_static)
 
 # Add the executable

@@ -16,6 +16,7 @@
 #include "svg_export_dialog.hpp"
 
 #include "../constants.hpp"
+#include "../export_params.hpp"
 
 #include "utils.hpp"
 #include "widget_factory.hpp"
@@ -57,7 +58,7 @@ SvgExportDialog::SvgExportDialog(QWidget & parent)
     connect(m_buttonBox, &QDialogButtonBox::accepted, this, [=] {
         m_buttonBox->setEnabled(false);
         m_progressBar->setValue(50);
-        emit svgExportRequested(m_fileNameWithExtension);
+        emit svgExportRequested({ m_fileNameWithExtension });
     });
 
     connect(m_fileNameLineEdit, &QLineEdit::textChanged, this, &SvgExportDialog::validate);

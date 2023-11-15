@@ -18,6 +18,7 @@
 #include "editor_scene.hpp"
 #include "editor_service.hpp"
 #include "editor_view.hpp"
+#include "export_params.hpp"
 #include "image_manager.hpp"
 #include "magic_zoom.hpp"
 #include "main_window.hpp"
@@ -308,25 +309,25 @@ void ApplicationService::enableRedo(bool enable)
     m_mainWindow.enableRedo(enable);
 }
 
-void ApplicationService::exportToPng(QString filename, QSize size, bool transparentBackground)
+void ApplicationService::exportToPng(const ExportParams & exportParams)
 {
     m_editorView->saveZoom();
     zoomForExport();
 
-    L().info() << "Exporting a PNG image of size (" << size.width() << "x" << size.height() << ") to " << filename.toStdString();
-    const auto image = m_editorScene->toImage(size, SingleInstanceContainer::instance().editorService().backgroundColor(), transparentBackground);
+    L().info() << "Exporting a PNG image of size (" << exportParams.imageSize.width() << "x" << exportParams.imageSize.height() << ") to " << exportParams.fileName.toStdString();
+    const auto image = m_editorScene->toImage(exportParams.imageSize, SingleInstanceContainer::instance().editorService().backgroundColor(), exportParams.transparentBackground);
     m_editorView->restoreZoom();
 
-    emit pngExportFinished(image.save(filename));
+    emit pngExportFinished(image.save(exportParams.fileName));
 }
 
-void ApplicationService::exportToSvg(QString filename)
+void ApplicationService::exportToSvg(const ExportParams & exportParams)
 {
     m_editorView->saveZoom();
     zoomForExport();
 
-    L().info() << "Exporting an SVG image to " << filename.toStdString();
-    m_editorScene->toSvg(filename, QFileInfo { filename }.fileName());
+    L().info() << "Exporting an SVG image to " << exportParams.fileName.toStdString();
+    m_editorScene->toSvg(exportParams.fileName, QFileInfo { exportParams.fileName }.fileName());
     m_editorView->restoreZoom();
 
     emit svgExportFinished(true);

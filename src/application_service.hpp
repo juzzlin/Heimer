@@ -30,6 +30,7 @@
 class MouseAction;
 class EditorScene;
 class EditorView;
+class ExportParams;
 class Graph;
 class MainWindow;
 class NodeAction;
@@ -179,9 +180,9 @@ public slots:
 
     void enableRedo(bool enable);
 
-    void exportToPng(QString filename, QSize size, bool transparentBackground);
+    void exportToPng(const ExportParams & exportParams);
 
-    void exportToSvg(QString filename);
+    void exportToSvg(const ExportParams & exportParams);
 
     void mirror(bool vertically);
 

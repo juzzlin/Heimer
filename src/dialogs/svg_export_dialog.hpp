@@ -18,6 +18,7 @@
 
 #include <QDialog>
 
+class ExportParams;
 class QCheckBox;
 class QDialogButtonBox;
 class QLineEdit;
@@ -45,7 +46,7 @@ public slots:
 
 signals:
 
-    void svgExportRequested(QString filename);
+    void svgExportRequested(const ExportParams & exportParams);
 
 private slots:
 

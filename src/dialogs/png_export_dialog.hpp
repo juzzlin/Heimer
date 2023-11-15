@@ -25,6 +25,8 @@ class QProgressBar;
 class QPushButton;
 class QSpinBox;
 
+class ExportParams;
+
 namespace Dialogs {
 
 class PngExportDialog : public QDialog
@@ -47,7 +49,7 @@ public slots:
 
 signals:
 
-    void pngExportRequested(QString filename, QSize size, bool transparentBackground);
+    void pngExportRequested(const ExportParams & exportParams);
 
 private slots:
 

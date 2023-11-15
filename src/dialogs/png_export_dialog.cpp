@@ -82,7 +82,7 @@ PngExportDialog::PngExportDialog(QWidget & parent)
     connect(m_filenameLineEdit, &QLineEdit::textChanged, this, &PngExportDialog::validate);
 
     connect(m_buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
-    connect(m_buttonBox, &QDialogButtonBox::accepted, [=] {
+    connect(m_buttonBox, &QDialogButtonBox::accepted, this, [=] {
         m_buttonBox->setEnabled(false);
         m_progressBar->setValue(50);
         emit pngExportRequested(m_filenameWithExtension, QSize(m_imageWidthSpinBox->value(), m_imageHeightSpinBox->value()), m_transparentBackgroundCheckBox->isChecked());

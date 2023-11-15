@@ -20,7 +20,7 @@
 
 #include <memory>
 
-class Mediator;
+class ApplicationService;
 
 //! State machine mainly for application logic involving user actions (show dialog, load mind map, etc ... )
 class StateMachine : public QObject
@@ -110,7 +110,7 @@ public:
 
     void calculateState(StateMachine::Action action);
 
-    void setMediator(std::shared_ptr<Mediator> mediator);
+    void setApplicationService(std::shared_ptr<ApplicationService> applicationService);
 
 signals:
 
@@ -121,7 +121,7 @@ private:
 
     QuitType m_quitType = QuitType::None;
 
-    std::shared_ptr<Mediator> m_mediator;
+    std::shared_ptr<ApplicationService> m_applicationService;
 };
 
 #endif // STATE_MACHINE_HPP

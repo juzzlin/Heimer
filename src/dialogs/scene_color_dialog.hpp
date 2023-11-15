@@ -20,14 +20,14 @@
 
 #include <memory>
 
-class Mediator;
+class ApplicationService;
 
 namespace Dialogs {
 
 class SceneColorDialog : public ColorDialog
 {
 public:
-    SceneColorDialog(Role role, std::shared_ptr<Mediator> mediator);
+    SceneColorDialog(Role role, std::shared_ptr<ApplicationService> applicationService);
 };
 
 } // namespace Dialogs

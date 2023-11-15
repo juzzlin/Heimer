@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "mediator.hpp"
+#include "application_service.hpp"
 
 #include "editor_service.hpp"
 #include "editor_scene.hpp"
@@ -49,15 +49,15 @@
 
 using juzzlin::L;
 
-Mediator::Mediator(MainWindow & mainWindow)
+ApplicationService::ApplicationService(MainWindow & mainWindow)
   : m_mainWindow(mainWindow)
 {
-    connect(&m_mainWindow, &MainWindow::zoomToFitTriggered, this, &Mediator::zoomToFit);
-    connect(&m_mainWindow, &MainWindow::zoomInTriggered, this, &Mediator::zoomIn);
-    connect(&m_mainWindow, &MainWindow::zoomOutTriggered, this, &Mediator::zoomOut);
+    connect(&m_mainWindow, &MainWindow::zoomToFitTriggered, this, &ApplicationService::zoomToFit);
+    connect(&m_mainWindow, &MainWindow::zoomInTriggered, this, &ApplicationService::zoomIn);
+    connect(&m_mainWindow, &MainWindow::zoomOutTriggered, this, &ApplicationService::zoomOut);
 }
 
-void Mediator::addExistingGraphToScene(bool zoomToFitAfterNodesLoaded)
+void ApplicationService::addExistingGraphToScene(bool zoomToFitAfterNodesLoaded)
 {
     for (auto && node : m_editorService->mindMapData()->graph().getNodes()) {
         if (node->scene() != m_editorScene.get()) {
@@ -121,7 +121,7 @@ void Mediator::addExistingGraphToScene(bool zoomToFitAfterNodesLoaded)
     m_mainWindow.enableWidgetSignals(true);
 }
 
-void Mediator::addEdge(NodeR node1, NodeR node2)
+void ApplicationService::addEdge(NodeR node1, NodeR node2)
 {
     // Add edge from node1 to node2
     connectEdgeToUndoMechanism(m_editorService->addEdge(std::make_shared<SceneItems::Edge>(&node1, &node2)));
@@ -130,7 +130,7 @@ void Mediator::addEdge(NodeR node1, NodeR node2)
     addExistingGraphToScene();
 }
 
-void Mediator::addItem(QGraphicsItem & item, bool adjustSceneRect)
+void ApplicationService::addItem(QGraphicsItem & item, bool adjustSceneRect)
 {
     m_editorScene->addItem(&item);
     if (adjustSceneRect) {
@@ -138,50 +138,50 @@ void Mediator::addItem(QGraphicsItem & item, bool adjustSceneRect)
     }
 }
 
-void Mediator::addNodeToSelectionGroup(NodeR node, bool isImplicit)
+void ApplicationService::addNodeToSelectionGroup(NodeR node, bool isImplicit)
 {
     m_editorService->addNodeToSelectionGroup(node, isImplicit);
     updateNodeConnectionActions();
 }
 
-void Mediator::adjustSceneRect()
+void ApplicationService::adjustSceneRect()
 {
     m_editorScene->adjustSceneRect();
 }
 
-void Mediator::clearSelectionGroup(bool onlyImplicitNodes)
+void ApplicationService::clearSelectionGroup(bool onlyImplicitNodes)
 {
     m_editorService->clearSelectionGroup(onlyImplicitNodes);
     updateNodeConnectionActions();
 }
 
-bool Mediator::canBeSaved() const
+bool ApplicationService::canBeSaved() const
 {
     return !m_editorService->fileName().isEmpty();
 }
 
-void Mediator::connectEdgeToUndoMechanism(EdgeS edge)
+void ApplicationService::connectEdgeToUndoMechanism(EdgeS edge)
 {
-    connect(edge.get(), &SceneItems::Edge::undoPointRequested, this, &Mediator::saveUndoPoint, Qt::UniqueConnection);
+    connect(edge.get(), &SceneItems::Edge::undoPointRequested, this, &ApplicationService::saveUndoPoint, Qt::UniqueConnection);
 }
 
-void Mediator::connectNodeToUndoMechanism(NodeS node)
+void ApplicationService::connectNodeToUndoMechanism(NodeS node)
 {
-    connect(node.get(), &SceneItems::Node::undoPointRequested, this, &Mediator::saveUndoPoint, Qt::UniqueConnection);
+    connect(node.get(), &SceneItems::Node::undoPointRequested, this, &ApplicationService::saveUndoPoint, Qt::UniqueConnection);
 }
 
-void Mediator::connectNodeToImageManager(NodeS node)
+void ApplicationService::connectNodeToImageManager(NodeS node)
 {
     connect(node.get(), &SceneItems::Node::imageRequested, &m_editorService->mindMapData()->imageManager(), &ImageManager::handleImageRequest, Qt::UniqueConnection);
     node->setImageRef(node->imageRef()); // This effectively results in a fetch from ImageManager
 }
 
-size_t Mediator::copyStackSize() const
+size_t ApplicationService::copyStackSize() const
 {
     return m_editorService->copyStackSize();
 }
 
-void Mediator::connectGraphToUndoMechanism()
+void ApplicationService::connectGraphToUndoMechanism()
 {
     for (auto && node : m_editorService->mindMapData()->graph().getNodes()) {
         connectNodeToUndoMechanism(node);
@@ -192,14 +192,14 @@ void Mediator::connectGraphToUndoMechanism()
     }
 }
 
-void Mediator::connectGraphToImageManager()
+void ApplicationService::connectGraphToImageManager()
 {
     for (auto && node : m_editorService->mindMapData()->graph().getNodes()) {
         connectNodeToImageManager(node);
     }
 }
 
-void Mediator::connectSelectedNodes()
+void ApplicationService::connectSelectedNodes()
 {
     L().debug() << "Connecting selected nodes: " << m_editorService->selectionGroupSize();
     if (areSelectedNodesConnectable()) {
@@ -212,7 +212,7 @@ void Mediator::connectSelectedNodes()
     }
 }
 
-void Mediator::disconnectSelectedNodes()
+void ApplicationService::disconnectSelectedNodes()
 {
     L().debug() << "Disconnecting selected nodes: " << m_editorService->selectionGroupSize();
     if (areSelectedNodesDisconnectable()) {
@@ -222,13 +222,13 @@ void Mediator::disconnectSelectedNodes()
     }
 }
 
-void Mediator::changeFont(const QFont & font)
+void ApplicationService::changeFont(const QFont & font)
 {
     saveUndoPoint();
     m_editorService->mindMapData()->changeFont(font);
 }
 
-NodeS Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
+NodeS ApplicationService::createAndAddNode(int sourceNodeIndex, QPointF pos)
 {
     const auto node0 = getNodeByIndex(sourceNodeIndex);
     const auto node1 = m_mainWindow.copyOnDragEnabled() ? m_editorService->copyNodeAt(*node0, pos) : m_editorService->addNodeAt(pos);
@@ -248,7 +248,7 @@ NodeS Mediator::createAndAddNode(int sourceNodeIndex, QPointF pos)
     return node1;
 }
 
-NodeS Mediator::createAndAddNode(QPointF pos)
+NodeS ApplicationService::createAndAddNode(QPointF pos)
 {
     const auto node1 = m_editorService->addNodeAt(m_editorView->grid().snapToGrid(pos));
     assert(node1);
@@ -265,7 +265,7 @@ NodeS Mediator::createAndAddNode(QPointF pos)
     return node1;
 }
 
-NodeS Mediator::pasteNodeAt(NodeR source, QPointF pos)
+NodeS ApplicationService::pasteNodeAt(NodeR source, QPointF pos)
 {
     const auto copiedNode = m_editorService->copyNodeAt(source, pos);
     assert(copiedNode);
@@ -275,34 +275,34 @@ NodeS Mediator::pasteNodeAt(NodeR source, QPointF pos)
     return copiedNode;
 }
 
-MouseAction & Mediator::mouseAction()
+MouseAction & ApplicationService::mouseAction()
 {
     return m_editorService->mouseAction();
 }
 
-void Mediator::deleteEdge(EdgeR edge)
+void ApplicationService::deleteEdge(EdgeR edge)
 {
     m_editorService->deleteEdge(edge);
 }
 
-void Mediator::enableAutosave(bool enable)
+void ApplicationService::enableAutosave(bool enable)
 {
     if (enable) {
         m_editorService->requestAutosave(EditorService::AutosaveContext::Modification, true);
     }
 }
 
-void Mediator::enableUndo(bool enable)
+void ApplicationService::enableUndo(bool enable)
 {
     m_mainWindow.enableUndo(enable);
 }
 
-void Mediator::enableRedo(bool enable)
+void ApplicationService::enableRedo(bool enable)
 {
     m_mainWindow.enableRedo(enable);
 }
 
-void Mediator::exportToPng(QString filename, QSize size, bool transparentBackground)
+void ApplicationService::exportToPng(QString filename, QSize size, bool transparentBackground)
 {
     m_editorView->saveZoom();
     zoomForExport();
@@ -314,7 +314,7 @@ void Mediator::exportToPng(QString filename, QSize size, bool transparentBackgro
     emit pngExportFinished(image.save(filename));
 }
 
-void Mediator::exportToSvg(QString filename)
+void ApplicationService::exportToSvg(QString filename)
 {
     m_editorView->saveZoom();
     zoomForExport();
@@ -326,22 +326,22 @@ void Mediator::exportToSvg(QString filename)
     emit svgExportFinished(true);
 }
 
-QString Mediator::fileName() const
+QString ApplicationService::fileName() const
 {
     return m_editorService->fileName();
 }
 
-NodeS Mediator::getNodeByIndex(int index)
+NodeS ApplicationService::getNodeByIndex(int index)
 {
     return m_editorService->getNodeByIndex(index);
 }
 
-bool Mediator::hasNodes() const
+bool ApplicationService::hasNodes() const
 {
     return m_editorService->mindMapData() && m_editorService->mindMapData()->graph().nodeCount();
 }
 
-void Mediator::initializeNewMindMap()
+void ApplicationService::initializeNewMindMap()
 {
     L().debug() << "Initializing a new mind map";
 
@@ -358,12 +358,12 @@ void Mediator::initializeNewMindMap()
 
     addExistingGraphToScene();
 
-    QTimer::singleShot(0, this, &Mediator::zoomToFit);
+    QTimer::singleShot(0, this, &ApplicationService::zoomToFit);
 
     m_mainWindow.initializeNewMindMap();
 }
 
-void Mediator::initiateNewNodeDrag(SceneItems::NodeHandle & nodeHandle)
+void ApplicationService::initiateNewNodeDrag(SceneItems::NodeHandle & nodeHandle)
 {
     L().debug() << "Initiating new node drag";
 
@@ -377,7 +377,7 @@ void Mediator::initiateNewNodeDrag(SceneItems::NodeHandle & nodeHandle)
     QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
 }
 
-void Mediator::initiateNodeDrag(NodeR node)
+void ApplicationService::initiateNodeDrag(NodeR node)
 {
     L().debug() << "Initiating node drag";
 
@@ -391,7 +391,7 @@ void Mediator::initiateNodeDrag(NodeR node)
     QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
 }
 
-void Mediator::initializeView()
+void ApplicationService::initializeView()
 {
     L().debug() << "Initializing view";
 
@@ -407,7 +407,7 @@ void Mediator::initializeView()
     m_mainWindow.setContentsMargins(0, 0, 0, 0);
 }
 
-bool Mediator::areDirectlyConnected(NodeCR node1, NodeCR node2) const
+bool ApplicationService::areDirectlyConnected(NodeCR node1, NodeCR node2) const
 {
     auto && graph = m_editorService->mindMapData()->graph();
     const auto node1Ptr = graph.getNode(node1.index());
@@ -415,74 +415,74 @@ bool Mediator::areDirectlyConnected(NodeCR node1, NodeCR node2) const
     return graph.areDirectlyConnected(node1Ptr, node2Ptr);
 }
 
-bool Mediator::areSelectedNodesConnectable() const
+bool ApplicationService::areSelectedNodesConnectable() const
 {
     return m_editorService->areSelectedNodesConnectable();
 }
 
-bool Mediator::areSelectedNodesDisconnectable() const
+bool ApplicationService::areSelectedNodesDisconnectable() const
 {
     return m_editorService->areSelectedNodesDisconnectable();
 }
 
-bool Mediator::isLeafNode(NodeR node)
+bool ApplicationService::isLeafNode(NodeR node)
 {
     auto && graph = m_editorService->mindMapData()->graph();
     return graph.getEdgesFromNode(graph.getNode(node.index())).size() + graph.getEdgesToNode(graph.getNode(node.index())).size() <= 1;
 }
 
-bool Mediator::isInBetween(NodeR node)
+bool ApplicationService::isInBetween(NodeR node)
 {
     auto && graph = m_editorService->mindMapData()->graph();
     return graph.getEdgesFromNode(graph.getNode(node.index())).size() + graph.getEdgesToNode(graph.getNode(node.index())).size() == 2;
 }
 
-bool Mediator::isInSelectionGroup(NodeR node)
+bool ApplicationService::isInSelectionGroup(NodeR node)
 {
     return m_editorService->isInSelectionGroup(node);
 }
 
-bool Mediator::isRedoable() const
+bool ApplicationService::isRedoable() const
 {
     return m_editorService->isRedoable();
 }
 
-bool Mediator::isModified() const
+bool ApplicationService::isModified() const
 {
     return m_editorService->isModified();
 }
 
-bool Mediator::isUndoable() const
+bool ApplicationService::isUndoable() const
 {
     return m_editorService->isUndoable();
 }
 
-void Mediator::mirror(bool vertically)
+void ApplicationService::mirror(bool vertically)
 {
     m_editorService->mirror(vertically);
 }
 
-void Mediator::moveSelectionGroup(NodeR reference, QPointF location)
+void ApplicationService::moveSelectionGroup(NodeR reference, QPointF location)
 {
     m_editorService->moveSelectionGroup(reference, location);
 }
 
-MindMapDataS Mediator::mindMapData() const
+MindMapDataS ApplicationService::mindMapData() const
 {
     return m_editorService->mindMapData();
 }
 
-size_t Mediator::nodeCount() const
+size_t ApplicationService::nodeCount() const
 {
     return m_editorService->mindMapData() ? m_editorService->mindMapData()->graph().nodeCount() : 0;
 }
 
-bool Mediator::nodeHasImageAttached() const
+bool ApplicationService::nodeHasImageAttached() const
 {
     return m_editorService->nodeHasImageAttached();
 }
 
-void Mediator::paste()
+void ApplicationService::paste()
 {
     // Create a new node from OS clipboard if text has been copied
     if (!QApplication::clipboard()->text().isEmpty()) {
@@ -521,7 +521,7 @@ void Mediator::paste()
     }
 }
 
-void Mediator::performNodeAction(const NodeAction & action)
+void ApplicationService::performNodeAction(const NodeAction & action)
 {
     juzzlin::L().debug() << "Handling NodeAction: " << static_cast<int>(action.type);
 
@@ -591,7 +591,7 @@ void Mediator::performNodeAction(const NodeAction & action)
     }
 }
 
-bool Mediator::openMindMap(QString fileName)
+bool ApplicationService::openMindMap(QString fileName)
 {
     try {
         juzzlin::L().info() << "Loading '" << fileName.toStdString() << "'";
@@ -627,7 +627,7 @@ bool Mediator::openMindMap(QString fileName)
     return true;
 }
 
-void Mediator::redo()
+void ApplicationService::redo()
 {
     L().debug() << "Undo..";
 
@@ -637,12 +637,12 @@ void Mediator::redo()
     setupMindMapAfterUndoOrRedo();
 }
 
-void Mediator::removeItem(QGraphicsItem & item)
+void ApplicationService::removeItem(QGraphicsItem & item)
 {
     m_editorScene->removeItem(&item);
 }
 
-void Mediator::toggleNodeInSelectionGroup(NodeR node, bool updateNodeConnectionActions)
+void ApplicationService::toggleNodeInSelectionGroup(NodeR node, bool updateNodeConnectionActions)
 {
     m_editorService->toggleNodeInSelectionGroup(node);
     if (updateNodeConnectionActions) {
@@ -650,42 +650,42 @@ void Mediator::toggleNodeInSelectionGroup(NodeR node, bool updateNodeConnectionA
     }
 }
 
-bool Mediator::saveMindMapAs(QString fileName)
+bool ApplicationService::saveMindMapAs(QString fileName)
 {
     return m_editorService->saveMindMapAs(fileName, true);
 }
 
-bool Mediator::saveMindMap()
+bool ApplicationService::saveMindMap()
 {
     return m_editorService->saveMindMap(true);
 }
 
-void Mediator::saveUndoPoint()
+void ApplicationService::saveUndoPoint()
 {
     m_editorService->saveUndoPoint();
 }
 
-QSize Mediator::sceneRectSize() const
+QSize ApplicationService::sceneRectSize() const
 {
     return m_editorScene->sceneRect().size().toSize();
 }
 
-EdgeP Mediator::selectedEdge() const
+EdgeP ApplicationService::selectedEdge() const
 {
     return m_editorService->selectedEdge();
 }
 
-NodeP Mediator::selectedNode() const
+NodeP ApplicationService::selectedNode() const
 {
     return m_editorService->selectedNode();
 }
 
-size_t Mediator::selectionGroupSize() const
+size_t ApplicationService::selectionGroupSize() const
 {
     return m_editorService->selectionGroupSize();
 }
 
-void Mediator::setArrowSize(double arrowSize)
+void ApplicationService::setArrowSize(double arrowSize)
 {
     // Break loop with the spinbox
     if (!qFuzzyCompare(m_editorService->mindMapData()->arrowSize(), arrowSize)) {
@@ -695,7 +695,7 @@ void Mediator::setArrowSize(double arrowSize)
     }
 }
 
-void Mediator::setBackgroundColor(QColor color)
+void ApplicationService::setBackgroundColor(QColor color)
 {
     if (m_editorService->mindMapData()->backgroundColor() != color) {
         saveUndoPoint();
@@ -704,7 +704,7 @@ void Mediator::setBackgroundColor(QColor color)
     }
 }
 
-void Mediator::setCornerRadius(int value)
+void ApplicationService::setCornerRadius(int value)
 {
     // Break loop with the spinbox
     if (m_editorService->mindMapData()->cornerRadius() != value) {
@@ -714,7 +714,7 @@ void Mediator::setCornerRadius(int value)
     }
 }
 
-void Mediator::setEdgeColor(QColor color)
+void ApplicationService::setEdgeColor(QColor color)
 {
     if (m_editorService->mindMapData()->edgeColor() != color) {
         saveUndoPoint();
@@ -723,7 +723,7 @@ void Mediator::setEdgeColor(QColor color)
     }
 }
 
-void Mediator::setEdgeWidth(double value)
+void ApplicationService::setEdgeWidth(double value)
 {
     // Break loop with the spinbox
     if (!qFuzzyCompare(m_editorService->mindMapData()->edgeWidth(), value)) {
@@ -733,7 +733,7 @@ void Mediator::setEdgeWidth(double value)
     }
 }
 
-void Mediator::setGridColor(QColor color)
+void ApplicationService::setGridColor(QColor color)
 {
     if (m_editorService->mindMapData()->gridColor() != color) {
         saveUndoPoint();
@@ -743,15 +743,15 @@ void Mediator::setGridColor(QColor color)
     }
 }
 
-void Mediator::setEditorService(std::shared_ptr<EditorService> editorService)
+void ApplicationService::setEditorService(std::shared_ptr<EditorService> editorService)
 {
     m_editorService = editorService;
 
-    connect(m_editorService.get(), &EditorService::undoEnabled, this, &Mediator::enableUndo);
-    connect(m_editorService.get(), &EditorService::redoEnabled, this, &Mediator::enableRedo);
+    connect(m_editorService.get(), &EditorService::undoEnabled, this, &ApplicationService::enableUndo);
+    connect(m_editorService.get(), &EditorService::redoEnabled, this, &ApplicationService::enableRedo);
 }
 
-void Mediator::setEditorView(EditorView & editorView)
+void ApplicationService::setEditorView(EditorView & editorView)
 {
     m_editorView = &editorView;
 
@@ -763,7 +763,7 @@ void Mediator::setEditorView(EditorView & editorView)
     });
 }
 
-size_t Mediator::setRectagleSelection(QRectF rect)
+size_t ApplicationService::setRectagleSelection(QRectF rect)
 {
     size_t nodesInRectangle = 0;
     for (auto && item : m_editorScene->items(rect, Core::SingleInstanceContainer::instance().settingsProxy().selectNodeGroupByIntersection() ? Qt::IntersectsItemShape : Qt::ContainsItemShape)) {
@@ -776,7 +776,7 @@ size_t Mediator::setRectagleSelection(QRectF rect)
     return nodesInRectangle;
 }
 
-void Mediator::setSelectedEdge(EdgeP edge)
+void ApplicationService::setSelectedEdge(EdgeP edge)
 {
     L().debug() << __func__ << "(): " << reinterpret_cast<uint64_t>(edge);
 
@@ -791,7 +791,7 @@ void Mediator::setSelectedEdge(EdgeP edge)
     m_editorService->setSelectedEdge(edge);
 }
 
-void Mediator::setSearchText(QString text)
+void ApplicationService::setSearchText(QString text)
 {
     // Leave zoom setting as it is if user has cleared selected nodes and search field.
     // Otherwise zoom in to search results and select matching texts.
@@ -809,18 +809,18 @@ void Mediator::setSearchText(QString text)
     updateNodeConnectionActions();
 }
 
-void Mediator::setShadowEffect(const ShadowEffectParams & params)
+void ApplicationService::setShadowEffect(const ShadowEffectParams & params)
 {
     m_editorService->mindMapData()->setShadowEffect(params);
 }
 
-void Mediator::setGridSize(int size, bool autoSnap)
+void ApplicationService::setGridSize(int size, bool autoSnap)
 {
     m_editorView->setGridSize(size);
     m_editorService->setGridSize(size, autoSnap);
 }
 
-void Mediator::setTextSize(int textSize)
+void ApplicationService::setTextSize(int textSize)
 {
     // Break loop with the spinbox
     if (m_editorService->mindMapData()->textSize() != textSize) {
@@ -829,7 +829,7 @@ void Mediator::setTextSize(int textSize)
     }
 }
 
-void Mediator::setupMindMapAfterUndoOrRedo()
+void ApplicationService::setupMindMapAfterUndoOrRedo()
 {
     const auto oldSceneRect = m_editorScene->sceneRect();
     const auto oldCenter = m_editorView->mapToScene(m_editorView->viewport()->rect()).boundingRect().center();
@@ -847,23 +847,23 @@ void Mediator::setupMindMapAfterUndoOrRedo()
     m_editorView->centerOn(oldCenter);
 }
 
-void Mediator::showStatusText(QString statusText)
+void ApplicationService::showStatusText(QString statusText)
 {
     m_editorView->showStatusText(statusText);
 }
 
-void Mediator::updateNodeConnectionActions()
+void ApplicationService::updateNodeConnectionActions()
 {
     m_mainWindow.enableConnectSelectedNodesAction(areSelectedNodesConnectable());
     m_mainWindow.enableDisconnectSelectedNodesAction(areSelectedNodesDisconnectable());
 }
 
-void Mediator::updateProgress()
+void ApplicationService::updateProgress()
 {
     Core::SingleInstanceContainer::instance().progressManager().updateProgress();
 }
 
-void Mediator::undo()
+void ApplicationService::undo()
 {
     L().debug() << "Undo..";
 
@@ -873,22 +873,22 @@ void Mediator::undo()
     setupMindMapAfterUndoOrRedo();
 }
 
-void Mediator::unselectText()
+void ApplicationService::unselectText()
 {
     m_editorService->unselectText();
 }
 
-void Mediator::zoomIn()
+void ApplicationService::zoomIn()
 {
     m_editorView->zoom(std::pow(Constants::View::ZOOM_SENSITIVITY, 2));
 }
 
-void Mediator::zoomOut()
+void ApplicationService::zoomOut()
 {
     m_editorView->zoom(1.0 / std::pow(Constants::View::ZOOM_SENSITIVITY, 2));
 }
 
-QSize Mediator::zoomForExport(bool dryRun)
+QSize ApplicationService::zoomForExport(bool dryRun)
 {
     unselectSelectedNode();
     clearSelectionGroup();
@@ -899,14 +899,14 @@ QSize Mediator::zoomForExport(bool dryRun)
     return zoomToFitRectangle.size().toSize();
 }
 
-void Mediator::zoomToFit()
+void ApplicationService::zoomToFit()
 {
     if (hasNodes()) {
         m_editorView->zoomToFit(m_editorScene->calculateZoomToFitRectangle());
     }
 }
 
-double Mediator::calculateNodeOverlapScore(NodeCR node1, NodeCR node2) const
+double ApplicationService::calculateNodeOverlapScore(NodeCR node1, NodeCR node2) const
 {
     if (&node1 == &node2) {
         return 0;
@@ -927,19 +927,19 @@ double Mediator::calculateNodeOverlapScore(NodeCR node1, NodeCR node2) const
     return 0;
 }
 
-void Mediator::unselectImplicitlySelectedNodes()
+void ApplicationService::unselectImplicitlySelectedNodes()
 {
     m_editorService->clearSelectionGroup(true);
 }
 
-void Mediator::unselectSelectedNode()
+void ApplicationService::unselectSelectedNode()
 {
     for (auto && node : m_editorService->mindMapData()->graph().getNodes()) {
         node->setSelected(false);
     }
 }
 
-NodeS Mediator::getBestOverlapNode(NodeCR source)
+NodeS ApplicationService::getBestOverlapNode(NodeCR source)
 {
     NodeS bestNode;
     double bestScore = 0;
@@ -956,4 +956,4 @@ NodeS Mediator::getBestOverlapNode(NodeCR source)
     return bestNode;
 }
 
-Mediator::~Mediator() = default;
+ApplicationService::~ApplicationService() = default;

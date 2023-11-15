@@ -16,7 +16,7 @@
 #include "main_context_menu.hpp"
 
 #include "../grid.hpp"
-#include "../mediator.hpp"
+#include "../application_service.hpp"
 #include "../mouse_action.hpp"
 #include "../node_action.hpp"
 #include "../scene_items/node.hpp"
@@ -27,11 +27,11 @@
 
 namespace Menus {
 
-MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & grid)
+MainContextMenu::MainContextMenu(QWidget * parent, ApplicationService & applicationService, Grid & grid)
   : QMenu(parent)
   , m_copyNodeAction(new QAction(tr("Copy node"), this))
   , m_pasteNodeAction(new QAction(tr("Paste node"), this))
-  , m_mediator(mediator)
+  , m_applicationService(applicationService)
 {
     // Here we add a shortcut to the context menu action. However, the action cannot be triggered unless the context menu
     // is open. As a "solution" we create another shortcut and add it to the parent widget.
@@ -41,7 +41,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     connect(copyNodeShortCut, &QShortcut::activated, m_copyNodeAction, &QAction::trigger);
     connect(m_copyNodeAction, &QAction::triggered, this, [this] {
         juzzlin::L().debug() << "Copy node triggered";
-        m_mediator.performNodeAction({ NodeAction::Type::Copy });
+        m_applicationService.performNodeAction({ NodeAction::Type::Copy });
     });
     m_mainContextMenuActions[Mode::All].push_back(m_copyNodeAction);
 
@@ -53,7 +53,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     connect(pasteNodeShortCut, &QShortcut::activated, m_pasteNodeAction, &QAction::trigger);
     connect(m_pasteNodeAction, &QAction::triggered, this, [this] {
         juzzlin::L().debug() << "Paste node triggered";
-        m_mediator.performNodeAction({ NodeAction::Type::Paste });
+        m_applicationService.performNodeAction({ NodeAction::Type::Paste });
     });
     m_mainContextMenuActions[Mode::All].push_back(m_pasteNodeAction);
 
@@ -82,10 +82,10 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     createNodeAction->setShortcut(createNodeSequence);
     const auto createNodeShortCut = new QShortcut(createNodeSequence, parent);
     connect(createNodeShortCut, &QShortcut::activated, this, [this, grid] {
-        emit newNodeRequested(grid.snapToGrid(m_mediator.mouseAction().mappedPos()));
+        emit newNodeRequested(grid.snapToGrid(m_applicationService.mouseAction().mappedPos()));
     });
     connect(createNodeAction, &QAction::triggered, this, [this, grid] {
-        emit newNodeRequested(grid.snapToGrid(m_mediator.mouseAction().clickedScenePos()));
+        emit newNodeRequested(grid.snapToGrid(m_applicationService.mouseAction().clickedScenePos()));
     });
     m_mainContextMenuActions[Mode::Background].push_back(createNodeAction);
 
@@ -108,10 +108,10 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
     deleteNodeAction->setShortcut(deleteNodeSequence);
     const auto deleteNodeShortCut = new QShortcut(deleteNodeSequence, parent);
     connect(deleteNodeShortCut, &QShortcut::activated, this, [this] {
-        m_mediator.performNodeAction({ NodeAction::Type::Delete });
+        m_applicationService.performNodeAction({ NodeAction::Type::Delete });
     });
     connect(deleteNodeAction, &QAction::triggered, this, [this] {
-        m_mediator.performNodeAction({ NodeAction::Type::Delete });
+        m_applicationService.performNodeAction({ NodeAction::Type::Delete });
     });
 
     m_mainContextMenuActions[Mode::Node].push_back(deleteNodeAction);
@@ -125,7 +125,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Mediator & mediator, Grid & g
 
     m_removeImageAction = new QAction(tr("Remove attached image"), this);
     connect(m_removeImageAction, &QAction::triggered, this, [this] {
-        m_mediator.performNodeAction({ NodeAction::Type::RemoveAttachedImage });
+        m_applicationService.performNodeAction({ NodeAction::Type::RemoveAttachedImage });
     });
 
     m_mainContextMenuActions[Mode::Node].push_back(m_removeImageAction);
@@ -165,13 +165,13 @@ void MainContextMenu::setMode(const Mode & mode)
 
     m_colorMenuAction->setText(mode == Mode::Node ? tr("Node &colors") : tr("General &colors"));
 
-    m_copyNodeAction->setEnabled(m_mediator.selectionGroupSize());
-    m_copyNodeAction->setText(m_mediator.selectionGroupSize() > 1 ? tr("Copy nodes") : tr("Copy node"));
+    m_copyNodeAction->setEnabled(m_applicationService.selectionGroupSize());
+    m_copyNodeAction->setText(m_applicationService.selectionGroupSize() > 1 ? tr("Copy nodes") : tr("Copy node"));
 
-    m_pasteNodeAction->setEnabled(m_mediator.copyStackSize());
-    m_pasteNodeAction->setText(m_mediator.copyStackSize() > 1 ? tr("Paste nodes") : tr("Paste node"));
+    m_pasteNodeAction->setEnabled(m_applicationService.copyStackSize());
+    m_pasteNodeAction->setText(m_applicationService.copyStackSize() > 1 ? tr("Paste nodes") : tr("Paste node"));
 
-    m_removeImageAction->setEnabled(m_mediator.nodeHasImageAttached());
+    m_removeImageAction->setEnabled(m_applicationService.nodeHasImageAttached());
 }
 
 } // namespace Menus

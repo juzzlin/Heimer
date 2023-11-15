@@ -15,12 +15,12 @@
 
 #include "scene_color_dialog.hpp"
 
-#include "../mediator.hpp"
+#include "../application_service.hpp"
 #include "../node_action.hpp"
 
 namespace Dialogs {
 
-SceneColorDialog::SceneColorDialog(Role role, std::shared_ptr<Mediator> mediator)
+SceneColorDialog::SceneColorDialog(Role role, std::shared_ptr<ApplicationService> applicationService)
   : ColorDialog(role)
 {
     connect(this, &QColorDialog::colorSelected, [=](QColor color) {
@@ -29,19 +29,19 @@ SceneColorDialog::SceneColorDialog(Role role, std::shared_ptr<Mediator> mediator
         }
         switch (role) {
         case Role::Background:
-            mediator->setBackgroundColor(color);
+            applicationService->setBackgroundColor(color);
             break;
         case Role::Edge:
-            mediator->setEdgeColor(color);
+            applicationService->setEdgeColor(color);
             break;
         case Role::Grid:
-            mediator->setGridColor(color);
+            applicationService->setGridColor(color);
             break;
         case Role::Node:
-            mediator->performNodeAction({ NodeAction::Type::SetNodeColor, color });
+            applicationService->performNodeAction({ NodeAction::Type::SetNodeColor, color });
             break;
         case Role::Text:
-            mediator->performNodeAction({ NodeAction::Type::SetTextColor, color });
+            applicationService->performNodeAction({ NodeAction::Type::SetTextColor, color });
             break;
         case Role::ShadowColor:
         case Role::SelectedItemShadowColor:

@@ -17,7 +17,7 @@
 
 #include "constants.hpp"
 #include "control_strategy.hpp"
-#include "mediator.hpp"
+#include "application_service.hpp"
 #include "node_action.hpp"
 #include "recent_files_manager.hpp"
 
@@ -91,11 +91,11 @@ void MainWindow::addConnectSelectedNodesAction(QMenu & menu)
     m_connectSelectedNodesAction->setShortcut(QKeySequence("Ctrl+Shift+C"));
     connect(m_connectSelectedNodesAction, &QAction::triggered, this, [this] {
         juzzlin::L().debug() << "Connect selected triggered";
-        m_mediator->performNodeAction({ NodeAction::Type::ConnectSelected });
+        m_applicationService->performNodeAction({ NodeAction::Type::ConnectSelected });
     });
     menu.addAction(m_connectSelectedNodesAction);
     connect(&menu, &QMenu::aboutToShow, this, [=] {
-        m_connectSelectedNodesAction->setEnabled(m_mediator->areSelectedNodesConnectable());
+        m_connectSelectedNodesAction->setEnabled(m_applicationService->areSelectedNodesConnectable());
     });
 }
 
@@ -104,11 +104,11 @@ void MainWindow::addDisconnectSelectedNodesAction(QMenu & menu)
     m_disconnectSelectedNodesAction->setShortcut(QKeySequence("Ctrl+Shift+D"));
     connect(m_disconnectSelectedNodesAction, &QAction::triggered, this, [this] {
         juzzlin::L().debug() << "Disconnect selected triggered";
-        m_mediator->performNodeAction({ NodeAction::Type::DisconnectSelected });
+        m_applicationService->performNodeAction({ NodeAction::Type::DisconnectSelected });
     });
     menu.addAction(m_disconnectSelectedNodesAction);
     connect(&menu, &QMenu::aboutToShow, this, [=] {
-        m_disconnectSelectedNodesAction->setEnabled(m_mediator->areSelectedNodesDisconnectable());
+        m_disconnectSelectedNodesAction->setEnabled(m_applicationService->areSelectedNodesDisconnectable());
     });
 }
 
@@ -116,7 +116,7 @@ void MainWindow::addRedoAction(QMenu & menu)
 {
     m_redoAction->setShortcut(QKeySequence(QKeySequence::Redo));
 
-    connect(m_redoAction, &QAction::triggered, m_mediator.get(), &Mediator::redo);
+    connect(m_redoAction, &QAction::triggered, m_applicationService.get(), &ApplicationService::redo);
 
     m_redoAction->setEnabled(false);
 
@@ -127,7 +127,7 @@ void MainWindow::addUndoAction(QMenu & menu)
 {
     m_undoAction->setShortcut(QKeySequence(QKeySequence::Undo));
 
-    connect(m_undoAction, &QAction::triggered, m_mediator.get(), &Mediator::undo);
+    connect(m_undoAction, &QAction::triggered, m_applicationService.get(), &ApplicationService::undo);
 
     m_undoAction->setEnabled(false);
 
@@ -208,7 +208,7 @@ void MainWindow::createMirrorSubMenu(QMenu & editMenu)
     mirrorHorizontallyAction->setShortcut(QKeySequence(m_controlStrategy.mirrorLayoutHorizontallyShortcut()));
     mirrorMenu->addAction(mirrorHorizontallyAction);
     connect(mirrorHorizontallyAction, &QAction::triggered, this, [=] {
-        m_mediator->performNodeAction(NodeAction::Type::MirrorLayoutHorizontally);
+        m_applicationService->performNodeAction(NodeAction::Type::MirrorLayoutHorizontally);
     });
     mirrorMenu->addSeparator();
 
@@ -216,7 +216,7 @@ void MainWindow::createMirrorSubMenu(QMenu & editMenu)
     mirrorVerticallyAction->setShortcut(QKeySequence(m_controlStrategy.mirrorLayoutVerticallyShortcut()));
     mirrorMenu->addAction(mirrorVerticallyAction);
     connect(mirrorVerticallyAction, &QAction::triggered, this, [=] {
-        m_mediator->performNodeAction(NodeAction::Type::MirrorLayoutVertically);
+        m_applicationService->performNodeAction(NodeAction::Type::MirrorLayoutVertically);
     });
 }
 
@@ -277,8 +277,8 @@ void MainWindow::createExportSubMenu(QMenu & fileMenu)
     });
 
     connect(&fileMenu, &QMenu::aboutToShow, this, [=] {
-        exportToPngAction->setEnabled(m_mediator->hasNodes());
-        exportToSvgAction->setEnabled(m_mediator->hasNodes());
+        exportToPngAction->setEnabled(m_applicationService->hasNodes());
+        exportToSvgAction->setEnabled(m_applicationService->hasNodes());
     });
 }
 
@@ -425,7 +425,7 @@ void MainWindow::createViewMenu()
     connect(zoomToFit, &QAction::triggered, this, &MainWindow::zoomToFitTriggered);
 
     connect(viewMenu, &QMenu::aboutToShow, this, [=] {
-        zoomToFit->setEnabled(m_mediator->hasNodes());
+        zoomToFit->setEnabled(m_applicationService->hasNodes());
     });
 }
 
@@ -467,16 +467,16 @@ void MainWindow::initialize()
     emit actionTriggered(StateMachine::Action::MainWindowInitialized);
 }
 
-void MainWindow::setMediator(std::shared_ptr<Mediator> mediator)
+void MainWindow::setApplicationService(std::shared_ptr<ApplicationService> applicationService)
 {
-    m_mediator = mediator;
+    m_applicationService = applicationService;
 }
 
 void MainWindow::setTitle()
 {
     const auto appInfo = QString(Constants::Application::APPLICATION_NAME) + " " + Constants::Application::APPLICATION_VERSION;
-    const auto displayFileName = m_mediator->fileName().isEmpty() ? tr("New File") : m_mediator->fileName();
-    if (m_mediator->isModified()) {
+    const auto displayFileName = m_applicationService->fileName().isEmpty() ? tr("New File") : m_applicationService->fileName();
+    if (m_applicationService->isModified()) {
         setWindowTitle(appInfo + " - " + displayFileName + " - " + tr("Not Saved"));
     } else {
         setWindowTitle(appInfo + " - " + displayFileName);

@@ -26,7 +26,7 @@
 
 class Grid;
 class Node;
-class Mediator;
+class ApplicationService;
 
 namespace Menus {
 
@@ -42,7 +42,7 @@ public:
         Node
     };
 
-    MainContextMenu(QWidget * parent, Mediator & mediator, Grid & grid);
+    MainContextMenu(QWidget * parent, ApplicationService & applicationService, Grid & grid);
 
     void setMode(const Mode & mode);
 
@@ -67,7 +67,7 @@ private:
 
     std::map<Mode, std::vector<QAction *>> m_mainContextMenuActions;
 
-    Mediator & m_mediator;
+    ApplicationService & m_applicationService;
 };
 
 } // namespace Menus

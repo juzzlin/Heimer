@@ -14,7 +14,7 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "state_machine.hpp"
-#include "mediator.hpp"
+#include "application_service.hpp"
 
 #include "simple_logger.hpp"
 
@@ -55,7 +55,7 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::NewSelected:
         m_quitType = QuitType::New;
-        if (m_mediator->isModified()) {
+        if (m_applicationService->isModified()) {
             m_state = State::ShowNotSavedDialog;
         } else {
             m_state = State::InitializeNewMindMap;
@@ -114,7 +114,7 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::OpenSelected:
         m_quitType = QuitType::Open;
-        if (m_mediator->isModified()) {
+        if (m_applicationService->isModified()) {
             m_state = State::ShowNotSavedDialog;
         } else {
             m_state = State::ShowOpenDialog;
@@ -123,7 +123,7 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::QuitSelected:
         m_quitType = QuitType::Close;
-        if (m_mediator->isModified()) {
+        if (m_applicationService->isModified()) {
             m_state = State::ShowNotSavedDialog;
         } else {
             m_state = State::Exit;
@@ -132,7 +132,7 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::NotSavedDialogAccepted:
     case Action::SaveSelected:
-        if (m_mediator->canBeSaved()) {
+        if (m_applicationService->canBeSaved()) {
             m_state = State::Save;
         } else {
             m_state = State::ShowSaveAsDialog;
@@ -149,7 +149,7 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::RecentFileSelected:
         m_quitType = QuitType::OpenRecent;
-        if (m_mediator->isModified()) {
+        if (m_applicationService->isModified()) {
             m_state = State::ShowNotSavedDialog;
         } else {
             m_state = State::OpenRecent;
@@ -158,7 +158,7 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::DropFileSelected:
         m_quitType = QuitType::OpenDrop;
-        if (m_mediator->isModified()) {
+        if (m_applicationService->isModified()) {
             m_state = State::ShowNotSavedDialog;
         } else {
             m_state = State::OpenDrop;
@@ -176,7 +176,7 @@ void StateMachine::calculateState(StateMachine::Action action)
     emit stateChanged(m_state);
 }
 
-void StateMachine::setMediator(std::shared_ptr<Mediator> mediator)
+void StateMachine::setApplicationService(std::shared_ptr<ApplicationService> applicationService)
 {
-    m_mediator = mediator;
+    m_applicationService = applicationService;
 }

@@ -41,7 +41,7 @@ class ToolBar;
 class ControlStrategy;
 class EditorService;
 class EditorView;
-class Mediator;
+class ApplicationService;
 class Node;
 
 class QAction;
@@ -85,7 +85,7 @@ public:
 
     void saveWindowSize();
 
-    void setMediator(std::shared_ptr<Mediator> mediator);
+    void setApplicationService(std::shared_ptr<ApplicationService> applicationService);
 
     void setSaveActionStatesOnNewMindMap();
 
@@ -201,7 +201,7 @@ private:
 
     QString m_argMindMapFile;
 
-    std::shared_ptr<Mediator> m_mediator;
+    std::shared_ptr<ApplicationService> m_applicationService;
 
     bool m_closeNow = false;
 

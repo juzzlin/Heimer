@@ -33,7 +33,7 @@
 #include <set>
 
 class ControlStrategy;
-class Mediator;
+class ApplicationService;
 class MindMapTile;
 class Object;
 class ObjectModelLoaderoader;
@@ -59,7 +59,7 @@ class EditorView : public QGraphicsView
     Q_OBJECT
 
 public:
-    explicit EditorView(Mediator & mediator);
+    explicit EditorView(ApplicationService & applicationService);
 
     ~EditorView() override;
 
@@ -180,7 +180,7 @@ private:
 
     double m_scale = 1.0;
 
-    Mediator & m_mediator;
+    ApplicationService & m_applicationService;
 
     NodeU m_dummyDragNode;
 

@@ -21,7 +21,7 @@
 #include "image_manager.hpp"
 #include "layout_optimizer.hpp"
 #include "main_window.hpp"
-#include "mediator.hpp"
+#include "application_service.hpp"
 #include "node_action.hpp"
 #include "recent_files_manager.hpp"
 #include "state_machine.hpp"
@@ -67,17 +67,17 @@ Application::Application(int & argc, char ** argv)
     // Instantiate components here because the possible language given
     // in the command line must have been loaded before this
     m_mainWindow = std::make_unique<MainWindow>();
-    m_mediator = std::make_unique<Mediator>(*m_mainWindow);
+    m_applicationService = std::make_unique<ApplicationService>(*m_mainWindow);
     m_editorService = std::make_unique<EditorService>();
-    m_editorView = new EditorView(*m_mediator);
+    m_editorView = new EditorView(*m_applicationService);
     m_pngExportDialog = std::make_unique<Dialogs::PngExportDialog>(*m_mainWindow);
     m_svgExportDialog = std::make_unique<Dialogs::SvgExportDialog>(*m_mainWindow);
 
-    m_mainWindow->setMediator(m_mediator);
-    m_stateMachine->setMediator(m_mediator);
+    m_mainWindow->setApplicationService(m_applicationService);
+    m_stateMachine->setApplicationService(m_applicationService);
 
-    m_mediator->setEditorService(m_editorService);
-    m_mediator->setEditorView(*m_editorView);
+    m_applicationService->setEditorService(m_editorService);
+    m_applicationService->setEditorView(*m_editorView);
 
     // Connect views and StateMachine together
     connect(this, &Application::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
@@ -88,28 +88,28 @@ Application::Application(int & argc, char ** argv)
     connect(m_stateMachine.get(), &StateMachine::stateChanged, this, &Application::runState);
 
     connect(m_editorService.get(), &EditorService::isModifiedChanged, m_mainWindow.get(), [=](bool isModified) {
-        m_mainWindow->enableSave(isModified || m_mediator->canBeSaved());
+        m_mainWindow->enableSave(isModified || m_applicationService->canBeSaved());
     });
 
-    connect(m_pngExportDialog.get(), &Dialogs::PngExportDialog::pngExportRequested, m_mediator.get(), &Mediator::exportToPng);
-    connect(m_svgExportDialog.get(), &Dialogs::SvgExportDialog::svgExportRequested, m_mediator.get(), &Mediator::exportToSvg);
+    connect(m_pngExportDialog.get(), &Dialogs::PngExportDialog::pngExportRequested, m_applicationService.get(), &ApplicationService::exportToPng);
+    connect(m_svgExportDialog.get(), &Dialogs::SvgExportDialog::svgExportRequested, m_applicationService.get(), &ApplicationService::exportToSvg);
 
-    connect(m_mediator.get(), &Mediator::pngExportFinished, m_pngExportDialog.get(), &Dialogs::PngExportDialog::finishExport);
-    connect(m_mediator.get(), &Mediator::svgExportFinished, m_svgExportDialog.get(), &Dialogs::SvgExportDialog::finishExport);
+    connect(m_applicationService.get(), &ApplicationService::pngExportFinished, m_pngExportDialog.get(), &Dialogs::PngExportDialog::finishExport);
+    connect(m_applicationService.get(), &ApplicationService::svgExportFinished, m_svgExportDialog.get(), &Dialogs::SvgExportDialog::finishExport);
 
-    connect(m_mainWindow.get(), &MainWindow::arrowSizeChanged, m_mediator.get(), &Mediator::setArrowSize);
-    connect(m_mainWindow.get(), &MainWindow::autosaveEnabled, m_mediator.get(), &Mediator::enableAutosave);
-    connect(m_mainWindow.get(), &MainWindow::cornerRadiusChanged, m_mediator.get(), &Mediator::setCornerRadius);
-    connect(m_mainWindow.get(), &MainWindow::edgeWidthChanged, m_mediator.get(), &Mediator::setEdgeWidth);
-    connect(m_mainWindow.get(), &MainWindow::fontChanged, m_mediator.get(), &Mediator::changeFont);
-    connect(m_mainWindow.get(), &MainWindow::textSizeChanged, m_mediator.get(), &Mediator::setTextSize);
-    connect(m_mainWindow.get(), &MainWindow::gridSizeChanged, m_mediator.get(), &Mediator::setGridSize);
+    connect(m_mainWindow.get(), &MainWindow::arrowSizeChanged, m_applicationService.get(), &ApplicationService::setArrowSize);
+    connect(m_mainWindow.get(), &MainWindow::autosaveEnabled, m_applicationService.get(), &ApplicationService::enableAutosave);
+    connect(m_mainWindow.get(), &MainWindow::cornerRadiusChanged, m_applicationService.get(), &ApplicationService::setCornerRadius);
+    connect(m_mainWindow.get(), &MainWindow::edgeWidthChanged, m_applicationService.get(), &ApplicationService::setEdgeWidth);
+    connect(m_mainWindow.get(), &MainWindow::fontChanged, m_applicationService.get(), &ApplicationService::changeFont);
+    connect(m_mainWindow.get(), &MainWindow::textSizeChanged, m_applicationService.get(), &ApplicationService::setTextSize);
+    connect(m_mainWindow.get(), &MainWindow::gridSizeChanged, m_applicationService.get(), &ApplicationService::setGridSize);
     connect(m_mainWindow.get(), &MainWindow::gridVisibleChanged, m_editorView, [this](int state) {
         bool visible = state == Qt::Checked;
         m_editorView->setGridVisible(visible);
     });
-    connect(m_mainWindow.get(), &MainWindow::searchTextChanged, m_mediator.get(), &Mediator::setSearchText);
-    connect(m_mainWindow.get(), &MainWindow::shadowEffectChanged, m_mediator.get(), &Mediator::setShadowEffect);
+    connect(m_mainWindow.get(), &MainWindow::searchTextChanged, m_applicationService.get(), &ApplicationService::setSearchText);
+    connect(m_mainWindow.get(), &MainWindow::shadowEffectChanged, m_applicationService.get(), &ApplicationService::setShadowEffect);
 
     m_mainWindow->initialize();
     m_mainWindow->appear();
@@ -126,7 +126,7 @@ Application::Application(int & argc, char ** argv)
     }
 
     connect(m_versionChecker.get(), &Core::VersionChecker::newVersionFound, this, [this](Core::Version version, QString downloadUrl) {
-        m_mediator->showStatusText(QString(tr("A new version %1 available at <a href='%2'>%2</a>")).arg(version.toString(), downloadUrl));
+        m_applicationService->showStatusText(QString(tr("A new version %1 available at <a href='%2'>%2</a>")).arg(version.toString(), downloadUrl));
     });
     m_versionChecker->checkForNewReleases();
 }
@@ -242,7 +242,7 @@ void Application::runState(StateMachine::State state)
         m_mainWindow->setTitle();
         break;
     case StateMachine::State::InitializeNewMindMap:
-        m_mediator->initializeNewMindMap();
+        m_applicationService->initializeNewMindMap();
         break;
     case StateMachine::State::OpenRecent:
         doOpenMindMap(RecentFilesManager::instance().selectedFile());
@@ -329,7 +329,7 @@ void Application::doOpenMindMap(QString fileName)
     L().debug() << "Opening '" << fileName.toStdString();
     m_mainWindow->showSpinnerDialog(true, tr("Opening '%1'..").arg(fileName));
     updateProgress();
-    if (m_mediator->openMindMap(fileName)) {
+    if (m_applicationService->openMindMap(fileName)) {
         m_mainWindow->disableUndoAndRedo();
         updateProgress();
         m_mainWindow->setSaveActionStatesOnOpenedMindMap();
@@ -350,7 +350,7 @@ void Application::saveMindMap()
 {
     L().debug() << "Save..";
 
-    if (!m_mediator->saveMindMap()) {
+    if (!m_applicationService->saveMindMap()) {
         const auto msg = QString(tr("Failed to save file."));
         L().error() << msg.toStdString();
         showMessageBox(msg);
@@ -381,7 +381,7 @@ void Application::saveMindMapAs()
         fileName += Constants::Application::FILE_EXTENSION;
     }
 
-    if (m_mediator->saveMindMapAs(fileName)) {
+    if (m_applicationService->saveMindMapAs(fileName)) {
         const auto msg = QString(tr("File '")) + fileName + tr("' saved.");
         L().debug() << msg.toStdString();
         m_mainWindow->enableSave(false);
@@ -397,36 +397,36 @@ void Application::saveMindMapAs()
 
 void Application::showBackgroundColorDialog()
 {
-    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Background, m_mediator).exec();
+    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Background, m_applicationService).exec();
     emit actionTriggered(StateMachine::Action::BackgroundColorChanged);
 }
 
 void Application::showEdgeColorDialog()
 {
-    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Edge, m_mediator).exec();
+    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Edge, m_applicationService).exec();
     emit actionTriggered(StateMachine::Action::EdgeColorChanged);
 }
 
 void Application::showGridColorDialog()
 {
-    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Grid, m_mediator).exec();
+    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Grid, m_applicationService).exec();
     emit actionTriggered(StateMachine::Action::GridColorChanged);
 }
 
 void Application::showNodeColorDialog()
 {
-    if (Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Node, m_mediator).exec() != QDialog::Accepted) {
+    if (Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Node, m_applicationService).exec() != QDialog::Accepted) {
         // Clear implicitly selected nodes on cancel
-        m_mediator->clearSelectionGroup(true);
+        m_applicationService->clearSelectionGroup(true);
     }
     emit actionTriggered(StateMachine::Action::NodeColorChanged);
 }
 
 void Application::showTextColorDialog()
 {
-    if (Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Text, m_mediator).exec() != QDialog::Accepted) {
+    if (Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Text, m_applicationService).exec() != QDialog::Accepted) {
         // Clear implicitly selected nodes on cancel
-        m_mediator->clearSelectionGroup(true);
+        m_applicationService->clearSelectionGroup(true);
     }
     emit actionTriggered(StateMachine::Action::TextColorChanged);
 }
@@ -439,7 +439,7 @@ void Application::showImageFileDialog()
       m_mainWindow.get(), tr("Open an image"), path, tr("Image Files") + " " + extensions);
 
     if (QImage image; image.load(fileName)) {
-        m_mediator->performNodeAction({ NodeAction::Type::AttachImage, image, fileName });
+        m_applicationService->performNodeAction({ NodeAction::Type::AttachImage, image, fileName });
         Settings::V1::saveRecentImagePath(fileName);
     } else if (fileName != "") {
         QMessageBox::critical(m_mainWindow.get(), tr("Load image"), tr("Failed to load image '") + fileName + "'");
@@ -448,7 +448,7 @@ void Application::showImageFileDialog()
 
 void Application::showPngExportDialog()
 {
-    m_pngExportDialog->setImageSize(m_mediator->zoomForExport(true));
+    m_pngExportDialog->setImageSize(m_applicationService->zoomForExport(true));
     m_pngExportDialog->exec();
 
     // Doesn't matter if canceled or not
@@ -465,12 +465,12 @@ void Application::showSvgExportDialog()
 
 void Application::showLayoutOptimizationDialog()
 {
-    LayoutOptimizer layoutOptimizer { m_mediator->mindMapData(), m_editorView->grid() };
-    Dialogs::LayoutOptimizationDialog dialog { *m_mainWindow, *m_mediator->mindMapData(), layoutOptimizer, *m_editorView };
-    connect(&dialog, &Dialogs::LayoutOptimizationDialog::undoPointRequested, m_mediator.get(), &Mediator::saveUndoPoint);
+    LayoutOptimizer layoutOptimizer { m_applicationService->mindMapData(), m_editorView->grid() };
+    Dialogs::LayoutOptimizationDialog dialog { *m_mainWindow, *m_applicationService->mindMapData(), layoutOptimizer, *m_editorView };
+    connect(&dialog, &Dialogs::LayoutOptimizationDialog::undoPointRequested, m_applicationService.get(), &ApplicationService::saveUndoPoint);
 
     if (dialog.exec() == QDialog::Accepted) {
-        m_mediator->zoomToFit();
+        m_applicationService->zoomToFit();
     }
 
     emit actionTriggered(StateMachine::Action::LayoutOptimized);

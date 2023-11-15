@@ -17,6 +17,7 @@ set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_BINAR
 # Set sources for the lib
 set(HEIMER_LIB_SRC
     application.cpp
+    application_service.cpp
     constants.hpp
     control_strategy.cpp
     copy_context.cpp
@@ -30,7 +31,6 @@ set(HEIMER_LIB_SRC
     layout_optimizer.cpp
     magic_zoom.cpp
     main_window.cpp
-    mediator.cpp
     mouse_action.cpp
     node_action.hpp
     recent_files_manager.cpp

@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef MEDIATOR_HPP
-#define MEDIATOR_HPP
+#ifndef APPLICATION_SERVICE_HPP
+#define APPLICATION_SERVICE_HPP
 
 #include <QFont>
 #include <QObject>
@@ -43,17 +43,17 @@ class NodeHandle;
 
 /*! Acts as a communication channel between MainWindow and editor components:
  *
- *  - MainWindow <-> Mediator <-> QGraphicsScene / EditorView / EditorService
- *  - EditorView <-> Mediator <-> EditorService
+ *  - MainWindow <-> ApplicationService <-> QGraphicsScene / EditorView / EditorService
+ *  - EditorView <-> ApplicationService <-> EditorService
  */
-class Mediator : public QObject
+class ApplicationService : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit Mediator(MainWindow & mainWindow);
+    explicit ApplicationService(MainWindow & mainWindow);
 
-    ~Mediator() override;
+    ~ApplicationService() override;
 
     void addEdge(NodeR node1, NodeR node2);
 
@@ -254,4 +254,4 @@ private:
     MainWindow & m_mainWindow;
 };
 
-#endif // MEDIATOR_HPP
+#endif // APPLICATION_SERVICE_HPP

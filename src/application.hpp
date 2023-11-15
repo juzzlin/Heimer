@@ -29,7 +29,7 @@ class EditorService;
 class EditorView;
 class ImageManager;
 class MainWindow;
-class Mediator;
+class ApplicationService;
 
 namespace Core {
 class VersionChecker;
@@ -116,7 +116,7 @@ private:
 
     std::unique_ptr<MainWindow> m_mainWindow;
 
-    std::shared_ptr<Mediator> m_mediator;
+    std::shared_ptr<ApplicationService> m_applicationService;
 
     std::shared_ptr<EditorService> m_editorService;
 

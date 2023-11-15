@@ -21,7 +21,7 @@
 #include "../types.hpp"
 
 class Edge;
-class Mediator;
+class ApplicationService;
 
 namespace Menus {
 
@@ -30,10 +30,10 @@ class EdgeContextMenu : public QMenu
     Q_OBJECT
 
 public:
-    EdgeContextMenu(QWidget * parent, Mediator & mediator);
+    EdgeContextMenu(QWidget * parent, ApplicationService & applicationService);
 
 private:
-    Mediator & m_mediator;
+    ApplicationService & m_applicationService;
 
     EdgeP m_selectedEdge = nullptr;
 };

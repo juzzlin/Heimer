@@ -15,53 +15,53 @@
 
 #include "edge_context_menu.hpp"
 
-#include "../mediator.hpp"
+#include "../application_service.hpp"
 #include "../scene_items/edge.hpp"
 
 #include <cassert>
 
 namespace Menus {
 
-EdgeContextMenu::EdgeContextMenu(QWidget * parent, Mediator & mediator)
+EdgeContextMenu::EdgeContextMenu(QWidget * parent, ApplicationService & applicationService)
   : QMenu(parent)
-  , m_mediator(mediator)
+  , m_applicationService(applicationService)
 {
     const auto changeEdgeDirectionAction(new QAction(tr("Change direction"), this));
     QObject::connect(changeEdgeDirectionAction, &QAction::triggered, this, [=] {
-        m_mediator.saveUndoPoint();
-        m_mediator.selectedEdge()->setReversed(!m_mediator.selectedEdge()->reversed());
+        m_applicationService.saveUndoPoint();
+        m_applicationService.selectedEdge()->setReversed(!m_applicationService.selectedEdge()->reversed());
     });
 
     using SceneItems::EdgeModel;
 
     const auto showEdgeArrowAction(new QAction(tr("Show arrow"), this));
     QObject::connect(showEdgeArrowAction, &QAction::triggered, this, [=] {
-        m_mediator.saveUndoPoint();
-        m_mediator.selectedEdge()->setArrowMode(showEdgeArrowAction->isChecked() ? EdgeModel::ArrowMode::Single : EdgeModel::ArrowMode::Hidden);
+        m_applicationService.saveUndoPoint();
+        m_applicationService.selectedEdge()->setArrowMode(showEdgeArrowAction->isChecked() ? EdgeModel::ArrowMode::Single : EdgeModel::ArrowMode::Hidden);
     });
     showEdgeArrowAction->setCheckable(true);
 
     const auto doubleArrowAction(new QAction(tr("Double arrow"), this));
     QObject::connect(doubleArrowAction, &QAction::triggered, this, [=] {
-        m_mediator.saveUndoPoint();
-        m_mediator.selectedEdge()->setArrowMode(doubleArrowAction->isChecked() ? EdgeModel::ArrowMode::Double : EdgeModel::ArrowMode::Single);
+        m_applicationService.saveUndoPoint();
+        m_applicationService.selectedEdge()->setArrowMode(doubleArrowAction->isChecked() ? EdgeModel::ArrowMode::Double : EdgeModel::ArrowMode::Single);
     });
     doubleArrowAction->setCheckable(true);
 
     const auto dashedLineAction(new QAction(tr("Dashed line"), this));
     QObject::connect(dashedLineAction, &QAction::triggered, this, [=] {
-        m_mediator.saveUndoPoint();
-        m_mediator.selectedEdge()->setDashedLine(dashedLineAction->isChecked());
+        m_applicationService.saveUndoPoint();
+        m_applicationService.selectedEdge()->setDashedLine(dashedLineAction->isChecked());
     });
     dashedLineAction->setCheckable(true);
 
     const auto deleteEdgeAction(new QAction(tr("Delete edge"), this));
     QObject::connect(deleteEdgeAction, &QAction::triggered, this, [=] {
-        m_mediator.setSelectedEdge(nullptr);
-        m_mediator.saveUndoPoint();
+        m_applicationService.setSelectedEdge(nullptr);
+        m_applicationService.saveUndoPoint();
         // Use a separate variable and timer here because closing the menu will always nullify the selected edge
         QTimer::singleShot(0, this, [=] {
-            m_mediator.deleteEdge(*m_selectedEdge);
+            m_applicationService.deleteEdge(*m_selectedEdge);
         });
     });
 
@@ -78,7 +78,7 @@ EdgeContextMenu::EdgeContextMenu(QWidget * parent, Mediator & mediator)
 
     // Set correct edge config when the menu opens.
     connect(this, &QMenu::aboutToShow, this, [=] {
-        m_selectedEdge = m_mediator.selectedEdge();
+        m_selectedEdge = m_applicationService.selectedEdge();
         assert(m_selectedEdge);
         changeEdgeDirectionAction->setEnabled(m_selectedEdge->arrowMode() != EdgeModel::ArrowMode::Double && m_selectedEdge->arrowMode() != EdgeModel::ArrowMode::Hidden);
         dashedLineAction->setChecked(m_selectedEdge->dashedLine());
@@ -89,7 +89,7 @@ EdgeContextMenu::EdgeContextMenu(QWidget * parent, Mediator & mediator)
     // Always clear edge selection when the menu closes.
     connect(this, &QMenu::aboutToHide, [=] {
         QTimer::singleShot(0, this, [=] {
-            m_mediator.setSelectedEdge(nullptr);
+            m_applicationService.setSelectedEdge(nullptr);
         });
     });
 }

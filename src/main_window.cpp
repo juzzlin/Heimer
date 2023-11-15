@@ -586,10 +586,7 @@ void MainWindow::saveWindowSize()
 
 void MainWindow::showErrorDialog(QString message)
 {
-    QMessageBox::critical(this,
-                          Constants::Application::APPLICATION_NAME,
-                          message,
-                          "");
+    QMessageBox::critical(this, Constants::Application::APPLICATION_NAME, message, QMessageBox::Ok);
 }
 
 void MainWindow::showSpinnerDialog(bool show, QString message)

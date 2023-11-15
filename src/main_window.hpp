@@ -39,7 +39,7 @@ class ToolBar;
 } // namespace Menus
 
 class ControlStrategy;
-class EditorData;
+class EditorService;
 class EditorView;
 class Mediator;
 class Node;

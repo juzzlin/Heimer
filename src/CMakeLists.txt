@@ -20,8 +20,8 @@ set(HEIMER_LIB_SRC
     constants.hpp
     control_strategy.cpp
     copy_context.cpp
-    editor_data.cpp
     editor_scene.cpp
+    editor_service.cpp
     editor_view.cpp
     grid.cpp
     image.cpp

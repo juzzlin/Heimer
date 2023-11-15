@@ -15,7 +15,7 @@
 
 #include "application.hpp"
 #include "constants.hpp"
-#include "editor_data.hpp"
+#include "editor_service.hpp"
 #include "editor_scene.hpp"
 #include "editor_view.hpp"
 #include "image_manager.hpp"
@@ -68,7 +68,7 @@ Application::Application(int & argc, char ** argv)
     // in the command line must have been loaded before this
     m_mainWindow = std::make_unique<MainWindow>();
     m_mediator = std::make_unique<Mediator>(*m_mainWindow);
-    m_editorData = std::make_unique<EditorData>();
+    m_editorService = std::make_unique<EditorService>();
     m_editorView = new EditorView(*m_mediator);
     m_pngExportDialog = std::make_unique<Dialogs::PngExportDialog>(*m_mainWindow);
     m_svgExportDialog = std::make_unique<Dialogs::SvgExportDialog>(*m_mainWindow);
@@ -76,7 +76,7 @@ Application::Application(int & argc, char ** argv)
     m_mainWindow->setMediator(m_mediator);
     m_stateMachine->setMediator(m_mediator);
 
-    m_mediator->setEditorData(m_editorData);
+    m_mediator->setEditorService(m_editorService);
     m_mediator->setEditorView(*m_editorView);
 
     // Connect views and StateMachine together
@@ -87,7 +87,7 @@ Application::Application(int & argc, char ** argv)
     connect(m_mainWindow.get(), &MainWindow::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
     connect(m_stateMachine.get(), &StateMachine::stateChanged, this, &Application::runState);
 
-    connect(m_editorData.get(), &EditorData::isModifiedChanged, m_mainWindow.get(), [=](bool isModified) {
+    connect(m_editorService.get(), &EditorService::isModifiedChanged, m_mainWindow.get(), [=](bool isModified) {
         m_mainWindow->enableSave(isModified || m_mediator->canBeSaved());
     });
 

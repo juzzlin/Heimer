@@ -13,17 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef EDITOR_DATA_TEST_HPP
-#define EDITOR_DATA_TEST_HPP
+#ifndef EDITOR_SERVICE_TEST_HPP
+#define EDITOR_SERVICE_TEST_HPP
 
 #include <QTest>
 
-class EditorDataTest : public QObject
+class EditorServiceTest : public QObject
 {
     Q_OBJECT
 
 public:
-    EditorDataTest();
+    EditorServiceTest();
 
 private slots:
 
@@ -98,4 +98,4 @@ private slots:
     void testUndoModificationFlagOnLoadDesign();
 };
 
-#endif // EDITOR_DATA_TEST_HPP
+#endif // EDITOR_SERVICE_TEST_HPP

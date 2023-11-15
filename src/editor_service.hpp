@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef EDITOR_DATA_HPP
-#define EDITOR_DATA_HPP
+#ifndef EDITOR_SERVICE_HPP
+#define EDITOR_SERVICE_HPP
 
 #include <memory>
 #include <set>
@@ -51,14 +51,14 @@ namespace IO {
 class AlzFileIO;
 } // namespace IO
 
-class EditorData : public QObject
+class EditorService : public QObject
 {
     Q_OBJECT
 
 public:
-    EditorData();
+    EditorService();
 
-    ~EditorData() override;
+    ~EditorService() override;
 
     EdgeS addEdge(EdgeS edge);
 
@@ -188,8 +188,8 @@ signals:
     void redoEnabled(bool enable);
 
 private:
-    EditorData(const EditorData & e) = delete;
-    EditorData & operator=(const EditorData & e) = delete;
+    EditorService(const EditorService & e) = delete;
+    EditorService & operator=(const EditorService & e) = delete;
 
     using NodePairVector = std::vector<std::pair<NodeP, NodeP>>;
     NodePairVector getConnectableNodes() const;
@@ -235,4 +235,4 @@ private:
     Grid m_grid;
 };
 
-#endif // EDITOR_DATA_HPP
+#endif // EDITOR_SERVICE_HPP

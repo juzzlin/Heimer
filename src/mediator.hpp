@@ -28,7 +28,7 @@
 #include "scene_items/node.hpp"
 
 class MouseAction;
-class EditorData;
+class EditorService;
 class EditorScene;
 class EditorView;
 class Graph;
@@ -43,8 +43,8 @@ class NodeHandle;
 
 /*! Acts as a communication channel between MainWindow and editor components:
  *
- *  - MainWindow <-> Mediator <-> QGraphicsScene / EditorView / EditorData
- *  - EditorView <-> Mediator <-> EditorData
+ *  - MainWindow <-> Mediator <-> QGraphicsScene / EditorView / EditorService
+ *  - EditorView <-> Mediator <-> EditorService
  */
 class Mediator : public QObject
 {
@@ -151,7 +151,7 @@ public:
 
     size_t selectionGroupSize() const;
 
-    void setEditorData(std::shared_ptr<EditorData> editorData);
+    void setEditorService(std::shared_ptr<EditorService> editorService);
 
     void setEditorView(EditorView & editorView);
 
@@ -245,7 +245,7 @@ private:
 
     void updateProgress();
 
-    std::shared_ptr<EditorData> m_editorData;
+    std::shared_ptr<EditorService> m_editorService;
 
     std::unique_ptr<EditorScene> m_editorScene;
 

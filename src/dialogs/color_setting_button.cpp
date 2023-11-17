@@ -27,13 +27,13 @@ ColorSettingButton::ColorSettingButton(QString text, ColorDialog::Role role, QWi
 {
     // Set current default color
     if (const std::map<ColorDialog::Role, QColor> roleToColorMap = {
-          { ColorDialog::Role::Background, m_settingsProxy.backgroundColor() },
-          { ColorDialog::Role::Edge, m_settingsProxy.edgeColor() },
-          { ColorDialog::Role::Grid, m_settingsProxy.gridColor() },
-          { ColorDialog::Role::Node, m_settingsProxy.nodeColor() },
-          { ColorDialog::Role::Text, m_settingsProxy.nodeTextColor() },
-          { ColorDialog::Role::ShadowColor, m_settingsProxy.shadowEffect().shadowColor },
-          { ColorDialog::Role::SelectedItemShadowColor, m_settingsProxy.shadowEffect().selectedItemShadowColor } };
+          { ColorDialog::Role::Background, m_settingsProxy->backgroundColor() },
+          { ColorDialog::Role::Edge, m_settingsProxy->edgeColor() },
+          { ColorDialog::Role::Grid, m_settingsProxy->gridColor() },
+          { ColorDialog::Role::Node, m_settingsProxy->nodeColor() },
+          { ColorDialog::Role::Text, m_settingsProxy->nodeTextColor() },
+          { ColorDialog::Role::ShadowColor, m_settingsProxy->shadowEffect().shadowColor },
+          { ColorDialog::Role::SelectedItemShadowColor, m_settingsProxy->shadowEffect().selectedItemShadowColor } };
         roleToColorMap.count(role)) {
         setColor(roleToColorMap.at(role));
     }
@@ -57,19 +57,19 @@ void ColorSettingButton::apply(QColor color)
         setColor(color);
         switch (m_role) {
         case ColorDialog::Role::Background:
-            m_settingsProxy.setBackgroundColor(color);
+            m_settingsProxy->setBackgroundColor(color);
             break;
         case ColorDialog::Role::Edge:
-            m_settingsProxy.setEdgeColor(color);
+            m_settingsProxy->setEdgeColor(color);
             break;
         case ColorDialog::Role::Grid:
-            m_settingsProxy.setGridColor(color);
+            m_settingsProxy->setGridColor(color);
             break;
         case ColorDialog::Role::Node:
-            m_settingsProxy.setNodeColor(color);
+            m_settingsProxy->setNodeColor(color);
             break;
         case ColorDialog::Role::Text:
-            m_settingsProxy.setNodeTextColor(color);
+            m_settingsProxy->setNodeTextColor(color);
             break;
         case ColorDialog::Role::ShadowColor:
             // Saving shadow effect handled in effects_tab.cpp

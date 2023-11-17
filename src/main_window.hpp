@@ -23,6 +23,7 @@
 #include <QTimer>
 
 #include "state_machine.hpp"
+#include "types.hpp"
 
 #include <map>
 #include <memory>
@@ -207,7 +208,7 @@ private:
 
     QLabel * m_statusText;
 
-    ControlStrategy & m_controlStrategy;
+    ControlStrategyS m_controlStrategy;
 
     static MainWindow * m_instance;
 };

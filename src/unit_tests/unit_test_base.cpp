@@ -13,35 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "settings_tab_base.hpp"
+#include "unit_test_base.hpp"
 
-#include "../core/settings_proxy.hpp"
 #include "../single_instance_container.hpp"
 
-namespace Dialogs {
-
-SettingsTabBase::SettingsTabBase(QString name, QWidget * parent)
-  : QWidget(parent)
-  , m_name(name)
+UnitTestBase::UnitTestBase()
+  : m_sic(std::make_unique<SingleInstanceContainer>())
 {
 }
 
-void SettingsTabBase::apply()
-{
-}
-
-void SettingsTabBase::reject()
-{
-}
-
-QString SettingsTabBase::name() const
-{
-    return m_name;
-}
-
-SettingsProxyS SettingsTabBase::settingsProxy() const
-{
-    return SingleInstanceContainer::instance().settingsProxy();
-}
-
-} // namespace Dialogs
+UnitTestBase::~UnitTestBase() = default;

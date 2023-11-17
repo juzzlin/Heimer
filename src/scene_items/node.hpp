@@ -161,7 +161,7 @@ private:
 
     void updateHandlePositions();
 
-    Core::SettingsProxy & m_settingsProxy;
+    SettingsProxyS m_settingsProxy;
 
     std::unique_ptr<NodeModel> m_nodeModel;
 

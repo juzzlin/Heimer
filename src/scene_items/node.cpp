@@ -53,12 +53,12 @@ NodeP Node::m_lastHoveredNode = nullptr;
 
 Node::Node()
   : m_settingsProxy(SingleInstanceContainer::instance().settingsProxy())
-  , m_nodeModel(std::make_unique<NodeModel>(m_settingsProxy.nodeColor(), m_settingsProxy.nodeTextColor()))
+  , m_nodeModel(std::make_unique<NodeModel>(m_settingsProxy->nodeColor(), m_settingsProxy->nodeTextColor()))
   , m_textEdit(new TextEdit(this))
 {
     setAcceptHoverEvents(true);
 
-    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_settingsProxy.shadowEffect(), false));
+    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_settingsProxy->shadowEffect(), false));
 
     m_nodeModel->size = QSize(Constants::Node::MIN_WIDTH, Constants::Node::MIN_HEIGHT);
 
@@ -406,7 +406,7 @@ void Node::setCornerRadius(int value)
 
 void Node::enableShadowEffect(bool enable)
 {
-    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_settingsProxy.shadowEffect(), m_selected, !enable);
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_settingsProxy->shadowEffect(), m_selected, !enable);
     update();
 }
 
@@ -446,7 +446,7 @@ bool Node::selected() const
 void Node::setSelected(bool selected)
 {
     m_selected = selected;
-    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_settingsProxy.shadowEffect(), m_selected);
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_settingsProxy->shadowEffect(), m_selected);
     update();
 }
 

@@ -151,7 +151,7 @@ private:
 
     void updateLabel(LabelUpdateReason lur = LabelUpdateReason::Default);
 
-    Core::SettingsProxy & m_settingsProxy;
+    SettingsProxyS m_settingsProxy;
 
     std::unique_ptr<EdgeModel> m_edgeModel;
 

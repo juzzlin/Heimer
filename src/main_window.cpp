@@ -205,7 +205,7 @@ void MainWindow::createMirrorSubMenu(QMenu & editMenu)
     mirrorAction->setText(tr("&Mirror layout"));
 
     const auto mirrorHorizontallyAction = new QAction(tr("Horizontally"), this);
-    mirrorHorizontallyAction->setShortcut(QKeySequence(m_controlStrategy.mirrorLayoutHorizontallyShortcut()));
+    mirrorHorizontallyAction->setShortcut(QKeySequence(m_controlStrategy->mirrorLayoutHorizontallyShortcut()));
     mirrorMenu->addAction(mirrorHorizontallyAction);
     connect(mirrorHorizontallyAction, &QAction::triggered, this, [=] {
         m_applicationService->performNodeAction(NodeAction::Type::MirrorLayoutHorizontally);
@@ -213,7 +213,7 @@ void MainWindow::createMirrorSubMenu(QMenu & editMenu)
     mirrorMenu->addSeparator();
 
     const auto mirrorVerticallyAction = new QAction(tr("Vertically"), this);
-    mirrorVerticallyAction->setShortcut(QKeySequence(m_controlStrategy.mirrorLayoutVerticallyShortcut()));
+    mirrorVerticallyAction->setShortcut(QKeySequence(m_controlStrategy->mirrorLayoutVerticallyShortcut()));
     mirrorMenu->addAction(mirrorVerticallyAction);
     connect(mirrorVerticallyAction, &QAction::triggered, this, [=] {
         m_applicationService->performNodeAction(NodeAction::Type::MirrorLayoutVertically);

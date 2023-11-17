@@ -15,6 +15,8 @@
 
 #include "alz_file_io_test.hpp"
 
+#include "../../single_instance_container.hpp"
+
 #include "../../image_manager.hpp"
 
 #include "../../core/mind_map_data.hpp"
@@ -662,5 +664,7 @@ void AlzFileIOTest::testV2_Version()
     QVERIFY(inData->applicationVersion() == Constants::Application::APPLICATION_VERSION);
     QVERIFY(inData->alzFormatVersion() == Constants::Application::ALZ_FORMAT_VERSION);
 }
+
+AlzFileIOTest::~AlzFileIOTest() = default;
 
 QTEST_GUILESS_MAIN(AlzFileIOTest)

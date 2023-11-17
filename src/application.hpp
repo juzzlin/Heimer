@@ -29,6 +29,7 @@ class ApplicationService;
 class EditorView;
 class ImageManager;
 class MainWindow;
+class SingleInstanceContainer;
 
 namespace Core {
 class VersionChecker;
@@ -102,6 +103,8 @@ private:
     void updateProgress();
 
     QApplication m_application;
+
+    std::unique_ptr<SingleInstanceContainer> m_singleInstanceContainer;
 
     QTranslator m_appTranslator;
 

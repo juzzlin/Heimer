@@ -29,7 +29,7 @@ namespace Core {
 
 struct MindMapData::Style
 {
-    Style(SettingsProxy & settingsProxy)
+    Style(const SettingsProxy & settingsProxy)
       : arrowSize(settingsProxy.arrowSize())
       , backgroundColor(settingsProxy.backgroundColor())
       , edgeColor(settingsProxy.edgeColor())
@@ -59,7 +59,7 @@ struct MindMapData::Style
 
 MindMapData::MindMapData(QString name)
   : MindMapDataBase(name)
-  , m_style(std::make_unique<Style>(SingleInstanceContainer::instance().settingsProxy()))
+  , m_style(std::make_unique<Style>(*SingleInstanceContainer::instance().settingsProxy()))
   , m_graph(std::make_unique<Graph>())
   , m_imageManager(std::make_unique<ImageManager>())
 {

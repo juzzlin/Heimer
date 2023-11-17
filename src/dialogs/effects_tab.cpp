@@ -44,17 +44,17 @@ EffectsTab::EffectsTab(QString name, QWidget * parent)
 {
     m_shadowOffsetSpinBox->setMinimum(Constants::Effects::SHADOW_EFFECT_MIN_OFFSET);
     m_shadowOffsetSpinBox->setMaximum(Constants::Effects::SHADOW_EFFECT_MAX_OFFSET);
-    m_shadowOffsetSpinBox->setValue(settingsProxy().shadowEffect().offset);
+    m_shadowOffsetSpinBox->setValue(settingsProxy()->shadowEffect().offset);
 
     m_shadowBlurRadiusSpinBox->setMinimum(Constants::Effects::SHADOW_EFFECT_MIN_BLUR_RADIUS);
     m_shadowBlurRadiusSpinBox->setMaximum(Constants::Effects::SHADOW_EFFECT_MAX_BLUR_RADIUS);
-    m_shadowBlurRadiusSpinBox->setValue(settingsProxy().shadowEffect().blurRadius);
+    m_shadowBlurRadiusSpinBox->setValue(settingsProxy()->shadowEffect().blurRadius);
 
     m_selectedItemShadowBlurRadiusSpinBox->setMinimum(Constants::Effects::SHADOW_EFFECT_MIN_BLUR_RADIUS);
     m_selectedItemShadowBlurRadiusSpinBox->setMaximum(Constants::Effects::SHADOW_EFFECT_MAX_BLUR_RADIUS);
-    m_selectedItemShadowBlurRadiusSpinBox->setValue(settingsProxy().shadowEffect().selectedItemBlurRadius);
+    m_selectedItemShadowBlurRadiusSpinBox->setValue(settingsProxy()->shadowEffect().selectedItemBlurRadius);
 
-    m_optimizeShadowsCheckBox->setChecked(settingsProxy().optimizeShadowEffects());
+    m_optimizeShadowsCheckBox->setChecked(settingsProxy()->optimizeShadowEffects());
 
     initWidgets();
 
@@ -83,12 +83,12 @@ void EffectsTab::apply()
 
 void EffectsTab::apply(const ShadowEffectParams & params)
 {
-    if (settingsProxy().shadowEffect() != params) {
-        settingsProxy().setShadowEffect(params);
+    if (settingsProxy()->shadowEffect() != params) {
+        settingsProxy()->setShadowEffect(params);
         emit shadowEffectChanged(params);
     }
 
-    settingsProxy().setOptimizeShadowEffects(m_optimizeShadowsCheckBox->isChecked());
+    settingsProxy()->setOptimizeShadowEffects(m_optimizeShadowsCheckBox->isChecked());
 }
 
 void EffectsTab::initWidgets()

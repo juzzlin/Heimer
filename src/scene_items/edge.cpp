@@ -52,8 +52,8 @@ namespace SceneItems {
 
 Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enableLabel)
   : m_settingsProxy(SingleInstanceContainer::instance().settingsProxy())
-  , m_edgeModel(std::make_unique<EdgeModel>(m_settingsProxy.reversedEdgeDirection(),
-                                            EdgeModel::Style { m_settingsProxy.edgeArrowMode() }))
+  , m_edgeModel(std::make_unique<EdgeModel>(m_settingsProxy->reversedEdgeDirection(),
+                                            EdgeModel::Style { m_settingsProxy->edgeArrowMode() }))
   , m_sourceNode(sourceNode)
   , m_targetNode(targetNode)
   , m_enableAnimations(enableAnimations)
@@ -72,7 +72,7 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
 {
     setAcceptHoverEvents(true && enableAnimations);
 
-    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_settingsProxy.shadowEffect(), false));
+    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_settingsProxy->shadowEffect(), false));
 
     setZValue(static_cast<int>(Layers::Edge));
 
@@ -181,7 +181,7 @@ bool Edge::dashedLine() const
 
 void Edge::enableShadowEffect(bool enable)
 {
-    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_settingsProxy.shadowEffect(), m_selected, !enable);
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_settingsProxy->shadowEffect(), m_selected, !enable);
     update();
 }
 
@@ -252,7 +252,7 @@ void Edge::setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason vc
             if (visible) {
                 m_label->setVisible(true);
                 m_label->setParentItem(nullptr);
-                m_label->setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_settingsProxy.shadowEffect(), false));
+                m_label->setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_settingsProxy->shadowEffect(), false));
                 m_dummyLabel->setVisible(false);
             }
         } break;
@@ -336,9 +336,9 @@ void Edge::setReversed(bool reversed)
 void Edge::setSelected(bool selected)
 {
     m_selected = selected;
-    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_settingsProxy.shadowEffect(), selected);
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_settingsProxy->shadowEffect(), selected);
     if (m_label && m_label->parentItem() != this) {
-        GraphicsFactory::updateDropShadowEffect(m_label->graphicsEffect(), m_settingsProxy.shadowEffect(), selected);
+        GraphicsFactory::updateDropShadowEffect(m_label->graphicsEffect(), m_settingsProxy->shadowEffect(), selected);
     }
     update();
 }
@@ -347,7 +347,7 @@ void Edge::setShadowEffect(const ShadowEffectParams & params)
 {
     GraphicsFactory::updateDropShadowEffect(graphicsEffect(), params, m_selected);
     if (m_label && m_label->parentItem() != this) {
-        GraphicsFactory::updateDropShadowEffect(m_label->graphicsEffect(), m_settingsProxy.shadowEffect(), m_selected);
+        GraphicsFactory::updateDropShadowEffect(m_label->graphicsEffect(), m_settingsProxy->shadowEffect(), m_selected);
     }
     update();
 }

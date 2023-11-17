@@ -18,7 +18,9 @@
 
 #include <QTest>
 
-class NodeTest : public QObject
+#include "../unit_test_base.hpp"
+
+class NodeTest : public UnitTestBase
 {
     Q_OBJECT
 

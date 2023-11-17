@@ -97,18 +97,18 @@ void EditorView::finishRubberBand()
 
 void EditorView::handleMousePressEventOnBackground(QMouseEvent & event)
 {
-    if (m_controlStrategy.rubberBandInitiated(event)) {
+    if (m_controlStrategy->rubberBandInitiated(event)) {
         initiateRubberBand();
-    } else if (m_controlStrategy.backgroundDragInitiated(event)) {
+    } else if (m_controlStrategy->backgroundDragInitiated(event)) {
         initiateBackgroundDrag();
-    } else if (m_controlStrategy.secondaryButtonClicked(event)) {
+    } else if (m_controlStrategy->secondaryButtonClicked(event)) {
         openMainContextMenu(Menus::MainContextMenu::Mode::Background);
     }
 }
 
 bool EditorView::handleMousePressEventOnEdge(QMouseEvent & event, EdgeR edge)
 {
-    if (m_controlStrategy.secondaryButtonClicked(event)) {
+    if (m_controlStrategy->secondaryButtonClicked(event)) {
         handleSecondaryButtonClickOnEdge(edge);
         return true;
     }
@@ -119,9 +119,9 @@ void EditorView::handleMousePressEventOnNode(QMouseEvent & event, NodeR node)
 {
     if (node.index() != -1) // Prevent right-click on the drag node
     {
-        if (m_controlStrategy.secondaryButtonClicked(event)) {
+        if (m_controlStrategy->secondaryButtonClicked(event)) {
             handleSecondaryButtonClickOnNode(node);
-        } else if (m_controlStrategy.primaryButtonClicked(event)) {
+        } else if (m_controlStrategy->primaryButtonClicked(event)) {
             handlePrimaryButtonClickOnNode(node);
         }
     }
@@ -133,7 +133,7 @@ void EditorView::handleMousePressEventOnNodeHandle(QMouseEvent & event, SceneIte
         return;
     }
 
-    if (m_controlStrategy.primaryButtonClicked(event)) {
+    if (m_controlStrategy->primaryButtonClicked(event)) {
         handlePrimaryButtonClickOnNodeHandle(nodeHandle);
     }
 }
@@ -329,7 +329,7 @@ void EditorView::mousePressEvent(QMouseEvent * event)
             }
             // This hack enables edge context menu even if user clicks on the edge text edit.
         } else if (result.edgeTextEdit) {
-            if (m_controlStrategy.secondaryButtonClicked(*event)) {
+            if (m_controlStrategy->secondaryButtonClicked(*event)) {
                 if (const auto edge = result.edgeTextEdit->edge(); edge) {
                     juzzlin::L().debug() << "Edge text edit pressed";
                     handleMousePressEventOnEdge(*event, *edge);
@@ -338,7 +338,7 @@ void EditorView::mousePressEvent(QMouseEvent * event)
             }
             // This hack enables node context menu even if user clicks on the node text edit.
         } else if (result.nodeTextEdit) {
-            if (m_controlStrategy.secondaryButtonClicked(*event) || (m_controlStrategy.primaryButtonClicked(*event) && isModifierPressed())) {
+            if (m_controlStrategy->secondaryButtonClicked(*event) || (m_controlStrategy->primaryButtonClicked(*event) && isModifierPressed())) {
                 if (const auto node = dynamic_cast<NodeP>(result.nodeTextEdit->parentItem()); node) {
                     juzzlin::L().debug() << "Node text edit pressed";
                     handleMousePressEventOnNode(*event, *node);
@@ -365,7 +365,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
         default:
             break;
         }
-    } else if (m_controlStrategy.primaryButtonClicked(*event)) {
+    } else if (m_controlStrategy->primaryButtonClicked(*event)) {
         switch (m_applicationService.mouseAction().action()) {
         case MouseAction::Action::None:
             // This can happen if the user deletes the drag node while connecting nodes or creating a new node.
@@ -472,7 +472,7 @@ void EditorView::updateScale()
 
 void EditorView::removeShadowEffectsDuringDrag()
 {
-    if (SingleInstanceContainer::instance().settingsProxy().optimizeShadowEffects()) {
+    if (SingleInstanceContainer::instance().settingsProxy()->optimizeShadowEffects()) {
 
         if (!m_shadowEffectsDuringDragRemoved) {
             m_shadowEffectsDuringDragRemoved = true;
@@ -504,7 +504,7 @@ void EditorView::updateShadowEffectsBasedOnItemVisiblity()
         }
     }
 
-    if (SingleInstanceContainer::instance().settingsProxy().optimizeShadowEffects()) {
+    if (SingleInstanceContainer::instance().settingsProxy()->optimizeShadowEffects()) {
         for (auto && item : scene()->items()) {
             if (const auto sceneItem = dynamic_cast<SceneItems::SceneItemBase *>(item); sceneItem) {
                 if (!enabledItems.count(sceneItem)) {

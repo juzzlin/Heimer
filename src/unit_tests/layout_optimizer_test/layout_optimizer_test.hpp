@@ -18,7 +18,9 @@
 
 #include <QTest>
 
-class LayoutOptimizerTest : public QObject
+#include "../unit_test_base.hpp"
+
+class LayoutOptimizerTest : public UnitTestBase
 {
     Q_OBJECT
 

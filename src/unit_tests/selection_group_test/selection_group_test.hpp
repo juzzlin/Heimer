@@ -18,7 +18,9 @@
 
 #include <QTest>
 
-class SelectionGroupTest : public QObject
+#include "../unit_test_base.hpp"
+
+class SelectionGroupTest : public UnitTestBase
 {
     Q_OBJECT
 

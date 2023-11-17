@@ -13,35 +13,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "settings_tab_base.hpp"
+#ifndef UNIT_TEST_BASE_HPP
+#define UNIT_TEST_BASE_HPP
 
-#include "../core/settings_proxy.hpp"
-#include "../single_instance_container.hpp"
+#include <QObject>
 
-namespace Dialogs {
+#include <memory>
 
-SettingsTabBase::SettingsTabBase(QString name, QWidget * parent)
-  : QWidget(parent)
-  , m_name(name)
+class SingleInstanceContainer;
+
+class UnitTestBase : public QObject
 {
-}
+    Q_OBJECT
 
-void SettingsTabBase::apply()
-{
-}
+public:
+    UnitTestBase();
 
-void SettingsTabBase::reject()
-{
-}
+    virtual ~UnitTestBase() override;
 
-QString SettingsTabBase::name() const
-{
-    return m_name;
-}
+private:
+    std::unique_ptr<SingleInstanceContainer> m_sic;
+};
 
-SettingsProxyS SettingsTabBase::settingsProxy() const
-{
-    return SingleInstanceContainer::instance().settingsProxy();
-}
-
-} // namespace Dialogs
+#endif // UNIT_TEST_BASE_HPP

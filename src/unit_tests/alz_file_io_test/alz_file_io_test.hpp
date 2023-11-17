@@ -18,12 +18,16 @@
 
 #include <QTest>
 
-class AlzFileIOTest : public QObject
+#include "../unit_test_base.hpp"
+
+class AlzFileIOTest : public UnitTestBase
 {
     Q_OBJECT
 
 public:
     AlzFileIOTest();
+
+    ~AlzFileIOTest() override;
 
 private slots:
 

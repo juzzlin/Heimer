@@ -35,15 +35,15 @@ EditingTab::EditingTab(QString name, QWidget * parent)
 
 void EditingTab::apply()
 {
-    settingsProxy().setSelectNodeGroupByIntersection(m_selectNodeGroupByIntersectionCheckBox->isChecked());
+    settingsProxy()->setSelectNodeGroupByIntersection(m_selectNodeGroupByIntersectionCheckBox->isChecked());
 
-    settingsProxy().setAutosave(m_autosaveCheckBox->isChecked());
+    settingsProxy()->setAutosave(m_autosaveCheckBox->isChecked());
 
     emit autosaveEnabled(m_autosaveCheckBox->isChecked());
 
-    settingsProxy().setAutoload(m_autoloadCheckBox->isChecked());
+    settingsProxy()->setAutoload(m_autoloadCheckBox->isChecked());
 
-    settingsProxy().setInvertedControls(m_invertedControlsCheckBox->isChecked());
+    settingsProxy()->setInvertedControls(m_invertedControlsCheckBox->isChecked());
 }
 
 void EditingTab::initWidgets()
@@ -78,13 +78,13 @@ void EditingTab::initWidgets()
 
 void EditingTab::setActiveSettings()
 {
-    m_selectNodeGroupByIntersectionCheckBox->setChecked(settingsProxy().selectNodeGroupByIntersection());
+    m_selectNodeGroupByIntersectionCheckBox->setChecked(settingsProxy()->selectNodeGroupByIntersection());
 
-    m_autosaveCheckBox->setChecked(settingsProxy().autosave());
+    m_autosaveCheckBox->setChecked(settingsProxy()->autosave());
 
-    m_autoloadCheckBox->setChecked(settingsProxy().autoload());
+    m_autoloadCheckBox->setChecked(settingsProxy()->autoload());
 
-    m_invertedControlsCheckBox->setChecked(settingsProxy().invertedControls());
+    m_invertedControlsCheckBox->setChecked(settingsProxy()->invertedControls());
 }
 
 } // namespace Dialogs

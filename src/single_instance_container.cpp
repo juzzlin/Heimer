@@ -24,49 +24,52 @@
 
 #include <stdexcept>
 
-std::unique_ptr<SingleInstanceContainer> SingleInstanceContainer::m_instance;
+SingleInstanceContainer * SingleInstanceContainer::m_instance;
 
 SingleInstanceContainer::SingleInstanceContainer()
   : m_controlStrategy(std::make_unique<ControlStrategy>())
   , m_progressManager(std::make_unique<Core::ProgressManager>())
   , m_settingsProxy(std::make_unique<Core::SettingsProxy>())
+  , m_editorService(std::make_unique<EditorService>())
 {
-    if (SingleInstanceContainer::m_instance) {
+    if (!SingleInstanceContainer::m_instance) {
+        SingleInstanceContainer::m_instance = this;
+    } else {
         throw std::runtime_error("SingleInstanceContainer already instantiated!");
     }
 }
 
-ControlStrategy & SingleInstanceContainer::controlStrategy() const
+ControlStrategyS SingleInstanceContainer::controlStrategy()
 {
-    return *m_controlStrategy;
+    return m_controlStrategy;
 }
 
-EditorService & SingleInstanceContainer::editorService() const
+EditorServiceS SingleInstanceContainer::editorService() const
 {
-    if (!m_editorService) {
-        m_editorService = std::make_unique<EditorService>();
-        juzzlin::L().debug() << "EditorService instantiated";
-    }
-
-    return *m_editorService;
+    return m_editorService;
 }
 
-Core::ProgressManager & SingleInstanceContainer::progressManager() const
+ProgressManagerS SingleInstanceContainer::progressManager() const
 {
-    return *m_progressManager;
+    return m_progressManager;
 }
 
-Core::SettingsProxy & SingleInstanceContainer::settingsProxy() const
+SettingsProxyS SingleInstanceContainer::settingsProxy()
 {
-    return *m_settingsProxy;
+    return m_settingsProxy;
 }
 
 SingleInstanceContainer & SingleInstanceContainer::instance()
 {
     if (!SingleInstanceContainer::m_instance) {
-        SingleInstanceContainer::m_instance = std::make_unique<SingleInstanceContainer>();
+        throw std::runtime_error("SingleInstanceContainer not instantiated");
     }
     return *SingleInstanceContainer::m_instance;
 }
 
-SingleInstanceContainer::~SingleInstanceContainer() = default;
+SingleInstanceContainer::~SingleInstanceContainer()
+{
+    m_editorService.reset();
+
+    SingleInstanceContainer::m_instance = nullptr;
+}

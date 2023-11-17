@@ -18,7 +18,9 @@
 
 #include <QTest>
 
-class GraphTest : public QObject
+#include "../unit_test_base.hpp"
+
+class GraphTest : public UnitTestBase
 {
     Q_OBJECT
 

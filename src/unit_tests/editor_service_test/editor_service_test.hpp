@@ -18,7 +18,9 @@
 
 #include <QTest>
 
-class EditorServiceTest : public QObject
+#include "../unit_test_base.hpp"
+
+class EditorServiceTest : public UnitTestBase
 {
     Q_OBJECT
 

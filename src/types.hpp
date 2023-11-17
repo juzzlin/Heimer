@@ -18,6 +18,14 @@
 
 #include <memory>
 
+class ControlStrategy;
+
+using ControlStrategyS = std::shared_ptr<ControlStrategy>;
+
+class EditorService;
+
+using EditorServiceS = std::shared_ptr<EditorService>;
+
 namespace SceneItems {
 class Edge;
 }
@@ -35,6 +43,8 @@ using EdgeU = std::unique_ptr<SceneItems::Edge>;
 namespace Core {
 class Graph;
 class MindMapData;
+class ProgressManager;
+class SettingsProxy;
 } // namespace Core
 
 using GraphCR = const Core::Graph &;
@@ -62,5 +72,9 @@ using NodeR = SceneItems::Node &;
 using NodeS = std::shared_ptr<SceneItems::Node>;
 
 using NodeU = std::unique_ptr<SceneItems::Node>;
+
+using ProgressManagerS = std::shared_ptr<Core::ProgressManager>;
+
+using SettingsProxyS = std::shared_ptr<Core::SettingsProxy>;
 
 #endif // TYPES_HPP

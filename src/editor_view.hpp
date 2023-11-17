@@ -223,7 +223,7 @@ private:
 
     std::optional<ZoomParameters> m_savedZoom;
 
-    ControlStrategy & m_controlStrategy;
+    ControlStrategyS m_controlStrategy;
 
     QTimer m_updateShadowEffectsOnZoomTimer;
 };

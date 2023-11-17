@@ -16,6 +16,8 @@
 #ifndef SINGLE_INSTANCE_CONTAINER_HPP
 #define SINGLE_INSTANCE_CONTAINER_HPP
 
+#include "types.hpp"
+
 #include <memory>
 
 class ApplicationService;
@@ -37,28 +39,28 @@ public:
 
     static SingleInstanceContainer & instance();
 
-    ControlStrategy & controlStrategy() const;
+    ControlStrategyS controlStrategy();
 
-    EditorService & editorService() const;
+    EditorServiceS editorService() const;
 
-    Core::ProgressManager & progressManager() const;
+    ProgressManagerS progressManager() const;
 
-    Core::SettingsProxy & settingsProxy() const;
+    SettingsProxyS settingsProxy();
 
 private:
     SingleInstanceContainer(const SingleInstanceContainer & other) = delete;
 
     SingleInstanceContainer & operator=(const SingleInstanceContainer & other) = delete;
 
-    mutable std::unique_ptr<EditorService> m_editorService;
+    ControlStrategyS m_controlStrategy;
 
-    std::unique_ptr<ControlStrategy> m_controlStrategy;
+    ProgressManagerS m_progressManager;
 
-    std::unique_ptr<Core::ProgressManager> m_progressManager;
+    SettingsProxyS m_settingsProxy;
 
-    std::unique_ptr<Core::SettingsProxy> m_settingsProxy;
+    EditorServiceS m_editorService;
 
-    static std::unique_ptr<SingleInstanceContainer> m_instance;
+    static SingleInstanceContainer * m_instance;
 };
 
 #endif // SINGLE_INSTANCE_CONTAINER_HPP

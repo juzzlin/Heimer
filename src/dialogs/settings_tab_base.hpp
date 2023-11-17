@@ -17,6 +17,8 @@
 
 #include <QWidget>
 
+#include "types.hpp"
+
 namespace Core {
 class SettingsProxy;
 }
@@ -37,7 +39,7 @@ public:
     QString name() const;
 
 protected:
-    Core::SettingsProxy & settingsProxy() const;
+    SettingsProxyS settingsProxy() const;
 
 private:
     QString m_name;

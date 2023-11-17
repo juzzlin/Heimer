@@ -58,6 +58,7 @@ using juzzlin::L;
 
 Application::Application(int & argc, char ** argv)
   : m_application(argc, argv)
+  , m_singleInstanceContainer(std::make_unique<SingleInstanceContainer>())
   , m_stateMachine(std::make_unique<StateMachine>())
   , m_versionChecker(std::make_unique<Core::VersionChecker>())
 {
@@ -76,8 +77,8 @@ Application::Application(int & argc, char ** argv)
     m_mainWindow->setApplicationService(m_applicationService);
     m_stateMachine->setApplicationService(m_applicationService);
 
-    connect(&SingleInstanceContainer::instance().editorService(), &EditorService::undoEnabled, m_applicationService.get(), &ApplicationService::enableUndo);
-    connect(&SingleInstanceContainer::instance().editorService(), &EditorService::redoEnabled, m_applicationService.get(), &ApplicationService::enableRedo);
+    connect(SingleInstanceContainer::instance().editorService().get(), &EditorService::undoEnabled, m_applicationService.get(), &ApplicationService::enableUndo);
+    connect(SingleInstanceContainer::instance().editorService().get(), &EditorService::redoEnabled, m_applicationService.get(), &ApplicationService::enableRedo);
 
     m_applicationService->setEditorView(*m_editorView);
 
@@ -89,7 +90,7 @@ Application::Application(int & argc, char ** argv)
     connect(m_mainWindow.get(), &MainWindow::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
     connect(m_stateMachine.get(), &StateMachine::stateChanged, this, &Application::runState);
 
-    connect(&SingleInstanceContainer::instance().editorService(), &EditorService::isModifiedChanged, m_mainWindow.get(), [=](bool isModified) {
+    connect(SingleInstanceContainer::instance().editorService().get(), &EditorService::isModifiedChanged, m_mainWindow.get(), [=](bool isModified) {
         m_mainWindow->enableSave(isModified || m_applicationService->canBeSaved());
     });
 
@@ -119,7 +120,7 @@ Application::Application(int & argc, char ** argv)
     // Open mind map according to CLI argument (if exists) or autoload the recent mind map (if enabled)
     if (!m_mindMapFile.isEmpty()) {
         QTimer::singleShot(0, this, &Application::openArgMindMap);
-    } else if (SingleInstanceContainer::instance().settingsProxy().autoload()) {
+    } else if (SingleInstanceContainer::instance().settingsProxy()->autoload()) {
         if (const auto recentFile = RecentFilesManager::instance().recentFile(); recentFile.has_value()) {
             // Exploit same code as used to open arg mind map
             m_mindMapFile = recentFile.value();
@@ -306,7 +307,7 @@ void Application::runState(StateMachine::State state)
 
 void Application::updateProgress()
 {
-    SingleInstanceContainer::instance().progressManager().updateProgress();
+    SingleInstanceContainer::instance().progressManager()->updateProgress();
 }
 
 void Application::openArgMindMap()
@@ -450,7 +451,7 @@ void Application::showImageFileDialog()
 
 void Application::showPngExportDialog()
 {
-    m_pngExportDialog->setCurrentMindMapFileName(SingleInstanceContainer::instance().editorService().fileName());
+    m_pngExportDialog->setCurrentMindMapFileName(SingleInstanceContainer::instance().editorService()->fileName());
     m_pngExportDialog->setImageSize(m_applicationService->zoomForExport(true));
     m_pngExportDialog->exec();
 
@@ -460,7 +461,7 @@ void Application::showPngExportDialog()
 
 void Application::showSvgExportDialog()
 {
-    m_svgExportDialog->setCurrentMindMapFileName(SingleInstanceContainer::instance().editorService().fileName());
+    m_svgExportDialog->setCurrentMindMapFileName(SingleInstanceContainer::instance().editorService()->fileName());
     m_svgExportDialog->exec();
 
     // Doesn't matter if canceled or not

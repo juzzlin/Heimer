@@ -15,11 +15,12 @@
 
 #include "svg_export_dialog.hpp"
 
-#include "../constants.hpp"
-#include "../export_params.hpp"
+#include "../../constants.hpp"
+#include "../../export_params.hpp"
+
+#include "../widget_factory.hpp"
 
 #include "utils.hpp"
-#include "widget_factory.hpp"
 
 #include <QCheckBox>
 #include <QDialogButtonBox>
@@ -35,7 +36,7 @@
 #include <QTimer>
 #include <QVBoxLayout>
 
-namespace Dialogs {
+namespace Dialogs::Export {
 
 SvgExportDialog::SvgExportDialog(QWidget & parent)
   : QDialog(&parent)
@@ -139,4 +140,4 @@ void SvgExportDialog::initWidgets()
     setLayout(mainLayout);
 }
 
-} // namespace Dialogs
+} // namespace Dialogs::Export

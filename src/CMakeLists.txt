@@ -62,14 +62,14 @@ set(HEIMER_LIB_SRC
     dialogs/editing_tab.cpp
     dialogs/effects_tab.cpp
     dialogs/layout_optimization_dialog.cpp
-    dialogs/png_export_dialog.cpp
     dialogs/scene_color_dialog.cpp
     dialogs/settings_dialog.cpp
     dialogs/settings_tab_base.cpp
     dialogs/spinner_dialog.cpp
-    dialogs/svg_export_dialog.cpp
     dialogs/whats_new_dialog.cpp
     dialogs/widget_factory.cpp
+    dialogs/export/png_export_dialog.cpp
+    dialogs/export/svg_export_dialog.cpp
 
     io/alz_file_io.cpp
     io/alz_file_io_version.hpp

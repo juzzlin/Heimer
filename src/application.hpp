@@ -34,10 +34,10 @@ namespace Core {
 class VersionChecker;
 }
 
-namespace Dialogs {
+namespace Dialogs::Export {
 class PngExportDialog;
 class SvgExportDialog;
-} // namespace Dialogs
+} // namespace Dialogs::Export
 
 class Application : public QObject
 {
@@ -119,9 +119,9 @@ private:
 
     EditorView * m_editorView = nullptr;
 
-    std::unique_ptr<Dialogs::PngExportDialog> m_pngExportDialog;
+    std::unique_ptr<Dialogs::Export::PngExportDialog> m_pngExportDialog;
 
-    std::unique_ptr<Dialogs::SvgExportDialog> m_svgExportDialog;
+    std::unique_ptr<Dialogs::Export::SvgExportDialog> m_svgExportDialog;
 
     std::unique_ptr<Core::VersionChecker> m_versionChecker;
 };

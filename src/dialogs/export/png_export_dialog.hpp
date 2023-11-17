@@ -27,7 +27,7 @@ class QSpinBox;
 
 class ExportParams;
 
-namespace Dialogs {
+namespace Dialogs::Export {
 
 class PngExportDialog : public QDialog
 {
@@ -79,6 +79,6 @@ private:
     float m_aspectRatio = 1.0;
 };
 
-} // namespace Dialogs
+} // namespace Dialogs::Export
 
 #endif // PNG_EXPORT_DIALOG_HPP

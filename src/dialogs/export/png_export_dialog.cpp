@@ -15,11 +15,11 @@
 
 #include "png_export_dialog.hpp"
 
-#include "../constants.hpp"
-#include "../export_params.hpp"
-#include "../utils.hpp"
+#include "../../constants.hpp"
+#include "../../export_params.hpp"
+#include "../../utils.hpp"
 
-#include "widget_factory.hpp"
+#include "../widget_factory.hpp"
 
 #include <QCheckBox>
 #include <QDialogButtonBox>
@@ -36,7 +36,7 @@
 #include <QTimer>
 #include <QVBoxLayout>
 
-namespace Dialogs {
+namespace Dialogs::Export {
 
 PngExportDialog::PngExportDialog(QWidget & parent)
   : QDialog(&parent)
@@ -214,4 +214,4 @@ void PngExportDialog::initWidgets()
     setLayout(mainLayout);
 }
 
-} // namespace Dialogs
+} // namespace Dialogs::Export

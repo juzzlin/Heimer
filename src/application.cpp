@@ -34,10 +34,10 @@
 #include "core/user_exception.hpp"
 #include "core/version_checker.hpp"
 
+#include "dialogs/export/png_export_dialog.hpp"
+#include "dialogs/export/svg_export_dialog.hpp"
 #include "dialogs/layout_optimization_dialog.hpp"
-#include "dialogs/png_export_dialog.hpp"
 #include "dialogs/scene_color_dialog.hpp"
-#include "dialogs/svg_export_dialog.hpp"
 
 #include "argengine.hpp"
 #include "simple_logger.hpp"
@@ -70,8 +70,8 @@ Application::Application(int & argc, char ** argv)
     m_mainWindow = std::make_unique<MainWindow>();
     m_applicationService = std::make_unique<ApplicationService>(*m_mainWindow);
     m_editorView = new EditorView(*m_applicationService);
-    m_pngExportDialog = std::make_unique<Dialogs::PngExportDialog>(*m_mainWindow);
-    m_svgExportDialog = std::make_unique<Dialogs::SvgExportDialog>(*m_mainWindow);
+    m_pngExportDialog = std::make_unique<Dialogs::Export::PngExportDialog>(*m_mainWindow);
+    m_svgExportDialog = std::make_unique<Dialogs::Export::SvgExportDialog>(*m_mainWindow);
 
     m_mainWindow->setApplicationService(m_applicationService);
     m_stateMachine->setApplicationService(m_applicationService);
@@ -93,11 +93,11 @@ Application::Application(int & argc, char ** argv)
         m_mainWindow->enableSave(isModified || m_applicationService->canBeSaved());
     });
 
-    connect(m_pngExportDialog.get(), &Dialogs::PngExportDialog::pngExportRequested, m_applicationService.get(), &ApplicationService::exportToPng);
-    connect(m_svgExportDialog.get(), &Dialogs::SvgExportDialog::svgExportRequested, m_applicationService.get(), &ApplicationService::exportToSvg);
+    connect(m_pngExportDialog.get(), &Dialogs::Export::PngExportDialog::pngExportRequested, m_applicationService.get(), &ApplicationService::exportToPng);
+    connect(m_svgExportDialog.get(), &Dialogs::Export::SvgExportDialog::svgExportRequested, m_applicationService.get(), &ApplicationService::exportToSvg);
 
-    connect(m_applicationService.get(), &ApplicationService::pngExportFinished, m_pngExportDialog.get(), &Dialogs::PngExportDialog::finishExport);
-    connect(m_applicationService.get(), &ApplicationService::svgExportFinished, m_svgExportDialog.get(), &Dialogs::SvgExportDialog::finishExport);
+    connect(m_applicationService.get(), &ApplicationService::pngExportFinished, m_pngExportDialog.get(), &Dialogs::Export::PngExportDialog::finishExport);
+    connect(m_applicationService.get(), &ApplicationService::svgExportFinished, m_svgExportDialog.get(), &Dialogs::Export::SvgExportDialog::finishExport);
 
     connect(m_mainWindow.get(), &MainWindow::arrowSizeChanged, m_applicationService.get(), &ApplicationService::setArrowSize);
     connect(m_mainWindow.get(), &MainWindow::autosaveEnabled, m_applicationService.get(), &ApplicationService::enableAutosave);

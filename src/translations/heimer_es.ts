@@ -470,7 +470,7 @@
     </message>
 </context>
 <context>
-    <name>Dialogs::PngExportDialog</name>
+    <name>Dialogs::Export::PngExportDialog</name>
     <message>
         <location filename="../dialogs/png_export_dialog.cpp" line="42"/>
         <source>Export to PNG Image</source>
@@ -551,7 +551,7 @@
     </message>
 </context>
 <context>
-    <name>Dialogs::SvgExportDialog</name>
+    <name>Dialogs::Export::SvgExportDialog</name>
     <message>
         <location filename="../dialogs/svg_export_dialog.cpp" line="41"/>
         <source>Export to an SVG File</source>

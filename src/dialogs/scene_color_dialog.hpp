@@ -27,7 +27,7 @@ namespace Dialogs {
 class SceneColorDialog : public ColorDialog
 {
 public:
-    SceneColorDialog(Role role, std::shared_ptr<ApplicationService> applicationService);
+    SceneColorDialog(Role role);
 };
 
 } // namespace Dialogs

@@ -17,51 +17,51 @@
 
 #include "../application_service.hpp"
 #include "../scene_items/edge.hpp"
+#include "../single_instance_container.hpp"
 
 #include <cassert>
 
 namespace Menus {
 
-EdgeContextMenu::EdgeContextMenu(QWidget * parent, ApplicationService & applicationService)
+EdgeContextMenu::EdgeContextMenu(QWidget * parent)
   : QMenu(parent)
-  , m_applicationService(applicationService)
 {
     const auto changeEdgeDirectionAction(new QAction(tr("Change direction"), this));
     QObject::connect(changeEdgeDirectionAction, &QAction::triggered, this, [=] {
-        m_applicationService.saveUndoPoint();
-        m_applicationService.selectedEdge()->setReversed(!m_applicationService.selectedEdge()->reversed());
+        SIC::instance().applicationService()->saveUndoPoint();
+        SIC::instance().applicationService()->selectedEdge()->setReversed(!SIC::instance().applicationService()->selectedEdge()->reversed());
     });
 
     using SceneItems::EdgeModel;
 
     const auto showEdgeArrowAction(new QAction(tr("Show arrow"), this));
     QObject::connect(showEdgeArrowAction, &QAction::triggered, this, [=] {
-        m_applicationService.saveUndoPoint();
-        m_applicationService.selectedEdge()->setArrowMode(showEdgeArrowAction->isChecked() ? EdgeModel::ArrowMode::Single : EdgeModel::ArrowMode::Hidden);
+        SIC::instance().applicationService()->saveUndoPoint();
+        SIC::instance().applicationService()->selectedEdge()->setArrowMode(showEdgeArrowAction->isChecked() ? EdgeModel::ArrowMode::Single : EdgeModel::ArrowMode::Hidden);
     });
     showEdgeArrowAction->setCheckable(true);
 
     const auto doubleArrowAction(new QAction(tr("Double arrow"), this));
     QObject::connect(doubleArrowAction, &QAction::triggered, this, [=] {
-        m_applicationService.saveUndoPoint();
-        m_applicationService.selectedEdge()->setArrowMode(doubleArrowAction->isChecked() ? EdgeModel::ArrowMode::Double : EdgeModel::ArrowMode::Single);
+        SIC::instance().applicationService()->saveUndoPoint();
+        SIC::instance().applicationService()->selectedEdge()->setArrowMode(doubleArrowAction->isChecked() ? EdgeModel::ArrowMode::Double : EdgeModel::ArrowMode::Single);
     });
     doubleArrowAction->setCheckable(true);
 
     const auto dashedLineAction(new QAction(tr("Dashed line"), this));
     QObject::connect(dashedLineAction, &QAction::triggered, this, [=] {
-        m_applicationService.saveUndoPoint();
-        m_applicationService.selectedEdge()->setDashedLine(dashedLineAction->isChecked());
+        SIC::instance().applicationService()->saveUndoPoint();
+        SIC::instance().applicationService()->selectedEdge()->setDashedLine(dashedLineAction->isChecked());
     });
     dashedLineAction->setCheckable(true);
 
     const auto deleteEdgeAction(new QAction(tr("Delete edge"), this));
     QObject::connect(deleteEdgeAction, &QAction::triggered, this, [=] {
-        m_applicationService.setSelectedEdge(nullptr);
-        m_applicationService.saveUndoPoint();
+        SIC::instance().applicationService()->setSelectedEdge(nullptr);
+        SIC::instance().applicationService()->saveUndoPoint();
         // Use a separate variable and timer here because closing the menu will always nullify the selected edge
         QTimer::singleShot(0, this, [=] {
-            m_applicationService.deleteEdge(*m_selectedEdge);
+            SIC::instance().applicationService()->deleteEdge(*m_selectedEdge);
         });
     });
 
@@ -78,7 +78,7 @@ EdgeContextMenu::EdgeContextMenu(QWidget * parent, ApplicationService & applicat
 
     // Set correct edge config when the menu opens.
     connect(this, &QMenu::aboutToShow, this, [=] {
-        m_selectedEdge = m_applicationService.selectedEdge();
+        m_selectedEdge = SIC::instance().applicationService()->selectedEdge();
         assert(m_selectedEdge);
         changeEdgeDirectionAction->setEnabled(m_selectedEdge->arrowMode() != EdgeModel::ArrowMode::Double && m_selectedEdge->arrowMode() != EdgeModel::ArrowMode::Hidden);
         dashedLineAction->setChecked(m_selectedEdge->dashedLine());
@@ -89,7 +89,7 @@ EdgeContextMenu::EdgeContextMenu(QWidget * parent, ApplicationService & applicat
     // Always clear edge selection when the menu closes.
     connect(this, &QMenu::aboutToHide, [=] {
         QTimer::singleShot(0, this, [=] {
-            m_applicationService.setSelectedEdge(nullptr);
+            SIC::instance().applicationService()->setSelectedEdge(nullptr);
         });
     });
 }

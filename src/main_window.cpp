@@ -52,8 +52,6 @@
 
 #include <cassert>
 
-MainWindow * MainWindow::m_instance = nullptr;
-
 MainWindow::MainWindow()
   : m_aboutDlg(new Dialogs::AboutDialog(this))
   , m_settingsDlg(new Dialogs::SettingsDialog(this))
@@ -67,14 +65,7 @@ MainWindow::MainWindow()
   , m_undoAction(new QAction(tr("Undo"), this))
   , m_redoAction(new QAction(tr("Redo"), this))
   , m_statusText(new QLabel(this))
-  , m_controlStrategy(SingleInstanceContainer::instance().controlStrategy())
 {
-    if (!m_instance) {
-        m_instance = this;
-    } else {
-        qFatal("MainWindow already instantiated!");
-    }
-
     addToolBar(Qt::BottomToolBarArea, m_toolBar);
 
     connectToolBar();
@@ -84,31 +75,33 @@ MainWindow::MainWindow()
     connect(m_settingsDlg, &Dialogs::SettingsDialog::autosaveEnabled, this, &MainWindow::autosaveEnabled);
 
     m_statusText->setOpenExternalLinks(true);
+
+    juzzlin::L().debug() << "MainWindow instantiated";
 }
 
 void MainWindow::addConnectSelectedNodesAction(QMenu & menu)
 {
     m_connectSelectedNodesAction->setShortcut(QKeySequence("Ctrl+Shift+C"));
-    connect(m_connectSelectedNodesAction, &QAction::triggered, this, [this] {
+    connect(m_connectSelectedNodesAction, &QAction::triggered, this, [] {
         juzzlin::L().debug() << "Connect selected triggered";
-        m_applicationService->performNodeAction({ NodeAction::Type::ConnectSelected });
+        SIC::instance().applicationService()->performNodeAction({ NodeAction::Type::ConnectSelected });
     });
     menu.addAction(m_connectSelectedNodesAction);
     connect(&menu, &QMenu::aboutToShow, this, [=] {
-        m_connectSelectedNodesAction->setEnabled(m_applicationService->areSelectedNodesConnectable());
+        m_connectSelectedNodesAction->setEnabled(SIC::instance().applicationService()->areSelectedNodesConnectable());
     });
 }
 
 void MainWindow::addDisconnectSelectedNodesAction(QMenu & menu)
 {
     m_disconnectSelectedNodesAction->setShortcut(QKeySequence("Ctrl+Shift+D"));
-    connect(m_disconnectSelectedNodesAction, &QAction::triggered, this, [this] {
+    connect(m_disconnectSelectedNodesAction, &QAction::triggered, this, [] {
         juzzlin::L().debug() << "Disconnect selected triggered";
-        m_applicationService->performNodeAction({ NodeAction::Type::DisconnectSelected });
+        SIC::instance().applicationService()->performNodeAction({ NodeAction::Type::DisconnectSelected });
     });
     menu.addAction(m_disconnectSelectedNodesAction);
     connect(&menu, &QMenu::aboutToShow, this, [=] {
-        m_disconnectSelectedNodesAction->setEnabled(m_applicationService->areSelectedNodesDisconnectable());
+        m_disconnectSelectedNodesAction->setEnabled(SIC::instance().applicationService()->areSelectedNodesDisconnectable());
     });
 }
 
@@ -116,7 +109,7 @@ void MainWindow::addRedoAction(QMenu & menu)
 {
     m_redoAction->setShortcut(QKeySequence(QKeySequence::Redo));
 
-    connect(m_redoAction, &QAction::triggered, m_applicationService.get(), &ApplicationService::redo);
+    connect(m_redoAction, &QAction::triggered, SIC::instance().applicationService().get(), &ApplicationService::redo);
 
     m_redoAction->setEnabled(false);
 
@@ -127,7 +120,7 @@ void MainWindow::addUndoAction(QMenu & menu)
 {
     m_undoAction->setShortcut(QKeySequence(QKeySequence::Undo));
 
-    connect(m_undoAction, &QAction::triggered, m_applicationService.get(), &ApplicationService::undo);
+    connect(m_undoAction, &QAction::triggered, SIC::instance().applicationService().get(), &ApplicationService::undo);
 
     m_undoAction->setEnabled(false);
 
@@ -205,18 +198,18 @@ void MainWindow::createMirrorSubMenu(QMenu & editMenu)
     mirrorAction->setText(tr("&Mirror layout"));
 
     const auto mirrorHorizontallyAction = new QAction(tr("Horizontally"), this);
-    mirrorHorizontallyAction->setShortcut(QKeySequence(m_controlStrategy->mirrorLayoutHorizontallyShortcut()));
+    mirrorHorizontallyAction->setShortcut(QKeySequence(SIC::instance().controlStrategy()->mirrorLayoutHorizontallyShortcut()));
     mirrorMenu->addAction(mirrorHorizontallyAction);
     connect(mirrorHorizontallyAction, &QAction::triggered, this, [=] {
-        m_applicationService->performNodeAction(NodeAction::Type::MirrorLayoutHorizontally);
+        SIC::instance().applicationService()->performNodeAction(NodeAction::Type::MirrorLayoutHorizontally);
     });
     mirrorMenu->addSeparator();
 
     const auto mirrorVerticallyAction = new QAction(tr("Vertically"), this);
-    mirrorVerticallyAction->setShortcut(QKeySequence(m_controlStrategy->mirrorLayoutVerticallyShortcut()));
+    mirrorVerticallyAction->setShortcut(QKeySequence(SIC::instance().controlStrategy()->mirrorLayoutVerticallyShortcut()));
     mirrorMenu->addAction(mirrorVerticallyAction);
     connect(mirrorVerticallyAction, &QAction::triggered, this, [=] {
-        m_applicationService->performNodeAction(NodeAction::Type::MirrorLayoutVertically);
+        SIC::instance().applicationService()->performNodeAction(NodeAction::Type::MirrorLayoutVertically);
     });
 }
 
@@ -277,8 +270,8 @@ void MainWindow::createExportSubMenu(QMenu & fileMenu)
     });
 
     connect(&fileMenu, &QMenu::aboutToShow, this, [=] {
-        exportToPngAction->setEnabled(m_applicationService->hasNodes());
-        exportToSvgAction->setEnabled(m_applicationService->hasNodes());
+        exportToPngAction->setEnabled(SIC::instance().applicationService()->hasNodes());
+        exportToSvgAction->setEnabled(SIC::instance().applicationService()->hasNodes());
     });
 }
 
@@ -425,7 +418,7 @@ void MainWindow::createViewMenu()
     connect(zoomToFit, &QAction::triggered, this, &MainWindow::zoomToFitTriggered);
 
     connect(viewMenu, &QMenu::aboutToShow, this, [=] {
-        zoomToFit->setEnabled(m_applicationService->hasNodes());
+        zoomToFit->setEnabled(SIC::instance().applicationService()->hasNodes());
     });
 }
 
@@ -467,25 +460,15 @@ void MainWindow::initialize()
     emit actionTriggered(StateMachine::Action::MainWindowInitialized);
 }
 
-void MainWindow::setApplicationService(std::shared_ptr<ApplicationService> applicationService)
-{
-    m_applicationService = applicationService;
-}
-
 void MainWindow::setTitle()
 {
     const auto appInfo = QString(Constants::Application::APPLICATION_NAME) + " " + Constants::Application::APPLICATION_VERSION;
-    const auto displayFileName = m_applicationService->fileName().isEmpty() ? tr("New File") : m_applicationService->fileName();
-    if (m_applicationService->isModified()) {
+    const auto displayFileName = SIC::instance().applicationService()->fileName().isEmpty() ? tr("New File") : SIC::instance().applicationService()->fileName();
+    if (SIC::instance().applicationService()->isModified()) {
         setWindowTitle(appInfo + " - " + displayFileName + " - " + tr("Not Saved"));
     } else {
         setWindowTitle(appInfo + " - " + displayFileName);
     }
-}
-
-MainWindow * MainWindow::instance()
-{
-    return MainWindow::m_instance;
 }
 
 void MainWindow::closeEvent(QCloseEvent * event)

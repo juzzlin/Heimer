@@ -14,11 +14,13 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "state_machine.hpp"
+
 #include "application_service.hpp"
-
 #include "simple_logger.hpp"
+#include "single_instance_container.hpp"
 
-StateMachine::StateMachine()
+StateMachine::StateMachine(QObject * parent)
+  : QObject(parent)
 {
 }
 
@@ -55,7 +57,7 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::NewSelected:
         m_quitType = QuitType::New;
-        if (m_applicationService->isModified()) {
+        if (SIC::instance().applicationService()->isModified()) {
             m_state = State::ShowNotSavedDialog;
         } else {
             m_state = State::InitializeNewMindMap;
@@ -114,7 +116,7 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::OpenSelected:
         m_quitType = QuitType::Open;
-        if (m_applicationService->isModified()) {
+        if (SIC::instance().applicationService()->isModified()) {
             m_state = State::ShowNotSavedDialog;
         } else {
             m_state = State::ShowOpenDialog;
@@ -123,7 +125,7 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::QuitSelected:
         m_quitType = QuitType::Close;
-        if (m_applicationService->isModified()) {
+        if (SIC::instance().applicationService()->isModified()) {
             m_state = State::ShowNotSavedDialog;
         } else {
             m_state = State::Exit;
@@ -132,7 +134,7 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::NotSavedDialogAccepted:
     case Action::SaveSelected:
-        if (m_applicationService->canBeSaved()) {
+        if (SIC::instance().applicationService()->canBeSaved()) {
             m_state = State::Save;
         } else {
             m_state = State::ShowSaveAsDialog;
@@ -149,7 +151,7 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::RecentFileSelected:
         m_quitType = QuitType::OpenRecent;
-        if (m_applicationService->isModified()) {
+        if (SIC::instance().applicationService()->isModified()) {
             m_state = State::ShowNotSavedDialog;
         } else {
             m_state = State::OpenRecent;
@@ -158,7 +160,7 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::DropFileSelected:
         m_quitType = QuitType::OpenDrop;
-        if (m_applicationService->isModified()) {
+        if (SIC::instance().applicationService()->isModified()) {
             m_state = State::ShowNotSavedDialog;
         } else {
             m_state = State::OpenDrop;
@@ -174,9 +176,4 @@ void StateMachine::calculateState(StateMachine::Action action)
     }
 
     emit stateChanged(m_state);
-}
-
-void StateMachine::setApplicationService(std::shared_ptr<ApplicationService> applicationService)
-{
-    m_applicationService = applicationService;
 }

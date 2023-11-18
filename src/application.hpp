@@ -17,6 +17,7 @@
 #define APPLICATION_HPP
 
 #include "state_machine.hpp"
+#include "types.hpp"
 
 #include <QApplication>
 #include <QColor>
@@ -25,11 +26,9 @@
 
 #include <memory>
 
-class ApplicationService;
 class EditorView;
 class ImageManager;
 class MainWindow;
-class SingleInstanceContainer;
 
 namespace Core {
 class VersionChecker;
@@ -104,7 +103,11 @@ private:
 
     QApplication m_application;
 
-    std::unique_ptr<SingleInstanceContainer> m_singleInstanceContainer;
+    MainWindowS m_mainWindow;
+
+    std::unique_ptr<SIC> m_sic;
+
+    StateMachine * m_stateMachine;
 
     QTranslator m_appTranslator;
 
@@ -114,19 +117,13 @@ private:
 
     QString m_lang;
 
-    std::unique_ptr<StateMachine> m_stateMachine;
-
-    std::unique_ptr<MainWindow> m_mainWindow;
-
-    std::shared_ptr<ApplicationService> m_applicationService;
-
     EditorView * m_editorView = nullptr;
 
-    std::unique_ptr<Dialogs::Export::PngExportDialog> m_pngExportDialog;
+    Dialogs::Export::PngExportDialog * m_pngExportDialog = nullptr;
 
-    std::unique_ptr<Dialogs::Export::SvgExportDialog> m_svgExportDialog;
+    Dialogs::Export::SvgExportDialog * m_svgExportDialog = nullptr;
 
-    std::unique_ptr<Core::VersionChecker> m_versionChecker;
+    Core::VersionChecker * m_versionChecker;
 };
 
 #endif // APPLICATION_HPP

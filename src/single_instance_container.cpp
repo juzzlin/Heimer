@@ -15,10 +15,10 @@
 
 #include "single_instance_container.hpp"
 
+#include "application_service.hpp"
 #include "control_strategy.hpp"
 #include "core/progress_manager.hpp"
 #include "core/settings_proxy.hpp"
-#include "editor_service.hpp"
 
 #include "simple_logger.hpp"
 
@@ -30,7 +30,6 @@ SingleInstanceContainer::SingleInstanceContainer()
   : m_controlStrategy(std::make_unique<ControlStrategy>())
   , m_progressManager(std::make_unique<Core::ProgressManager>())
   , m_settingsProxy(std::make_unique<Core::SettingsProxy>())
-  , m_editorService(std::make_unique<EditorService>())
 {
     if (!SingleInstanceContainer::m_instance) {
         SingleInstanceContainer::m_instance = this;
@@ -39,14 +38,24 @@ SingleInstanceContainer::SingleInstanceContainer()
     }
 }
 
+ApplicationServiceS SingleInstanceContainer::applicationService()
+{
+    if (!m_applicationService) {
+        if (!m_mainWindow) {
+            throw std::runtime_error("MainWindow not set when instantiating ApplicationService!");
+        }
+        if (!SingleInstanceContainer::m_instance) {
+            throw std::runtime_error("ApplicatonService requested while SIC is deleting!");
+        }
+        m_applicationService = std::make_unique<ApplicationService>(m_mainWindow);
+        juzzlin::L().debug() << "ApplicationService instantiated";
+    }
+    return m_applicationService;
+}
+
 ControlStrategyS SingleInstanceContainer::controlStrategy()
 {
     return m_controlStrategy;
-}
-
-EditorServiceS SingleInstanceContainer::editorService() const
-{
-    return m_editorService;
 }
 
 ProgressManagerS SingleInstanceContainer::progressManager() const
@@ -59,7 +68,7 @@ SettingsProxyS SingleInstanceContainer::settingsProxy()
     return m_settingsProxy;
 }
 
-SingleInstanceContainer & SingleInstanceContainer::instance()
+SingleInstanceContainer & SIC::instance()
 {
     if (!SingleInstanceContainer::m_instance) {
         throw std::runtime_error("SingleInstanceContainer not instantiated");
@@ -67,9 +76,14 @@ SingleInstanceContainer & SingleInstanceContainer::instance()
     return *SingleInstanceContainer::m_instance;
 }
 
+void SingleInstanceContainer::setMainWindow(MainWindowS mainWindow)
+{
+    m_mainWindow = mainWindow;
+}
+
 SingleInstanceContainer::~SingleInstanceContainer()
 {
-    m_editorService.reset();
+    m_applicationService.reset();
 
     SingleInstanceContainer::m_instance = nullptr;
 }

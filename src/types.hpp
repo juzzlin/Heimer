@@ -18,6 +18,9 @@
 
 #include <memory>
 
+class ApplicationService;
+using ApplicationServiceS = std::shared_ptr<ApplicationService>;
+
 class ControlStrategy;
 
 using ControlStrategyS = std::shared_ptr<ControlStrategy>;
@@ -51,6 +54,9 @@ using GraphCR = const Core::Graph &;
 
 using GraphR = Core::Graph &;
 
+class MainWindow;
+using MainWindowS = std::shared_ptr<MainWindow>;
+
 using MindMapDataR = Core::MindMapData &;
 
 using MindMapDataCR = const Core::MindMapData &;
@@ -76,5 +82,8 @@ using NodeU = std::unique_ptr<SceneItems::Node>;
 using ProgressManagerS = std::shared_ptr<Core::ProgressManager>;
 
 using SettingsProxyS = std::shared_ptr<Core::SettingsProxy>;
+
+class SingleInstanceContainer;
+using SIC = SingleInstanceContainer;
 
 #endif // TYPES_HPP

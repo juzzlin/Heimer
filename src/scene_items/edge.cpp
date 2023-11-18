@@ -51,7 +51,7 @@ using Core::TestMode;
 namespace SceneItems {
 
 Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enableLabel)
-  : m_settingsProxy(SingleInstanceContainer::instance().settingsProxy())
+  : m_settingsProxy(SIC::instance().settingsProxy())
   , m_edgeModel(std::make_unique<EdgeModel>(m_settingsProxy->reversedEdgeDirection(),
                                             EdgeModel::Style { m_settingsProxy->edgeArrowMode() }))
   , m_sourceNode(sourceNode)

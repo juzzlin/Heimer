@@ -39,18 +39,22 @@ public:
 
     static SingleInstanceContainer & instance();
 
-    ControlStrategyS controlStrategy();
+    ApplicationServiceS applicationService();
 
-    EditorServiceS editorService() const;
+    ControlStrategyS controlStrategy();
 
     ProgressManagerS progressManager() const;
 
     SettingsProxyS settingsProxy();
 
+    void setMainWindow(MainWindowS mainWindow);
+
 private:
     SingleInstanceContainer(const SingleInstanceContainer & other) = delete;
 
     SingleInstanceContainer & operator=(const SingleInstanceContainer & other) = delete;
+
+    ApplicationServiceS m_applicationService;
 
     ControlStrategyS m_controlStrategy;
 
@@ -58,7 +62,7 @@ private:
 
     SettingsProxyS m_settingsProxy;
 
-    EditorServiceS m_editorService;
+    MainWindowS m_mainWindow;
 
     static SingleInstanceContainer * m_instance;
 };

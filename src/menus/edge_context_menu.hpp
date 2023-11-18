@@ -30,11 +30,9 @@ class EdgeContextMenu : public QMenu
     Q_OBJECT
 
 public:
-    EdgeContextMenu(QWidget * parent, ApplicationService & applicationService);
+    EdgeContextMenu(QWidget * parent);
 
 private:
-    ApplicationService & m_applicationService;
-
     EdgeP m_selectedEdge = nullptr;
 };
 

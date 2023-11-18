@@ -28,6 +28,8 @@ class StateMachine : public QObject
     Q_OBJECT
 
 public:
+    StateMachine(QObject * parent = nullptr);
+
     enum class State
     {
         Edit,
@@ -110,8 +112,6 @@ public:
 
     void calculateState(StateMachine::Action action);
 
-    void setApplicationService(std::shared_ptr<ApplicationService> applicationService);
-
 signals:
 
     void stateChanged(StateMachine::State state);
@@ -120,8 +120,6 @@ private:
     State m_state = State::Init;
 
     QuitType m_quitType = QuitType::None;
-
-    std::shared_ptr<ApplicationService> m_applicationService;
 };
 
 #endif // STATE_MACHINE_HPP

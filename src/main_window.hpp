@@ -39,10 +39,8 @@ namespace Menus {
 class ToolBar;
 } // namespace Menus
 
-class ControlStrategy;
 class EditorService;
 class EditorView;
-class ApplicationService;
 class Node;
 
 class QAction;
@@ -66,8 +64,6 @@ public:
 
     ~MainWindow() override;
 
-    static MainWindow * instance();
-
     void appear();
 
     bool copyOnDragEnabled() const;
@@ -85,8 +81,6 @@ public:
     void initializeNewMindMap();
 
     void saveWindowSize();
-
-    void setApplicationService(std::shared_ptr<ApplicationService> applicationService);
 
     void setSaveActionStatesOnNewMindMap();
 
@@ -202,15 +196,9 @@ private:
 
     QString m_argMindMapFile;
 
-    std::shared_ptr<ApplicationService> m_applicationService;
-
     bool m_closeNow = false;
 
     QLabel * m_statusText;
-
-    ControlStrategyS m_controlStrategy;
-
-    static MainWindow * m_instance;
 };
 
 #endif // MAIN_WINDOW_HPP

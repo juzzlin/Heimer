@@ -51,7 +51,7 @@ class ApplicationService : public QObject
     Q_OBJECT
 
 public:
-    explicit ApplicationService(MainWindow & mainWindow);
+    explicit ApplicationService(MainWindowS mainWindow);
 
     ~ApplicationService() override;
 
@@ -243,11 +243,13 @@ private:
 
     void updateProgress();
 
+    EditorServiceS m_editorService;
+
     std::unique_ptr<EditorScene> m_editorScene;
 
     EditorView * m_editorView = nullptr;
 
-    MainWindow & m_mainWindow;
+    MainWindowS m_mainWindow;
 };
 
 #endif // APPLICATION_SERVICE_HPP

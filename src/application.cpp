@@ -58,9 +58,9 @@ using juzzlin::L;
 
 Application::Application(int & argc, char ** argv)
   : m_application(argc, argv)
-  , m_singleInstanceContainer(std::make_unique<SingleInstanceContainer>())
-  , m_stateMachine(std::make_unique<StateMachine>())
-  , m_versionChecker(std::make_unique<Core::VersionChecker>())
+  , m_sic(std::make_unique<SIC>())
+  , m_stateMachine(new StateMachine(this)) // Parented to this
+  , m_versionChecker(new Core::VersionChecker(this)) // Parented to this
 {
     parseArgs(argc, argv);
 
@@ -69,50 +69,35 @@ Application::Application(int & argc, char ** argv)
     // Instantiate components here because the possible language given
     // in the command line must have been loaded before this
     m_mainWindow = std::make_unique<MainWindow>();
-    m_applicationService = std::make_unique<ApplicationService>(*m_mainWindow);
-    m_editorView = new EditorView(*m_applicationService);
-    m_pngExportDialog = std::make_unique<Dialogs::Export::PngExportDialog>(*m_mainWindow);
-    m_svgExportDialog = std::make_unique<Dialogs::Export::SvgExportDialog>(*m_mainWindow);
+    m_sic->setMainWindow(m_mainWindow);
+    m_editorView = new EditorView;
 
-    m_mainWindow->setApplicationService(m_applicationService);
-    m_stateMachine->setApplicationService(m_applicationService);
+    // Use raw pointers because the dialogs are parented to m_mainWindow which takes
+    // the ownership and handles deletion.
+    m_pngExportDialog = new Dialogs::Export::PngExportDialog(*m_mainWindow);
+    m_svgExportDialog = new Dialogs::Export::SvgExportDialog(*m_mainWindow);
 
-    connect(SingleInstanceContainer::instance().editorService().get(), &EditorService::undoEnabled, m_applicationService.get(), &ApplicationService::enableUndo);
-    connect(SingleInstanceContainer::instance().editorService().get(), &EditorService::redoEnabled, m_applicationService.get(), &ApplicationService::enableRedo);
-
-    m_applicationService->setEditorView(*m_editorView);
+    // Note!!: EditorView will be parented to MainWindow.
+    m_sic->applicationService()->setEditorView(*m_editorView);
 
     // Connect views and StateMachine together
-    connect(this, &Application::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
-    connect(m_editorView, &EditorView::actionTriggered, m_stateMachine.get(), [this](StateMachine::Action action) {
+    connect(this, &Application::actionTriggered, m_stateMachine, &StateMachine::calculateState);
+    connect(m_editorView, &EditorView::actionTriggered, m_stateMachine, [this](StateMachine::Action action) {
         m_stateMachine->calculateState(action);
     });
-    connect(m_mainWindow.get(), &MainWindow::actionTriggered, m_stateMachine.get(), &StateMachine::calculateState);
-    connect(m_stateMachine.get(), &StateMachine::stateChanged, this, &Application::runState);
+    connect(m_mainWindow.get(), &MainWindow::actionTriggered, m_stateMachine, &StateMachine::calculateState);
+    connect(m_stateMachine, &StateMachine::stateChanged, this, &Application::runState);
 
-    connect(SingleInstanceContainer::instance().editorService().get(), &EditorService::isModifiedChanged, m_mainWindow.get(), [=](bool isModified) {
-        m_mainWindow->enableSave(isModified || m_applicationService->canBeSaved());
-    });
+    connect(m_pngExportDialog, &Dialogs::Export::PngExportDialog::pngExportRequested, m_sic->applicationService().get(), &ApplicationService::exportToPng);
+    connect(m_svgExportDialog, &Dialogs::Export::SvgExportDialog::svgExportRequested, m_sic->applicationService().get(), &ApplicationService::exportToSvg);
 
-    connect(m_pngExportDialog.get(), &Dialogs::Export::PngExportDialog::pngExportRequested, m_applicationService.get(), &ApplicationService::exportToPng);
-    connect(m_svgExportDialog.get(), &Dialogs::Export::SvgExportDialog::svgExportRequested, m_applicationService.get(), &ApplicationService::exportToSvg);
+    connect(m_sic->applicationService().get(), &ApplicationService::pngExportFinished, m_pngExportDialog, &Dialogs::Export::PngExportDialog::finishExport);
+    connect(m_sic->applicationService().get(), &ApplicationService::svgExportFinished, m_svgExportDialog, &Dialogs::Export::SvgExportDialog::finishExport);
 
-    connect(m_applicationService.get(), &ApplicationService::pngExportFinished, m_pngExportDialog.get(), &Dialogs::Export::PngExportDialog::finishExport);
-    connect(m_applicationService.get(), &ApplicationService::svgExportFinished, m_svgExportDialog.get(), &Dialogs::Export::SvgExportDialog::finishExport);
-
-    connect(m_mainWindow.get(), &MainWindow::arrowSizeChanged, m_applicationService.get(), &ApplicationService::setArrowSize);
-    connect(m_mainWindow.get(), &MainWindow::autosaveEnabled, m_applicationService.get(), &ApplicationService::enableAutosave);
-    connect(m_mainWindow.get(), &MainWindow::cornerRadiusChanged, m_applicationService.get(), &ApplicationService::setCornerRadius);
-    connect(m_mainWindow.get(), &MainWindow::edgeWidthChanged, m_applicationService.get(), &ApplicationService::setEdgeWidth);
-    connect(m_mainWindow.get(), &MainWindow::fontChanged, m_applicationService.get(), &ApplicationService::changeFont);
-    connect(m_mainWindow.get(), &MainWindow::textSizeChanged, m_applicationService.get(), &ApplicationService::setTextSize);
-    connect(m_mainWindow.get(), &MainWindow::gridSizeChanged, m_applicationService.get(), &ApplicationService::setGridSize);
     connect(m_mainWindow.get(), &MainWindow::gridVisibleChanged, m_editorView, [this](int state) {
         bool visible = state == Qt::Checked;
         m_editorView->setGridVisible(visible);
     });
-    connect(m_mainWindow.get(), &MainWindow::searchTextChanged, m_applicationService.get(), &ApplicationService::setSearchText);
-    connect(m_mainWindow.get(), &MainWindow::shadowEffectChanged, m_applicationService.get(), &ApplicationService::setShadowEffect);
 
     m_mainWindow->initialize();
     m_mainWindow->appear();
@@ -120,7 +105,7 @@ Application::Application(int & argc, char ** argv)
     // Open mind map according to CLI argument (if exists) or autoload the recent mind map (if enabled)
     if (!m_mindMapFile.isEmpty()) {
         QTimer::singleShot(0, this, &Application::openArgMindMap);
-    } else if (SingleInstanceContainer::instance().settingsProxy()->autoload()) {
+    } else if (SIC::instance().settingsProxy()->autoload()) {
         if (const auto recentFile = RecentFilesManager::instance().recentFile(); recentFile.has_value()) {
             // Exploit same code as used to open arg mind map
             m_mindMapFile = recentFile.value();
@@ -128,8 +113,8 @@ Application::Application(int & argc, char ** argv)
         }
     }
 
-    connect(m_versionChecker.get(), &Core::VersionChecker::newVersionFound, this, [this](Core::Version version, QString downloadUrl) {
-        m_applicationService->showStatusText(QString(tr("A new version %1 available at <a href='%2'>%2</a>")).arg(version.toString(), downloadUrl));
+    connect(m_versionChecker, &Core::VersionChecker::newVersionFound, this, [this](Core::Version version, QString downloadUrl) {
+        m_sic->applicationService()->showStatusText(QString(tr("A new version %1 available at <a href='%2'>%2</a>")).arg(version.toString(), downloadUrl));
     });
     m_versionChecker->checkForNewReleases();
 }
@@ -245,7 +230,7 @@ void Application::runState(StateMachine::State state)
         m_mainWindow->setTitle();
         break;
     case StateMachine::State::InitializeNewMindMap:
-        m_applicationService->initializeNewMindMap();
+        m_sic->applicationService()->initializeNewMindMap();
         break;
     case StateMachine::State::OpenRecent:
         doOpenMindMap(RecentFilesManager::instance().selectedFile());
@@ -307,7 +292,7 @@ void Application::runState(StateMachine::State state)
 
 void Application::updateProgress()
 {
-    SingleInstanceContainer::instance().progressManager()->updateProgress();
+    SIC::instance().progressManager()->updateProgress();
 }
 
 void Application::openArgMindMap()
@@ -332,7 +317,7 @@ void Application::doOpenMindMap(QString fileName)
     L().debug() << "Opening '" << fileName.toStdString();
     m_mainWindow->showSpinnerDialog(true, tr("Opening '%1'..").arg(fileName));
     updateProgress();
-    if (m_applicationService->openMindMap(fileName)) {
+    if (m_sic->applicationService()->openMindMap(fileName)) {
         m_mainWindow->disableUndoAndRedo();
         updateProgress();
         m_mainWindow->setSaveActionStatesOnOpenedMindMap();
@@ -353,7 +338,7 @@ void Application::saveMindMap()
 {
     L().debug() << "Save..";
 
-    if (!m_applicationService->saveMindMap()) {
+    if (!m_sic->applicationService()->saveMindMap()) {
         const auto msg = QString(tr("Failed to save file."));
         L().error() << msg.toStdString();
         showMessageBox(msg);
@@ -384,7 +369,7 @@ void Application::saveMindMapAs()
         fileName += Constants::Application::FILE_EXTENSION;
     }
 
-    if (m_applicationService->saveMindMapAs(fileName)) {
+    if (m_sic->applicationService()->saveMindMapAs(fileName)) {
         const auto msg = QString(tr("File '")) + fileName + tr("' saved.");
         L().debug() << msg.toStdString();
         m_mainWindow->enableSave(false);
@@ -400,36 +385,36 @@ void Application::saveMindMapAs()
 
 void Application::showBackgroundColorDialog()
 {
-    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Background, m_applicationService).exec();
+    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Background).exec();
     emit actionTriggered(StateMachine::Action::BackgroundColorChanged);
 }
 
 void Application::showEdgeColorDialog()
 {
-    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Edge, m_applicationService).exec();
+    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Edge).exec();
     emit actionTriggered(StateMachine::Action::EdgeColorChanged);
 }
 
 void Application::showGridColorDialog()
 {
-    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Grid, m_applicationService).exec();
+    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Grid).exec();
     emit actionTriggered(StateMachine::Action::GridColorChanged);
 }
 
 void Application::showNodeColorDialog()
 {
-    if (Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Node, m_applicationService).exec() != QDialog::Accepted) {
+    if (Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Node).exec() != QDialog::Accepted) {
         // Clear implicitly selected nodes on cancel
-        m_applicationService->clearSelectionGroup(true);
+        m_sic->applicationService()->clearSelectionGroup(true);
     }
     emit actionTriggered(StateMachine::Action::NodeColorChanged);
 }
 
 void Application::showTextColorDialog()
 {
-    if (Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Text, m_applicationService).exec() != QDialog::Accepted) {
+    if (Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Text).exec() != QDialog::Accepted) {
         // Clear implicitly selected nodes on cancel
-        m_applicationService->clearSelectionGroup(true);
+        m_sic->applicationService()->clearSelectionGroup(true);
     }
     emit actionTriggered(StateMachine::Action::TextColorChanged);
 }
@@ -442,7 +427,7 @@ void Application::showImageFileDialog()
       m_mainWindow.get(), tr("Open an image"), path, tr("Image Files") + " " + extensions);
 
     if (QImage image; image.load(fileName)) {
-        m_applicationService->performNodeAction({ NodeAction::Type::AttachImage, image, fileName });
+        m_sic->applicationService()->performNodeAction({ NodeAction::Type::AttachImage, image, fileName });
         Settings::V1::saveRecentImagePath(fileName);
     } else if (fileName != "") {
         QMessageBox::critical(m_mainWindow.get(), tr("Load image"), tr("Failed to load image '") + fileName + "'");
@@ -451,8 +436,8 @@ void Application::showImageFileDialog()
 
 void Application::showPngExportDialog()
 {
-    m_pngExportDialog->setCurrentMindMapFileName(SingleInstanceContainer::instance().editorService()->fileName());
-    m_pngExportDialog->setImageSize(m_applicationService->zoomForExport(true));
+    m_pngExportDialog->setCurrentMindMapFileName(m_sic->applicationService()->fileName());
+    m_pngExportDialog->setImageSize(m_sic->applicationService()->zoomForExport(true));
     m_pngExportDialog->exec();
 
     // Doesn't matter if canceled or not
@@ -461,7 +446,7 @@ void Application::showPngExportDialog()
 
 void Application::showSvgExportDialog()
 {
-    m_svgExportDialog->setCurrentMindMapFileName(SingleInstanceContainer::instance().editorService()->fileName());
+    m_svgExportDialog->setCurrentMindMapFileName(m_sic->applicationService()->fileName());
     m_svgExportDialog->exec();
 
     // Doesn't matter if canceled or not
@@ -470,12 +455,12 @@ void Application::showSvgExportDialog()
 
 void Application::showLayoutOptimizationDialog()
 {
-    LayoutOptimizer layoutOptimizer { m_applicationService->mindMapData(), m_editorView->grid() };
-    Dialogs::LayoutOptimizationDialog dialog { *m_mainWindow, *m_applicationService->mindMapData(), layoutOptimizer, *m_editorView };
-    connect(&dialog, &Dialogs::LayoutOptimizationDialog::undoPointRequested, m_applicationService.get(), &ApplicationService::saveUndoPoint);
+    LayoutOptimizer layoutOptimizer { m_sic->applicationService()->mindMapData(), m_editorView->grid() };
+    Dialogs::LayoutOptimizationDialog dialog { *m_mainWindow, *m_sic->applicationService()->mindMapData(), layoutOptimizer, *m_editorView };
+    connect(&dialog, &Dialogs::LayoutOptimizationDialog::undoPointRequested, m_sic->applicationService().get(), &ApplicationService::saveUndoPoint);
 
     if (dialog.exec() == QDialog::Accepted) {
-        m_applicationService->zoomToFit();
+        m_sic->applicationService()->zoomToFit();
     }
 
     emit actionTriggered(StateMachine::Action::LayoutOptimized);

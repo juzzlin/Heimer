@@ -50,24 +50,39 @@
 
 using juzzlin::L;
 
-ApplicationService::ApplicationService(MainWindow & mainWindow)
-  : m_mainWindow(mainWindow)
+ApplicationService::ApplicationService(MainWindowS mainWindow)
+  : m_editorService(std::make_unique<EditorService>())
+  , m_mainWindow(mainWindow)
 {
-    connect(&m_mainWindow, &MainWindow::zoomToFitTriggered, this, &ApplicationService::zoomToFit);
-    connect(&m_mainWindow, &MainWindow::zoomInTriggered, this, &ApplicationService::zoomIn);
-    connect(&m_mainWindow, &MainWindow::zoomOutTriggered, this, &ApplicationService::zoomOut);
+    connect(m_mainWindow.get(), &MainWindow::arrowSizeChanged, this, &ApplicationService::setArrowSize);
+    connect(m_mainWindow.get(), &MainWindow::autosaveEnabled, this, &ApplicationService::enableAutosave);
+    connect(m_mainWindow.get(), &MainWindow::cornerRadiusChanged, this, &ApplicationService::setCornerRadius);
+    connect(m_mainWindow.get(), &MainWindow::edgeWidthChanged, this, &ApplicationService::setEdgeWidth);
+    connect(m_mainWindow.get(), &MainWindow::fontChanged, this, &ApplicationService::changeFont);
+    connect(m_mainWindow.get(), &MainWindow::gridSizeChanged, this, &ApplicationService::setGridSize);
+    connect(m_mainWindow.get(), &MainWindow::searchTextChanged, this, &ApplicationService::setSearchText);
+    connect(m_mainWindow.get(), &MainWindow::shadowEffectChanged, this, &ApplicationService::setShadowEffect);
+    connect(m_mainWindow.get(), &MainWindow::textSizeChanged, this, &ApplicationService::setTextSize);
+    connect(m_mainWindow.get(), &MainWindow::zoomInTriggered, this, &ApplicationService::zoomIn);
+    connect(m_mainWindow.get(), &MainWindow::zoomOutTriggered, this, &ApplicationService::zoomOut);
+    connect(m_mainWindow.get(), &MainWindow::zoomToFitTriggered, this, &ApplicationService::zoomToFit);
+
+    connect(m_editorService.get(), &EditorService::isModifiedChanged, m_mainWindow.get(), [=](bool isModified) {
+        m_mainWindow->enableSave(isModified || canBeSaved());
+    });
+    connect(m_editorService.get(), &EditorService::redoEnabled, this, &ApplicationService::enableRedo);
+    connect(m_editorService.get(), &EditorService::undoEnabled, this, &ApplicationService::enableUndo);
 }
 
 void ApplicationService::addExistingGraphToScene(bool zoomToFitAfterNodesLoaded)
 {
-    auto && editorService = SingleInstanceContainer::instance().editorService();
 
-    for (auto && node : editorService->mindMapData()->graph().getNodes()) {
+    for (auto && node : m_editorService->mindMapData()->graph().getNodes()) {
         if (node->scene() != m_editorScene.get()) {
             addItem(*node);
-            node->setCornerRadius(editorService->mindMapData()->cornerRadius());
-            node->setTextSize(editorService->mindMapData()->textSize());
-            node->changeFont(editorService->mindMapData()->font());
+            node->setCornerRadius(m_editorService->mindMapData()->cornerRadius());
+            node->setTextSize(m_editorService->mindMapData()->textSize());
+            node->changeFont(m_editorService->mindMapData()->font());
             L().trace() << "Added existing node id=" << node->index() << " to scene";
         }
     }
@@ -79,16 +94,16 @@ void ApplicationService::addExistingGraphToScene(bool zoomToFitAfterNodesLoaded)
     updateProgress();
 
     size_t progressCounter = 0;
-    for (auto && edge : editorService->mindMapData()->graph().getEdges()) {
+    for (auto && edge : m_editorService->mindMapData()->graph().getEdges()) {
         const auto node0 = getNodeByIndex(edge->sourceNode().index());
         const auto node1 = getNodeByIndex(edge->targetNode().index());
         if (!m_editorScene->hasEdge(*node0, *node1)) {
             addItem(*edge, false);
-            edge->setArrowSize(editorService->mindMapData()->arrowSize());
-            edge->setColor(editorService->mindMapData()->edgeColor());
-            edge->setEdgeWidth(editorService->mindMapData()->edgeWidth());
-            edge->setTextSize(editorService->mindMapData()->textSize());
-            edge->changeFont(editorService->mindMapData()->font());
+            edge->setArrowSize(m_editorService->mindMapData()->arrowSize());
+            edge->setColor(m_editorService->mindMapData()->edgeColor());
+            edge->setEdgeWidth(m_editorService->mindMapData()->edgeWidth());
+            edge->setTextSize(m_editorService->mindMapData()->textSize());
+            edge->changeFont(m_editorService->mindMapData()->font());
             node0->addGraphicsEdge(*edge);
             node1->addGraphicsEdge(*edge);
             edge->updateLine();
@@ -102,32 +117,32 @@ void ApplicationService::addExistingGraphToScene(bool zoomToFitAfterNodesLoaded)
     updateProgress();
 
     // This is to prevent nasty updated loops like in https://github.com/juzzlin/Heimer/issues/96
-    m_mainWindow.enableWidgetSignals(false);
+    m_mainWindow->enableWidgetSignals(false);
 
     updateProgress();
 
-    m_mainWindow.setArrowSize(editorService->mindMapData()->arrowSize());
-    m_mainWindow.setCornerRadius(editorService->mindMapData()->cornerRadius());
-    m_mainWindow.setEdgeWidth(editorService->mindMapData()->edgeWidth());
-    m_mainWindow.setTextSize(editorService->mindMapData()->textSize());
-    m_mainWindow.changeFont(editorService->mindMapData()->font());
+    m_mainWindow->setArrowSize(m_editorService->mindMapData()->arrowSize());
+    m_mainWindow->setCornerRadius(m_editorService->mindMapData()->cornerRadius());
+    m_mainWindow->setEdgeWidth(m_editorService->mindMapData()->edgeWidth());
+    m_mainWindow->setTextSize(m_editorService->mindMapData()->textSize());
+    m_mainWindow->changeFont(m_editorService->mindMapData()->font());
 
     updateProgress();
 
-    m_editorView->setArrowSize(editorService->mindMapData()->arrowSize());
-    m_editorView->setCornerRadius(editorService->mindMapData()->cornerRadius());
-    m_editorView->setEdgeColor(editorService->mindMapData()->edgeColor());
-    m_editorView->setEdgeWidth(editorService->mindMapData()->edgeWidth());
+    m_editorView->setArrowSize(m_editorService->mindMapData()->arrowSize());
+    m_editorView->setCornerRadius(m_editorService->mindMapData()->cornerRadius());
+    m_editorView->setEdgeColor(m_editorService->mindMapData()->edgeColor());
+    m_editorView->setEdgeWidth(m_editorService->mindMapData()->edgeWidth());
 
     updateProgress();
 
-    m_mainWindow.enableWidgetSignals(true);
+    m_mainWindow->enableWidgetSignals(true);
 }
 
 void ApplicationService::addEdge(NodeR node1, NodeR node2)
 {
     // Add edge from node1 to node2
-    connectEdgeToUndoMechanism(SingleInstanceContainer::instance().editorService()->addEdge(std::make_shared<SceneItems::Edge>(&node1, &node2)));
+    connectEdgeToUndoMechanism(m_editorService->addEdge(std::make_shared<SceneItems::Edge>(&node1, &node2)));
     L().debug() << "Created a new edge " << node1.index() << " -> " << node2.index();
 
     addExistingGraphToScene();
@@ -143,7 +158,7 @@ void ApplicationService::addItem(QGraphicsItem & item, bool adjustSceneRect)
 
 void ApplicationService::addNodeToSelectionGroup(NodeR node, bool isImplicit)
 {
-    SingleInstanceContainer::instance().editorService()->addNodeToSelectionGroup(node, isImplicit);
+    m_editorService->addNodeToSelectionGroup(node, isImplicit);
     updateNodeConnectionActions();
 }
 
@@ -154,13 +169,13 @@ void ApplicationService::adjustSceneRect()
 
 void ApplicationService::clearSelectionGroup(bool onlyImplicitNodes)
 {
-    SingleInstanceContainer::instance().editorService()->clearSelectionGroup(onlyImplicitNodes);
+    m_editorService->clearSelectionGroup(onlyImplicitNodes);
     updateNodeConnectionActions();
 }
 
 bool ApplicationService::canBeSaved() const
 {
-    return !SingleInstanceContainer::instance().editorService()->fileName().isEmpty();
+    return !m_editorService->fileName().isEmpty();
 }
 
 void ApplicationService::connectEdgeToUndoMechanism(EdgeS edge)
@@ -175,41 +190,39 @@ void ApplicationService::connectNodeToUndoMechanism(NodeS node)
 
 void ApplicationService::connectNodeToImageManager(NodeS node)
 {
-    connect(node.get(), &SceneItems::Node::imageRequested, &SingleInstanceContainer::instance().editorService()->mindMapData()->imageManager(), &ImageManager::handleImageRequest, Qt::UniqueConnection);
+    connect(node.get(), &SceneItems::Node::imageRequested, &m_editorService->mindMapData()->imageManager(), &ImageManager::handleImageRequest, Qt::UniqueConnection);
     node->setImageRef(node->imageRef()); // This effectively results in a fetch from ImageManager
 }
 
 size_t ApplicationService::copyStackSize() const
 {
-    return SingleInstanceContainer::instance().editorService()->copyStackSize();
+    return m_editorService->copyStackSize();
 }
 
 void ApplicationService::connectGraphToUndoMechanism()
 {
-    for (auto && node : SingleInstanceContainer::instance().editorService()->mindMapData()->graph().getNodes()) {
+    for (auto && node : m_editorService->mindMapData()->graph().getNodes()) {
         connectNodeToUndoMechanism(node);
     }
 
-    for (auto && edge : SingleInstanceContainer::instance().editorService()->mindMapData()->graph().getEdges()) {
+    for (auto && edge : m_editorService->mindMapData()->graph().getEdges()) {
         connectEdgeToUndoMechanism(edge);
     }
 }
 
 void ApplicationService::connectGraphToImageManager()
 {
-    for (auto && node : SingleInstanceContainer::instance().editorService()->mindMapData()->graph().getNodes()) {
+    for (auto && node : m_editorService->mindMapData()->graph().getNodes()) {
         connectNodeToImageManager(node);
     }
 }
 
 void ApplicationService::connectSelectedNodes()
 {
-    auto && editorService = SingleInstanceContainer::instance().editorService();
-
-    L().debug() << "Connecting selected nodes: " << editorService->selectionGroupSize();
+    L().debug() << "Connecting selected nodes: " << m_editorService->selectionGroupSize();
     if (areSelectedNodesConnectable()) {
         saveUndoPoint();
-        for (auto && edge : editorService->connectSelectedNodes()) {
+        for (auto && edge : m_editorService->connectSelectedNodes()) {
             connectEdgeToUndoMechanism(edge);
         }
         addExistingGraphToScene();
@@ -219,12 +232,10 @@ void ApplicationService::connectSelectedNodes()
 
 void ApplicationService::disconnectSelectedNodes()
 {
-    auto && editorService = SingleInstanceContainer::instance().editorService();
-
-    L().debug() << "Disconnecting selected nodes: " << editorService->selectionGroupSize();
+    L().debug() << "Disconnecting selected nodes: " << m_editorService->selectionGroupSize();
     if (areSelectedNodesDisconnectable()) {
         saveUndoPoint();
-        editorService->disconnectSelectedNodes();
+        m_editorService->disconnectSelectedNodes();
         updateNodeConnectionActions();
     }
 }
@@ -232,21 +243,19 @@ void ApplicationService::disconnectSelectedNodes()
 void ApplicationService::changeFont(const QFont & font)
 {
     saveUndoPoint();
-    SingleInstanceContainer::instance().editorService()->mindMapData()->changeFont(font);
+    m_editorService->mindMapData()->changeFont(font);
 }
 
 NodeS ApplicationService::createAndAddNode(int sourceNodeIndex, QPointF pos)
 {
-    auto && editorService = SingleInstanceContainer::instance().editorService();
-
     const auto node0 = getNodeByIndex(sourceNodeIndex);
-    const auto node1 = m_mainWindow.copyOnDragEnabled() ? editorService->copyNodeAt(*node0, pos) : editorService->addNodeAt(pos);
+    const auto node1 = m_mainWindow->copyOnDragEnabled() ? m_editorService->copyNodeAt(*node0, pos) : m_editorService->addNodeAt(pos);
     connectNodeToUndoMechanism(node1);
     connectNodeToImageManager(node1);
     L().debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
 
     // Add edge from the parent node.
-    connectEdgeToUndoMechanism(editorService->addEdge(std::make_shared<SceneItems::Edge>(node0.get(), node1.get())));
+    connectEdgeToUndoMechanism(m_editorService->addEdge(std::make_shared<SceneItems::Edge>(node0.get(), node1.get())));
     L().debug() << "Created a new edge " << node0->index() << " -> " << node1->index();
 
     addExistingGraphToScene();
@@ -259,7 +268,7 @@ NodeS ApplicationService::createAndAddNode(int sourceNodeIndex, QPointF pos)
 
 NodeS ApplicationService::createAndAddNode(QPointF pos)
 {
-    const auto node1 = SingleInstanceContainer::instance().editorService()->addNodeAt(m_editorView->grid().snapToGrid(pos));
+    const auto node1 = m_editorService->addNodeAt(m_editorView->grid().snapToGrid(pos));
     connectNodeToUndoMechanism(node1);
     connectNodeToImageManager(node1);
     L().debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
@@ -275,7 +284,7 @@ NodeS ApplicationService::createAndAddNode(QPointF pos)
 
 NodeS ApplicationService::pasteNodeAt(NodeR source, QPointF pos)
 {
-    const auto copiedNode = SingleInstanceContainer::instance().editorService()->copyNodeAt(source, pos);
+    const auto copiedNode = m_editorService->copyNodeAt(source, pos);
     connectNodeToUndoMechanism(copiedNode);
     connectNodeToImageManager(copiedNode);
     L().debug() << "Pasted node at (" << pos.x() << "," << pos.y() << ")";
@@ -284,29 +293,29 @@ NodeS ApplicationService::pasteNodeAt(NodeR source, QPointF pos)
 
 MouseAction & ApplicationService::mouseAction()
 {
-    return SingleInstanceContainer::instance().editorService()->mouseAction();
+    return m_editorService->mouseAction();
 }
 
 void ApplicationService::deleteEdge(EdgeR edge)
 {
-    SingleInstanceContainer::instance().editorService()->deleteEdge(edge);
+    m_editorService->deleteEdge(edge);
 }
 
 void ApplicationService::enableAutosave(bool enable)
 {
     if (enable) {
-        SingleInstanceContainer::instance().editorService()->requestAutosave(EditorService::AutosaveContext::Modification, true);
+        m_editorService->requestAutosave(EditorService::AutosaveContext::Modification, true);
     }
 }
 
 void ApplicationService::enableUndo(bool enable)
 {
-    m_mainWindow.enableUndo(enable);
+    m_mainWindow->enableUndo(enable);
 }
 
 void ApplicationService::enableRedo(bool enable)
 {
-    m_mainWindow.enableRedo(enable);
+    m_mainWindow->enableRedo(enable);
 }
 
 void ApplicationService::exportToPng(const ExportParams & exportParams)
@@ -315,7 +324,7 @@ void ApplicationService::exportToPng(const ExportParams & exportParams)
     zoomForExport();
 
     L().info() << "Exporting a PNG image of size (" << exportParams.imageSize.width() << "x" << exportParams.imageSize.height() << ") to " << exportParams.fileName.toStdString();
-    const auto image = m_editorScene->toImage(exportParams.imageSize, SingleInstanceContainer::instance().editorService()->backgroundColor(), exportParams.transparentBackground);
+    const auto image = m_editorScene->toImage(exportParams.imageSize, m_editorService->backgroundColor(), exportParams.transparentBackground);
     m_editorView->restoreZoom();
 
     emit pngExportFinished(image.save(exportParams.fileName));
@@ -335,32 +344,29 @@ void ApplicationService::exportToSvg(const ExportParams & exportParams)
 
 QString ApplicationService::fileName() const
 {
-    return SingleInstanceContainer::instance().editorService()->fileName();
+    return m_editorService->fileName();
 }
 
 NodeS ApplicationService::getNodeByIndex(int index)
 {
-    return SingleInstanceContainer::instance().editorService()->getNodeByIndex(index);
+    return m_editorService->getNodeByIndex(index);
 }
 
 bool ApplicationService::hasNodes() const
 {
-    auto && editorService = SingleInstanceContainer::instance().editorService();
-    return editorService->mindMapData() && editorService->mindMapData()->graph().nodeCount();
+    return m_editorService->mindMapData() && m_editorService->mindMapData()->graph().nodeCount();
 }
 
 void ApplicationService::initializeNewMindMap()
 {
     L().debug() << "Initializing a new mind map";
 
-    auto && editorService = SingleInstanceContainer::instance().editorService();
-
     m_editorScene = std::make_unique<EditorScene>();
-    editorService->initializeNewMindMap();
+    m_editorService->initializeNewMindMap();
 
     initializeView();
 
-    const auto node = editorService->addNodeAt(QPointF(0, 0));
+    const auto node = m_editorService->addNodeAt(QPointF(0, 0));
     connectNodeToUndoMechanism(node);
     connectNodeToImageManager(node);
 
@@ -368,7 +374,7 @@ void ApplicationService::initializeNewMindMap()
 
     QTimer::singleShot(0, this, &ApplicationService::zoomToFit);
 
-    m_mainWindow.initializeNewMindMap();
+    m_mainWindow->initializeNewMindMap();
 }
 
 void ApplicationService::initiateNewNodeDrag(SceneItems::NodeHandle & nodeHandle)
@@ -407,15 +413,15 @@ void ApplicationService::initializeView()
     m_editorView->setScene(m_editorScene.get());
     m_editorView->resetDummyDragItems();
 
-    m_editorView->setBackgroundBrush(QBrush(SingleInstanceContainer::instance().editorService()->backgroundColor()));
+    m_editorView->setBackgroundBrush(QBrush(m_editorService->backgroundColor()));
 
-    m_mainWindow.setCentralWidget(m_editorView);
-    m_mainWindow.setContentsMargins(0, 0, 0, 0);
+    m_mainWindow->setCentralWidget(m_editorView);
+    m_mainWindow->setContentsMargins(0, 0, 0, 0);
 }
 
 bool ApplicationService::areDirectlyConnected(NodeCR node1, NodeCR node2) const
 {
-    auto && graph = SingleInstanceContainer::instance().editorService()->mindMapData()->graph();
+    auto && graph = m_editorService->mindMapData()->graph();
     const auto node1Ptr = graph.getNode(node1.index());
     const auto node2Ptr = graph.getNode(node2.index());
     return graph.areDirectlyConnected(node1Ptr, node2Ptr);
@@ -423,81 +429,80 @@ bool ApplicationService::areDirectlyConnected(NodeCR node1, NodeCR node2) const
 
 bool ApplicationService::areSelectedNodesConnectable() const
 {
-    return SingleInstanceContainer::instance().editorService()->areSelectedNodesConnectable();
+    return m_editorService->areSelectedNodesConnectable();
 }
 
 bool ApplicationService::areSelectedNodesDisconnectable() const
 {
-    return SingleInstanceContainer::instance().editorService()->areSelectedNodesDisconnectable();
+    return m_editorService->areSelectedNodesDisconnectable();
 }
 
 bool ApplicationService::isLeafNode(NodeR node)
 {
-    auto && graph = SingleInstanceContainer::instance().editorService()->mindMapData()->graph();
+    auto && graph = m_editorService->mindMapData()->graph();
     return graph.getEdgesFromNode(graph.getNode(node.index())).size() + graph.getEdgesToNode(graph.getNode(node.index())).size() <= 1;
 }
 
 bool ApplicationService::isInBetween(NodeR node)
 {
-    auto && graph = SingleInstanceContainer::instance().editorService()->mindMapData()->graph();
+    auto && graph = m_editorService->mindMapData()->graph();
     return graph.getEdgesFromNode(graph.getNode(node.index())).size() + graph.getEdgesToNode(graph.getNode(node.index())).size() == 2;
 }
 
 bool ApplicationService::isInSelectionGroup(NodeR node)
 {
-    return SingleInstanceContainer::instance().editorService()->isInSelectionGroup(node);
+    return m_editorService->isInSelectionGroup(node);
 }
 
 bool ApplicationService::isRedoable() const
 {
-    return SingleInstanceContainer::instance().editorService()->isRedoable();
+    return m_editorService->isRedoable();
 }
 
 bool ApplicationService::isModified() const
 {
-    return SingleInstanceContainer::instance().editorService()->isModified();
+    return m_editorService->isModified();
 }
 
 bool ApplicationService::isUndoable() const
 {
-    return SingleInstanceContainer::instance().editorService()->isUndoable();
+    return m_editorService->isUndoable();
 }
 
 void ApplicationService::mirror(bool vertically)
 {
-    SingleInstanceContainer::instance().editorService()->mirror(vertically);
+    m_editorService->mirror(vertically);
 }
 
 void ApplicationService::moveSelectionGroup(NodeR reference, QPointF location)
 {
-    SingleInstanceContainer::instance().editorService()->moveSelectionGroup(reference, location);
+    m_editorService->moveSelectionGroup(reference, location);
 }
 
 MindMapDataS ApplicationService::mindMapData() const
 {
-    return SingleInstanceContainer::instance().editorService()->mindMapData();
+    return m_editorService->mindMapData();
 }
 
 size_t ApplicationService::nodeCount() const
 {
-    auto && editorService = SingleInstanceContainer::instance().editorService();
-    return editorService->mindMapData() ? editorService->mindMapData()->graph().nodeCount() : 0;
+    return m_editorService->mindMapData() ? m_editorService->mindMapData()->graph().nodeCount() : 0;
 }
 
 bool ApplicationService::nodeHasImageAttached() const
 {
-    return SingleInstanceContainer::instance().editorService()->nodeHasImageAttached();
+    return m_editorService->nodeHasImageAttached();
 }
 
 void ApplicationService::paste()
 {
     // Create a new node from OS clipboard if text has been copied
-    auto && editorService = SingleInstanceContainer::instance().editorService();
+
     if (!QApplication::clipboard()->text().isEmpty()) {
         saveUndoPoint();
         const auto node = createAndAddNode(m_editorView->grid().snapToGrid(mouseAction().mappedPos()));
         node->setText(QApplication::clipboard()->text());
-        editorService->clearCopyStack();
+        m_editorService->clearCopyStack();
     } else if (!QApplication::clipboard()->image().isNull()) {
         saveUndoPoint();
         using std::chrono::duration_cast;
@@ -505,24 +510,24 @@ void ApplicationService::paste()
         const auto node = createAndAddNode(m_editorView->grid().snapToGrid(mouseAction().mappedPos()));
         const auto ts = duration_cast<std::chrono::milliseconds>(system_clock::now().time_since_epoch()).count();
         const Image image(QApplication::clipboard()->image(), "copy-pasted-image-data-" + std::to_string(ts) + ".png");
-        const auto id = editorService->mindMapData()->imageManager().addImage(image);
+        const auto id = m_editorService->mindMapData()->imageManager().addImage(image);
         node->setImageRef(id);
-        editorService->clearCopyStack();
+        m_editorService->clearCopyStack();
     } else { // Paste copied nodes
-        if (editorService->copyStackSize()) {
+        if (m_editorService->copyStackSize()) {
             saveUndoPoint();
             std::map<int, NodeS> nodeMapping;
             juzzlin::L().debug() << "Pasting nodes";
-            for (auto && copiedNode : editorService->copiedData().nodes) {
-                const auto pastedNode = pasteNodeAt(*copiedNode, m_editorView->grid().snapToGrid(mouseAction().mappedPos() - editorService->copiedData().copyReferencePoint + copiedNode->pos()));
+            for (auto && copiedNode : m_editorService->copiedData().nodes) {
+                const auto pastedNode = pasteNodeAt(*copiedNode, m_editorView->grid().snapToGrid(mouseAction().mappedPos() - m_editorService->copiedData().copyReferencePoint + copiedNode->pos()));
                 nodeMapping[copiedNode->index()] = pastedNode;
             }
             juzzlin::L().debug() << "Pasting edges";
-            for (auto && copiedEdge : editorService->copiedData().edges) {
+            for (auto && copiedEdge : m_editorService->copiedData().edges) {
                 const auto pastedEdge = std::make_shared<SceneItems::Edge>(*copiedEdge.edge);
                 pastedEdge->setSourceNode(*nodeMapping[copiedEdge.sourceNodeIndex]);
                 pastedEdge->setTargetNode(*nodeMapping[copiedEdge.targetNodeIndex]);
-                connectEdgeToUndoMechanism(editorService->addEdge(pastedEdge));
+                connectEdgeToUndoMechanism(m_editorService->addEdge(pastedEdge));
             }
             addExistingGraphToScene();
         }
@@ -533,17 +538,15 @@ void ApplicationService::performNodeAction(const NodeAction & action)
 {
     juzzlin::L().debug() << "Handling NodeAction: " << static_cast<int>(action.type);
 
-    auto && editorService = SingleInstanceContainer::instance().editorService();
-
     switch (action.type) {
     case NodeAction::Type::None:
         break;
     case NodeAction::Type::AttachImage: {
         const Image image { action.image, action.fileName.toStdString() };
-        const auto id = editorService->mindMapData()->imageManager().addImage(image);
-        if (editorService->selectionGroupSize()) {
+        const auto id = m_editorService->mindMapData()->imageManager().addImage(image);
+        if (m_editorService->selectionGroupSize()) {
             saveUndoPoint();
-            editorService->setImageRefForSelectedNodes(id);
+            m_editorService->setImageRefForSelectedNodes(id);
         }
     } break;
     case NodeAction::Type::ConnectSelected:
@@ -551,7 +554,7 @@ void ApplicationService::performNodeAction(const NodeAction & action)
         break;
     case NodeAction::Type::Copy:
         QApplication::clipboard()->clear();
-        editorService->copySelectedNodes();
+        m_editorService->copySelectedNodes();
         break;
     case NodeAction::Type::Delete:
         if (mouseAction().action() == MouseAction::Action::CreateOrConnectNode) {
@@ -561,7 +564,7 @@ void ApplicationService::performNodeAction(const NodeAction & action)
         } else if (mouseAction().action() == MouseAction::Action::None) {
             saveUndoPoint();
             m_editorView->resetDummyDragItems();
-            editorService->deleteSelectedNodes();
+            m_editorService->deleteSelectedNodes();
         } else {
             juzzlin::L().warning() << "Cannot delete node due to incompleted MouseAction: " << static_cast<int>(mouseAction().action());
         }
@@ -582,20 +585,20 @@ void ApplicationService::performNodeAction(const NodeAction & action)
         break;
     case NodeAction::Type::RemoveAttachedImage:
         saveUndoPoint();
-        editorService->removeImageRefsOfSelectedNodes();
+        m_editorService->removeImageRefsOfSelectedNodes();
         break;
     case NodeAction::Type::SetNodeColor:
         saveUndoPoint();
-        editorService->setColorForSelectedNodes(action.color);
-        if (editorService->selectionGroupSize() == 1) {
-            editorService->clearSelectionGroup();
+        m_editorService->setColorForSelectedNodes(action.color);
+        if (m_editorService->selectionGroupSize() == 1) {
+            m_editorService->clearSelectionGroup();
         }
         break;
     case NodeAction::Type::SetTextColor:
         saveUndoPoint();
-        editorService->setTextColorForSelectedNodes(action.color);
-        if (editorService->selectionGroupSize() == 1) {
-            editorService->clearSelectionGroup();
+        m_editorService->setTextColorForSelectedNodes(action.color);
+        if (m_editorService->selectionGroupSize() == 1) {
+            m_editorService->clearSelectionGroup();
         }
         break;
     }
@@ -605,8 +608,8 @@ bool ApplicationService::openMindMap(QString fileName)
 {
     try {
         juzzlin::L().info() << "Loading '" << fileName.toStdString() << "'";
-        SingleInstanceContainer::instance().progressManager()->setEnabled(true);
-        SingleInstanceContainer::instance().editorService()->loadMindMapData(fileName);
+        SIC::instance().progressManager()->setEnabled(true);
+        m_editorService->loadMindMapData(fileName);
         updateProgress();
         m_editorScene = std::make_unique<EditorScene>();
         updateProgress();
@@ -623,17 +626,17 @@ bool ApplicationService::openMindMap(QString fileName)
     } catch (const IO::FileException & e) {
         // Initialize a new mind map to avoid an undefined state.
         initializeNewMindMap();
-        m_mainWindow.showErrorDialog(e.message());
-        SingleInstanceContainer::instance().progressManager()->setEnabled(false);
+        m_mainWindow->showErrorDialog(e.message());
+        SIC::instance().progressManager()->setEnabled(false);
         return false;
     } catch (const std::runtime_error & e) {
         // Initialize a new mind map to avoid an undefined state.
         initializeNewMindMap();
-        m_mainWindow.showErrorDialog(e.what());
-        SingleInstanceContainer::instance().progressManager()->setEnabled(false);
+        m_mainWindow->showErrorDialog(e.what());
+        SIC::instance().progressManager()->setEnabled(false);
         return false;
     }
-    SingleInstanceContainer::instance().progressManager()->setEnabled(false);
+    SIC::instance().progressManager()->setEnabled(false);
     return true;
 }
 
@@ -642,7 +645,7 @@ void ApplicationService::redo()
     L().debug() << "Undo..";
 
     m_editorView->resetDummyDragItems();
-    SingleInstanceContainer::instance().editorService()->redo();
+    m_editorService->redo();
 
     setupMindMapAfterUndoOrRedo();
 }
@@ -654,7 +657,7 @@ void ApplicationService::removeItem(QGraphicsItem & item)
 
 void ApplicationService::toggleNodeInSelectionGroup(NodeR node, bool updateNodeConnectionActions)
 {
-    SingleInstanceContainer::instance().editorService()->toggleNodeInSelectionGroup(node);
+    m_editorService->toggleNodeInSelectionGroup(node);
     if (updateNodeConnectionActions) {
         this->updateNodeConnectionActions();
     }
@@ -662,17 +665,17 @@ void ApplicationService::toggleNodeInSelectionGroup(NodeR node, bool updateNodeC
 
 bool ApplicationService::saveMindMapAs(QString fileName)
 {
-    return SingleInstanceContainer::instance().editorService()->saveMindMapAs(fileName, true);
+    return m_editorService->saveMindMapAs(fileName, true);
 }
 
 bool ApplicationService::saveMindMap()
 {
-    return SingleInstanceContainer::instance().editorService()->saveMindMap(true);
+    return m_editorService->saveMindMap(true);
 }
 
 void ApplicationService::saveUndoPoint()
 {
-    SingleInstanceContainer::instance().editorService()->saveUndoPoint();
+    m_editorService->saveUndoPoint();
 }
 
 QSize ApplicationService::sceneRectSize() const
@@ -682,34 +685,34 @@ QSize ApplicationService::sceneRectSize() const
 
 EdgeP ApplicationService::selectedEdge() const
 {
-    return SingleInstanceContainer::instance().editorService()->selectedEdge();
+    return m_editorService->selectedEdge();
 }
 
 NodeP ApplicationService::selectedNode() const
 {
-    return SingleInstanceContainer::instance().editorService()->selectedNode();
+    return m_editorService->selectedNode();
 }
 
 size_t ApplicationService::selectionGroupSize() const
 {
-    return SingleInstanceContainer::instance().editorService()->selectionGroupSize();
+    return m_editorService->selectionGroupSize();
 }
 
 void ApplicationService::setArrowSize(double arrowSize)
 {
     // Break loop with the spinbox
-    if (auto && editorService = SingleInstanceContainer::instance().editorService(); !qFuzzyCompare(editorService->mindMapData()->arrowSize(), arrowSize)) {
+    if (!qFuzzyCompare(m_editorService->mindMapData()->arrowSize(), arrowSize)) {
         saveUndoPoint();
-        editorService->mindMapData()->setArrowSize(arrowSize);
-        m_editorView->setArrowSize(editorService->mindMapData()->arrowSize());
+        m_editorService->mindMapData()->setArrowSize(arrowSize);
+        m_editorView->setArrowSize(m_editorService->mindMapData()->arrowSize());
     }
 }
 
 void ApplicationService::setBackgroundColor(QColor color)
 {
-    if (auto && editorService = SingleInstanceContainer::instance().editorService(); editorService->mindMapData()->backgroundColor() != color) {
+    if (m_editorService->mindMapData()->backgroundColor() != color) {
         saveUndoPoint();
-        editorService->mindMapData()->setBackgroundColor(color);
+        m_editorService->mindMapData()->setBackgroundColor(color);
         m_editorView->setBackgroundBrush(QBrush(color));
     }
 }
@@ -717,18 +720,18 @@ void ApplicationService::setBackgroundColor(QColor color)
 void ApplicationService::setCornerRadius(int value)
 {
     // Break loop with the spinbox
-    if (auto && editorService = SingleInstanceContainer::instance().editorService(); editorService->mindMapData()->cornerRadius() != value) {
+    if (m_editorService->mindMapData()->cornerRadius() != value) {
         saveUndoPoint();
-        editorService->mindMapData()->setCornerRadius(value);
-        m_editorView->setCornerRadius(editorService->mindMapData()->cornerRadius());
+        m_editorService->mindMapData()->setCornerRadius(value);
+        m_editorView->setCornerRadius(m_editorService->mindMapData()->cornerRadius());
     }
 }
 
 void ApplicationService::setEdgeColor(QColor color)
 {
-    if (auto && editorService = SingleInstanceContainer::instance().editorService(); editorService->mindMapData()->edgeColor() != color) {
+    if (m_editorService->mindMapData()->edgeColor() != color) {
         saveUndoPoint();
-        editorService->mindMapData()->setEdgeColor(color);
+        m_editorService->mindMapData()->setEdgeColor(color);
         m_editorView->setEdgeColor(color);
     }
 }
@@ -736,18 +739,18 @@ void ApplicationService::setEdgeColor(QColor color)
 void ApplicationService::setEdgeWidth(double value)
 {
     // Break loop with the spinbox
-    if (auto && editorService = SingleInstanceContainer::instance().editorService(); !qFuzzyCompare(editorService->mindMapData()->edgeWidth(), value)) {
+    if (!qFuzzyCompare(m_editorService->mindMapData()->edgeWidth(), value)) {
         saveUndoPoint();
-        editorService->mindMapData()->setEdgeWidth(value);
-        m_editorView->setEdgeWidth(editorService->mindMapData()->edgeWidth());
+        m_editorService->mindMapData()->setEdgeWidth(value);
+        m_editorView->setEdgeWidth(m_editorService->mindMapData()->edgeWidth());
     }
 }
 
 void ApplicationService::setGridColor(QColor color)
 {
-    if (auto && editorService = SingleInstanceContainer::instance().editorService(); editorService->mindMapData()->gridColor() != color) {
+    if (m_editorService->mindMapData()->gridColor() != color) {
         saveUndoPoint();
-        editorService->mindMapData()->setGridColor(color);
+        m_editorService->mindMapData()->setGridColor(color);
         m_editorView->setGridColor(color);
         m_editorView->scene()->update();
     }
@@ -757,7 +760,7 @@ void ApplicationService::setEditorView(EditorView & editorView)
 {
     m_editorView = &editorView;
 
-    m_editorView->setParent(&m_mainWindow);
+    m_editorView->setParent(m_mainWindow.get());
 
     connect(m_editorView, &EditorView::newNodeRequested, this, [=](QPointF position) {
         saveUndoPoint();
@@ -768,7 +771,7 @@ void ApplicationService::setEditorView(EditorView & editorView)
 size_t ApplicationService::setRectagleSelection(QRectF rect)
 {
     size_t nodesInRectangle = 0;
-    for (auto && item : m_editorScene->items(rect, SingleInstanceContainer::instance().settingsProxy()->selectNodeGroupByIntersection() ? Qt::IntersectsItemShape : Qt::ContainsItemShape)) {
+    for (auto && item : m_editorScene->items(rect, SIC::instance().settingsProxy()->selectNodeGroupByIntersection() ? Qt::IntersectsItemShape : Qt::ContainsItemShape)) {
         if (const auto node = dynamic_cast<NodeP>(item)) {
             toggleNodeInSelectionGroup(*node, false);
             nodesInRectangle++;
@@ -782,28 +785,27 @@ void ApplicationService::setSelectedEdge(EdgeP edge)
 {
     L().debug() << __func__ << "(): " << reinterpret_cast<uint64_t>(edge);
 
-    auto && editorService = SingleInstanceContainer::instance().editorService();
-    if (editorService->selectedEdge()) {
-        editorService->selectedEdge()->setSelected(false);
+    if (m_editorService->selectedEdge()) {
+        m_editorService->selectedEdge()->setSelected(false);
     }
 
     if (edge) {
         edge->setSelected(true);
     }
 
-    editorService->setSelectedEdge(edge);
+    m_editorService->setSelectedEdge(edge);
 }
 
 void ApplicationService::setSearchText(QString text)
 {
     // Leave zoom setting as it is if user has cleared selected nodes and search field.
     // Otherwise zoom in to search results and select matching texts.
-    auto && editorService = SingleInstanceContainer::instance().editorService();
-    if (text.isEmpty() && !editorService->selectionGroupSize()) {
-        editorService->selectNodesByText("");
+
+    if (text.isEmpty() && !m_editorService->selectionGroupSize()) {
+        m_editorService->selectNodesByText("");
     } else {
-        editorService->selectNodesByText(text);
-        if (const auto selectedNodes = editorService->selectedNodes(); selectedNodes.size()) {
+        m_editorService->selectNodesByText(text);
+        if (const auto selectedNodes = m_editorService->selectedNodes(); selectedNodes.size()) {
             m_editorView->zoomToFit(MagicZoom::calculateRectangleByNodes(selectedNodes));
         } else {
             zoomToFit();
@@ -815,22 +817,22 @@ void ApplicationService::setSearchText(QString text)
 
 void ApplicationService::setShadowEffect(const ShadowEffectParams & params)
 {
-    SingleInstanceContainer::instance().editorService()->mindMapData()->setShadowEffect(params);
+    m_editorService->mindMapData()->setShadowEffect(params);
 }
 
 void ApplicationService::setGridSize(int size, bool autoSnap)
 {
     m_editorView->setGridSize(size);
-    SingleInstanceContainer::instance().editorService()->setGridSize(size, autoSnap);
+    m_editorService->setGridSize(size, autoSnap);
 }
 
 void ApplicationService::setTextSize(int textSize)
 {
     // Break loop with the spinbox
-    auto && editorService = SingleInstanceContainer::instance().editorService();
-    if (editorService->mindMapData()->textSize() != textSize) {
+
+    if (m_editorService->mindMapData()->textSize() != textSize) {
         saveUndoPoint();
-        editorService->mindMapData()->setTextSize(textSize);
+        m_editorService->mindMapData()->setTextSize(textSize);
     }
 }
 
@@ -841,7 +843,7 @@ void ApplicationService::setupMindMapAfterUndoOrRedo()
 
     m_editorScene = std::make_unique<EditorScene>();
     m_editorView->setScene(m_editorScene.get());
-    m_editorView->setBackgroundBrush(QBrush(SingleInstanceContainer::instance().editorService()->backgroundColor()));
+    m_editorView->setBackgroundBrush(QBrush(m_editorService->backgroundColor()));
 
     addExistingGraphToScene();
 
@@ -859,13 +861,13 @@ void ApplicationService::showStatusText(QString statusText)
 
 void ApplicationService::updateNodeConnectionActions()
 {
-    m_mainWindow.enableConnectSelectedNodesAction(areSelectedNodesConnectable());
-    m_mainWindow.enableDisconnectSelectedNodesAction(areSelectedNodesDisconnectable());
+    m_mainWindow->enableConnectSelectedNodesAction(areSelectedNodesConnectable());
+    m_mainWindow->enableDisconnectSelectedNodesAction(areSelectedNodesDisconnectable());
 }
 
 void ApplicationService::updateProgress()
 {
-    SingleInstanceContainer::instance().progressManager()->updateProgress();
+    SIC::instance().progressManager()->updateProgress();
 }
 
 void ApplicationService::undo()
@@ -873,14 +875,14 @@ void ApplicationService::undo()
     L().debug() << "Undo..";
 
     m_editorView->resetDummyDragItems();
-    SingleInstanceContainer::instance().editorService()->undo();
+    m_editorService->undo();
 
     setupMindMapAfterUndoOrRedo();
 }
 
 void ApplicationService::unselectText()
 {
-    SingleInstanceContainer::instance().editorService()->unselectText();
+    m_editorService->unselectText();
 }
 
 void ApplicationService::zoomIn()
@@ -934,12 +936,12 @@ double ApplicationService::calculateNodeOverlapScore(NodeCR node1, NodeCR node2)
 
 void ApplicationService::unselectImplicitlySelectedNodes()
 {
-    SingleInstanceContainer::instance().editorService()->clearSelectionGroup(true);
+    m_editorService->clearSelectionGroup(true);
 }
 
 void ApplicationService::unselectSelectedNode()
 {
-    for (auto && node : SingleInstanceContainer::instance().editorService()->mindMapData()->graph().getNodes()) {
+    for (auto && node : m_editorService->mindMapData()->graph().getNodes()) {
         node->setSelected(false);
     }
 }
@@ -949,7 +951,7 @@ NodeS ApplicationService::getBestOverlapNode(NodeCR source)
     NodeS bestNode;
     double bestScore = 0;
     const double minThreshold = 0.25;
-    for (auto && node : SingleInstanceContainer::instance().editorService()->mindMapData()->graph().getNodes()) {
+    for (auto && node : m_editorService->mindMapData()->graph().getNodes()) {
         if (node->index() != source.index() && node->index() != mouseAction().sourceNode()->index() && !areDirectlyConnected(*node, *mouseAction().sourceNode())) {
             if (const auto score = calculateNodeOverlapScore(source, *node); score > minThreshold && score > bestScore) {
                 bestNode = node;

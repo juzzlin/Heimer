@@ -17,10 +17,11 @@
 
 #include "../application_service.hpp"
 #include "../node_action.hpp"
+#include "../single_instance_container.hpp"
 
 namespace Dialogs {
 
-SceneColorDialog::SceneColorDialog(Role role, std::shared_ptr<ApplicationService> applicationService)
+SceneColorDialog::SceneColorDialog(Role role)
   : ColorDialog(role)
 {
     connect(this, &QColorDialog::colorSelected, [=](QColor color) {
@@ -29,19 +30,19 @@ SceneColorDialog::SceneColorDialog(Role role, std::shared_ptr<ApplicationService
         }
         switch (role) {
         case Role::Background:
-            applicationService->setBackgroundColor(color);
+            SIC::instance().applicationService()->setBackgroundColor(color);
             break;
         case Role::Edge:
-            applicationService->setEdgeColor(color);
+            SIC::instance().applicationService()->setEdgeColor(color);
             break;
         case Role::Grid:
-            applicationService->setGridColor(color);
+            SIC::instance().applicationService()->setGridColor(color);
             break;
         case Role::Node:
-            applicationService->performNodeAction({ NodeAction::Type::SetNodeColor, color });
+            SIC::instance().applicationService()->performNodeAction({ NodeAction::Type::SetNodeColor, color });
             break;
         case Role::Text:
-            applicationService->performNodeAction({ NodeAction::Type::SetTextColor, color });
+            SIC::instance().applicationService()->performNodeAction({ NodeAction::Type::SetTextColor, color });
             break;
         case Role::ShadowColor:
         case Role::SelectedItemShadowColor:

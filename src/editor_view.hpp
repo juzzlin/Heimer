@@ -33,7 +33,6 @@
 #include <set>
 
 class ControlStrategy;
-class ApplicationService;
 class MindMapTile;
 class Object;
 class ObjectModelLoaderoader;
@@ -59,7 +58,7 @@ class EditorView : public QGraphicsView
     Q_OBJECT
 
 public:
-    explicit EditorView(ApplicationService & applicationService);
+    EditorView();
 
     ~EditorView() override;
 
@@ -179,8 +178,6 @@ private:
     QPointF m_mappedPos;
 
     double m_scale = 1.0;
-
-    ApplicationService & m_applicationService;
 
     NodeU m_dummyDragNode;
 

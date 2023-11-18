@@ -462,7 +462,7 @@ static void readChildren(const QDomElement & root, std::map<QString, std::functi
 {
     auto domNode = root.firstChild();
     while (!domNode.isNull()) {
-        SingleInstanceContainer::instance().progressManager()->updateProgress();
+        SIC::instance().progressManager()->updateProgress();
         const auto element = domNode.toElement();
         if (!element.isNull()) {
             if (handlerMap.count(element.nodeName())) {
@@ -723,7 +723,7 @@ MindMapDataU AlzFileIOWorker::fromXml(QString xml) const
 {
     QDomDocument document;
     document.setContent(xml, false);
-    SingleInstanceContainer::instance().progressManager()->updateProgress();
+    SIC::instance().progressManager()->updateProgress();
     return IO::fromXml(document);
 }
 

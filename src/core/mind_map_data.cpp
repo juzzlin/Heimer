@@ -59,7 +59,7 @@ struct MindMapData::Style
 
 MindMapData::MindMapData(QString name)
   : MindMapDataBase(name)
-  , m_style(std::make_unique<Style>(*SingleInstanceContainer::instance().settingsProxy()))
+  , m_style(std::make_unique<Style>(*SIC::instance().settingsProxy()))
   , m_graph(std::make_unique<Graph>())
   , m_imageManager(std::make_unique<ImageManager>())
 {

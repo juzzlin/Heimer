@@ -26,7 +26,6 @@
 
 class Grid;
 class Node;
-class ApplicationService;
 
 namespace Menus {
 
@@ -42,7 +41,7 @@ public:
         Node
     };
 
-    MainContextMenu(QWidget * parent, ApplicationService & applicationService, Grid & grid);
+    MainContextMenu(QWidget * parent, Grid & grid);
 
     void setMode(const Mode & mode);
 
@@ -66,8 +65,6 @@ private:
     NodeP m_selectedNode = nullptr;
 
     std::map<Mode, std::vector<QAction *>> m_mainContextMenuActions;
-
-    ApplicationService & m_applicationService;
 };
 
 } // namespace Menus

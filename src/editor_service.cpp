@@ -62,7 +62,7 @@ void EditorService::addNodeToSelectionGroup(NodeR node, bool isImplicit)
 void EditorService::requestAutosave(AutosaveContext context, bool async)
 {
     const auto doRequestAutosave = [this](bool async) {
-        if (SingleInstanceContainer::instance().settingsProxy()->autosave() && !m_fileName.isEmpty()) {
+        if (SIC::instance().settingsProxy()->autosave() && !m_fileName.isEmpty()) {
             L().debug() << "Autosaving to '" << m_fileName.toStdString() << "'";
             saveMindMapAs(m_fileName, async);
         }

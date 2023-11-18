@@ -41,7 +41,7 @@ QString SettingsTabBase::name() const
 
 SettingsProxyS SettingsTabBase::settingsProxy() const
 {
-    return SingleInstanceContainer::instance().settingsProxy();
+    return SIC::instance().settingsProxy();
 }
 
 } // namespace Dialogs

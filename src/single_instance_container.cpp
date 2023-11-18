@@ -24,7 +24,7 @@
 
 #include <stdexcept>
 
-SingleInstanceContainer * SingleInstanceContainer::m_instance;
+SingleInstanceContainer * SingleInstanceContainer::m_instance = nullptr;
 
 SingleInstanceContainer::SingleInstanceContainer()
   : m_controlStrategy(std::make_unique<ControlStrategy>())

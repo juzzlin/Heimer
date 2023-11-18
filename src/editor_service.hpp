@@ -51,6 +51,7 @@ namespace IO {
 class AlzFileIO;
 } // namespace IO
 
+//! Service class related to editing the mind map data.
 class EditorService : public QObject
 {
     Q_OBJECT

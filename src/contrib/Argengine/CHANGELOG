@@ -1,3 +1,68 @@
+x.y.z
+=====
+
+Release date:
+
+New features:
+
+Bug fixes:
+
+Other:
+
+1.2.0
+=====
+
+Release date:
+
+Sun, 15 Oct 2023 22:29:51 +0300
+
+New features:
+
+* Fix GitHub Issue #1: Implement conflicting options
+
+1.1.1
+=====
+
+Release date:
+
+Tue, 06 Sep 2022 18:30:37 -0000
+
+Bug fixes:
+
+* Fix typo in the unknown option error message
+
+Other:
+
+* Fix GitHub Issue #5: Add documentation of option info texts
+* Update documentation of ex1
+
+1.1.0
+=====
+
+New features:
+
+* Fix GitHub Issue #2: Configurable value names for help
+* Add getter for help text
+
+1.0.1
+=====
+
+Bug fixes:
+
+* Fix include path in tests
+
+1.0.0
+=====
+
+New features:
+
+* Enable/disable tests on top level
+* Build shared and static libs
+
+Other:
+
+* Documentation updates
+
 0.0.1
 =====
 

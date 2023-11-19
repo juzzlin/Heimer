@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2020 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (c) 2023 Jussi Lind <jussi.lind@iki.fi>
 //
 // https://github.com/juzzlin/Argengine
 //
@@ -30,7 +30,7 @@
 using juzzlin::Argengine;
 
 //
-// Ex1: Demonstrate basic usage.
+// Ex2: Demonstrate conflicting options.
 //
 
 int main(int argc, char ** argv)
@@ -38,21 +38,20 @@ int main(int argc, char ** argv)
     // Instantiate Argengine and give it the raw argument data.
     Argengine ae(argc, argv);
 
-    // Add option "-a" that, when set, prints all arguments given to the binary.
+    // Add a minimal dummy option "foo".
     ae.addOption(
-      { "-a", "--arguments" }, [&] {
-          for (int i = 0; i < argc; i++) {
-              std::cout << argv[i] << std::endl;
-          }
-      },
-      false, "Print arguments."); // Set the option non-required and set documentation string.
+      { "foo" }, [] {
+          std::cout << "Foo enabled!" << std::endl;
+      });
 
-    // Add option "-p" that prints the length of the given string e.g. "-p FOO".
+    // Add a minimal dummy option "bar".
     ae.addOption(
-      { "-p" }, [](std::string value) {
-          std::cout << value.size() << std::endl;
-      },
-      true, "Print length of given text. This option is required.", "TEXT"); // Set the option required and set documentation string and variable name shown in the documentation.
+      { "bar" }, [] {
+          std::cout << "Bar enabled!" << std::endl;
+      });
+
+    // Set "foo" and "bar" as conflicting options.
+    ae.addConflictingOptions({ "foo", "bar" });
 
     // Parse the arguments and store possible error to variable error.
     Argengine::Error error;

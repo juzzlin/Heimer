@@ -31,7 +31,7 @@
 
 namespace juzzlin {
 
-const std::string SHOW_THIS_HELP_TEXT = "Show this help.";
+const auto SHOW_THIS_HELP_TEXT = "Show this help.";
 
 class Argengine::Impl
 {
@@ -57,9 +57,16 @@ public:
         return addOptionCommon(optionVariants, callback, required, infoText);
     }
 
-    std::shared_ptr<OptionDefinition> addOption(OptionVariants optionVariants, SingleStringCallback callback, bool required, std::string infoText)
+    std::shared_ptr<OptionDefinition> addOption(OptionVariants optionVariants, SingleStringCallback callback, bool required, std::string infoText, std::string valueName)
     {
-        return addOptionCommon(optionVariants, callback, required, infoText);
+        const auto od = addOptionCommon(optionVariants, callback, required, infoText);
+        od->valueName = valueName;
+        return od;
+    }
+
+    void addConflictingOptions(ConflictingOptionSet conflictingOptionSet)
+    {
+        m_conflictingOptionSets.push_back(conflictingOptionSet);
     }
 
     ArgumentVector arguments() const
@@ -75,6 +82,11 @@ public:
     void setHelpText(std::string helpText)
     {
         m_helpText = helpText;
+    }
+
+    std::string helpText() const
+    {
+        return m_helpText;
     }
 
     void setHelpSorting(HelpSorting helpSorting)
@@ -106,7 +118,7 @@ public:
         std::vector<std::pair<std::string, std::string>> optionTexts;
         size_t maxLength = 0;
         for (auto && option : m_optionDefinitions) {
-            const auto variantsString = option->getVariantsString() + (option->singleStringCallback ? " [" + option->valuePlaceholder + "]" : "");
+            const auto variantsString = option->getVariantsString() + (option->singleStringCallback ? " [" + option->valueName + "]" : "");
             maxLength = std::max(variantsString.size(), maxLength);
             optionTexts.push_back({ variantsString, option->infoText });
         }
@@ -159,7 +171,7 @@ private:
         {
         }
 
-        bool isMatch(OptionVariants variants) const
+        bool matches(OptionVariants variants) const
         {
             for (auto && variant : variants) {
                 if (this->variants.count(variant)) {
@@ -196,7 +208,7 @@ private:
 
         std::string infoText;
 
-        std::string valuePlaceholder = "VALUE";
+        std::string valueName = "VALUE";
     };
 
     template<typename CallbackType>
@@ -238,7 +250,7 @@ private:
     OptionDefinitionPtr getOptionDefinition(OptionVariants variants) const
     {
         for (auto && definition : m_optionDefinitions) {
-            if (definition->isMatch(variants)) {
+            if (definition->matches(variants)) {
                 return definition;
             }
         }
@@ -258,16 +270,14 @@ private:
     std::pair<std::string, std::string> splitAssignmentFormat(std::string arg) const
     {
         std::string assignmentFormatArg;
-        const auto pos = arg.find('=');
-        if (pos != arg.npos) {
+        if (const auto pos = arg.find('='); pos != arg.npos) {
             assignmentFormatArg = arg.substr(0, pos);
-            const auto match = getOptionDefinition(assignmentFormatArg);
-            if (match && match->singleStringCallback) {
-                const auto valueLength = arg.size() - (pos + 1);
-                if (!valueLength) {
+            if (const auto match = getOptionDefinition(assignmentFormatArg); match && match->singleStringCallback) {
+                if (const auto valueLength = arg.size() - (pos + 1); !valueLength) {
                     return { assignmentFormatArg, "" };
+                } else {
+                    return { assignmentFormatArg, arg.substr(pos + 1, valueLength) };
                 }
-                return { assignmentFormatArg, arg.substr(pos + 1, valueLength) };
             }
         }
         return {};
@@ -284,15 +294,14 @@ private:
             }
         }
         if (matchingDefinitions.size() == 1) {
-            const auto match = matchingDefinitions.begin()->first;
-            if (match && match->singleStringCallback) {
+            if (const auto match = matchingDefinitions.begin()->first; match && match->singleStringCallback) {
                 const auto spacelessArg = matchingDefinitions.begin()->second;
                 const auto pos = spacelessArg.size();
-                const auto valueLength = arg.size() - pos;
-                if (!valueLength) {
+                if (const auto valueLength = arg.size() - pos; !valueLength) {
                     return { spacelessArg, "" };
+                } else {
+                    return { spacelessArg, arg.substr(pos, valueLength) };
                 }
-                return { spacelessArg, arg.substr(pos, valueLength) };
             }
         }
         return {};
@@ -303,15 +312,13 @@ private:
         ArgumentVector tokens;
 
         for (auto && arg : args) {
-            const auto assignmentTokens = splitAssignmentFormat(arg);
-            if (!assignmentTokens.first.empty()) {
+            if (const auto assignmentTokens = splitAssignmentFormat(arg); !assignmentTokens.first.empty()) {
                 tokens.push_back(assignmentTokens.first);
                 if (!assignmentTokens.second.empty()) {
                     tokens.push_back(assignmentTokens.second);
                 }
             } else {
-                const auto spacelessTokens = splitSpacelessFormat(arg);
-                if (!spacelessTokens.first.empty()) {
+                if (const auto spacelessTokens = splitSpacelessFormat(arg); !spacelessTokens.first.empty()) {
                     tokens.push_back(spacelessTokens.first);
                     if (!spacelessTokens.second.empty()) {
                         tokens.push_back(spacelessTokens.second);
@@ -325,26 +332,49 @@ private:
         return tokens;
     }
 
+    void checkConflictingOptions(const ArgumentVector & tokens)
+    {
+        OptionDefinitionVector optionDefinitions;
+        for (size_t i = 1; i < tokens.size(); i++) {
+            if (const auto arg = tokens.at(i); const auto definition = getOptionDefinition(arg)) {
+                optionDefinitions.push_back(definition);
+            }
+        }
+        for (auto && conflictingOptionSet : m_conflictingOptionSets) {
+            ConflictingOptionSet conflictingOptionSetForError;
+            for (auto && conflictingOption : conflictingOptionSet) {
+                for (auto && optionDefinition : optionDefinitions) {
+                    if (optionDefinition->matches({ conflictingOption })) {
+                        conflictingOptionSetForError.insert(conflictingOption);
+                    }
+                }
+            }
+            if (conflictingOptionSetForError.size() > 1) {
+                throwConflictingOptionsError(conflictingOptionSetForError);
+            }
+        }
+    }
+
     void processArgs(bool dryRun)
     {
         const auto tokens = tokenize(m_args);
-        ArgumentVector positionalArguments;
+
+        checkConflictingOptions(tokens);
 
         // Process help first as it's a special case
         for (size_t i = 1; i < tokens.size(); i++) {
-            const auto arg = tokens.at(i);
-            if (const auto definition = getOptionDefinition(arg)) {
+            if (const auto arg = tokens.at(i); const auto definition = getOptionDefinition(arg)) {
                 if (definition->isHelp) {
-                    i = processDefinitionMatch(definition, tokens, i, false);
+                    processDefinitionMatch(definition, tokens, i, false);
                     break;
                 }
             }
         }
 
         // Other arguments
+        ArgumentVector positionalArguments;
         for (size_t i = 1; i < tokens.size(); i++) {
-            const auto arg = tokens.at(i);
-            if (const auto definition = getOptionDefinition(arg)) {
+            if (const auto arg = tokens.at(i); const auto definition = getOptionDefinition(arg)) {
                 if (!definition->isHelp) {
                     i = processDefinitionMatch(definition, tokens, i, dryRun);
                 }
@@ -372,8 +402,7 @@ private:
         } else if (match->singleStringCallback) {
             if (++currentIndex < tokens.size()) {
                 if (!dryRun) {
-                    const auto value = tokens.at(currentIndex);
-                    if (const auto innerMatch = getOptionDefinition(value)) {
+                    if (const auto value = tokens.at(currentIndex); const auto innerMatch = getOptionDefinition(value)) {
                         throwNoValueError(*match);
                     }
                     match->singleStringCallback(tokens.at(currentIndex));
@@ -384,6 +413,18 @@ private:
             }
         }
         return currentIndex;
+    }
+
+    [[noreturn]] void throwConflictingOptionsError(const ConflictingOptionSet & conflictingOptionSet) const
+    {
+        std::string optionsString;
+        for (auto && option : conflictingOptionSet) {
+            if (!optionsString.empty() && optionsString.back() == '\'') {
+                optionsString += ", ";
+            }
+            optionsString += "'" + option + "'";
+        }
+        throw std::runtime_error(name() + ": Conflicting options: " + optionsString + ". These options cannot coexist.");
     }
 
     [[noreturn]] void throwOptionExistingError(const OptionDefinition & existing) const
@@ -398,7 +439,7 @@ private:
 
     [[noreturn]] void throwUnknownArgumentError(std::string arg) const
     {
-        throw std::runtime_error(name() + ": Uknown option '" + arg + "'!");
+        throw std::runtime_error(name() + ": Unknown option '" + arg + "'!");
     }
 
     [[noreturn]] void throwNoValueError(const OptionDefinition & existing) const
@@ -412,7 +453,10 @@ private:
 
     HelpSorting m_helpSorting = HelpSorting::None;
 
-    std::vector<OptionDefinitionPtr> m_optionDefinitions;
+    using OptionDefinitionVector = std::vector<OptionDefinitionPtr>;
+    OptionDefinitionVector m_optionDefinitions;
+
+    std::vector<ConflictingOptionSet> m_conflictingOptionSets;
 
     MultiStringCallback m_positionalArgumentCallback = nullptr;
 
@@ -436,14 +480,19 @@ void Argengine::addOption(OptionVariants optionVariants, ValuelessCallback callb
     m_impl->addOption(optionVariants, callback, required, infoText);
 }
 
-void Argengine::addOption(OptionVariants optionVariants, SingleStringCallback callback, bool required, std::string infoText)
+void Argengine::addOption(OptionVariants optionVariants, SingleStringCallback callback, bool required, std::string infoText, std::string valueName)
 {
-    m_impl->addOption(optionVariants, callback, required, infoText);
+    m_impl->addOption(optionVariants, callback, required, infoText, valueName);
 }
 
 void Argengine::addHelp(OptionVariants optionVariants, ValuelessCallback callback)
 {
     m_impl->addOption(optionVariants, callback, false, SHOW_THIS_HELP_TEXT)->isHelp = true;
+}
+
+void Argengine::addConflictingOptions(ConflictingOptionSet conflictingOptionSet)
+{
+    m_impl->addConflictingOptions(conflictingOptionSet);
 }
 
 Argengine::ArgumentVector Argengine::arguments() const
@@ -454,6 +503,11 @@ Argengine::ArgumentVector Argengine::arguments() const
 void Argengine::setHelpText(std::string helpText)
 {
     m_impl->setHelpText(helpText);
+}
+
+std::string Argengine::helpText() const
+{
+    return m_impl->helpText();
 }
 
 void Argengine::setHelpSorting(HelpSorting helpSorting)
@@ -493,7 +547,7 @@ void Argengine::parse(Error & error)
 
 std::string Argengine::version()
 {
-    return "0.0.1";
+    return "1.2.0";
 }
 
 Argengine::~Argengine() = default;

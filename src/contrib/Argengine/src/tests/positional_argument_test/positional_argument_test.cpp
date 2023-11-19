@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "argengine.hpp"
+#include "../../argengine.hpp"
 
 // Don't compile asserts away
 #ifdef NDEBUG
@@ -34,8 +34,6 @@
 #include <iostream>
 
 using juzzlin::Argengine;
-
-const std::string name = "Argengine";
 
 void testSinglePositionalArgument_NoOtherArguments_ShouldSucceed()
 {

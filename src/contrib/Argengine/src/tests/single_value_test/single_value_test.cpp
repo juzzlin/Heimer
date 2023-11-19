@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "argengine.hpp"
+#include "../../argengine.hpp"
 
 // Don't compile asserts away
 #ifdef NDEBUG
@@ -36,7 +36,7 @@
 
 using juzzlin::Argengine;
 
-const std::string name = "Argengine";
+const auto name = "Argengine";
 
 void testSingleValue_NoValueGiven_ShouldFail()
 {
@@ -52,7 +52,7 @@ void testSingleValue_NoValueGiven_ShouldFail()
         error = e.what();
     }
     assert(!called);
-    assert(error == name + ": No value for option '-f' given!");
+    assert(error == std::string(name) + ": No value for option '-f' given!");
 }
 
 void testSingleValue_ValueGiven_ShouldSucceed()
@@ -97,7 +97,7 @@ void testSingleValue_NoValueGivenWithAssignment_ShouldFail()
         error = e.what();
     }
     assert(!called);
-    assert(error == name + ": No value for option 'f' given!");
+    assert(error == std::string(name) + ": No value for option 'f' given!");
 }
 
 void testSingleValue_MultipleValuesGivenWithAssignments_ShouldSucceed()
@@ -135,7 +135,7 @@ void testSingleValue_NoValueGivenWithoutSpace_ShouldFail()
         error = e.what();
     }
     assert(!called);
-    assert(error == name + ": No value for option 'f' given!");
+    assert(error == std::string(name) + ": No value for option 'f' given!");
 }
 
 void testSingleValue_ValueGivenWithoutSpace_ShouldSucceed()
@@ -206,7 +206,7 @@ void testSingleValue_RequiredButNotGiven_ShouldFail()
         error = e.what();
     }
 
-    assert(error == name + ": Option '-f, --foo' is required!");
+    assert(error == std::string(name) + ": Option '-f, --foo' is required!");
 }
 
 void testSingleValue_RequiredAndGiven_ShouldSucceed()
@@ -266,7 +266,7 @@ void testSameArgumentDefinedMultipleTimes_ShouldFail()
     } catch (std::runtime_error & e) {
         error = e.what();
     }
-    assert(error == name + ": Option '-a' already defined!");
+    assert(error == std::string(name) + ": Option '-a' already defined!");
 }
 
 int main(int, char **)

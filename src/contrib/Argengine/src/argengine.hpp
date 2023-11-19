@@ -65,13 +65,19 @@ public:
     //! \param callback Callback to be called when the option has been given with a value. Signature: `void(std::string)`.
     //! \param required \see addOption(OptionVariants optionVariants, SingleStringCallback callback, bool required).
     //! \param infoText Short info text shown in help/usage.
+    //! \param valueName Name of the value in help.
     using SingleStringCallback = std::function<void(std::string)>;
-    void addOption(OptionVariants optionVariants, SingleStringCallback callback, bool required = false, std::string infoText = "");
+    void addOption(OptionVariants optionVariants, SingleStringCallback callback, bool required = false, std::string infoText = "", std::string valueName = "VALUE");
 
     //! Special method to add custom help / decorate output of `printHelp()`. Help is always executed first if present.
     //! \param optionVariants A set of possible options for help, usually the short and long form: {"-h", "--help"}
     //! \param callback Callback to be called when the help option has been given. Signature: `void()`.
     void addHelp(OptionVariants optionVariants, ValuelessCallback callback);
+
+    //! Adds a options that cannot coexist.
+    //! \param conflictingOptions A set of possible options that cannot coexist, e.g.: {"--bar", "--foo"}
+    using ConflictingOptionSet = std::set<std::string>;
+    void addConflictingOptions(ConflictingOptionSet conflictingOptionSet);
 
     //! \return All given arguments.
     ArgumentVector arguments() const;
@@ -79,6 +85,9 @@ public:
     //! Set info text printed on help/usage before argument help.
     //! \param helpText Text shown in help. E.g. "MyApplication v1.0.0, Copyright (c) 2020 Foo Bar".
     void setHelpText(std::string helpText);
+
+    //! \return The current help text.
+    std::string helpText() const;
 
     //! Sorting order of arguments in help.
     enum class HelpSorting

@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "argengine.hpp"
+#include "../../argengine.hpp"
 
 // Don't compile asserts away
 #ifdef NDEBUG
@@ -36,7 +36,7 @@
 
 using juzzlin::Argengine;
 
-const std::string name = "Argengine";
+const auto name = "Argengine";
 
 void testUnknownArgumentBehavior_ShouldThrow()
 {
@@ -50,7 +50,7 @@ void testUnknownArgumentBehavior_ShouldThrow()
     } catch (std::runtime_error & e) {
         error = e.what();
     }
-    assert(error == name + ": Uknown option '" + ae.arguments().at(1) + "'!");
+    assert(error == std::string(name) + ": Unknown option '" + ae.arguments().at(1) + "'!");
 }
 
 void testUnknownArgument_SingleValueAssignment_ShouldThrow()
@@ -65,7 +65,7 @@ void testUnknownArgument_SingleValueAssignment_ShouldThrow()
     } catch (std::runtime_error & e) {
         error = e.what();
     }
-    assert(error == name + ": Uknown option '--foo=42'!");
+    assert(error == std::string(name) + ": Unknown option '--foo=42'!");
 }
 
 int main(int, char **)

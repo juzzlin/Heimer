@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "argengine.hpp"
+#include "../../argengine.hpp"
 
 // Don't compile asserts away
 #ifdef NDEBUG
@@ -36,7 +36,7 @@
 
 using juzzlin::Argengine;
 
-const std::string name = "Argengine";
+const auto name = "Argengine";
 
 void testDefaultHelpOverride_HelpActive_ShouldFail()
 {
@@ -48,7 +48,7 @@ void testDefaultHelpOverride_HelpActive_ShouldFail()
     } catch (std::runtime_error & e) {
         error = e.what();
     }
-    assert(error == name + ": Option '-h, --help' already defined!");
+    assert(error == std::string(name) + ": Option '-h, --help' already defined!");
 }
 
 void testDefaultHelpOverride_HelpNotActive_ShouldSucceed()
@@ -82,8 +82,32 @@ void testDefaultHelp_ClearHelpText_ShouldSucceed()
     ae.setOutputStream(ss);
     ae.setHelpText("");
     ae.printHelp();
-    const std::string answer = "Options:\n\n-h, --help  Show this help.\n\n";
+    const std::string answer = "Options:\n\n"
+                               "-h, --help  Show this help.\n\n";
     assert(ss.str() == answer);
+}
+
+void testDefaultHelp_SingleValueOptionAdded_ShouldSucceed()
+{
+    Argengine ae({ "test" });
+    std::stringstream ss;
+    ae.addOption(
+      { "-f", "--foo" }, [](std::string) {}, false, "Add foo.", "FOO");
+    ae.setOutputStream(ss);
+    ae.printHelp();
+    const std::string answer = "Usage: test [OPTIONS]\n\n"
+                               "Options:\n\n"
+                               "-h, --help       Show this help.\n"
+                               "-f, --foo [FOO]  Add foo.\n\n";
+    assert(ss.str() == answer);
+}
+
+void testSetGetHelpText_ShouldSucceed()
+{
+    Argengine ae({ "test" });
+    assert(ae.helpText() == "Usage: test [OPTIONS]");
+    ae.setHelpText("Foo");
+    assert(ae.helpText() == "Foo");
 }
 
 int main(int, char **)
@@ -95,6 +119,10 @@ int main(int, char **)
     testDefaultHelp_PrintToStream_ShouldSucceed();
 
     testDefaultHelp_ClearHelpText_ShouldSucceed();
+
+    testDefaultHelp_SingleValueOptionAdded_ShouldSucceed();
+
+    testSetGetHelpText_ShouldSucceed();
 
     return EXIT_SUCCESS;
 }

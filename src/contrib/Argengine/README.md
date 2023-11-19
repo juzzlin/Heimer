@@ -39,7 +39,7 @@ include_directories(Argengine/src)
 Link to the library:
 
 ```
-target_link_libraries(${YOUR_TARGET_NAME} Argengine)
+target_link_libraries(${YOUR_TARGET_NAME} Argengine_static)
 ```
 
 In your code:
@@ -216,6 +216,69 @@ In order to mark an option mandatory, there's an overload that accepts `bool req
     ...
 ```
 
+## General: Adding option documentation for the auto-generated help
+
+One can add option documentation for the auto-generated help.
+
+Consider this example code:
+
+```
+    ...
+
+    juzzlin::Argengine ae(argc, argv);
+    ae.addOption(
+      { "-p" }, [](std::string value) {
+          std::cout << value.size() << std::endl;
+      },
+      true, "Print length of given text. This option is required.", "TEXT");
+
+    ...
+```
+
+Here we have added a documentation string `Print length of given text. This option is required.` and also a variable name `TEXT` for option `-p`.
+
+Thus, this will generate a help content like this:
+
+```
+Options:
+
+-h, --help       Show this help.
+-p [TEXT]        Print length of given text. This option is required.
+
+```
+
+## General: Setting two or more options as conflicting
+
+Sometimes we want to prevent the user from giving a certain set of arguments.
+
+Consider this example code:
+
+```
+    ...
+
+    juzzlin::Argengine ae(argc, argv);
+    ae.addOption(
+      { "foo" }, [] {
+          std::cout << "Foo enabled!" << std::endl;
+      });
+
+    ae.addOption(
+      { "bar" }, [] {
+          std::cout << "Bar enabled!" << std::endl;
+      });
+
+    // Set "foo" and "bar" as conflicting options.
+    ae.addConflictingOptions({ "foo", "bar" });
+    ...
+```
+
+Now, if we give both `foo` and `bar` to the application, we'll get an error like this:
+
+
+```
+Argengine: Conflicting options: 'bar', 'foo'. These options cannot coexist.
+```
+
 ## General: Error handling
 
 For error handling there are two options: exceptions or error value.
@@ -262,3 +325,9 @@ C++11
 # Licence
 
 MIT
+
+# Projects currently using Argengine
+
+* https://github.com/juzzlin/DustRacing2D
+
+* https://github.com/juzzlin/Heimer

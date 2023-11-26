@@ -18,6 +18,7 @@
 #include "constants.hpp"
 
 #include <QDateTime>
+#include <QDir>
 
 #include <chrono>
 
@@ -80,6 +81,12 @@ QString Utils::exportFileName(QString mindMapFileName, QString exportExtension)
 {
     const auto formattedDateTime = QDateTime::currentDateTime().toString("_yyyy-MM-dd_hh-mm-ss");
     return mindMapFileName.replace(Constants::Application::FILE_EXTENSION, "") + formattedDateTime + exportExtension;
+}
+
+bool Utils::fileExists(QString filePath)
+{
+    QDir dir;
+    return dir.exists(filePath);
 }
 
 int Utils::fontWeightToInt(QFont::Weight value)

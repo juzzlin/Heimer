@@ -59,6 +59,10 @@ QString loadRecentPath();
 
 void saveRecentPath(QString path);
 
+QStringList loadRecentFiles();
+
+void saveRecentFiles(QStringList fileList);
+
 QString loadRecentImagePath();
 
 void saveRecentImagePath(QString path);

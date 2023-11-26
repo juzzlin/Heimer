@@ -55,6 +55,10 @@ const auto recentImagePathKey = "recentImagePath";
 
 const auto recentPathKey = "recentPath";
 
+const auto recentFilesArrayKey = "recentFilesArray";
+
+const auto recentFilesFilePathKey = "filePath";
+
 const auto reversedEdgeDirectionKey = "reversedEdgeDirection";
 
 const auto selectNodeGroupByIntersectionKey = "selectNodeGroupByIntersection";
@@ -223,6 +227,30 @@ void saveRecentPath(QString path)
     settings.beginGroup(settingsGroupApplication);
     settings.setValue(recentPathKey, path);
     settings.endGroup();
+}
+
+QStringList loadRecentFiles()
+{
+    QStringList fileList;
+    QSettings settings;
+    const int size = settings.beginReadArray(recentFilesArrayKey);
+    for (int i = 0; i < size; i++) {
+        settings.setArrayIndex(i);
+        fileList.push_back(settings.value(recentFilesFilePathKey).toString());
+    }
+    settings.endArray();
+    return fileList;
+}
+
+void saveRecentFiles(QStringList fileList)
+{
+    QSettings settings;
+    settings.beginWriteArray(recentFilesArrayKey);
+    for (int i = 0; i < fileList.size(); i++) {
+        settings.setArrayIndex(i);
+        settings.setValue(recentFilesFilePathKey, fileList.at(i));
+    }
+    settings.endArray();
 }
 
 QString loadRecentImagePath()

@@ -20,7 +20,6 @@
 #include <QObject>
 #include <QString>
 
-#include <memory>
 #include <optional>
 
 class RecentFilesManager : public QObject
@@ -28,11 +27,9 @@ class RecentFilesManager : public QObject
 public:
     RecentFilesManager();
 
-    static RecentFilesManager & instance();
-
     std::optional<QString> recentFile() const;
 
-    QList<QString> recentFiles() const;
+    QStringList recentFiles() const;
 
     bool hasRecentFiles() const;
 
@@ -44,9 +41,7 @@ public slots:
     void setSelectedFile(QString filePath);
 
 private:
-    static std::unique_ptr<RecentFilesManager> m_instance;
-
-    QList<QString> m_recentFiles;
+    QStringList m_recentFiles;
 
     QString m_selectedFile;
 };

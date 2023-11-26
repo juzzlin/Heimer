@@ -30,6 +30,8 @@ QFont::Weight intToFontWeight(int value);
 
 QString exportFileName(QString mindMapFileName, QString exportExtension);
 
+bool fileExists(QString filePath);
+
 int fontWeightToInt(QFont::Weight value);
 
 int fontWeightToInt(int value);

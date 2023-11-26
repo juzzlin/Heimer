@@ -343,7 +343,7 @@ void MainWindow::createFileMenu()
     });
 
     connect(fileMenu, &QMenu::aboutToShow, this, [=] {
-        recentFilesMenuAction->setEnabled(RecentFilesManager::instance().hasRecentFiles());
+        recentFilesMenuAction->setEnabled(SIC::instance().recentFilesManager()->hasRecentFiles());
     });
 }
 

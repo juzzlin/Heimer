@@ -81,6 +81,9 @@ using NodeU = std::unique_ptr<SceneItems::Node>;
 
 using ProgressManagerS = std::shared_ptr<Core::ProgressManager>;
 
+class RecentFilesManager;
+using RecentFilesManagerS = std::shared_ptr<RecentFilesManager>;
+
 using SettingsProxyS = std::shared_ptr<Core::SettingsProxy>;
 
 class SingleInstanceContainer;

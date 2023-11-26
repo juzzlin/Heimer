@@ -19,6 +19,7 @@
 #include "control_strategy.hpp"
 #include "core/progress_manager.hpp"
 #include "core/settings_proxy.hpp"
+#include "recent_files_manager.hpp"
 
 #include "simple_logger.hpp"
 
@@ -27,9 +28,10 @@
 SingleInstanceContainer * SingleInstanceContainer::m_instance = nullptr;
 
 SingleInstanceContainer::SingleInstanceContainer()
-  : m_controlStrategy(std::make_unique<ControlStrategy>())
+  : m_settingsProxy(std::make_unique<Core::SettingsProxy>())
+  , m_controlStrategy(std::make_unique<ControlStrategy>())
   , m_progressManager(std::make_unique<Core::ProgressManager>())
-  , m_settingsProxy(std::make_unique<Core::SettingsProxy>())
+  , m_recentFilesManager(std::make_unique<RecentFilesManager>())
 {
     if (!SingleInstanceContainer::m_instance) {
         SingleInstanceContainer::m_instance = this;
@@ -61,6 +63,11 @@ ControlStrategyS SingleInstanceContainer::controlStrategy()
 ProgressManagerS SingleInstanceContainer::progressManager() const
 {
     return m_progressManager;
+}
+
+RecentFilesManagerS SingleInstanceContainer::recentFilesManager() const
+{
+    return m_recentFilesManager;
 }
 
 SettingsProxyS SingleInstanceContainer::settingsProxy()

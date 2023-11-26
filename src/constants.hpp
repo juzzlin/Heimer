@@ -221,10 +221,6 @@ namespace RecentFiles {
 
 static const int MAX_FILES = 8;
 
-static const auto QSETTINGS_ARRAY_KEY = "recentFilesArray";
-
-static const auto QSETTINGS_FILE_PATH_KEY = "filePath";
-
 } // namespace RecentFiles
 
 namespace LayoutOptimizer {

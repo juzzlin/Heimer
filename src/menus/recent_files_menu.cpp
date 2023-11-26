@@ -14,7 +14,10 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "recent_files_menu.hpp"
+
 #include "../recent_files_manager.hpp"
+#include "../single_instance_container.hpp"
+#include "../utils.hpp"
 
 #include <functional>
 
@@ -27,16 +30,15 @@ RecentFilesMenu::RecentFilesMenu(QWidget * parent)
         for (auto && action : actions()) {
             removeAction(action);
         }
-        // clang-format off
-        for (auto && filePath : RecentFilesManager::instance().recentFiles()) {
+        for (auto && filePath : SIC::instance().recentFilesManager()->recentFiles()) {
             const auto action = addAction(filePath);
             const auto handler = std::bind([=](QString filePath) {
-                RecentFilesManager::instance().setSelectedFile(filePath);
+                SIC::instance().recentFilesManager()->setSelectedFile(filePath);
                 fileSelected(filePath);
             }, action->text());
+            action->setEnabled(Utils::fileExists(filePath));
             connect(action, &QAction::triggered, handler);
         }
-        // clang-format on
     });
 }
 

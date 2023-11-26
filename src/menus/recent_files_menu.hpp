@@ -37,8 +37,6 @@ signals:
 
 private:
     std::list<QAction *> m_actions;
-
-    QString m_selectedFile;
 };
 
 } // namespace Menus

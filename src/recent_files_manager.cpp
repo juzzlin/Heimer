@@ -14,39 +14,17 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "recent_files_manager.hpp"
+
 #include "constants.hpp"
 #include "contrib/SimpleLogger/src/simple_logger.hpp"
-
-#include <stdexcept>
+#include "core/settings.hpp"
 
 #include <QFileInfo>
 #include <QSettings>
 
-std::unique_ptr<RecentFilesManager> RecentFilesManager::m_instance;
-
 RecentFilesManager::RecentFilesManager()
 {
-    if (RecentFilesManager::m_instance) {
-        throw std::runtime_error("RecentFilesManager already instantiated!");
-    }
-
-    QSettings settings;
-    const int size = settings.beginReadArray(Constants::RecentFiles::QSETTINGS_ARRAY_KEY);
-    for (int i = 0; i < size; i++) {
-        settings.setArrayIndex(i);
-        m_recentFiles.push_back(settings.value(Constants::RecentFiles::QSETTINGS_FILE_PATH_KEY).toString());
-    }
-    settings.endArray();
-}
-
-RecentFilesManager & RecentFilesManager::instance()
-{
-    if (!RecentFilesManager::m_instance) {
-        RecentFilesManager::m_instance = std::make_unique<RecentFilesManager>();
-        juzzlin::L().debug() << "RecentFilesManager created";
-    }
-
-    return *RecentFilesManager::m_instance;
+    m_recentFiles = Settings::V1::loadRecentFiles();
 }
 
 void RecentFilesManager::addRecentFile(QString filePath)
@@ -65,24 +43,15 @@ void RecentFilesManager::addRecentFile(QString filePath)
     juzzlin::L().debug() << "Added recent file: " << filePath.toStdString();
     juzzlin::L().debug() << "Recent file count: " << m_recentFiles.size();
 
-    QSettings settings;
-    settings.beginWriteArray(Constants::RecentFiles::QSETTINGS_ARRAY_KEY);
-    for (int i = 0; i < m_recentFiles.size(); i++) {
-        settings.setArrayIndex(i);
-        settings.setValue(Constants::RecentFiles::QSETTINGS_FILE_PATH_KEY, m_recentFiles.at(i));
-    }
-    settings.endArray();
+    Settings::V1::saveRecentFiles(m_recentFiles);
 }
 
 std::optional<QString> RecentFilesManager::recentFile() const
 {
-    if (!m_recentFiles.empty()) {
-        return m_recentFiles.at(0);
-    }
-    return {};
+    return !m_recentFiles.empty() ? m_recentFiles.at(0) : std::optional<QString> {};
 }
 
-QList<QString> RecentFilesManager::recentFiles() const
+QStringList RecentFilesManager::recentFiles() const
 {
     return m_recentFiles;
 }

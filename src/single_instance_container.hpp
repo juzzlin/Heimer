@@ -23,6 +23,7 @@
 class ApplicationService;
 class EditorService;
 class ControlStrategy;
+class RecentFilesManager;
 
 namespace Core {
 class ProgressManager;
@@ -45,6 +46,8 @@ public:
 
     ProgressManagerS progressManager() const;
 
+    RecentFilesManagerS recentFilesManager() const;
+
     SettingsProxyS settingsProxy();
 
     void setMainWindow(MainWindowS mainWindow);
@@ -54,13 +57,15 @@ private:
 
     SingleInstanceContainer & operator=(const SingleInstanceContainer & other) = delete;
 
+    SettingsProxyS m_settingsProxy;
+
     ApplicationServiceS m_applicationService;
 
     ControlStrategyS m_controlStrategy;
 
     ProgressManagerS m_progressManager;
 
-    SettingsProxyS m_settingsProxy;
+    RecentFilesManagerS m_recentFilesManager;
 
     MainWindowS m_mainWindow;
 

@@ -10,6 +10,8 @@ New features:
 
 * Set default filename with a timestamp in PNG and SVG export dialogs
 
+* Disable recent file entries that don't exist anymore
+
 Bug fixes:
 
 Other:

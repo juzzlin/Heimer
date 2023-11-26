@@ -106,7 +106,7 @@ Application::Application(int & argc, char ** argv)
     if (!m_mindMapFile.isEmpty()) {
         QTimer::singleShot(0, this, &Application::openArgMindMap);
     } else if (SIC::instance().settingsProxy()->autoload()) {
-        if (const auto recentFile = RecentFilesManager::instance().recentFile(); recentFile.has_value()) {
+        if (const auto recentFile = SIC::instance().recentFilesManager()->recentFile(); recentFile.has_value()) {
             // Exploit same code as used to open arg mind map
             m_mindMapFile = recentFile.value();
             QTimer::singleShot(0, this, &Application::openArgMindMap);
@@ -233,7 +233,7 @@ void Application::runState(StateMachine::State state)
         m_sic->applicationService()->initializeNewMindMap();
         break;
     case StateMachine::State::OpenRecent:
-        doOpenMindMap(RecentFilesManager::instance().selectedFile());
+        doOpenMindMap(SIC::instance().recentFilesManager()->selectedFile());
         break;
     case StateMachine::State::OpenDrop:
         doOpenMindMap(m_editorView->dropFile());

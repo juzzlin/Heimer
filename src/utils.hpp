@@ -36,6 +36,8 @@ int fontWeightToInt(QFont::Weight value);
 
 int fontWeightToInt(int value);
 
+QColor mixedColor(QColor color1, QColor color2, double balance);
+
 } // namespace Utils
 
 #endif // UTILS_HPP

@@ -16,6 +16,10 @@ Bug fixes:
 
 Other:
 
+* Optimize rendering of grid lines
+  - Prevent situations where a zoomed-out view would have way too many grid
+    lines visible, even multiple lines per pixel
+
 4.2.0
 =====
 

@@ -19,30 +19,29 @@
 
 Grid::Grid()
 {
+    m_lines.reserve(1024);
 }
 
-Grid::LineArray Grid::calculateLines(const QRectF & rect) const
+const Grid::LineArray & Grid::calculateLines(const QRectF & sceneRect) const
 {
-    LineArray lines;
+    m_lines.clear();
 
     if (m_size) {
-        const qreal left = static_cast<int>(rect.left()) - static_cast<int>(rect.left()) % m_size;
-        const qreal top = static_cast<int>(rect.top()) - static_cast<int>(rect.top()) % m_size;
-
-        auto x = left;
-        while (x < rect.right()) {
-            lines.append({ x, rect.top(), x, rect.bottom() });
+        // Vertical lines
+        auto x = snapToGrid({ sceneRect.left(), sceneRect.top() }).x();
+        while (x < sceneRect.right()) {
+            m_lines.push_back({ x, sceneRect.top(), x, sceneRect.bottom() });
             x += m_size;
         }
-
-        auto y = top;
-        while (y < rect.bottom()) {
-            lines.append({ rect.left(), y, rect.right(), y });
+        // Horizontal lines
+        auto y = snapToGrid({ sceneRect.left(), sceneRect.top() }).y();
+        while (y < sceneRect.bottom()) {
+            m_lines.push_back({ sceneRect.left(), y, sceneRect.right(), y });
             y += m_size;
         }
     }
 
-    return lines;
+    return m_lines;
 }
 
 void Grid::setSize(int size)

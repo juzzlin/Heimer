@@ -33,8 +33,8 @@
 #include "item_filter.hpp"
 #include "magic_zoom.hpp"
 #include "mouse_action.hpp"
-#include "node_action.hpp"
 #include "single_instance_container.hpp"
+#include "utils.hpp"
 
 #include "core/mind_map_data.hpp"
 #include "core/settings_proxy.hpp"
@@ -43,7 +43,6 @@
 
 #include "scene_items/edge.hpp"
 #include "scene_items/edge_text_edit.hpp"
-#include "scene_items/graphics_factory.hpp"
 #include "scene_items/node.hpp"
 #include "scene_items/node_handle.hpp"
 #include "scene_items/scene_item_base.hpp"
@@ -52,8 +51,6 @@
 
 #include "simple_logger.hpp"
 
-#include <cassert>
-#include <cstdlib>
 #include <unordered_set>
 
 using juzzlin::L;
@@ -658,18 +655,31 @@ QString EditorView::dropFile() const
     return this->m_dropFile;
 }
 
-void EditorView::drawBackground(QPainter * painter, const QRectF & rect)
+void EditorView::drawBackground(QPainter * painter, const QRectF & sceneRect)
 {
     painter->save();
-    painter->fillRect(rect, backgroundBrush());
-
-    if (m_gridVisible) {
-        const auto lines = m_grid.calculateLines(rect);
-        painter->setPen(SIC::instance().applicationService()->mindMapData()->gridColor());
-        painter->drawLines(lines.data(), static_cast<int>(lines.size()));
-    }
-
+    painter->fillRect(sceneRect, backgroundBrush());
+    drawGrid(*painter, sceneRect);
     painter->restore();
+}
+
+void EditorView::drawGrid(QPainter & painter, const QRectF & sceneRect)
+{
+    // Draw grid only if we have enough details visible versus the grid size. Otherwise fake it with a colored rectangle.
+    // The idea is to prevent situations where we have zoomed out so that there are ridiculous amount of grid lines
+    // visible - even multiple lines per pixel.
+    if (m_gridVisible && m_grid.size()) {
+        const int virtualLineWidth = 5;
+        if (const auto detailRect = mapFromScene(QRectF { 0, 0, static_cast<double>(m_grid.size()), 1 }).boundingRect(); detailRect.width() > virtualLineWidth) {
+            if (auto && lines = m_grid.calculateLines(sceneRect); !lines.empty()) {
+                painter.setPen(SIC::instance().applicationService()->mindMapData()->gridColor());
+                painter.drawLines(m_grid.calculateLines(sceneRect).data(), static_cast<int>(lines.size()));
+            }
+        } else {
+            const double balance = static_cast<double>(detailRect.width()) / virtualLineWidth;
+            painter.fillRect(sceneRect, Utils::mixedColor(backgroundBrush().color(), SIC::instance().applicationService()->mindMapData()->gridColor(), balance));
+        }
+    }
 }
 
 EditorView::~EditorView() = default;

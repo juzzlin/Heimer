@@ -114,6 +114,8 @@ signals:
     void newNodeRequested(QPointF position);
 
 private:
+    void drawGrid(QPainter & painter, const QRectF & sceneRect);
+
     void finishRubberBand();
 
     void handleMousePressEventOnBackground(QMouseEvent & event);

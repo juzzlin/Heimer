@@ -19,15 +19,16 @@
 #include <QLineF>
 #include <QPointF>
 #include <QRectF>
-#include <QVarLengthArray>
+
+#include <vector>
 
 class Grid
 {
 public:
     Grid();
 
-    using LineArray = QVarLengthArray<QLineF, 100>;
-    LineArray calculateLines(const QRectF & rect) const;
+    using LineArray = std::vector<QLineF>;
+    const LineArray & calculateLines(const QRectF & sceneRect) const;
 
     void setSize(int gridSize);
 
@@ -37,6 +38,8 @@ public:
 
 private:
     int m_size = 0;
+
+    mutable LineArray m_lines;
 };
 
 #endif // GRID_HPP

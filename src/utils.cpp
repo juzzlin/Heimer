@@ -106,3 +106,10 @@ int Utils::fontWeightToInt(int value)
     return value / 10;
 #endif
 }
+
+QColor Utils::mixedColor(QColor color1, QColor color2, double balance)
+{
+    return { static_cast<int>(color1.red() * balance + color2.red() * (1 - balance)),
+             static_cast<int>(color1.green() * balance + color2.green() * (1 - balance)),
+             static_cast<int>(color1.blue() * balance + color2.blue() * (1 - balance)) };
+}

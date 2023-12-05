@@ -44,7 +44,6 @@
 #include <QMimeData>
 #include <QSizePolicy>
 
-#include <cassert>
 #include <chrono>
 #include <cmath>
 

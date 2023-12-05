@@ -28,7 +28,6 @@
 #include <QGraphicsLineItem>
 #include <QPainter>
 #include <QtSvg/QSvgGenerator>
-#include <cmath>
 
 EditorScene::EditorScene()
 {

@@ -5,6 +5,10 @@ Release date:
 
 New features:
 
+* Fix GitHub Issue #249: Option to include grid on export
+    - Grid will be exported if set visible
+    - Works for both PNG and SVG exports
+
 * Fix GitHub Issue #251: Feature request: child has same colors as parent
   - Change "Copy on Drag" behavior so that only the style will be copied
 

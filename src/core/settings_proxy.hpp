@@ -16,16 +16,21 @@
 #ifndef SETTINGS_PROXY_HPP
 #define SETTINGS_PROXY_HPP
 
-#include "../constants.hpp"
 #include "../scene_items/edge_model.hpp"
 #include "shadow_effect_params.hpp"
-
-#include <memory>
 
 #include <QFont>
 
 namespace Core {
 
+//! Some kind of a frond-end or facade for stateless Settings to enable faster value reads (QSettings can be quite slow)
+//! and to create more complex settings (e.g. setShadowEffect()) that use the Settings API. However, the situation is a
+//! bit of a mess right now as some features still use Settings directly and some features use SettingsProxy.
+//!
+//! The current policy for new settings is to use the Settings::Generic API and hide it behind SettingsProxy to
+//! expose a clean API without visible setting keys or low-level functions.
+//!
+//! SettingsProxy can be accessed via SingleInstanceContainer throughout the application.
 class SettingsProxy
 {
 public:

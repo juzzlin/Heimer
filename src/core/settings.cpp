@@ -199,9 +199,7 @@ Qt::CheckState loadGridVisibleState()
 {
     QSettings settings;
     settings.beginGroup(settingsGroupMainWindow);
-    const auto gridState = settings.value(gridVisibleStateKey, Qt::Unchecked).toInt();
-    settings.endGroup();
-    return static_cast<Qt::CheckState>(gridState);
+    return static_cast<Qt::CheckState>(settings.value(gridVisibleStateKey, Qt::Unchecked).toInt());
 }
 
 void saveGridVisibleState(int state)

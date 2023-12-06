@@ -27,6 +27,7 @@
 #include "single_instance_container.hpp"
 
 #include "core/progress_manager.hpp"
+#include "core/settings.hpp"
 #include "core/settings_proxy.hpp"
 #include "core/shadow_effect_params.hpp"
 
@@ -317,14 +318,36 @@ void ApplicationService::enableRedo(bool enable)
     m_mainWindow->enableRedo(enable);
 }
 
+ApplicationService::GridLineVector ApplicationService::addGridForExport()
+{
+    GridLineVector addedLineItems;
+    if (Settings::V1::loadGridVisibleState()) {
+        const auto gridLines = m_editorView->grid().calculateLines(m_editorScene->sceneRect());
+        const auto gridColor = SIC::instance().applicationService()->mindMapData()->gridColor();
+        for (auto && gridLine : gridLines) {
+            addedLineItems.push_back(m_editorScene->addLine(gridLine, gridColor));
+        }
+    }
+    return addedLineItems;
+}
+
+void ApplicationService::removeLineItems(const GridLineVector & lines)
+{
+    for (auto && line : lines) {
+        m_editorScene->removeItem(line);
+    }
+}
+
 void ApplicationService::exportToPng(const ExportParams & exportParams)
 {
     m_editorView->saveZoom();
     zoomForExport();
 
     L().info() << "Exporting a PNG image of size (" << exportParams.imageSize.width() << "x" << exportParams.imageSize.height() << ") to " << exportParams.fileName.toStdString();
+    const auto lines = addGridForExport();
     const auto image = m_editorScene->toImage(exportParams.imageSize, m_editorService->backgroundColor(), exportParams.transparentBackground);
     m_editorView->restoreZoom();
+    removeLineItems(lines);
 
     emit pngExportFinished(image.save(exportParams.fileName));
 }
@@ -335,8 +358,10 @@ void ApplicationService::exportToSvg(const ExportParams & exportParams)
     zoomForExport();
 
     L().info() << "Exporting an SVG image to " << exportParams.fileName.toStdString();
+    const auto lines = addGridForExport();
     m_editorScene->toSvg(exportParams.fileName, QFileInfo { exportParams.fileName }.fileName());
     m_editorView->restoreZoom();
+    removeLineItems(lines);
 
     emit svgExportFinished(true);
 }

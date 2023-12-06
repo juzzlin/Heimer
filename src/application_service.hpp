@@ -225,6 +225,9 @@ signals:
 private:
     void addExistingGraphToScene(bool zoomToFitAfterNodesLoaded = false);
 
+    using GridLineVector = std::vector<QGraphicsLineItem *>;
+    GridLineVector addGridForExport();
+
     double calculateNodeOverlapScore(NodeCR node1, NodeCR node2) const;
 
     void connectGraphToUndoMechanism();
@@ -236,6 +239,8 @@ private:
     void disconnectSelectedNodes();
 
     void paste();
+
+    void removeLineItems(const GridLineVector & lines);
 
     void setupMindMapAfterUndoOrRedo();
 

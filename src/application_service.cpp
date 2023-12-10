@@ -321,7 +321,7 @@ void ApplicationService::enableRedo(bool enable)
 ApplicationService::GridLineVector ApplicationService::addGridForExport()
 {
     GridLineVector addedLineItems;
-    if (Settings::V1::loadGridVisibleState()) {
+    if (Settings::Custom::loadGridVisibleState()) {
         const auto gridLines = m_editorView->grid().calculateLines(m_editorScene->sceneRect());
         const auto gridColor = SIC::instance().applicationService()->mindMapData()->gridColor();
         for (auto && gridLine : gridLines) {

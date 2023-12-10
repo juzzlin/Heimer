@@ -77,7 +77,7 @@ const auto windowSizeKey = "size";
 
 namespace Settings {
 
-namespace V1 {
+namespace Custom {
 
 bool loadAutoload()
 {
@@ -321,7 +321,7 @@ void saveSelectNodeGroupByIntersection(bool selectNodeGroupByIntersection)
 
 } // namespace V1
 
-namespace V2 {
+namespace Generic {
 
 bool getBoolean(QString group, QString key, bool defaultValue)
 {

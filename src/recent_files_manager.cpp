@@ -24,7 +24,7 @@
 
 RecentFilesManager::RecentFilesManager()
 {
-    m_recentFiles = Settings::V1::loadRecentFiles();
+    m_recentFiles = Settings::Custom::loadRecentFiles();
 }
 
 void RecentFilesManager::addRecentFile(QString filePath)
@@ -43,7 +43,7 @@ void RecentFilesManager::addRecentFile(QString filePath)
     juzzlin::L().debug() << "Added recent file: " << filePath.toStdString();
     juzzlin::L().debug() << "Recent file count: " << m_recentFiles.size();
 
-    Settings::V1::saveRecentFiles(m_recentFiles);
+    Settings::Custom::saveRecentFiles(m_recentFiles);
 }
 
 std::optional<QString> RecentFilesManager::recentFile() const

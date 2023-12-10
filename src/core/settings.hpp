@@ -25,7 +25,7 @@
 
 namespace Settings {
 
-namespace V1 {
+namespace Custom {
 
 bool loadAutoload();
 
@@ -79,9 +79,9 @@ bool loadFullScreen();
 
 void saveFullScreen(bool fullScreen);
 
-} // namespace V1
+} // namespace Custom
 
-namespace V2 {
+namespace Generic {
 
 bool getBoolean(QString group, QString key, bool defaultValue);
 
@@ -99,7 +99,7 @@ QFont getFont(QString group, QString key, QFont defaultValue);
 
 void setFont(QString group, QString key, QFont value);
 
-} // namespace V2
+} // namespace Generic
 
 } // namespace Settings
 

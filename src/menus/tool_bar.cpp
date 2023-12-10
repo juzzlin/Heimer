@@ -76,11 +76,11 @@ ToolBar::ToolBar(QWidget * parent)
 
     addWidget(m_showGridCheckBox);
     connect(m_showGridCheckBox, &QCheckBox::stateChanged, this, &ToolBar::gridVisibleChanged);
-    connect(m_showGridCheckBox, &QCheckBox::stateChanged, Settings::V1::saveGridVisibleState);
+    connect(m_showGridCheckBox, &QCheckBox::stateChanged, Settings::Custom::saveGridVisibleState);
     addSeparator();
 
     addWidget(m_autoSnapCheckBox);
-    connect(m_autoSnapCheckBox, &QCheckBox::stateChanged, Settings::V1::saveAutoSnapState);
+    connect(m_autoSnapCheckBox, &QCheckBox::stateChanged, Settings::Custom::saveAutoSnapState);
     addSeparator();
 
     addWidget(m_copyOnDragCheckBox);
@@ -183,7 +183,7 @@ QWidgetAction * ToolBar::createGridSizeAction()
     connect(m_gridSizeSpinBox, signal, this, [=](int size) {
         emit gridSizeChanged(size, autoSnapEnabled());
     });
-    connect(m_gridSizeSpinBox, signal, Settings::V1::saveGridSize);
+    connect(m_gridSizeSpinBox, signal, Settings::Custom::saveGridSize);
 
     return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Grid size:"), *m_gridSizeSpinBox, *this).second;
 }
@@ -237,9 +237,9 @@ void ToolBar::enableWidgetSignals(bool enable)
 
 void ToolBar::loadSettings()
 {
-    m_autoSnapCheckBox->setCheckState(Settings::V1::loadAutoSnapState());
-    m_gridSizeSpinBox->setValue(Settings::V1::loadGridSize());
-    m_showGridCheckBox->setCheckState(Settings::V1::loadGridVisibleState());
+    m_autoSnapCheckBox->setCheckState(Settings::Custom::loadAutoSnapState());
+    m_gridSizeSpinBox->setValue(Settings::Custom::loadGridSize());
+    m_showGridCheckBox->setCheckState(Settings::Custom::loadGridVisibleState());
 }
 
 void ToolBar::setArrowSize(double value)

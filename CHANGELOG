@@ -5,6 +5,19 @@ Release date:
 
 New features:
 
+Bug fixes:
+
+Other:
+
+4.3.0
+=====
+
+Release date:
+
+Tue, 12 Dec 2023 21:33:12 +0200
+
+New features:
+
 * Fix GitHub Issue #249: Option to include grid on export
     - Grid will be exported if set visible
     - Works for both PNG and SVG exports
@@ -15,8 +28,6 @@ New features:
 * Set default filename with a timestamp in PNG and SVG export dialogs
 
 * Disable recent file entries that don't exist anymore
-
-Bug fixes:
 
 Other:
 

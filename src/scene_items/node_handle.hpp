@@ -48,12 +48,6 @@ public:
 
     QRectF boundingRect() const override;
 
-    void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
-
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
-
-    void hoverMoveEvent(QGraphicsSceneHoverEvent * event) override;
-
     void paint(QPainter * painter,
                const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
 
@@ -64,6 +58,13 @@ public:
     NodeR parentNode() const;
 
     int radius() const;
+
+protected:
+    void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
+
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
+
+    void hoverMoveEvent(QGraphicsSceneHoverEvent * event) override;
 
 private:
     QColor calculateBackgroundColor() const;

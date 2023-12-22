@@ -105,7 +105,7 @@ private:
 
     MainWindowS m_mainWindow;
 
-    std::unique_ptr<SIC> m_sic;
+    std::unique_ptr<SIC> mm_sc;
 
     StateMachine * m_stateMachine;
 

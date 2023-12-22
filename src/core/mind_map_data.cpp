@@ -18,7 +18,7 @@
 #include "graph.hpp"
 #include "settings_proxy.hpp"
 #include "shadow_effect_params.hpp"
-#include "single_instance_container.hpp"
+#include "service_container.hpp"
 
 #include "../grid.hpp"
 #include "../image_manager.hpp"

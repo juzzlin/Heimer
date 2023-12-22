@@ -16,7 +16,7 @@
 #include "color_setting_button.hpp"
 
 #include "../core/settings_proxy.hpp"
-#include "../single_instance_container.hpp"
+#include "../service_container.hpp"
 
 namespace Dialogs {
 

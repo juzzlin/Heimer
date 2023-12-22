@@ -19,7 +19,7 @@
 #include "constants.hpp"
 #include "recent_files_manager.hpp"
 #include "selection_group.hpp"
-#include "single_instance_container.hpp"
+#include "service_container.hpp"
 
 #include "core/graph.hpp"
 #include "core/mind_map_data.hpp"

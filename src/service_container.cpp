@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "single_instance_container.hpp"
+#include "service_container.hpp"
 
 #include "application_service.hpp"
 #include "control_strategy.hpp"
@@ -25,28 +25,28 @@
 
 #include <stdexcept>
 
-SingleInstanceContainer * SingleInstanceContainer::m_instance = nullptr;
+ServiceContainer * ServiceContainer::m_instance = nullptr;
 
-SingleInstanceContainer::SingleInstanceContainer()
+ServiceContainer::ServiceContainer()
   : m_settingsProxy(std::make_unique<Core::SettingsProxy>())
   , m_controlStrategy(std::make_unique<ControlStrategy>())
   , m_progressManager(std::make_unique<Core::ProgressManager>())
   , m_recentFilesManager(std::make_unique<RecentFilesManager>())
 {
-    if (!SingleInstanceContainer::m_instance) {
-        SingleInstanceContainer::m_instance = this;
+    if (!ServiceContainer::m_instance) {
+        ServiceContainer::m_instance = this;
     } else {
-        throw std::runtime_error("SingleInstanceContainer already instantiated!");
+        throw std::runtime_error("ServiceContainer already instantiated!");
     }
 }
 
-ApplicationServiceS SingleInstanceContainer::applicationService()
+ApplicationServiceS ServiceContainer::applicationService()
 {
     if (!m_applicationService) {
         if (!m_mainWindow) {
             throw std::runtime_error("MainWindow not set when instantiating ApplicationService!");
         }
-        if (!SingleInstanceContainer::m_instance) {
+        if (!ServiceContainer::m_instance) {
             throw std::runtime_error("ApplicatonService requested while SIC is deleting!");
         }
         m_applicationService = std::make_unique<ApplicationService>(m_mainWindow);
@@ -55,42 +55,42 @@ ApplicationServiceS SingleInstanceContainer::applicationService()
     return m_applicationService;
 }
 
-ControlStrategyS SingleInstanceContainer::controlStrategy()
+ControlStrategyS ServiceContainer::controlStrategy()
 {
     return m_controlStrategy;
 }
 
-ProgressManagerS SingleInstanceContainer::progressManager() const
+ProgressManagerS ServiceContainer::progressManager() const
 {
     return m_progressManager;
 }
 
-RecentFilesManagerS SingleInstanceContainer::recentFilesManager() const
+RecentFilesManagerS ServiceContainer::recentFilesManager() const
 {
     return m_recentFilesManager;
 }
 
-SettingsProxyS SingleInstanceContainer::settingsProxy()
+SettingsProxyS ServiceContainer::settingsProxy()
 {
     return m_settingsProxy;
 }
 
-SingleInstanceContainer & SIC::instance()
+ServiceContainer & SIC::instance()
 {
-    if (!SingleInstanceContainer::m_instance) {
-        throw std::runtime_error("SingleInstanceContainer not instantiated");
+    if (!ServiceContainer::m_instance) {
+        throw std::runtime_error("ServiceContainer not instantiated");
     }
-    return *SingleInstanceContainer::m_instance;
+    return *ServiceContainer::m_instance;
 }
 
-void SingleInstanceContainer::setMainWindow(MainWindowS mainWindow)
+void ServiceContainer::setMainWindow(MainWindowS mainWindow)
 {
     m_mainWindow = mainWindow;
 }
 
-SingleInstanceContainer::~SingleInstanceContainer()
+ServiceContainer::~ServiceContainer()
 {
     m_applicationService.reset();
 
-    SingleInstanceContainer::m_instance = nullptr;
+    ServiceContainer::m_instance = nullptr;
 }

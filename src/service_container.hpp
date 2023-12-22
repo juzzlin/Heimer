@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SINGLE_INSTANCE_CONTAINER_HPP
-#define SINGLE_INSTANCE_CONTAINER_HPP
+#ifndef SERVICE_CONTAINER_HPP
+#define SERVICE_CONTAINER_HPP
 
 #include "types.hpp"
 
@@ -31,14 +31,14 @@ class SettingsProxy;
 } // namespace Core
 
 //! A poor man's single instance DI.
-class SingleInstanceContainer
+class ServiceContainer
 {
 public:
-    SingleInstanceContainer();
+    ServiceContainer();
 
-    ~SingleInstanceContainer();
+    ~ServiceContainer();
 
-    static SingleInstanceContainer & instance();
+    static ServiceContainer & instance();
 
     ApplicationServiceS applicationService();
 
@@ -53,9 +53,9 @@ public:
     void setMainWindow(MainWindowS mainWindow);
 
 private:
-    SingleInstanceContainer(const SingleInstanceContainer & other) = delete;
+    ServiceContainer(const ServiceContainer & other) = delete;
 
-    SingleInstanceContainer & operator=(const SingleInstanceContainer & other) = delete;
+    ServiceContainer & operator=(const ServiceContainer & other) = delete;
 
     SettingsProxyS m_settingsProxy;
 
@@ -69,7 +69,7 @@ private:
 
     MainWindowS m_mainWindow;
 
-    static SingleInstanceContainer * m_instance;
+    static ServiceContainer * m_instance;
 };
 
-#endif // SINGLE_INSTANCE_CONTAINER_HPP
+#endif // SERVICE_CONTAINER_HPP

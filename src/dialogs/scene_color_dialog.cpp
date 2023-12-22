@@ -17,7 +17,7 @@
 
 #include "../application_service.hpp"
 #include "../node_action.hpp"
-#include "../single_instance_container.hpp"
+#include "../service_container.hpp"
 
 namespace Dialogs {
 

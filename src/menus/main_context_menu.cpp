@@ -20,7 +20,7 @@
 #include "../mouse_action.hpp"
 #include "../node_action.hpp"
 #include "../scene_items/node.hpp"
-#include "../single_instance_container.hpp"
+#include "../service_container.hpp"
 
 #include "simple_logger.hpp"
 

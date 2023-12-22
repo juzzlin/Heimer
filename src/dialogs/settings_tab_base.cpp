@@ -16,7 +16,7 @@
 #include "settings_tab_base.hpp"
 
 #include "../core/settings_proxy.hpp"
-#include "../single_instance_container.hpp"
+#include "../service_container.hpp"
 
 namespace Dialogs {
 

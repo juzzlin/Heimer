@@ -16,7 +16,7 @@
 #include "recent_files_menu.hpp"
 
 #include "../recent_files_manager.hpp"
-#include "../single_instance_container.hpp"
+#include "../service_container.hpp"
 #include "../utils.hpp"
 
 #include <functional>

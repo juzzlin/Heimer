@@ -30,7 +30,7 @@ namespace Core {
 //! The current policy for new settings is to use the Settings::Generic API and hide it behind SettingsProxy to
 //! expose a clean API without visible setting keys or low-level functions.
 //!
-//! SettingsProxy can be accessed via SingleInstanceContainer throughout the application.
+//! SettingsProxy can be accessed via ServiceContainer throughout the application.
 class SettingsProxy
 {
 public:

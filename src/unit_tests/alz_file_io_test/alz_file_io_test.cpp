@@ -15,7 +15,7 @@
 
 #include "alz_file_io_test.hpp"
 
-#include "../../single_instance_container.hpp"
+#include "../../service_container.hpp"
 
 #include "../../image_manager.hpp"
 

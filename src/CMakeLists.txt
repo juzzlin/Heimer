@@ -35,11 +35,10 @@ set(HEIMER_LIB_SRC
     node_action.hpp
     recent_files_manager.cpp
     selection_group.cpp
-    single_instance_container.cpp
+    service_container.cpp
     state_machine.cpp
     types.hpp
     utils.cpp
-
     core/graph.cpp
     core/hash_seed.cpp
     core/mind_map_data.cpp
@@ -54,7 +53,6 @@ set(HEIMER_LIB_SRC
     core/user_exception.hpp
     core/version.hpp
     core/version_checker.cpp
-
     dialogs/about_dialog.cpp
     dialogs/color_dialog.cpp
     dialogs/color_setting_button.cpp
@@ -70,7 +68,6 @@ set(HEIMER_LIB_SRC
     dialogs/widget_factory.cpp
     dialogs/export/png_export_dialog.cpp
     dialogs/export/svg_export_dialog.cpp
-
     io/alz_file_io.cpp
     io/alz_file_io_version.hpp
     io/alz_file_io_worker.cpp
@@ -78,13 +75,11 @@ set(HEIMER_LIB_SRC
     io/file_io.hpp
     io/xml_reader.cpp
     io/xml_writer.cpp
-
     menus/edge_context_menu.cpp
     menus/main_context_menu.cpp
     menus/recent_files_menu.cpp
     menus/tool_bar.cpp
     menus/widget_factory.cpp
-
     scene_items/edge.cpp
     scene_items/edge_dot.cpp
     scene_items/edge_model.hpp
@@ -97,7 +92,6 @@ set(HEIMER_LIB_SRC
     scene_items/node_model.hpp
     scene_items/scene_item_base.cpp
     scene_items/text_edit.cpp
-
     widgets/font_button.cpp
     widgets/status_label.cpp
 )

@@ -15,10 +15,10 @@
 
 #include "unit_test_base.hpp"
 
-#include "../single_instance_container.hpp"
+#include "../service_container.hpp"
 
 UnitTestBase::UnitTestBase()
-  : m_sic(std::make_unique<SingleInstanceContainer>())
+  : mm_sc(std::make_unique<ServiceContainer>())
 {
 }
 

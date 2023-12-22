@@ -17,7 +17,7 @@
 
 #include "../application_service.hpp"
 #include "../scene_items/edge.hpp"
-#include "../single_instance_container.hpp"
+#include "../service_container.hpp"
 
 #include <cassert>
 

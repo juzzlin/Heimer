@@ -33,7 +33,7 @@
 #include "item_filter.hpp"
 #include "magic_zoom.hpp"
 #include "mouse_action.hpp"
-#include "single_instance_container.hpp"
+#include "service_container.hpp"
 #include "utils.hpp"
 
 #include "core/mind_map_data.hpp"

@@ -20,7 +20,7 @@
 #include "control_strategy.hpp"
 #include "node_action.hpp"
 #include "recent_files_manager.hpp"
-#include "single_instance_container.hpp"
+#include "service_container.hpp"
 
 #include "core/settings.hpp"
 

@@ -20,7 +20,7 @@
 
 #include <memory>
 
-class SingleInstanceContainer;
+class ServiceContainer;
 
 class UnitTestBase : public QObject
 {
@@ -32,7 +32,7 @@ public:
     virtual ~UnitTestBase() override;
 
 private:
-    std::unique_ptr<SingleInstanceContainer> m_sic;
+    std::unique_ptr<ServiceContainer> mm_sc;
 };
 
 #endif // UNIT_TEST_BASE_HPP

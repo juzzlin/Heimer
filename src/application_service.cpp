@@ -24,7 +24,7 @@
 #include "main_window.hpp"
 #include "mouse_action.hpp"
 #include "node_action.hpp"
-#include "single_instance_container.hpp"
+#include "service_container.hpp"
 
 #include "core/progress_manager.hpp"
 #include "core/settings.hpp"

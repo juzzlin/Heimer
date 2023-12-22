@@ -23,7 +23,7 @@
 
 #include "../constants.hpp"
 #include "../image.hpp"
-#include "../single_instance_container.hpp"
+#include "../service_container.hpp"
 #include "../utils.hpp"
 
 #include "../core/settings_proxy.hpp"

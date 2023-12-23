@@ -228,3 +228,20 @@ target_link_libraries(${HEIMER_LIB_NAME} Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_V
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 add_executable(${BINARY_NAME} WIN32 ${APP_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
 target_link_libraries(${BINARY_NAME} ${HEIMER_LIB_NAME})
+
+# Add target for running clang-format
+find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
+if(NOT CLANG_FORMAT_EXECUTABLE)
+    message(WARNING "clang-format not found. The 'style' target will not be available.")
+else()
+    add_custom_target(style COMMENT "Running clang-format on headers and sources")
+    set(ALL_SOURCE_FILES ${HEIMER_LIB_SRC} ${HEIMER_LIB_HDR} ${APP_SRC})
+    foreach(SOURCE_FILE ${ALL_SOURCE_FILES})
+        add_custom_command(
+            TARGET style
+            COMMAND ${CLANG_FORMAT_EXECUTABLE} -i ${SOURCE_FILE}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            COMMENT "Formatting ${SOURCE_FILE} with clang-format"
+        )
+    endforeach()
+endif()

@@ -21,8 +21,6 @@
 
 #include <QFont>
 
-
-
 //! Some kind of a frond-end or facade for stateless Settings to enable faster value reads (QSettings can be quite slow)
 //! and to create more complex settings (e.g. setShadowEffect()) that use the Settings API. However, the situation is a
 //! bit of a mess right now as some features still use Settings directly and some features use SettingsProxy.
@@ -145,7 +143,5 @@ private:
 
     bool m_optimizeShadowEffects = true;
 };
-
-
 
 #endif // SETTINGS_PROXY_HPP

@@ -19,7 +19,6 @@
 #include <QDomDocument>
 
 namespace IO::XmlWriter {
-
 bool writeToFile(QDomDocument document, QString filePath);
 }
 

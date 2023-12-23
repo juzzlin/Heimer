@@ -29,7 +29,7 @@ namespace Widgets {
 class StatusLabel : public QLabel
 {
     Q_OBJECT
-    Q_PROPERTY(qreal scale READ scale WRITE setScale)
+    Q_PROPERTY(qreal scale READ scale WRITE setScale CONSTANT)
 
 public:
     StatusLabel(EditorView & editorView, QString message);

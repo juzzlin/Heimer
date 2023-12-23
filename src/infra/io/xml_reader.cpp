@@ -15,6 +15,8 @@
 
 #include "xml_reader.hpp"
 
+#include "file_exception.hpp"
+
 #include <QFile>
 #include <QObject>
 

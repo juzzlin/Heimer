@@ -19,8 +19,6 @@
 #include <stdexcept>
 #include <string>
 
-
-
 class UserException : public std::runtime_error
 {
 public:
@@ -29,7 +27,5 @@ public:
     {
     }
 };
-
-
 
 #endif // USER_EXCEPTION_HPP

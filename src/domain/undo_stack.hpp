@@ -19,9 +19,6 @@
 #include "../common/types.hpp"
 
 #include <list>
-#include <memory>
-
-
 
 class UndoStack
 {
@@ -54,7 +51,5 @@ private:
 
     size_t m_maxHistorySize;
 };
-
-
 
 #endif // UNDO_STACK_HPP

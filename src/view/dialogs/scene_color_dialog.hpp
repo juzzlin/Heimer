@@ -18,10 +18,6 @@
 
 #include "color_dialog.hpp"
 
-#include <memory>
-
-class ApplicationService;
-
 namespace Dialogs {
 
 class SceneColorDialog : public ColorDialog

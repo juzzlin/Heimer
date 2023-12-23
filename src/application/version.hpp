@@ -26,8 +26,6 @@
 #undef minor
 #undef patch
 
-
-
 struct Version
 {
     Version()
@@ -121,7 +119,5 @@ inline std::ostream & operator<<(std::ostream & os, const Version & version)
     os << version.major << "." << version.minor << "." << version.patch;
     return os;
 }
-
-
 
 #endif // VERSION_HPP

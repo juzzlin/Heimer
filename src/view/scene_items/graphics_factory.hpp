@@ -16,8 +16,6 @@
 #ifndef GRAPHICS_FACTORY_HPP
 #define GRAPHICS_FACTORY_HPP
 
-#include "../../common/constants.hpp"
-
 #include <QColor>
 #include <QPen>
 

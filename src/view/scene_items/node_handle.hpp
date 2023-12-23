@@ -29,8 +29,8 @@ class Node;
 class NodeHandle : public QObject, public QGraphicsItem
 {
     Q_OBJECT
-    Q_PROPERTY(qreal scale READ scale WRITE setScale)
-    Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
+    Q_PROPERTY(qreal scale READ scale WRITE setScale CONSTANT)
+    Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity CONSTANT)
     Q_INTERFACES(QGraphicsItem)
 
 public:

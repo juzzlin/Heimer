@@ -20,8 +20,6 @@
 
 #include "../application/version.hpp"
 
-
-
 class VersionChecker : public QObject
 {
     Q_OBJECT
@@ -34,7 +32,5 @@ public:
 signals:
     void newVersionFound(Version version, QString downloadUrl);
 };
-
-
 
 #endif // VERSION_CHECKER_HPP

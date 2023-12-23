@@ -24,8 +24,6 @@
 #include <unordered_map>
 #include <vector>
 
-
-
 class Graph
 {
 public:
@@ -97,7 +95,5 @@ private:
 
     int m_count = 0;
 };
-
-
 
 #endif // GRAPH_HPP

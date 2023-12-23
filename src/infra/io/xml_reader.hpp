@@ -18,12 +18,8 @@
 
 #include <QDomDocument>
 
-#include "file_exception.hpp"
-
 namespace IO::XmlReader {
-
 QDomDocument readFromFile(QString filePath);
-
 }
 
 #endif // XML_READER_HPP

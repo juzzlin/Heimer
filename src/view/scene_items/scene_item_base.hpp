@@ -26,7 +26,7 @@ class SceneItemBase : public QObject, public QGraphicsItem
 {
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)
-    Q_PROPERTY(qreal scale READ scale WRITE setScale CONSTANT)
+    Q_PROPERTY(qreal scale READ scale WRITE setScale)
 
 public:
     SceneItemBase();

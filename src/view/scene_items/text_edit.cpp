@@ -21,6 +21,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
+#include <QTextCursor>
 #include <QTextDocument>
 #include <QTextOption>
 

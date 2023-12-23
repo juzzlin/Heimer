@@ -20,6 +20,7 @@
 #include <QGraphicsItem>
 #include <QImage>
 #include <QObject>
+#include <QTextCharFormat>
 
 #include <map>
 #include <vector>
@@ -182,6 +183,8 @@ private:
     QPointF m_currentMousePos;
 
     QPixmap m_pixmap;
+
+    QTextCharFormat m_unselectedFormat;
 
     static NodeP m_lastHoveredNode;
 };

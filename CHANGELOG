@@ -7,6 +7,8 @@ New features:
 
 Bug fixes:
 
+* Fix GitHub Issue #191: Windows: Text highlighted by the search not visible
+
 * Fix GitHub Issue #255: Run error in ArchLinux
 
 Other:

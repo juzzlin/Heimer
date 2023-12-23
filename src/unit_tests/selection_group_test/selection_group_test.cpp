@@ -15,18 +15,16 @@
 
 #include "selection_group_test.hpp"
 
-#include "selection_group.hpp"
-
-#include "../../core/test_mode.hpp"
-
-#include "../../scene_items/node.hpp"
+#include "../../common/test_mode.hpp"
+#include "../../view/scene_items/node.hpp"
+#include "../../view/selection_group.hpp"
 
 using SceneItems::Edge;
 using SceneItems::Node;
 
 SelectionGroupTest::SelectionGroupTest()
 {
-    Core::TestMode::setEnabled(true);
+    TestMode::setEnabled(true);
 }
 
 void SelectionGroupTest::testAddNodes_Explicit()

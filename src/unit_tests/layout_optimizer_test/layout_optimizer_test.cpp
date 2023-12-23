@@ -15,26 +15,24 @@
 
 #include "layout_optimizer_test.hpp"
 
-#include "../../grid.hpp"
-#include "../../layout_optimizer.hpp"
-
-#include "../../core/graph.hpp"
-#include "../../core/mind_map_data.hpp"
-#include "../../core/test_mode.hpp"
+#include "../../domain/mind_map_data.hpp"
+#include "../../common/test_mode.hpp"
+#include "../../domain/graph.hpp"
+#include "../../domain/layout_optimizer.hpp"
+#include "../../view/grid.hpp"
 
 #include "simple_logger.hpp"
 
-#include <iostream>
+#include <memory>
 #include <random>
-
-using Core::MindMapData;
+#include <vector>
 
 using SceneItems::Edge;
 using SceneItems::Node;
 
 LayoutOptimizerTest::LayoutOptimizerTest()
 {
-    Core::TestMode::setEnabled(true);
+    TestMode::setEnabled(true);
 }
 
 void LayoutOptimizerTest::testNoNodes_ShouldNotInitialize()

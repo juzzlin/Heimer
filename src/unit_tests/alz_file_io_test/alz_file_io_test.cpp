@@ -15,21 +15,12 @@
 
 #include "alz_file_io_test.hpp"
 
-#include "../../service_container.hpp"
-
-#include "../../image_manager.hpp"
-
-#include "../../core/mind_map_data.hpp"
-#include "../../core/test_mode.hpp"
-
-#include "../../io/alz_file_io.hpp"
-#include "../../io/alz_file_io_version.hpp"
-#include "../../io/xml_reader.hpp"
-#include "../../io/xml_writer.hpp"
-
-#include "../../core/graph.hpp"
-
-using Core::MindMapData;
+#include "../../domain/mind_map_data.hpp"
+#include "../../common/test_mode.hpp"
+#include "../../domain/graph.hpp"
+#include "../../domain/image_manager.hpp"
+#include "../../infra/io/alz_file_io.hpp"
+#include "../../infra/io/alz_file_io_version.hpp"
 
 using SceneItems::Edge;
 using SceneItems::EdgeModel;
@@ -38,7 +29,7 @@ using SceneItems::NodeModel;
 
 AlzFileIOTest::AlzFileIOTest()
 {
-    Core::TestMode::setEnabled(true);
+    TestMode::setEnabled(true);
 }
 
 void AlzFileIOTest::testEmptyDesign()

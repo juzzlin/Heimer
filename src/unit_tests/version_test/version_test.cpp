@@ -15,9 +15,7 @@
 
 #include "version_test.hpp"
 
-#include "../../core/version.hpp"
-
-using Core::Version;
+#include "../../application/version.hpp"
 
 void VersionTest::testInitialization_defaultShouldNotBeValid()
 {

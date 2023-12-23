@@ -15,13 +15,10 @@
 
 #include "editor_service_test.hpp"
 
-#include "../../editor_service.hpp"
-
-#include "../../core/graph.hpp"
-#include "../../core/mind_map_data.hpp"
-#include "../../core/test_mode.hpp"
-
-using Core::MindMapData;
+#include "../../common/test_mode.hpp"
+#include "../../domain/editor_service.hpp"
+#include "../../domain/graph.hpp"
+#include "../../domain/mind_map_data.hpp"
 
 using SceneItems::Edge;
 using SceneItems::EdgeModel;
@@ -30,7 +27,7 @@ using SceneItems::NodeModel;
 
 EditorServiceTest::EditorServiceTest()
 {
-    Core::TestMode::setEnabled(true);
+    TestMode::setEnabled(true);
 }
 
 void EditorServiceTest::testAddAndDeleteEdge()

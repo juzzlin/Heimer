@@ -15,15 +15,14 @@
 
 #include "node_test.hpp"
 
-#include "../../core/test_mode.hpp"
-
-#include "../../scene_items/node.hpp"
+#include "../../common/test_mode.hpp"
+#include "../../view/scene_items/node.hpp"
 
 using SceneItems::Node;
 
 NodeTest::NodeTest()
 {
-    Core::TestMode::setEnabled(true);
+    TestMode::setEnabled(true);
 }
 
 void NodeTest::testContainsText()

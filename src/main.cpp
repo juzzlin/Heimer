@@ -16,13 +16,12 @@
 #include <QApplication>
 #include <QSettings>
 
-#include "application.hpp"
-#include "constants.hpp"
+#include "application/application.hpp"
+#include "application/hash_seed.hpp"
+#include "application/user_exception.hpp"
+#include "common/constants.hpp"
+#include "common/utils.hpp"
 #include "simple_logger.hpp"
-#include "utils.hpp"
-
-#include "core/hash_seed.hpp"
-#include "core/user_exception.hpp"
 
 #include <cstdlib>
 #include <iostream>
@@ -62,7 +61,7 @@ static void initLogger()
 
 int main(int argc, char ** argv)
 {
-    Core::HashSeed::init();
+    HashSeed::init();
 
 #if QT_VERSION >= 0x50600 && QT_VERSION < 0x60000
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -77,7 +76,7 @@ int main(int argc, char ** argv)
         initLogger();
         return Application(argc, argv).run();
     } catch (std::exception & e) {
-        if (!dynamic_cast<Core::UserException *>(&e)) {
+        if (!dynamic_cast<UserException *>(&e)) {
             std::cerr << e.what() << std::endl;
         }
         return EXIT_FAILURE;

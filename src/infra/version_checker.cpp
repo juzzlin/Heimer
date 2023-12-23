@@ -25,8 +25,6 @@
 
 using juzzlin::L;
 
-
-
 VersionChecker::VersionChecker(QObject * parent)
   : QObject(parent)
 {
@@ -69,5 +67,3 @@ void VersionChecker::checkForNewReleases()
             });
     manager->get(QNetworkRequest({ Constants::Application::RELEASES_URL }));
 }
-
-

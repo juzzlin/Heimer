@@ -21,8 +21,8 @@
 #include <map>
 #include <optional>
 
-#include "image.hpp"
 #include "../common/types.hpp"
+#include "image.hpp"
 
 class ImageManager : public QObject
 {

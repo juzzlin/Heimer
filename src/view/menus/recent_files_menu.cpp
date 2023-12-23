@@ -35,7 +35,8 @@ RecentFilesMenu::RecentFilesMenu(QWidget * parent)
             const auto handler = std::bind([=](QString filePath) {
                 SIC::instance().recentFilesManager()->setSelectedFile(filePath);
                 fileSelected(filePath);
-            }, action->text());
+            },
+                                           action->text());
             action->setEnabled(Utils::fileExists(filePath));
             connect(action, &QAction::triggered, handler);
         }

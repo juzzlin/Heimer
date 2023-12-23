@@ -21,8 +21,6 @@
 #include <stdexcept>
 #include <string>
 
-
-
 namespace {
 int64_t getKey(int c0, int c1)
 {
@@ -188,5 +186,3 @@ Graph::~Graph()
 
     juzzlin::L().debug() << "Graph deleted";
 }
-
-

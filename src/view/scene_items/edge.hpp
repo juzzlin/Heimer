@@ -45,7 +45,6 @@ class Edge : public SceneItemBase
     Q_OBJECT
 
 public:
-
     //! Constructor.
     //! Note!!: We are using raw pointers here because the edge only must only refer to the nodes.
     Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations = true, bool enableLabel = true);

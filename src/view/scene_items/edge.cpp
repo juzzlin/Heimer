@@ -17,8 +17,8 @@
 
 #include "../../application/service_container.hpp"
 #include "../../application/settings_proxy.hpp"
-#include "../../common/test_mode.hpp"
 #include "../../common/constants.hpp"
+#include "../../common/test_mode.hpp"
 #include "../../domain/graph.hpp"
 #include "../shadow_effect_params.hpp"
 #include "edge_dot.hpp"

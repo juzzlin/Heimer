@@ -16,8 +16,8 @@
 #include "state_machine.hpp"
 
 #include "application_service.hpp"
-#include "simple_logger.hpp"
 #include "service_container.hpp"
+#include "simple_logger.hpp"
 
 StateMachine::StateMachine(QObject * parent)
   : QObject(parent)

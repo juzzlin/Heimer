@@ -82,5 +82,3 @@ MindMapDataU UndoStack::redo()
 
     return {};
 }
-
-

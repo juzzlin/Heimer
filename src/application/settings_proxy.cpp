@@ -16,8 +16,6 @@
 #include "settings_proxy.hpp"
 #include "../infra/settings.hpp"
 
-
-
 SettingsProxy::SettingsProxy()
   : m_autoload(Settings::Custom::loadAutoload())
   , m_autosave(Settings::Custom::loadAutosave())
@@ -270,5 +268,3 @@ void SettingsProxy::setOptimizeShadowEffects(bool optimizeShadowEffects)
 }
 
 SettingsProxy::~SettingsProxy() = default;
-
-

@@ -29,11 +29,11 @@
 
 #include "../application/application_service.hpp"
 #include "../application/control_strategy.hpp"
-#include "../domain/mind_map_data.hpp"
 #include "../application/service_container.hpp"
 #include "../application/settings_proxy.hpp"
 #include "../common/constants.hpp"
 #include "../common/utils.hpp"
+#include "../domain/mind_map_data.hpp"
 #include "item_filter.hpp"
 #include "magic_zoom.hpp"
 #include "menus/edge_context_menu.hpp"

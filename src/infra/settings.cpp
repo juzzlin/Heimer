@@ -319,7 +319,7 @@ void saveSelectNodeGroupByIntersection(bool selectNodeGroupByIntersection)
     settings.endGroup();
 }
 
-} // namespace V1
+} // namespace Custom
 
 namespace Generic {
 
@@ -404,6 +404,6 @@ void setFont(QString group, QString key, QFont value)
     settings.endGroup();
 }
 
-} // namespace V2
+} // namespace Generic
 
 } // namespace Settings

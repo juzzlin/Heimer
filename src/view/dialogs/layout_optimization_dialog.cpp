@@ -15,9 +15,9 @@
 
 #include "layout_optimization_dialog.hpp"
 
-#include "../../domain/mind_map_data.hpp"
 #include "../../common/constants.hpp"
 #include "../../domain/layout_optimizer.hpp"
+#include "../../domain/mind_map_data.hpp"
 #include "../editor_view.hpp"
 #include "widget_factory.hpp"
 

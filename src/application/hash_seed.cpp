@@ -15,8 +15,6 @@
 
 #include "hash_seed.hpp"
 
-
-
 void HashSeed::init()
 {
 #if QT_VERSION >= 0x50600
@@ -25,5 +23,3 @@ void HashSeed::init()
     qt_qhash_seed.store(0);
 #endif
 }
-
-

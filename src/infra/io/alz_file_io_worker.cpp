@@ -15,15 +15,15 @@
 
 #include "alz_file_io_worker.hpp"
 
-#include "../../domain/mind_map_data.hpp"
 #include "../../application/progress_manager.hpp"
 #include "../../application/service_container.hpp"
-#include "../../common/test_mode.hpp"
 #include "../../common/constants.hpp"
+#include "../../common/test_mode.hpp"
 #include "../../common/types.hpp"
 #include "../../common/utils.hpp"
 #include "../../domain/graph.hpp"
 #include "../../domain/image_manager.hpp"
+#include "../../domain/mind_map_data.hpp"
 #include "../../view/scene_items/edge.hpp"
 #include "../../view/scene_items/node.hpp"
 #include "xml_reader.hpp"

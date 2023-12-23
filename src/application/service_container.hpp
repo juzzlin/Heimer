@@ -25,10 +25,8 @@ class EditorService;
 class ControlStrategy;
 class RecentFilesManager;
 
-
 class ProgressManager;
 class SettingsProxy;
-
 
 //! A poor man's single instance DI.
 class ServiceContainer

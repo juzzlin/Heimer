@@ -15,9 +15,9 @@
 
 #include "layout_optimizer.hpp"
 
-#include "../domain/mind_map_data.hpp"
 #include "../common/constants.hpp"
 #include "../domain/graph.hpp"
+#include "../domain/mind_map_data.hpp"
 #include "../view/grid.hpp"
 #include "../view/scene_items/node.hpp"
 

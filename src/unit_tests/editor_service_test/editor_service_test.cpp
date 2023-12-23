@@ -15,8 +15,8 @@
 
 #include "editor_service_test.hpp"
 
+#include "../../application/editor_service.hpp"
 #include "../../common/test_mode.hpp"
-#include "../../domain/editor_service.hpp"
 #include "../../domain/graph.hpp"
 #include "../../domain/mind_map_data.hpp"
 

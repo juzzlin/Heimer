@@ -24,7 +24,6 @@
 #include "../domain/mind_map_data.hpp"
 #include "../domain/undo_stack.hpp"
 #include "../infra/io/alz_file_io.hpp"
-#include "../view/editor_scene.hpp"
 #include "../view/scene_items/edge.hpp"
 #include "../view/scene_items/node.hpp"
 #include "../view/selection_group.hpp"

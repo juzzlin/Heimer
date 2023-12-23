@@ -26,9 +26,9 @@
 #include <QTimer>
 
 #include "../common/types.hpp"
+#include "../domain/copy_context.hpp"
 #include "../view/grid.hpp"
 #include "../view/mouse_action.hpp"
-#include "copy_context.hpp"
 
 class MindMapTile;
 class SelectionGroup;

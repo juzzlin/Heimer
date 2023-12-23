@@ -15,7 +15,10 @@
 
 #include "application_service.hpp"
 
-#include "../domain/editor_service.hpp"
+#include "../application//editor_service.hpp"
+#include "../application/progress_manager.hpp"
+#include "../application/service_container.hpp"
+#include "../application/settings_proxy.hpp"
 #include "../domain/graph.hpp"
 #include "../domain/image_manager.hpp"
 #include "../infra/export_params.hpp"
@@ -29,9 +32,6 @@
 #include "../view/node_action.hpp"
 #include "../view/scene_items/node_handle.hpp"
 #include "../view/shadow_effect_params.hpp"
-#include "progress_manager.hpp"
-#include "service_container.hpp"
-#include "settings_proxy.hpp"
 
 #include "simple_logger.hpp"
 

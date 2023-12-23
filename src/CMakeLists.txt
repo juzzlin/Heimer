@@ -19,6 +19,7 @@ set(HEIMER_LIB_SRC
     application/application.cpp
     application/application_service.cpp
     application/control_strategy.cpp
+    application/editor_service.cpp
     application/hash_seed.cpp
     application/progress_manager.cpp
     application/recent_files_manager.cpp
@@ -28,7 +29,6 @@ set(HEIMER_LIB_SRC
     common/test_mode.cpp
     common/utils.cpp
     domain/copy_context.cpp
-    domain/editor_service.cpp
     domain/graph.cpp
     domain/image.cpp
     domain/image_manager.cpp
@@ -87,6 +87,7 @@ set(HEIMER_LIB_HDR
     application/application.hpp
     application/application_service.hpp
     application/control_strategy.hpp
+    application/editor_service.hpp
     application/hash_seed.hpp
     application/progress_manager.hpp
     application/recent_files_manager.hpp
@@ -100,7 +101,6 @@ set(HEIMER_LIB_HDR
     common/types.hpp
     common/utils.hpp
     domain/copy_context.hpp
-    domain/editor_service.hpp
     domain/graph.hpp
     domain/image.hpp
     domain/image_manager.hpp

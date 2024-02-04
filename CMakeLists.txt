@@ -61,6 +61,7 @@ if(NOT CMAKE_BUILD_TYPE)
         "Choose the type of build, options are: None Debug Release RelWithDebInfo
 MinSizeRel." FORCE)
 endif()
+message(STATUS "Build type        : ${CMAKE_BUILD_TYPE}")
 
 # Package type info shown in the About dialog
 if(PACKAGE_TYPE)

@@ -221,7 +221,7 @@ private:
 
     bool m_isModified = false;
 
-    bool m_touched = false;
+    bool m_isTouched = false;
 
     QString m_fileName;
 

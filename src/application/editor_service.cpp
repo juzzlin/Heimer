@@ -71,7 +71,7 @@ void EditorService::requestAutosave(AutosaveContext context, bool async)
     case AutosaveContext::InitializeNewMindMap:
     case AutosaveContext::OpenMindMap:
     case AutosaveContext::QuitApplication:
-        if (m_touched) {
+        if (m_isTouched) {
             doRequestAutosave(async);
         }
         break;
@@ -200,7 +200,7 @@ void EditorService::saveUndoPoint(bool dontClearRedoStack)
     sendUndoAndRedoSignals();
     requestAutosave(AutosaveContext::Modification, true);
 
-    m_touched = true;
+    m_isTouched = true;
 }
 
 void EditorService::saveRedoPoint()

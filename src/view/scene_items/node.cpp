@@ -571,7 +571,7 @@ QColor Node::color() const
 
 bool Node::containsText(const QString & text) const
 {
-    return m_nodeModel->text.toLower().contains(text.toLower());
+    return m_nodeModel->text.contains(text, Qt::CaseInsensitive);
 }
 
 int Node::index() const

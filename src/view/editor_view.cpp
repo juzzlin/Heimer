@@ -80,9 +80,14 @@ const Grid & EditorView::grid() const
 
 void EditorView::finishRubberBand()
 {
-    if (!SC::instance().applicationService()->setRectagleSelection({ mapToScene(m_rubberBand->geometry().topLeft()), mapToScene(m_rubberBand->geometry().bottomRight()) })) {
+    const auto selectionRectangle = QRectF { mapToScene(m_rubberBand->geometry().topLeft()), mapToScene(m_rubberBand->geometry().bottomRight()) };
+    if (!SC::instance().applicationService()->setNodeRectangleSelection(selectionRectangle)) {
         // No nodes were within the rectangle => clear the whole selection group.
-        SC::instance().applicationService()->clearSelectionGroup();
+        SC::instance().applicationService()->clearNodeSelectionGroup();
+    }
+    if (!SC::instance().applicationService()->setEdgeRectangleSelection(selectionRectangle)) {
+        // No edges were within the rectangle => clear the whole selection group.
+        SC::instance().applicationService()->clearEdgeSelectionGroup();
     }
     m_rubberBand->hide();
 }
@@ -138,7 +143,7 @@ void EditorView::handlePrimaryButtonClickOnNode(NodeR node)
     } else {
         // Clear selection group if the node is not in it
         if (SC::instance().applicationService()->selectionGroupSize() && !SC::instance().applicationService()->isInSelectionGroup(node)) {
-            SC::instance().applicationService()->clearSelectionGroup();
+            SC::instance().applicationService()->clearNodeSelectionGroup();
         }
 
         // User is initiating a node move drag
@@ -149,7 +154,7 @@ void EditorView::handlePrimaryButtonClickOnNode(NodeR node)
 void EditorView::handlePrimaryButtonClickOnNodeHandle(SceneItems::NodeHandle & nodeHandle)
 {
     if (!nodeHandle.parentNode().selected()) {
-        SC::instance().applicationService()->clearSelectionGroup();
+        SC::instance().applicationService()->clearNodeSelectionGroup();
     }
 
     switch (nodeHandle.role()) {
@@ -180,7 +185,7 @@ void EditorView::handleSecondaryButtonClickOnEdge(EdgeR edge)
 void EditorView::handleSecondaryButtonClickOnNode(NodeR node)
 {
     if (!node.selected()) {
-        SC::instance().applicationService()->clearSelectionGroup();
+        SC::instance().applicationService()->clearNodeSelectionGroup();
     }
 
     SC::instance().applicationService()->addNodeToSelectionGroup(node, true);
@@ -192,7 +197,7 @@ void EditorView::handleSecondaryButtonClickOnNode(NodeR node)
 
 void EditorView::initiateBackgroundDrag()
 {
-    juzzlin::L().debug() << "Initiating background drag..";
+    juzzlin::L().debug() << "Initiating background drag";
 
     SC::instance().applicationService()->setSelectedEdge(nullptr);
     SC::instance().applicationService()->mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
@@ -202,7 +207,7 @@ void EditorView::initiateBackgroundDrag()
 
 void EditorView::initiateRubberBand()
 {
-    juzzlin::L().debug() << "Initiating rubber band..";
+    juzzlin::L().debug() << "Initiating rubber band";
 
     SC::instance().applicationService()->mouseAction().setRubberBandOrigin(m_clickedPos);
     if (!m_rubberBand) {
@@ -274,7 +279,7 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
 
         // This is needed to clear implicitly "selected" connection candidate nodes when hovering the dummy drag node on other nodes
         SC::instance().applicationService()->unselectSelectedNode();
-        SC::instance().applicationService()->clearSelectionGroup();
+        SC::instance().applicationService()->clearNodeSelectionGroup();
 
         m_connectionTargetNode = nullptr;
 

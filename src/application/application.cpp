@@ -389,7 +389,10 @@ void Application::showBackgroundColorDialog()
 
 void Application::showEdgeColorDialog()
 {
-    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Edge).exec();
+    if (Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Edge).exec() != QDialog::Accepted) {
+        // Clear implicitly selected edges on cancel
+        m_sc->applicationService()->clearEdgeSelectionGroup(true);
+    }
     emit actionTriggered(StateMachine::Action::EdgeColorChanged);
 }
 
@@ -403,7 +406,7 @@ void Application::showNodeColorDialog()
 {
     if (Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Node).exec() != QDialog::Accepted) {
         // Clear implicitly selected nodes on cancel
-        m_sc->applicationService()->clearSelectionGroup(true);
+        m_sc->applicationService()->clearNodeSelectionGroup(true);
     }
     emit actionTriggered(StateMachine::Action::NodeColorChanged);
 }
@@ -412,7 +415,7 @@ void Application::showTextColorDialog()
 {
     if (Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Text).exec() != QDialog::Accepted) {
         // Clear implicitly selected nodes on cancel
-        m_sc->applicationService()->clearSelectionGroup(true);
+        m_sc->applicationService()->clearNodeSelectionGroup(true);
     }
     emit actionTriggered(StateMachine::Action::TextColorChanged);
 }

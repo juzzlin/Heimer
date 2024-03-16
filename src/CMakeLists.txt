@@ -57,6 +57,7 @@ set(HEIMER_LIB_SRC
     view/dialogs/spinner_dialog.cpp
     view/dialogs/whats_new_dialog.cpp
     view/dialogs/widget_factory.cpp
+    view/edge_selection_group.cpp
     view/editor_scene.cpp
     view/editor_view.cpp
     view/grid.cpp
@@ -134,6 +135,7 @@ set(HEIMER_LIB_HDR
     view/dialogs/spinner_dialog.hpp
     view/dialogs/whats_new_dialog.hpp
     view/dialogs/widget_factory.hpp
+    view/edge_selection_group.hpp
     view/editor_scene.hpp
     view/editor_view.hpp
     view/grid.hpp

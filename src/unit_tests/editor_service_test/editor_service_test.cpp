@@ -72,7 +72,7 @@ void EditorServiceTest::testGroupConnection()
     const auto node1 = editorService.addNodeAt(QPointF(1, 1));
     const auto node2 = editorService.addNodeAt(QPointF(2, 2));
 
-    QCOMPARE(editorService.selectionGroupSize(), size_t(0));
+    QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(0));
     editorService.toggleNodeInSelectionGroup(*node0);
     QCOMPARE(editorService.areSelectedNodesConnectable(), false);
     editorService.toggleNodeInSelectionGroup(*node2);
@@ -98,7 +98,7 @@ void EditorServiceTest::testGroupDisconnection()
     const auto node1 = editorService.addNodeAt(QPointF(1, 1));
     const auto node2 = editorService.addNodeAt(QPointF(2, 2));
 
-    QCOMPARE(editorService.selectionGroupSize(), size_t(0));
+    QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(0));
     editorService.toggleNodeInSelectionGroup(*node0);
     QCOMPARE(editorService.areSelectedNodesDisconnectable(), false);
     editorService.toggleNodeInSelectionGroup(*node2);
@@ -126,7 +126,7 @@ void EditorServiceTest::testGroupDelete()
 
     editorService.deleteSelectedNodes();
 
-    QCOMPARE(editorService.selectionGroupSize(), size_t(0));
+    QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(0));
     QCOMPARE(editorService.mindMapData()->graph().getNodes().empty(), true);
 }
 
@@ -166,31 +166,31 @@ void EditorServiceTest::testGroupSelection()
     const auto node0 = editorService.addNodeAt(QPointF(0, 0));
     const auto node1 = editorService.addNodeAt(QPointF(1, 1));
 
-    QCOMPARE(editorService.selectionGroupSize(), size_t(0));
+    QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(0));
 
     editorService.toggleNodeInSelectionGroup(*node0);
     editorService.toggleNodeInSelectionGroup(*node1);
 
-    QCOMPARE(editorService.selectionGroupSize(), size_t(2));
+    QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(2));
     QCOMPARE(node0->selected(), true);
     QCOMPARE(node1->selected(), true);
 
-    editorService.clearSelectionGroup();
+    editorService.clearNodeSelectionGroup();
 
-    QCOMPARE(editorService.selectionGroupSize(), size_t(0));
+    QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(0));
     QCOMPARE(node0->selected(), false);
     QCOMPARE(node1->selected(), false);
 
     editorService.addNodeToSelectionGroup(*node0);
     editorService.addNodeToSelectionGroup(*node1);
 
-    QCOMPARE(editorService.selectionGroupSize(), size_t(2));
+    QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(2));
     QCOMPARE(node0->selected(), true);
     QCOMPARE(node1->selected(), true);
 
     editorService.loadMindMapData(""); // Doesn't really load anything if in unit tests
 
-    QCOMPARE(editorService.selectionGroupSize(), size_t(0));
+    QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(0));
 }
 
 void EditorServiceTest::testLoadState()
@@ -213,7 +213,7 @@ void EditorServiceTest::testLoadState()
 
     QCOMPARE(editorService.fileName(), fileName);
     QCOMPARE(editorService.isUndoable(), false);
-    QCOMPARE(editorService.selectionGroupSize(), size_t(0));
+    QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(0));
     QCOMPARE(editorService.selectedEdge(), nullptr);
     QVERIFY(!editorService.selectedNode().has_value());
 }
@@ -888,7 +888,7 @@ void EditorServiceTest::testUndoState()
     editorService.undo();
 
     QCOMPARE(editorService.isUndoable(), false);
-    QCOMPARE(editorService.selectionGroupSize(), size_t(0));
+    QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(0));
     QCOMPARE(editorService.selectedEdge(), nullptr);
     QVERIFY(!editorService.selectedNode().has_value());
 }
@@ -916,7 +916,7 @@ void EditorServiceTest::testRedoState()
     editorService.redo();
 
     QCOMPARE(editorService.isUndoable(), true);
-    QCOMPARE(editorService.selectionGroupSize(), size_t(0));
+    QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(0));
     QCOMPARE(editorService.selectedEdge(), nullptr);
     QVERIFY(!editorService.selectedNode().has_value());
 

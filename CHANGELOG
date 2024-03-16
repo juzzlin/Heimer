@@ -5,6 +5,8 @@ Release date:
 
 New features:
 
+* Search text also in edge labels
+
 Bug fixes:
 
 * Fix GitHub Issue #191: Windows: Text highlighted by the search not visible

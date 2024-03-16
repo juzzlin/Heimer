@@ -166,9 +166,14 @@ void ApplicationService::adjustSceneRect()
     m_editorScene->adjustSceneRect();
 }
 
-void ApplicationService::clearSelectionGroup(bool onlyImplicitNodes)
+void ApplicationService::clearEdgeSelectionGroup(bool implicitOnly)
 {
-    m_editorService->clearSelectionGroup(onlyImplicitNodes);
+    m_editorService->clearEdgeSelectionGroup(implicitOnly);
+}
+
+void ApplicationService::clearNodeSelectionGroup(bool implicitOnly)
+{
+    m_editorService->clearNodeSelectionGroup(implicitOnly);
     updateNodeConnectionActions();
 }
 
@@ -218,7 +223,7 @@ void ApplicationService::connectGraphToImageManager()
 
 void ApplicationService::connectSelectedNodes()
 {
-    L().debug() << "Connecting selected nodes: " << m_editorService->selectionGroupSize();
+    L().debug() << "Connecting selected nodes: " << m_editorService->nodeSelectionGroupSize();
     if (areSelectedNodesConnectable()) {
         saveUndoPoint();
         for (auto && edge : m_editorService->connectSelectedNodes()) {
@@ -231,7 +236,7 @@ void ApplicationService::connectSelectedNodes()
 
 void ApplicationService::disconnectSelectedNodes()
 {
-    L().debug() << "Disconnecting selected nodes: " << m_editorService->selectionGroupSize();
+    L().debug() << "Disconnecting selected nodes: " << m_editorService->nodeSelectionGroupSize();
     if (areSelectedNodesDisconnectable()) {
         saveUndoPoint();
         m_editorService->disconnectSelectedNodes();
@@ -404,7 +409,7 @@ void ApplicationService::initiateNewNodeDrag(SceneItems::NodeHandle & nodeHandle
 {
     L().debug() << "Initiating new node drag";
 
-    clearSelectionGroup();
+    clearNodeSelectionGroup();
     saveUndoPoint();
     mouseAction().setSourceNode(&nodeHandle.parentNode(), MouseAction::Action::CreateOrConnectNode);
     mouseAction().setSourcePosOnNode(nodeHandle.pos() - nodeHandle.parentNode().pos());
@@ -567,7 +572,7 @@ void ApplicationService::performNodeAction(const NodeAction & action)
     case NodeAction::Type::AttachImage: {
         const Image image { action.image, action.fileName.toStdString() };
         const auto id = m_editorService->mindMapData()->imageManager().addImage(image);
-        if (m_editorService->selectionGroupSize()) {
+        if (m_editorService->nodeSelectionGroupSize()) {
             saveUndoPoint();
             m_editorService->setImageRefForSelectedNodes(id);
         }
@@ -613,15 +618,15 @@ void ApplicationService::performNodeAction(const NodeAction & action)
     case NodeAction::Type::SetNodeColor:
         saveUndoPoint();
         m_editorService->setColorForSelectedNodes(action.color);
-        if (m_editorService->selectionGroupSize() == 1) {
-            m_editorService->clearSelectionGroup();
+        if (m_editorService->nodeSelectionGroupSize() == 1) {
+            m_editorService->clearNodeSelectionGroup();
         }
         break;
     case NodeAction::Type::SetTextColor:
         saveUndoPoint();
         m_editorService->setTextColorForSelectedNodes(action.color);
-        if (m_editorService->selectionGroupSize() == 1) {
-            m_editorService->clearSelectionGroup();
+        if (m_editorService->nodeSelectionGroupSize() == 1) {
+            m_editorService->clearNodeSelectionGroup();
         }
         break;
     }
@@ -678,6 +683,11 @@ void ApplicationService::removeItem(QGraphicsItem & item)
     m_editorScene->removeItem(&item);
 }
 
+void ApplicationService::toggleEdgeInSelectionGroup(EdgeR edge)
+{
+    m_editorService->toggleEdgeInSelectionGroup(edge);
+}
+
 void ApplicationService::toggleNodeInSelectionGroup(NodeR node, bool updateNodeConnectionActions)
 {
     m_editorService->toggleNodeInSelectionGroup(node);
@@ -718,7 +728,7 @@ std::optional<NodeP> ApplicationService::selectedNode() const
 
 size_t ApplicationService::selectionGroupSize() const
 {
-    return m_editorService->selectionGroupSize();
+    return m_editorService->nodeSelectionGroupSize();
 }
 
 void ApplicationService::setArrowSize(double arrowSize)
@@ -791,7 +801,19 @@ void ApplicationService::setEditorView(EditorView & editorView)
     });
 }
 
-size_t ApplicationService::setRectagleSelection(QRectF rect)
+size_t ApplicationService::setEdgeRectangleSelection(QRectF rect)
+{
+    size_t edgesInRectangle = 0;
+    for (auto && item : m_editorScene->items(rect, SC::instance().settingsProxy()->selectNodeGroupByIntersection() ? Qt::IntersectsItemShape : Qt::ContainsItemShape)) {
+        if (const auto edge = dynamic_cast<EdgeP>(item)) {
+            toggleEdgeInSelectionGroup(*edge);
+            edgesInRectangle++;
+        }
+    }
+    return edgesInRectangle;
+}
+
+size_t ApplicationService::setNodeRectangleSelection(QRectF rect)
 {
     size_t nodesInRectangle = 0;
     for (auto && item : m_editorScene->items(rect, SC::instance().settingsProxy()->selectNodeGroupByIntersection() ? Qt::IntersectsItemShape : Qt::ContainsItemShape)) {
@@ -824,15 +846,25 @@ void ApplicationService::setSearchText(QString text)
     // Leave zoom setting as it is if user has cleared selected nodes and search field.
     // Otherwise zoom in to search results and select matching texts.
 
-    if (text.isEmpty() && !m_editorService->selectionGroupSize()) {
+    if (text.isEmpty() && !m_editorService->edgeSelectionGroupSize() && !m_editorService->nodeSelectionGroupSize()) {
         m_editorService->selectNodesByText("");
         m_editorService->selectEdgesByText("");
     } else {
         m_editorService->selectNodesByText(text);
+        const auto nodeRect = MagicZoom::calculateRectangleByNodes(m_editorService->selectedNodes());
         m_editorService->selectEdgesByText(text);
-        if (const auto selectedNodes = m_editorService->selectedNodes(); selectedNodes.size()) {
-            m_editorView->zoomToFit(MagicZoom::calculateRectangleByNodes(selectedNodes));
+        const auto edgeRect = MagicZoom::calculateRectangleByEdges(m_editorService->selectedEdges());
+        if (edgeRect.isValid() && nodeRect.isValid()) {
+            L().trace() << "edgeRect and nodeRect valid";
+            m_editorView->zoomToFit(edgeRect.united(nodeRect));
+        } else if (edgeRect.isValid()) {
+            L().trace() << "edgeRect valid";
+            m_editorView->zoomToFit(edgeRect);
+        } else if (nodeRect.isValid()) {
+            L().trace() << "nodeRect valid";
+            m_editorView->zoomToFit(nodeRect);
         } else {
+            L().trace() << "Default zoom-to-fit";
             zoomToFit();
         }
     }
@@ -923,7 +955,7 @@ void ApplicationService::zoomOut()
 QSize ApplicationService::zoomForExport(bool dryRun)
 {
     unselectSelectedNode();
-    clearSelectionGroup();
+    clearSelectionGroups();
     const auto zoomToFitRectangle = m_editorScene->calculateZoomToFitRectangle(true);
     if (!dryRun) {
         m_editorScene->setSceneRect(zoomToFitRectangle);
@@ -959,9 +991,15 @@ double ApplicationService::calculateNodeOverlapScore(NodeCR node1, NodeCR node2)
     return 0;
 }
 
+void ApplicationService::clearSelectionGroups()
+{
+    clearEdgeSelectionGroup();
+    clearNodeSelectionGroup();
+}
+
 void ApplicationService::unselectImplicitlySelectedNodes()
 {
-    m_editorService->clearSelectionGroup(true);
+    m_editorService->clearNodeSelectionGroup(true);
 }
 
 void ApplicationService::unselectSelectedNode()

@@ -31,6 +31,7 @@
 #include "../view/grid.hpp"
 #include "../view/mouse_action.hpp"
 
+class EdgeSelectionGroup;
 class MindMapTile;
 class NodeSelectionGroup;
 class QGraphicsLineItem;
@@ -58,6 +59,8 @@ public:
 
     EdgeS addEdge(EdgeS edge);
 
+    void addEdgeToSelectionGroup(EdgeR edge, bool isImplicit = false);
+
     void addNodeToSelectionGroup(NodeR node, bool isImplicit = false);
 
     //! \return true if at least one selected node pair can be connected.
@@ -78,7 +81,9 @@ public:
 
     void clearCopyStack();
 
-    void clearSelectionGroup(bool onlyImplicitNodes = false);
+    void clearEdgeSelectionGroup(bool onlyImplicitEdges = false);
+
+    void clearNodeSelectionGroup(bool onlyImplicitNodes = false);
 
     //! Connects selected nodes in the order they were selected.
     //! \return the new edge objects.
@@ -161,15 +166,21 @@ public:
 
     EdgeP selectedEdge() const;
 
+    std::vector<EdgeP> selectedEdges() const;
+
     std::optional<NodeP> selectedNode() const;
 
     std::vector<NodeP> selectedNodes() const;
 
-    size_t selectionGroupSize() const;
+    size_t edgeSelectionGroupSize() const;
+
+    size_t nodeSelectionGroupSize() const;
 
     void selectEdgesByText(QString text);
 
     void selectNodesByText(QString text);
+
+    void toggleEdgeInSelectionGroup(EdgeR node);
 
     void toggleNodeInSelectionGroup(NodeR node);
 
@@ -189,6 +200,8 @@ private:
     EditorService(const EditorService & e) = delete;
     EditorService & operator=(const EditorService & e) = delete;
 
+    void clearSelectionGroups();
+
     using NodePairVector = std::vector<std::pair<NodeP, NodeP>>;
     NodePairVector getConnectableNodes() const;
 
@@ -206,7 +219,9 @@ private:
 
     std::unique_ptr<CopyContext> m_copyContext;
 
-    std::unique_ptr<NodeSelectionGroup> m_selectionGroup;
+    std::unique_ptr<EdgeSelectionGroup> m_edgeSelectionGroup;
+
+    std::unique_ptr<NodeSelectionGroup> m_nodeSelectionGroup;
 
     std::unique_ptr<UndoStack> m_undoStack;
 

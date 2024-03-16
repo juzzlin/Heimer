@@ -65,11 +65,15 @@ public:
 
     QRectF boundingRect() const override;
 
+    bool containsText(const QString & text) const;
+
     bool dashedLine() const;
 
     void enableShadowEffect(bool enable) override;
 
     void highlightText(const QString & text);
+
+    QString id() const;
 
     double length() const;
 
@@ -80,6 +84,8 @@ public:
     bool reversed() const;
 
     void restoreLabelParent();
+
+    bool selected() const;
 
     NodeR sourceNode() const;
 
@@ -94,6 +100,8 @@ public:
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
 
     QString text() const;
+
+    QRectF unitedBoundingRect() const;
 
     void unselectText();
 

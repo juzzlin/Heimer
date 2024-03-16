@@ -73,7 +73,9 @@ public:
 
     void changeFont(const QFont & font);
 
-    void clearSelectionGroup(bool onlyImplicitNodes = false);
+    void clearEdgeSelectionGroup(bool implicitOnly = false);
+
+    void clearNodeSelectionGroup(bool implicitOnly = false);
 
     void connectEdgeToUndoMechanism(EdgeS edge);
 
@@ -155,12 +157,17 @@ public:
 
     void setGridSize(int size, bool autoSnap);
 
+    //! \returns number of edges in the current rectangle.
+    size_t setEdgeRectangleSelection(QRectF rect);
+
     //! \returns number of nodes in the current rectangle.
-    size_t setRectagleSelection(QRectF rect);
+    size_t setNodeRectangleSelection(QRectF rect);
 
     void setSelectedEdge(EdgeP edge);
 
     void showStatusText(QString statusText);
+
+    void toggleEdgeInSelectionGroup(EdgeR edge);
 
     void toggleNodeInSelectionGroup(NodeR node, bool updateNodeConnectionActions = true);
 
@@ -229,6 +236,8 @@ private:
     GridLineVector addGridForExport();
 
     double calculateNodeOverlapScore(NodeCR node1, NodeCR node2) const;
+
+    void clearSelectionGroups();
 
     void connectGraphToUndoMechanism();
 

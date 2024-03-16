@@ -19,7 +19,7 @@
 
 #include <algorithm>
 
-void NodeSelectionGroup::addNode(NodeR node, bool isImplicit)
+void NodeSelectionGroup::add(NodeR node, bool isImplicit)
 {
     if (!m_implicitlyAdded.count(&node)) {
         m_implicitlyAdded[&node] = isImplicit;
@@ -31,7 +31,7 @@ void NodeSelectionGroup::addNode(NodeR node, bool isImplicit)
 void NodeSelectionGroup::clear(bool onlyImplicitNodes)
 {
     if (onlyImplicitNodes) {
-        clearOnlyImplicitNodes();
+        clearImplicitOnly();
     } else {
         clearAll();
     }
@@ -46,7 +46,7 @@ void NodeSelectionGroup::clearAll()
     m_nodes.clear();
 }
 
-void NodeSelectionGroup::clearOnlyImplicitNodes()
+void NodeSelectionGroup::clearImplicitOnly()
 {
     for (auto && node : m_nodes) {
         if (m_implicitlyAdded.count(node) && m_implicitlyAdded.at(node)) {
@@ -67,7 +67,7 @@ void NodeSelectionGroup::clearOnlyImplicitNodes()
     }
 }
 
-bool NodeSelectionGroup::hasNode(NodeR node) const
+bool NodeSelectionGroup::contains(NodeR node) const
 {
     return m_implicitlyAdded.count(&node);
 }
@@ -110,13 +110,13 @@ size_t NodeSelectionGroup::size() const
     return m_nodes.size();
 }
 
-void NodeSelectionGroup::toggleNode(NodeR node)
+void NodeSelectionGroup::toggle(NodeR node)
 {
     if (node.selected()) {
         m_nodes.erase(std::find(m_nodes.begin(), m_nodes.end(), &node));
         node.setSelected(false);
         m_implicitlyAdded.erase(&node);
     } else {
-        addNode(node);
+        add(node);
     }
 }

@@ -49,8 +49,6 @@
 #include <QVBoxLayout>
 #include <QWidgetAction>
 
-#include <cassert>
-
 MainWindow::MainWindow()
   : m_aboutDlg(new Dialogs::AboutDialog(this))
   , m_settingsDlg(new Dialogs::SettingsDialog(this))

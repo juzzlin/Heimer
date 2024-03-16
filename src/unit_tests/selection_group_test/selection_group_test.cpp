@@ -17,7 +17,7 @@
 
 #include "../../common/test_mode.hpp"
 #include "../../view/scene_items/node.hpp"
-#include "../../view/selection_group.hpp"
+#include "../../view/node_selection_group.hpp"
 
 using SceneItems::Edge;
 using SceneItems::Node;
@@ -32,7 +32,7 @@ void SelectionGroupTest::testAddNodes_Explicit()
     const auto node1 = std::make_unique<Node>();
     const auto node2 = std::make_unique<Node>();
 
-    SelectionGroup selectionGroup;
+    NodeSelectionGroup selectionGroup;
     selectionGroup.addNode(*node1);
     selectionGroup.addNode(*node2);
 
@@ -54,7 +54,7 @@ void SelectionGroupTest::testAddNodes_Implicit()
 {
     const auto node = std::make_unique<Node>();
 
-    SelectionGroup selectionGroup;
+    NodeSelectionGroup selectionGroup;
     selectionGroup.addNode(*node, true);
 
     QCOMPARE(selectionGroup.hasNode(*node), true);
@@ -73,7 +73,7 @@ void SelectionGroupTest::testAddNodes_ImplicitAndExplicit()
     const auto node1 = std::make_unique<Node>();
     const auto node2 = std::make_unique<Node>();
 
-    SelectionGroup selectionGroup;
+    NodeSelectionGroup selectionGroup;
     selectionGroup.addNode(*node1, true);
     selectionGroup.addNode(*node2, false);
 
@@ -106,7 +106,7 @@ void SelectionGroupTest::testNodes()
     const auto node2 = std::make_unique<Node>();
     const auto node3 = std::make_unique<Node>();
 
-    SelectionGroup selectionGroup;
+    NodeSelectionGroup selectionGroup;
     selectionGroup.addNode(*node1);
     selectionGroup.addNode(*node2);
     selectionGroup.addNode(*node3);
@@ -124,7 +124,7 @@ void SelectionGroupTest::testSelectedNode()
     const auto node2 = std::make_unique<Node>();
     const auto node3 = std::make_unique<Node>();
 
-    SelectionGroup selectionGroup;
+    NodeSelectionGroup selectionGroup;
     selectionGroup.addNode(*node1);
     selectionGroup.addNode(*node2);
     selectionGroup.addNode(*node3);
@@ -136,7 +136,7 @@ void SelectionGroupTest::testToggleNode()
 {
     const auto node = std::make_unique<Node>();
 
-    SelectionGroup selectionGroup;
+    NodeSelectionGroup selectionGroup;
     selectionGroup.toggleNode(*node);
 
     QCOMPARE(selectionGroup.hasNode(*node), true);

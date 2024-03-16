@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SELECTION_GROUP_HPP
-#define SELECTION_GROUP_HPP
+#ifndef NODE_SELECTION_GROUP_HPP
+#define NODE_SELECTION_GROUP_HPP
 
 #include <QPointF>
 #include <unordered_map>
@@ -22,7 +22,7 @@
 
 #include "../common/types.hpp"
 
-class SelectionGroup
+class NodeSelectionGroup
 {
 public:
     //! Adds node to the selection group.
@@ -60,4 +60,4 @@ private:
     std::unordered_map<NodeP, bool> m_nodeMap;
 };
 
-#endif // SELECTION_GROUP_HPP
+#endif // NODE_SELECTION_GROUP_HPP

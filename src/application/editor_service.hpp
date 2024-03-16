@@ -31,7 +31,7 @@
 #include "../view/mouse_action.hpp"
 
 class MindMapTile;
-class SelectionGroup;
+class NodeSelectionGroup;
 class QGraphicsLineItem;
 class UndoStack;
 
@@ -205,7 +205,7 @@ private:
 
     std::unique_ptr<CopyContext> m_copyContext;
 
-    std::unique_ptr<SelectionGroup> m_selectionGroup;
+    std::unique_ptr<NodeSelectionGroup> m_selectionGroup;
 
     std::unique_ptr<UndoStack> m_undoStack;
 

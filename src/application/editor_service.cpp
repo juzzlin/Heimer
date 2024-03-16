@@ -24,9 +24,9 @@
 #include "../domain/mind_map_data.hpp"
 #include "../domain/undo_stack.hpp"
 #include "../infra/io/alz_file_io.hpp"
+#include "../view/node_selection_group.hpp"
 #include "../view/scene_items/edge.hpp"
 #include "../view/scene_items/node.hpp"
-#include "../view/selection_group.hpp"
 
 #include "simple_logger.hpp"
 
@@ -41,7 +41,7 @@ using std::make_shared;
 EditorService::EditorService()
   : m_alzFileIO(std::make_unique<IO::AlzFileIO>())
   , m_copyContext(std::make_unique<CopyContext>())
-  , m_selectionGroup(std::make_unique<SelectionGroup>())
+  , m_selectionGroup(std::make_unique<NodeSelectionGroup>())
   , m_undoStack(std::make_unique<UndoStack>())
 {
     m_undoTimer.setSingleShot(true);

@@ -77,7 +77,7 @@ set(HEIMER_LIB_SRC
     view/scene_items/node_handle.cpp
     view/scene_items/scene_item_base.cpp
     view/scene_items/text_edit.cpp
-    view/selection_group.cpp
+    view/node_selection_group.cpp
     view/widgets/font_button.cpp
     view/widgets/status_label.cpp
 )
@@ -147,6 +147,7 @@ set(HEIMER_LIB_HDR
     view/menus/widget_factory.hpp
     view/mouse_action.hpp
     view/node_action.hpp
+    view/node_selection_group.hpp
     view/scene_items/edge.hpp
     view/scene_items/edge_dot.hpp
     view/scene_items/edge_model.hpp
@@ -159,7 +160,6 @@ set(HEIMER_LIB_HDR
     view/scene_items/node_model.hpp
     view/scene_items/scene_item_base.hpp
     view/scene_items/text_edit.hpp
-    view/selection_group.hpp
     view/shadow_effect_params.hpp
     view/widgets/font_button.hpp
     view/widgets/status_label.hpp

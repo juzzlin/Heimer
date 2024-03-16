@@ -13,13 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "selection_group.hpp"
+#include "node_selection_group.hpp"
 
 #include "scene_items/node.hpp"
 
 #include <algorithm>
 
-void SelectionGroup::addNode(NodeR node, bool isImplicit)
+void NodeSelectionGroup::addNode(NodeR node, bool isImplicit)
 {
     if (!m_nodeMap.count(&node)) {
         m_nodeMap[&node] = isImplicit;
@@ -28,7 +28,7 @@ void SelectionGroup::addNode(NodeR node, bool isImplicit)
     }
 }
 
-void SelectionGroup::clear(bool onlyImplicitNodes)
+void NodeSelectionGroup::clear(bool onlyImplicitNodes)
 {
     if (onlyImplicitNodes) {
         clearOnlyImplicitNodes();
@@ -37,7 +37,7 @@ void SelectionGroup::clear(bool onlyImplicitNodes)
     }
 }
 
-void SelectionGroup::clearAll()
+void NodeSelectionGroup::clearAll()
 {
     for (auto && node : m_nodes) {
         node->setSelected(false);
@@ -46,7 +46,7 @@ void SelectionGroup::clearAll()
     m_nodes.clear();
 }
 
-void SelectionGroup::clearOnlyImplicitNodes()
+void NodeSelectionGroup::clearOnlyImplicitNodes()
 {
     for (auto && node : m_nodes) {
         if (m_nodeMap.count(node) && m_nodeMap.at(node)) {
@@ -67,17 +67,17 @@ void SelectionGroup::clearOnlyImplicitNodes()
     }
 }
 
-bool SelectionGroup::hasNode(NodeR node) const
+bool NodeSelectionGroup::hasNode(NodeR node) const
 {
     return m_nodeMap.count(&node);
 }
 
-bool SelectionGroup::isEmpty() const
+bool NodeSelectionGroup::isEmpty() const
 {
     return m_nodeMap.empty();
 }
 
-void SelectionGroup::move(NodeR reference, QPointF location)
+void NodeSelectionGroup::move(NodeR reference, QPointF location)
 {
     std::map<int, QPointF> delta;
     for (auto && node : m_nodes) {
@@ -95,22 +95,22 @@ void SelectionGroup::move(NodeR reference, QPointF location)
     }
 }
 
-const std::vector<NodeP> SelectionGroup::nodes() const
+const std::vector<NodeP> NodeSelectionGroup::nodes() const
 {
     return m_nodes;
 }
 
-NodeP SelectionGroup::selectedNode() const
+NodeP NodeSelectionGroup::selectedNode() const
 {
     return !m_nodes.empty() ? *m_nodes.begin() : nullptr;
 }
 
-size_t SelectionGroup::size() const
+size_t NodeSelectionGroup::size() const
 {
     return m_nodes.size();
 }
 
-void SelectionGroup::toggleNode(NodeR node)
+void NodeSelectionGroup::toggleNode(NodeR node)
 {
     if (node.selected()) {
         m_nodes.erase(std::find(m_nodes.begin(), m_nodes.end(), &node));

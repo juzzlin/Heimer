@@ -83,11 +83,11 @@ void MainWindow::addConnectSelectedNodesAction(QMenu & menu)
     m_connectSelectedNodesAction->setShortcut(QKeySequence("Ctrl+Shift+C"));
     connect(m_connectSelectedNodesAction, &QAction::triggered, this, [] {
         juzzlin::L().debug() << "Connect selected triggered";
-        SIC::instance().applicationService()->performNodeAction({ NodeAction::Type::ConnectSelected });
+        SC::instance().applicationService()->performNodeAction({ NodeAction::Type::ConnectSelected });
     });
     menu.addAction(m_connectSelectedNodesAction);
     connect(&menu, &QMenu::aboutToShow, this, [=] {
-        m_connectSelectedNodesAction->setEnabled(SIC::instance().applicationService()->areSelectedNodesConnectable());
+        m_connectSelectedNodesAction->setEnabled(SC::instance().applicationService()->areSelectedNodesConnectable());
     });
 }
 
@@ -96,11 +96,11 @@ void MainWindow::addDisconnectSelectedNodesAction(QMenu & menu)
     m_disconnectSelectedNodesAction->setShortcut(QKeySequence("Ctrl+Shift+D"));
     connect(m_disconnectSelectedNodesAction, &QAction::triggered, this, [] {
         juzzlin::L().debug() << "Disconnect selected triggered";
-        SIC::instance().applicationService()->performNodeAction({ NodeAction::Type::DisconnectSelected });
+        SC::instance().applicationService()->performNodeAction({ NodeAction::Type::DisconnectSelected });
     });
     menu.addAction(m_disconnectSelectedNodesAction);
     connect(&menu, &QMenu::aboutToShow, this, [=] {
-        m_disconnectSelectedNodesAction->setEnabled(SIC::instance().applicationService()->areSelectedNodesDisconnectable());
+        m_disconnectSelectedNodesAction->setEnabled(SC::instance().applicationService()->areSelectedNodesDisconnectable());
     });
 }
 
@@ -108,7 +108,7 @@ void MainWindow::addRedoAction(QMenu & menu)
 {
     m_redoAction->setShortcut(QKeySequence(QKeySequence::Redo));
 
-    connect(m_redoAction, &QAction::triggered, SIC::instance().applicationService().get(), &ApplicationService::redo);
+    connect(m_redoAction, &QAction::triggered, SC::instance().applicationService().get(), &ApplicationService::redo);
 
     m_redoAction->setEnabled(false);
 
@@ -119,7 +119,7 @@ void MainWindow::addUndoAction(QMenu & menu)
 {
     m_undoAction->setShortcut(QKeySequence(QKeySequence::Undo));
 
-    connect(m_undoAction, &QAction::triggered, SIC::instance().applicationService().get(), &ApplicationService::undo);
+    connect(m_undoAction, &QAction::triggered, SC::instance().applicationService().get(), &ApplicationService::undo);
 
     m_undoAction->setEnabled(false);
 
@@ -197,18 +197,18 @@ void MainWindow::createMirrorSubMenu(QMenu & editMenu)
     mirrorAction->setText(tr("&Mirror layout"));
 
     const auto mirrorHorizontallyAction = new QAction(tr("Horizontally"), this);
-    mirrorHorizontallyAction->setShortcut(QKeySequence(SIC::instance().controlStrategy()->mirrorLayoutHorizontallyShortcut()));
+    mirrorHorizontallyAction->setShortcut(QKeySequence(SC::instance().controlStrategy()->mirrorLayoutHorizontallyShortcut()));
     mirrorMenu->addAction(mirrorHorizontallyAction);
     connect(mirrorHorizontallyAction, &QAction::triggered, this, [=] {
-        SIC::instance().applicationService()->performNodeAction(NodeAction::Type::MirrorLayoutHorizontally);
+        SC::instance().applicationService()->performNodeAction(NodeAction::Type::MirrorLayoutHorizontally);
     });
     mirrorMenu->addSeparator();
 
     const auto mirrorVerticallyAction = new QAction(tr("Vertically"), this);
-    mirrorVerticallyAction->setShortcut(QKeySequence(SIC::instance().controlStrategy()->mirrorLayoutVerticallyShortcut()));
+    mirrorVerticallyAction->setShortcut(QKeySequence(SC::instance().controlStrategy()->mirrorLayoutVerticallyShortcut()));
     mirrorMenu->addAction(mirrorVerticallyAction);
     connect(mirrorVerticallyAction, &QAction::triggered, this, [=] {
-        SIC::instance().applicationService()->performNodeAction(NodeAction::Type::MirrorLayoutVertically);
+        SC::instance().applicationService()->performNodeAction(NodeAction::Type::MirrorLayoutVertically);
     });
 }
 
@@ -269,8 +269,8 @@ void MainWindow::createExportSubMenu(QMenu & fileMenu)
     });
 
     connect(&fileMenu, &QMenu::aboutToShow, this, [=] {
-        exportToPngAction->setEnabled(SIC::instance().applicationService()->hasNodes());
-        exportToSvgAction->setEnabled(SIC::instance().applicationService()->hasNodes());
+        exportToPngAction->setEnabled(SC::instance().applicationService()->hasNodes());
+        exportToSvgAction->setEnabled(SC::instance().applicationService()->hasNodes());
     });
 }
 
@@ -342,7 +342,7 @@ void MainWindow::createFileMenu()
     });
 
     connect(fileMenu, &QMenu::aboutToShow, this, [=] {
-        recentFilesMenuAction->setEnabled(SIC::instance().recentFilesManager()->hasRecentFiles());
+        recentFilesMenuAction->setEnabled(SC::instance().recentFilesManager()->hasRecentFiles());
     });
 }
 
@@ -417,7 +417,7 @@ void MainWindow::createViewMenu()
     connect(zoomToFit, &QAction::triggered, this, &MainWindow::zoomToFitTriggered);
 
     connect(viewMenu, &QMenu::aboutToShow, this, [=] {
-        zoomToFit->setEnabled(SIC::instance().applicationService()->hasNodes());
+        zoomToFit->setEnabled(SC::instance().applicationService()->hasNodes());
     });
 }
 
@@ -462,8 +462,8 @@ void MainWindow::initialize()
 void MainWindow::setTitle()
 {
     const auto appInfo = QString(Constants::Application::APPLICATION_NAME) + " " + Constants::Application::APPLICATION_VERSION;
-    const auto displayFileName = SIC::instance().applicationService()->fileName().isEmpty() ? tr("New File") : SIC::instance().applicationService()->fileName();
-    if (SIC::instance().applicationService()->isModified()) {
+    const auto displayFileName = SC::instance().applicationService()->fileName().isEmpty() ? tr("New File") : SC::instance().applicationService()->fileName();
+    if (SC::instance().applicationService()->isModified()) {
         setWindowTitle(appInfo + " - " + displayFileName + " - " + tr("Not Saved"));
     } else {
         setWindowTitle(appInfo + " - " + displayFileName);

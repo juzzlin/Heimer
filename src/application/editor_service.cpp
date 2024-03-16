@@ -58,7 +58,7 @@ void EditorService::addNodeToSelectionGroup(NodeR node, bool isImplicit)
 void EditorService::requestAutosave(AutosaveContext context, bool async)
 {
     const auto doRequestAutosave = [this](bool async) {
-        if (SIC::instance().settingsProxy()->autosave() && !m_fileName.isEmpty()) {
+        if (SC::instance().settingsProxy()->autosave() && !m_fileName.isEmpty()) {
             L().debug() << "Autosaving to '" << m_fileName.toStdString() << "'";
             saveMindMapAs(m_fileName, async);
         }
@@ -109,7 +109,7 @@ void EditorService::loadMindMapData(QString fileName)
 
     m_fileName = fileName;
     setIsModified(false);
-    SIC::instance().recentFilesManager()->addRecentFile(fileName);
+    SC::instance().recentFilesManager()->addRecentFile(fileName);
 
     m_undoStack->clear();
 }
@@ -224,7 +224,7 @@ bool EditorService::saveMindMapAs(QString fileName, bool async)
     if (m_alzFileIO->toFile(m_mindMapData, fileName, async)) {
         m_fileName = fileName;
         setIsModified(false);
-        SIC::instance().recentFilesManager()->addRecentFile(fileName);
+        SC::instance().recentFilesManager()->addRecentFile(fileName);
         return true;
     }
 

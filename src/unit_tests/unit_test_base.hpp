@@ -32,7 +32,7 @@ public:
     virtual ~UnitTestBase() override;
 
 private:
-    std::unique_ptr<ServiceContainer> mm_sc;
+    std::unique_ptr<ServiceContainer> m_sc;
 };
 
 #endif // UNIT_TEST_BASE_HPP

@@ -48,7 +48,7 @@ namespace SceneItems {
 NodeP Node::m_lastHoveredNode = nullptr;
 
 Node::Node()
-  : m_settingsProxy(SIC::instance().settingsProxy())
+  : m_settingsProxy(SC::instance().settingsProxy())
   , m_nodeModel(std::make_unique<NodeModel>(m_settingsProxy->nodeColor(), m_settingsProxy->nodeTextColor()))
   , m_textEdit(new TextEdit(this))
 {

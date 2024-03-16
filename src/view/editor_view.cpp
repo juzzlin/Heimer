@@ -54,7 +54,7 @@ using juzzlin::L;
 EditorView::EditorView()
   : m_edgeContextMenu(new Menus::EdgeContextMenu(this))
   , m_mainContextMenu(new Menus::MainContextMenu(this, m_grid))
-  , m_controlStrategy(SIC::instance().controlStrategy())
+  , m_controlStrategy(SC::instance().controlStrategy())
 {
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -80,9 +80,9 @@ const Grid & EditorView::grid() const
 
 void EditorView::finishRubberBand()
 {
-    if (!SIC::instance().applicationService()->setRectagleSelection({ mapToScene(m_rubberBand->geometry().topLeft()), mapToScene(m_rubberBand->geometry().bottomRight()) })) {
+    if (!SC::instance().applicationService()->setRectagleSelection({ mapToScene(m_rubberBand->geometry().topLeft()), mapToScene(m_rubberBand->geometry().bottomRight()) })) {
         // No nodes were within the rectangle => clear the whole selection group.
-        SIC::instance().applicationService()->clearSelectionGroup();
+        SC::instance().applicationService()->clearSelectionGroup();
     }
     m_rubberBand->hide();
 }
@@ -134,37 +134,37 @@ void EditorView::handlePrimaryButtonClickOnNode(NodeR node)
 {
     if (isModifierPressed()) {
         // User is selecting a node
-        SIC::instance().applicationService()->toggleNodeInSelectionGroup(node);
+        SC::instance().applicationService()->toggleNodeInSelectionGroup(node);
     } else {
         // Clear selection group if the node is not in it
-        if (SIC::instance().applicationService()->selectionGroupSize() && !SIC::instance().applicationService()->isInSelectionGroup(node)) {
-            SIC::instance().applicationService()->clearSelectionGroup();
+        if (SC::instance().applicationService()->selectionGroupSize() && !SC::instance().applicationService()->isInSelectionGroup(node)) {
+            SC::instance().applicationService()->clearSelectionGroup();
         }
 
         // User is initiating a node move drag
-        SIC::instance().applicationService()->initiateNodeDrag(node);
+        SC::instance().applicationService()->initiateNodeDrag(node);
     }
 }
 
 void EditorView::handlePrimaryButtonClickOnNodeHandle(SceneItems::NodeHandle & nodeHandle)
 {
     if (!nodeHandle.parentNode().selected()) {
-        SIC::instance().applicationService()->clearSelectionGroup();
+        SC::instance().applicationService()->clearSelectionGroup();
     }
 
     switch (nodeHandle.role()) {
     case SceneItems::NodeHandle::Role::ConnectOrCreate:
-        SIC::instance().applicationService()->initiateNewNodeDrag(nodeHandle);
+        SC::instance().applicationService()->initiateNewNodeDrag(nodeHandle);
         break;
     case SceneItems::NodeHandle::Role::Move:
-        SIC::instance().applicationService()->initiateNodeDrag(nodeHandle.parentNode());
+        SC::instance().applicationService()->initiateNodeDrag(nodeHandle.parentNode());
         break;
     case SceneItems::NodeHandle::Role::NodeColor:
-        SIC::instance().applicationService()->addNodeToSelectionGroup(nodeHandle.parentNode(), true);
+        SC::instance().applicationService()->addNodeToSelectionGroup(nodeHandle.parentNode(), true);
         emit actionTriggered(StateMachine::Action::NodeColorChangeRequested);
         break;
     case SceneItems::NodeHandle::Role::TextColor:
-        SIC::instance().applicationService()->addNodeToSelectionGroup(nodeHandle.parentNode(), true);
+        SC::instance().applicationService()->addNodeToSelectionGroup(nodeHandle.parentNode(), true);
         emit actionTriggered(StateMachine::Action::TextColorChangeRequested);
         break;
     }
@@ -172,7 +172,7 @@ void EditorView::handlePrimaryButtonClickOnNodeHandle(SceneItems::NodeHandle & n
 
 void EditorView::handleSecondaryButtonClickOnEdge(EdgeR edge)
 {
-    SIC::instance().applicationService()->setSelectedEdge(&edge);
+    SC::instance().applicationService()->setSelectedEdge(&edge);
 
     openEdgeContextMenu();
 }
@@ -180,22 +180,22 @@ void EditorView::handleSecondaryButtonClickOnEdge(EdgeR edge)
 void EditorView::handleSecondaryButtonClickOnNode(NodeR node)
 {
     if (!node.selected()) {
-        SIC::instance().applicationService()->clearSelectionGroup();
+        SC::instance().applicationService()->clearSelectionGroup();
     }
 
-    SIC::instance().applicationService()->addNodeToSelectionGroup(node, true);
+    SC::instance().applicationService()->addNodeToSelectionGroup(node, true);
 
     openMainContextMenu(Menus::MainContextMenu::Mode::Node);
 
-    SIC::instance().applicationService()->unselectImplicitlySelectedNodes();
+    SC::instance().applicationService()->unselectImplicitlySelectedNodes();
 }
 
 void EditorView::initiateBackgroundDrag()
 {
     juzzlin::L().debug() << "Initiating background drag..";
 
-    SIC::instance().applicationService()->setSelectedEdge(nullptr);
-    SIC::instance().applicationService()->mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
+    SC::instance().applicationService()->setSelectedEdge(nullptr);
+    SC::instance().applicationService()->mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
 
     setDragMode(ScrollHandDrag);
 }
@@ -204,7 +204,7 @@ void EditorView::initiateRubberBand()
 {
     juzzlin::L().debug() << "Initiating rubber band..";
 
-    SIC::instance().applicationService()->mouseAction().setRubberBandOrigin(m_clickedPos);
+    SC::instance().applicationService()->mouseAction().setRubberBandOrigin(m_clickedPos);
     if (!m_rubberBand) {
         m_rubberBand = new QRubberBand { QRubberBand::Rectangle, this };
     }
@@ -239,7 +239,7 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
 {
     m_pos = event->pos();
     m_mappedPos = mapToScene(event->pos());
-    SIC::instance().applicationService()->mouseAction().setMappedPos(m_mappedPos);
+    SC::instance().applicationService()->mouseAction().setMappedPos(m_mappedPos);
 
     using SceneItems::Node;
 
@@ -253,33 +253,33 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
         }
     }
 
-    switch (SIC::instance().applicationService()->mouseAction().action()) {
+    switch (SC::instance().applicationService()->mouseAction().action()) {
     case MouseAction::Action::None:
         break;
     case MouseAction::Action::MoveNode:
-        if (const auto node = SIC::instance().applicationService()->mouseAction().sourceNode()) {
-            if (SIC::instance().applicationService()->selectionGroupSize()) {
-                SIC::instance().applicationService()->moveSelectionGroup(*node, m_grid.snapToGrid(m_mappedPos - SIC::instance().applicationService()->mouseAction().sourcePosOnNode()));
+        if (const auto node = SC::instance().applicationService()->mouseAction().sourceNode()) {
+            if (SC::instance().applicationService()->selectionGroupSize()) {
+                SC::instance().applicationService()->moveSelectionGroup(*node, m_grid.snapToGrid(m_mappedPos - SC::instance().applicationService()->mouseAction().sourcePosOnNode()));
             } else {
-                node->setLocation(m_grid.snapToGrid(m_mappedPos - SIC::instance().applicationService()->mouseAction().sourcePosOnNode()));
+                node->setLocation(m_grid.snapToGrid(m_mappedPos - SC::instance().applicationService()->mouseAction().sourcePosOnNode()));
             }
         }
         break;
     case MouseAction::Action::CreateOrConnectNode: {
         showDummyDragNode(true);
         showDummyDragEdge(true);
-        m_dummyDragNode->setPos(m_grid.snapToGrid(m_mappedPos - SIC::instance().applicationService()->mouseAction().sourcePosOnNode()));
+        m_dummyDragNode->setPos(m_grid.snapToGrid(m_mappedPos - SC::instance().applicationService()->mouseAction().sourcePosOnNode()));
         m_dummyDragEdge->updateLine();
-        SIC::instance().applicationService()->mouseAction().sourceNode()->setHandlesVisible(false);
+        SC::instance().applicationService()->mouseAction().sourceNode()->setHandlesVisible(false);
 
         // This is needed to clear implicitly "selected" connection candidate nodes when hovering the dummy drag node on other nodes
-        SIC::instance().applicationService()->unselectSelectedNode();
-        SIC::instance().applicationService()->clearSelectionGroup();
+        SC::instance().applicationService()->unselectSelectedNode();
+        SC::instance().applicationService()->clearSelectionGroup();
 
         m_connectionTargetNode = nullptr;
 
         // TODO: Use items() to pre-filter the nodes
-        if (auto && node = SIC::instance().applicationService()->getBestOverlapNode(*m_dummyDragNode)) {
+        if (auto && node = SC::instance().applicationService()->getBestOverlapNode(*m_dummyDragNode)) {
             node->setSelected(true);
             m_connectionTargetNode = node;
         }
@@ -299,7 +299,7 @@ void EditorView::mousePressEvent(QMouseEvent * event)
 {
     m_clickedPos = event->pos();
     const auto clickedScenePos = mapToScene(m_clickedPos);
-    SIC::instance().applicationService()->mouseAction().setClickedScenePos(clickedScenePos);
+    SC::instance().applicationService()->mouseAction().setClickedScenePos(clickedScenePos);
 
     if (const auto result = ItemFilter::getFirstItemAtPosition(*scene(), clickedScenePos, Constants::View::CLICK_TOLERANCE); result.success) {
         if (result.edge) {
@@ -349,7 +349,7 @@ void EditorView::mousePressEvent(QMouseEvent * event)
 void EditorView::mouseReleaseEvent(QMouseEvent * event)
 {
     if (event->button() == Qt::MiddleButton) {
-        switch (SIC::instance().applicationService()->mouseAction().action()) {
+        switch (SC::instance().applicationService()->mouseAction().action()) {
         case MouseAction::Action::RubberBand:
             finishRubberBand();
             break;
@@ -357,7 +357,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
             break;
         }
     } else if (m_controlStrategy->primaryButtonClicked(*event)) {
-        switch (SIC::instance().applicationService()->mouseAction().action()) {
+        switch (SC::instance().applicationService()->mouseAction().action()) {
         case MouseAction::Action::None:
             // This can happen if the user deletes the drag node while connecting nodes or creating a new node.
             // In this case the action is just aborted.
@@ -367,16 +367,16 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
             }
             break;
         case MouseAction::Action::MoveNode:
-            SIC::instance().applicationService()->adjustSceneRect();
+            SC::instance().applicationService()->adjustSceneRect();
             break;
         case MouseAction::Action::CreateOrConnectNode:
-            if (const auto sourceNode = SIC::instance().applicationService()->mouseAction().sourceNode()) {
+            if (const auto sourceNode = SC::instance().applicationService()->mouseAction().sourceNode()) {
                 if (m_connectionTargetNode) {
-                    SIC::instance().applicationService()->addEdge(*sourceNode, *m_connectionTargetNode);
+                    SC::instance().applicationService()->addEdge(*sourceNode, *m_connectionTargetNode);
                     m_connectionTargetNode->setSelected(false);
                     m_connectionTargetNode = nullptr;
                 } else {
-                    SIC::instance().applicationService()->createAndAddNode(sourceNode->index(), m_grid.snapToGrid(m_mappedPos - SIC::instance().applicationService()->mouseAction().sourcePosOnNode()));
+                    SC::instance().applicationService()->createAndAddNode(sourceNode->index(), m_grid.snapToGrid(m_mappedPos - SC::instance().applicationService()->mouseAction().sourcePosOnNode()));
                 }
                 resetDummyDragItems();
             }
@@ -393,7 +393,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
         QApplication::restoreOverrideCursor();
     }
 
-    SIC::instance().applicationService()->mouseAction().clear();
+    SC::instance().applicationService()->mouseAction().clear();
 
     QGraphicsView::mouseReleaseEvent(event);
 }
@@ -420,7 +420,7 @@ void EditorView::resetDummyDragItems()
 
 void EditorView::showDummyDragEdge(bool show)
 {
-    if (const auto sourceNode = SIC::instance().applicationService()->mouseAction().sourceNode()) {
+    if (const auto sourceNode = SC::instance().applicationService()->mouseAction().sourceNode()) {
         if (!m_dummyDragEdge) {
             L().debug() << "Creating a new dummy drag edge";
             m_dummyDragEdge = std::make_unique<SceneItems::Edge>(sourceNode, m_dummyDragNode.get(), false, false);
@@ -463,7 +463,7 @@ void EditorView::updateScale()
 
 void EditorView::removeShadowEffectsDuringDrag()
 {
-    if (SIC::instance().settingsProxy()->optimizeShadowEffects()) {
+    if (SC::instance().settingsProxy()->optimizeShadowEffects()) {
 
         if (!m_shadowEffectsDuringDragRemoved) {
             m_shadowEffectsDuringDragRemoved = true;
@@ -495,7 +495,7 @@ void EditorView::updateShadowEffectsBasedOnItemVisiblity()
         }
     }
 
-    if (SIC::instance().settingsProxy()->optimizeShadowEffects()) {
+    if (SC::instance().settingsProxy()->optimizeShadowEffects()) {
         for (auto && item : scene()->items()) {
             if (const auto sceneItem = dynamic_cast<SceneItems::SceneItemBase *>(item); sceneItem) {
                 if (!enabledItems.count(sceneItem)) {
@@ -510,7 +510,7 @@ void EditorView::updateShadowEffectsBasedOnItemVisiblity()
 
 void EditorView::updateRubberBand()
 {
-    m_rubberBand->setGeometry(QRect(SIC::instance().applicationService()->mouseAction().rubberBandOrigin().toPoint(), m_pos.toPoint()).normalized());
+    m_rubberBand->setGeometry(QRect(SC::instance().applicationService()->mouseAction().rubberBandOrigin().toPoint(), m_pos.toPoint()).normalized());
 }
 
 void EditorView::restoreZoom()
@@ -561,7 +561,7 @@ void EditorView::setGridSize(int size)
 
 void EditorView::setGridColor(const QColor & gridColor)
 {
-    SIC::instance().applicationService()->mindMapData()->setGridColor(gridColor);
+    SC::instance().applicationService()->mindMapData()->setGridColor(gridColor);
 }
 
 void EditorView::setGridVisible(bool visible)
@@ -667,12 +667,12 @@ void EditorView::drawGrid(QPainter & painter, const QRectF & sceneRect)
         const int virtualLineWidth = 5;
         if (const auto detailRect = mapFromScene(QRectF { 0, 0, static_cast<double>(m_grid.size()), 1 }).boundingRect(); detailRect.width() > virtualLineWidth) {
             if (auto && lines = m_grid.calculateLines(sceneRect); !lines.empty()) {
-                painter.setPen(SIC::instance().applicationService()->mindMapData()->gridColor());
+                painter.setPen(SC::instance().applicationService()->mindMapData()->gridColor());
                 painter.drawLines(m_grid.calculateLines(sceneRect).data(), static_cast<int>(lines.size()));
             }
         } else {
             const double balance = static_cast<double>(detailRect.width()) / virtualLineWidth;
-            painter.fillRect(sceneRect, Utils::mixedColor(backgroundBrush().color(), SIC::instance().applicationService()->mindMapData()->gridColor(), balance));
+            painter.fillRect(sceneRect, Utils::mixedColor(backgroundBrush().color(), SC::instance().applicationService()->mindMapData()->gridColor(), balance));
         }
     }
 }

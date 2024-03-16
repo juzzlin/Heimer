@@ -322,7 +322,7 @@ ApplicationService::GridLineVector ApplicationService::addGridForExport()
     GridLineVector addedLineItems;
     if (Settings::Custom::loadGridVisibleState()) {
         const auto gridLines = m_editorView->grid().calculateLines(m_editorScene->sceneRect());
-        const auto gridColor = SIC::instance().applicationService()->mindMapData()->gridColor();
+        const auto gridColor = SC::instance().applicationService()->mindMapData()->gridColor();
         for (auto && gridLine : gridLines) {
             addedLineItems.push_back(m_editorScene->addLine(gridLine, gridColor));
         }
@@ -631,7 +631,7 @@ bool ApplicationService::openMindMap(QString fileName)
 {
     try {
         juzzlin::L().info() << "Loading '" << fileName.toStdString() << "'";
-        SIC::instance().progressManager()->setEnabled(true);
+        SC::instance().progressManager()->setEnabled(true);
         m_editorService->loadMindMapData(fileName);
         updateProgress();
         m_editorScene = std::make_unique<EditorScene>();
@@ -650,16 +650,16 @@ bool ApplicationService::openMindMap(QString fileName)
         // Initialize a new mind map to avoid an undefined state.
         initializeNewMindMap();
         m_mainWindow->showErrorDialog(e.message());
-        SIC::instance().progressManager()->setEnabled(false);
+        SC::instance().progressManager()->setEnabled(false);
         return false;
     } catch (const std::runtime_error & e) {
         // Initialize a new mind map to avoid an undefined state.
         initializeNewMindMap();
         m_mainWindow->showErrorDialog(e.what());
-        SIC::instance().progressManager()->setEnabled(false);
+        SC::instance().progressManager()->setEnabled(false);
         return false;
     }
-    SIC::instance().progressManager()->setEnabled(false);
+    SC::instance().progressManager()->setEnabled(false);
     return true;
 }
 
@@ -794,7 +794,7 @@ void ApplicationService::setEditorView(EditorView & editorView)
 size_t ApplicationService::setRectagleSelection(QRectF rect)
 {
     size_t nodesInRectangle = 0;
-    for (auto && item : m_editorScene->items(rect, SIC::instance().settingsProxy()->selectNodeGroupByIntersection() ? Qt::IntersectsItemShape : Qt::ContainsItemShape)) {
+    for (auto && item : m_editorScene->items(rect, SC::instance().settingsProxy()->selectNodeGroupByIntersection() ? Qt::IntersectsItemShape : Qt::ContainsItemShape)) {
         if (const auto node = dynamic_cast<NodeP>(item)) {
             toggleNodeInSelectionGroup(*node, false);
             nodesInRectangle++;
@@ -892,7 +892,7 @@ void ApplicationService::updateNodeConnectionActions()
 
 void ApplicationService::updateProgress()
 {
-    SIC::instance().progressManager()->updateProgress();
+    SC::instance().progressManager()->updateProgress();
 }
 
 void ApplicationService::undo()

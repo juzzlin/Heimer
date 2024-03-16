@@ -30,19 +30,19 @@ SceneColorDialog::SceneColorDialog(Role role)
         }
         switch (role) {
         case Role::Background:
-            SIC::instance().applicationService()->setBackgroundColor(color);
+            SC::instance().applicationService()->setBackgroundColor(color);
             break;
         case Role::Edge:
-            SIC::instance().applicationService()->setEdgeColor(color);
+            SC::instance().applicationService()->setEdgeColor(color);
             break;
         case Role::Grid:
-            SIC::instance().applicationService()->setGridColor(color);
+            SC::instance().applicationService()->setGridColor(color);
             break;
         case Role::Node:
-            SIC::instance().applicationService()->performNodeAction({ NodeAction::Type::SetNodeColor, color });
+            SC::instance().applicationService()->performNodeAction({ NodeAction::Type::SetNodeColor, color });
             break;
         case Role::Text:
-            SIC::instance().applicationService()->performNodeAction({ NodeAction::Type::SetTextColor, color });
+            SC::instance().applicationService()->performNodeAction({ NodeAction::Type::SetTextColor, color });
             break;
         case Role::ShadowColor:
         case Role::SelectedItemShadowColor:

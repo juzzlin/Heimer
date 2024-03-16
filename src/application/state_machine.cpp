@@ -57,7 +57,7 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::NewSelected:
         m_quitType = QuitType::New;
-        if (SIC::instance().applicationService()->isModified()) {
+        if (SC::instance().applicationService()->isModified()) {
             m_state = State::ShowNotSavedDialog;
         } else {
             m_state = State::InitializeNewMindMap;
@@ -116,7 +116,7 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::OpenSelected:
         m_quitType = QuitType::Open;
-        if (SIC::instance().applicationService()->isModified()) {
+        if (SC::instance().applicationService()->isModified()) {
             m_state = State::ShowNotSavedDialog;
         } else {
             m_state = State::ShowOpenDialog;
@@ -125,7 +125,7 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::QuitSelected:
         m_quitType = QuitType::Close;
-        if (SIC::instance().applicationService()->isModified()) {
+        if (SC::instance().applicationService()->isModified()) {
             m_state = State::ShowNotSavedDialog;
         } else {
             m_state = State::Exit;
@@ -134,7 +134,7 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::NotSavedDialogAccepted:
     case Action::SaveSelected:
-        if (SIC::instance().applicationService()->canBeSaved()) {
+        if (SC::instance().applicationService()->canBeSaved()) {
             m_state = State::Save;
         } else {
             m_state = State::ShowSaveAsDialog;
@@ -151,7 +151,7 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::RecentFileSelected:
         m_quitType = QuitType::OpenRecent;
-        if (SIC::instance().applicationService()->isModified()) {
+        if (SC::instance().applicationService()->isModified()) {
             m_state = State::ShowNotSavedDialog;
         } else {
             m_state = State::OpenRecent;
@@ -160,7 +160,7 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::DropFileSelected:
         m_quitType = QuitType::OpenDrop;
-        if (SIC::instance().applicationService()->isModified()) {
+        if (SC::instance().applicationService()->isModified()) {
             m_state = State::ShowNotSavedDialog;
         } else {
             m_state = State::OpenDrop;

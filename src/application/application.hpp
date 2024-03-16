@@ -102,7 +102,7 @@ private:
 
     MainWindowS m_mainWindow;
 
-    std::unique_ptr<SIC> mm_sc;
+    std::unique_ptr<SC> m_sc;
 
     StateMachine * m_stateMachine;
 

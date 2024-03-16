@@ -85,6 +85,6 @@ using RecentFilesManagerS = std::shared_ptr<RecentFilesManager>;
 using SettingsProxyS = std::shared_ptr<SettingsProxy>;
 
 class ServiceContainer;
-using SIC = ServiceContainer;
+using SC = ServiceContainer;
 
 #endif // TYPES_HPP

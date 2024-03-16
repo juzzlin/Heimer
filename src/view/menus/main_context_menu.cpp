@@ -41,7 +41,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Grid & grid)
     connect(copyNodeShortCut, &QShortcut::activated, m_copyNodeAction, &QAction::trigger);
     connect(m_copyNodeAction, &QAction::triggered, this, [] {
         juzzlin::L().debug() << "Copy node triggered";
-        SIC::instance().applicationService()->performNodeAction({ NodeAction::Type::Copy });
+        SC::instance().applicationService()->performNodeAction({ NodeAction::Type::Copy });
     });
     m_mainContextMenuActions[Mode::All].push_back(m_copyNodeAction);
 
@@ -53,7 +53,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Grid & grid)
     connect(pasteNodeShortCut, &QShortcut::activated, m_pasteNodeAction, &QAction::trigger);
     connect(m_pasteNodeAction, &QAction::triggered, this, [] {
         juzzlin::L().debug() << "Paste node triggered";
-        SIC::instance().applicationService()->performNodeAction({ NodeAction::Type::Paste });
+        SC::instance().applicationService()->performNodeAction({ NodeAction::Type::Paste });
     });
     m_mainContextMenuActions[Mode::All].push_back(m_pasteNodeAction);
 
@@ -82,10 +82,10 @@ MainContextMenu::MainContextMenu(QWidget * parent, Grid & grid)
     createNodeAction->setShortcut(createNodeSequence);
     const auto createNodeShortCut = new QShortcut(createNodeSequence, parent);
     connect(createNodeShortCut, &QShortcut::activated, this, [this, grid] {
-        emit newNodeRequested(grid.snapToGrid(SIC::instance().applicationService()->mouseAction().mappedPos()));
+        emit newNodeRequested(grid.snapToGrid(SC::instance().applicationService()->mouseAction().mappedPos()));
     });
     connect(createNodeAction, &QAction::triggered, this, [this, grid] {
-        emit newNodeRequested(grid.snapToGrid(SIC::instance().applicationService()->mouseAction().clickedScenePos()));
+        emit newNodeRequested(grid.snapToGrid(SC::instance().applicationService()->mouseAction().clickedScenePos()));
     });
     m_mainContextMenuActions[Mode::Background].push_back(createNodeAction);
 
@@ -108,10 +108,10 @@ MainContextMenu::MainContextMenu(QWidget * parent, Grid & grid)
     deleteNodeAction->setShortcut(deleteNodeSequence);
     const auto deleteNodeShortCut = new QShortcut(deleteNodeSequence, parent);
     connect(deleteNodeShortCut, &QShortcut::activated, this, [] {
-        SIC::instance().applicationService()->performNodeAction({ NodeAction::Type::Delete });
+        SC::instance().applicationService()->performNodeAction({ NodeAction::Type::Delete });
     });
     connect(deleteNodeAction, &QAction::triggered, this, [] {
-        SIC::instance().applicationService()->performNodeAction({ NodeAction::Type::Delete });
+        SC::instance().applicationService()->performNodeAction({ NodeAction::Type::Delete });
     });
 
     m_mainContextMenuActions[Mode::Node].push_back(deleteNodeAction);
@@ -125,7 +125,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Grid & grid)
 
     m_removeImageAction = new QAction(tr("Remove attached image"), this);
     connect(m_removeImageAction, &QAction::triggered, this, [] {
-        SIC::instance().applicationService()->performNodeAction({ NodeAction::Type::RemoveAttachedImage });
+        SC::instance().applicationService()->performNodeAction({ NodeAction::Type::RemoveAttachedImage });
     });
 
     m_mainContextMenuActions[Mode::Node].push_back(m_removeImageAction);
@@ -165,13 +165,13 @@ void MainContextMenu::setMode(const Mode & mode)
 
     m_colorMenuAction->setText(mode == Mode::Node ? tr("Node &colors") : tr("General &colors"));
 
-    m_copyNodeAction->setEnabled(SIC::instance().applicationService()->selectionGroupSize());
-    m_copyNodeAction->setText(SIC::instance().applicationService()->selectionGroupSize() > 1 ? tr("Copy nodes") : tr("Copy node"));
+    m_copyNodeAction->setEnabled(SC::instance().applicationService()->selectionGroupSize());
+    m_copyNodeAction->setText(SC::instance().applicationService()->selectionGroupSize() > 1 ? tr("Copy nodes") : tr("Copy node"));
 
-    m_pasteNodeAction->setEnabled(SIC::instance().applicationService()->copyStackSize());
-    m_pasteNodeAction->setText(SIC::instance().applicationService()->copyStackSize() > 1 ? tr("Paste nodes") : tr("Paste node"));
+    m_pasteNodeAction->setEnabled(SC::instance().applicationService()->copyStackSize());
+    m_pasteNodeAction->setText(SC::instance().applicationService()->copyStackSize() > 1 ? tr("Paste nodes") : tr("Paste node"));
 
-    m_removeImageAction->setEnabled(SIC::instance().applicationService()->nodeHasImageAttached());
+    m_removeImageAction->setEnabled(SC::instance().applicationService()->nodeHasImageAttached());
 }
 
 } // namespace Menus

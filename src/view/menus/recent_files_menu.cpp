@@ -30,10 +30,10 @@ RecentFilesMenu::RecentFilesMenu(QWidget * parent)
         for (auto && action : actions()) {
             removeAction(action);
         }
-        for (auto && filePath : SIC::instance().recentFilesManager()->recentFiles()) {
+        for (auto && filePath : SC::instance().recentFilesManager()->recentFiles()) {
             const auto action = addAction(filePath);
             const auto handler = std::bind([=](QString filePath) {
-                SIC::instance().recentFilesManager()->setSelectedFile(filePath);
+                SC::instance().recentFilesManager()->setSelectedFile(filePath);
                 fileSelected(filePath);
             },
                                            action->text());

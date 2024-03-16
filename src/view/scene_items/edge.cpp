@@ -46,7 +46,7 @@
 namespace SceneItems {
 
 Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enableLabel)
-  : m_settingsProxy(SIC::instance().settingsProxy())
+  : m_settingsProxy(SC::instance().settingsProxy())
   , m_edgeModel(std::make_unique<EdgeModel>(m_settingsProxy->reversedEdgeDirection(),
                                             EdgeModel::Style { m_settingsProxy->edgeArrowMode() }))
   , m_sourceNode(sourceNode)

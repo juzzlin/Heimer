@@ -33,14 +33,14 @@ bool ControlStrategy::isModifierPressed() const
 
 bool ControlStrategy::backgroundDragInitiated(QMouseEvent & event) const
 {
-    const bool invertedControls = SIC::instance().settingsProxy()->invertedControls();
+    const bool invertedControls = SC::instance().settingsProxy()->invertedControls();
 
     return (invertedControls == isModifierPressed()) && event.button() == Qt::LeftButton;
 }
 
 bool ControlStrategy::rubberBandInitiated(QMouseEvent & event) const
 {
-    const bool invertedControls = SIC::instance().settingsProxy()->invertedControls();
+    const bool invertedControls = SC::instance().settingsProxy()->invertedControls();
 
     return ((!invertedControls ^ !isModifierPressed()) && (event.button() == Qt::LeftButton)) || event.button() == Qt::MiddleButton;
 }

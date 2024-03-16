@@ -75,7 +75,7 @@ SettingsProxyS ServiceContainer::settingsProxy()
     return m_settingsProxy;
 }
 
-ServiceContainer & SIC::instance()
+ServiceContainer & SC::instance()
 {
     if (!ServiceContainer::m_instance) {
         throw std::runtime_error("ServiceContainer not instantiated");

@@ -18,8 +18,6 @@
 
 #include "../common/types.hpp"
 
-#include <memory>
-
 class ApplicationService;
 class EditorService;
 class ControlStrategy;

@@ -18,7 +18,7 @@
 #include "../application/service_container.hpp"
 
 UnitTestBase::UnitTestBase()
-  : mm_sc(std::make_unique<ServiceContainer>())
+  : m_sc(std::make_unique<ServiceContainer>())
 {
 }
 

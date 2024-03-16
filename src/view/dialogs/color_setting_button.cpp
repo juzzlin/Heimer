@@ -23,7 +23,7 @@ namespace Dialogs {
 ColorSettingButton::ColorSettingButton(QString text, ColorDialog::Role role, QWidget * parent)
   : QPushButton(text, parent)
   , m_role(role)
-  , m_settingsProxy(SIC::instance().settingsProxy())
+  , m_settingsProxy(SC::instance().settingsProxy())
 {
     // Set current default color
     if (const std::map<ColorDialog::Role, QColor> roleToColorMap = {

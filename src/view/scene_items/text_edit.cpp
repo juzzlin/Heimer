@@ -29,6 +29,7 @@ namespace SceneItems {
 
 TextEdit::TextEdit(QGraphicsItem * parentItem)
   : QGraphicsTextItem(parentItem)
+  , m_unselectedFormat(textCursor().charFormat())
 {
     if (!TestMode::enabled()) {
         setTextInteractionFlags(Qt::TextEditorInteraction);
@@ -116,6 +117,34 @@ void TextEdit::setBackgroundColor(const QColor & backgroundColor)
     m_backgroundColor = backgroundColor;
 
     update();
+}
+
+void TextEdit::selectText(const QString & text)
+{
+    unselectText();
+    auto cursor(textCursor());
+    cursor.clearSelection();
+    if (!text.isEmpty()) {
+        if (const auto index = static_cast<int>(this->text().toLower().indexOf(text.toLower())); index >= 0) {
+            // Customize the text selection color
+            auto format = cursor.charFormat();
+            format.setForeground(Qt::white);
+            format.setBackground(Qt::blue);
+            cursor.setPosition(index);
+            cursor.movePosition(QTextCursor::MoveOperation::Right, QTextCursor::MoveMode::KeepAnchor, static_cast<int>(text.length()));
+            cursor.setCharFormat(format);
+        }
+    }
+    cursor.clearSelection();
+    setTextCursor(cursor);
+}
+
+void TextEdit::unselectText()
+{
+    auto cursor = textCursor();
+    cursor.setPosition(0);
+    cursor.movePosition(QTextCursor::MoveOperation::Right, QTextCursor::MoveMode::KeepAnchor, static_cast<int>(this->text().length()));
+    cursor.setCharFormat(m_unselectedFormat);
 }
 
 void TextEdit::setTextSize(int textSize)

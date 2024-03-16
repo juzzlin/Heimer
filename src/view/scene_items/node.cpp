@@ -51,7 +51,6 @@ Node::Node()
   : m_settingsProxy(SIC::instance().settingsProxy())
   , m_nodeModel(std::make_unique<NodeModel>(m_settingsProxy->nodeColor(), m_settingsProxy->nodeTextColor()))
   , m_textEdit(new TextEdit(this))
-  , m_unselectedFormat(m_textEdit->textCursor().charFormat())
 {
     setAcceptHoverEvents(true);
 
@@ -260,22 +259,7 @@ std::pair<EdgePoint, EdgePoint> Node::getNearestEdgePoints(NodeCR node1, NodeCR 
 void Node::highlightText(const QString & text)
 {
     if (!TestMode::enabled()) {
-        unselectText();
-        auto cursor(m_textEdit->textCursor());
-        cursor.clearSelection();
-        if (!text.isEmpty()) {
-            if (const auto index = static_cast<int>(m_textEdit->text().toLower().indexOf(text.toLower())); index >= 0) {
-                // Customize the text selection color
-                auto format = cursor.charFormat();
-                format.setForeground(Qt::white);
-                format.setBackground(Qt::blue);
-                cursor.setPosition(index);
-                cursor.movePosition(QTextCursor::MoveOperation::Right, QTextCursor::MoveMode::KeepAnchor, static_cast<int>(text.length()));
-                cursor.setCharFormat(format);
-            }
-        }
-        cursor.clearSelection();
-        m_textEdit->setTextCursor(cursor);
+        m_textEdit->selectText(text);
     } else {
         TestMode::logDisabledCode("highlightText");
     }
@@ -604,10 +588,7 @@ void Node::setIndex(int index)
 
 void Node::unselectText()
 {
-    auto cursor = m_textEdit->textCursor();
-    cursor.setPosition(0);
-    cursor.movePosition(QTextCursor::MoveOperation::Right, QTextCursor::MoveMode::KeepAnchor, static_cast<int>(m_textEdit->text().length()));
-    cursor.setCharFormat(m_unselectedFormat);
+    m_textEdit->unselectText();
 }
 
 Node::~Node()

@@ -18,6 +18,7 @@
 
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsTextItem>
+#include <QTextCharFormat>
 
 namespace SceneItems {
 
@@ -31,6 +32,10 @@ public:
     QColor backgroundColor() const;
 
     virtual void setBackgroundColor(const QColor & backgroundColor);
+
+    virtual void selectText(const QString & text);
+
+    virtual void unselectText();
 
     virtual void setTextSize(int textSize);
 
@@ -67,6 +72,8 @@ private:
     QString m_text;
 
     int m_textSize = 0;
+
+    QTextCharFormat m_unselectedFormat;
 };
 
 } // namespace SceneItems

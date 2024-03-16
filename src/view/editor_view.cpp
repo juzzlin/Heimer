@@ -195,7 +195,6 @@ void EditorView::initiateBackgroundDrag()
     juzzlin::L().debug() << "Initiating background drag..";
 
     SIC::instance().applicationService()->setSelectedEdge(nullptr);
-    SIC::instance().applicationService()->unselectText();
     SIC::instance().applicationService()->mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
 
     setDragMode(ScrollHandDrag);

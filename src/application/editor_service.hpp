@@ -166,6 +166,8 @@ public:
 
     size_t selectionGroupSize() const;
 
+    void selectEdgesByText(QString text);
+
     void selectNodesByText(QString text);
 
     void toggleNodeInSelectionGroup(NodeR node);

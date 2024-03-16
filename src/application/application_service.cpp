@@ -826,8 +826,10 @@ void ApplicationService::setSearchText(QString text)
 
     if (text.isEmpty() && !m_editorService->selectionGroupSize()) {
         m_editorService->selectNodesByText("");
+        m_editorService->selectEdgesByText("");
     } else {
         m_editorService->selectNodesByText(text);
+        m_editorService->selectEdgesByText(text);
         if (const auto selectedNodes = m_editorService->selectedNodes(); selectedNodes.size()) {
             m_editorView->zoomToFit(MagicZoom::calculateRectangleByNodes(selectedNodes));
         } else {

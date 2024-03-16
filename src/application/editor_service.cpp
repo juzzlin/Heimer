@@ -140,6 +140,10 @@ void EditorService::undo()
 
 void EditorService::unselectText()
 {
+    for (auto && edge : mindMapData()->graph().getEdges()) {
+        edge->unselectText();
+    }
+
     for (auto && node : mindMapData()->graph().getNodes()) {
         node->unselectText();
     }
@@ -273,6 +277,13 @@ void EditorService::setMindMapData(MindMapDataS mindMapData)
     setIsModified(false);
 
     m_undoStack->clear();
+}
+
+void EditorService::selectEdgesByText(QString text)
+{
+    for (auto && edge : m_mindMapData->graph().getEdges()) {
+        edge->highlightText(text);
+    }
 }
 
 void EditorService::selectNodesByText(QString text)

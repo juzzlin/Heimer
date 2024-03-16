@@ -69,6 +69,8 @@ public:
 
     void enableShadowEffect(bool enable) override;
 
+    void highlightText(const QString & text);
+
     double length() const;
 
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
@@ -92,6 +94,8 @@ public:
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
 
     QString text() const;
+
+    void unselectText();
 
 public slots:
 

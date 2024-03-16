@@ -288,8 +288,6 @@ void Node::hoverMoveEvent(QGraphicsSceneHoverEvent * event)
 
 void Node::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
-    unselectText();
-
     // Prevent left-click on the drag node
     if (event && index() != -1) {
         if (expandedTextEditRect().contains(event->pos())) {

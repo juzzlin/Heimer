@@ -68,6 +68,8 @@ void TextEdit::keyPressEvent(QKeyEvent * event)
 
 void TextEdit::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
+    unselectText();
+
     emit undoPointRequested();
 
     QGraphicsTextItem::mousePressEvent(event);

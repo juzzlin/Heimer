@@ -180,6 +180,15 @@ void Edge::enableShadowEffect(bool enable)
     update();
 }
 
+void Edge::highlightText(const QString & text)
+{
+    if (!TestMode::enabled()) {
+        m_label->selectText(text);
+    } else {
+        TestMode::logDisabledCode("highlightText");
+    }
+}
+
 double Edge::length() const
 {
     return m_line->line().length();
@@ -511,6 +520,11 @@ QRectF Edge::boundingRect() const
 QString Edge::text() const
 {
     return m_edgeModel->text;
+}
+
+void Edge::unselectText()
+{
+    m_label->unselectText();
 }
 
 void Edge::updateLine()

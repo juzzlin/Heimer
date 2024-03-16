@@ -215,7 +215,7 @@ void EditorServiceTest::testLoadState()
     QCOMPARE(editorService.isUndoable(), false);
     QCOMPARE(editorService.selectionGroupSize(), size_t(0));
     QCOMPARE(editorService.selectedEdge(), nullptr);
-    QCOMPARE(editorService.selectedNode(), nullptr);
+    QVERIFY(!editorService.selectedNode().has_value());
 }
 
 void EditorServiceTest::testUndoAddNodes()
@@ -890,7 +890,7 @@ void EditorServiceTest::testUndoState()
     QCOMPARE(editorService.isUndoable(), false);
     QCOMPARE(editorService.selectionGroupSize(), size_t(0));
     QCOMPARE(editorService.selectedEdge(), nullptr);
-    QCOMPARE(editorService.selectedNode(), nullptr);
+    QVERIFY(!editorService.selectedNode().has_value());
 }
 
 void EditorServiceTest::testRedoState()
@@ -918,7 +918,7 @@ void EditorServiceTest::testRedoState()
     QCOMPARE(editorService.isUndoable(), true);
     QCOMPARE(editorService.selectionGroupSize(), size_t(0));
     QCOMPARE(editorService.selectedEdge(), nullptr);
-    QCOMPARE(editorService.selectedNode(), nullptr);
+    QVERIFY(!editorService.selectedNode().has_value());
 
     editorService.undo();
     editorService.saveUndoPoint();

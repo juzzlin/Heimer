@@ -711,7 +711,7 @@ EdgeP ApplicationService::selectedEdge() const
     return m_editorService->selectedEdge();
 }
 
-NodeP ApplicationService::selectedNode() const
+std::optional<NodeP> ApplicationService::selectedNode() const
 {
     return m_editorService->selectedNode();
 }

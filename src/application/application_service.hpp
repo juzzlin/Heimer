@@ -16,6 +16,8 @@
 #ifndef APPLICATION_SERVICE_HPP
 #define APPLICATION_SERVICE_HPP
 
+#include <optional>
+
 #include <QFont>
 #include <QObject>
 #include <QPointF>
@@ -145,7 +147,7 @@ public:
 
     EdgeP selectedEdge() const;
 
-    NodeP selectedNode() const;
+    std::optional<NodeP> selectedNode() const;
 
     size_t selectionGroupSize() const;
 

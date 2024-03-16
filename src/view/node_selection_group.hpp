@@ -17,6 +17,8 @@
 #define NODE_SELECTION_GROUP_HPP
 
 #include <QPointF>
+
+#include <optional>
 #include <unordered_map>
 #include <vector>
 
@@ -42,7 +44,7 @@ public:
 
     const std::vector<NodeP> nodes() const;
 
-    NodeP selectedNode() const;
+    std::optional<NodeP> selectedNode() const;
 
     size_t size() const;
 
@@ -57,7 +59,7 @@ private:
     std::vector<NodeP> m_nodes;
 
     // Map from node -> is implicitly added
-    std::unordered_map<NodeP, bool> m_nodeMap;
+    std::unordered_map<NodeP, bool> m_implicitlyAdded;
 };
 
 #endif // NODE_SELECTION_GROUP_HPP

@@ -537,7 +537,7 @@ EdgeP EditorService::selectedEdge() const
     return m_selectedEdge;
 }
 
-NodeP EditorService::selectedNode() const
+std::optional<NodeP> EditorService::selectedNode() const
 {
     return m_selectionGroup->selectedNode();
 }

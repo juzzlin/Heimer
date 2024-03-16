@@ -17,6 +17,7 @@
 #define EDITOR_SERVICE_HPP
 
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -160,7 +161,7 @@ public:
 
     EdgeP selectedEdge() const;
 
-    NodeP selectedNode() const;
+    std::optional<NodeP> selectedNode() const;
 
     std::vector<NodeP> selectedNodes() const;
 

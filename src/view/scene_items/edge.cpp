@@ -189,6 +189,12 @@ void Edge::highlightText(const QString & text)
     }
 }
 
+QString Edge::id() const
+{
+    const auto unknown = "??";
+    return QString { "%1_%2" }.arg(m_sourceNode ? QString::number(m_sourceNode->index()) : unknown, m_targetNode ? QString::number(m_targetNode->index()) : unknown);
+}
+
 double Edge::length() const
 {
     return m_line->line().length();
@@ -507,6 +513,11 @@ void Edge::restoreLabelParent()
     }
 }
 
+bool Edge::selected() const
+{
+    return m_selected;
+}
+
 EdgeModel::ArrowMode Edge::arrowMode() const
 {
     return m_edgeModel->style.arrowMode;
@@ -517,9 +528,19 @@ QRectF Edge::boundingRect() const
     return m_line->boundingRect();
 }
 
+bool Edge::containsText(const QString & text) const
+{
+    return m_edgeModel->text.contains(text, Qt::CaseInsensitive);
+}
+
 QString Edge::text() const
 {
     return m_edgeModel->text;
+}
+
+QRectF Edge::unitedBoundingRect() const
+{
+    return m_label ? boundingRect().united(m_label->boundingRect()) : boundingRect();
 }
 
 void Edge::unselectText()

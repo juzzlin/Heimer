@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2019 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2024 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef NODE_SELECTION_GROUP_HPP
-#define NODE_SELECTION_GROUP_HPP
+#ifndef EDGE_SELECTION_GROUP_HPP
+#define EDGE_SELECTION_GROUP_HPP
 
 #include <QPointF>
 
@@ -24,31 +24,29 @@
 
 #include "../common/types.hpp"
 
-class NodeSelectionGroup
+class EdgeSelectionGroup
 {
 public:
-    //! Adds node to the selection group.
-    //! \param node Node to be added.
-    //! \param isImplicit Tells if the node is implicitly added e.g. due to some user action.
-    void add(NodeR node, bool isImplicit = false);
+    //! Adds edge to the selection group.
+    //! \param edge Edge to be added.
+    //! \param isImplicit Tells if the edge is implicitly added e.g. due to some user action.
+    void add(EdgeR edge, bool isImplicit = false);
 
     //! Clears the selection group.
-    //! \param implicitOnly If true, only implicitly added nodes are removed from the group.
+    //! \param implicitOnly If true, only implicitly added edges are removed from the group.
     void clear(bool implicitOnly = false);
 
-    bool contains(NodeR node) const;
+    bool contains(EdgeR edgee) const;
 
     bool isEmpty() const;
 
-    void move(NodeR reference, QPointF location);
+    const std::vector<EdgeP> edges() const;
 
-    const std::vector<NodeP> nodes() const;
-
-    std::optional<NodeP> selectedNode() const;
+    std::optional<EdgeP> selectedEdge() const;
 
     size_t size() const;
 
-    void toggle(NodeR node);
+    void toggle(EdgeR edge);
 
 private:
     void clearAll();
@@ -56,10 +54,10 @@ private:
     void clearImplicitOnly();
 
     // Use vector because we want to keep the order
-    std::vector<NodeP> m_nodes;
+    std::vector<EdgeP> m_edges;
 
-    // Map from node -> is implicitly added
-    std::unordered_map<NodeP, bool> m_implicitlyAdded;
+    // Map from edge -> is implicitly added
+    std::unordered_map<EdgeP, bool> m_implicitlyAdded;
 };
 
-#endif // NODE_SELECTION_GROUP_HPP
+#endif // EDGE_SELECTION_GROUP_HPP

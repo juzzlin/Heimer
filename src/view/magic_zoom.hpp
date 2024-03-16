@@ -30,6 +30,9 @@ namespace MagicZoom {
 using ItemList = QList<QGraphicsItem *>;
 QRectF calculateRectangleByItems(const ItemList & items, bool isForExport = false);
 
+using EdgeList = std::vector<EdgeP>;
+QRectF calculateRectangleByEdges(const EdgeList & edges);
+
 using NodeList = std::vector<NodeP>;
 QRectF calculateRectangleByNodes(const NodeList & nodes, bool isForExport = false);
 

@@ -16,8 +16,10 @@
 #include "selection_group_test.hpp"
 
 #include "../../common/test_mode.hpp"
-#include "../../view/scene_items/node.hpp"
+#include "../../view/edge_selection_group.hpp"
 #include "../../view/node_selection_group.hpp"
+#include "../../view/scene_items/edge.hpp"
+#include "../../view/scene_items/node.hpp"
 
 using SceneItems::Edge;
 using SceneItems::Node;
@@ -27,25 +29,149 @@ SelectionGroupTest::SelectionGroupTest()
     TestMode::setEnabled(true);
 }
 
+void SelectionGroupTest::testAddEdges_Explicit()
+{
+    const auto edge1 = std::make_unique<Edge>(nullptr, nullptr);
+    const auto edge2 = std::make_unique<Edge>(nullptr, nullptr);
+
+    EdgeSelectionGroup selectionGroup;
+    selectionGroup.add(*edge1);
+    selectionGroup.add(*edge2);
+
+    QVERIFY(selectionGroup.contains(*edge1));
+    QVERIFY(edge1->selected());
+    QVERIFY(selectionGroup.contains(*edge2));
+    QVERIFY(edge2->selected());
+
+    selectionGroup.clear();
+
+    QVERIFY(!selectionGroup.contains(*edge1));
+    QVERIFY(!edge1->selected());
+    QVERIFY(!selectionGroup.contains(*edge2));
+    QVERIFY(!edge2->selected());
+    QCOMPARE(selectionGroup.size(), size_t(0));
+}
+
+void SelectionGroupTest::testAddEdges_Implicit()
+{
+    const auto edge = std::make_unique<Edge>(nullptr, nullptr);
+
+    EdgeSelectionGroup selectionGroup;
+    selectionGroup.add(*edge, true);
+
+    QVERIFY(selectionGroup.contains(*edge));
+    QVERIFY(edge->selected());
+    QCOMPARE(selectionGroup.size(), size_t(1));
+
+    selectionGroup.clear(true);
+
+    QVERIFY(!selectionGroup.contains(*edge));
+    QVERIFY(!edge->selected());
+    QCOMPARE(selectionGroup.size(), size_t(0));
+}
+
+void SelectionGroupTest::testAddEdges_ImplicitAndExplicit()
+{
+    const auto edge1 = std::make_unique<Edge>(nullptr, nullptr);
+    const auto edge2 = std::make_unique<Edge>(nullptr, nullptr);
+
+    EdgeSelectionGroup selectionGroup;
+    selectionGroup.add(*edge1, true);
+    selectionGroup.add(*edge2, false);
+
+    QVERIFY(selectionGroup.contains(*edge1));
+    QVERIFY(edge1->selected());
+    QVERIFY(selectionGroup.contains(*edge2));
+    QVERIFY(edge2->selected());
+    QCOMPARE(selectionGroup.size(), size_t(2));
+
+    selectionGroup.clear(true);
+
+    QVERIFY(!selectionGroup.contains(*edge1));
+    QVERIFY(!edge1->selected());
+    QVERIFY(selectionGroup.contains(*edge2));
+    QVERIFY(edge2->selected());
+    QCOMPARE(selectionGroup.size(), size_t(1));
+
+    selectionGroup.clear();
+
+    QVERIFY(!selectionGroup.contains(*edge1));
+    QVERIFY(!edge1->selected());
+    QVERIFY(!selectionGroup.contains(*edge2));
+    QVERIFY(!edge2->selected());
+    QCOMPARE(selectionGroup.size(), size_t(0));
+}
+
+void SelectionGroupTest::testEdges()
+{
+    const auto edge1 = std::make_unique<Edge>(nullptr, nullptr);
+    const auto edge2 = std::make_unique<Edge>(nullptr, nullptr);
+    const auto edge3 = std::make_unique<Edge>(nullptr, nullptr);
+
+    EdgeSelectionGroup selectionGroup;
+    selectionGroup.add(*edge1);
+    selectionGroup.add(*edge2);
+    selectionGroup.add(*edge3);
+
+    const auto edges = selectionGroup.edges();
+    QCOMPARE(edges.size(), size_t(3));
+    QCOMPARE(edges.at(0), edge1.get());
+    QCOMPARE(edges.at(1), edge2.get());
+    QCOMPARE(edges.at(2), edge3.get());
+}
+
+void SelectionGroupTest::testSelectedEdge()
+{
+    const auto edge1 = std::make_unique<Edge>(nullptr, nullptr);
+    const auto edge2 = std::make_unique<Edge>(nullptr, nullptr);
+    const auto edge3 = std::make_unique<Edge>(nullptr, nullptr);
+
+    EdgeSelectionGroup selectionGroup;
+
+    QVERIFY(!selectionGroup.selectedEdge().has_value());
+
+    selectionGroup.add(*edge1);
+    selectionGroup.add(*edge2);
+    selectionGroup.add(*edge3);
+
+    QVERIFY(selectionGroup.selectedEdge().has_value());
+    QCOMPARE(selectionGroup.selectedEdge().value(), edge1.get());
+}
+
+void SelectionGroupTest::testToggleEdge()
+{
+    const auto edge = std::make_unique<Edge>(nullptr, nullptr);
+
+    EdgeSelectionGroup selectionGroup;
+    selectionGroup.toggle(*edge);
+
+    QVERIFY(selectionGroup.contains(*edge));
+    QVERIFY(edge->selected());
+
+    selectionGroup.toggle(*edge);
+
+    QVERIFY(!selectionGroup.contains(*edge));
+    QVERIFY(!edge->selected());
+}
 void SelectionGroupTest::testAddNodes_Explicit()
 {
     const auto node1 = std::make_unique<Node>();
     const auto node2 = std::make_unique<Node>();
 
     NodeSelectionGroup selectionGroup;
-    selectionGroup.addNode(*node1);
-    selectionGroup.addNode(*node2);
-
-    QCOMPARE(selectionGroup.hasNode(*node1), true);
+    selectionGroup.add(*node1);
+    selectionGroup.add(*node2);
+    
+    QCOMPARE(selectionGroup.contains(*node1), true);
     QCOMPARE(node1->selected(), true);
-    QCOMPARE(selectionGroup.hasNode(*node2), true);
+    QCOMPARE(selectionGroup.contains(*node2), true);
     QCOMPARE(node2->selected(), true);
 
     selectionGroup.clear();
-
-    QCOMPARE(selectionGroup.hasNode(*node1), false);
+    
+    QCOMPARE(selectionGroup.contains(*node1), false);
     QCOMPARE(node1->selected(), false);
-    QCOMPARE(selectionGroup.hasNode(*node2), false);
+    QCOMPARE(selectionGroup.contains(*node2), false);
     QCOMPARE(node2->selected(), false);
     QCOMPARE(selectionGroup.size(), size_t(0));
 }
@@ -55,15 +181,15 @@ void SelectionGroupTest::testAddNodes_Implicit()
     const auto node = std::make_unique<Node>();
 
     NodeSelectionGroup selectionGroup;
-    selectionGroup.addNode(*node, true);
-
-    QCOMPARE(selectionGroup.hasNode(*node), true);
+    selectionGroup.add(*node, true);
+    
+    QCOMPARE(selectionGroup.contains(*node), true);
     QCOMPARE(node->selected(), true);
     QCOMPARE(selectionGroup.size(), size_t(1));
 
     selectionGroup.clear(true);
-
-    QCOMPARE(selectionGroup.hasNode(*node), false);
+    
+    QCOMPARE(selectionGroup.contains(*node), false);
     QCOMPARE(node->selected(), false);
     QCOMPARE(selectionGroup.size(), size_t(0));
 }
@@ -74,28 +200,28 @@ void SelectionGroupTest::testAddNodes_ImplicitAndExplicit()
     const auto node2 = std::make_unique<Node>();
 
     NodeSelectionGroup selectionGroup;
-    selectionGroup.addNode(*node1, true);
-    selectionGroup.addNode(*node2, false);
-
-    QCOMPARE(selectionGroup.hasNode(*node1), true);
+    selectionGroup.add(*node1, true);
+    selectionGroup.add(*node2, false);
+    
+    QCOMPARE(selectionGroup.contains(*node1), true);
     QCOMPARE(node1->selected(), true);
-    QCOMPARE(selectionGroup.hasNode(*node2), true);
+    QCOMPARE(selectionGroup.contains(*node2), true);
     QCOMPARE(node2->selected(), true);
     QCOMPARE(selectionGroup.size(), size_t(2));
 
     selectionGroup.clear(true);
-
-    QCOMPARE(selectionGroup.hasNode(*node1), false);
+    
+    QCOMPARE(selectionGroup.contains(*node1), false);
     QCOMPARE(node1->selected(), false);
-    QCOMPARE(selectionGroup.hasNode(*node2), true);
+    QCOMPARE(selectionGroup.contains(*node2), true);
     QCOMPARE(node2->selected(), true);
     QCOMPARE(selectionGroup.size(), size_t(1));
 
     selectionGroup.clear();
-
-    QCOMPARE(selectionGroup.hasNode(*node1), false);
+    
+    QCOMPARE(selectionGroup.contains(*node1), false);
     QCOMPARE(node1->selected(), false);
-    QCOMPARE(selectionGroup.hasNode(*node2), false);
+    QCOMPARE(selectionGroup.contains(*node2), false);
     QCOMPARE(node2->selected(), false);
     QCOMPARE(selectionGroup.size(), size_t(0));
 }
@@ -107,9 +233,9 @@ void SelectionGroupTest::testNodes()
     const auto node3 = std::make_unique<Node>();
 
     NodeSelectionGroup selectionGroup;
-    selectionGroup.addNode(*node1);
-    selectionGroup.addNode(*node2);
-    selectionGroup.addNode(*node3);
+    selectionGroup.add(*node1);
+    selectionGroup.add(*node2);
+    selectionGroup.add(*node3);
 
     const auto nodes = selectionGroup.nodes();
     QCOMPARE(nodes.size(), size_t(3));
@@ -125,11 +251,15 @@ void SelectionGroupTest::testSelectedNode()
     const auto node3 = std::make_unique<Node>();
 
     NodeSelectionGroup selectionGroup;
-    selectionGroup.addNode(*node1);
-    selectionGroup.addNode(*node2);
-    selectionGroup.addNode(*node3);
 
-    QCOMPARE(selectionGroup.selectedNode(), node1.get());
+    QVERIFY(!selectionGroup.selectedNode().has_value());
+
+    selectionGroup.add(*node1);
+    selectionGroup.add(*node2);
+    selectionGroup.add(*node3);
+
+    QVERIFY(selectionGroup.selectedNode().has_value());
+    QCOMPARE(selectionGroup.selectedNode().value(), node1.get());
 }
 
 void SelectionGroupTest::testToggleNode()
@@ -137,14 +267,14 @@ void SelectionGroupTest::testToggleNode()
     const auto node = std::make_unique<Node>();
 
     NodeSelectionGroup selectionGroup;
-    selectionGroup.toggleNode(*node);
-
-    QCOMPARE(selectionGroup.hasNode(*node), true);
+    selectionGroup.toggle(*node);
+    
+    QCOMPARE(selectionGroup.contains(*node), true);
     QCOMPARE(node->selected(), true);
-
-    selectionGroup.toggleNode(*node);
-
-    QCOMPARE(selectionGroup.hasNode(*node), false);
+    
+    selectionGroup.toggle(*node);
+    
+    QCOMPARE(selectionGroup.contains(*node), false);
     QCOMPARE(node->selected(), false);
 }
 

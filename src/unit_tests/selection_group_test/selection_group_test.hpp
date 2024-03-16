@@ -29,6 +29,18 @@ public:
 
 private slots:
 
+    void testAddEdges_Explicit();
+
+    void testAddEdges_Implicit();
+
+    void testAddEdges_ImplicitAndExplicit();
+
+    void testEdges();
+
+    void testSelectedEdge();
+
+    void testToggleEdge();
+
     void testAddNodes_Explicit();
 
     void testAddNodes_Implicit();

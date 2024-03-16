@@ -24,6 +24,7 @@
 #include "../domain/mind_map_data.hpp"
 #include "../domain/undo_stack.hpp"
 #include "../infra/io/alz_file_io.hpp"
+#include "../view/edge_selection_group.hpp"
 #include "../view/node_selection_group.hpp"
 #include "../view/scene_items/edge.hpp"
 #include "../view/scene_items/node.hpp"
@@ -41,18 +42,26 @@ using std::make_shared;
 EditorService::EditorService()
   : m_alzFileIO(std::make_unique<IO::AlzFileIO>())
   , m_copyContext(std::make_unique<CopyContext>())
-  , m_selectionGroup(std::make_unique<NodeSelectionGroup>())
+  , m_edgeSelectionGroup(std::make_unique<EdgeSelectionGroup>())
+  , m_nodeSelectionGroup(std::make_unique<NodeSelectionGroup>())
   , m_undoStack(std::make_unique<UndoStack>())
 {
     m_undoTimer.setSingleShot(true);
     m_undoTimer.setInterval(Constants::View::TOO_QUICK_ACTION_DELAY_MS);
 }
 
+void EditorService::addEdgeToSelectionGroup(EdgeR edge, bool isImplicit)
+{
+    L().debug() << "Adding edge " << edge.id().toStdString() << " to selection group";
+
+    m_edgeSelectionGroup->add(edge, isImplicit);
+}
+
 void EditorService::addNodeToSelectionGroup(NodeR node, bool isImplicit)
 {
-    L().debug() << "Adding node " << node.index() << " to selection group..";
+    L().debug() << "Adding node " << node.index() << " to selection group";
 
-    m_selectionGroup->addNode(node, isImplicit);
+    m_nodeSelectionGroup->add(node, isImplicit);
 }
 
 void EditorService::requestAutosave(AutosaveContext context, bool async)
@@ -97,7 +106,7 @@ QString EditorService::fileName() const
 void EditorService::loadMindMapData(QString fileName)
 {
     requestAutosave(AutosaveContext::OpenMindMap, false);
-    clearSelectionGroup();
+    clearSelectionGroups();
 
     m_selectedEdge = nullptr;
 
@@ -127,7 +136,7 @@ bool EditorService::isUndoable() const
 void EditorService::undo()
 {
     if (m_undoStack->isUndoable()) {
-        clearSelectionGroup();
+        clearSelectionGroups();
         m_selectedEdge = nullptr;
         m_dragAndDropNode = nullptr;
         saveRedoPoint();
@@ -157,7 +166,7 @@ bool EditorService::isRedoable() const
 void EditorService::redo()
 {
     if (m_undoStack->isRedoable()) {
-        clearSelectionGroup();
+        clearSelectionGroups();
         m_selectedEdge = nullptr;
         m_dragAndDropNode = nullptr;
         saveUndoPoint(true);
@@ -170,7 +179,7 @@ void EditorService::redo()
 
 void EditorService::removeImageRefsOfSelectedNodes()
 {
-    for (auto && node : m_selectionGroup->nodes()) {
+    for (auto && node : m_nodeSelectionGroup->nodes()) {
         node->setImageRef(0);
     }
 }
@@ -187,11 +196,11 @@ void EditorService::saveUndoPoint(bool dontClearRedoStack)
 {
     if (!TestMode::enabled()) {
         if (m_undoTimer.isActive()) {
-            L().debug() << "Saving undo point skipped..";
+            L().debug() << "Saving undo point skipped";
             m_undoTimer.start();
             return;
         }
-        L().debug() << "Saving undo point..";
+        L().debug() << "Saving undo point";
         m_undoTimer.start();
     }
 
@@ -209,7 +218,7 @@ void EditorService::saveUndoPoint(bool dontClearRedoStack)
 
 void EditorService::saveRedoPoint()
 {
-    L().debug() << "Saving redo point..";
+    L().debug() << "Saving redo point";
 
     assert(m_mindMapData);
     m_undoStack->pushRedoPoint(*m_mindMapData);
@@ -233,7 +242,7 @@ bool EditorService::saveMindMapAs(QString fileName, bool async)
 
 void EditorService::setColorForSelectedNodes(QColor color)
 {
-    for (auto && node : m_selectionGroup->nodes()) {
+    for (auto && node : m_nodeSelectionGroup->nodes()) {
         node->setColor(color);
     }
 }
@@ -243,9 +252,9 @@ void EditorService::setGridSize(int size, bool autoSnap)
     m_grid.setSize(size);
 
     if (autoSnap) {
-        if (!m_selectionGroup->isEmpty()) {
+        if (!m_nodeSelectionGroup->isEmpty()) {
             saveUndoPoint();
-            for (auto && node : m_selectionGroup->nodes()) {
+            for (auto && node : m_nodeSelectionGroup->nodes()) {
                 node->setLocation(m_grid.snapToGrid(node->location()));
             }
         } else if (m_mindMapData) {
@@ -257,7 +266,7 @@ void EditorService::setGridSize(int size, bool autoSnap)
 
 void EditorService::setImageRefForSelectedNodes(size_t id)
 {
-    for (auto && node : m_selectionGroup->nodes()) {
+    for (auto && node : m_nodeSelectionGroup->nodes()) {
         juzzlin::L().info() << "Setting image id=" << id << " to node " << node->index();
         node->setImageRef(id);
     }
@@ -265,7 +274,7 @@ void EditorService::setImageRefForSelectedNodes(size_t id)
 
 void EditorService::setTextColorForSelectedNodes(QColor color)
 {
-    for (auto && node : m_selectionGroup->nodes()) {
+    for (auto && node : m_nodeSelectionGroup->nodes()) {
         node->setTextColor(color);
     }
 }
@@ -281,14 +290,18 @@ void EditorService::setMindMapData(MindMapDataS mindMapData)
 
 void EditorService::selectEdgesByText(QString text)
 {
+    clearEdgeSelectionGroup();
     for (auto && edge : m_mindMapData->graph().getEdges()) {
+        if (!text.isEmpty() && edge->containsText(text)) {
+            addEdgeToSelectionGroup(*edge);
+        }
         edge->highlightText(text);
     }
 }
 
 void EditorService::selectNodesByText(QString text)
 {
-    clearSelectionGroup();
+    clearNodeSelectionGroup();
     for (auto && node : m_mindMapData->graph().getNodes()) {
         if (!text.isEmpty() && node->containsText(text)) {
             addNodeToSelectionGroup(*node);
@@ -297,11 +310,18 @@ void EditorService::selectNodesByText(QString text)
     }
 }
 
+void EditorService::toggleEdgeInSelectionGroup(EdgeR edge)
+{
+    L().debug() << "Toggling edge " << edge.id().toStdString() << " in selection group";
+
+    m_edgeSelectionGroup->toggle(edge);
+}
+
 void EditorService::toggleNodeInSelectionGroup(NodeR node)
 {
-    L().debug() << "Toggling node " << node.index() << " in selection group..";
+    L().debug() << "Toggling node " << node.index() << " in selection group";
 
-    m_selectionGroup->toggleNode(node);
+    m_nodeSelectionGroup->toggle(node);
 }
 
 EdgeS EditorService::addEdge(EdgeS edge)
@@ -347,13 +367,13 @@ void EditorService::deleteSelectedNodes()
 {
     assert(m_mindMapData);
 
-    const auto selectedNodes = m_selectionGroup->nodes();
+    const auto selectedNodes = m_nodeSelectionGroup->nodes();
     if (selectedNodes.empty()) {
         if (SceneItems::Node::lastHoveredNode()) {
             deleteNode(*SceneItems::Node::lastHoveredNode());
         }
     } else {
-        m_selectionGroup->clear();
+        m_nodeSelectionGroup->clear();
         for (auto && node : selectedNodes) {
             deleteNode(*node);
         }
@@ -370,12 +390,18 @@ NodeS EditorService::addNodeAt(QPointF pos)
     return node;
 }
 
+void EditorService::clearSelectionGroups()
+{
+    clearEdgeSelectionGroup();
+    clearNodeSelectionGroup();
+}
+
 EditorService::NodePairVector EditorService::getConnectableNodes() const
 {
     NodePairVector nodes;
-    for (size_t i = 0; i + 1 < m_selectionGroup->nodes().size(); i++) {
-        const auto c0 = m_selectionGroup->nodes().at(i);
-        const auto c1 = m_selectionGroup->nodes().at(i + 1);
+    for (size_t i = 0; i + 1 < m_nodeSelectionGroup->nodes().size(); i++) {
+        const auto c0 = m_nodeSelectionGroup->nodes().at(i);
+        const auto c1 = m_nodeSelectionGroup->nodes().at(i + 1);
         if (!m_mindMapData->graph().areDirectlyConnected(c0->index(), c1->index())) {
             nodes.push_back({ c0, c1 });
         }
@@ -385,9 +411,9 @@ EditorService::NodePairVector EditorService::getConnectableNodes() const
 
 bool EditorService::areSelectedNodesConnectable() const
 {
-    for (size_t i = 0; i + 1 < m_selectionGroup->nodes().size(); i++) {
-        const auto c0 = m_selectionGroup->nodes().at(i);
-        const auto c1 = m_selectionGroup->nodes().at(i + 1);
+    for (size_t i = 0; i + 1 < m_nodeSelectionGroup->nodes().size(); i++) {
+        const auto c0 = m_nodeSelectionGroup->nodes().at(i);
+        const auto c1 = m_nodeSelectionGroup->nodes().at(i + 1);
         if (!m_mindMapData->graph().areDirectlyConnected(c0->index(), c1->index())) {
             return true;
         }
@@ -398,10 +424,10 @@ bool EditorService::areSelectedNodesConnectable() const
 EditorService::NodePairVector EditorService::getDisconnectableNodes() const
 {
     NodePairVector nodes;
-    for (size_t i = 0; i < m_selectionGroup->nodes().size(); i++) {
-        for (size_t j = i + 1; j < m_selectionGroup->nodes().size(); j++) {
-            const auto c0 = m_selectionGroup->nodes().at(i);
-            const auto c1 = m_selectionGroup->nodes().at(j);
+    for (size_t i = 0; i < m_nodeSelectionGroup->nodes().size(); i++) {
+        for (size_t j = i + 1; j < m_nodeSelectionGroup->nodes().size(); j++) {
+            const auto c0 = m_nodeSelectionGroup->nodes().at(i);
+            const auto c1 = m_nodeSelectionGroup->nodes().at(j);
             if (m_mindMapData->graph().areDirectlyConnected(c0->index(), c1->index())) {
                 nodes.push_back({ c0, c1 });
             }
@@ -412,10 +438,10 @@ EditorService::NodePairVector EditorService::getDisconnectableNodes() const
 
 bool EditorService::areSelectedNodesDisconnectable() const
 {
-    for (size_t i = 0; i < m_selectionGroup->nodes().size(); i++) {
-        for (size_t j = i + 1; j < m_selectionGroup->nodes().size(); j++) {
-            const auto c0 = m_selectionGroup->nodes().at(i);
-            const auto c1 = m_selectionGroup->nodes().at(j);
+    for (size_t i = 0; i < m_nodeSelectionGroup->nodes().size(); i++) {
+        for (size_t j = i + 1; j < m_nodeSelectionGroup->nodes().size(); j++) {
+            const auto c0 = m_nodeSelectionGroup->nodes().at(i);
+            const auto c1 = m_nodeSelectionGroup->nodes().at(j);
             if (m_mindMapData->graph().areDirectlyConnected(c0->index(), c1->index())) {
                 return true;
             }
@@ -459,10 +485,10 @@ NodeS EditorService::copyNodeAt(NodeCR source, QPointF pos)
 
 void EditorService::copySelectedNodes()
 {
-    if (m_selectionGroup->size()) {
+    if (m_nodeSelectionGroup->size()) {
         clearCopyStack();
-        m_copyContext->push(m_selectionGroup->nodes(), m_mindMapData->graph());
-        L().debug() << m_selectionGroup->size() << " nodes copied. Reference point calculated at (" << m_copyContext->copiedData().copyReferencePoint.x() << ", " << m_copyContext->copiedData().copyReferencePoint.y() << ")";
+        m_copyContext->push(m_nodeSelectionGroup->nodes(), m_mindMapData->graph());
+        L().debug() << m_nodeSelectionGroup->size() << " nodes copied. Reference point calculated at (" << m_copyContext->copiedData().copyReferencePoint.x() << ", " << m_copyContext->copiedData().copyReferencePoint.y() << ")";
     }
 }
 
@@ -476,11 +502,18 @@ void EditorService::clearCopyStack()
     m_copyContext->clear();
 }
 
-void EditorService::clearSelectionGroup(bool onlyImplicitNodes)
+void EditorService::clearEdgeSelectionGroup(bool implicitOnly)
 {
-    L().trace() << "Clearing selection group: onlyImplicitNodes == " << onlyImplicitNodes;
+    L().trace() << "Clearing edge selection group: implicitOnly == " << implicitOnly;
 
-    m_selectionGroup->clear(onlyImplicitNodes);
+    m_edgeSelectionGroup->clear(implicitOnly);
+}
+
+void EditorService::clearNodeSelectionGroup(bool implicitOnly)
+{
+    L().trace() << "Clearing node selection group: implicitOnly == " << implicitOnly;
+
+    m_nodeSelectionGroup->clear(implicitOnly);
 }
 
 NodeS EditorService::getNodeByIndex(int index)
@@ -499,7 +532,7 @@ void EditorService::initializeNewMindMap()
 
 bool EditorService::isInSelectionGroup(NodeR node)
 {
-    return m_selectionGroup->hasNode(node);
+    return m_nodeSelectionGroup->contains(node);
 }
 
 MindMapDataS EditorService::mindMapData()
@@ -514,12 +547,12 @@ void EditorService::mirror(bool vertically)
 
 void EditorService::moveSelectionGroup(NodeR reference, QPointF location)
 {
-    m_selectionGroup->move(reference, location);
+    m_nodeSelectionGroup->move(reference, location);
 }
 
 bool EditorService::nodeHasImageAttached() const
 {
-    for (auto && node : m_selectionGroup->nodes()) {
+    for (auto && node : m_nodeSelectionGroup->nodes()) {
         if (node->imageRef()) {
             return true;
         }
@@ -537,19 +570,29 @@ EdgeP EditorService::selectedEdge() const
     return m_selectedEdge;
 }
 
+std::vector<EdgeP> EditorService::selectedEdges() const
+{
+    return m_edgeSelectionGroup->edges();
+}
+
 std::optional<NodeP> EditorService::selectedNode() const
 {
-    return m_selectionGroup->selectedNode();
+    return m_nodeSelectionGroup->selectedNode();
 }
 
 std::vector<NodeP> EditorService::selectedNodes() const
 {
-    return m_selectionGroup->nodes();
+    return m_nodeSelectionGroup->nodes();
 }
 
-size_t EditorService::selectionGroupSize() const
+size_t EditorService::edgeSelectionGroupSize() const
 {
-    return m_selectionGroup->size();
+    return m_edgeSelectionGroup->size();
+}
+
+size_t EditorService::nodeSelectionGroupSize() const
+{
+    return m_nodeSelectionGroup->size();
 }
 
 void EditorService::sendUndoAndRedoSignals()

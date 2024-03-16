@@ -34,27 +34,62 @@ QRectF MagicZoom::calculateRectangleByItems(const ItemList & items, bool isForEx
     return calculateRectangleByNodes(nodes, isForExport);
 }
 
-QRectF MagicZoom::calculateRectangleByNodes(const NodeList & nodes, bool isForExport)
+static QRectF adjustRect(QRectF unitedRect, double avgItemArea, double totalArea)
 {
-    double nodeArea = 0;
-    QRectF rect;
-    for (auto && node : nodes) {
-        const auto nodeRect = node->placementBoundingRect();
-        rect = rect.united(nodeRect.translated(node->pos().x(), node->pos().y()));
-        nodeArea += nodeRect.width() * nodeRect.height();
-    }
-
     const int margin = 60;
-
-    if (isForExport) {
-        return rect.adjusted(-margin, -margin, margin, margin);
-    }
 
     // This "don't ask" heuristics tries to calculate a "nice" zoom-to-fit based on the design
     // density and node count. For example, if we have just a single node we don't want it to
     // be super big and cover the whole screen.
-    const double density = nodeArea / rect.width() / rect.height();
-    const int avgNodeCount = static_cast<int>(nodeArea / Constants::Node::MIN_WIDTH / Constants::Node::MIN_HEIGHT);
-    const double adjust = 3.0 * std::max(density * rect.width(), density * rect.height()) / pow(avgNodeCount, 1.5);
-    return rect.adjusted(-adjust / 2, -adjust / 2, adjust / 2, adjust / 2).adjusted(-margin, -margin, margin, margin);
+    const double density = totalArea / unitedRect.width() / unitedRect.height();
+    const int avgItemCount = static_cast<int>(totalArea / avgItemArea);
+    const double adjust = 3.0 * std::max(density * unitedRect.width(), density * unitedRect.height()) / pow(avgItemCount, 1.5);
+    return unitedRect.adjusted(-adjust / 2, -adjust / 2, adjust / 2, adjust / 2).adjusted(-margin, -margin, margin, margin);
+}
+
+QRectF MagicZoom::calculateRectangleByEdges(const EdgeList & edges)
+{
+    if (edges.empty()) {
+        return {};
+    }
+
+    double totalArea = 0;
+    double avgEdgeArea = 0;
+    QRectF unitedRect;
+    for (auto && edge : edges) {
+        const auto edgeRect = edge->unitedBoundingRect();
+        unitedRect = unitedRect.united(edgeRect);
+        const auto edgeArea = edgeRect.width() * edgeRect.height();
+        totalArea += edgeArea;
+        avgEdgeArea += edgeArea;
+    }
+    avgEdgeArea /= static_cast<double>(edges.size());
+
+    return adjustRect(unitedRect, avgEdgeArea, totalArea);
+}
+
+QRectF MagicZoom::calculateRectangleByNodes(const NodeList & nodes, bool isForExport)
+{
+    if (nodes.empty()) {
+        return {};
+    }
+
+    double totalArea = 0;
+    double avgNodeArea = 0;
+    QRectF unitedRect;
+    for (auto && node : nodes) {
+        const auto nodeRect = node->placementBoundingRect();
+        unitedRect = unitedRect.united(nodeRect.translated(node->pos().x(), node->pos().y()));
+        const auto nodeArea = nodeRect.width() * nodeRect.height();
+        totalArea += nodeArea;
+        avgNodeArea += nodeArea;
+    }
+    avgNodeArea /= static_cast<double>(nodes.size());
+
+    if (isForExport) {
+        const int exportMargin = 60;
+        return unitedRect.adjusted(-exportMargin, -exportMargin, exportMargin, exportMargin);
+    }
+
+    return adjustRect(unitedRect, avgNodeArea, totalArea);
 }

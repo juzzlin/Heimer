@@ -557,6 +557,11 @@ void MainWindow::enableSave(bool enable)
     m_saveAction->setEnabled(enable);
 }
 
+void MainWindow::requestCurrentSearchText()
+{
+    m_toolBar->requestCurrentSearchText();
+}
+
 void MainWindow::saveWindowSize()
 {
     if (!m_fullScreenAction->isChecked()) {

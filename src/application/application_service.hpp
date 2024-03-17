@@ -232,6 +232,8 @@ private slots:
 
 signals:
 
+    void currentSearchTextRequested();
+
     void pngExportFinished(bool success);
 
     void svgExportFinished(bool success);

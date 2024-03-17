@@ -67,6 +67,8 @@ ApplicationService::ApplicationService(MainWindowS mainWindow)
     connect(m_mainWindow.get(), &MainWindow::zoomOutTriggered, this, &ApplicationService::zoomOut);
     connect(m_mainWindow.get(), &MainWindow::zoomToFitTriggered, this, &ApplicationService::zoomToFit);
 
+    connect(this, &ApplicationService::currentSearchTextRequested, m_mainWindow.get(), &MainWindow::requestCurrentSearchText);
+
     connect(m_editorService.get(), &EditorService::isModifiedChanged, m_mainWindow.get(), [=](bool isModified) {
         m_mainWindow->enableSave(isModified || canBeSaved());
     });
@@ -919,6 +921,8 @@ void ApplicationService::setupMindMapAfterUndoOrRedo()
 
     m_editorScene->setSceneRect(oldSceneRect);
     m_editorView->centerOn(oldCenter);
+
+    emit currentSearchTextRequested();
 }
 
 void ApplicationService::showStatusText(QString statusText)

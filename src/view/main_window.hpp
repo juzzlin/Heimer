@@ -94,6 +94,8 @@ public slots:
 
     void enableSave(bool enable);
 
+    void requestCurrentSearchText();
+
     void setArrowSize(double value);
 
     void setCornerRadius(int value);

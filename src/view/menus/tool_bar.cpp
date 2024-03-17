@@ -242,6 +242,11 @@ void ToolBar::loadSettings()
     m_showGridCheckBox->setCheckState(Settings::Custom::loadGridVisibleState());
 }
 
+void ToolBar::requestCurrentSearchText()
+{
+    emit searchTextChanged(m_searchLineEdit->text());
+}
+
 void ToolBar::setArrowSize(double value)
 {
     if (!qFuzzyCompare(m_arrowSizeSpinBox->value(), value)) {

@@ -9,6 +9,8 @@ New features:
 
 * Implement group deletion of edges
 
+* Apply text search on undo/redo
+
 Bug fixes:
 
 * Fix GitHub Issue #191: Windows: Text highlighted by the search not visible

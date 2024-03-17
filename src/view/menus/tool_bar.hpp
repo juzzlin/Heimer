@@ -51,6 +51,8 @@ public:
 
     void loadSettings();
 
+    void requestCurrentSearchText();
+
     void setArrowSize(double value);
 
     void setCornerRadius(int value);

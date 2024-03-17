@@ -138,6 +138,11 @@ signals:
 
     void zoomToFitTriggered();
 
+    void zoomToScaleRequested(double xScale, double yScale);
+
+protected:
+    void resizeEvent(QResizeEvent * event) override;
+
 private:
     void addConnectSelectedNodesAction(QMenu & menu);
 
@@ -196,6 +201,10 @@ private:
     bool m_closeNow = false;
 
     QLabel * m_statusText;
+
+    QSize m_originalSize;
+
+    QTimer m_resizeTimer;
 };
 
 #endif // MAIN_WINDOW_HPP

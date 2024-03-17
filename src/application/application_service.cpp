@@ -65,6 +65,7 @@ ApplicationService::ApplicationService(MainWindowS mainWindow)
     connect(m_mainWindow.get(), &MainWindow::zoomInTriggered, this, &ApplicationService::zoomIn);
     connect(m_mainWindow.get(), &MainWindow::zoomOutTriggered, this, &ApplicationService::zoomOut);
     connect(m_mainWindow.get(), &MainWindow::zoomToFitTriggered, this, &ApplicationService::zoomToFit);
+    connect(m_mainWindow.get(), &MainWindow::zoomToScaleRequested, this, &ApplicationService::zoomToScale);
 
     connect(m_editorService.get(), &EditorService::isModifiedChanged, m_mainWindow.get(), [=](bool isModified) {
         m_mainWindow->enableSave(isModified || canBeSaved());
@@ -967,6 +968,13 @@ void ApplicationService::zoomToFit()
 {
     if (hasNodes()) {
         m_editorView->zoomToFit(m_editorScene->calculateZoomToFitRectangle());
+    }
+}
+
+void ApplicationService::zoomToScale(double xScale, double yScale)
+{
+    if (hasNodes()) {
+        m_editorView->zoomToScale(m_editorScene->calculateZoomToFitRectangle(), xScale, yScale);
     }
 }
 

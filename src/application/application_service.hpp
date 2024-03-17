@@ -217,6 +217,8 @@ public slots:
 
     void zoomToFit();
 
+    void zoomToScale(double xScale, double yScale);
+
 private slots:
 
     void zoomIn();

@@ -73,6 +73,8 @@ public:
 
     void zoomToFit(QRectF nodeBoundingRect);
 
+    void zoomToScale(QRectF nodeBoundingRect, double xScale, double yScale);
+
     QString dropFile() const;
 
 public slots:

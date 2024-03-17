@@ -73,7 +73,29 @@ MainWindow::MainWindow()
 
     m_statusText->setOpenExternalLinks(true);
 
+    m_resizeTimer.setSingleShot(true);
+    m_resizeTimer.setInterval(125);
+
+    connect(&m_resizeTimer, &QTimer::timeout, this, [=] {
+        double xScale = static_cast<double>(size().width()) / m_originalSize.width();
+        double yScale = static_cast<double>(size().height()) / m_originalSize.height();
+        emit zoomToScaleRequested(xScale, yScale);
+    });
+
     juzzlin::L().debug() << "MainWindow instantiated";
+}
+
+void MainWindow::resizeEvent(QResizeEvent * event)
+{
+    QMainWindow::resizeEvent(event);
+
+    juzzlin::L().trace() << "Window resized to " << event->size().width() << " x " << event->size().height();
+
+    if (!m_resizeTimer.isActive()) {
+        m_originalSize = event->size();
+    }
+
+    m_resizeTimer.start();
 }
 
 void MainWindow::addConnectSelectedNodesAction(QMenu & menu)

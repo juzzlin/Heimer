@@ -650,6 +650,33 @@ void EditorView::zoomToFit(QRectF nodeBoundingRect)
     m_nodeBoundingRect = nodeBoundingRect;
 }
 
+void EditorView::zoomToScale(QRectF nodeBoundingRect, double xScale, double yScale)
+{
+    if (xScale < 1.0 && yScale < 1.0) {
+        if (xScale < yScale) {
+            m_scale *= xScale;
+        } else {
+            m_scale *= yScale;
+        }
+    } else if (xScale > 1.0 && yScale > 1.0) {
+        if (xScale < yScale) {
+            m_scale *= yScale;
+        } else {
+            m_scale *= xScale;
+        }
+    } else {
+        if (xScale < yScale) {
+            m_scale *= yScale;
+        } else {
+            m_scale *= xScale;
+        }
+    }
+
+    updateScale();
+
+    centerOn(nodeBoundingRect.center());
+}
+
 QString EditorView::dropFile() const
 {
     return this->m_dropFile;

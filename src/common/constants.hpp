@@ -37,7 +37,7 @@ static constexpr auto APPLICATION_VERSION = VERSION;
 
 static constexpr auto ALZ_FORMAT_VERSION = IO::AlzFormatVersion::V2;
 
-static constexpr auto COPYRIGHT = "Copyright (c) 2018-2023 Jussi Lind";
+static constexpr auto COPYRIGHT = "Copyright (c) 2018-2024 Jussi Lind";
 
 static constexpr auto FILE_EXTENSION = ".alz";
 

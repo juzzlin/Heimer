@@ -563,6 +563,20 @@ void ApplicationService::paste()
     }
 }
 
+void ApplicationService::performEdgeAction(const EdgeAction & action)
+{
+    juzzlin::L().debug() << "Handling EdgeAction: " << static_cast<int>(action.type);
+
+    switch (action.type) {
+    case NodeAction::Type::None:
+        break;
+    case NodeAction::Type::Delete:
+        saveUndoPoint();
+        m_editorService->deleteSelectedEdges();
+        break;
+    }
+}
+
 void ApplicationService::performNodeAction(const NodeAction & action)
 {
     juzzlin::L().debug() << "Handling NodeAction: " << static_cast<int>(action.type);

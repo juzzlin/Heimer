@@ -135,6 +135,8 @@ public:
 
     bool openMindMap(QString fileName);
 
+    void performEdgeAction(const EdgeAction & action);
+
     void performNodeAction(const NodeAction & action);
 
     void redo();

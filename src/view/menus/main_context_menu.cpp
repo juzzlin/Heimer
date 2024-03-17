@@ -106,8 +106,9 @@ MainContextMenu::MainContextMenu(QWidget * parent, Grid & grid)
     // is open. As a "solution" we create another shortcut and add it to the parent widget.
     const auto deleteNodeSequence = QKeySequence(QKeySequence::Delete);
     deleteNodeAction->setShortcut(deleteNodeSequence);
-    const auto deleteNodeShortCut = new QShortcut(deleteNodeSequence, parent);
-    connect(deleteNodeShortCut, &QShortcut::activated, this, [] {
+    const auto deleteNodesAndEdgesShortCut = new QShortcut(deleteNodeSequence, parent);
+    connect(deleteNodesAndEdgesShortCut, &QShortcut::activated, this, [] {
+        SC::instance().applicationService()->performEdgeAction({ EdgeAction::Type::Delete });
         SC::instance().applicationService()->performNodeAction({ NodeAction::Type::Delete });
     });
     connect(deleteNodeAction, &QAction::triggered, this, [] {

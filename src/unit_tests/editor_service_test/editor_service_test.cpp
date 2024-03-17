@@ -114,12 +114,28 @@ void EditorServiceTest::testGroupDisconnection()
     QCOMPARE(editorService.mindMapData()->graph().areDirectlyConnected(node2, node1), false);
 }
 
-void EditorServiceTest::testGroupDelete()
+void EditorServiceTest::testGroupDeletionOfEdges_shouldDeleteSelectedEdges()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
-    auto node0 = editorService.addNodeAt(QPointF(0, 0));
-    auto node1 = editorService.addNodeAt(QPointF(1, 1));
+    const auto node0 = editorService.addNodeAt(QPointF(0, 0));
+    const auto node1 = editorService.addNodeAt(QPointF(1, 1));
+    const auto edge0 = std::make_shared<Edge>(node0, node1);
+    editorService.addEdge(edge0);
+    editorService.toggleEdgeInSelectionGroup(*edge0);
+
+    editorService.deleteSelectedEdges();
+
+    QCOMPARE(editorService.edgeSelectionGroupSize(), size_t(0));
+    QVERIFY(editorService.mindMapData()->graph().getEdges().empty());
+}
+
+void EditorServiceTest::testGroupDeletionOfNodes_shouldDeleteSelectedNodes()
+{
+    EditorService editorService;
+    editorService.setMindMapData(std::make_shared<MindMapData>());
+    const auto node0 = editorService.addNodeAt(QPointF(0, 0));
+    const auto node1 = editorService.addNodeAt(QPointF(1, 1));
 
     editorService.toggleNodeInSelectionGroup(*node0);
     editorService.toggleNodeInSelectionGroup(*node1);
@@ -127,15 +143,15 @@ void EditorServiceTest::testGroupDelete()
     editorService.deleteSelectedNodes();
 
     QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(0));
-    QCOMPARE(editorService.mindMapData()->graph().getNodes().empty(), true);
+    QVERIFY(editorService.mindMapData()->graph().getNodes().empty());
 }
 
 void EditorServiceTest::testGroupMove()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
-    auto node0 = editorService.addNodeAt(QPointF(0, 0));
-    auto node1 = editorService.addNodeAt(QPointF(1, 1));
+    const auto node0 = editorService.addNodeAt(QPointF(0, 0));
+    const auto node1 = editorService.addNodeAt(QPointF(1, 1));
 
     editorService.toggleNodeInSelectionGroup(*node0);
     editorService.toggleNodeInSelectionGroup(*node1);
@@ -158,7 +174,39 @@ void EditorServiceTest::testInitializationResetsFileName()
     QCOMPARE(editorService.fileName(), QString { "" });
 }
 
-void EditorServiceTest::testGroupSelection()
+void EditorServiceTest::testGroupSelectionOfEdges()
+{
+    EditorService editorService;
+    editorService.setMindMapData(std::make_shared<MindMapData>());
+
+    const auto node0 = editorService.addNodeAt(QPointF(0, 0));
+    const auto node1 = editorService.addNodeAt(QPointF(1, 1));
+    const auto edge = std::make_shared<Edge>(node0, node1);
+    editorService.addEdge(edge);
+
+    QCOMPARE(editorService.edgeSelectionGroupSize(), size_t(0));
+
+    editorService.toggleEdgeInSelectionGroup(*edge);
+
+    QCOMPARE(editorService.edgeSelectionGroupSize(), size_t(1));
+    QVERIFY(edge->selected());
+
+    editorService.clearEdgeSelectionGroup();
+
+    QCOMPARE(editorService.edgeSelectionGroupSize(), size_t(0));
+    QVERIFY(!edge->selected());
+
+    editorService.addEdgeToSelectionGroup(*edge);
+
+    QCOMPARE(editorService.edgeSelectionGroupSize(), size_t(1));
+    QVERIFY(edge->selected());
+
+    editorService.loadMindMapData(""); // Doesn't really load anything if in unit tests
+
+    QCOMPARE(editorService.edgeSelectionGroupSize(), size_t(0));
+}
+
+void EditorServiceTest::testGroupSelectionOfNodes()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -172,21 +220,21 @@ void EditorServiceTest::testGroupSelection()
     editorService.toggleNodeInSelectionGroup(*node1);
 
     QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(2));
-    QCOMPARE(node0->selected(), true);
-    QCOMPARE(node1->selected(), true);
+    QVERIFY(node0->selected());
+    QVERIFY(node1->selected());
 
     editorService.clearNodeSelectionGroup();
 
     QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(0));
-    QCOMPARE(node0->selected(), false);
-    QCOMPARE(node1->selected(), false);
+    QVERIFY(!node0->selected());
+    QVERIFY(!node1->selected());
 
     editorService.addNodeToSelectionGroup(*node0);
     editorService.addNodeToSelectionGroup(*node1);
 
     QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(2));
-    QCOMPARE(node0->selected(), true);
-    QCOMPARE(node1->selected(), true);
+    QVERIFY(node0->selected());
+    QVERIFY(node1->selected());
 
     editorService.loadMindMapData(""); // Doesn't really load anything if in unit tests
 
@@ -203,7 +251,7 @@ void EditorServiceTest::testLoadState()
     const auto edge01 = editorService.addEdge(std::make_shared<Edge>(node0, node1));
 
     editorService.toggleNodeInSelectionGroup(*node0);
-    editorService.setSelectedEdge(edge01.get());
+    editorService.addEdgeToSelectionGroup(*edge01.get());
     editorService.saveUndoPoint();
 
     QCOMPARE(editorService.isUndoable(), true);
@@ -214,7 +262,7 @@ void EditorServiceTest::testLoadState()
     QCOMPARE(editorService.fileName(), fileName);
     QCOMPARE(editorService.isUndoable(), false);
     QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(0));
-    QCOMPARE(editorService.selectedEdge(), nullptr);
+    QVERIFY(!editorService.selectedEdge().has_value());
     QVERIFY(!editorService.selectedNode().has_value());
 }
 
@@ -880,7 +928,7 @@ void EditorServiceTest::testUndoState()
     const auto edge01 = editorService.addEdge(std::make_shared<Edge>(node0, node1));
 
     editorService.toggleNodeInSelectionGroup(*node0);
-    editorService.setSelectedEdge(edge01.get());
+    editorService.addEdgeToSelectionGroup(*edge01.get());
     editorService.saveUndoPoint();
 
     QCOMPARE(editorService.isUndoable(), true);
@@ -889,7 +937,7 @@ void EditorServiceTest::testUndoState()
 
     QCOMPARE(editorService.isUndoable(), false);
     QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(0));
-    QCOMPARE(editorService.selectedEdge(), nullptr);
+    QVERIFY(!editorService.selectedEdge().has_value());
     QVERIFY(!editorService.selectedNode().has_value());
 }
 
@@ -903,7 +951,7 @@ void EditorServiceTest::testRedoState()
     const auto edge01 = editorService.addEdge(std::make_shared<Edge>(node0, node1));
 
     editorService.toggleNodeInSelectionGroup(*node0);
-    editorService.setSelectedEdge(edge01.get());
+    editorService.addEdgeToSelectionGroup(*edge01.get());
     editorService.saveUndoPoint();
 
     QCOMPARE(editorService.isUndoable(), true);
@@ -911,13 +959,13 @@ void EditorServiceTest::testRedoState()
     editorService.undo();
 
     editorService.toggleNodeInSelectionGroup(*node0);
-    editorService.setSelectedEdge(edge01.get());
+    editorService.addEdgeToSelectionGroup(*edge01.get());
 
     editorService.redo();
 
     QCOMPARE(editorService.isUndoable(), true);
     QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(0));
-    QCOMPARE(editorService.selectedEdge(), nullptr);
+    QVERIFY(!editorService.selectedEdge().has_value());
     QVERIFY(!editorService.selectedNode().has_value());
 
     editorService.undo();

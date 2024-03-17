@@ -27,12 +27,13 @@
 #include "../domain/mind_map_data.hpp"
 #include "../view/scene_items/node.hpp"
 
-class MouseAction;
+class EdgeAction;
 class EditorScene;
 class EditorView;
 class ExportParams;
 class Graph;
 class MainWindow;
+class MouseAction;
 class NodeAction;
 class QGraphicsItem;
 struct ShadowEffectParams;
@@ -58,6 +59,8 @@ public:
     void addEdge(NodeR node1, NodeR node2);
 
     void addItem(QGraphicsItem & item, bool adjustSceneRect = true);
+
+    void addEdgeToSelectionGroup(EdgeR edge, bool isImplicit = false);
 
     void addNodeToSelectionGroup(NodeR node, bool isImplicit = false);
 
@@ -135,6 +138,8 @@ public:
 
     bool openMindMap(QString fileName);
 
+    void performEdgeAction(const EdgeAction & action);
+
     void performNodeAction(const NodeAction & action);
 
     void redo();
@@ -147,11 +152,13 @@ public:
 
     QSize sceneRectSize() const;
 
-    EdgeP selectedEdge() const;
+    std::optional<EdgeP> selectedEdge() const;
 
     std::optional<NodeP> selectedNode() const;
 
-    size_t selectionGroupSize() const;
+    size_t edgeSelectionGroupSize() const;
+
+    size_t nodeSelectionGroupSize() const;
 
     void setEditorView(EditorView & editorView);
 
@@ -163,8 +170,6 @@ public:
     //! \returns number of nodes in the current rectangle.
     size_t setNodeRectangleSelection(QRectF rect);
 
-    void setSelectedEdge(EdgeP edge);
-
     void showStatusText(QString statusText);
 
     void toggleEdgeInSelectionGroup(EdgeR edge);
@@ -172,6 +177,8 @@ public:
     void toggleNodeInSelectionGroup(NodeR node, bool updateNodeConnectionActions = true);
 
     void undo();
+
+    void unselectImplicitlySelectedEdges();
 
     void unselectImplicitlySelectedNodes();
 

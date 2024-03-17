@@ -75,6 +75,8 @@ public:
 
     void deleteNode(NodeR node);
 
+    void deleteSelectedEdges();
+
     void deleteSelectedNodes();
 
     NodeS addNodeAt(QPointF pos);
@@ -156,15 +158,11 @@ public:
 
     void setMindMapData(MindMapDataS newMindMapData);
 
-    void setSelectedEdge(EdgeP edge);
-
-    void setSelectedNode(NodeP node);
-
     void setImageRefForSelectedNodes(size_t id);
 
     void setTextColorForSelectedNodes(QColor color);
 
-    EdgeP selectedEdge() const;
+    std::optional<EdgeP> selectedEdge() const;
 
     std::vector<EdgeP> selectedEdges() const;
 
@@ -224,8 +222,6 @@ private:
     std::unique_ptr<NodeSelectionGroup> m_nodeSelectionGroup;
 
     std::unique_ptr<UndoStack> m_undoStack;
-
-    EdgeP m_selectedEdge = nullptr;
 
     NodeP m_dragAndDropNode = nullptr;
 

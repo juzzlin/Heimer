@@ -161,18 +161,18 @@ void SelectionGroupTest::testAddNodes_Explicit()
     NodeSelectionGroup selectionGroup;
     selectionGroup.add(*node1);
     selectionGroup.add(*node2);
-    
-    QCOMPARE(selectionGroup.contains(*node1), true);
-    QCOMPARE(node1->selected(), true);
-    QCOMPARE(selectionGroup.contains(*node2), true);
-    QCOMPARE(node2->selected(), true);
+
+    QVERIFY(selectionGroup.contains(*node1));
+    QVERIFY(node1->selected());
+    QVERIFY(selectionGroup.contains(*node2));
+    QVERIFY(node2->selected());
 
     selectionGroup.clear();
-    
-    QCOMPARE(selectionGroup.contains(*node1), false);
-    QCOMPARE(node1->selected(), false);
-    QCOMPARE(selectionGroup.contains(*node2), false);
-    QCOMPARE(node2->selected(), false);
+
+    QVERIFY(!selectionGroup.contains(*node1));
+    QVERIFY(!node1->selected());
+    QVERIFY(!selectionGroup.contains(*node2));
+    QVERIFY(!node2->selected());
     QCOMPARE(selectionGroup.size(), size_t(0));
 }
 
@@ -182,15 +182,15 @@ void SelectionGroupTest::testAddNodes_Implicit()
 
     NodeSelectionGroup selectionGroup;
     selectionGroup.add(*node, true);
-    
-    QCOMPARE(selectionGroup.contains(*node), true);
-    QCOMPARE(node->selected(), true);
+
+    QVERIFY(selectionGroup.contains(*node));
+    QVERIFY(node->selected());
     QCOMPARE(selectionGroup.size(), size_t(1));
 
     selectionGroup.clear(true);
-    
-    QCOMPARE(selectionGroup.contains(*node), false);
-    QCOMPARE(node->selected(), false);
+
+    QVERIFY(!selectionGroup.contains(*node));
+    QVERIFY(!node->selected());
     QCOMPARE(selectionGroup.size(), size_t(0));
 }
 
@@ -202,27 +202,27 @@ void SelectionGroupTest::testAddNodes_ImplicitAndExplicit()
     NodeSelectionGroup selectionGroup;
     selectionGroup.add(*node1, true);
     selectionGroup.add(*node2, false);
-    
-    QCOMPARE(selectionGroup.contains(*node1), true);
-    QCOMPARE(node1->selected(), true);
-    QCOMPARE(selectionGroup.contains(*node2), true);
-    QCOMPARE(node2->selected(), true);
+
+    QVERIFY(selectionGroup.contains(*node1));
+    QVERIFY(node1->selected());
+    QVERIFY(selectionGroup.contains(*node2));
+    QVERIFY(node2->selected());
     QCOMPARE(selectionGroup.size(), size_t(2));
 
     selectionGroup.clear(true);
-    
-    QCOMPARE(selectionGroup.contains(*node1), false);
-    QCOMPARE(node1->selected(), false);
-    QCOMPARE(selectionGroup.contains(*node2), true);
-    QCOMPARE(node2->selected(), true);
+
+    QVERIFY(!selectionGroup.contains(*node1));
+    QVERIFY(!node1->selected());
+    QVERIFY(selectionGroup.contains(*node2));
+    QVERIFY(node2->selected());
     QCOMPARE(selectionGroup.size(), size_t(1));
 
     selectionGroup.clear();
-    
-    QCOMPARE(selectionGroup.contains(*node1), false);
-    QCOMPARE(node1->selected(), false);
-    QCOMPARE(selectionGroup.contains(*node2), false);
-    QCOMPARE(node2->selected(), false);
+
+    QVERIFY(!selectionGroup.contains(*node1));
+    QVERIFY(!node1->selected());
+    QVERIFY(!selectionGroup.contains(*node2));
+    QVERIFY(!node2->selected());
     QCOMPARE(selectionGroup.size(), size_t(0));
 }
 
@@ -268,14 +268,14 @@ void SelectionGroupTest::testToggleNode()
 
     NodeSelectionGroup selectionGroup;
     selectionGroup.toggle(*node);
-    
-    QCOMPARE(selectionGroup.contains(*node), true);
-    QCOMPARE(node->selected(), true);
-    
+
+    QVERIFY(selectionGroup.contains(*node));
+    QVERIFY(node->selected());
+
     selectionGroup.toggle(*node);
-    
-    QCOMPARE(selectionGroup.contains(*node), false);
-    QCOMPARE(node->selected(), false);
+
+    QVERIFY(!selectionGroup.contains(*node));
+    QVERIFY(!node->selected());
 }
 
 QTEST_GUILESS_MAIN(SelectionGroupTest)

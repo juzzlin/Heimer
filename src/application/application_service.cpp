@@ -24,6 +24,7 @@
 #include "../infra/export_params.hpp"
 #include "../infra/io/file_exception.hpp"
 #include "../infra/settings.hpp"
+#include "../view/edge_action.hpp"
 #include "../view/editor_scene.hpp"
 #include "../view/editor_view.hpp"
 #include "../view/magic_zoom.hpp"
@@ -153,6 +154,11 @@ void ApplicationService::addItem(QGraphicsItem & item, bool adjustSceneRect)
     if (adjustSceneRect) {
         this->adjustSceneRect();
     }
+}
+
+void ApplicationService::addEdgeToSelectionGroup(EdgeR edge, bool isImplicit)
+{
+    m_editorService->addEdgeToSelectionGroup(edge, isImplicit);
 }
 
 void ApplicationService::addNodeToSelectionGroup(NodeR node, bool isImplicit)
@@ -562,15 +568,29 @@ void ApplicationService::paste()
     }
 }
 
+void ApplicationService::performEdgeAction(const EdgeAction & action)
+{
+    juzzlin::L().debug() << "Handling EdgeAction: " << static_cast<int>(action.type());
+
+    switch (action.type()) {
+    case EdgeAction::Type::None:
+        break;
+    case EdgeAction::Type::Delete:
+        saveUndoPoint();
+        m_editorService->deleteSelectedEdges();
+        break;
+    }
+}
+
 void ApplicationService::performNodeAction(const NodeAction & action)
 {
-    juzzlin::L().debug() << "Handling NodeAction: " << static_cast<int>(action.type);
+    juzzlin::L().debug() << "Handling NodeAction: " << static_cast<int>(action.type());
 
-    switch (action.type) {
+    switch (action.type()) {
     case NodeAction::Type::None:
         break;
     case NodeAction::Type::AttachImage: {
-        const Image image { action.image, action.fileName.toStdString() };
+        const Image image { action.image(), action.fileName().toStdString() };
         const auto id = m_editorService->mindMapData()->imageManager().addImage(image);
         if (m_editorService->nodeSelectionGroupSize()) {
             saveUndoPoint();
@@ -617,14 +637,14 @@ void ApplicationService::performNodeAction(const NodeAction & action)
         break;
     case NodeAction::Type::SetNodeColor:
         saveUndoPoint();
-        m_editorService->setColorForSelectedNodes(action.color);
+        m_editorService->setColorForSelectedNodes(action.color());
         if (m_editorService->nodeSelectionGroupSize() == 1) {
             m_editorService->clearNodeSelectionGroup();
         }
         break;
     case NodeAction::Type::SetTextColor:
         saveUndoPoint();
-        m_editorService->setTextColorForSelectedNodes(action.color);
+        m_editorService->setTextColorForSelectedNodes(action.color());
         if (m_editorService->nodeSelectionGroupSize() == 1) {
             m_editorService->clearNodeSelectionGroup();
         }
@@ -716,7 +736,7 @@ QSize ApplicationService::sceneRectSize() const
     return m_editorScene->sceneRect().size().toSize();
 }
 
-EdgeP ApplicationService::selectedEdge() const
+std::optional<EdgeP> ApplicationService::selectedEdge() const
 {
     return m_editorService->selectedEdge();
 }
@@ -726,7 +746,12 @@ std::optional<NodeP> ApplicationService::selectedNode() const
     return m_editorService->selectedNode();
 }
 
-size_t ApplicationService::selectionGroupSize() const
+size_t ApplicationService::edgeSelectionGroupSize() const
+{
+    return m_editorService->edgeSelectionGroupSize();
+}
+
+size_t ApplicationService::nodeSelectionGroupSize() const
 {
     return m_editorService->nodeSelectionGroupSize();
 }
@@ -824,21 +849,6 @@ size_t ApplicationService::setNodeRectangleSelection(QRectF rect)
     }
     updateNodeConnectionActions();
     return nodesInRectangle;
-}
-
-void ApplicationService::setSelectedEdge(EdgeP edge)
-{
-    L().debug() << __func__ << "(): " << reinterpret_cast<uint64_t>(edge);
-
-    if (m_editorService->selectedEdge()) {
-        m_editorService->selectedEdge()->setSelected(false);
-    }
-
-    if (edge) {
-        edge->setSelected(true);
-    }
-
-    m_editorService->setSelectedEdge(edge);
 }
 
 void ApplicationService::setSearchText(QString text)
@@ -995,6 +1005,11 @@ void ApplicationService::clearSelectionGroups()
 {
     clearEdgeSelectionGroup();
     clearNodeSelectionGroup();
+}
+
+void ApplicationService::unselectImplicitlySelectedEdges()
+{
+    m_editorService->clearEdgeSelectionGroup(true);
 }
 
 void ApplicationService::unselectImplicitlySelectedNodes()

@@ -17,6 +17,7 @@
 
 #include "../../application/application_service.hpp"
 #include "../../application/service_container.hpp"
+#include "../edge_action.hpp"
 #include "../grid.hpp"
 #include "../mouse_action.hpp"
 #include "../node_action.hpp"
@@ -106,8 +107,9 @@ MainContextMenu::MainContextMenu(QWidget * parent, Grid & grid)
     // is open. As a "solution" we create another shortcut and add it to the parent widget.
     const auto deleteNodeSequence = QKeySequence(QKeySequence::Delete);
     deleteNodeAction->setShortcut(deleteNodeSequence);
-    const auto deleteNodeShortCut = new QShortcut(deleteNodeSequence, parent);
-    connect(deleteNodeShortCut, &QShortcut::activated, this, [] {
+    const auto deleteNodesAndEdgesShortCut = new QShortcut(deleteNodeSequence, parent);
+    connect(deleteNodesAndEdgesShortCut, &QShortcut::activated, this, [] {
+        SC::instance().applicationService()->performEdgeAction({ EdgeAction::Type::Delete });
         SC::instance().applicationService()->performNodeAction({ NodeAction::Type::Delete });
     });
     connect(deleteNodeAction, &QAction::triggered, this, [] {
@@ -165,8 +167,8 @@ void MainContextMenu::setMode(const Mode & mode)
 
     m_colorMenuAction->setText(mode == Mode::Node ? tr("Node &colors") : tr("General &colors"));
 
-    m_copyNodeAction->setEnabled(SC::instance().applicationService()->selectionGroupSize());
-    m_copyNodeAction->setText(SC::instance().applicationService()->selectionGroupSize() > 1 ? tr("Copy nodes") : tr("Copy node"));
+    m_copyNodeAction->setEnabled(SC::instance().applicationService()->nodeSelectionGroupSize());
+    m_copyNodeAction->setText(SC::instance().applicationService()->nodeSelectionGroupSize() > 1 ? tr("Copy nodes") : tr("Copy node"));
 
     m_pasteNodeAction->setEnabled(SC::instance().applicationService()->copyStackSize());
     m_pasteNodeAction->setText(SC::instance().applicationService()->copyStackSize() > 1 ? tr("Paste nodes") : tr("Paste node"));

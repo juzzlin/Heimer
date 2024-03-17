@@ -70,6 +70,7 @@ set(HEIMER_LIB_SRC
     view/menus/tool_bar.cpp
     view/menus/widget_factory.cpp
     view/mouse_action.cpp
+    view/node_selection_group.cpp
     view/scene_items/edge.cpp
     view/scene_items/edge_dot.cpp
     view/scene_items/edge_text_edit.cpp
@@ -78,7 +79,6 @@ set(HEIMER_LIB_SRC
     view/scene_items/node_handle.cpp
     view/scene_items/scene_item_base.cpp
     view/scene_items/text_edit.cpp
-    view/node_selection_group.cpp
     view/widgets/font_button.cpp
     view/widgets/status_label.cpp
 )
@@ -135,6 +135,7 @@ set(HEIMER_LIB_HDR
     view/dialogs/spinner_dialog.hpp
     view/dialogs/whats_new_dialog.hpp
     view/dialogs/widget_factory.hpp
+    view/edge_action.hpp
     view/edge_selection_group.hpp
     view/editor_scene.hpp
     view/editor_view.hpp

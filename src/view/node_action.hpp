@@ -19,8 +19,9 @@
 #include <QColor>
 #include <QImage>
 
-struct NodeAction
+class NodeAction
 {
+public:
     enum class Type
     {
         None,
@@ -38,30 +39,59 @@ struct NodeAction
     };
 
     NodeAction(Type type)
-      : type(type)
+      : m_type(type)
     {
     }
 
     NodeAction(Type type, QColor color)
-      : type(type)
-      , color(color)
+      : m_type(type)
+      , m_color(color)
     {
     }
 
     NodeAction(Type type, QImage image, QString fileName)
-      : type(type)
-      , image(image)
-      , fileName(fileName)
+      : m_type(type)
+      , m_image(image)
+      , m_fileName(fileName)
     {
     }
 
-    Type type = Type::None;
+    Type type() const;
 
-    QColor color = Qt::white;
+    QColor color() const;
 
-    QImage image;
+    QImage image() const;
 
-    QString fileName;
+    QString fileName() const;
+
+private:
+    Type m_type = Type::None;
+
+    QColor m_color = Qt::white;
+
+    QImage m_image;
+
+    QString m_fileName;
 };
+
+inline NodeAction::Type NodeAction::type() const
+{
+    return m_type;
+}
+
+inline QColor NodeAction::color() const
+{
+    return m_color;
+}
+
+inline QImage NodeAction::image() const
+{
+    return m_image;
+}
+
+inline QString NodeAction::fileName() const
+{
+    return m_fileName;
+}
 
 #endif // NODE_ACTION_HPP

@@ -142,7 +142,7 @@ void EditorView::handlePrimaryButtonClickOnNode(NodeR node)
         SC::instance().applicationService()->toggleNodeInSelectionGroup(node);
     } else {
         // Clear selection group if the node is not in it
-        if (SC::instance().applicationService()->selectionGroupSize() && !SC::instance().applicationService()->isInSelectionGroup(node)) {
+        if (SC::instance().applicationService()->nodeSelectionGroupSize() && !SC::instance().applicationService()->isInSelectionGroup(node)) {
             SC::instance().applicationService()->clearNodeSelectionGroup();
         }
 
@@ -177,9 +177,15 @@ void EditorView::handlePrimaryButtonClickOnNodeHandle(SceneItems::NodeHandle & n
 
 void EditorView::handleSecondaryButtonClickOnEdge(EdgeR edge)
 {
-    SC::instance().applicationService()->setSelectedEdge(&edge);
+    if (!edge.selected()) {
+        SC::instance().applicationService()->clearEdgeSelectionGroup();
+    }
+
+    SC::instance().applicationService()->addEdgeToSelectionGroup(edge, true);
 
     openEdgeContextMenu();
+
+    SC::instance().applicationService()->unselectImplicitlySelectedEdges();
 }
 
 void EditorView::handleSecondaryButtonClickOnNode(NodeR node)
@@ -199,7 +205,6 @@ void EditorView::initiateBackgroundDrag()
 {
     juzzlin::L().debug() << "Initiating background drag";
 
-    SC::instance().applicationService()->setSelectedEdge(nullptr);
     SC::instance().applicationService()->mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
 
     setDragMode(ScrollHandDrag);
@@ -263,7 +268,7 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
         break;
     case MouseAction::Action::MoveNode:
         if (const auto node = SC::instance().applicationService()->mouseAction().sourceNode()) {
-            if (SC::instance().applicationService()->selectionGroupSize()) {
+            if (SC::instance().applicationService()->nodeSelectionGroupSize()) {
                 SC::instance().applicationService()->moveSelectionGroup(*node, m_grid.snapToGrid(m_mappedPos - SC::instance().applicationService()->mouseAction().sourcePosOnNode()));
             } else {
                 node->setLocation(m_grid.snapToGrid(m_mappedPos - SC::instance().applicationService()->mouseAction().sourcePosOnNode()));

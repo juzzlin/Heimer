@@ -108,8 +108,6 @@ void EditorService::loadMindMapData(QString fileName)
     requestAutosave(AutosaveContext::OpenMindMap, false);
     clearSelectionGroups();
 
-    m_selectedEdge = nullptr;
-
     if (!TestMode::enabled()) {
         setMindMapData(m_alzFileIO->fromFile(fileName));
     } else {
@@ -137,7 +135,6 @@ void EditorService::undo()
 {
     if (m_undoStack->isUndoable()) {
         clearSelectionGroups();
-        m_selectedEdge = nullptr;
         m_dragAndDropNode = nullptr;
         saveRedoPoint();
         m_mindMapData = m_undoStack->undo();
@@ -167,7 +164,6 @@ void EditorService::redo()
 {
     if (m_undoStack->isRedoable()) {
         clearSelectionGroups();
-        m_selectedEdge = nullptr;
         m_dragAndDropNode = nullptr;
         saveUndoPoint(true);
         m_mindMapData = m_undoStack->redo();
@@ -363,16 +359,23 @@ void EditorService::deleteNode(NodeR node)
     }
 }
 
+void EditorService::deleteSelectedEdges()
+{
+    assert(m_mindMapData);
+
+    if (auto && selectedEdges = m_edgeSelectionGroup->edges(); !selectedEdges.empty()) {
+        m_edgeSelectionGroup->clear();
+        for (auto && edge : selectedEdges) {
+            deleteEdge(*edge);
+        }
+    }
+}
+
 void EditorService::deleteSelectedNodes()
 {
     assert(m_mindMapData);
 
-    const auto selectedNodes = m_nodeSelectionGroup->nodes();
-    if (selectedNodes.empty()) {
-        if (SceneItems::Node::lastHoveredNode()) {
-            deleteNode(*SceneItems::Node::lastHoveredNode());
-        }
-    } else {
+    if (auto && selectedNodes = m_nodeSelectionGroup->nodes(); !selectedNodes.empty()) {
         m_nodeSelectionGroup->clear();
         for (auto && node : selectedNodes) {
             deleteNode(*node);
@@ -560,14 +563,9 @@ bool EditorService::nodeHasImageAttached() const
     return false;
 }
 
-void EditorService::setSelectedEdge(EdgeP edge)
+std::optional<EdgeP> EditorService::selectedEdge() const
 {
-    m_selectedEdge = edge;
-}
-
-EdgeP EditorService::selectedEdge() const
-{
-    return m_selectedEdge;
+    return m_edgeSelectionGroup->selectedEdge();
 }
 
 std::vector<EdgeP> EditorService::selectedEdges() const

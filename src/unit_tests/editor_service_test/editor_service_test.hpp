@@ -35,11 +35,15 @@ private slots:
 
     void testGroupDisconnection();
 
-    void testGroupDelete();
+    void testGroupDeletionOfEdges_shouldDeleteSelectedEdges();
+
+    void testGroupDeletionOfNodes_shouldDeleteSelectedNodes();
 
     void testGroupMove();
 
-    void testGroupSelection();
+    void testGroupSelectionOfEdges();
+
+    void testGroupSelectionOfNodes();
 
     void testInitializationResetsFileName();
 

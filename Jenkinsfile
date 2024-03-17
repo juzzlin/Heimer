@@ -1,7 +1,7 @@
 pipeline {
     agent none
     stages {
-        stage('CMake Debug build and unit tests') {
+        stage('Debug build and unit tests') {
             agent {
                 docker {
                     image 'juzzlin/qt5-18.04:latest'
@@ -11,6 +11,19 @@ pipeline {
             steps {
                 sh "mkdir -p build-debug"
                 sh "cd build-debug && cmake -GNinja -DCMAKE_BUILD_TYPE=Debug .."
+                sh "cd build-debug && cmake --build . && ctest"
+            }
+        }
+        stage('Release build and unit tests') {
+            agent {
+                docker {
+                    image 'juzzlin/qt5-18.04:latest'
+                    args '--privileged -t -v $WORKSPACE:/heimer'
+                }
+            }
+            steps {
+                sh "mkdir -p build-release"
+                sh "cd build-debug && cmake -GNinja -DCMAKE_BUILD_TYPE=Release .."
                 sh "cd build-debug && cmake --build . && ctest"
             }
         }

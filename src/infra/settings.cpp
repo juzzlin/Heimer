@@ -63,11 +63,11 @@ const auto reversedEdgeDirectionKey = "reversedEdgeDirection";
 
 const auto selectNodeGroupByIntersectionKey = "selectNodeGroupByIntersection";
 
-const auto settingsGroupApplication = "Application";
+const auto settingGroupApplication = "Application";
 
-const auto settingsGroupEditing = "Editing";
+const auto settingGroupEditing = "Editing";
 
-const auto settingsGroupMainWindow = "MainWindow";
+const auto settingGroupMainWindow = "MainWindow";
 
 const auto windowFullScreenKey = "fullScreen";
 
@@ -82,7 +82,7 @@ namespace Custom {
 bool loadAutoload()
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupEditing);
+    settings.beginGroup(settingGroupEditing);
     const auto autoload = settings.value(autoloadKey, false).toBool();
     settings.endGroup();
     return autoload;
@@ -91,7 +91,7 @@ bool loadAutoload()
 void saveAutoload(bool autoload)
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupEditing);
+    settings.beginGroup(settingGroupEditing);
     settings.setValue(autoloadKey, autoload);
     settings.endGroup();
 }
@@ -99,7 +99,7 @@ void saveAutoload(bool autoload)
 bool loadAutosave()
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupEditing);
+    settings.beginGroup(settingGroupEditing);
     const auto autosave = settings.value(autosaveKey, false).toBool();
     settings.endGroup();
     return autosave;
@@ -108,7 +108,7 @@ bool loadAutosave()
 void saveAutosave(bool autosave)
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupEditing);
+    settings.beginGroup(settingGroupEditing);
     settings.setValue(autosaveKey, autosave);
     settings.endGroup();
 }
@@ -116,7 +116,7 @@ void saveAutosave(bool autosave)
 Qt::CheckState loadAutoSnapState()
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupMainWindow);
+    settings.beginGroup(settingGroupMainWindow);
     const auto gridState = settings.value(autoSnapStateKey, Qt::Unchecked).toInt();
     settings.endGroup();
     return static_cast<Qt::CheckState>(gridState);
@@ -125,7 +125,7 @@ Qt::CheckState loadAutoSnapState()
 void saveAutoSnapState(int state)
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupMainWindow);
+    settings.beginGroup(settingGroupMainWindow);
     settings.setValue(autoSnapStateKey, state);
     settings.endGroup();
 }
@@ -167,7 +167,7 @@ void saveReversedEdgeDirection(bool reversed)
 int loadGridSize()
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupMainWindow);
+    settings.beginGroup(settingGroupMainWindow);
     const auto gridSize = settings.value(gridSizeKey, 0).toInt();
     settings.endGroup();
     return gridSize;
@@ -184,7 +184,7 @@ void saveGridSize(int value)
         gridSizeTimer->setInterval(Constants::View::TOO_QUICK_ACTION_DELAY_MS);
         gridSizeTimer->connect(gridSizeTimer.get(), &QTimer::timeout, gridSizeTimer.get(), [&]() {
             QSettings settings;
-            settings.beginGroup(settingsGroupMainWindow);
+            settings.beginGroup(settingGroupMainWindow);
             settings.setValue(gridSizeKey, sGridSizeValue);
             settings.endGroup();
         });
@@ -198,14 +198,14 @@ void saveGridSize(int value)
 Qt::CheckState loadGridVisibleState()
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupMainWindow);
+    settings.beginGroup(settingGroupMainWindow);
     return static_cast<Qt::CheckState>(settings.value(gridVisibleStateKey, Qt::Unchecked).toInt());
 }
 
 void saveGridVisibleState(int state)
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupMainWindow);
+    settings.beginGroup(settingGroupMainWindow);
     settings.setValue(gridVisibleStateKey, state);
     settings.endGroup();
 }
@@ -213,7 +213,7 @@ void saveGridVisibleState(int state)
 QString loadRecentPath()
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupApplication);
+    settings.beginGroup(settingGroupApplication);
     const auto path = settings.value(recentPathKey, QStandardPaths::writableLocation(QStandardPaths::HomeLocation)).toString();
     settings.endGroup();
     return path;
@@ -222,7 +222,7 @@ QString loadRecentPath()
 void saveRecentPath(QString path)
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupApplication);
+    settings.beginGroup(settingGroupApplication);
     settings.setValue(recentPathKey, path);
     settings.endGroup();
 }
@@ -254,7 +254,7 @@ void saveRecentFiles(QStringList fileList)
 QString loadRecentImagePath()
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupApplication);
+    settings.beginGroup(settingGroupApplication);
     const QString path = settings.value(recentImagePathKey, QStandardPaths::writableLocation(QStandardPaths::HomeLocation)).toString();
     settings.endGroup();
     return path;
@@ -263,7 +263,7 @@ QString loadRecentImagePath()
 void saveRecentImagePath(QString path)
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupApplication);
+    settings.beginGroup(settingGroupApplication);
     settings.setValue(recentImagePathKey, path);
     settings.endGroup();
 }
@@ -271,7 +271,7 @@ void saveRecentImagePath(QString path)
 QSize loadWindowSize(QSize defaultSize)
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupMainWindow);
+    settings.beginGroup(settingGroupMainWindow);
     const auto size = settings.value(windowSizeKey, defaultSize).toSize();
     settings.endGroup();
     return size;
@@ -280,7 +280,7 @@ QSize loadWindowSize(QSize defaultSize)
 void saveWindowSize(QSize size)
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupMainWindow);
+    settings.beginGroup(settingGroupMainWindow);
     settings.setValue(windowSizeKey, size);
     settings.endGroup();
 }
@@ -288,7 +288,7 @@ void saveWindowSize(QSize size)
 bool loadFullScreen()
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupMainWindow);
+    settings.beginGroup(settingGroupMainWindow);
     const auto fullScreen = settings.value(windowFullScreenKey, false).toBool();
     settings.endGroup();
     return fullScreen;
@@ -297,7 +297,7 @@ bool loadFullScreen()
 void saveFullScreen(bool fullScreen)
 {
     QSettings settings;
-    settings.beginGroup(settingsGroupMainWindow);
+    settings.beginGroup(settingGroupMainWindow);
     settings.setValue(windowFullScreenKey, fullScreen);
     settings.endGroup();
 }

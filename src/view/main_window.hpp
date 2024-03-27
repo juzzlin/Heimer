@@ -33,6 +33,7 @@ class WhatsNewDialog;
 } // namespace Dialogs
 
 namespace Menus {
+class MainMenu;
 class ToolBar;
 } // namespace Menus
 
@@ -40,7 +41,6 @@ class EditorService;
 class EditorView;
 class Node;
 
-class QAction;
 class QCheckBox;
 class QFont;
 class QLabel;
@@ -141,33 +141,17 @@ signals:
     void zoomToFitTriggered();
 
 private:
-    void addConnectSelectedNodesAction(QMenu & menu);
+    void centerWindow();
 
-    void addDisconnectSelectedNodesAction(QMenu & menu);
-
-    void addRedoAction(QMenu & menu);
-
-    void addUndoAction(QMenu & menu);
-
-    std::pair<QSize, QSize> calculateDefaultWindowSize() const;
-
-    void createColorSubMenu(QMenu & editMenu);
-
-    void createEditMenu();
-
-    void createExportSubMenu(QMenu & fileMenu);
-
-    void createFileMenu();
-
-    void createHelpMenu();
-
-    void createMirrorSubMenu(QMenu & editMenu);
+    void connectMainMenu();
 
     void connectToolBar();
 
-    void createViewMenu();
+    QSize defaultWindowSize() const;
 
-    void populateMenuBar();
+    QSize screenSize() const;
+
+    void resizeWindow();
 
     Dialogs::AboutDialog * m_aboutDlg;
 
@@ -175,23 +159,11 @@ private:
 
     Dialogs::SpinnerDialog * m_spinnerDlg;
 
+    Menus::MainMenu * m_mainMenu;
+
     Menus::ToolBar * m_toolBar;
 
     Dialogs::WhatsNewDialog * m_whatsNewDlg;
-
-    QAction * m_connectSelectedNodesAction = nullptr;
-
-    QAction * m_disconnectSelectedNodesAction = nullptr;
-
-    QAction * m_fullScreenAction = nullptr;
-
-    QAction * m_saveAction = nullptr;
-
-    QAction * m_saveAsAction = nullptr;
-
-    QAction * m_undoAction = nullptr;
-
-    QAction * m_redoAction = nullptr;
 
     QString m_argMindMapFile;
 

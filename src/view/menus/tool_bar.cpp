@@ -33,9 +33,8 @@
 
 namespace Menus {
 
-ToolBar::ToolBar(QWidget * parent)
-  : QToolBar(parent)
-  , m_autoSnapCheckBox(new QCheckBox(tr("Auto snap"), this))
+ToolBar::ToolBar()
+  : m_autoSnapCheckBox(new QCheckBox(tr("Auto snap"), this))
   , m_copyOnDragCheckBox(new QCheckBox(tr("Copy on drag"), this))
   , m_cornerRadiusSpinBox(new QSpinBox(this))
   , m_arrowSizeSpinBox(new QDoubleSpinBox(this))

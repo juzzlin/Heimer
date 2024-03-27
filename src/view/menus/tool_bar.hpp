@@ -39,7 +39,7 @@ class ToolBar : public QToolBar
     Q_OBJECT
 
 public:
-    ToolBar(QWidget * parent = nullptr);
+    ToolBar();
 
     bool autoSnapEnabled() const;
 

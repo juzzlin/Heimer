@@ -66,6 +66,7 @@ set(HEIMER_LIB_SRC
     view/main_window.cpp
     view/menus/edge_context_menu.cpp
     view/menus/main_context_menu.cpp
+    view/menus/main_menu.cpp
     view/menus/recent_files_menu.cpp
     view/menus/tool_bar.cpp
     view/menus/widget_factory.cpp
@@ -145,6 +146,7 @@ set(HEIMER_LIB_HDR
     view/main_window.hpp
     view/menus/edge_context_menu.hpp
     view/menus/main_context_menu.hpp
+    view/menus/main_menu.hpp
     view/menus/recent_files_menu.hpp
     view/menus/tool_bar.hpp
     view/menus/widget_factory.hpp

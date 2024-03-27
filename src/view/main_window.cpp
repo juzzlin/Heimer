@@ -28,6 +28,7 @@
 #include "dialogs/spinner_dialog.hpp"
 #include "dialogs/whats_new_dialog.hpp"
 
+#include "menus/main_menu.hpp"
 #include "menus/recent_files_menu.hpp"
 #include "menus/tool_bar.hpp"
 
@@ -53,17 +54,18 @@ MainWindow::MainWindow()
   : m_aboutDlg(new Dialogs::AboutDialog(this))
   , m_settingsDlg(new Dialogs::SettingsDialog(this))
   , m_spinnerDlg(new Dialogs::SpinnerDialog(this))
+  , m_mainMenu(new Menus::MainMenu)
   , m_toolBar(new Menus::ToolBar)
   , m_whatsNewDlg(new Dialogs::WhatsNewDialog(this))
   , m_connectSelectedNodesAction(new QAction(tr("Connect selected nodes"), this))
   , m_disconnectSelectedNodesAction(new QAction(tr("Disconnect selected nodes"), this))
-  , m_saveAction(new QAction(tr("&Save"), this))
-  , m_saveAsAction(new QAction(tr("&Save as") + Constants::Misc::THREE_DOTS, this))
   , m_undoAction(new QAction(tr("Undo"), this))
   , m_redoAction(new QAction(tr("Redo"), this))
   , m_statusText(new QLabel(this))
 {
     addToolBar(Qt::BottomToolBarArea, m_toolBar);
+
+    setMenuBar(m_mainMenu);
 
     connectToolBar();
 
@@ -244,106 +246,6 @@ void MainWindow::createEditMenu()
     editMenu->addAction(optimizeLayoutAction);
 }
 
-void MainWindow::createExportSubMenu(QMenu & fileMenu)
-{
-    const auto exportMenu = new QMenu;
-    const auto exportMenuAction = fileMenu.addMenu(exportMenu);
-    exportMenuAction->setText(tr("&Export"));
-
-    // Add "export to PNG image"-action
-    const auto exportToPngAction = new QAction(tr("&PNG"), this);
-    exportMenu->addAction(exportToPngAction);
-    connect(exportToPngAction, &QAction::triggered, this, [=] {
-        emit actionTriggered(StateMachine::Action::PngExportSelected);
-    });
-
-    exportMenu->addSeparator();
-
-    // Add "export to SVG file"-action
-    const auto exportToSvgAction = new QAction(tr("&SVG"), this);
-    exportMenu->addAction(exportToSvgAction);
-    connect(exportToSvgAction, &QAction::triggered, this, [=] {
-        emit actionTriggered(StateMachine::Action::SvgExportSelected);
-    });
-
-    connect(&fileMenu, &QMenu::aboutToShow, this, [=] {
-        exportToPngAction->setEnabled(SC::instance().applicationService()->hasNodes());
-        exportToSvgAction->setEnabled(SC::instance().applicationService()->hasNodes());
-    });
-}
-
-void MainWindow::createFileMenu()
-{
-    const auto fileMenu = menuBar()->addMenu(tr("&File"));
-
-    // Add "new"-action
-    const auto newAct = new QAction(tr("&New") + Constants::Misc::THREE_DOTS, this);
-    newAct->setShortcut(QKeySequence(QKeySequence::New));
-    fileMenu->addAction(newAct);
-    connect(newAct, &QAction::triggered, this, [=] {
-        emit actionTriggered(StateMachine::Action::NewSelected);
-    });
-
-    // Add "open"-action
-    const auto openAct = new QAction(tr("&Open") + Constants::Misc::THREE_DOTS, this);
-    openAct->setShortcut(QKeySequence(QKeySequence::Open));
-    fileMenu->addAction(openAct);
-    connect(openAct, &QAction::triggered, this, [=] {
-        emit actionTriggered(StateMachine::Action::OpenSelected);
-    });
-
-    // Add "Recent Files"-menu
-    const auto recentFilesMenu = new Menus::RecentFilesMenu;
-    const auto recentFilesMenuAction = fileMenu->addMenu(recentFilesMenu);
-    recentFilesMenuAction->setText(tr("Recent &Files"));
-    connect(recentFilesMenu, &Menus::RecentFilesMenu::fileSelected, this, [=] {
-        emit actionTriggered(StateMachine::Action::RecentFileSelected);
-    });
-
-    fileMenu->addSeparator();
-
-    // Add "save"-action
-    m_saveAction->setShortcut(QKeySequence(QKeySequence::Save));
-    m_saveAction->setEnabled(false);
-    fileMenu->addAction(m_saveAction);
-    connect(m_saveAction, &QAction::triggered, this, [=] {
-        emit actionTriggered(StateMachine::Action::SaveSelected);
-    });
-
-    // Add "save as"-action
-    m_saveAsAction->setShortcut(QKeySequence(QKeySequence::SaveAs));
-    m_saveAsAction->setEnabled(false);
-    fileMenu->addAction(m_saveAsAction);
-    connect(m_saveAsAction, &QAction::triggered, this, [=] {
-        emit actionTriggered(StateMachine::Action::SaveAsSelected);
-    });
-
-    fileMenu->addSeparator();
-
-    createExportSubMenu(*fileMenu);
-
-    fileMenu->addSeparator();
-
-    // Add "settings"-action
-    const auto settingsAct = new QAction(tr("Settings") + Constants::Misc::THREE_DOTS, this);
-    connect(settingsAct, &QAction::triggered, m_settingsDlg, &Dialogs::SettingsDialog::exec);
-    fileMenu->addAction(settingsAct);
-
-    fileMenu->addSeparator();
-
-    // Add "quit"-action
-    const auto quitAct = new QAction(tr("&Quit"), this);
-    quitAct->setShortcut(QKeySequence(QKeySequence::Quit));
-    fileMenu->addAction(quitAct);
-    connect(quitAct, &QAction::triggered, this, [=] {
-        emit actionTriggered(StateMachine::Action::QuitSelected);
-    });
-
-    connect(fileMenu, &QMenu::aboutToShow, this, [=] {
-        recentFilesMenuAction->setEnabled(SC::instance().recentFilesManager()->hasRecentFiles());
-    });
-}
-
 void MainWindow::createHelpMenu()
 {
     const auto helpMenu = menuBar()->addMenu(tr("&Help"));
@@ -476,8 +378,6 @@ void MainWindow::closeEvent(QCloseEvent * event)
 
 void MainWindow::populateMenuBar()
 {
-    createFileMenu();
-
     createEditMenu();
 
     createViewMenu();
@@ -554,7 +454,7 @@ void MainWindow::enableSave(bool enable)
 {
     setTitle();
 
-    m_saveAction->setEnabled(enable);
+    m_mainMenu->setSaveActionEnabled(enable);
 }
 
 void MainWindow::requestCurrentSearchText()
@@ -594,14 +494,14 @@ void MainWindow::initializeNewMindMap()
 
 void MainWindow::setSaveActionStatesOnNewMindMap()
 {
-    m_saveAction->setEnabled(true);
-    m_saveAsAction->setEnabled(true);
+    m_mainMenu->setSaveActionEnabled(true);
+    m_mainMenu->setSaveAsActionEnabled(true);
 }
 
 void MainWindow::setSaveActionStatesOnOpenedMindMap()
 {
-    m_saveAction->setEnabled(false);
-    m_saveAsAction->setEnabled(true);
+    m_mainMenu->setSaveActionEnabled(false);
+    m_mainMenu->setSaveAsActionEnabled(true);
 }
 
 MainWindow::~MainWindow() = default;

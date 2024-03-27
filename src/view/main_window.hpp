@@ -33,6 +33,7 @@ class WhatsNewDialog;
 } // namespace Dialogs
 
 namespace Menus {
+class MainMenu;
 class ToolBar;
 } // namespace Menus
 
@@ -155,10 +156,6 @@ private:
 
     void createEditMenu();
 
-    void createExportSubMenu(QMenu & fileMenu);
-
-    void createFileMenu();
-
     void createHelpMenu();
 
     void createMirrorSubMenu(QMenu & editMenu);
@@ -175,6 +172,8 @@ private:
 
     Dialogs::SpinnerDialog * m_spinnerDlg;
 
+    Menus::MainMenu * m_mainMenu;
+
     Menus::ToolBar * m_toolBar;
 
     Dialogs::WhatsNewDialog * m_whatsNewDlg;
@@ -184,10 +183,6 @@ private:
     QAction * m_disconnectSelectedNodesAction = nullptr;
 
     QAction * m_fullScreenAction = nullptr;
-
-    QAction * m_saveAction = nullptr;
-
-    QAction * m_saveAsAction = nullptr;
 
     QAction * m_undoAction = nullptr;
 

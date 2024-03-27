@@ -5,6 +5,19 @@ Release date:
 
 New features:
 
+Bug fixes:
+
+Other:
+
+4.4.0
+=====
+
+Release date:
+
+Wed, 27 Mar 2024 22:29:16 +0200
+
+New features:
+
 * Search text also in edge labels
 
 * Implement group deletion of edges
@@ -17,7 +30,7 @@ Bug fixes:
 
 * Fix GitHub Issue #255: Run error in ArchLinux
 
-Other:
+* Fix search field not always taking focus on startup
 
 4.3.0
 =====

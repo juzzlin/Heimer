@@ -63,9 +63,9 @@ ApplicationService::ApplicationService(MainWindowS mainWindow)
     connect(m_mainWindow.get(), &MainWindow::searchTextChanged, this, &ApplicationService::setSearchText);
     connect(m_mainWindow.get(), &MainWindow::shadowEffectChanged, this, &ApplicationService::setShadowEffect);
     connect(m_mainWindow.get(), &MainWindow::textSizeChanged, this, &ApplicationService::setTextSize);
-    connect(m_mainWindow.get(), &MainWindow::zoomInTriggered, this, &ApplicationService::zoomIn);
-    connect(m_mainWindow.get(), &MainWindow::zoomOutTriggered, this, &ApplicationService::zoomOut);
-    connect(m_mainWindow.get(), &MainWindow::zoomToFitTriggered, this, &ApplicationService::zoomToFit);
+    connect(m_mainWindow.get(), &MainWindow::zoomInRequested, this, &ApplicationService::zoomIn);
+    connect(m_mainWindow.get(), &MainWindow::zoomOutRequested, this, &ApplicationService::zoomOut);
+    connect(m_mainWindow.get(), &MainWindow::zoomToFitRequested, this, &ApplicationService::zoomToFit);
 
     connect(this, &ApplicationService::currentSearchTextRequested, m_mainWindow.get(), &MainWindow::requestCurrentSearchText);
 

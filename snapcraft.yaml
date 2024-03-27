@@ -6,12 +6,12 @@ description: |
   Emphasis on easy diagram creation, simplicity, and speed.
 grade: stable
 confinement: strict
-base: core18
+base: core20
 icon: data/icons/heimer.png
 
 apps:
   heimer:
-    command: desktop-launch heimer
+    command: bin/desktop-launch heimer
     environment: 
       DISABLE_WAYLAND: 1 # UI completely broken on Ubuntu 22.04 without this
     desktop: usr/share/applications/heimer.desktop
@@ -53,7 +53,7 @@ parts:
   gnu-heimer:
     source: .
     plugin: cmake
-    configflags:
+    cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
       - -DCMAKE_INSTALL_PREFIX=/usr
       - -DBUILD_TESTS=OFF

@@ -192,6 +192,10 @@ private:
     const int m_handleRadiusMedium = 24;
 
     const int m_handleRadiusSmall = 20;
+
+    const QColor m_textEditBackgroundColorDark { 0x00, 0x00, 0x00, 0x10 };
+
+    const QColor m_textEditBackgroundColorLight { 0xff, 0xff, 0xff, 0x10 };
 };
 
 } // namespace SceneItems

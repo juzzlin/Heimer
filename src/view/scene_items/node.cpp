@@ -359,7 +359,7 @@ void Node::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
     // Patch for TextEdit
 
     painter->fillRect(expandedTextEditRect(),
-                      Utils::isColorBright(m_nodeModel->color) ? Constants::Node::TEXT_EDIT_BACKGROUND_COLOR_DARK : Constants::Node::TEXT_EDIT_BACKGROUND_COLOR_LIGHT);
+                      Utils::isColorBright(m_nodeModel->color) ? m_textEditBackgroundColorDark : m_textEditBackgroundColorLight);
     painter->restore();
 }
 

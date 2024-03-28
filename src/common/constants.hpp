@@ -154,10 +154,6 @@ static const int MIN_HEIGHT = 75;
 
 static const int MIN_WIDTH = 200;
 
-static const QColor TEXT_EDIT_BACKGROUND_COLOR_DARK { 0x00, 0x00, 0x00, 0x10 };
-
-static const QColor TEXT_EDIT_BACKGROUND_COLOR_LIGHT { 0xff, 0xff, 0xff, 0x10 };
-
 } // namespace Node
 
 namespace RecentFiles {

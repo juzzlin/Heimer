@@ -114,6 +114,10 @@ private:
     QCheckBox * m_showGridCheckBox = nullptr;
 
     QSpinBox * m_textSizeSpinBox = nullptr;
+
+    const int m_minGridSize = 0;
+
+    const int m_maxGridSize = 500;
 };
 
 } // namespace Menus

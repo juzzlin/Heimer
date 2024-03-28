@@ -82,14 +82,6 @@ static const int TEXT_EDIT_VER_PADDING = 1;
 
 } // namespace Edge
 
-namespace Grid {
-
-static const int MIN_SIZE = 0;
-
-static const int MAX_SIZE = 500;
-
-} // namespace Grid
-
 namespace MindMap {
 
 namespace Defaults {

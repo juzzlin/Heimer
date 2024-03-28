@@ -170,8 +170,8 @@ QWidgetAction * ToolBar::createFontAction()
 
 QWidgetAction * ToolBar::createGridSizeAction()
 {
-    m_gridSizeSpinBox->setMinimum(Constants::Grid::MIN_SIZE);
-    m_gridSizeSpinBox->setMaximum(Constants::Grid::MAX_SIZE);
+    m_gridSizeSpinBox->setMinimum(m_minGridSize);
+    m_gridSizeSpinBox->setMaximum(m_maxGridSize);
     m_gridSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))

@@ -242,8 +242,6 @@ static const QColor SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR = { 255, 0, 0 };
 
 } // namespace Defaults
 
-static const auto EFFECTS_SETTINGS_GROUP = "Effects";
-
 static const int SHADOW_EFFECT_MAX_OFFSET = 10;
 
 static const int SHADOW_EFFECT_MIN_OFFSET = 0;
@@ -251,18 +249,6 @@ static const int SHADOW_EFFECT_MIN_OFFSET = 0;
 static const int SHADOW_EFFECT_MAX_BLUR_RADIUS = 100;
 
 static const int SHADOW_EFFECT_MIN_BLUR_RADIUS = 0;
-
-static const auto SHADOW_EFFECT_OFFSET_SETTINGS_KEY = "shadowEffectOffset";
-
-static const auto SHADOW_EFFECT_NORMAL_BLUR_RADIUS_SETTINGS_KEY = "shadowEffectBlurRadius";
-
-static const auto SHADOW_EFFECT_SELECTED_ITEM_BLUR_RADIUS_SETTINGS_KEY = "shadowEffectSelectedItemBlurRadius";
-
-static const auto SHADOW_EFFECT_SHADOW_COLOR_SETTINGS_KEY = "shadowEffectShadowColor";
-
-static const auto SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR_SETTINGS_KEY = "shadowEffectSelectedItemShadowColor";
-
-static const auto OPTIMIZE_SHADOW_EFFECTS_SETTINGS_KEY = "optimizeShadowEffects";
 
 } // namespace Effects
 

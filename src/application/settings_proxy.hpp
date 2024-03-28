@@ -109,6 +109,20 @@ private:
 
     SettingsProxy & operator=(const SettingsProxy & other) = delete;
 
+    const QString m_effectsSettingsGroup = "Effects";
+
+    const QString m_shadowEffectOffsetSettingsKey = "shadowEffectOffset";
+
+    const QString m_shadowEffectNormalBlurRadiusSettingsKey = "shadowEffectBlurRadius";
+
+    const QString m_shadowEffectSelectedItemBlurRadiusSettingsKey = "shadowEffectSelectedItemBlurRadius";
+
+    const QString m_shadowEffectShadowColorSettingsKey = "shadowEffectShadowColor";
+
+    const QString m_shadowEffectSelectedItemShadowColorSettingsKey = "shadowEffectSelectedItemShadowColor";
+
+    const QString m_optimizeShadowEffectsSettingsKey = "optimizeShadowEffects";
+
     bool m_autoload = false;
 
     bool m_autosave = false;

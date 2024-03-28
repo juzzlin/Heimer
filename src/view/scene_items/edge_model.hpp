@@ -35,8 +35,8 @@ struct EdgeModel
     {
         Style(ArrowMode arrowMode)
           : arrowMode(arrowMode)
-          , arrowSize(Constants::Edge::Defaults::ARROW_SIZE)
-          , edgeWidth(Constants::MindMap::Defaults::EDGE_WIDTH)
+          , arrowSize(Constants::Settings::defaultArrowSize())
+          , edgeWidth(Constants::Settings::defaultEdgeWidth())
         {
         }
 

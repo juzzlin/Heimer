@@ -56,15 +56,13 @@ namespace Settings {
 
 QString defaultsSettingGroup();
 
+double defaultArrowSize();
+
+double defaultEdgeWidth();
+
 } // namespace Settings
 
 namespace Edge {
-
-namespace Defaults {
-
-static const double ARROW_SIZE = 20;
-
-} // namespace Defaults
 
 static const double ARROW_SIZE_STEP = 5;
 
@@ -101,8 +99,6 @@ static const QColor GRID_COLOR { Qt::gray };
 static const QColor NODE_COLOR { Qt::white };
 
 static const QColor NODE_TEXT_COLOR { Qt::black };
-
-static const double EDGE_WIDTH = 1.0;
 
 static const int TEXT_SIZE = 14;
 

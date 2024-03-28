@@ -92,6 +92,16 @@ QString defaultsSettingGroup()
     return "Defaults";
 }
 
+double defaultArrowSize()
+{
+    return 20;
+}
+
+double defaultEdgeWidth()
+{
+    return 1.0;
+}
+
 } // namespace Settings
 
 } // namespace Constants

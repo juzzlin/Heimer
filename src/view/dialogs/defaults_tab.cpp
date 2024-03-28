@@ -142,8 +142,8 @@ void DefaultsTab::createEdgeWidgets(QVBoxLayout & mainLayout)
     connect(resetToDefaultsButton.first, &QPushButton::clicked, this, [=] {
         m_edgeArrowStyleRadioMap.at(EdgeModel::ArrowMode::Single)->setChecked(true);
         m_edgeDirectionCheckBox->setChecked(false);
-        m_arrowSizeSpinBox->setValue(Constants::Edge::Defaults::ARROW_SIZE);
-        m_edgeWidthSpinBox->setValue(Constants::MindMap::Defaults::EDGE_WIDTH);
+        m_arrowSizeSpinBox->setValue(Constants::Settings::defaultArrowSize());
+        m_edgeWidthSpinBox->setValue(Constants::Settings::defaultEdgeWidth());
     });
 }
 

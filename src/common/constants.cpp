@@ -15,7 +15,9 @@
 
 #include "constants.hpp"
 
-namespace Constants::Application {
+namespace Constants {
+
+namespace Application {
 
 QString applicationName()
 {
@@ -81,4 +83,15 @@ QString translationsResourceBase()
     return ":/translations/heimer_";
 }
 
-} // namespace Constants::Application
+} // namespace Application
+
+namespace Settings {
+
+QString defaultsSettingGroup()
+{
+    return "Defaults";
+}
+
+} // namespace Settings
+
+} // namespace Constants

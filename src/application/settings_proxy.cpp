@@ -19,26 +19,26 @@
 SettingsProxy::SettingsProxy()
   : m_autoload(Settings::Custom::loadAutoload())
   , m_autosave(Settings::Custom::loadAutosave())
-  , m_backgroundColor(Settings::Generic::getColor(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::BACKGROUND_COLOR_SETTINGS_KEY, Constants::MindMap::Defaults::BACKGROUND_COLOR))
-  , m_edgeColor(Settings::Generic::getColor(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::EDGE_COLOR_SETTINGS_KEY, Constants::MindMap::Defaults::EDGE_COLOR))
-  , m_gridColor(Settings::Generic::getColor(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::GRID_COLOR_SETTINGS_KEY, Constants::MindMap::Defaults::GRID_COLOR))
-  , m_nodeColor(Settings::Generic::getColor(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::NODE_COLOR_SETTINGS_KEY, Constants::MindMap::Defaults::NODE_COLOR))
-  , m_nodeTextColor(Settings::Generic::getColor(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::NODE_TEXT_COLOR_SETTINGS_KEY, Constants::MindMap::Defaults::NODE_TEXT_COLOR))
+  , m_backgroundColor(Settings::Generic::getColor(m_defaultsSettingGroup, m_backgroundColorSettingKey, Constants::MindMap::Defaults::BACKGROUND_COLOR))
+  , m_edgeColor(Settings::Generic::getColor(m_defaultsSettingGroup, m_edgeColorSettingKey, Constants::MindMap::Defaults::EDGE_COLOR))
+  , m_gridColor(Settings::Generic::getColor(m_defaultsSettingGroup, m_gridColorSettingKey, Constants::MindMap::Defaults::GRID_COLOR))
+  , m_nodeColor(Settings::Generic::getColor(m_defaultsSettingGroup, m_nodeColorSettingKey, Constants::MindMap::Defaults::NODE_COLOR))
+  , m_nodeTextColor(Settings::Generic::getColor(m_defaultsSettingGroup, m_nodeTextColorSettingKey, Constants::MindMap::Defaults::NODE_TEXT_COLOR))
   , m_edgeArrowMode(Settings::Custom::loadEdgeArrowMode(SceneItems::EdgeModel::ArrowMode::Single))
-  , m_arrowSize(Settings::Generic::getNumber(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::ARROW_SIZE_SETTINGS_KEY, Constants::Edge::Defaults::ARROW_SIZE))
-  , m_edgeWidth(Settings::Generic::getNumber(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::EDGE_WIDTH_SETTINGS_KEY, Constants::MindMap::Defaults::EDGE_WIDTH))
+  , m_arrowSize(Settings::Generic::getNumber(m_defaultsSettingGroup, m_arrowSizeSettingKey, Constants::Edge::Defaults::ARROW_SIZE))
+  , m_edgeWidth(Settings::Generic::getNumber(m_defaultsSettingGroup, m_edgeWidthSettingKey, Constants::MindMap::Defaults::EDGE_WIDTH))
   , m_invertedControls(Settings::Generic::getBoolean(Constants::View::EDITING_SETTINGS_GROUP, Constants::View::INVERTED_CONTROLS_SETTINGS_KEY, false))
   , m_reversedEdgeDirection(Settings::Custom::loadReversedEdgeDirection(false))
   , m_selectNodeGroupByIntersection(Settings::Custom::loadSelectNodeGroupByIntersection())
-  , m_textSize(Settings::Generic::getNumber(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::TEXT_SIZE_SETTINGS_KEY, Constants::MindMap::Defaults::TEXT_SIZE))
-  , m_font(Settings::Generic::getFont(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::FONT_SETTINGS_KEY, {}))
+  , m_textSize(Settings::Generic::getNumber(m_defaultsSettingGroup, m_textSizeSettingKey, Constants::MindMap::Defaults::TEXT_SIZE))
+  , m_font(Settings::Generic::getFont(m_defaultsSettingGroup, m_fontSettingKey, {}))
   , m_shadowEffectParams(
-      static_cast<int>(Settings::Generic::getNumber(m_effectsSettingsGroup, m_shadowEffectOffsetSettingsKey, Constants::Effects::Defaults::SHADOW_EFFECT_OFFSET)),
-      static_cast<int>(Settings::Generic::getNumber(m_effectsSettingsGroup, m_shadowEffectNormalBlurRadiusSettingsKey, Constants::Effects::Defaults::SHADOW_EFFECT_BLUR_RADIUS)),
-      static_cast<int>(Settings::Generic::getNumber(m_effectsSettingsGroup, m_shadowEffectSelectedItemBlurRadiusSettingsKey, Constants::Effects::Defaults::SELECTED_ITEM_SHADOW_EFFECT_BLUR_RADIUS)),
-      Settings::Generic::getColor(m_effectsSettingsGroup, m_shadowEffectShadowColorSettingsKey, Constants::Effects::Defaults::SHADOW_EFFECT_SHADOW_COLOR),
-      Settings::Generic::getColor(m_effectsSettingsGroup, m_shadowEffectSelectedItemShadowColorSettingsKey, Constants::Effects::Defaults::SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR))
-  , m_optimizeShadowEffects(Settings::Generic::getBoolean(m_effectsSettingsGroup, m_optimizeShadowEffectsSettingsKey, true))
+      static_cast<int>(Settings::Generic::getNumber(m_effectsSettingGroup, m_shadowEffectOffsetSettingKey, Constants::Effects::Defaults::SHADOW_EFFECT_OFFSET)),
+      static_cast<int>(Settings::Generic::getNumber(m_effectsSettingGroup, m_shadowEffectNormalBlurRadiusSettingKey, Constants::Effects::Defaults::SHADOW_EFFECT_BLUR_RADIUS)),
+      static_cast<int>(Settings::Generic::getNumber(m_effectsSettingGroup, m_shadowEffectSelectedItemBlurRadiusSettingKey, Constants::Effects::Defaults::SELECTED_ITEM_SHADOW_EFFECT_BLUR_RADIUS)),
+      Settings::Generic::getColor(m_effectsSettingGroup, m_shadowEffectShadowColorSettingKey, Constants::Effects::Defaults::SHADOW_EFFECT_SHADOW_COLOR),
+      Settings::Generic::getColor(m_effectsSettingGroup, m_shadowEffectSelectedItemShadowColorSettingKey, Constants::Effects::Defaults::SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR))
+  , m_optimizeShadowEffects(Settings::Generic::getBoolean(m_effectsSettingGroup, m_optimizeShadowEffectsSettingKey, true))
 {
 }
 
@@ -77,7 +77,7 @@ void SettingsProxy::setBackgroundColor(const QColor & backgroundColor)
 {
     if (m_backgroundColor != backgroundColor) {
         m_backgroundColor = backgroundColor;
-        Settings::Generic::setColor(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::BACKGROUND_COLOR_SETTINGS_KEY, backgroundColor);
+        Settings::Generic::setColor(m_defaultsSettingGroup, m_backgroundColorSettingKey, backgroundColor);
     }
 }
 
@@ -90,7 +90,7 @@ void SettingsProxy::setEdgeColor(const QColor & edgeColor)
 {
     if (m_edgeColor != edgeColor) {
         m_edgeColor = edgeColor;
-        Settings::Generic::setColor(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::EDGE_COLOR_SETTINGS_KEY, edgeColor);
+        Settings::Generic::setColor(m_defaultsSettingGroup, m_edgeColorSettingKey, edgeColor);
     }
 }
 
@@ -103,7 +103,7 @@ void SettingsProxy::setGridColor(const QColor & gridColor)
 {
     if (m_gridColor != gridColor) {
         m_gridColor = gridColor;
-        Settings::Generic::setColor(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::GRID_COLOR_SETTINGS_KEY, gridColor);
+        Settings::Generic::setColor(m_defaultsSettingGroup, m_gridColorSettingKey, gridColor);
     }
 }
 
@@ -116,7 +116,7 @@ void SettingsProxy::setNodeColor(const QColor & nodeColor)
 {
     if (m_nodeColor != nodeColor) {
         m_nodeColor = nodeColor;
-        Settings::Generic::setColor(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::NODE_COLOR_SETTINGS_KEY, nodeColor);
+        Settings::Generic::setColor(m_defaultsSettingGroup, m_nodeColorSettingKey, nodeColor);
     }
 }
 
@@ -129,7 +129,7 @@ void SettingsProxy::setNodeTextColor(const QColor & nodeTextColor)
 {
     if (m_nodeTextColor != nodeTextColor) {
         m_nodeTextColor = nodeTextColor;
-        Settings::Generic::setColor(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::NODE_TEXT_COLOR_SETTINGS_KEY, nodeTextColor);
+        Settings::Generic::setColor(m_defaultsSettingGroup, m_nodeTextColorSettingKey, nodeTextColor);
     }
 }
 
@@ -155,7 +155,7 @@ void SettingsProxy::setArrowSize(double arrowSize)
 {
     if (!qFuzzyCompare(m_arrowSize, arrowSize)) {
         m_arrowSize = arrowSize;
-        Settings::Generic::setNumber(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::ARROW_SIZE_SETTINGS_KEY, arrowSize);
+        Settings::Generic::setNumber(m_defaultsSettingGroup, m_arrowSizeSettingKey, arrowSize);
     }
 }
 
@@ -168,7 +168,7 @@ void SettingsProxy::setEdgeWidth(double edgeWidth)
 {
     if (!qFuzzyCompare(m_edgeWidth, edgeWidth)) {
         m_edgeWidth = edgeWidth;
-        Settings::Generic::setNumber(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::EDGE_WIDTH_SETTINGS_KEY, edgeWidth);
+        Settings::Generic::setNumber(m_defaultsSettingGroup, m_edgeWidthSettingKey, edgeWidth);
     }
 }
 
@@ -194,7 +194,7 @@ void SettingsProxy::setTextSize(int textSize)
 {
     if (m_textSize != textSize) {
         m_textSize = textSize;
-        Settings::Generic::setNumber(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::TEXT_SIZE_SETTINGS_KEY, textSize);
+        Settings::Generic::setNumber(m_defaultsSettingGroup, m_textSizeSettingKey, textSize);
     }
 }
 
@@ -207,7 +207,7 @@ void SettingsProxy::setFont(const QFont & font)
 {
     if (m_font != font) {
         m_font = font;
-        Settings::Generic::setFont(Constants::MindMap::Defaults::SETTINGS_GROUP, Constants::MindMap::Defaults::FONT_SETTINGS_KEY, font);
+        Settings::Generic::setFont(m_defaultsSettingGroup, m_fontSettingKey, font);
     }
 }
 
@@ -246,11 +246,11 @@ void SettingsProxy::setShadowEffect(const ShadowEffectParams & params)
 {
     if (m_shadowEffectParams != params) {
         m_shadowEffectParams = params;
-        Settings::Generic::setNumber(m_effectsSettingsGroup, m_shadowEffectOffsetSettingsKey, params.offset);
-        Settings::Generic::setNumber(m_effectsSettingsGroup, m_shadowEffectNormalBlurRadiusSettingsKey, params.blurRadius);
-        Settings::Generic::setNumber(m_effectsSettingsGroup, m_shadowEffectSelectedItemBlurRadiusSettingsKey, params.selectedItemBlurRadius);
-        Settings::Generic::setColor(m_effectsSettingsGroup, m_shadowEffectShadowColorSettingsKey, params.shadowColor);
-        Settings::Generic::setColor(m_effectsSettingsGroup, m_shadowEffectSelectedItemShadowColorSettingsKey, params.selectedItemShadowColor);
+        Settings::Generic::setNumber(m_effectsSettingGroup, m_shadowEffectOffsetSettingKey, params.offset);
+        Settings::Generic::setNumber(m_effectsSettingGroup, m_shadowEffectNormalBlurRadiusSettingKey, params.blurRadius);
+        Settings::Generic::setNumber(m_effectsSettingGroup, m_shadowEffectSelectedItemBlurRadiusSettingKey, params.selectedItemBlurRadius);
+        Settings::Generic::setColor(m_effectsSettingGroup, m_shadowEffectShadowColorSettingKey, params.shadowColor);
+        Settings::Generic::setColor(m_effectsSettingGroup, m_shadowEffectSelectedItemShadowColorSettingKey, params.selectedItemShadowColor);
     }
 }
 
@@ -263,7 +263,7 @@ void SettingsProxy::setOptimizeShadowEffects(bool optimizeShadowEffects)
 {
     if (m_optimizeShadowEffects != optimizeShadowEffects) {
         m_optimizeShadowEffects = optimizeShadowEffects;
-        Settings::Generic::setBoolean(m_effectsSettingsGroup, m_optimizeShadowEffectsSettingsKey, optimizeShadowEffects);
+        Settings::Generic::setBoolean(m_effectsSettingGroup, m_optimizeShadowEffectsSettingKey, optimizeShadowEffects);
     }
 }
 

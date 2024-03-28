@@ -52,6 +52,12 @@ QString webSiteUrl();
 
 } // namespace Application
 
+namespace Settings {
+
+QString defaultsSettingGroup();
+
+} // namespace Settings
+
 namespace Edge {
 
 namespace Defaults {
@@ -86,39 +92,19 @@ namespace MindMap {
 
 namespace Defaults {
 
-const auto SETTINGS_GROUP = "Defaults";
-
-static const auto ARROW_SIZE_SETTINGS_KEY = "arrowSize";
-
 static const QColor BACKGROUND_COLOR { 0xba, 0xbd, 0xb6 };
-
-static const auto BACKGROUND_COLOR_SETTINGS_KEY = "backgroundColor";
 
 static const QColor EDGE_COLOR { 0, 0, 0, 200 };
 
-static const auto EDGE_COLOR_SETTINGS_KEY = "edgeColor";
-
-static const auto EDGE_WIDTH_SETTINGS_KEY = "edgeWidth";
-
-static const auto FONT_SETTINGS_KEY = "font";
-
 static const QColor GRID_COLOR { Qt::gray };
-
-static const auto GRID_COLOR_SETTINGS_KEY = "gridColor";
 
 static const QColor NODE_COLOR { Qt::white };
 
-static const auto NODE_COLOR_SETTINGS_KEY = "nodeColor";
-
 static const QColor NODE_TEXT_COLOR { Qt::black };
-
-static const auto NODE_TEXT_COLOR_SETTINGS_KEY = "nodeTextColor";
 
 static const double EDGE_WIDTH = 1.0;
 
 static const int TEXT_SIZE = 14;
-
-static const auto TEXT_SIZE_SETTINGS_KEY = "textSize";
 
 } // namespace Defaults
 

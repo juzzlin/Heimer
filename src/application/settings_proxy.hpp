@@ -109,19 +109,39 @@ private:
 
     SettingsProxy & operator=(const SettingsProxy & other) = delete;
 
-    const QString m_effectsSettingsGroup = "Effects";
+    const QString m_defaultsSettingGroup = Constants::Settings::defaultsSettingGroup();
 
-    const QString m_shadowEffectOffsetSettingsKey = "shadowEffectOffset";
+    const QString m_arrowSizeSettingKey = "arrowSize";
 
-    const QString m_shadowEffectNormalBlurRadiusSettingsKey = "shadowEffectBlurRadius";
+    const QString m_backgroundColorSettingKey = "backgroundColor";
 
-    const QString m_shadowEffectSelectedItemBlurRadiusSettingsKey = "shadowEffectSelectedItemBlurRadius";
+    const QString m_edgeColorSettingKey = "edgeColor";
 
-    const QString m_shadowEffectShadowColorSettingsKey = "shadowEffectShadowColor";
+    const QString m_edgeWidthSettingKey = "edgeWidth";
 
-    const QString m_shadowEffectSelectedItemShadowColorSettingsKey = "shadowEffectSelectedItemShadowColor";
+    const QString m_fontSettingKey = "font";
 
-    const QString m_optimizeShadowEffectsSettingsKey = "optimizeShadowEffects";
+    const QString m_gridColorSettingKey = "gridColor";
+
+    const QString m_nodeColorSettingKey = "nodeColor";
+
+    const QString m_nodeTextColorSettingKey = "nodeTextColor";
+
+    const QString m_textSizeSettingKey = "textSize";
+
+    const QString m_effectsSettingGroup = "Effects";
+
+    const QString m_shadowEffectOffsetSettingKey = "shadowEffectOffset";
+
+    const QString m_shadowEffectNormalBlurRadiusSettingKey = "shadowEffectBlurRadius";
+
+    const QString m_shadowEffectSelectedItemBlurRadiusSettingKey = "shadowEffectSelectedItemBlurRadius";
+
+    const QString m_shadowEffectShadowColorSettingKey = "shadowEffectShadowColor";
+
+    const QString m_shadowEffectSelectedItemShadowColorSettingKey = "shadowEffectSelectedItemShadowColor";
+
+    const QString m_optimizeShadowEffectsSettingKey = "optimizeShadowEffects";
 
     bool m_autoload = false;
 

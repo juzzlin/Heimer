@@ -133,7 +133,7 @@ void saveAutoSnapState(int state)
 SceneItems::EdgeModel::ArrowMode loadEdgeArrowMode(SceneItems::EdgeModel::ArrowMode defaultMode)
 {
     QSettings settings;
-    settings.beginGroup(Constants::MindMap::Defaults::SETTINGS_GROUP);
+    settings.beginGroup(Constants::Settings::defaultsSettingGroup());
     const auto mode = static_cast<SceneItems::EdgeModel::ArrowMode>(settings.value(edgeArrowModeKey, static_cast<int>(defaultMode)).toInt());
     settings.endGroup();
     return mode;
@@ -142,7 +142,7 @@ SceneItems::EdgeModel::ArrowMode loadEdgeArrowMode(SceneItems::EdgeModel::ArrowM
 void saveEdgeArrowMode(SceneItems::EdgeModel::ArrowMode mode)
 {
     QSettings settings;
-    settings.beginGroup(Constants::MindMap::Defaults::SETTINGS_GROUP);
+    settings.beginGroup(Constants::Settings::defaultsSettingGroup());
     settings.setValue(edgeArrowModeKey, static_cast<int>(mode));
     settings.endGroup();
 }
@@ -150,7 +150,7 @@ void saveEdgeArrowMode(SceneItems::EdgeModel::ArrowMode mode)
 bool loadReversedEdgeDirection(bool defaultDirection)
 {
     QSettings settings;
-    settings.beginGroup(Constants::MindMap::Defaults::SETTINGS_GROUP);
+    settings.beginGroup(Constants::Settings::defaultsSettingGroup());
     const auto direction = settings.value(reversedEdgeDirectionKey, defaultDirection).toBool();
     settings.endGroup();
     return direction;
@@ -159,7 +159,7 @@ bool loadReversedEdgeDirection(bool defaultDirection)
 void saveReversedEdgeDirection(bool reversed)
 {
     QSettings settings;
-    settings.beginGroup(Constants::MindMap::Defaults::SETTINGS_GROUP);
+    settings.beginGroup(Constants::Settings::defaultsSettingGroup());
     settings.setValue(reversedEdgeDirectionKey, reversed);
     settings.endGroup();
 }
@@ -305,7 +305,7 @@ void saveFullScreen(bool fullScreen)
 bool loadSelectNodeGroupByIntersection()
 {
     QSettings settings;
-    settings.beginGroup(Constants::MindMap::Defaults::SETTINGS_GROUP);
+    settings.beginGroup(Constants::Settings::defaultsSettingGroup());
     const auto fullScreen = settings.value(selectNodeGroupByIntersectionKey, false).toBool();
     settings.endGroup();
     return fullScreen;
@@ -314,7 +314,7 @@ bool loadSelectNodeGroupByIntersection()
 void saveSelectNodeGroupByIntersection(bool selectNodeGroupByIntersection)
 {
     QSettings settings;
-    settings.beginGroup(Constants::MindMap::Defaults::SETTINGS_GROUP);
+    settings.beginGroup(Constants::Settings::defaultsSettingGroup());
     settings.setValue(selectNodeGroupByIntersectionKey, selectNodeGroupByIntersection);
     settings.endGroup();
 }

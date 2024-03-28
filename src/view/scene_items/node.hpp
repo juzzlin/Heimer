@@ -186,6 +186,12 @@ private:
     static NodeP m_lastHoveredNode;
 
     const int m_contentPadding = 10;
+
+    const int m_handleRadius = 28;
+
+    const int m_handleRadiusMedium = 24;
+
+    const int m_handleRadiusSmall = 20;
 };
 
 } // namespace SceneItems

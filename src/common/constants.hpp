@@ -146,12 +146,6 @@ static const int HANDLE_VISIBILITY_DURATION = 2500;
 
 static const double HANDLE_OPACITY = 0.75;
 
-static const int HANDLE_RADIUS = 28;
-
-static const int HANDLE_RADIUS_MEDIUM = 24;
-
-static const int HANDLE_RADIUS_SMALL = 20;
-
 static const int HIDE_HANDLES_DISTANCE = 32;
 
 static const int MAX_CORNER_RADIUS = 20;

@@ -143,6 +143,10 @@ private:
 
     const QString m_optimizeShadowEffectsSettingKey = "optimizeShadowEffects";
 
+    const QString m_editingSettingGroup = "Editing";
+
+    const QString m_invertedControlsSettingKey = "invertedControls";
+
     bool m_autoload = false;
 
     bool m_autosave = false;

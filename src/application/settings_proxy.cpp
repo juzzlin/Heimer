@@ -27,7 +27,7 @@ SettingsProxy::SettingsProxy()
   , m_edgeArrowMode(Settings::Custom::loadEdgeArrowMode(SceneItems::EdgeModel::ArrowMode::Single))
   , m_arrowSize(Settings::Generic::getNumber(m_defaultsSettingGroup, m_arrowSizeSettingKey, Constants::Edge::Defaults::ARROW_SIZE))
   , m_edgeWidth(Settings::Generic::getNumber(m_defaultsSettingGroup, m_edgeWidthSettingKey, Constants::MindMap::Defaults::EDGE_WIDTH))
-  , m_invertedControls(Settings::Generic::getBoolean(Constants::View::EDITING_SETTINGS_GROUP, Constants::View::INVERTED_CONTROLS_SETTINGS_KEY, false))
+  , m_invertedControls(Settings::Generic::getBoolean(m_editingSettingGroup, m_invertedControlsSettingKey, false))
   , m_reversedEdgeDirection(Settings::Custom::loadReversedEdgeDirection(false))
   , m_selectNodeGroupByIntersection(Settings::Custom::loadSelectNodeGroupByIntersection())
   , m_textSize(Settings::Generic::getNumber(m_defaultsSettingGroup, m_textSizeSettingKey, Constants::MindMap::Defaults::TEXT_SIZE))
@@ -181,7 +181,7 @@ void SettingsProxy::setInvertedControls(bool invertedControls)
 {
     if (m_invertedControls != invertedControls) {
         m_invertedControls = invertedControls;
-        Settings::Generic::setBoolean(Constants::View::EDITING_SETTINGS_GROUP, Constants::View::INVERTED_CONTROLS_SETTINGS_KEY, invertedControls);
+        Settings::Generic::setBoolean(m_editingSettingGroup, m_invertedControlsSettingKey, invertedControls);
     }
 }
 

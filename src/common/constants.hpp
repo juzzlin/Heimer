@@ -188,10 +188,6 @@ static const int MAX_SIZE = 72;
 
 namespace View {
 
-const auto EDITING_SETTINGS_GROUP = "Editing";
-
-const auto INVERTED_CONTROLS_SETTINGS_KEY = "invertedControls";
-
 static const int CLICK_TOLERANCE = 5;
 
 static const double DRAG_NODE_OPACITY = 0.5;

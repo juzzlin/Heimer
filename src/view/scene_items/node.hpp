@@ -184,6 +184,8 @@ private:
     QPixmap m_pixmap;
 
     static NodeP m_lastHoveredNode;
+
+    const int m_contentPadding = 10;
 };
 
 } // namespace SceneItems

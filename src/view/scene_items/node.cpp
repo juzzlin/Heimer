@@ -150,10 +150,9 @@ void Node::adjustSize()
 {
     prepareGeometryChange();
 
-    const auto margin = Constants::Node::MARGIN * 2;
     const auto newSize = QSize {
-        std::max(Constants::Node::MIN_WIDTH, static_cast<int>(m_textEdit->boundingRect().width() + margin)),
-        std::max(Constants::Node::MIN_HEIGHT, static_cast<int>(m_textEdit->boundingRect().height() + margin))
+        std::max(Constants::Node::MIN_WIDTH, static_cast<int>(m_textEdit->boundingRect().width() + m_contentPadding * 2)),
+        std::max(Constants::Node::MIN_HEIGHT, static_cast<int>(m_textEdit->boundingRect().height() + m_contentPadding * 2))
     };
 
     m_nodeModel->size = newSize;
@@ -227,7 +226,7 @@ QRectF Node::expandedTextEditRect() const
     auto textEditRect = QRectF {};
     textEditRect.setX(m_textEdit->pos().x());
     textEditRect.setY(m_textEdit->pos().y());
-    textEditRect.setWidth(m_nodeModel->size.width() - Constants::Node::MARGIN * 2);
+    textEditRect.setWidth(m_nodeModel->size.width() - m_contentPadding * 2);
     textEditRect.setHeight(m_textEdit->boundingRect().height());
     return textEditRect;
 }
@@ -302,7 +301,7 @@ void Node::initTextField()
     if (!TestMode::enabled()) {
         m_textEdit->setTextWidth(-1);
         const auto size = m_nodeModel->size;
-        m_textEdit->setPos(-size.width() * 0.5 + Constants::Node::MARGIN, -size.height() * 0.5 + Constants::Node::MARGIN);
+        m_textEdit->setPos(-size.width() * 0.5 + m_contentPadding, -size.height() * 0.5 + m_contentPadding);
     } else {
         TestMode::logDisabledCode("initTestField");
     }

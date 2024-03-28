@@ -47,7 +47,7 @@ SvgExportDialog::SvgExportDialog(QWidget & parent)
         if (const auto fileName = QFileDialog::getSaveFileName(this,
                                                                tr("Export As"),
                                                                QStandardPaths::writableLocation(QStandardPaths::HomeLocation),
-                                                               tr("SVG Files") + " (*" + Constants::Export::Svg::FILE_EXTENSION + ")");
+                                                               tr("SVG Files") + " (*" + m_svgFileExtension + ")");
             !fileName.isEmpty()) {
             m_fileNameLineEdit->setText(fileName);
         }
@@ -66,7 +66,7 @@ SvgExportDialog::SvgExportDialog(QWidget & parent)
 void SvgExportDialog::setCurrentMindMapFileName(QString fileName)
 {
     if (!fileName.isEmpty()) {
-        m_fileNameLineEdit->setText(Utils::exportFileName(fileName, Constants::Export::Svg::FILE_EXTENSION));
+        m_fileNameLineEdit->setText(Utils::exportFileName(fileName, m_svgFileExtension));
     }
 }
 
@@ -102,8 +102,8 @@ void SvgExportDialog::validate()
         return;
     }
 
-    if (!m_fileNameWithExtension.toLower().endsWith(Constants::Export::Svg::FILE_EXTENSION)) {
-        m_fileNameWithExtension += Constants::Export::Svg::FILE_EXTENSION;
+    if (!m_fileNameWithExtension.toLower().endsWith(m_svgFileExtension)) {
+        m_fileNameWithExtension += m_svgFileExtension;
     }
 }
 

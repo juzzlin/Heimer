@@ -77,6 +77,12 @@ private:
     bool m_enableSpinBoxConnection = true;
 
     float m_aspectRatio = 1.0;
+
+    const QString m_pngFileExtension = ".png";
+
+    const int m_minImageSize = 0;
+
+    const int m_maxImageSize = 99999;
 };
 
 } // namespace Dialogs::Export

@@ -64,6 +64,8 @@ private:
     QProgressBar * m_progressBar = nullptr;
 
     QString m_fileNameWithExtension;
+
+    const QString m_svgFileExtension = ".svg";
 };
 
 } // namespace Dialogs::Export

@@ -82,26 +82,6 @@ static const int TEXT_EDIT_VER_PADDING = 1;
 
 } // namespace Edge
 
-namespace Export {
-
-namespace Png {
-
-static const auto FILE_EXTENSION = ".png";
-
-static const int MIN_IMAGE_SIZE = 0;
-
-static const int MAX_IMAGE_SIZE = 99999;
-
-} // namespace Png
-
-namespace Svg {
-
-static const auto FILE_EXTENSION = ".svg";
-
-} // namespace Svg
-
-} // namespace Export
-
 namespace Grid {
 
 static const int MIN_SIZE = 0;

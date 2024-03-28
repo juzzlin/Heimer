@@ -62,22 +62,6 @@ static const double ARROW_SIZE = 20;
 
 static const double ARROW_SIZE_STEP = 5;
 
-static const double ARROW_OPENING = 150;
-
-static const double CORNER_RADIUS_SCALE = 0.3;
-
-static const QVector<qreal> DASH_PATTERN { qreal(5), qreal(5) };
-
-static const QColor DOT_COLOR { 255, 0, 0, 192 };
-
-static const int DOT_DURATION = 2000;
-
-static const int DOT_RADIUS = 10;
-
-static const QColor LABEL_COLOR { 0xff, 0xee, 0xaa };
-
-static const int LABEL_DURATION = 2000;
-
 static const double MIN_ARROW_SIZE = 5;
 
 static const double MAX_ARROW_SIZE = 99;
@@ -95,8 +79,6 @@ static const int TEXT_EDIT_DURATION = 2000;
 static const int TEXT_EDIT_HOR_PADDING = 3;
 
 static const int TEXT_EDIT_VER_PADDING = 1;
-
-static const double WIDTH_SCALE = 0.5;
 
 } // namespace Edge
 

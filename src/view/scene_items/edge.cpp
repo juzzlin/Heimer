@@ -17,7 +17,6 @@
 
 #include "../../application/service_container.hpp"
 #include "../../application/settings_proxy.hpp"
-#include "../../common/constants.hpp"
 #include "../../common/test_mode.hpp"
 #include "../../domain/graph.hpp"
 #include "../shadow_effect_params.hpp"
@@ -74,8 +73,11 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
     initDots();
 
     if (m_enableLabel) {
+
+        const QColor labelColor { 0xff, 0xee, 0xaa };
+
         m_label->setZValue(static_cast<int>(Layers::EdgeLabel));
-        m_label->setBackgroundColor(Constants::Edge::LABEL_COLOR);
+        m_label->setBackgroundColor(labelColor);
         connect(m_label, &TextEdit::textChanged, this, [=](const QString & text) {
             updateLabel();
             m_edgeModel->text = text;
@@ -85,7 +87,7 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
 
         m_dummyLabel->setZValue(static_cast<int>(Layers::EdgeDummyLabel));
         m_dummyLabel->setAcceptHoverEvents(false);
-        m_dummyLabel->setBackgroundColor(Constants::Edge::LABEL_COLOR);
+        m_dummyLabel->setBackgroundColor(labelColor);
         m_dummyLabel->setText(tr("..."));
         m_dummyLabel->setEnabled(false);
 
@@ -98,7 +100,10 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
         });
 
         m_labelVisibilityTimer.setSingleShot(true);
-        m_labelVisibilityTimer.setInterval(Constants::Edge::LABEL_DURATION);
+
+        const int labelDurationMs = 2000;
+
+        m_labelVisibilityTimer.setInterval(labelDurationMs);
 
         connect(&m_labelVisibilityTimer, &QTimer::timeout, this, [=] {
             setLabelVisible(false);
@@ -144,7 +149,7 @@ QPen Edge::buildPen(bool ignoreDashSetting) const
     QPen pen { QBrush { QColor { m_color.red(), m_color.green(), m_color.blue() } }, m_edgeModel->style.edgeWidth };
     pen.setCapStyle(Qt::PenCapStyle::RoundCap);
     if (!ignoreDashSetting && m_edgeModel->style.dashedLine) {
-        pen.setDashPattern(Constants::Edge::DASH_PATTERN);
+        pen.setDashPattern({ qreal(5), qreal(5) });
     }
     return pen;
 }
@@ -203,22 +208,30 @@ double Edge::length() const
 void Edge::initDots()
 {
     if (m_enableAnimations) {
-        m_sourceDot->setPen(QPen(Constants::Edge::DOT_COLOR));
-        m_sourceDot->setBrush(QBrush(Constants::Edge::DOT_COLOR));
+
+        const QColor dotColor { 255, 0, 0, 192 };
+
+        m_sourceDot->setPen(QPen(dotColor));
+        m_sourceDot->setBrush(QBrush(dotColor));
         m_sourceDot->setZValue(zValue() + 10);
 
-        m_targetDot->setPen(QPen(Constants::Edge::DOT_COLOR));
-        m_targetDot->setBrush(QBrush(Constants::Edge::DOT_COLOR));
+        m_targetDot->setPen(QPen(dotColor));
+        m_targetDot->setBrush(QBrush(dotColor));
         m_targetDot->setZValue(zValue() + 10);
 
-        m_sourceDotSizeAnimation->setDuration(Constants::Edge::DOT_DURATION);
+        const int dotDurationMs = 2000;
+
+        m_sourceDotSizeAnimation->setDuration(dotDurationMs);
         m_sourceDotSizeAnimation->setStartValue(1.0);
         m_sourceDotSizeAnimation->setEndValue(0.0);
 
-        const QRectF rect(-Constants::Edge::DOT_RADIUS, -Constants::Edge::DOT_RADIUS, Constants::Edge::DOT_RADIUS * 2, Constants::Edge::DOT_RADIUS * 2);
+        const int dotRadius = 10;
+
+        const QRectF rect { -dotRadius, -dotRadius, dotRadius * 2, dotRadius * 2 };
+
         m_sourceDot->setRect(rect);
 
-        m_targetDotSizeAnimation->setDuration(Constants::Edge::DOT_DURATION);
+        m_targetDotSizeAnimation->setDuration(dotDurationMs);
         m_targetDotSizeAnimation->setStartValue(1.0);
         m_targetDotSizeAnimation->setEndValue(0.0);
 
@@ -387,13 +400,15 @@ void Edge::updateArrowhead()
     QLineF lineL1;
     QLineF lineR1;
 
+    const double arrowOpening = 150;
+
     switch (m_edgeModel->style.arrowMode) {
     case EdgeModel::ArrowMode::Single: {
         lineL0.setP1(point0);
-        const auto angleL = qDegreesToRadians(angle0 + Constants::Edge::ARROW_OPENING);
+        const auto angleL = qDegreesToRadians(angle0 + arrowOpening);
         lineL0.setP2(point0 + QPointF(std::cos(angleL), std::sin(angleL)) * m_edgeModel->style.arrowSize);
         lineR0.setP1(point0);
-        const auto angleR = qDegreesToRadians(angle0 - Constants::Edge::ARROW_OPENING);
+        const auto angleR = qDegreesToRadians(angle0 - arrowOpening);
         lineR0.setP2(point0 + QPointF(std::cos(angleR), std::sin(angleR)) * m_edgeModel->style.arrowSize);
         m_arrowheadL0->setLine(lineL0);
         m_arrowheadR0->setLine(lineR0);
@@ -405,20 +420,20 @@ void Edge::updateArrowhead()
     }
     case EdgeModel::ArrowMode::Double: {
         lineL0.setP1(point0);
-        const auto angleL0 = qDegreesToRadians(angle0 + Constants::Edge::ARROW_OPENING);
+        const auto angleL0 = qDegreesToRadians(angle0 + arrowOpening);
         lineL0.setP2(point0 + QPointF(std::cos(angleL0), std::sin(angleL0)) * m_edgeModel->style.arrowSize);
         lineR0.setP1(point0);
-        const auto angleR0 = qDegreesToRadians(angle0 - Constants::Edge::ARROW_OPENING);
+        const auto angleR0 = qDegreesToRadians(angle0 - arrowOpening);
         lineR0.setP2(point0 + QPointF(std::cos(angleR0), std::sin(angleR0)) * m_edgeModel->style.arrowSize);
         lineL1.setP1(point1);
         m_arrowheadL0->setLine(lineL0);
         m_arrowheadR0->setLine(lineR0);
         m_arrowheadL0->show();
         m_arrowheadR0->show();
-        const auto angleL1 = qDegreesToRadians(angle1 + Constants::Edge::ARROW_OPENING);
+        const auto angleL1 = qDegreesToRadians(angle1 + arrowOpening);
         lineL1.setP2(point1 + QPointF(std::cos(angleL1), std::sin(angleL1)) * m_edgeModel->style.arrowSize);
         lineR1.setP1(point1);
-        const auto angleR1 = qDegreesToRadians(angle1 - Constants::Edge::ARROW_OPENING);
+        const auto angleR1 = qDegreesToRadians(angle1 - arrowOpening);
         lineR1.setP2(point1 + QPointF(std::cos(angleR1), std::sin(angleR1)) * m_edgeModel->style.arrowSize);
         m_arrowheadL1->setLine(lineL1);
         m_arrowheadR1->setLine(lineR1);
@@ -552,20 +567,20 @@ void Edge::updateLine()
 {
     m_line->setPen(buildPen());
 
-    const auto nearestPoints = Node::getNearestEdgePoints(sourceNode(), targetNode());
-
+    auto && nearestPoints = Node::getNearestEdgePoints(sourceNode(), targetNode());
     const auto p1 = nearestPoints.first.location + sourceNode().pos();
     QVector2D direction1(sourceNode().pos() - p1);
     direction1.normalize();
-
     const auto p2 = nearestPoints.second.location + targetNode().pos();
     QVector2D direction2(targetNode().pos() - p2);
     direction2.normalize();
 
-    m_line->setLine(QLineF(
-      p1 + (nearestPoints.first.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction1 * static_cast<float>(sourceNode().cornerRadius())).toPointF() : QPointF { 0, 0 }),
-      p2 + (nearestPoints.second.isCorner ? Constants::Edge::CORNER_RADIUS_SCALE * (direction2 * static_cast<float>(targetNode().cornerRadius())).toPointF() : QPointF { 0, 0 }) - //
-        (direction2 * static_cast<float>(m_edgeModel->style.edgeWidth)).toPointF() * Constants::Edge::WIDTH_SCALE));
+    const double widthScale = 0.5;
+    const double cornerRadiusScale = 0.3;
+    m_line->setLine(QLineF {
+      p1 + (nearestPoints.first.isCorner ? cornerRadiusScale * (direction1 * static_cast<float>(sourceNode().cornerRadius())).toPointF() : QPointF { 0, 0 }),
+      p2 + (nearestPoints.second.isCorner ? cornerRadiusScale * (direction2 * static_cast<float>(targetNode().cornerRadius())).toPointF() : QPointF { 0, 0 }) - //
+        (direction2 * static_cast<float>(m_edgeModel->style.edgeWidth)).toPointF() * widthScale });
 
     updateDots();
     updateLabel(LabelUpdateReason::EdgeGeometryChanged);

@@ -68,8 +68,8 @@ int main(int argc, char ** argv)
 #if QT_VERSION >= 0x50600 && QT_VERSION < 0x60000
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
-    QApplication::setOrganizationName(qsettingsCompanyName());
-    QApplication::setApplicationName(qsettingsSoftwareName());
+    QApplication::setOrganizationName(qSettingsCompanyName());
+    QApplication::setApplicationName(qSettingsSoftwareName());
 #ifdef Q_OS_WIN32
     QSettings::setDefaultFormat(QSettings::IniFormat);
 #endif

@@ -38,9 +38,9 @@ QString copyright();
 
 QString fileExtension();
 
-QString qsettingsCompanyName();
+QString qSettingsCompanyName();
 
-QString qsettingsSoftwareName();
+QString qSettingsSoftwareName();
 
 QString releasesUrl();
 

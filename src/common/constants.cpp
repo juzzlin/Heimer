@@ -51,7 +51,7 @@ QString fileExtension()
     return ".alz";
 }
 
-QString qsettingsCompanyName()
+QString qSettingsCompanyName()
 {
     return "Heimer";
 }
@@ -61,7 +61,7 @@ QString webSiteUrl()
     return "http://juzzlin.github.io/Heimer";
 }
 
-QString qsettingsSoftwareName()
+QString qSettingsSoftwareName()
 {
     return applicationName();
 }

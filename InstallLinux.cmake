@@ -22,7 +22,7 @@ function(setup_install_targets)
     install(FILES data/icons/heimer.png DESTINATION share/icons/hicolor/256x256/apps)
 
     set(CPACK_DEBIAN_PACKAGE_NAME "heimer")
-    set(CPACK_DEBIAN_PACKAGE_VERSION ${VERSION})
+    set(CPACK_DEBIAN_PACKAGE_VERSION ${APPLICATION_VERSION})
     set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "amd64")
     set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Jussi Lind <jussi.lind@iki.fi>")
     set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "Simple mind map creation tool.")

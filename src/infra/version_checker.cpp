@@ -55,15 +55,15 @@ void VersionChecker::checkForNewReleases()
                 const auto latestReleasedVersion = parseLatestReleasedVersion(reply->readAll());
                 L().debug() << "The latest released version is " << latestReleasedVersion;
                 if (latestReleasedVersion.isValid()) {
-                    if (const Version currentVersion(VERSION); latestReleasedVersion > currentVersion) {
-                        L().debug() << "=> NEW version available: " << latestReleasedVersion << " @ " << Constants::Application::RELEASES_URL;
-                        emit newVersionFound(latestReleasedVersion, Constants::Application::RELEASES_URL);
+                    if (const Version currentVersion { Constants::Application::applicationVersion() }; latestReleasedVersion > currentVersion) {
+                        L().debug() << "=> NEW version available: " << latestReleasedVersion << " @ " << Constants::Application::releasesUrl();
+                        emit newVersionFound(latestReleasedVersion, Constants::Application::releasesUrl());
                     } else {
-                        L().debug() << "=> " << Constants::Application::APPLICATION_NAME << " is up-to-date";
+                        L().debug() << "=> " << Constants::Application::applicationName() << " is up-to-date";
                     }
                 } else {
                     L().warning() << "Could not determine the latest released version!";
                 }
             });
-    manager->get(QNetworkRequest({ Constants::Application::RELEASES_URL }));
+    manager->get(QNetworkRequest(QUrl { Constants::Application::releasesUrl() }));
 }

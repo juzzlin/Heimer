@@ -26,6 +26,7 @@ set(HEIMER_LIB_SRC
     application/service_container.cpp
     application/settings_proxy.cpp
     application/state_machine.cpp
+    common/constants.cpp
     common/test_mode.cpp
     common/utils.cpp
     domain/copy_context.cpp

@@ -30,13 +30,15 @@ const int logoSize = 256;
 AboutDialog::AboutDialog(QWidget * parent)
   : QDialog(parent)
 {
-    setWindowTitle(tr("About ") + Constants::Application::APPLICATION_NAME);
+    setWindowTitle(tr("About ") + Constants::Application::applicationName());
     setMinimumWidth(3 * logoSize); // Note that there should be enough space for all languages
     initWidgets();
 }
 
 void AboutDialog::initWidgets()
 {
+    using namespace Constants::Application;
+
     const auto vLayout = new QVBoxLayout(this);
     const auto pixmapLabel = new QLabel(this);
     pixmapLabel->setPixmap(QPixmap(":/about.png").scaled(logoSize, logoSize));
@@ -47,15 +49,15 @@ void AboutDialog::initWidgets()
     const auto infoLabel = new QTextBrowser(this);
     infoLabel->setOpenExternalLinks(true);
     infoLabel->setHtml(
-      QString("<h2>") + Constants::Application::APPLICATION_NAME + " v" + Constants::Application::APPLICATION_VERSION + "</h2>"
-      + "<p>" + Constants::Application::APPLICATION_NAME + tr(" is licenced under ") + "GNU GPLv3" + ".</p>"
-      + "<p>" + Constants::Application::COPYRIGHT + ".</p>"
-      + "<p>" + tr("Package type: ") + Constants::Application::APPLICATION_PACKAGE_TYPE + "</p>"
-      + tr("Project website: ") + "<a href='" + Constants::Application::WEB_SITE_URL + "'>"
-      + Constants::Application::WEB_SITE_URL + "</a>"
-      + "<p>" + tr("Support ") + Constants::Application::APPLICATION_NAME + tr(" via PayPal: ")
-      + "<a href='" + Constants::Application::SUPPORT_SITE_URL + "'>"
-      + Constants::Application::SUPPORT_SITE_URL + "</a></p>");
+      QString("<h2>") + applicationName() + " v" + applicationVersion() + "</h2>"
+      + "<p>" + applicationName() + tr(" is licenced under ") + "GNU GPLv3" + ".</p>"
+      + "<p>" + copyright() + ".</p>"
+      + "<p>" + tr("Package type: ") + applicationPackageType() + "</p>"
+      + tr("Project website: ") + "<a href='" + webSiteUrl() + "'>"
+      + webSiteUrl() + "</a>"
+      + "<p>" + tr("Support ") + applicationName() + tr(" via PayPal: ")
+      + "<a href='" + supportSiteUrl() + "'>"
+      + supportSiteUrl() + "</a></p>");
     infoLabel->setFrameStyle(QFrame::NoFrame);
     infoLabel->viewport()->setAutoFillBackground(false);
     hLayout->addWidget(infoLabel);

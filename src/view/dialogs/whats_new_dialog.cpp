@@ -15,6 +15,8 @@
 
 #include "whats_new_dialog.hpp"
 
+#include "../../common/constants.hpp"
+
 #include <QDialogButtonBox>
 #include <QFile>
 #include <QPixmap>
@@ -36,7 +38,7 @@ QString filterChangeLog(QString data)
     bool versionFound = false;
     QString filteredLines;
     for (auto && line : lines) {
-        if (line.contains(VERSION)) {
+        if (line.contains(Constants::Application::applicationVersion())) {
             versionFound = true;
         }
         if (versionFound) {

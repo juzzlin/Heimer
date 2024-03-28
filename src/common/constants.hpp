@@ -17,6 +17,7 @@
 #define CONSTANTS_HPP
 
 #include <QColor>
+#include <QString>
 #include <QVector>
 
 #include "../infra/io/alz_file_io_version.hpp"
@@ -25,33 +26,29 @@ namespace Constants {
 
 namespace Application {
 
-static constexpr auto APPLICATION_NAME = "Heimer";
+IO::AlzFormatVersion alzFormatVersion();
 
-#ifndef PACKAGE_TYPE
-static constexpr auto APPLICATION_PACKAGE_TYPE = "N/A";
-#else
-static constexpr auto APPLICATION_PACKAGE_TYPE = PACKAGE_TYPE;
-#endif
+QString applicationName();
 
-static constexpr auto APPLICATION_VERSION = VERSION;
+QString applicationPackageType();
 
-static constexpr auto ALZ_FORMAT_VERSION = IO::AlzFormatVersion::V2;
+QString applicationVersion();
 
-static constexpr auto COPYRIGHT = "Copyright (c) 2018-2024 Jussi Lind";
+QString copyright();
 
-static constexpr auto FILE_EXTENSION = ".alz";
+QString fileExtension();
 
-static constexpr auto QSETTINGS_COMPANY_NAME = "Heimer";
+QString qsettingsCompanyName();
 
-static constexpr auto WEB_SITE_URL = "http://juzzlin.github.io/Heimer";
+QString qsettingsSoftwareName();
 
-static constexpr auto QSETTINGS_SOFTWARE_NAME = APPLICATION_NAME;
+QString releasesUrl();
 
-static constexpr auto RELEASES_URL = "https://github.com/juzzlin/Heimer/releases";
+QString supportSiteUrl();
 
-static constexpr auto SUPPORT_SITE_URL = "https://paypal.me/juzzlin";
+QString translationsResourceBase();
 
-static constexpr auto TRANSLATIONS_RESOURCE_BASE = ":/translations/heimer_";
+QString webSiteUrl();
 
 } // namespace Application
 

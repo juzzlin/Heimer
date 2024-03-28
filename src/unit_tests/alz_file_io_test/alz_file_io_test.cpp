@@ -15,10 +15,11 @@
 
 #include "alz_file_io_test.hpp"
 
-#include "../../domain/mind_map_data.hpp"
+#include "../../common/constants.hpp"
 #include "../../common/test_mode.hpp"
 #include "../../domain/graph.hpp"
 #include "../../domain/image_manager.hpp"
+#include "../../domain/mind_map_data.hpp"
 #include "../../infra/io/alz_file_io.hpp"
 #include "../../infra/io/alz_file_io_version.hpp"
 
@@ -36,7 +37,7 @@ void AlzFileIOTest::testEmptyDesign()
 {
     const auto outData = std::make_shared<MindMapData>();
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
-    QCOMPARE(QString(inData->applicationVersion()), QString(VERSION));
+    QCOMPARE(QString(inData->applicationVersion()), Constants::Application::applicationVersion());
 }
 
 void AlzFileIOTest::testStyle_ArrowSize()
@@ -643,8 +644,8 @@ void AlzFileIOTest::testV1_Version()
     const auto outData = std::make_shared<MindMapData>();
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO(IO::AlzFormatVersion::V1).toXml(outData));
 
-    QVERIFY(inData->applicationVersion() == Constants::Application::APPLICATION_VERSION);
-    QVERIFY(inData->alzFormatVersion() == IO::AlzFormatVersion::V1);
+    QCOMPARE(inData->applicationVersion(), Constants::Application::applicationVersion());
+    QCOMPARE(inData->alzFormatVersion(), IO::AlzFormatVersion::V1);
 }
 
 void AlzFileIOTest::testV2_Version()
@@ -652,8 +653,8 @@ void AlzFileIOTest::testV2_Version()
     const auto outData = std::make_shared<MindMapData>();
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
 
-    QVERIFY(inData->applicationVersion() == Constants::Application::APPLICATION_VERSION);
-    QVERIFY(inData->alzFormatVersion() == Constants::Application::ALZ_FORMAT_VERSION);
+    QCOMPARE(inData->applicationVersion(), Constants::Application::applicationVersion());
+    QCOMPARE(inData->alzFormatVersion(), Constants::Application::alzFormatVersion());
 }
 
 AlzFileIOTest::~AlzFileIOTest() = default;

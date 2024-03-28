@@ -80,7 +80,7 @@ QFont::Weight Utils::intToFontWeight(int value)
 QString Utils::exportFileName(QString mindMapFileName, QString exportExtension)
 {
     const auto formattedDateTime = QDateTime::currentDateTime().toString("_yyyy-MM-dd_hh-mm-ss");
-    return mindMapFileName.replace(Constants::Application::FILE_EXTENSION, "") + formattedDateTime + exportExtension;
+    return mindMapFileName.replace(Constants::Application::fileExtension(), "") + formattedDateTime + exportExtension;
 }
 
 bool Utils::fileExists(QString filePath)

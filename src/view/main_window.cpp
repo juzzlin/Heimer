@@ -459,12 +459,12 @@ void MainWindow::initialize()
 
 void MainWindow::setTitle()
 {
-    const auto appInfo = QString(Constants::Application::APPLICATION_NAME) + " " + Constants::Application::APPLICATION_VERSION;
+    const auto appInfo = QString { "%1 %2" }.arg(Constants::Application::applicationName(), Constants::Application::applicationVersion());
     const auto displayFileName = SC::instance().applicationService()->fileName().isEmpty() ? tr("New File") : SC::instance().applicationService()->fileName();
     if (SC::instance().applicationService()->isModified()) {
-        setWindowTitle(appInfo + " - " + displayFileName + " - " + tr("Not Saved"));
+        setWindowTitle(QString { "%1 - %2 - %3" }.arg(appInfo, displayFileName, tr("Not Saved")));
     } else {
-        setWindowTitle(appInfo + " - " + displayFileName);
+        setWindowTitle(QString { "%1 - %2" }.arg(appInfo, displayFileName));
     }
 }
 
@@ -571,7 +571,7 @@ void MainWindow::saveWindowSize()
 
 void MainWindow::showErrorDialog(QString message)
 {
-    QMessageBox::critical(this, Constants::Application::APPLICATION_NAME, message, QMessageBox::Ok);
+    QMessageBox::critical(this, Constants::Application::applicationName(), message, QMessageBox::Ok);
 }
 
 void MainWindow::showSpinnerDialog(bool show, QString message)

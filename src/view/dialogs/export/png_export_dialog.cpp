@@ -130,7 +130,7 @@ void PngExportDialog::finishExport(bool success)
         m_progressBar->setValue(100);
         QTimer::singleShot(500, this, &QDialog::accept);
     } else {
-        QMessageBox::critical(this, Constants::Application::APPLICATION_NAME, tr("Couldn't write to") + " '" + m_fileNameLineEdit->text() + "'", QMessageBox::Ok);
+        QMessageBox::critical(this, Constants::Application::applicationName(), tr("Couldn't write to") + " '" + m_fileNameLineEdit->text() + "'", QMessageBox::Ok);
     }
 }
 

@@ -28,6 +28,8 @@
 
 #include <QDir>
 
+using namespace Constants::Application;
+
 static void initLogger()
 {
     using juzzlin::L;
@@ -54,8 +56,8 @@ static void initLogger()
     L::setLoggingLevel(L::Level::Debug);
 #endif
 
-    L().info() << Constants::Application::QSETTINGS_SOFTWARE_NAME << " version " << VERSION;
-    L().info() << Constants::Application::COPYRIGHT;
+    L().info() << applicationName().toStdString() << " version " << applicationVersion().toStdString();
+    L().info() << copyright().toStdString();
     L().info() << "Compiled against Qt version " << QT_VERSION_STR;
 }
 
@@ -66,8 +68,8 @@ int main(int argc, char ** argv)
 #if QT_VERSION >= 0x50600 && QT_VERSION < 0x60000
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
-    QApplication::setOrganizationName(Constants::Application::QSETTINGS_COMPANY_NAME);
-    QApplication::setApplicationName(Constants::Application::QSETTINGS_SOFTWARE_NAME);
+    QApplication::setOrganizationName(qsettingsCompanyName());
+    QApplication::setApplicationName(qsettingsSoftwareName());
 #ifdef Q_OS_WIN32
     QSettings::setDefaultFormat(QSettings::IniFormat);
 #endif

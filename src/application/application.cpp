@@ -119,7 +119,7 @@ Application::Application(int & argc, char ** argv)
 
 QString Application::getFileDialogFileText() const
 {
-    return tr("Heimer Files") + " (*" + Constants::Application::FILE_EXTENSION + ")";
+    return tr("Heimer Files") + " (*" + Constants::Application::fileExtension() + ")";
 }
 
 // Forces the language to the given one or chooses the best UI language
@@ -153,7 +153,7 @@ void Application::initTranslations()
     // Application's translations
     for (auto && lang : langs) {
         L().debug() << "Trying application translations for '" << lang.toStdString() << "'";
-        if (m_appTranslator.load(Constants::Application::TRANSLATIONS_RESOURCE_BASE + lang)) {
+        if (m_appTranslator.load(Constants::Application::translationsResourceBase() + lang)) {
             m_application.installTranslator(&m_appTranslator);
             L().debug() << "Loaded application translations for '" << lang.toStdString() << "'";
             break;
@@ -363,8 +363,8 @@ void Application::saveMindMapAs()
         return;
     }
 
-    if (!fileName.endsWith(Constants::Application::FILE_EXTENSION)) {
-        fileName += Constants::Application::FILE_EXTENSION;
+    if (!fileName.endsWith(Constants::Application::fileExtension())) {
+        fileName += Constants::Application::fileExtension();
     }
 
     if (m_sc->applicationService()->saveMindMapAs(fileName)) {

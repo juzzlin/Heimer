@@ -108,7 +108,7 @@ static const int TEXT_SIZE = 14;
 
 namespace Misc {
 
-static const auto THREE_DOTS = "...";
+QString threeDots();
 
 } // namespace Misc
 

@@ -104,4 +104,13 @@ double defaultEdgeWidth()
 
 } // namespace Settings
 
+namespace Misc {
+
+QString threeDots()
+{
+    return "...";
+}
+
+} // namespace Misc
+
 } // namespace Constants

@@ -27,7 +27,7 @@ namespace Widgets {
 FontButton::FontButton(QWidget * parent)
   : QPushButton(parent)
 {
-    setText(tr("Font") + Constants::Misc::THREE_DOTS);
+    setText(tr("Font") + Constants::Misc::threeDots());
 
     connect(this, &QPushButton::clicked, this, [=] {
         bool ok;

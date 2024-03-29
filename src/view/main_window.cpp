@@ -58,7 +58,7 @@ MainWindow::MainWindow()
   , m_connectSelectedNodesAction(new QAction(tr("Connect selected nodes"), this))
   , m_disconnectSelectedNodesAction(new QAction(tr("Disconnect selected nodes"), this))
   , m_saveAction(new QAction(tr("&Save"), this))
-  , m_saveAsAction(new QAction(tr("&Save as") + Constants::Misc::THREE_DOTS, this))
+  , m_saveAsAction(new QAction(tr("&Save as") + Constants::Misc::threeDots(), this))
   , m_undoAction(new QAction(tr("Undo"), this))
   , m_redoAction(new QAction(tr("Redo"), this))
   , m_statusText(new QLabel(this))
@@ -156,7 +156,7 @@ void MainWindow::createColorSubMenu(QMenu & editMenu)
     const auto colorMenuAction = editMenu.addMenu(colorMenu);
     colorMenuAction->setText(tr("General &colors"));
 
-    const auto backgroundColorAction = new QAction(tr("Set background color") + Constants::Misc::THREE_DOTS, this);
+    const auto backgroundColorAction = new QAction(tr("Set background color") + Constants::Misc::threeDots(), this);
     backgroundColorAction->setShortcut(QKeySequence("Ctrl+B"));
 
     connect(backgroundColorAction, &QAction::triggered, this, [=] {
@@ -167,7 +167,7 @@ void MainWindow::createColorSubMenu(QMenu & editMenu)
 
     colorMenu->addSeparator();
 
-    const auto edgeColorAction = new QAction(tr("Set edge color") + Constants::Misc::THREE_DOTS, this);
+    const auto edgeColorAction = new QAction(tr("Set edge color") + Constants::Misc::threeDots(), this);
     edgeColorAction->setShortcut(QKeySequence("Ctrl+E"));
 
     connect(edgeColorAction, &QAction::triggered, this, [=] {
@@ -178,7 +178,7 @@ void MainWindow::createColorSubMenu(QMenu & editMenu)
 
     colorMenu->addSeparator();
 
-    const auto gridColorAction = new QAction(tr("Set grid color") + Constants::Misc::THREE_DOTS, this);
+    const auto gridColorAction = new QAction(tr("Set grid color") + Constants::Misc::threeDots(), this);
     gridColorAction->setShortcut(QKeySequence("Ctrl+G"));
 
     connect(gridColorAction, &QAction::triggered, this, [=] {
@@ -234,7 +234,7 @@ void MainWindow::createEditMenu()
 
     editMenu->addSeparator();
 
-    auto optimizeLayoutAction = new QAction(tr("Optimize layout") + Constants::Misc::THREE_DOTS, this);
+    auto optimizeLayoutAction = new QAction(tr("Optimize layout") + Constants::Misc::threeDots(), this);
     optimizeLayoutAction->setShortcut(QKeySequence("Ctrl+Shift+O"));
 
     connect(optimizeLayoutAction, &QAction::triggered, this, [=] {
@@ -277,7 +277,7 @@ void MainWindow::createFileMenu()
     const auto fileMenu = menuBar()->addMenu(tr("&File"));
 
     // Add "new"-action
-    const auto newAct = new QAction(tr("&New") + Constants::Misc::THREE_DOTS, this);
+    const auto newAct = new QAction(tr("&New") + Constants::Misc::threeDots(), this);
     newAct->setShortcut(QKeySequence(QKeySequence::New));
     fileMenu->addAction(newAct);
     connect(newAct, &QAction::triggered, this, [=] {
@@ -285,7 +285,7 @@ void MainWindow::createFileMenu()
     });
 
     // Add "open"-action
-    const auto openAct = new QAction(tr("&Open") + Constants::Misc::THREE_DOTS, this);
+    const auto openAct = new QAction(tr("&Open") + Constants::Misc::threeDots(), this);
     openAct->setShortcut(QKeySequence(QKeySequence::Open));
     fileMenu->addAction(openAct);
     connect(openAct, &QAction::triggered, this, [=] {
@@ -325,7 +325,7 @@ void MainWindow::createFileMenu()
     fileMenu->addSeparator();
 
     // Add "settings"-action
-    const auto settingsAct = new QAction(tr("Settings") + Constants::Misc::THREE_DOTS, this);
+    const auto settingsAct = new QAction(tr("Settings") + Constants::Misc::threeDots(), this);
     connect(settingsAct, &QAction::triggered, m_settingsDlg, &Dialogs::SettingsDialog::exec);
     fileMenu->addAction(settingsAct);
 

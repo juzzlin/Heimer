@@ -32,8 +32,8 @@ ColorSettingButton::ColorSettingButton(QString text, ColorDialog::Role role, QWi
           { ColorDialog::Role::Grid, m_settingsProxy->gridColor() },
           { ColorDialog::Role::Node, m_settingsProxy->nodeColor() },
           { ColorDialog::Role::Text, m_settingsProxy->nodeTextColor() },
-          { ColorDialog::Role::ShadowColor, m_settingsProxy->shadowEffect().shadowColor },
-          { ColorDialog::Role::SelectedItemShadowColor, m_settingsProxy->shadowEffect().selectedItemShadowColor } };
+          { ColorDialog::Role::ShadowColor, m_settingsProxy->shadowEffect().shadowColor() },
+          { ColorDialog::Role::SelectedItemShadowColor, m_settingsProxy->shadowEffect().selectedItemShadowColor() } };
         roleToColorMap.count(role)) {
         setColor(roleToColorMap.at(role));
     }
@@ -89,8 +89,8 @@ void ColorSettingButton::resetToDefault()
           { ColorDialog::Role::Grid, Constants::MindMap::Defaults::GRID_COLOR },
           { ColorDialog::Role::Node, Constants::MindMap::Defaults::NODE_COLOR },
           { ColorDialog::Role::Text, Constants::MindMap::Defaults::NODE_TEXT_COLOR },
-          { ColorDialog::Role::ShadowColor, Constants::Effects::Defaults::SHADOW_EFFECT_SHADOW_COLOR },
-          { ColorDialog::Role::SelectedItemShadowColor, Constants::Effects::Defaults::SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR } };
+          { ColorDialog::Role::ShadowColor, Constants::Settings::defaultShadowEffectShadowColor() },
+          { ColorDialog::Role::SelectedItemShadowColor, Constants::Settings::defaultShadowEffectSelectedItemShadowColor() } };
         roleToColorMap.count(m_role)) {
         setColor(roleToColorMap.at(m_role));
         apply(roleToColorMap.at(m_role));

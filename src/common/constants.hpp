@@ -60,6 +60,16 @@ double defaultArrowSize();
 
 double defaultEdgeWidth();
 
+int defaultShadowEffectOffset();
+
+int defaultShadowEffectBlurRadius();
+
+int defaultSelectedItemShadowEffectBlurRadius();
+
+QColor defaultShadowEffectShadowColor();
+
+QColor defaultShadowEffectSelectedItemShadowColor();
+
 } // namespace Settings
 
 namespace Edge {
@@ -203,32 +213,6 @@ static const double ZOOM_MIN = .02;
 static const double ZOOM_SENSITIVITY = 1.1;
 
 } // namespace View
-
-namespace Effects {
-
-namespace Defaults {
-
-static const int SHADOW_EFFECT_OFFSET = 3;
-
-static const int SHADOW_EFFECT_BLUR_RADIUS = 5;
-
-static const int SELECTED_ITEM_SHADOW_EFFECT_BLUR_RADIUS = 50;
-
-static const QColor SHADOW_EFFECT_SHADOW_COLOR = { 96, 96, 96 };
-
-static const QColor SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR = { 255, 0, 0 };
-
-} // namespace Defaults
-
-static const int SHADOW_EFFECT_MAX_OFFSET = 10;
-
-static const int SHADOW_EFFECT_MIN_OFFSET = 0;
-
-static const int SHADOW_EFFECT_MAX_BLUR_RADIUS = 100;
-
-static const int SHADOW_EFFECT_MIN_BLUR_RADIUS = 0;
-
-} // namespace Effects
 
 } // namespace Constants
 

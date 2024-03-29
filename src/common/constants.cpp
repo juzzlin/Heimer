@@ -102,6 +102,31 @@ double defaultEdgeWidth()
     return 1.0;
 }
 
+int defaultShadowEffectOffset()
+{
+    return 3;
+}
+
+int defaultShadowEffectBlurRadius()
+{
+    return 5;
+}
+
+int defaultSelectedItemShadowEffectBlurRadius()
+{
+    return 50;
+}
+
+QColor defaultShadowEffectShadowColor()
+{
+    return { 96, 96, 96 };
+}
+
+QColor defaultShadowEffectSelectedItemShadowColor()
+{
+    return { 255, 0, 0 };
+}
+
 } // namespace Settings
 
 namespace Misc {

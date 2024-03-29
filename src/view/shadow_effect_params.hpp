@@ -20,24 +20,23 @@
 
 #include <QColor>
 
-struct ShadowEffectParams
+class ShadowEffectParams
 {
-    ShadowEffectParams()
-    {
-    }
+public:
+    ShadowEffectParams() = default;
 
     ShadowEffectParams(int offset, int blurRadius, int selectedItemBlurRadius, QColor shadowColor, QColor selectedItemShadowColor)
-      : offset(offset)
-      , blurRadius(blurRadius)
-      , selectedItemBlurRadius(selectedItemBlurRadius)
-      , shadowColor(shadowColor)
-      , selectedItemShadowColor(selectedItemShadowColor)
+      : m_offset(offset)
+      , m_blurRadius(blurRadius)
+      , m_selectedItemBlurRadius(selectedItemBlurRadius)
+      , m_shadowColor(shadowColor)
+      , m_selectedItemShadowColor(selectedItemShadowColor)
     {
     }
 
     bool operator==(const ShadowEffectParams & other) const
     {
-        return offset == other.offset && blurRadius == other.blurRadius && selectedItemBlurRadius == other.selectedItemBlurRadius && shadowColor == other.shadowColor && selectedItemShadowColor == other.selectedItemShadowColor;
+        return m_offset == other.m_offset && m_blurRadius == other.m_blurRadius && m_selectedItemBlurRadius == other.m_selectedItemBlurRadius && m_shadowColor == other.m_shadowColor && m_selectedItemShadowColor == other.m_selectedItemShadowColor;
     }
 
     bool operator!=(const ShadowEffectParams & other) const
@@ -45,15 +44,51 @@ struct ShadowEffectParams
         return !(*this == other);
     }
 
-    int offset = Constants::Effects::Defaults::SHADOW_EFFECT_OFFSET;
+    int offset() const;
 
-    int blurRadius = Constants::Effects::Defaults::SHADOW_EFFECT_BLUR_RADIUS;
+    int blurRadius() const;
 
-    int selectedItemBlurRadius = Constants::Effects::Defaults::SELECTED_ITEM_SHADOW_EFFECT_BLUR_RADIUS;
+    int selectedItemBlurRadius() const;
 
-    QColor shadowColor = Constants::Effects::Defaults::SHADOW_EFFECT_SHADOW_COLOR;
+    QColor shadowColor() const;
 
-    QColor selectedItemShadowColor = Constants::Effects::Defaults::SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR;
+    QColor selectedItemShadowColor() const;
+
+private:
+    int m_offset = Constants::Settings::defaultShadowEffectOffset();
+
+    int m_blurRadius = Constants::Settings::defaultShadowEffectBlurRadius();
+
+    int m_selectedItemBlurRadius = Constants::Settings::defaultSelectedItemShadowEffectBlurRadius();
+
+    QColor m_shadowColor = Constants::Settings::defaultShadowEffectShadowColor();
+
+    QColor m_selectedItemShadowColor = Constants::Settings::defaultShadowEffectSelectedItemShadowColor();
 };
+
+inline int ShadowEffectParams::offset() const
+{
+    return m_offset;
+}
+
+inline int ShadowEffectParams::blurRadius() const
+{
+    return m_blurRadius;
+}
+
+inline int ShadowEffectParams::selectedItemBlurRadius() const
+{
+    return m_selectedItemBlurRadius;
+}
+
+inline QColor ShadowEffectParams::shadowColor() const
+{
+    return m_shadowColor;
+}
+
+inline QColor ShadowEffectParams::selectedItemShadowColor() const
+{
+    return m_selectedItemShadowColor;
+}
 
 #endif // SHADOW_EFFECT_PARAMS_HPP

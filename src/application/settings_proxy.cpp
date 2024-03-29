@@ -33,11 +33,11 @@ SettingsProxy::SettingsProxy()
   , m_textSize(Settings::Generic::getNumber(m_defaultsSettingGroup, m_textSizeSettingKey, Constants::MindMap::Defaults::TEXT_SIZE))
   , m_font(Settings::Generic::getFont(m_defaultsSettingGroup, m_fontSettingKey, {}))
   , m_shadowEffectParams(
-      static_cast<int>(Settings::Generic::getNumber(m_effectsSettingGroup, m_shadowEffectOffsetSettingKey, Constants::Effects::Defaults::SHADOW_EFFECT_OFFSET)),
-      static_cast<int>(Settings::Generic::getNumber(m_effectsSettingGroup, m_shadowEffectNormalBlurRadiusSettingKey, Constants::Effects::Defaults::SHADOW_EFFECT_BLUR_RADIUS)),
-      static_cast<int>(Settings::Generic::getNumber(m_effectsSettingGroup, m_shadowEffectSelectedItemBlurRadiusSettingKey, Constants::Effects::Defaults::SELECTED_ITEM_SHADOW_EFFECT_BLUR_RADIUS)),
-      Settings::Generic::getColor(m_effectsSettingGroup, m_shadowEffectShadowColorSettingKey, Constants::Effects::Defaults::SHADOW_EFFECT_SHADOW_COLOR),
-      Settings::Generic::getColor(m_effectsSettingGroup, m_shadowEffectSelectedItemShadowColorSettingKey, Constants::Effects::Defaults::SHADOW_EFFECT_SELECTED_ITEM_SHADOW_COLOR))
+      static_cast<int>(Settings::Generic::getNumber(m_effectsSettingGroup, m_shadowEffectOffsetSettingKey, Constants::Settings::defaultShadowEffectOffset())),
+      static_cast<int>(Settings::Generic::getNumber(m_effectsSettingGroup, m_shadowEffectNormalBlurRadiusSettingKey, Constants::Settings::defaultShadowEffectBlurRadius())),
+      static_cast<int>(Settings::Generic::getNumber(m_effectsSettingGroup, m_shadowEffectSelectedItemBlurRadiusSettingKey, Constants::Settings::defaultSelectedItemShadowEffectBlurRadius())),
+      Settings::Generic::getColor(m_effectsSettingGroup, m_shadowEffectShadowColorSettingKey, Constants::Settings::defaultShadowEffectShadowColor()),
+      Settings::Generic::getColor(m_effectsSettingGroup, m_shadowEffectSelectedItemShadowColorSettingKey, Constants::Settings::defaultShadowEffectSelectedItemShadowColor()))
   , m_optimizeShadowEffects(Settings::Generic::getBoolean(m_effectsSettingGroup, m_optimizeShadowEffectsSettingKey, true))
 {
 }
@@ -246,11 +246,11 @@ void SettingsProxy::setShadowEffect(const ShadowEffectParams & params)
 {
     if (m_shadowEffectParams != params) {
         m_shadowEffectParams = params;
-        Settings::Generic::setNumber(m_effectsSettingGroup, m_shadowEffectOffsetSettingKey, params.offset);
-        Settings::Generic::setNumber(m_effectsSettingGroup, m_shadowEffectNormalBlurRadiusSettingKey, params.blurRadius);
-        Settings::Generic::setNumber(m_effectsSettingGroup, m_shadowEffectSelectedItemBlurRadiusSettingKey, params.selectedItemBlurRadius);
-        Settings::Generic::setColor(m_effectsSettingGroup, m_shadowEffectShadowColorSettingKey, params.shadowColor);
-        Settings::Generic::setColor(m_effectsSettingGroup, m_shadowEffectSelectedItemShadowColorSettingKey, params.selectedItemShadowColor);
+        Settings::Generic::setNumber(m_effectsSettingGroup, m_shadowEffectOffsetSettingKey, params.offset());
+        Settings::Generic::setNumber(m_effectsSettingGroup, m_shadowEffectNormalBlurRadiusSettingKey, params.blurRadius());
+        Settings::Generic::setNumber(m_effectsSettingGroup, m_shadowEffectSelectedItemBlurRadiusSettingKey, params.selectedItemBlurRadius());
+        Settings::Generic::setColor(m_effectsSettingGroup, m_shadowEffectShadowColorSettingKey, params.shadowColor());
+        Settings::Generic::setColor(m_effectsSettingGroup, m_shadowEffectSelectedItemShadowColorSettingKey, params.selectedItemShadowColor());
     }
 }
 

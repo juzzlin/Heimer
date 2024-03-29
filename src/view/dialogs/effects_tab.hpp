@@ -54,6 +54,14 @@ private:
     ColorSettingButton * m_selectedItemShadowColorButton;
 
     QCheckBox * m_optimizeShadowsCheckBox;
+
+    const int m_shadowEffectMaxOffset = 10;
+
+    const int m_shadowEffectMinOffset = 0;
+
+    const int m_shadowEffectMaxBlurRadius = 100;
+
+    const int m_shadowEffectMinBlurRadius = 0;
 };
 
 } // namespace Dialogs

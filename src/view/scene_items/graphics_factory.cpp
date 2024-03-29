@@ -44,13 +44,13 @@ void GraphicsFactory::updateDropShadowEffect(QGraphicsEffect * effect, const Sha
     if (const auto shadow = qobject_cast<QGraphicsDropShadowEffect *>(effect)) {
         if (!disabled) {
             if (!selected) {
-                shadow->setOffset(params.offset, params.offset);
-                shadow->setColor(params.shadowColor);
-                shadow->setBlurRadius(params.blurRadius);
+                shadow->setOffset(params.offset(), params.offset());
+                shadow->setColor(params.shadowColor());
+                shadow->setBlurRadius(params.blurRadius());
             } else {
                 shadow->setOffset({});
-                shadow->setColor(params.selectedItemShadowColor);
-                shadow->setBlurRadius(params.selectedItemBlurRadius);
+                shadow->setColor(params.selectedItemShadowColor());
+                shadow->setBlurRadius(params.selectedItemBlurRadius());
             }
         } else {
             shadow->setOffset({});

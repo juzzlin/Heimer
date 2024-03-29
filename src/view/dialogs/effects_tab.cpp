@@ -40,17 +40,17 @@ EffectsTab::EffectsTab(QString name, QWidget * parent)
   , m_selectedItemShadowColorButton(new ColorSettingButton(tr("Selected item shadow color"), ColorDialog::Role::SelectedItemShadowColor, this))
   , m_optimizeShadowsCheckBox(new QCheckBox(tr("Optimize shadow effects"), this))
 {
-    m_shadowOffsetSpinBox->setMinimum(Constants::Effects::SHADOW_EFFECT_MIN_OFFSET);
-    m_shadowOffsetSpinBox->setMaximum(Constants::Effects::SHADOW_EFFECT_MAX_OFFSET);
-    m_shadowOffsetSpinBox->setValue(settingsProxy()->shadowEffect().offset);
+    m_shadowOffsetSpinBox->setMinimum(m_shadowEffectMinOffset);
+    m_shadowOffsetSpinBox->setMaximum(m_shadowEffectMaxOffset);
+    m_shadowOffsetSpinBox->setValue(settingsProxy()->shadowEffect().offset());
 
-    m_shadowBlurRadiusSpinBox->setMinimum(Constants::Effects::SHADOW_EFFECT_MIN_BLUR_RADIUS);
-    m_shadowBlurRadiusSpinBox->setMaximum(Constants::Effects::SHADOW_EFFECT_MAX_BLUR_RADIUS);
-    m_shadowBlurRadiusSpinBox->setValue(settingsProxy()->shadowEffect().blurRadius);
+    m_shadowBlurRadiusSpinBox->setMinimum(m_shadowEffectMinBlurRadius);
+    m_shadowBlurRadiusSpinBox->setMaximum(m_shadowEffectMaxBlurRadius);
+    m_shadowBlurRadiusSpinBox->setValue(settingsProxy()->shadowEffect().blurRadius());
 
-    m_selectedItemShadowBlurRadiusSpinBox->setMinimum(Constants::Effects::SHADOW_EFFECT_MIN_BLUR_RADIUS);
-    m_selectedItemShadowBlurRadiusSpinBox->setMaximum(Constants::Effects::SHADOW_EFFECT_MAX_BLUR_RADIUS);
-    m_selectedItemShadowBlurRadiusSpinBox->setValue(settingsProxy()->shadowEffect().selectedItemBlurRadius);
+    m_selectedItemShadowBlurRadiusSpinBox->setMinimum(m_shadowEffectMinBlurRadius);
+    m_selectedItemShadowBlurRadiusSpinBox->setMaximum(m_shadowEffectMaxBlurRadius);
+    m_selectedItemShadowBlurRadiusSpinBox->setValue(settingsProxy()->shadowEffect().selectedItemBlurRadius());
 
     m_optimizeShadowsCheckBox->setChecked(settingsProxy()->optimizeShadowEffects());
 
@@ -132,9 +132,9 @@ void EffectsTab::initWidgets()
     const auto resetToDefaultsButton = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
     shadowsGroup.second->addLayout(resetToDefaultsButton.second);
     connect(resetToDefaultsButton.first, &QPushButton::clicked, this, [=] {
-        m_shadowOffsetSpinBox->setValue(Constants::Effects::Defaults::SHADOW_EFFECT_OFFSET);
-        m_shadowBlurRadiusSpinBox->setValue(Constants::Effects::Defaults::SHADOW_EFFECT_BLUR_RADIUS);
-        m_selectedItemShadowBlurRadiusSpinBox->setValue(Constants::Effects::Defaults::SELECTED_ITEM_SHADOW_EFFECT_BLUR_RADIUS);
+        m_shadowOffsetSpinBox->setValue(Constants::Settings::defaultShadowEffectOffset());
+        m_shadowBlurRadiusSpinBox->setValue(Constants::Settings::defaultShadowEffectBlurRadius());
+        m_selectedItemShadowBlurRadiusSpinBox->setValue(Constants::Settings::defaultSelectedItemShadowEffectBlurRadius());
         m_shadowColorButton->resetToDefault();
         m_selectedItemShadowColorButton->resetToDefault();
         apply();

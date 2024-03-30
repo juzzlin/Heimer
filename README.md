@@ -2,9 +2,18 @@
 
 Heimer is a desktop application for creating mind maps and other suitable diagrams. It's written in Qt and targeted for Linux and Windows.
 
-Here is a simple mind map of Heimer itself running on Ubuntu 20.04:
+Here are some example mind maps running on Ubuntu:
 
-![Heimer screenshot](/screenshots/3.6.2/Heimer.png?raw=true)
+<table>
+  <tr>
+    <td colspan="3"><img src="/screenshots/4.4.0/Heimer.png" width="100%"></td>
+  </tr>
+  <tr>
+    <td><img src="/screenshots/4.4.0/Large.png" width="100%"></td>
+    <td><img src="/screenshots/4.4.0/Family_TextSearch.png" width="100%"></td>
+    <td><img src="/screenshots/4.4.0/Matrix.png" width="100%"></td>
+  </tr>
+ </table>
 
 <a href="https://www.youtube.com/watch?feature=player_embedded&v=NXJp6tmmZdE">A very short introduction video to Heimer 1.9.0</a>
 

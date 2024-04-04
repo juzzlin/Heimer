@@ -4,7 +4,7 @@ pipeline {
         stage('Debug build and unit tests') {
             agent {
                 docker {
-                    image 'juzzlin/qt5-18.04:latest'
+                    image 'juzzlin/qt5-20.04:latest'
                     args '--privileged -t -v $WORKSPACE:/heimer'
                 }
             }
@@ -17,7 +17,7 @@ pipeline {
         stage('Release build and unit tests') {
             agent {
                 docker {
-                    image 'juzzlin/qt5-18.04:latest'
+                    image 'juzzlin/qt5-20.04:latest'
                     args '--privileged -t -v $WORKSPACE:/heimer'
                 }
             }
@@ -25,24 +25,6 @@ pipeline {
                 sh "mkdir -p build-release"
                 sh "cd build-debug && cmake -GNinja -DCMAKE_BUILD_TYPE=Release .."
                 sh "cd build-debug && cmake --build . && ctest"
-            }
-        }
-        stage('Debian package / Ubuntu 18.04') {
-            agent {
-                docker {
-                    image 'juzzlin/qt5-18.04:latest'
-                    args '--privileged -t -v $WORKSPACE:/heimer'
-                }
-            }
-            steps {
-                sh "mkdir -p build-deb-ubuntu-18.04"
-                sh "cd build-deb-ubuntu-18.04 && cmake -GNinja  -DDISTRO_VERSION=ubuntu-18.04  -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DPACKAGE_TYPE=Deb .. && cmake --build ."
-                sh "cd build-deb-ubuntu-18.04 && cpack -G DEB"
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'build-deb-ubuntu-18.04/*.deb', fingerprint: true
-                }
             }
         }
         stage('Debian package / Ubuntu 20.04') {

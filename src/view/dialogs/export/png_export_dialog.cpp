@@ -151,7 +151,7 @@ void PngExportDialog::validate()
         return;
     }
 
-    if (!m_fileNameWithExtension.toLower().endsWith(m_pngFileExtension)) {
+    if (!m_fileNameWithExtension.endsWith(m_pngFileExtension, Qt::CaseInsensitive)) {
         m_fileNameWithExtension += m_pngFileExtension;
     }
 }

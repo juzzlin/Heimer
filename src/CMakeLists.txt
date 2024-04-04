@@ -4,171 +4,173 @@ include_directories(contrib/SimpleLogger/src)
 add_subdirectory(contrib/Argengine EXCLUDE_FROM_ALL)
 include_directories(contrib/Argengine/src)
 
+set(HEIMER_SRC_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
+
 # Translation files in src/translations (without .ts)
 set(TS heimer_de heimer_en heimer_es heimer_fi heimer_fr heimer_it heimer_nl heimer_zh)
 set(TS_FILES)
 set(QM_FILES)
 foreach(TS_FILE ${TS})
-    list(APPEND TS_FILES ${CMAKE_SOURCE_DIR}/src/translations/${TS_FILE}.ts)
+    list(APPEND TS_FILES ${HEIMER_SRC_ROOT}/translations/${TS_FILE}.ts)
     list(APPEND QM_FILES ${CMAKE_BINARY_DIR}/data/translations/${TS_FILE}.qm)
 endforeach()
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_BINARY_DIR}/data/translations)
 
 # Set sources for the lib
 set(HEIMER_LIB_SRC
-    application/application.cpp
-    application/application_service.cpp
-    application/control_strategy.cpp
-    application/editor_service.cpp
-    application/hash_seed.cpp
-    application/progress_manager.cpp
-    application/recent_files_manager.cpp
-    application/service_container.cpp
-    application/settings_proxy.cpp
-    application/state_machine.cpp
-    common/constants.cpp
-    common/test_mode.cpp
-    common/utils.cpp
-    domain/copy_context.cpp
-    domain/graph.cpp
-    domain/image.cpp
-    domain/image_manager.cpp
-    domain/layout_optimizer.cpp
-    domain/mind_map_data.cpp
-    domain/mind_map_data_base.cpp
-    domain/undo_stack.cpp
-    infra/io/alz_file_io.cpp
-    infra/io/alz_file_io_worker.cpp
-    infra/io/xml_reader.cpp
-    infra/io/xml_writer.cpp
-    infra/settings.cpp
-    infra/version_checker.cpp
-    view/dialogs/about_dialog.cpp
-    view/dialogs/color_dialog.cpp
-    view/dialogs/color_setting_button.cpp
-    view/dialogs/defaults_tab.cpp
-    view/dialogs/editing_tab.cpp
-    view/dialogs/effects_tab.cpp
-    view/dialogs/export/png_export_dialog.cpp
-    view/dialogs/export/svg_export_dialog.cpp
-    view/dialogs/layout_optimization_dialog.cpp
-    view/dialogs/scene_color_dialog.cpp
-    view/dialogs/settings_dialog.cpp
-    view/dialogs/settings_tab_base.cpp
-    view/dialogs/spinner_dialog.cpp
-    view/dialogs/whats_new_dialog.cpp
-    view/dialogs/widget_factory.cpp
-    view/edge_selection_group.cpp
-    view/editor_scene.cpp
-    view/editor_view.cpp
-    view/grid.cpp
-    view/item_filter.cpp
-    view/magic_zoom.cpp
-    view/main_window.cpp
-    view/menus/edge_context_menu.cpp
-    view/menus/main_context_menu.cpp
-    view/menus/main_menu.cpp
-    view/menus/recent_files_menu.cpp
-    view/menus/tool_bar.cpp
-    view/menus/widget_factory.cpp
-    view/mouse_action.cpp
-    view/node_selection_group.cpp
-    view/scene_items/edge.cpp
-    view/scene_items/edge_dot.cpp
-    view/scene_items/edge_text_edit.cpp
-    view/scene_items/graphics_factory.cpp
-    view/scene_items/node.cpp
-    view/scene_items/node_handle.cpp
-    view/scene_items/scene_item_base.cpp
-    view/scene_items/text_edit.cpp
-    view/widgets/font_button.cpp
-    view/widgets/status_label.cpp
+    ${HEIMER_SRC_ROOT}/application/application.cpp
+    ${HEIMER_SRC_ROOT}/application/application_service.cpp
+    ${HEIMER_SRC_ROOT}/application/control_strategy.cpp
+    ${HEIMER_SRC_ROOT}/application/editor_service.cpp
+    ${HEIMER_SRC_ROOT}/application/hash_seed.cpp
+    ${HEIMER_SRC_ROOT}/application/progress_manager.cpp
+    ${HEIMER_SRC_ROOT}/application/recent_files_manager.cpp
+    ${HEIMER_SRC_ROOT}/application/service_container.cpp
+    ${HEIMER_SRC_ROOT}/application/settings_proxy.cpp
+    ${HEIMER_SRC_ROOT}/application/state_machine.cpp
+    ${HEIMER_SRC_ROOT}/common/constants.cpp
+    ${HEIMER_SRC_ROOT}/common/test_mode.cpp
+    ${HEIMER_SRC_ROOT}/common/utils.cpp
+    ${HEIMER_SRC_ROOT}/domain/copy_context.cpp
+    ${HEIMER_SRC_ROOT}/domain/graph.cpp
+    ${HEIMER_SRC_ROOT}/domain/image.cpp
+    ${HEIMER_SRC_ROOT}/domain/image_manager.cpp
+    ${HEIMER_SRC_ROOT}/domain/layout_optimizer.cpp
+    ${HEIMER_SRC_ROOT}/domain/mind_map_data.cpp
+    ${HEIMER_SRC_ROOT}/domain/mind_map_data_base.cpp
+    ${HEIMER_SRC_ROOT}/domain/undo_stack.cpp
+    ${HEIMER_SRC_ROOT}/infra/io/alz_file_io.cpp
+    ${HEIMER_SRC_ROOT}/infra/io/alz_file_io_worker.cpp
+    ${HEIMER_SRC_ROOT}/infra/io/xml_reader.cpp
+    ${HEIMER_SRC_ROOT}/infra/io/xml_writer.cpp
+    ${HEIMER_SRC_ROOT}/infra/settings.cpp
+    ${HEIMER_SRC_ROOT}/infra/version_checker.cpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/about_dialog.cpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/color_dialog.cpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/color_setting_button.cpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/defaults_tab.cpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/editing_tab.cpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/effects_tab.cpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/export/png_export_dialog.cpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/export/svg_export_dialog.cpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/layout_optimization_dialog.cpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/scene_color_dialog.cpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/settings_dialog.cpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/settings_tab_base.cpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/spinner_dialog.cpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/whats_new_dialog.cpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/widget_factory.cpp
+    ${HEIMER_SRC_ROOT}/view/edge_selection_group.cpp
+    ${HEIMER_SRC_ROOT}/view/editor_scene.cpp
+    ${HEIMER_SRC_ROOT}/view/editor_view.cpp
+    ${HEIMER_SRC_ROOT}/view/grid.cpp
+    ${HEIMER_SRC_ROOT}/view/item_filter.cpp
+    ${HEIMER_SRC_ROOT}/view/magic_zoom.cpp
+    ${HEIMER_SRC_ROOT}/view/main_window.cpp
+    ${HEIMER_SRC_ROOT}/view/menus/edge_context_menu.cpp
+    ${HEIMER_SRC_ROOT}/view/menus/main_context_menu.cpp
+    ${HEIMER_SRC_ROOT}/view/menus/main_menu.cpp
+    ${HEIMER_SRC_ROOT}/view/menus/recent_files_menu.cpp
+    ${HEIMER_SRC_ROOT}/view/menus/tool_bar.cpp
+    ${HEIMER_SRC_ROOT}/view/menus/widget_factory.cpp
+    ${HEIMER_SRC_ROOT}/view/mouse_action.cpp
+    ${HEIMER_SRC_ROOT}/view/node_selection_group.cpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/edge.cpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/edge_dot.cpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/edge_text_edit.cpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/graphics_factory.cpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/node.cpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/node_handle.cpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/scene_item_base.cpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/text_edit.cpp
+    ${HEIMER_SRC_ROOT}/view/widgets/font_button.cpp
+    ${HEIMER_SRC_ROOT}/view/widgets/status_label.cpp
 )
 
 # Set sources for the lib (needed only for the IDE)
 set(HEIMER_LIB_HDR
-    application/application.hpp
-    application/application_service.hpp
-    application/control_strategy.hpp
-    application/editor_service.hpp
-    application/hash_seed.hpp
-    application/progress_manager.hpp
-    application/recent_files_manager.hpp
-    application/service_container.hpp
-    application/settings_proxy.hpp
-    application/state_machine.hpp
-    application/user_exception.hpp
-    application/version.hpp
-    common/constants.hpp
-    common/test_mode.hpp
-    common/types.hpp
-    common/utils.hpp
-    domain/copy_context.hpp
-    domain/graph.hpp
-    domain/image.hpp
-    domain/image_manager.hpp
-    domain/layout_optimizer.hpp
-    domain/mind_map_data.hpp
-    domain/mind_map_data_base.hpp
-    domain/mind_map_stats.hpp
-    domain/undo_stack.hpp
-    infra/export_params.hpp
-    infra/io/alz_file_io.hpp
-    infra/io/alz_file_io_version.hpp
-    infra/io/alz_file_io_worker.hpp
-    infra/io/file_exception.hpp
-    infra/io/file_io.hpp
-    infra/io/xml_reader.hpp
-    infra/io/xml_writer.hpp
-    infra/settings.hpp
-    infra/version_checker.hpp
-    view/dialogs/about_dialog.hpp
-    view/dialogs/color_dialog.hpp
-    view/dialogs/color_setting_button.hpp
-    view/dialogs/defaults_tab.hpp
-    view/dialogs/editing_tab.hpp
-    view/dialogs/effects_tab.hpp
-    view/dialogs/export/png_export_dialog.hpp
-    view/dialogs/export/svg_export_dialog.hpp
-    view/dialogs/layout_optimization_dialog.hpp
-    view/dialogs/scene_color_dialog.hpp
-    view/dialogs/settings_dialog.hpp
-    view/dialogs/settings_tab_base.hpp
-    view/dialogs/spinner_dialog.hpp
-    view/dialogs/whats_new_dialog.hpp
-    view/dialogs/widget_factory.hpp
-    view/edge_action.hpp
-    view/edge_selection_group.hpp
-    view/editor_scene.hpp
-    view/editor_view.hpp
-    view/grid.hpp
-    view/item_filter.hpp
-    view/magic_zoom.hpp
-    view/main_window.hpp
-    view/menus/edge_context_menu.hpp
-    view/menus/main_context_menu.hpp
-    view/menus/main_menu.hpp
-    view/menus/recent_files_menu.hpp
-    view/menus/tool_bar.hpp
-    view/menus/widget_factory.hpp
-    view/mouse_action.hpp
-    view/node_action.hpp
-    view/node_selection_group.hpp
-    view/scene_items/edge.hpp
-    view/scene_items/edge_dot.hpp
-    view/scene_items/edge_model.hpp
-    view/scene_items/edge_point.hpp
-    view/scene_items/edge_text_edit.hpp
-    view/scene_items/graphics_factory.hpp
-    view/scene_items/layers.hpp
-    view/scene_items/node.hpp
-    view/scene_items/node_handle.hpp
-    view/scene_items/node_model.hpp
-    view/scene_items/scene_item_base.hpp
-    view/scene_items/text_edit.hpp
-    view/shadow_effect_params.hpp
-    view/widgets/font_button.hpp
-    view/widgets/status_label.hpp
+    ${HEIMER_SRC_ROOT}/application/application.hpp
+    ${HEIMER_SRC_ROOT}/application/application_service.hpp
+    ${HEIMER_SRC_ROOT}/application/control_strategy.hpp
+    ${HEIMER_SRC_ROOT}/application/editor_service.hpp
+    ${HEIMER_SRC_ROOT}/application/hash_seed.hpp
+    ${HEIMER_SRC_ROOT}/application/progress_manager.hpp
+    ${HEIMER_SRC_ROOT}/application/recent_files_manager.hpp
+    ${HEIMER_SRC_ROOT}/application/service_container.hpp
+    ${HEIMER_SRC_ROOT}/application/settings_proxy.hpp
+    ${HEIMER_SRC_ROOT}/application/state_machine.hpp
+    ${HEIMER_SRC_ROOT}/application/user_exception.hpp
+    ${HEIMER_SRC_ROOT}/application/version.hpp
+    ${HEIMER_SRC_ROOT}/common/constants.hpp
+    ${HEIMER_SRC_ROOT}/common/test_mode.hpp
+    ${HEIMER_SRC_ROOT}/common/types.hpp
+    ${HEIMER_SRC_ROOT}/common/utils.hpp
+    ${HEIMER_SRC_ROOT}/domain/copy_context.hpp
+    ${HEIMER_SRC_ROOT}/domain/graph.hpp
+    ${HEIMER_SRC_ROOT}/domain/image.hpp
+    ${HEIMER_SRC_ROOT}/domain/image_manager.hpp
+    ${HEIMER_SRC_ROOT}/domain/layout_optimizer.hpp
+    ${HEIMER_SRC_ROOT}/domain/mind_map_data.hpp
+    ${HEIMER_SRC_ROOT}/domain/mind_map_data_base.hpp
+    ${HEIMER_SRC_ROOT}/domain/mind_map_stats.hpp
+    ${HEIMER_SRC_ROOT}/domain/undo_stack.hpp
+    ${HEIMER_SRC_ROOT}/infra/export_params.hpp
+    ${HEIMER_SRC_ROOT}/infra/io/alz_file_io.hpp
+    ${HEIMER_SRC_ROOT}/infra/io/alz_file_io_version.hpp
+    ${HEIMER_SRC_ROOT}/infra/io/alz_file_io_worker.hpp
+    ${HEIMER_SRC_ROOT}/infra/io/file_exception.hpp
+    ${HEIMER_SRC_ROOT}/infra/io/file_io.hpp
+    ${HEIMER_SRC_ROOT}/infra/io/xml_reader.hpp
+    ${HEIMER_SRC_ROOT}/infra/io/xml_writer.hpp
+    ${HEIMER_SRC_ROOT}/infra/settings.hpp
+    ${HEIMER_SRC_ROOT}/infra/version_checker.hpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/about_dialog.hpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/color_dialog.hpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/color_setting_button.hpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/defaults_tab.hpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/editing_tab.hpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/effects_tab.hpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/export/png_export_dialog.hpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/export/svg_export_dialog.hpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/layout_optimization_dialog.hpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/scene_color_dialog.hpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/settings_dialog.hpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/settings_tab_base.hpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/spinner_dialog.hpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/whats_new_dialog.hpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/widget_factory.hpp
+    ${HEIMER_SRC_ROOT}/view/edge_action.hpp
+    ${HEIMER_SRC_ROOT}/view/edge_selection_group.hpp
+    ${HEIMER_SRC_ROOT}/view/editor_scene.hpp
+    ${HEIMER_SRC_ROOT}/view/editor_view.hpp
+    ${HEIMER_SRC_ROOT}/view/grid.hpp
+    ${HEIMER_SRC_ROOT}/view/item_filter.hpp
+    ${HEIMER_SRC_ROOT}/view/magic_zoom.hpp
+    ${HEIMER_SRC_ROOT}/view/main_window.hpp
+    ${HEIMER_SRC_ROOT}/view/menus/edge_context_menu.hpp
+    ${HEIMER_SRC_ROOT}/view/menus/main_context_menu.hpp
+    ${HEIMER_SRC_ROOT}/view/menus/main_menu.hpp
+    ${HEIMER_SRC_ROOT}/view/menus/recent_files_menu.hpp
+    ${HEIMER_SRC_ROOT}/view/menus/tool_bar.hpp
+    ${HEIMER_SRC_ROOT}/view/menus/widget_factory.hpp
+    ${HEIMER_SRC_ROOT}/view/mouse_action.hpp
+    ${HEIMER_SRC_ROOT}/view/node_action.hpp
+    ${HEIMER_SRC_ROOT}/view/node_selection_group.hpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/edge.hpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/edge_dot.hpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/edge_model.hpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/edge_point.hpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/edge_text_edit.hpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/graphics_factory.hpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/layers.hpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/node.hpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/node_handle.hpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/node_model.hpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/scene_item_base.hpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/text_edit.hpp
+    ${HEIMER_SRC_ROOT}/view/shadow_effect_params.hpp
+    ${HEIMER_SRC_ROOT}/view/widgets/font_button.hpp
+    ${HEIMER_SRC_ROOT}/view/widgets/status_label.hpp
 )
 
 # Set sources for the app
@@ -216,9 +218,9 @@ endif()
 if(UNIX)
     set(DesktopFileSourcePath)
     if(USC)
-        set(DesktopFileSourcePath ${CMAKE_SOURCE_DIR}/src/heimer.desktop.opt.in)
+        set(DesktopFileSourcePath ${HEIMER_SRC_ROOT}/heimer.desktop.opt.in)
     else()
-        set(DesktopFileSourcePath ${CMAKE_SOURCE_DIR}/src/heimer.desktop.in)
+        set(DesktopFileSourcePath ${HEIMER_SRC_ROOT}/heimer.desktop.in)
     endif()
     add_custom_target(desktop-file ALL
         COMMAND cmake -E copy ${DesktopFileSourcePath}
@@ -248,6 +250,24 @@ else()
             COMMAND ${CLANG_FORMAT_EXECUTABLE} -i ${SOURCE_FILE}
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             COMMENT "Formatting ${SOURCE_FILE} with clang-format"
+        )
+    endforeach()
+endif()
+
+# Specify the path to lupdate executable
+set(LUPDATE_COMMAND "lupdate")
+find_program(LUPDATE_EXECUTABLE ${LUPDATE_COMMAND})
+if(NOT LUPDATE_EXECUTABLE)
+    message(WARNING "${LUPDATE_COMMAND} not found. The 'update_translations' target will not be available.")
+else()
+    add_custom_target(update_translations)
+    foreach(TS_FILE ${TS_FILES})
+        get_filename_component(TS_FILE_NAME ${TS_FILE} NAME)
+        add_custom_command(
+            TARGET update_translations
+            COMMAND ${LUPDATE_EXECUTABLE}
+            ARGS ${HEIMER_LIB_SRC} -ts ${TS_FILE}
+            COMMENT "Updating translation source ${TS_FILE_NAME}"
         )
     endforeach()
 endif()

@@ -57,6 +57,11 @@ QRectF EditorScene::calculateZoomToFitRectangle(bool isForExport) const
     return MagicZoom::calculateRectangleByItems(items(), isForExport);
 }
 
+QRectF EditorScene::calculateZoomToFitRectangleByNodes(const std::vector<NodeP> & nodes) const
+{
+    return MagicZoom::calculateRectangleByNodes(nodes, false);
+}
+
 bool EditorScene::containsAll() const
 {
     const auto testMarginX = sceneRect().width() * Constants::Scene::ADJUSTMENT_MARGIN;

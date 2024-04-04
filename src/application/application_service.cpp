@@ -984,7 +984,11 @@ void ApplicationService::zoomForExport()
 void ApplicationService::zoomToFit()
 {
     if (hasNodes()) {
-        m_editorView->zoomToFit(m_editorScene->calculateZoomToFitRectangle());
+        if (auto && selectedNodes = m_editorService->selectedNodes(); !selectedNodes.empty()) {
+            m_editorView->zoomToFit(m_editorScene->calculateZoomToFitRectangleByNodes(selectedNodes));
+        } else {
+            m_editorView->zoomToFit(m_editorScene->calculateZoomToFitRectangle());
+        }
     }
 }
 

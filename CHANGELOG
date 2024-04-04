@@ -5,6 +5,8 @@ Release date:
 
 New features:
 
+* Make zoom-to-fit take possibly selected nodes into account
+
 Bug fixes:
 
 * Fix default image size in PNG export dialog

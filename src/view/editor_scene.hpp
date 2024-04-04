@@ -33,6 +33,8 @@ public:
 
     QRectF calculateZoomToFitRectangle(bool isForExport = false) const;
 
+    QRectF calculateZoomToFitRectangleByNodes(const std::vector<NodeP> & nodes) const;
+
     //! Checks if the graphics scene already has the given edge item added
     bool hasEdge(NodeR node0, NodeR node1);
 

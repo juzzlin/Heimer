@@ -438,7 +438,7 @@ void Application::showImageFileDialog()
 void Application::showPngExportDialog()
 {
     m_pngExportDialog->setCurrentMindMapFileName(m_sc->applicationService()->fileName());
-    m_pngExportDialog->setImageSize(m_sc->applicationService()->zoomForExport(true));
+    m_pngExportDialog->setDefaultImageSize(m_sc->applicationService()->calculateExportImageSize());
     m_pngExportDialog->exec();
 
     // Doesn't matter if canceled or not

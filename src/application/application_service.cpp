@@ -966,15 +966,19 @@ void ApplicationService::zoomOut()
     m_editorView->zoom(1.0 / std::pow(Constants::View::ZOOM_SENSITIVITY, 2));
 }
 
-QSize ApplicationService::zoomForExport(bool dryRun)
+QSize ApplicationService::calculateExportImageSize()
+{
+    unselectSelectedNode();
+    clearSelectionGroups();
+    return m_editorView->mapFromScene(m_editorScene->calculateZoomToFitRectangle(true)).boundingRect().size();
+}
+
+void ApplicationService::zoomForExport()
 {
     unselectSelectedNode();
     clearSelectionGroups();
     const auto zoomToFitRectangle = m_editorScene->calculateZoomToFitRectangle(true);
-    if (!dryRun) {
-        m_editorScene->setSceneRect(zoomToFitRectangle);
-    }
-    return zoomToFitRectangle.size().toSize();
+    m_editorScene->setSceneRect(zoomToFitRectangle);
 }
 
 void ApplicationService::zoomToFit()

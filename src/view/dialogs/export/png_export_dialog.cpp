@@ -64,7 +64,7 @@ PngExportDialog::PngExportDialog(QWidget & parent)
     connect(m_imageWidthSpinBox, spinBoxIntSignal, this, [&](int value) {
         if (m_enableSpinBoxConnection) {
             m_enableSpinBoxConnection = false;
-            m_imageHeightSpinBox->setValue(static_cast<int>(static_cast<float>(value) / m_aspectRatio));
+            m_imageHeightSpinBox->setValue(static_cast<int>(static_cast<double>(value) / m_aspectRatio));
             m_enableSpinBoxConnection = true;
         }
     });
@@ -72,7 +72,7 @@ PngExportDialog::PngExportDialog(QWidget & parent)
     connect(m_imageHeightSpinBox, spinBoxIntSignal, this, [&](int value) {
         if (m_enableSpinBoxConnection) {
             m_enableSpinBoxConnection = false;
-            m_imageWidthSpinBox->setValue(static_cast<int>(static_cast<float>(value) * m_aspectRatio));
+            m_imageWidthSpinBox->setValue(static_cast<int>(static_cast<double>(value) * m_aspectRatio));
             m_enableSpinBoxConnection = true;
         }
     });
@@ -98,18 +98,24 @@ void PngExportDialog::setCurrentMindMapFileName(QString fileName)
     }
 }
 
-void PngExportDialog::setImageSize(QSize size)
+void PngExportDialog::setDefaultImageSize(QSize size)
 {
     m_enableSpinBoxConnection = false;
 
-    // Set a bit bigger size as default. With the original
-    // size the result would be a bit blurry.
-    size *= 2;
+    m_aspectRatio = static_cast<double>(size.width()) / static_cast<double>(size.height());
 
-    m_imageWidthSpinBox->setValue(size.width());
-    m_imageHeightSpinBox->setValue(size.height());
-
-    m_aspectRatio = static_cast<float>(size.width()) / static_cast<float>(size.height());
+    if (size.height() <= m_maxImageSize && size.width() <= m_maxImageSize) {
+        m_imageWidthSpinBox->setValue(size.width());
+        m_imageHeightSpinBox->setValue(size.height());
+    } else {
+        if (size.height() > size.width()) {
+            m_imageHeightSpinBox->setValue(m_maxImageSize);
+            m_imageWidthSpinBox->setValue(static_cast<int>(m_maxImageSize * m_aspectRatio));
+        } else {
+            m_imageWidthSpinBox->setValue(m_maxImageSize);
+            m_imageHeightSpinBox->setValue(static_cast<int>(m_maxImageSize / m_aspectRatio));
+        }
+    }
 
     m_enableSpinBoxConnection = true;
 }
@@ -139,10 +145,10 @@ void PngExportDialog::validate()
     m_progressBar->setValue(0);
 
     m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled( //
-      m_imageHeightSpinBox->value() > m_minImageSize && // Intentionally open intervals
-      m_imageHeightSpinBox->value() < m_maxImageSize && //
-      m_imageWidthSpinBox->value() > m_minImageSize && //
-      m_imageWidthSpinBox->value() < m_maxImageSize && //
+      m_imageHeightSpinBox->value() >= m_minImageSize && //
+      m_imageHeightSpinBox->value() <= m_maxImageSize && //
+      m_imageWidthSpinBox->value() >= m_minImageSize && //
+      m_imageWidthSpinBox->value() <= m_maxImageSize && //
       !m_fileNameLineEdit->text().isEmpty());
 
     m_fileNameWithExtension = m_fileNameLineEdit->text();

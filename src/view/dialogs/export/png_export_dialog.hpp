@@ -34,12 +34,11 @@ class PngExportDialog : public QDialog
     Q_OBJECT
 
 public:
-    //! Constructor.
     explicit PngExportDialog(QWidget & parent);
 
     void setCurrentMindMapFileName(QString fileName);
 
-    void setImageSize(QSize size);
+    void setDefaultImageSize(QSize size);
 
     int exec() override;
 
@@ -76,13 +75,13 @@ private:
 
     bool m_enableSpinBoxConnection = true;
 
-    float m_aspectRatio = 1.0;
+    double m_aspectRatio = 1.0;
 
     const QString m_pngFileExtension = ".png";
 
-    const int m_minImageSize = 0;
+    const int m_minImageSize = 1;
 
-    const int m_maxImageSize = 99999;
+    const int m_maxImageSize = 16'384;
 };
 
 } // namespace Dialogs::Export

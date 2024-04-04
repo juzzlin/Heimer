@@ -220,7 +220,9 @@ public slots:
 
     void setTextSize(int textSize);
 
-    QSize zoomForExport(bool dryRun = false);
+    QSize calculateExportImageSize();
+
+    void zoomForExport();
 
     void zoomToFit();
 

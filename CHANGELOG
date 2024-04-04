@@ -7,6 +7,10 @@ New features:
 
 Bug fixes:
 
+* Fix default image size in PNG export dialog
+  - Set the default image size to current view size
+  - Set a more sensible upper limit for the image size
+
 Other:
 
 4.4.0

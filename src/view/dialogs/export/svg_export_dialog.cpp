@@ -102,7 +102,7 @@ void SvgExportDialog::validate()
         return;
     }
 
-    if (!m_fileNameWithExtension.toLower().endsWith(m_svgFileExtension)) {
+    if (!m_fileNameWithExtension.endsWith(m_svgFileExtension, Qt::CaseInsensitive)) {
         m_fileNameWithExtension += m_svgFileExtension;
     }
 }

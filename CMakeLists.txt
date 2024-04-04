@@ -99,15 +99,20 @@ add_definitions(-DAPPLICATION_VERSION="${APPLICATION_VERSION}")
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(QT_MIN_VER 5.9.5) # The version in Ubuntu 18.04 LTS
 if (BUILD_WITH_QT6)
+    set(QT_MINIMUM_VERSION 6.2.4)
     find_package(QT NAMES Qt6 COMPONENTS Core REQUIRED)
     find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Xml Widgets LinguistTools Svg Test Network REQUIRED)
 else()
+    set(QT_MINIMUM_VERSION 5.9.5)
     find_package(QT NAMES Qt5 COMPONENTS Core REQUIRED)
     find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Xml Widgets LinguistTools Svg Test Network REQUIRED)
 endif()
 message(STATUS "Qt version found  : ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_PATCH}\n")
+if(QT_VERSION VERSION_LESS QT_MINIMUM_VERSION)
+    message(FATAL_ERROR "\nMinimum supported Qt version: ${QT_MINIMUM_VERSION}\n")
+endif()
+
 # Install paths depend on the build type and target platform
 setup_install_targets()
 

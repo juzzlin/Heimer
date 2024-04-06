@@ -20,6 +20,7 @@
 #include <QGraphicsItem>
 #include <QImage>
 #include <QObject>
+#include <QPropertyAnimation>
 
 #include <map>
 #include <vector>
@@ -74,6 +75,10 @@ public:
     void enableShadowEffect(bool enable) override;
 
     static std::pair<EdgePoint, EdgePoint> getNearestEdgePoints(NodeCR node1, NodeCR node2);
+
+    void hideHandlesWithAnimation();
+
+    bool pointBeyondHideHandlesDistance(const QPointF & point) const;
 
     void highlightText(const QString & text);
 
@@ -153,6 +158,10 @@ private:
 
     void initTextField();
 
+    void raiseBody();
+
+    void raiseHandles();
+
     void removeHandles();
 
     void updateEdgeLines();
@@ -196,6 +205,8 @@ private:
     const QColor m_textEditBackgroundColorDark { 0x00, 0x00, 0x00, 0x10 };
 
     const QColor m_textEditBackgroundColorLight { 0xff, 0xff, 0xff, 0x10 };
+
+    QPropertyAnimation m_raiseAnimation;
 };
 
 } // namespace SceneItems

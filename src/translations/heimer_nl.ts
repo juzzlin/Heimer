@@ -334,12 +334,12 @@
 <context>
     <name>Dialogs::EditingTab</name>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="53"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="60"/>
         <source>Selecting Nodes</source>
         <translation>Knopen selecteren</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="54"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="32"/>
         <source>Select node group by intersection</source>
         <translation>Knoopgroep selecteren door intersectie</translation>
     </message>
@@ -348,47 +348,57 @@
         <translation type="vanished">Automatisch opslaan</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="60"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="68"/>
         <source>Autosave feature will automatically save your mind map on every modification after it has been initially saved once.</source>
         <translation>Automatisch opslaan slaat je mindmap op telkens als je een aanpassing hebt gedaan.</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="59"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="36"/>
         <source>Enable autosave</source>
         <translation>Automatisch opslaan inschakelen</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="66"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="33"/>
+        <source>Raise node on mouse hover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../view/dialogs/editing_tab.cpp" line="64"/>
+        <source>Moving mouse cursor on a zoomed-out node will raise it for easier editing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../view/dialogs/editing_tab.cpp" line="73"/>
         <source>Autoload feature will automatically load your recent mind map on application start.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="65"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="35"/>
         <source>Enable autoload</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="55"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="61"/>
         <source>The rectangle selection will select nodes also by intersection instead of inclusion only.</source>
         <translation>De rechthoekselectie selecteert knopen per intersectie.</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="58"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="67"/>
         <source>File Operations</source>
         <translation>Bestandsacties</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="69"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="76"/>
         <source>Controls</source>
         <translation>Bediening</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="71"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="77"/>
         <source>Scroll the view with a modifier key pressed and select a group of items without a modifier key being pressed.</source>
         <translation>Verschuif de weergave door een bewerktoets ingedrukt te houden en selecteer een groep items zonder indrukken.</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="70"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="34"/>
         <source>Inverted controls</source>
         <translation>Omgekeerde bediening</translation>
     </message>
@@ -1463,27 +1473,27 @@
 <context>
     <name>SceneItems::NodeHandle</name>
     <message>
-        <location filename="../view/scene_items/node_handle.cpp" line="60"/>
+        <location filename="../view/scene_items/node_handle.cpp" line="57"/>
         <source>Drag to connect or create a child node</source>
         <translation>Versleep om een onderliggende knoop te maken of verbinden</translation>
     </message>
     <message>
-        <location filename="../view/scene_items/node_handle.cpp" line="62"/>
+        <location filename="../view/scene_items/node_handle.cpp" line="59"/>
         <source>Move the node</source>
         <translation>Knoop verplaatsen</translation>
     </message>
     <message>
-        <location filename="../view/scene_items/node_handle.cpp" line="64"/>
+        <location filename="../view/scene_items/node_handle.cpp" line="61"/>
         <source>Select node color</source>
         <translation>Knoopkleur instellen</translation>
     </message>
     <message>
-        <location filename="../view/scene_items/node_handle.cpp" line="66"/>
+        <location filename="../view/scene_items/node_handle.cpp" line="63"/>
         <source>Select text color</source>
         <translation>Tekstkleur instellen</translation>
     </message>
     <message>
-        <location filename="../view/scene_items/node_handle.cpp" line="304"/>
+        <location filename="../view/scene_items/node_handle.cpp" line="301"/>
         <source>A</source>
         <translation>A</translation>
     </message>

@@ -16,6 +16,7 @@
 #include "node.hpp"
 
 #include "../../../common/test_mode.hpp"
+#include "../../application/application_service.hpp"
 #include "../../application/service_container.hpp"
 #include "../../application/settings_proxy.hpp"
 #include "../../common/constants.hpp"
@@ -30,6 +31,7 @@
 
 #include "simple_logger.hpp"
 
+#include <QDebug>
 #include <QFont>
 #include <QGraphicsEffect>
 #include <QGraphicsScene>
@@ -63,6 +65,8 @@ Node::Node()
     createEdgePoints();
 
     createHandles();
+
+    updateHandlePositions();
 
     initTextField();
 
@@ -136,6 +140,23 @@ void Node::removeFromScene()
     }
 }
 
+void Node::raiseBody()
+{
+    const auto currentSizeRatio = SC::instance().applicationService()->normalizedSizeInView(boundingRect()).width();
+    const auto targetSizeRatio = 0.1;
+    const auto targetScale = currentSizeRatio < targetSizeRatio ? targetSizeRatio / currentSizeRatio : 1.1;
+    raiseWithAnimation(targetScale);
+    setZValue(static_cast<int>(Layers::Last) + static_cast<int>(Layers::Node));
+}
+
+void Node::raiseHandles()
+{
+    for (auto && handle : m_handles) {
+        handle.second->raiseWithAnimation(targetScale());
+        handle.second->setZValue(static_cast<int>(Layers::Last) + static_cast<int>(Layers::NodeHandle));
+    }
+}
+
 void Node::removeHandles()
 {
     for (auto && handle : m_handles) {
@@ -170,7 +191,7 @@ void Node::adjustSize()
 
 QRectF Node::boundingRect() const
 {
-    const auto size = m_nodeModel->size;
+    const auto size = m_nodeModel->size * targetScale();
     return { -size.width() / 2, -size.height() / 2, size.width(), size.height() };
 }
 
@@ -217,8 +238,6 @@ void Node::createHandles()
     m_handles[NodeHandle::Role::TextColor] = new NodeHandle(*this, NodeHandle::Role::TextColor, m_handleRadiusSmall);
 
     m_handles[NodeHandle::Role::Move] = new NodeHandle(*this, NodeHandle::Role::Move, m_handleRadiusMedium);
-
-    updateHandlePositions();
 }
 
 QRectF Node::expandedTextEditRect() const
@@ -255,6 +274,25 @@ std::pair<EdgePoint, EdgePoint> Node::getNearestEdgePoints(NodeCR node1, NodeCR 
     return bestPair;
 }
 
+bool Node::pointBeyondHideHandlesDistance(const QPointF & point) const
+{
+    const auto hhd = Constants::Node::HIDE_HANDLES_DISTANCE * targetScale();
+    return point.x() > pos().x() + hhd + boundingRect().width() / 2 || //
+      point.x() < pos().x() - hhd - boundingRect().width() / 2 || //
+      point.y() > pos().y() + hhd + boundingRect().height() / 2 || //
+      point.y() < pos().y() - hhd - boundingRect().height() / 2;
+}
+
+void Node::hideHandlesWithAnimation()
+{
+    if (m_settingsProxy->raiseNodeOnMouseHover()) {
+        lowerWithAnimation();
+        setZValue(static_cast<int>(Layers::Node));
+    }
+
+    setHandlesVisible(false);
+}
+
 void Node::highlightText(const QString & text)
 {
     if (!TestMode::enabled()) {
@@ -275,12 +313,23 @@ void Node::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 
     setHandlesVisible(true);
 
+    if (m_settingsProxy->raiseNodeOnMouseHover()) {
+        raiseBody();
+        raiseHandles();
+        updateHandlePositions();
+    }
+
     QGraphicsItem::hoverEnterEvent(event);
 }
 
 void Node::hoverMoveEvent(QGraphicsSceneHoverEvent * event)
 {
     setHandlesVisible(true);
+
+    if (m_settingsProxy->raiseNodeOnMouseHover()) {
+        raiseHandles();
+        updateHandlePositions();
+    }
 
     QGraphicsItem::hoverMoveEvent(event);
 }
@@ -534,13 +583,13 @@ void Node::updateHandlePositions()
 
     const auto width = m_nodeModel->size.width();
 
-    m_handles[NodeHandle::Role::ConnectOrCreate]->setPos(pos() + QPointF { 0, height * 0.5 });
+    m_handles[NodeHandle::Role::ConnectOrCreate]->setPos(pos() + QPointF { 0, height * 0.5 } * targetScale());
 
-    m_handles[NodeHandle::Role::NodeColor]->setPos(pos() + QPointF { width * 0.5, height * 0.5 - m_handleRadiusSmall * 0.5 });
+    m_handles[NodeHandle::Role::NodeColor]->setPos(pos() + QPointF { width * 0.5, height * 0.5 - m_handleRadiusSmall * 0.5 } * targetScale());
 
-    m_handles[NodeHandle::Role::TextColor]->setPos(pos() + QPointF { width * 0.5, -height * 0.5 + m_handleRadiusSmall * 0.5 });
+    m_handles[NodeHandle::Role::TextColor]->setPos(pos() + QPointF { width * 0.5, -height * 0.5 + m_handleRadiusSmall * 0.5 } * targetScale());
 
-    m_handles[NodeHandle::Role::Move]->setPos(pos() + QPointF { -width * 0.5 - m_handleRadiusSmall * 0.15, -height * 0.5 - m_handleRadiusSmall * 0.15 });
+    m_handles[NodeHandle::Role::Move]->setPos(pos() + QPointF { -width * 0.5 - m_handleRadiusSmall * 0.15, -height * 0.5 - m_handleRadiusSmall * 0.15 } * targetScale());
 }
 
 NodeP Node::lastHoveredNode()

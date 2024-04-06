@@ -17,6 +17,7 @@
 #define EDGE_TEXT_EDIT_HPP
 
 #include "../../common/types.hpp"
+#include "scene_item_base.hpp"
 #include "text_edit.hpp"
 
 #include <QPropertyAnimation>

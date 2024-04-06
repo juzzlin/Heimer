@@ -21,11 +21,12 @@ namespace SceneItems {
 enum class Layers
 {
     Edge = 1,
+    Node = 10,
     EdgeDot = 20,
-    EdgeDummyLabel = 24,
-    EdgeLabel = 45,
+    EdgeDummyLabel = 25,
     NodeHandle = 30,
-    Node = 10
+    EdgeLabel = 45,
+    Last = 50
 };
 
 } // namespace SceneItems

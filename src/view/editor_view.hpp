@@ -115,6 +115,16 @@ private:
 
     void finishRubberBand();
 
+    void handleCreateOrConnectNodeAction();
+
+    void handleMoveNodeAction();
+
+    void handleMouseMoveActions();
+
+    void hideHandlesOfLastHoveredNode();
+
+    void updateMousePosition(QMouseEvent & event);
+
     void handleMousePressEventOnBackground(QMouseEvent & event);
 
     //! \returns true if accepted.
@@ -172,9 +182,9 @@ private:
 
     QAction * m_deleteEdgeAction = nullptr;
 
-    QPointF m_pos;
+    QPointF m_mousePositionOnView;
 
-    QPointF m_mappedPos;
+    QPointF m_mousePositionOnScene;
 
     double m_scale = 1.0;
 

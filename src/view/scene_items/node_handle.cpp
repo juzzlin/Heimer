@@ -15,7 +15,6 @@
 
 #include "node_handle.hpp"
 
-#include "../../common/constants.hpp"
 #include "../../common/utils.hpp"
 #include "graphics_factory.hpp"
 #include "layers.hpp"
@@ -30,17 +29,15 @@ NodeHandle::NodeHandle(NodeR parentNode, NodeHandle::Role role, int radius)
   : m_parentNode(parentNode)
   , m_role(role)
   , m_radius(radius)
-  , m_sizeAnimation(this, "scale")
-  , m_opacityAnimation(this, "opacity")
   , m_size({ m_radius * 2, m_radius * 2 })
 {
     setAcceptHoverEvents(true);
 
-    m_sizeAnimation.setDuration(Constants::Node::HANDLE_ANIMATION_DURATION);
-    m_opacityAnimation.setDuration(Constants::Node::HANDLE_ANIMATION_DURATION);
+    setAnimationDuration(m_handleAnimationDuration);
+    setAnimationOpacity(m_handleOpacity);
 
     m_visibilityTimer.setSingleShot(true);
-    m_visibilityTimer.setInterval(Constants::Node::HANDLE_VISIBILITY_DURATION);
+    m_visibilityTimer.setInterval(m_handleVisibilityDuration);
 
     connect(&m_visibilityTimer, &QTimer::timeout, this, [=] {
         setVisible(false);
@@ -327,30 +324,16 @@ void NodeHandle::setVisible(bool visible)
             QGraphicsItem::setVisible(true);
 
             m_visible = true;
-            m_sizeAnimation.setStartValue(0.0);
-            m_sizeAnimation.setEndValue(1.0);
-            m_sizeAnimation.stop();
-            m_sizeAnimation.start();
 
-            m_opacityAnimation.setStartValue(0.0);
-            m_opacityAnimation.setEndValue(Constants::Node::HANDLE_OPACITY);
-            m_opacityAnimation.stop();
-            m_opacityAnimation.start();
+            appearWithAnimation();
 
             m_visibilityTimer.start();
         }
     } else {
         if (m_visible) {
             m_visible = false;
-            m_sizeAnimation.setStartValue(scale());
-            m_sizeAnimation.setEndValue(0.0);
-            m_sizeAnimation.stop();
-            m_sizeAnimation.start();
 
-            m_opacityAnimation.setStartValue(opacity());
-            m_opacityAnimation.setEndValue(0.0);
-            m_opacityAnimation.stop();
-            m_opacityAnimation.start();
+            disappearWithAnimation();
         }
     }
 }

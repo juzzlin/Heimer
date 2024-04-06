@@ -29,6 +29,7 @@ SettingsProxy::SettingsProxy()
   , m_edgeWidth(Settings::Generic::getNumber(m_defaultsSettingGroup, m_edgeWidthSettingKey, Constants::Settings::defaultEdgeWidth()))
   , m_invertedControls(Settings::Generic::getBoolean(m_editingSettingGroup, m_invertedControlsSettingKey, false))
   , m_reversedEdgeDirection(Settings::Custom::loadReversedEdgeDirection(false))
+  , m_raiseNodeOnMouseHover(Settings::Generic::getBoolean(m_editingSettingGroup, m_raiseNodeOnMouseHoverKey, true))
   , m_selectNodeGroupByIntersection(Settings::Custom::loadSelectNodeGroupByIntersection())
   , m_textSize(Settings::Generic::getNumber(m_defaultsSettingGroup, m_textSizeSettingKey, Constants::MindMap::Defaults::TEXT_SIZE))
   , m_font(Settings::Generic::getFont(m_defaultsSettingGroup, m_fontSettingKey, {}))
@@ -221,6 +222,19 @@ void SettingsProxy::setReversedEdgeDirection(bool reversedEdgeDirection)
     if (m_reversedEdgeDirection != reversedEdgeDirection) {
         m_reversedEdgeDirection = reversedEdgeDirection;
         Settings::Custom::saveReversedEdgeDirection(reversedEdgeDirection);
+    }
+}
+
+bool SettingsProxy::raiseNodeOnMouseHover() const
+{
+    return m_raiseNodeOnMouseHover;
+}
+
+void SettingsProxy::setRaiseNodeOnMouseHover(bool raiseNodeOnMouseHover)
+{
+    if (m_raiseNodeOnMouseHover != raiseNodeOnMouseHover) {
+        m_raiseNodeOnMouseHover = raiseNodeOnMouseHover;
+        Settings::Generic::setBoolean(m_editingSettingGroup, m_raiseNodeOnMouseHoverKey, raiseNodeOnMouseHover);
     }
 }
 

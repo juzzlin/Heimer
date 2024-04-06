@@ -21,17 +21,15 @@
 #include <QTimer>
 
 #include "../../common/types.hpp"
+#include "scene_item_base.hpp"
 
 namespace SceneItems {
 
 class Node;
 
-class NodeHandle : public QObject, public QGraphicsItem
+class NodeHandle : public SceneItemBase
 {
     Q_OBJECT
-    Q_PROPERTY(qreal scale READ scale WRITE setScale)
-    Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
-    Q_INTERFACES(QGraphicsItem)
 
 public:
     enum class Role
@@ -99,15 +97,17 @@ private:
 
     QPen getForegroundPen() const;
 
+    const double m_handleOpacity = 0.75;
+
+    const int m_handleAnimationDuration = 150;
+
+    const int m_handleVisibilityDuration = 2500;
+
     NodeR m_parentNode;
 
     Role m_role;
 
     int m_radius;
-
-    QPropertyAnimation m_sizeAnimation;
-
-    QPropertyAnimation m_opacityAnimation;
 
     QSize m_size;
 

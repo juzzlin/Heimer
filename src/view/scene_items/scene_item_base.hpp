@@ -27,19 +27,42 @@ class SceneItemBase : public QObject, public QGraphicsItem
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)
     Q_PROPERTY(qreal scale READ scale WRITE setScale)
+    Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 
 public:
     SceneItemBase();
 
     virtual ~SceneItemBase() override;
 
-    virtual void hideWithAnimation();
+    virtual void appearWithAnimation();
 
-    virtual void removeFromScene();
+    virtual void disappearWithAnimation();
 
     virtual void enableShadowEffect(bool enable);
 
+    virtual void removeFromScene();
+
+    virtual void removeFromSceneWithAnimation();
+
+    virtual void raiseWithAnimation(double targetScale);
+
+    virtual void lowerWithAnimation();
+
+    void setAnimationDuration(int durationMs);
+
+    void setAnimationOpacity(qreal newAnimationOpacity);
+
+    qreal targetScale() const;
+
 private:
+    int m_animationDuration = 75;
+
+    qreal m_animationOpacity = 1.0;
+
+    qreal m_targetScale = 1.0;
+
+    QPropertyAnimation m_opacityAnimation;
+
     QPropertyAnimation m_scaleAnimation;
 };
 

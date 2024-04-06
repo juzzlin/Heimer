@@ -7,6 +7,10 @@ New features:
 
 * Make zoom-to-fit take possibly selected nodes into account
 
+* Fix GitHub Issue #165: Keep node handles usable
+  - Nodes are now raised and zoomed in on mouse hover
+  - This behavior can be disabled by Settings => Editing => Raise node on mouse hover
+
 Bug fixes:
 
 * Fix default image size in PNG export dialog

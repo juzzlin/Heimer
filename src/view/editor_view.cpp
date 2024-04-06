@@ -247,52 +247,41 @@ void EditorView::mouseDoubleClickEvent(QMouseEvent * event)
 
 void EditorView::mouseMoveEvent(QMouseEvent * event)
 {
-    m_pos = event->pos();
-    m_mappedPos = mapToScene(event->pos());
-    SC::instance().applicationService()->mouseAction().setMappedPos(m_mappedPos);
+    updateMousePosition(*event);
 
+    hideHandlesOfLastHoveredNode();
+
+    handleMouseMoveActions();
+
+    QGraphicsView::mouseMoveEvent(event);
+}
+
+void EditorView::updateMousePosition(QMouseEvent & event)
+{
+    m_mousePositionOnView = event.pos();
+    m_mousePositionOnScene = mapToScene(event.pos());
+    SC::instance().applicationService()->mouseAction().setMappedPos(m_mousePositionOnScene);
+}
+
+void EditorView::hideHandlesOfLastHoveredNode()
+{
     using SceneItems::Node;
 
-    if (Node::lastHoveredNode()) {
-        const auto hhd = Constants::Node::HIDE_HANDLES_DISTANCE;
-        if (m_mappedPos.x() > Node::lastHoveredNode()->pos().x() + hhd + Node::lastHoveredNode()->boundingRect().width() / 2 || //
-            m_mappedPos.x() < Node::lastHoveredNode()->pos().x() - hhd - Node::lastHoveredNode()->boundingRect().width() / 2 || //
-            m_mappedPos.y() > Node::lastHoveredNode()->pos().y() + hhd + Node::lastHoveredNode()->boundingRect().height() / 2 || //
-            m_mappedPos.y() < Node::lastHoveredNode()->pos().y() - hhd - Node::lastHoveredNode()->boundingRect().height() / 2) {
-            Node::lastHoveredNode()->setHandlesVisible(false);
-        }
+    if (Node::lastHoveredNode() && Node::lastHoveredNode()->pointBeyondHideHandlesDistance(m_mousePositionOnScene)) {
+        Node::lastHoveredNode()->hideHandlesWithAnimation();
     }
+}
 
+void EditorView::handleMouseMoveActions()
+{
     switch (SC::instance().applicationService()->mouseAction().action()) {
     case MouseAction::Action::None:
         break;
     case MouseAction::Action::MoveNode:
-        if (const auto node = SC::instance().applicationService()->mouseAction().sourceNode()) {
-            if (SC::instance().applicationService()->nodeSelectionGroupSize()) {
-                SC::instance().applicationService()->moveSelectionGroup(*node, m_grid.snapToGrid(m_mappedPos - SC::instance().applicationService()->mouseAction().sourcePosOnNode()));
-            } else {
-                node->setLocation(m_grid.snapToGrid(m_mappedPos - SC::instance().applicationService()->mouseAction().sourcePosOnNode()));
-            }
-        }
+        handleMoveNodeAction();
         break;
     case MouseAction::Action::CreateOrConnectNode: {
-        showDummyDragNode(true);
-        showDummyDragEdge(true);
-        m_dummyDragNode->setPos(m_grid.snapToGrid(m_mappedPos - SC::instance().applicationService()->mouseAction().sourcePosOnNode()));
-        m_dummyDragEdge->updateLine();
-        SC::instance().applicationService()->mouseAction().sourceNode()->setHandlesVisible(false);
-
-        // This is needed to clear implicitly "selected" connection candidate nodes when hovering the dummy drag node on other nodes
-        SC::instance().applicationService()->unselectSelectedNode();
-        SC::instance().applicationService()->clearNodeSelectionGroup();
-
-        m_connectionTargetNode = nullptr;
-
-        // TODO: Use items() to pre-filter the nodes
-        if (auto && node = SC::instance().applicationService()->getBestOverlapNode(*m_dummyDragNode)) {
-            node->setSelected(true);
-            m_connectionTargetNode = node;
-        }
+        handleCreateOrConnectNodeAction();
     } break;
     case MouseAction::Action::RubberBand:
         updateRubberBand();
@@ -301,8 +290,38 @@ void EditorView::mouseMoveEvent(QMouseEvent * event)
         removeShadowEffectsDuringDrag();
         break;
     }
+}
 
-    QGraphicsView::mouseMoveEvent(event);
+void EditorView::handleMoveNodeAction()
+{
+    if (const auto node = SC::instance().applicationService()->mouseAction().sourceNode()) {
+        if (SC::instance().applicationService()->nodeSelectionGroupSize()) {
+            SC::instance().applicationService()->moveSelectionGroup(*node, m_grid.snapToGrid(m_mousePositionOnScene - SC::instance().applicationService()->mouseAction().sourcePosOnNode()));
+        } else {
+            node->setLocation(m_grid.snapToGrid(m_mousePositionOnScene - SC::instance().applicationService()->mouseAction().sourcePosOnNode()));
+        }
+    }
+}
+
+void EditorView::handleCreateOrConnectNodeAction()
+{
+    showDummyDragNode(true);
+    showDummyDragEdge(true);
+    m_dummyDragNode->setPos(m_grid.snapToGrid(m_mousePositionOnScene - SC::instance().applicationService()->mouseAction().sourcePosOnNode()));
+    m_dummyDragEdge->updateLine();
+    SC::instance().applicationService()->mouseAction().sourceNode()->setHandlesVisible(false);
+
+    // This is needed to clear implicitly "selected" connection candidate nodes when hovering the dummy drag node on other nodes
+    SC::instance().applicationService()->unselectSelectedNode();
+    SC::instance().applicationService()->clearNodeSelectionGroup();
+
+    m_connectionTargetNode = nullptr;
+
+    // TODO: Use items() to pre-filter the nodes
+    if (auto && node = SC::instance().applicationService()->getBestOverlapNode(*m_dummyDragNode)) {
+        node->setSelected(true);
+        m_connectionTargetNode = node;
+    }
 }
 
 void EditorView::mousePressEvent(QMouseEvent * event)
@@ -386,7 +405,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
                     m_connectionTargetNode->setSelected(false);
                     m_connectionTargetNode = nullptr;
                 } else {
-                    SC::instance().applicationService()->createAndAddNode(sourceNode->index(), m_grid.snapToGrid(m_mappedPos - SC::instance().applicationService()->mouseAction().sourcePosOnNode()));
+                    SC::instance().applicationService()->createAndAddNode(sourceNode->index(), m_grid.snapToGrid(m_mousePositionOnScene - SC::instance().applicationService()->mouseAction().sourcePosOnNode()));
                 }
                 resetDummyDragItems();
             }
@@ -520,7 +539,7 @@ void EditorView::updateShadowEffectsBasedOnItemVisiblity()
 
 void EditorView::updateRubberBand()
 {
-    m_rubberBand->setGeometry(QRect(SC::instance().applicationService()->mouseAction().rubberBandOrigin().toPoint(), m_pos.toPoint()).normalized());
+    m_rubberBand->setGeometry(QRect(SC::instance().applicationService()->mouseAction().rubberBandOrigin().toPoint(), m_mousePositionOnView.toPoint()).normalized());
 }
 
 void EditorView::restoreZoom()

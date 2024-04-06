@@ -15,31 +15,96 @@
 
 #include "scene_item_base.hpp"
 
-#include "../../common/constants.hpp"
-
 namespace SceneItems {
 
 SceneItemBase::SceneItemBase()
-  : m_scaleAnimation(this, "scale")
+  : m_opacityAnimation(this, "opacity")
+  , m_scaleAnimation(this, "scale")
 {
-    m_scaleAnimation.setDuration(Constants::Node::SCALE_ANIMATION_DURATION);
-    m_scaleAnimation.setEndValue(0.0);
-
-    connect(&m_scaleAnimation, &QPropertyAnimation::finished, this, &SceneItemBase::removeFromScene);
 }
 
-void SceneItemBase::hideWithAnimation()
+void SceneItemBase::appearWithAnimation()
 {
-    m_scaleAnimation.setStartValue(scale());
+    m_scaleAnimation.setDuration(m_animationDuration);
+    m_scaleAnimation.setStartValue(0.0);
+    m_scaleAnimation.setEndValue(1.0);
+    m_scaleAnimation.stop();
     m_scaleAnimation.start();
+
+    m_opacityAnimation.setDuration(m_animationDuration);
+    m_opacityAnimation.setStartValue(0.0);
+    m_opacityAnimation.setEndValue(m_animationOpacity);
+    m_opacityAnimation.stop();
+    m_opacityAnimation.start();
+}
+
+void SceneItemBase::disappearWithAnimation()
+{
+    m_scaleAnimation.setDuration(m_animationDuration);
+    m_scaleAnimation.setStartValue(scale());
+    m_scaleAnimation.setEndValue(0.0);
+    m_scaleAnimation.stop();
+    m_scaleAnimation.start();
+
+    m_opacityAnimation.setDuration(m_animationDuration);
+    m_opacityAnimation.setStartValue(opacity());
+    m_opacityAnimation.setEndValue(0.0);
+    m_opacityAnimation.stop();
+    m_opacityAnimation.start();
 }
 
 void SceneItemBase::removeFromScene()
 {
 }
 
+void SceneItemBase::removeFromSceneWithAnimation()
+{
+    connect(&m_scaleAnimation, &QPropertyAnimation::finished, this, &SceneItemBase::removeFromScene);
+
+    m_scaleAnimation.setDuration(m_animationDuration);
+    m_scaleAnimation.setStartValue(scale());
+    m_scaleAnimation.setEndValue(0.0);
+    m_scaleAnimation.stop();
+    m_scaleAnimation.start();
+}
+
+void SceneItemBase::raiseWithAnimation(double targetScale)
+{
+    m_targetScale = targetScale;
+    m_scaleAnimation.setDuration(m_animationDuration);
+    m_scaleAnimation.setStartValue(scale());
+    m_scaleAnimation.setEndValue(targetScale);
+    m_scaleAnimation.stop();
+    m_scaleAnimation.start();
+}
+
+void SceneItemBase::lowerWithAnimation()
+{
+    m_targetScale = 1.0;
+    m_scaleAnimation.setDuration(m_animationDuration);
+    m_scaleAnimation.setStartValue(scale());
+    m_scaleAnimation.setEndValue(m_targetScale);
+    m_scaleAnimation.stop();
+    m_scaleAnimation.start();
+}
+
 void SceneItemBase::enableShadowEffect(bool)
 {
+}
+
+void SceneItemBase::setAnimationDuration(int durationMs)
+{
+    m_animationDuration = durationMs;
+}
+
+void SceneItemBase::setAnimationOpacity(qreal animationOpacity)
+{
+    m_animationOpacity = animationOpacity;
+}
+
+qreal SceneItemBase::targetScale() const
+{
+    return m_targetScale;
 }
 
 SceneItemBase::~SceneItemBase() = default;

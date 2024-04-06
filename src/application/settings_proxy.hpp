@@ -84,6 +84,10 @@ public:
 
     void setReversedEdgeDirection(bool reversedEdgeDirection);
 
+    bool raiseNodeOnMouseHover() const;
+
+    void setRaiseNodeOnMouseHover(bool raiseNodeOnMouseHover);
+
     bool selectNodeGroupByIntersection() const;
 
     void setSelectNodeGroupByIntersection(bool selectNodeGroupByIntersection);
@@ -147,6 +151,8 @@ private:
 
     const QString m_invertedControlsSettingKey = "invertedControls";
 
+    const QString m_raiseNodeOnMouseHoverKey = "raiseNodeOnMouseHoverKey";
+
     bool m_autoload = false;
 
     bool m_autosave = false;
@@ -170,6 +176,8 @@ private:
     bool m_invertedControls = false;
 
     bool m_reversedEdgeDirection = false;
+
+    bool m_raiseNodeOnMouseHover = true;
 
     bool m_selectNodeGroupByIntersection = false;
 

@@ -132,6 +132,8 @@ public:
 
     bool nodeHasImageAttached() const;
 
+    QSizeF normalizedSizeInView(const QRectF & rectInScene) const;
+
     NodeS pasteNodeAt(NodeR source, QPointF pos);
 
     MindMapDataS mindMapData() const;

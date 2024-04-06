@@ -41,11 +41,13 @@ private:
 
     QCheckBox * m_selectNodeGroupByIntersectionCheckBox = nullptr;
 
+    QCheckBox * m_raiseNodeOnMouseHoverCheckBox = nullptr;
+
     QCheckBox * m_invertedControlsCheckBox = nullptr;
 
-    QCheckBox * m_autosaveCheckBox = nullptr;
-
     QCheckBox * m_autoloadCheckBox = nullptr;
+
+    QCheckBox * m_autosaveCheckBox = nullptr;
 };
 
 } // namespace Dialogs

@@ -342,12 +342,12 @@
 <context>
     <name>Dialogs::EditingTab</name>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="53"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="60"/>
         <source>Selecting Nodes</source>
         <translation>Solmujen Valitseminen</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="54"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="32"/>
         <source>Select node group by intersection</source>
         <translation>Valitse joukko solmuja leikaten</translation>
     </message>
@@ -356,12 +356,12 @@
         <translation type="vanished">Automaattinen tallennus</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="60"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="68"/>
         <source>Autosave feature will automatically save your mind map on every modification after it has been initially saved once.</source>
         <translation>Automaattinen tallennus tallentaa käsitekarttasi jokaisen muutoksen jälkeen siitä lähtien kun käsitekartta on ensimmäisen kerran tallennettu.</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="59"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="36"/>
         <source>Enable autosave</source>
         <translation>Aktivoi automaattinen tallennus</translation>
     </message>
@@ -370,32 +370,42 @@
         <translation type="vanished">Automaattinen lataaminen</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="66"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="73"/>
         <source>Autoload feature will automatically load your recent mind map on application start.</source>
         <translation>Automaattinen lataaminen avaa viimeisimmän käsitekartan aina sovelluksen käynnistyessä.</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="65"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="35"/>
         <source>Enable autoload</source>
         <translation>Aktivoi automaattinen lataaminen</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="55"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="33"/>
+        <source>Raise node on mouse hover</source>
+        <translation>Kohota solmu kun hiiri on sen päällä</translation>
+    </message>
+    <message>
+        <location filename="../view/dialogs/editing_tab.cpp" line="61"/>
         <source>The rectangle selection will select nodes also by intersection instead of inclusion only.</source>
         <translation>Suorakaidevalinnan ei tarvitse sisältää valittavia solmuja kokonaan vaan se valitsee myös leikkaavat solmut.</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="58"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="64"/>
+        <source>Moving mouse cursor on a zoomed-out node will raise it for easier editing.</source>
+        <translation>Hiiren siirtäminen loitonnetun solmun päälle kohottaa sen, jotta editoiminen olisi helpompaa.</translation>
+    </message>
+    <message>
+        <location filename="../view/dialogs/editing_tab.cpp" line="67"/>
         <source>File Operations</source>
         <translation>Tiedosto-operaatiot</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="69"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="76"/>
         <source>Controls</source>
         <translation>Kontrollit</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="71"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="77"/>
         <source>Scroll the view with a modifier key pressed and select a group of items without a modifier key being pressed.</source>
         <translation>Vieritä näkymää muokkausnäppäintä painamalla ja valitse joukko objekteja ilman muokkausnäppäimen painamista.</translation>
     </message>
@@ -408,7 +418,7 @@
         <translation type="vanished">Käänteiset kontrollit vierittää näkymää muokkausnäppäimellä (Ctrl) ja valitsee joukon objekteja ilman muokkausnäppäintä.</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="70"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="34"/>
         <source>Inverted controls</source>
         <translation>Käänteiset kontrollit</translation>
     </message>
@@ -1318,167 +1328,167 @@
     <message>
         <location filename="../view/menus/main_menu.cpp" line="35"/>
         <source>Connect selected nodes</source>
-        <translation type="unfinished">Yhdistä valitut solmut</translation>
+        <translation>Yhdistä valitut solmut</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="36"/>
         <source>Disconnect selected nodes</source>
-        <translation type="unfinished">Erota valitut solmut</translation>
+        <translation>Erota valitut solmut</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="37"/>
         <source>Undo</source>
-        <translation type="unfinished">Kumoa</translation>
+        <translation>Kumoa</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="38"/>
         <source>Redo</source>
-        <translation type="unfinished">Tee Uudelleen</translation>
+        <translation>Tee Uudelleen</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="39"/>
         <source>&amp;Save</source>
-        <translation type="unfinished">&amp;Tallenna</translation>
+        <translation>&amp;Tallenna</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="40"/>
         <source>&amp;Save as</source>
-        <translation type="unfinished">&amp;Tallenna Nimellä</translation>
+        <translation>&amp;Tallenna Nimellä</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="148"/>
         <source>General &amp;colors</source>
-        <translation type="unfinished">Yleiset &amp;värit</translation>
+        <translation>Yleiset &amp;värit</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="150"/>
         <source>Set background color</source>
-        <translation type="unfinished">Aseta taustaväri</translation>
+        <translation>Aseta taustaväri</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="161"/>
         <source>Set edge color</source>
-        <translation type="unfinished">Aseta kaaren väri</translation>
+        <translation>Aseta kaaren väri</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="172"/>
         <source>Set grid color</source>
-        <translation type="unfinished">Aseta ruudukon väri</translation>
+        <translation>Aseta ruudukon väri</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="184"/>
         <source>&amp;Edit</source>
-        <translation type="unfinished">&amp;Muokkaa</translation>
+        <translation>&amp;Muokkaa</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="206"/>
         <source>Optimize layout</source>
-        <translation type="unfinished">Optimoi sijoittelu</translation>
+        <translation>Optimoi sijoittelu</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="220"/>
         <source>&amp;Export</source>
-        <translation type="unfinished">&amp;Vie</translation>
+        <translation>&amp;Vie</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="223"/>
         <source>&amp;PNG</source>
-        <translation type="unfinished">&amp;PNG</translation>
+        <translation>&amp;PNG</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="232"/>
         <source>&amp;SVG</source>
-        <translation type="unfinished">&amp;SVG</translation>
+        <translation>&amp;SVG</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="246"/>
         <source>&amp;File</source>
-        <translation type="unfinished">&amp;Tiedosto</translation>
+        <translation>&amp;Tiedosto</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="249"/>
         <source>&amp;New</source>
-        <translation type="unfinished">&amp;Uusi</translation>
+        <translation>&amp;Uusi</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="257"/>
         <source>&amp;Open</source>
-        <translation type="unfinished">&amp;Avaa</translation>
+        <translation>&amp;Avaa</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="267"/>
         <source>Recent &amp;Files</source>
-        <translation type="unfinished">&amp;Edelliset</translation>
+        <translation>&amp;Edelliset</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="297"/>
         <source>Settings</source>
-        <translation type="unfinished">Asetukset</translation>
+        <translation>Asetukset</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="304"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished">&amp;Poistu</translation>
+        <translation>&amp;Poistu</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="320"/>
         <source>&amp;Mirror layout</source>
-        <translation type="unfinished">&amp;Peilaa sijoittelu</translation>
+        <translation>&amp;Peilaa sijoittelu</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="322"/>
         <source>Horizontally</source>
-        <translation type="unfinished">Vaakatasossa</translation>
+        <translation>Vaakatasossa</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="330"/>
         <source>Vertically</source>
-        <translation type="unfinished">Pystytasossa</translation>
+        <translation>Pystytasossa</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="340"/>
         <source>&amp;Help</source>
-        <translation type="unfinished">&amp;Apua</translation>
+        <translation>&amp;Apua</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="343"/>
         <source>&amp;About</source>
-        <translation type="unfinished">&amp;Tietoa</translation>
+        <translation>&amp;Tietoa</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="348"/>
         <source>About &amp;Qt</source>
-        <translation type="unfinished">Tietoa &amp;Qt:sta</translation>
+        <translation>Tietoa &amp;Qt:sta</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="355"/>
         <source>What&apos;s New</source>
-        <translation type="unfinished">Uutta Tässä Versiossa</translation>
+        <translation>Uutta Tässä Versiossa</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="362"/>
         <source>&amp;View</source>
-        <translation type="unfinished">&amp;Näkymä</translation>
+        <translation>&amp;Näkymä</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="365"/>
         <source>Full Screen</source>
-        <translation type="unfinished">Koko Näyttö</translation>
+        <translation>Koko Näyttö</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="375"/>
         <source>Zoom In</source>
-        <translation type="unfinished">Suurenna</translation>
+        <translation>Suurenna</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="381"/>
         <source>Zoom Out</source>
-        <translation type="unfinished">Loitonna</translation>
+        <translation>Loitonna</translation>
     </message>
     <message>
         <location filename="../view/menus/main_menu.cpp" line="389"/>
         <source>&amp;Zoom To Fit</source>
-        <translation type="unfinished">&amp;Sovita</translation>
+        <translation>&amp;Sovita</translation>
     </message>
 </context>
 <context>
@@ -1650,27 +1660,27 @@
 <context>
     <name>SceneItems::NodeHandle</name>
     <message>
-        <location filename="../view/scene_items/node_handle.cpp" line="60"/>
+        <location filename="../view/scene_items/node_handle.cpp" line="57"/>
         <source>Drag to connect or create a child node</source>
         <translation>Raahaa kytkeäksesi tai tee uusi lapsisolmu</translation>
     </message>
     <message>
-        <location filename="../view/scene_items/node_handle.cpp" line="62"/>
+        <location filename="../view/scene_items/node_handle.cpp" line="59"/>
         <source>Move the node</source>
         <translation>Siirrä solmua</translation>
     </message>
     <message>
-        <location filename="../view/scene_items/node_handle.cpp" line="64"/>
+        <location filename="../view/scene_items/node_handle.cpp" line="61"/>
         <source>Select node color</source>
         <translation>Valitse solmun väri</translation>
     </message>
     <message>
-        <location filename="../view/scene_items/node_handle.cpp" line="66"/>
+        <location filename="../view/scene_items/node_handle.cpp" line="63"/>
         <source>Select text color</source>
         <translation>Valitse tekstin väri</translation>
     </message>
     <message>
-        <location filename="../view/scene_items/node_handle.cpp" line="304"/>
+        <location filename="../view/scene_items/node_handle.cpp" line="301"/>
         <source>A</source>
         <translation>A</translation>
     </message>

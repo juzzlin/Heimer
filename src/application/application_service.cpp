@@ -530,6 +530,12 @@ bool ApplicationService::nodeHasImageAttached() const
     return m_editorService->nodeHasImageAttached();
 }
 
+QSizeF ApplicationService::normalizedSizeInView(const QRectF & rectInScene) const
+{
+    const auto rectInView = m_editorView->mapFromScene(rectInScene).boundingRect();
+    return { static_cast<double>(rectInView.width()) / m_editorView->width(), static_cast<double>(rectInView.height()) / m_editorView->height() };
+}
+
 void ApplicationService::paste()
 {
     // Create a new node from OS clipboard if text has been copied

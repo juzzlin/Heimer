@@ -340,7 +340,7 @@ void EditorService::deleteEdge(int index0, int index1)
     assert(m_mindMapData);
 
     if (const auto deletedEdge = m_mindMapData->graph().deleteEdge(index0, index1)) {
-        deletedEdge->hideWithAnimation();
+        deletedEdge->removeFromSceneWithAnimation();
     }
 }
 
@@ -350,11 +350,11 @@ void EditorService::deleteNode(NodeR node)
 
     const auto deletionInfo = m_mindMapData->graph().deleteNode(node.index());
     if (deletionInfo.first) {
-        deletionInfo.first->hideWithAnimation();
+        deletionInfo.first->removeFromSceneWithAnimation();
     }
     for (auto && deletedEdge : deletionInfo.second) {
         if (deletedEdge) {
-            deletedEdge->hideWithAnimation();
+            deletedEdge->removeFromSceneWithAnimation();
         }
     }
 }

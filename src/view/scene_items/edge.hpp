@@ -101,7 +101,7 @@ public:
 
     QString text() const;
 
-    QRectF unitedBoundingRect() const;
+    QRectF translatedLabelBoundingRect() const;
 
     void unselectText();
 

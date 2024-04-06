@@ -57,7 +57,7 @@ QRectF MagicZoom::calculateRectangleByEdges(const EdgeList & edges)
     double avgEdgeArea = 0;
     QRectF unitedRect;
     for (auto && edge : edges) {
-        const auto edgeRect = edge->unitedBoundingRect();
+        const auto edgeRect = edge->translatedLabelBoundingRect();
         unitedRect = unitedRect.united(edgeRect);
         const auto edgeArea = edgeRect.width() * edgeRect.height();
         totalArea += edgeArea;

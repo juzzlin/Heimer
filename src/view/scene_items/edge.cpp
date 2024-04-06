@@ -553,9 +553,9 @@ QString Edge::text() const
     return m_edgeModel->text;
 }
 
-QRectF Edge::unitedBoundingRect() const
+QRectF Edge::translatedLabelBoundingRect() const
 {
-    return m_label ? boundingRect().united(m_label->boundingRect()) : boundingRect();
+    return m_label->boundingRect().translated(m_line->line().center());
 }
 
 void Edge::unselectText()

@@ -13,6 +13,8 @@ Bug fixes:
   - Set the default image size to current view size
   - Set a more sensible upper limit for the image size
 
+* Fix zooming when searching text on labels
+
 Other:
 
 4.4.0

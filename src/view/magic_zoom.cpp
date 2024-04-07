@@ -33,17 +33,17 @@ QRectF MagicZoom::calculateRectangleByItems(const ItemList & items, bool isForEx
     return calculateRectangleByNodes(nodes, isForExport);
 }
 
-static QRectF adjustRect(QRectF unitedRect, double avgItemArea, double totalArea)
+static QRectF calculateZoomRectBasedOnItemDensity(QRectF unitedItemRect, double averageItemArea, double totalArea)
 {
-    const int margin = 60;
+    const double amplification = 3.0;
+    const double nonlinearity = 1.5;
+    const double itemDensity = totalArea / unitedItemRect.width() / unitedItemRect.height();
+    const double averageItemCount = totalArea / averageItemArea;
+    const double maxItemRectDimension = std::max(unitedItemRect.width(), unitedItemRect.height());
+    const double expansionBasedOnDensity = amplification * itemDensity * maxItemRectDimension / pow(averageItemCount, nonlinearity);
 
-    // This "don't ask" heuristics tries to calculate a "nice" zoom-to-fit based on the design
-    // density and node count. For example, if we have just a single node we don't want it to
-    // be super big and cover the whole screen.
-    const double density = totalArea / unitedRect.width() / unitedRect.height();
-    const int avgItemCount = static_cast<int>(totalArea / avgItemArea);
-    const double adjust = 3.0 * std::max(density * unitedRect.width(), density * unitedRect.height()) / pow(avgItemCount, 1.5);
-    return unitedRect.adjusted(-adjust / 2, -adjust / 2, adjust / 2, adjust / 2).adjusted(-margin, -margin, margin, margin);
+    const int margin = 60;
+    return unitedItemRect.adjusted(-expansionBasedOnDensity / 2, -expansionBasedOnDensity / 2, expansionBasedOnDensity / 2, expansionBasedOnDensity / 2).adjusted(-margin, -margin, margin, margin);
 }
 
 QRectF MagicZoom::calculateRectangleByEdges(const EdgeList & edges)
@@ -64,7 +64,7 @@ QRectF MagicZoom::calculateRectangleByEdges(const EdgeList & edges)
     }
     avgEdgeArea /= static_cast<double>(edges.size());
 
-    return adjustRect(unitedRect, avgEdgeArea, totalArea);
+    return calculateZoomRectBasedOnItemDensity(unitedRect, avgEdgeArea, totalArea);
 }
 
 QRectF MagicZoom::calculateRectangleByNodes(const NodeList & nodes, bool isForExport)
@@ -90,5 +90,5 @@ QRectF MagicZoom::calculateRectangleByNodes(const NodeList & nodes, bool isForEx
         return unitedRect.adjusted(-exportMargin, -exportMargin, exportMargin, exportMargin);
     }
 
-    return adjustRect(unitedRect, avgNodeArea, totalArea);
+    return calculateZoomRectBasedOnItemDensity(unitedRect, avgNodeArea, totalArea);
 }

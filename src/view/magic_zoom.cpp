@@ -15,7 +15,6 @@
 
 #include "magic_zoom.hpp"
 
-#include "../common/constants.hpp"
 #include "../common/types.hpp"
 
 #include "scene_items/node.hpp"

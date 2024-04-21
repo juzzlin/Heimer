@@ -21,13 +21,13 @@
 #include <QTimer>
 
 #include "../../common/types.hpp"
-#include "scene_item_base.hpp"
+#include "scene_item_base_graphics_item.hpp"
 
 namespace SceneItems {
 
 class Node;
 
-class NodeHandle : public SceneItemBase
+class NodeHandle : public SceneItemBaseGraphicsItem
 {
     Q_OBJECT
 

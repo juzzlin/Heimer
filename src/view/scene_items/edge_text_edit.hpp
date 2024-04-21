@@ -17,7 +17,7 @@
 #define EDGE_TEXT_EDIT_HPP
 
 #include "../../common/types.hpp"
-#include "scene_item_base.hpp"
+#include "scene_item_base_graphics_item.hpp"
 #include "text_edit.hpp"
 
 #include <QPropertyAnimation>
@@ -39,9 +39,7 @@ public:
     enum class VisibilityChangeReason
     {
         Timeout,
-        Explicit,
-        Focused,
-        AvailableSpaceChanged
+        Explicit
     };
 
     void setVisible(bool visible);
@@ -54,17 +52,19 @@ public:
 
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) override;
 
-    //! Used to add some padding the the text field.
-    QRectF boundingRect() const override;
-
 signals:
-
     void hoverEntered();
 
     void visibilityTimeout();
 
 private:
-    void setAnimationConfig(bool visible);
+    void hideAnimated();
+
+    void showAnimated();
+
+    void initializeVisibilityTimer();
+
+    void paintOutline(QPainter * painter, const QStyleOptionGraphicsItem * option);
 
     EdgeP m_edge;
 

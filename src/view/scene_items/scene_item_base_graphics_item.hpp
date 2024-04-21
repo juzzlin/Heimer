@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SCENE_ITEM_BASE_HPP
-#define SCENE_ITEM_BASE_HPP
+#ifndef SCENE_ITEM_BASE_GRAPHICS_ITEM_HPP
+#define SCENE_ITEM_BASE_GRAPHICS_ITEM_HPP
 
 #include <QGraphicsItem>
 #include <QObject>
@@ -22,7 +22,7 @@
 
 namespace SceneItems {
 
-class SceneItemBase : public QObject, public QGraphicsItem
+class SceneItemBaseGraphicsItem : public QObject, public QGraphicsItem
 {
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)
@@ -30,9 +30,9 @@ class SceneItemBase : public QObject, public QGraphicsItem
     Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 
 public:
-    SceneItemBase();
+    SceneItemBaseGraphicsItem();
 
-    virtual ~SceneItemBase() override;
+    virtual ~SceneItemBaseGraphicsItem() override;
 
     virtual void appearWithAnimation();
 
@@ -47,6 +47,8 @@ public:
     virtual void raiseWithAnimation(double targetScale);
 
     virtual void lowerWithAnimation();
+
+    bool isRaised() const;
 
     void setAnimationDuration(int durationMs);
 
@@ -68,4 +70,4 @@ private:
 
 } // namespace SceneItems
 
-#endif // SCENE_ITEM_BASE_HPP
+#endif // SCENE_ITEM_BASE_GRAPHICS_ITEM_HPP

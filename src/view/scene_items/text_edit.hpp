@@ -16,13 +16,14 @@
 #ifndef TEXT_EDIT_HPP
 #define TEXT_EDIT_HPP
 
+#include "scene_item_base_graphics_text_item.hpp"
+
 #include <QGraphicsSceneMouseEvent>
-#include <QGraphicsTextItem>
 #include <QTextCharFormat>
 
 namespace SceneItems {
 
-class TextEdit : public QGraphicsTextItem
+class TextEdit : public SceneItemBaseGraphicsTextItem
 {
     Q_OBJECT
 

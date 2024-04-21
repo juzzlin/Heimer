@@ -23,7 +23,7 @@
 #include "../../common/types.hpp"
 #include "edge_model.hpp"
 #include "edge_text_edit.hpp"
-#include "scene_item_base.hpp"
+#include "scene_item_base_graphics_item.hpp"
 
 class QFont;
 class QGraphicsEllipseItem;
@@ -40,7 +40,7 @@ class EdgeDot;
 class Node;
 
 //! A graphic representation of a graph edge between nodes.
-class Edge : public SceneItemBase
+class Edge : public SceneItemBaseGraphicsItem
 {
     Q_OBJECT
 
@@ -138,11 +138,13 @@ signals:
 private:
     QPen buildPen(bool ignoreDashSetting = false) const;
 
+    double calculateTargetScale() const;
+
     void connectLabel();
 
     void copyData(EdgeCR other);
 
-    void hideLabelOnTimeout();
+    void hideLabelAndShowCondensedLabelIfEmptyOrNotEnoughSpace();
 
     void initializeDots();
 
@@ -156,19 +158,23 @@ private:
 
     bool isEnoughSpaceForCondensedLabel() const;
 
-    bool isCondensedLabelTextShoterThanLabelText() const;
+    bool isCondensedLabelTextShorterThanLabelText() const;
 
     QPointF lineCenter() const;
 
     void setArrowHeadPen(const QPen & pen);
 
+    void setLabelFocused();
+
     void setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason visibilityChangeReason = EdgeTextEdit::VisibilityChangeReason::Timeout);
 
-    void toggleLabelVisibilityOnGeometryChange();
+    void updateLabelAndCondensedLabelVisibilitiesBasedOnSpaceAvailable();
 
-    void showLabelWhenFocused();
+    void showLabelAndHideCondensedLabel();
 
-    void showOrHideLabelExplicitly(bool show);
+    void showLabelAndCondensedLabel();
+
+    void hideLabelAndCondensedLabel();
 
     void removeSelfFromNodes();
 

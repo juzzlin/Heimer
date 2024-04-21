@@ -143,8 +143,9 @@ void Node::removeFromScene()
 void Node::raiseBody()
 {
     const auto currentSizeRatio = SC::instance().applicationService()->normalizedSizeInView(boundingRect()).width();
-    const auto targetSizeRatio = 0.1;
-    const auto targetScale = currentSizeRatio < targetSizeRatio ? targetSizeRatio / currentSizeRatio : 1.1;
+    const auto minimumSizeRatio = 0.1;
+    const auto defaultRaisedSizeRatio = 1.1;
+    const auto targetScale = currentSizeRatio < minimumSizeRatio ? minimumSizeRatio / currentSizeRatio : defaultRaisedSizeRatio;
     raiseWithAnimation(targetScale);
     setZValue(static_cast<int>(Layers::Last) + static_cast<int>(Layers::Node));
 }
@@ -191,7 +192,7 @@ void Node::adjustSize()
 
 QRectF Node::boundingRect() const
 {
-    const auto size = m_nodeModel->size * targetScale();
+    const auto size = m_nodeModel->size;
     return { -size.width() / 2, -size.height() / 2, size.width(), size.height() };
 }
 

@@ -13,17 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "scene_item_base.hpp"
+#include "scene_item_base_graphics_item.hpp"
 
 namespace SceneItems {
 
-SceneItemBase::SceneItemBase()
+SceneItemBaseGraphicsItem::SceneItemBaseGraphicsItem()
   : m_opacityAnimation(this, "opacity")
   , m_scaleAnimation(this, "scale")
 {
 }
 
-void SceneItemBase::appearWithAnimation()
+void SceneItemBaseGraphicsItem::appearWithAnimation()
 {
     m_scaleAnimation.setDuration(m_animationDuration);
     m_scaleAnimation.setStartValue(0.0);
@@ -38,7 +38,7 @@ void SceneItemBase::appearWithAnimation()
     m_opacityAnimation.start();
 }
 
-void SceneItemBase::disappearWithAnimation()
+void SceneItemBaseGraphicsItem::disappearWithAnimation()
 {
     m_scaleAnimation.setDuration(m_animationDuration);
     m_scaleAnimation.setStartValue(scale());
@@ -53,13 +53,13 @@ void SceneItemBase::disappearWithAnimation()
     m_opacityAnimation.start();
 }
 
-void SceneItemBase::removeFromScene()
+void SceneItemBaseGraphicsItem::removeFromScene()
 {
 }
 
-void SceneItemBase::removeFromSceneWithAnimation()
+void SceneItemBaseGraphicsItem::removeFromSceneWithAnimation()
 {
-    connect(&m_scaleAnimation, &QPropertyAnimation::finished, this, &SceneItemBase::removeFromScene);
+    connect(&m_scaleAnimation, &QPropertyAnimation::finished, this, &SceneItemBaseGraphicsItem::removeFromScene);
 
     m_scaleAnimation.setDuration(m_animationDuration);
     m_scaleAnimation.setStartValue(scale());
@@ -68,7 +68,7 @@ void SceneItemBase::removeFromSceneWithAnimation()
     m_scaleAnimation.start();
 }
 
-void SceneItemBase::raiseWithAnimation(double targetScale)
+void SceneItemBaseGraphicsItem::raiseWithAnimation(double targetScale)
 {
     m_targetScale = targetScale;
     m_scaleAnimation.setDuration(m_animationDuration);
@@ -78,7 +78,7 @@ void SceneItemBase::raiseWithAnimation(double targetScale)
     m_scaleAnimation.start();
 }
 
-void SceneItemBase::lowerWithAnimation()
+void SceneItemBaseGraphicsItem::lowerWithAnimation()
 {
     m_targetScale = 1.0;
     m_scaleAnimation.setDuration(m_animationDuration);
@@ -88,25 +88,30 @@ void SceneItemBase::lowerWithAnimation()
     m_scaleAnimation.start();
 }
 
-void SceneItemBase::enableShadowEffect(bool)
+void SceneItemBaseGraphicsItem::enableShadowEffect(bool)
 {
 }
 
-void SceneItemBase::setAnimationDuration(int durationMs)
+bool SceneItemBaseGraphicsItem::isRaised() const
+{
+    return !qFuzzyCompare(scale(), 1.0);
+}
+
+void SceneItemBaseGraphicsItem::setAnimationDuration(int durationMs)
 {
     m_animationDuration = durationMs;
 }
 
-void SceneItemBase::setAnimationOpacity(qreal animationOpacity)
+void SceneItemBaseGraphicsItem::setAnimationOpacity(qreal animationOpacity)
 {
     m_animationOpacity = animationOpacity;
 }
 
-qreal SceneItemBase::targetScale() const
+qreal SceneItemBaseGraphicsItem::targetScale() const
 {
     return m_targetScale;
 }
 
-SceneItemBase::~SceneItemBase() = default;
+SceneItemBaseGraphicsItem::~SceneItemBaseGraphicsItem() = default;
 
 } // namespace SceneItems

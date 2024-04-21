@@ -15,6 +15,7 @@
 
 #include "edge.hpp"
 
+#include "../../application/application_service.hpp"
 #include "../../application/service_container.hpp"
 #include "../../application/settings_proxy.hpp"
 #include "../../common/test_mode.hpp"
@@ -29,6 +30,7 @@
 #include "simple_logger.hpp"
 
 #include <QBrush>
+#include <QDebug>
 #include <QFont>
 #include <QGraphicsEllipseItem>
 #include <QGraphicsLineItem>
@@ -37,7 +39,6 @@
 #include <QPropertyAnimation>
 #include <QTimer>
 #include <QVector2D>
-
 #include <QtMath>
 
 #include <cmath>
@@ -98,7 +99,7 @@ void Edge::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 {
     m_labelVisibilityTimer.stop();
 
-    setLabelVisible(true, EdgeTextEdit::VisibilityChangeReason::Focused);
+    setLabelFocused();
 
     QGraphicsItem::hoverEnterEvent(event);
 }
@@ -106,6 +107,10 @@ void Edge::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 void Edge::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
 {
     m_labelVisibilityTimer.start();
+
+    m_label->setParentItem(this);
+    m_label->setTransformOriginPoint(m_line->line().center());
+    m_label->lowerWithAnimation();
 
     QGraphicsItem::hoverLeaveEvent(event);
 }
@@ -214,9 +219,7 @@ void Edge::connectLabel()
 
     connect(m_label, &TextEdit::undoPointRequested, this, &Edge::undoPointRequested);
 
-    connect(m_label, &EdgeTextEdit::hoverEntered, this, [=] {
-        setLabelVisible(true, EdgeTextEdit::VisibilityChangeReason::Focused);
-    });
+    connect(m_label, &EdgeTextEdit::hoverEntered, this, &Edge::setLabelFocused);
 
     connect(m_label, &EdgeTextEdit::visibilityTimeout, this, [=] {
         setLabelVisible(false);
@@ -278,7 +281,7 @@ bool Edge::isEnoughSpaceForCondensedLabel() const
       !m_condensedLabel->sceneBoundingRect().intersects(targetNode().sceneBoundingRect());
 }
 
-bool Edge::isCondensedLabelTextShoterThanLabelText() const
+bool Edge::isCondensedLabelTextShorterThanLabelText() const
 {
     return m_condensedLabel->text().length() < m_label->text().length();
 }
@@ -288,52 +291,73 @@ QPointF Edge::lineCenter() const
     return m_line->line().center();
 }
 
-void Edge::toggleLabelVisibilityOnGeometryChange()
+void Edge::updateLabelAndCondensedLabelVisibilitiesBasedOnSpaceAvailable()
 {
     const bool isLabelVisible = isEnoughSpaceForLabel() && !m_label->text().isEmpty();
     m_label->setVisible(isLabelVisible);
-    m_condensedLabel->setVisible(!isLabelVisible && isEnoughSpaceForCondensedLabel() && isCondensedLabelTextShoterThanLabelText());
+    m_condensedLabel->setVisible(!isLabelVisible && isEnoughSpaceForCondensedLabel() && isCondensedLabelTextShorterThanLabelText());
 }
 
-void Edge::showLabelWhenFocused()
+void Edge::showLabelAndHideCondensedLabel()
 {
     m_label->setVisible(true);
-    m_label->setParentItem(nullptr);
-    m_label->setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_settingsProxy->shadowEffect(), false));
     m_condensedLabel->setVisible(false);
 }
 
-void Edge::showOrHideLabelExplicitly(bool show)
+void Edge::showLabelAndCondensedLabel()
 {
-    m_label->setVisible(show);
-    m_condensedLabel->setVisible(show);
+    m_label->setVisible(true);
+    m_condensedLabel->setVisible(true);
 }
 
-void Edge::hideLabelOnTimeout()
+void Edge::hideLabelAndCondensedLabel()
+{
+    m_label->setVisible(false);
+    m_condensedLabel->setVisible(false);
+}
+
+void Edge::hideLabelAndShowCondensedLabelIfEmptyOrNotEnoughSpace()
 {
     if ((m_label->text().isEmpty() || (!m_label->text().isEmpty() && !isEnoughSpaceForLabel())) && !m_label->hasFocus()) {
         m_label->setVisible(false);
-        m_condensedLabel->setVisible(isEnoughSpaceForCondensedLabel() && isCondensedLabelTextShoterThanLabelText());
+        m_condensedLabel->setVisible(isEnoughSpaceForCondensedLabel() && isCondensedLabelTextShorterThanLabelText());
     }
+}
+
+double Edge::calculateTargetScale() const
+{
+    const auto minimumSizeRatio = 0.025;
+    const auto defaultRaisedSizeRatio = 1.1;
+    const auto currentSizeRatio = SC::instance().applicationService()->normalizedSizeInView(m_label->boundingRect()).height() / (m_label->text().count('\n') + 1);
+    return std::max(defaultRaisedSizeRatio, currentSizeRatio < minimumSizeRatio ? minimumSizeRatio / currentSizeRatio : defaultRaisedSizeRatio);
+}
+
+void Edge::setLabelFocused()
+{
+
+    showLabelAndHideCondensedLabel();
+
+    // m_label->setZValue(static_cast<int>(Layers::Last) + static_cast<int>(Layers::Node));
+    m_label->setTransformOriginPoint(m_line->line().center());
+    m_label->raiseWithAnimation(calculateTargetScale());
 }
 
 void Edge::setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason visibilityChangeReason)
 {
     switch (visibilityChangeReason) {
-    case EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged:
-        toggleLabelVisibilityOnGeometryChange();
-        break;
     case EdgeTextEdit::VisibilityChangeReason::Explicit:
-        showOrHideLabelExplicitly(visible);
-        break;
-    case EdgeTextEdit::VisibilityChangeReason::Focused:
         if (visible) {
-            showLabelWhenFocused();
+            showLabelAndCondensedLabel();
+            // m_label->setZValue(static_cast<int>(Layers::Last) + static_cast<int>(Layers::Node));
+            m_label->setTransformOriginPoint(m_line->line().center());
+            m_label->raiseWithAnimation(calculateTargetScale());
+        } else {
+            hideLabelAndCondensedLabel();
         }
         break;
     case EdgeTextEdit::VisibilityChangeReason::Timeout:
         if (!visible) {
-            hideLabelOnTimeout();
+            hideLabelAndShowCondensedLabelIfEmptyOrNotEnoughSpace();
         }
         break;
     }
@@ -560,13 +584,14 @@ void Edge::updateDots()
     }
 }
 
-void Edge::updateLabel(LabelUpdateReason lur)
+void Edge::updateLabel(LabelUpdateReason labelUpdateReason)
 {
     m_label->setPos(lineCenter() - QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()) * 0.5);
     m_condensedLabel->setPos(lineCenter() - QPointF(m_condensedLabel->boundingRect().width(), m_condensedLabel->boundingRect().height()) * 0.5);
+
     // Toggle visibility according to space available if geometry changed
-    if (lur == LabelUpdateReason::EdgeGeometryChanged) {
-        setLabelVisible(m_label->isVisible(), EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged);
+    if (labelUpdateReason == LabelUpdateReason::EdgeGeometryChanged) {
+        updateLabelAndCondensedLabelVisibilitiesBasedOnSpaceAvailable();
     }
 }
 

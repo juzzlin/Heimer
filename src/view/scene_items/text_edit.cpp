@@ -28,7 +28,7 @@
 namespace SceneItems {
 
 TextEdit::TextEdit(QGraphicsItem * parentItem)
-  : QGraphicsTextItem(parentItem)
+  : SceneItemBaseGraphicsTextItem(parentItem)
   , m_unselectedFormat(textCursor().charFormat())
 {
     if (!TestMode::enabled()) {

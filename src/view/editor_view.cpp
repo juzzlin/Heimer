@@ -42,7 +42,7 @@
 #include "scene_items/edge_text_edit.hpp"
 #include "scene_items/node.hpp"
 #include "scene_items/node_handle.hpp"
-#include "scene_items/scene_item_base.hpp"
+#include "scene_items/scene_item_base_graphics_item.hpp"
 #include "widgets/status_label.hpp"
 
 #include "simple_logger.hpp"
@@ -501,12 +501,12 @@ void EditorView::removeShadowEffectsDuringDrag()
 
 void EditorView::updateShadowEffectsBasedOnItemVisiblity()
 {
-    std::unordered_set<SceneItems::SceneItemBase *> enabledItems;
+    std::unordered_set<SceneItems::SceneItemBaseGraphicsItem *> enabledItems;
 
     const int marginFraction = 20;
     const int glitchMargin = rect().width() / marginFraction;
     for (auto && item : scene()->items(mapToScene(rect().adjusted(-glitchMargin, -glitchMargin, glitchMargin, glitchMargin)))) {
-        if (const auto sceneItem = dynamic_cast<SceneItems::SceneItemBase *>(item); sceneItem) {
+        if (const auto sceneItem = dynamic_cast<SceneItems::SceneItemBaseGraphicsItem *>(item); sceneItem) {
             sceneItem->enableShadowEffect(true);
             enabledItems.insert(sceneItem);
         }
@@ -514,7 +514,7 @@ void EditorView::updateShadowEffectsBasedOnItemVisiblity()
 
     if (SC::instance().settingsProxy()->optimizeShadowEffects()) {
         for (auto && item : scene()->items()) {
-            if (const auto sceneItem = dynamic_cast<SceneItems::SceneItemBase *>(item); sceneItem) {
+            if (const auto sceneItem = dynamic_cast<SceneItems::SceneItemBaseGraphicsItem *>(item); sceneItem) {
                 if (!enabledItems.count(sceneItem)) {
                     sceneItem->enableShadowEffect(false);
                 }

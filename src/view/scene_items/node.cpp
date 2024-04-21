@@ -52,9 +52,9 @@ static const auto TAG = "Node";
 NodeP Node::m_lastHoveredNode = nullptr;
 
 Node::Node()
-  : m_settingsProxy(SC::instance().settingsProxy())
-  , m_nodeModel(std::make_unique<NodeModel>(m_settingsProxy->nodeColor(), m_settingsProxy->nodeTextColor()))
-  , m_textEdit(new TextEdit(this))
+  : m_settingsProxy { SC::instance().settingsProxy() }
+  , m_nodeModel { std::make_unique<NodeModel>(m_settingsProxy->nodeColor(), m_settingsProxy->nodeTextColor()) }
+  , m_textEdit { new TextEdit(this) }
 {
     setAcceptHoverEvents(true);
 
@@ -70,27 +70,13 @@ Node::Node()
 
     updateHandlePositions();
 
-    initTextField();
+    initializeTextField();
 
     setSelected(false);
-
-    connect(m_textEdit, &TextEdit::textChanged, this, [=](const QString & text) {
-        setText(text);
-        adjustSize();
-    });
-
-    connect(m_textEdit, &TextEdit::undoPointRequested, this, &Node::undoPointRequested);
-
-    // Set the background transparent as the TextEdit background will be rendered in Node::paint().
-    // The reason for this is that TextEdit's background affects only the area that includes letters
-    // and we want to render a larger area.
-    m_textEdit->setBackgroundColor({ 0, 0, 0, 0 });
-
-    setTextColor(m_nodeModel->textColor);
 }
 
 Node::Node(NodeCR other)
-  : Node()
+  : Node {}
 {
     setColor(other.m_nodeModel->color);
 
@@ -145,8 +131,9 @@ void Node::removeFromScene()
 void Node::raiseBody()
 {
     const auto currentSizeRatio = SC::instance().applicationService()->normalizedSizeInView(boundingRect()).width();
-    const auto targetSizeRatio = 0.1;
-    const auto targetScale = currentSizeRatio < targetSizeRatio ? targetSizeRatio / currentSizeRatio : 1.1;
+    const auto minimumSizeRatio = 0.1;
+    const auto defaultRaisedSizeRatio = 1.1;
+    const auto targetScale = currentSizeRatio < minimumSizeRatio ? minimumSizeRatio / currentSizeRatio : defaultRaisedSizeRatio;
     raiseWithAnimation(targetScale);
     setZValue(static_cast<int>(Layers::Last) + static_cast<int>(Layers::Node));
 }
@@ -186,14 +173,14 @@ void Node::adjustSize()
 
     updateHandlePositions();
 
-    initTextField();
+    initializeTextField();
 
     update();
 }
 
 QRectF Node::boundingRect() const
 {
-    const auto size = m_nodeModel->size * targetScale();
+    const auto size = m_nodeModel->size;
     return { -size.width() / 2, -size.height() / 2, size.width(), size.height() };
 }
 
@@ -348,7 +335,7 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent * event)
     }
 }
 
-void Node::initTextField()
+void Node::initializeTextField()
 {
     if (!TestMode::enabled()) {
         m_textEdit->setTextWidth(-1);
@@ -357,6 +344,20 @@ void Node::initTextField()
     } else {
         TestMode::logDisabledCode("initTestField");
     }
+
+    connect(m_textEdit, &TextEdit::textChanged, this, [=](const QString & text) {
+        setText(text);
+        adjustSize();
+    });
+
+    connect(m_textEdit, &TextEdit::undoPointRequested, this, &Node::undoPointRequested);
+
+    // Set the background transparent as the TextEdit background will be rendered in Node::paint().
+    // The reason for this is that TextEdit's background affects only the area that includes letters
+    // and we want to render a larger area.
+    m_textEdit->setBackgroundColor({ 0, 0, 0, 0 });
+
+    setTextColor(m_nodeModel->textColor);
 }
 
 void Node::addHandlesToScene()

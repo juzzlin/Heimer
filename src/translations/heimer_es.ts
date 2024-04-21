@@ -277,7 +277,7 @@
 <context>
     <name>Dialogs::EditingTab</name>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="60"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="63"/>
         <source>Selecting Nodes</source>
         <translation type="unfinished">Selección de nodos</translation>
     </message>
@@ -291,57 +291,67 @@
         <translation type="obsolete">Autoguardado</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="68"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="74"/>
         <source>Autosave feature will automatically save your mind map on every modification after it has been initially saved once.</source>
         <translation type="unfinished">Tras haber sido guardado el mapa mental por primera vez, la función de autoguardado lo volverá a guardar de manera automática cada vez que se modifique.</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="36"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="37"/>
         <source>Enable autosave</source>
         <translation type="unfinished">Activar autoguardado</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="33"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="34"/>
         <source>Raise node on mouse hover</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="64"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="70"/>
         <source>Moving mouse cursor on a zoomed-out node will raise it for easier editing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="73"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="79"/>
         <source>Autoload feature will automatically load your recent mind map on application start.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="35"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="36"/>
         <source>Enable autoload</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="61"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="33"/>
+        <source>Raise edge label on mouse hover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../view/dialogs/editing_tab.cpp" line="64"/>
         <source>The rectangle selection will select nodes also by intersection instead of inclusion only.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../view/dialogs/editing_tab.cpp" line="67"/>
+        <source>Moving mouse cursor on a zoomed-out edge label will raise it for easier editing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../view/dialogs/editing_tab.cpp" line="73"/>
         <source>File Operations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="76"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="82"/>
         <source>Controls</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="77"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="83"/>
         <source>Scroll the view with a modifier key pressed and select a group of items without a modifier key being pressed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="34"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="35"/>
         <source>Inverted controls</source>
         <translation type="unfinished"></translation>
     </message>

@@ -15,7 +15,6 @@
 
 #include "edge_text_edit.hpp"
 
-#include "../../common/constants.hpp"
 #include "edge.hpp"
 #include "graphics_factory.hpp"
 
@@ -31,29 +30,26 @@ EdgeTextEdit::EdgeTextEdit(EdgeP parentItem)
 {
     setAcceptHoverEvents(true);
 
+    initializeVisibilityTimer();
+
     m_opacityAnimation.setDuration(150);
 
     QGraphicsItem::setVisible(false);
+
     setOpacity(0);
+}
 
+void EdgeTextEdit::initializeVisibilityTimer()
+{
     m_visibilityTimer.setSingleShot(true);
-    m_visibilityTimer.setInterval(2000);
+    m_visibilityTimer.setInterval(1000);
 
-    connect(&m_visibilityTimer, &QTimer::timeout, this, [=] {
-        emit visibilityTimeout();
-    });
+    connect(&m_visibilityTimer, &QTimer::timeout, this, &EdgeTextEdit::visibilityTimeout);
 }
 
 EdgeP EdgeTextEdit::edge() const
 {
     return m_edge;
-}
-
-QRectF EdgeTextEdit::boundingRect() const
-{
-    const int horPadding = 3;
-    const int verPadding = 1;
-    return QGraphicsTextItem::boundingRect().adjusted(-horPadding, -verPadding, horPadding, verPadding);
 }
 
 void EdgeTextEdit::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
@@ -72,36 +68,46 @@ void EdgeTextEdit::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
     TextEdit::hoverLeaveEvent(event);
 }
 
-void EdgeTextEdit::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
+void EdgeTextEdit::paintOutline(QPainter * painter, const QStyleOptionGraphicsItem * option)
 {
-    TextEdit::paint(painter, option, widget);
-
-    // Outline
     QPainterPath path;
     path.addRect(option->rect);
     painter->setRenderHint(QPainter::Antialiasing);
     painter->strokePath(path, GraphicsFactory::createOutlinePen(backgroundColor()));
 }
 
-void EdgeTextEdit::setAnimationConfig(bool visible)
+void EdgeTextEdit::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
-    if (visible) {
-        QGraphicsItem::setVisible(true);
-        m_opacityAnimation.setStartValue(opacity());
-        m_opacityAnimation.setEndValue(1.0);
-        m_opacityAnimation.stop();
-        m_opacityAnimation.start();
-    } else {
-        m_opacityAnimation.setStartValue(opacity());
-        m_opacityAnimation.setEndValue(0.0);
-        m_opacityAnimation.stop();
-        m_opacityAnimation.start();
-    }
+    TextEdit::paint(painter, option, widget);
+
+    paintOutline(painter, option);
+}
+
+void EdgeTextEdit::hideAnimated()
+{
+    m_opacityAnimation.setStartValue(opacity());
+    m_opacityAnimation.setEndValue(0.0);
+    m_opacityAnimation.stop();
+    m_opacityAnimation.start();
+}
+
+void EdgeTextEdit::showAnimated()
+{
+    QGraphicsItem::setVisible(true);
+
+    m_opacityAnimation.setStartValue(opacity());
+    m_opacityAnimation.setEndValue(1.0);
+    m_opacityAnimation.stop();
+    m_opacityAnimation.start();
 }
 
 void EdgeTextEdit::setVisible(bool visible)
 {
-    setAnimationConfig(visible);
+    if (visible) {
+        showAnimated();
+    } else {
+        hideAnimated();
+    }
 }
 
 void EdgeTextEdit::updateDueToLostFocus()

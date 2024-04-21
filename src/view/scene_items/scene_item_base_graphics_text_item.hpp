@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2023 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2024 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,16 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef SCENE_ITEM_BASE_HPP
-#define SCENE_ITEM_BASE_HPP
+#ifndef SCENE_ITEM_BASE_GRAPHICS_TEXT_ITEM_HPP
+#define SCENE_ITEM_BASE_GRAPHICS_TEXT_ITEM_HPP
 
-#include <QGraphicsItem>
+#include <QGraphicsTextItem>
 #include <QObject>
 #include <QPropertyAnimation>
 
 namespace SceneItems {
 
-class SceneItemBase : public QObject, public QGraphicsItem
+class SceneItemBaseGraphicsTextItem : public QGraphicsTextItem
 {
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)
@@ -30,9 +30,9 @@ class SceneItemBase : public QObject, public QGraphicsItem
     Q_PROPERTY(qreal opacity READ opacity WRITE setOpacity)
 
 public:
-    SceneItemBase();
+    SceneItemBaseGraphicsTextItem(QGraphicsItem * parentItem);
 
-    virtual ~SceneItemBase() override;
+    virtual ~SceneItemBaseGraphicsTextItem() override;
 
     virtual void appearWithAnimation();
 
@@ -68,4 +68,4 @@ private:
 
 } // namespace SceneItems
 
-#endif // SCENE_ITEM_BASE_HPP
+#endif // SCENE_ITEM_BASE_GRAPHICS_TEXT_ITEM_HPP

@@ -81,7 +81,8 @@ set(HEIMER_LIB_SRC
     ${HEIMER_SRC_ROOT}/view/scene_items/graphics_factory.cpp
     ${HEIMER_SRC_ROOT}/view/scene_items/node.cpp
     ${HEIMER_SRC_ROOT}/view/scene_items/node_handle.cpp
-    ${HEIMER_SRC_ROOT}/view/scene_items/scene_item_base.cpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/scene_item_base_graphics_item.cpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/scene_item_base_graphics_text_item.cpp
     ${HEIMER_SRC_ROOT}/view/scene_items/text_edit.cpp
     ${HEIMER_SRC_ROOT}/view/widgets/font_button.cpp
     ${HEIMER_SRC_ROOT}/view/widgets/status_label.cpp
@@ -166,7 +167,8 @@ set(HEIMER_LIB_HDR
     ${HEIMER_SRC_ROOT}/view/scene_items/node.hpp
     ${HEIMER_SRC_ROOT}/view/scene_items/node_handle.hpp
     ${HEIMER_SRC_ROOT}/view/scene_items/node_model.hpp
-    ${HEIMER_SRC_ROOT}/view/scene_items/scene_item_base.hpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/scene_item_base_graphics_item.hpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/scene_item_base_graphics_text_item.hpp
     ${HEIMER_SRC_ROOT}/view/scene_items/text_edit.hpp
     ${HEIMER_SRC_ROOT}/view/shadow_effect_params.hpp
     ${HEIMER_SRC_ROOT}/view/widgets/font_button.hpp

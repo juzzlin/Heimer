@@ -29,7 +29,7 @@
 #include "edge.hpp"
 #include "edge_point.hpp"
 #include "node_handle.hpp"
-#include "scene_item_base.hpp"
+#include "scene_item_base_graphics_item.hpp"
 
 class Image;
 class QGraphicsTextItem;
@@ -44,7 +44,7 @@ namespace SceneItems {
 struct NodeModel;
 
 //! Freely placeable target node.
-class Node : public SceneItemBase
+class Node : public SceneItemBaseGraphicsItem
 {
     Q_OBJECT
 
@@ -159,7 +159,7 @@ private:
 
     QRectF expandedTextEditRect() const;
 
-    void initTextField();
+    void initializeTextField();
 
     void paintBackground(QPainter & painter);
 

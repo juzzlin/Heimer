@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2023 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2024 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,18 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "scene_item_base.hpp"
+#include "scene_item_base_graphics_text_item.hpp"
 
 namespace SceneItems {
 
-SceneItemBase::SceneItemBase()
-  : m_opacityAnimation(this, "opacity")
+SceneItemBaseGraphicsTextItem::SceneItemBaseGraphicsTextItem(QGraphicsItem * parentItem)
+  : QGraphicsTextItem(parentItem)
+  , m_opacityAnimation(this, "opacity")
   , m_scaleAnimation(this, "scale")
 {
 }
 
-void SceneItemBase::appearWithAnimation()
+void SceneItemBaseGraphicsTextItem::appearWithAnimation()
 {
+    setTransformOriginPoint(boundingRect().center());
+
     m_scaleAnimation.setDuration(m_animationDuration);
     m_scaleAnimation.setStartValue(0.0);
     m_scaleAnimation.setEndValue(1.0);
@@ -38,8 +41,10 @@ void SceneItemBase::appearWithAnimation()
     m_opacityAnimation.start();
 }
 
-void SceneItemBase::disappearWithAnimation()
+void SceneItemBaseGraphicsTextItem::disappearWithAnimation()
 {
+    setTransformOriginPoint(boundingRect().center());
+
     m_scaleAnimation.setDuration(m_animationDuration);
     m_scaleAnimation.setStartValue(scale());
     m_scaleAnimation.setEndValue(0.0);
@@ -53,13 +58,15 @@ void SceneItemBase::disappearWithAnimation()
     m_opacityAnimation.start();
 }
 
-void SceneItemBase::removeFromScene()
+void SceneItemBaseGraphicsTextItem::removeFromScene()
 {
 }
 
-void SceneItemBase::removeFromSceneWithAnimation()
+void SceneItemBaseGraphicsTextItem::removeFromSceneWithAnimation()
 {
-    connect(&m_scaleAnimation, &QPropertyAnimation::finished, this, &SceneItemBase::removeFromScene);
+    connect(&m_scaleAnimation, &QPropertyAnimation::finished, this, &SceneItemBaseGraphicsTextItem::removeFromScene);
+
+    setTransformOriginPoint(boundingRect().center());
 
     m_scaleAnimation.setDuration(m_animationDuration);
     m_scaleAnimation.setStartValue(scale());
@@ -68,8 +75,10 @@ void SceneItemBase::removeFromSceneWithAnimation()
     m_scaleAnimation.start();
 }
 
-void SceneItemBase::raiseWithAnimation(double targetScale)
+void SceneItemBaseGraphicsTextItem::raiseWithAnimation(double targetScale)
 {
+    setTransformOriginPoint(boundingRect().center());
+
     m_targetScale = targetScale;
     m_scaleAnimation.setDuration(m_animationDuration);
     m_scaleAnimation.setStartValue(scale());
@@ -78,8 +87,10 @@ void SceneItemBase::raiseWithAnimation(double targetScale)
     m_scaleAnimation.start();
 }
 
-void SceneItemBase::lowerWithAnimation()
+void SceneItemBaseGraphicsTextItem::lowerWithAnimation()
 {
+    setTransformOriginPoint(boundingRect().center());
+
     m_targetScale = 1.0;
     m_scaleAnimation.setDuration(m_animationDuration);
     m_scaleAnimation.setStartValue(scale());
@@ -88,25 +99,25 @@ void SceneItemBase::lowerWithAnimation()
     m_scaleAnimation.start();
 }
 
-void SceneItemBase::enableShadowEffect(bool)
+void SceneItemBaseGraphicsTextItem::enableShadowEffect(bool)
 {
 }
 
-void SceneItemBase::setAnimationDuration(int durationMs)
+void SceneItemBaseGraphicsTextItem::setAnimationDuration(int durationMs)
 {
     m_animationDuration = durationMs;
 }
 
-void SceneItemBase::setAnimationOpacity(qreal animationOpacity)
+void SceneItemBaseGraphicsTextItem::setAnimationOpacity(qreal animationOpacity)
 {
     m_animationOpacity = animationOpacity;
 }
 
-qreal SceneItemBase::targetScale() const
+qreal SceneItemBaseGraphicsTextItem::targetScale() const
 {
     return m_targetScale;
 }
 
-SceneItemBase::~SceneItemBase() = default;
+SceneItemBaseGraphicsTextItem::~SceneItemBaseGraphicsTextItem() = default;
 
 } // namespace SceneItems

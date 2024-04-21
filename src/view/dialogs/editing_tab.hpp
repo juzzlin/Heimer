@@ -41,6 +41,8 @@ private:
 
     QCheckBox * m_selectNodeGroupByIntersectionCheckBox = nullptr;
 
+    QCheckBox * m_raiseEdgeLabelOnMouseHoverCheckBox = nullptr;
+
     QCheckBox * m_raiseNodeOnMouseHoverCheckBox = nullptr;
 
     QCheckBox * m_invertedControlsCheckBox = nullptr;

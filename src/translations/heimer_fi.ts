@@ -340,7 +340,7 @@
 <context>
     <name>Dialogs::EditingTab</name>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="60"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="63"/>
         <source>Selecting Nodes</source>
         <translation>Solmujen Valitseminen</translation>
     </message>
@@ -354,12 +354,12 @@
         <translation type="vanished">Automaattinen tallennus</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="68"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="74"/>
         <source>Autosave feature will automatically save your mind map on every modification after it has been initially saved once.</source>
         <translation>Automaattinen tallennus tallentaa käsitekarttasi jokaisen muutoksen jälkeen siitä lähtien kun käsitekartta on ensimmäisen kerran tallennettu.</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="36"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="37"/>
         <source>Enable autosave</source>
         <translation>Aktivoi automaattinen tallennus</translation>
     </message>
@@ -368,42 +368,52 @@
         <translation type="vanished">Automaattinen lataaminen</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="73"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="79"/>
         <source>Autoload feature will automatically load your recent mind map on application start.</source>
         <translation>Automaattinen lataaminen avaa viimeisimmän käsitekartan aina sovelluksen käynnistyessä.</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="35"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="36"/>
         <source>Enable autoload</source>
         <translation>Aktivoi automaattinen lataaminen</translation>
     </message>
     <message>
         <location filename="../view/dialogs/editing_tab.cpp" line="33"/>
+        <source>Raise edge label on mouse hover</source>
+        <translation>Kohota kaaren teksti kun hiiri on sen päällä</translation>
+    </message>
+    <message>
+        <location filename="../view/dialogs/editing_tab.cpp" line="34"/>
         <source>Raise node on mouse hover</source>
         <translation>Kohota solmu kun hiiri on sen päällä</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="61"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="64"/>
         <source>The rectangle selection will select nodes also by intersection instead of inclusion only.</source>
         <translation>Suorakaidevalinnan ei tarvitse sisältää valittavia solmuja kokonaan vaan se valitsee myös leikkaavat solmut.</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="64"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="67"/>
+        <source>Moving mouse cursor on a zoomed-out edge label will raise it for easier editing.</source>
+        <translation>Hiiren siirtäminen loitonnetun kaaren tekstin päälle kohottaa sen, jotta editoiminen olisi helpompaa.</translation>
+    </message>
+    <message>
+        <location filename="../view/dialogs/editing_tab.cpp" line="70"/>
         <source>Moving mouse cursor on a zoomed-out node will raise it for easier editing.</source>
         <translation>Hiiren siirtäminen loitonnetun solmun päälle kohottaa sen, jotta editoiminen olisi helpompaa.</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="67"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="73"/>
         <source>File Operations</source>
         <translation>Tiedosto-operaatiot</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="76"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="82"/>
         <source>Controls</source>
         <translation>Kontrollit</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="77"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="83"/>
         <source>Scroll the view with a modifier key pressed and select a group of items without a modifier key being pressed.</source>
         <translation>Vieritä näkymää muokkausnäppäintä painamalla ja valitse joukko objekteja ilman muokkausnäppäimen painamista.</translation>
     </message>
@@ -416,7 +426,7 @@
         <translation type="vanished">Käänteiset kontrollit vierittää näkymää muokkausnäppäimellä (Ctrl) ja valitsee joukon objekteja ilman muokkausnäppäintä.</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/editing_tab.cpp" line="34"/>
+        <location filename="../view/dialogs/editing_tab.cpp" line="35"/>
         <source>Inverted controls</source>
         <translation>Käänteiset kontrollit</translation>
     </message>

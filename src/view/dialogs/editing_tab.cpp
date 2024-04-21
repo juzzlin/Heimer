@@ -30,6 +30,7 @@ namespace Dialogs {
 EditingTab::EditingTab(QString name, QWidget * parent)
   : SettingsTabBase { name, parent }
   , m_selectNodeGroupByIntersectionCheckBox(new QCheckBox(tr("Select node group by intersection")))
+  , m_raiseEdgeLabelOnMouseHoverCheckBox(new QCheckBox(tr("Raise edge label on mouse hover")))
   , m_raiseNodeOnMouseHoverCheckBox(new QCheckBox(tr("Raise node on mouse hover")))
   , m_invertedControlsCheckBox(new QCheckBox(tr("Inverted controls")))
   , m_autoloadCheckBox(new QCheckBox(tr("Enable autoload")))
@@ -41,6 +42,8 @@ EditingTab::EditingTab(QString name, QWidget * parent)
 void EditingTab::apply()
 {
     settingsProxy()->setSelectNodeGroupByIntersection(m_selectNodeGroupByIntersectionCheckBox->isChecked());
+
+    settingsProxy()->setRaiseEdgeLabelOnMouseHover(m_raiseEdgeLabelOnMouseHoverCheckBox->isChecked());
 
     settingsProxy()->setRaiseNodeOnMouseHover(m_raiseNodeOnMouseHoverCheckBox->isChecked());
 
@@ -60,6 +63,9 @@ void EditingTab::initWidgets()
     const auto && [editingGroup, editingGroupLayout] = WidgetFactory::buildGroupBoxWithVLayout(tr("Selecting Nodes"), *mainLayout);
     m_selectNodeGroupByIntersectionCheckBox->setToolTip(tr("The rectangle selection will select nodes also by intersection instead of inclusion only."));
     editingGroupLayout->addWidget(m_selectNodeGroupByIntersectionCheckBox);
+
+    m_raiseEdgeLabelOnMouseHoverCheckBox->setToolTip(tr("Moving mouse cursor on a zoomed-out edge label will raise it for easier editing."));
+    editingGroupLayout->addWidget(m_raiseEdgeLabelOnMouseHoverCheckBox);
 
     m_raiseNodeOnMouseHoverCheckBox->setToolTip(tr("Moving mouse cursor on a zoomed-out node will raise it for easier editing."));
     editingGroupLayout->addWidget(m_raiseNodeOnMouseHoverCheckBox);
@@ -85,6 +91,8 @@ void EditingTab::initWidgets()
 void EditingTab::setActiveSettings()
 {
     m_selectNodeGroupByIntersectionCheckBox->setChecked(settingsProxy()->selectNodeGroupByIntersection());
+
+    m_raiseEdgeLabelOnMouseHoverCheckBox->setChecked(settingsProxy()->raiseEdgeLabelOnMouseHover());
 
     m_raiseNodeOnMouseHoverCheckBox->setChecked(settingsProxy()->raiseNodeOnMouseHover());
 

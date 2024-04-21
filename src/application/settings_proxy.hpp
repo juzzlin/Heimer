@@ -84,7 +84,11 @@ public:
 
     void setReversedEdgeDirection(bool reversedEdgeDirection);
 
+    bool raiseEdgeLabelOnMouseHover() const;
+
     bool raiseNodeOnMouseHover() const;
+
+    void setRaiseEdgeLabelOnMouseHover(bool raiseEdgeLabelOnMouseHover);
 
     void setRaiseNodeOnMouseHover(bool raiseNodeOnMouseHover);
 
@@ -151,6 +155,8 @@ private:
 
     const QString m_invertedControlsSettingKey = "invertedControls";
 
+    const QString m_raiseEdgeLabelOnMouseHoverKey = "raiseEdgeLabelOnMouseHoverKey";
+
     const QString m_raiseNodeOnMouseHoverKey = "raiseNodeOnMouseHoverKey";
 
     bool m_autoload = false;
@@ -176,6 +182,8 @@ private:
     bool m_invertedControls = false;
 
     bool m_reversedEdgeDirection = false;
+
+    bool m_raiseEdgeLabelOnMouseHover = true;
 
     bool m_raiseNodeOnMouseHover = true;
 

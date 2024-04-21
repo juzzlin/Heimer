@@ -23,7 +23,7 @@
 #include "../../common/types.hpp"
 #include "edge_model.hpp"
 #include "edge_text_edit.hpp"
-#include "scene_item_base.hpp"
+#include "scene_item_base_graphics_item.hpp"
 
 class QFont;
 class QGraphicsEllipseItem;
@@ -40,7 +40,7 @@ class EdgeDot;
 class Node;
 
 //! A graphic representation of a graph edge between nodes.
-class Edge : public SceneItemBase
+class Edge : public SceneItemBaseGraphicsItem
 {
     Q_OBJECT
 
@@ -138,11 +138,13 @@ signals:
 private:
     QPen buildPen(bool ignoreDashSetting = false) const;
 
+    double calculateTargetScale() const;
+
     void connectLabel();
 
     void copyData(EdgeCR other);
 
-    void hideLabelOnTimeout();
+    void hideLabelAndShowCondensedLabelIfEmptyOrNotEnoughSpace();
 
     void initializeDots();
 
@@ -156,19 +158,27 @@ private:
 
     bool isEnoughSpaceForCondensedLabel() const;
 
-    bool isCondensedLabelTextShoterThanLabelText() const;
+    bool isCondensedLabelTextShorterThanLabelText() const;
 
     QPointF lineCenter() const;
 
     void setArrowHeadPen(const QPen & pen);
 
-    void setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason visibilityChangeReason = EdgeTextEdit::VisibilityChangeReason::Timeout);
+    void setLabelFocused();
 
-    void toggleLabelVisibilityOnGeometryChange();
+    void updateLabelAndCondensedLabelVisibilitiesBasedOnSpaceAvailable();
 
-    void showLabelWhenFocused();
+    void showLabelAndHideCondensedLabel();
 
-    void showOrHideLabelExplicitly(bool show);
+    void showLabelAndCondensedLabel();
+
+    void showLabelExplicitly();
+
+    void hideLabelExplicitly();
+
+    void hideLabelOnTimeout();
+
+    void hideLabelAndCondensedLabel();
 
     void removeSelfFromNodes();
 
@@ -190,13 +200,9 @@ private:
 
     void updateLineGeometry();
 
-    enum class LabelUpdateReason
-    {
-        Default,
-        EdgeGeometryChanged
-    };
+    void updateLabel();
 
-    void updateLabel(LabelUpdateReason lur = LabelUpdateReason::Default);
+    void updateLabelOnGeometryChange();
 
     SettingsProxyS m_settingsProxy;
 
@@ -210,9 +216,9 @@ private:
 
     bool m_selected = false;
 
-    bool m_enableAnimations;
+    const bool m_enableAnimations;
 
-    bool m_enableLabels;
+    const bool m_enableLabels;
 
     EdgeDot * m_sourceDot;
 

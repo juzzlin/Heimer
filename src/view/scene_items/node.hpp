@@ -20,7 +20,6 @@
 #include <QGraphicsItem>
 #include <QImage>
 #include <QObject>
-#include <QPropertyAnimation>
 
 #include <map>
 #include <vector>
@@ -205,8 +204,6 @@ private:
     const QColor m_textEditBackgroundColorDark { 0x00, 0x00, 0x00, 0x10 };
 
     const QColor m_textEditBackgroundColorLight { 0xff, 0xff, 0xff, 0x10 };
-
-    QPropertyAnimation m_raiseAnimation;
 };
 
 } // namespace SceneItems

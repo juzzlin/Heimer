@@ -154,6 +154,10 @@ private:
 
     void updateSingleArrowhead();
 
+    void triggerAnimationOnRelativeConnectionLocationChangeAtSourcePosition();
+
+    void triggerAnimationOnRelativeConnectionLocationChangeAtTargetPosition();
+
     void updateDots();
 
     enum class LabelUpdateReason

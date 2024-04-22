@@ -477,30 +477,38 @@ void Edge::updateArrowhead()
     }
 }
 
+void Edge::triggerAnimationOnRelativeConnectionLocationChangeAtSourcePosition()
+{
+    const auto newRelativeSourcePos = m_line->line().p1() - sourceNode().pos();
+    if (m_previousRelativeSourcePos != newRelativeSourcePos) {
+        m_previousRelativeSourcePos = newRelativeSourcePos;
+        m_sourceDotSizeAnimation->stop();
+        m_sourceDotSizeAnimation->start();
+    }
+
+    // Update location of possibly active animation
+    m_sourceDot->setPos(m_line->line().p1());
+}
+
+void Edge::triggerAnimationOnRelativeConnectionLocationChangeAtTargetPosition()
+{
+    // Trigger new animation if relative connection location has changed
+    const auto newRelativeTargetPos = m_line->line().p2() - targetNode().pos();
+    if (m_previousRelativeTargetPos != newRelativeTargetPos) {
+        m_previousRelativeTargetPos = newRelativeTargetPos;
+        m_targetDotSizeAnimation->stop();
+        m_targetDotSizeAnimation->start();
+    }
+
+    // Update location of possibly active animation
+    m_targetDot->setPos(m_line->line().p2());
+}
+
 void Edge::updateDots()
 {
     if (m_enableAnimations) {
-        // Trigger new animation if relative connection location has changed
-        const auto newRelativeSourcePos = m_line->line().p1() - sourceNode().pos();
-        if (m_previousRelativeSourcePos != newRelativeSourcePos) {
-            m_previousRelativeSourcePos = newRelativeSourcePos;
-            m_sourceDotSizeAnimation->stop();
-            m_sourceDotSizeAnimation->start();
-        }
-
-        // Update location of possibly active animation
-        m_sourceDot->setPos(m_line->line().p1());
-
-        // Trigger new animation if relative connection location has changed
-        const auto newRelativeTargetPos = m_line->line().p2() - targetNode().pos();
-        if (m_previousRelativeTargetPos != newRelativeTargetPos) {
-            m_previousRelativeTargetPos = newRelativeTargetPos;
-            m_targetDotSizeAnimation->stop();
-            m_targetDotSizeAnimation->start();
-        }
-
-        // Update location of possibly active animation
-        m_targetDot->setPos(m_line->line().p2());
+        triggerAnimationOnRelativeConnectionLocationChangeAtSourcePosition();
+        triggerAnimationOnRelativeConnectionLocationChangeAtTargetPosition();
     }
 }
 

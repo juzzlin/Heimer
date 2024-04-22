@@ -55,7 +55,7 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
   , m_sourceDot(enableAnimations ? new EdgeDot(this) : nullptr)
   , m_targetDot(enableAnimations ? new EdgeDot(this) : nullptr)
   , m_label(enableLabel ? new EdgeTextEdit(this) : nullptr)
-  , m_dummyLabel(enableLabel ? new EdgeTextEdit(this) : nullptr)
+  , m_condensedLabel(enableLabel ? new EdgeTextEdit(this) : nullptr)
   , m_line(new QGraphicsLineItem(this))
   , m_arrowheadBeginLeft(new QGraphicsLineItem(this))
   , m_arrowheadBeginRight(new QGraphicsLineItem(this))
@@ -70,45 +70,9 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
 
     setZValue(static_cast<int>(Layers::Edge));
 
-    initDots();
+    initializeDots();
 
-    if (m_enableLabel) {
-
-        const QColor labelColor { 0xff, 0xee, 0xaa };
-
-        m_label->setZValue(static_cast<int>(Layers::EdgeLabel));
-        m_label->setBackgroundColor(labelColor);
-        connect(m_label, &TextEdit::textChanged, this, [=](const QString & text) {
-            updateLabel();
-            m_edgeModel->text = text;
-        });
-
-        connect(m_label, &TextEdit::undoPointRequested, this, &Edge::undoPointRequested);
-
-        m_dummyLabel->setZValue(static_cast<int>(Layers::EdgeDummyLabel));
-        m_dummyLabel->setAcceptHoverEvents(false);
-        m_dummyLabel->setBackgroundColor(labelColor);
-        m_dummyLabel->setText(tr("..."));
-        m_dummyLabel->setEnabled(false);
-
-        connect(m_label, &EdgeTextEdit::hoverEntered, this, [=] {
-            setLabelVisible(true, EdgeTextEdit::VisibilityChangeReason::Focused);
-        });
-
-        connect(m_label, &EdgeTextEdit::visibilityTimeout, this, [=] {
-            setLabelVisible(false);
-        });
-
-        m_labelVisibilityTimer.setSingleShot(true);
-
-        const int labelDurationMs = 2000;
-
-        m_labelVisibilityTimer.setInterval(labelDurationMs);
-
-        connect(&m_labelVisibilityTimer, &QTimer::timeout, this, [=] {
-            setLabelVisible(false);
-        });
-    }
+    initializeLabels();
 }
 
 Edge::Edge(NodeS sourceNode, NodeS targetNode, bool enableAnimations, bool enableLabel)
@@ -170,7 +134,7 @@ void Edge::changeFont(const QFont & font)
             newFont.setPointSize(m_label->font().pointSize());
         }
         m_label->setFont(newFont);
-        m_dummyLabel->setFont(newFont);
+        m_condensedLabel->setFont(newFont);
     }
 }
 
@@ -205,7 +169,20 @@ double Edge::length() const
     return m_line->line().length();
 }
 
-void Edge::initDots()
+void Edge::initializeDotAnimations()
+{
+    const int animationDurationMs = 2000;
+
+    m_sourceDotSizeAnimation->setDuration(animationDurationMs);
+    m_sourceDotSizeAnimation->setStartValue(1.0);
+    m_sourceDotSizeAnimation->setEndValue(0.0);
+
+    m_targetDotSizeAnimation->setDuration(animationDurationMs);
+    m_targetDotSizeAnimation->setStartValue(1.0);
+    m_targetDotSizeAnimation->setEndValue(0.0);
+}
+
+void Edge::initializeDots()
 {
     if (m_enableAnimations) {
 
@@ -215,27 +192,67 @@ void Edge::initDots()
         m_sourceDot->setBrush(QBrush(dotColor));
         m_sourceDot->setZValue(zValue() + 10);
 
+        const int dotRadius = 10;
+        const QRectF rect { -dotRadius, -dotRadius, dotRadius * 2, dotRadius * 2 };
+        m_sourceDot->setRect(rect);
+
         m_targetDot->setPen(QPen(dotColor));
         m_targetDot->setBrush(QBrush(dotColor));
         m_targetDot->setZValue(zValue() + 10);
-
-        const int dotDurationMs = 2000;
-
-        m_sourceDotSizeAnimation->setDuration(dotDurationMs);
-        m_sourceDotSizeAnimation->setStartValue(1.0);
-        m_sourceDotSizeAnimation->setEndValue(0.0);
-
-        const int dotRadius = 10;
-
-        const QRectF rect { -dotRadius, -dotRadius, dotRadius * 2, dotRadius * 2 };
-
-        m_sourceDot->setRect(rect);
-
-        m_targetDotSizeAnimation->setDuration(dotDurationMs);
-        m_targetDotSizeAnimation->setStartValue(1.0);
-        m_targetDotSizeAnimation->setEndValue(0.0);
-
         m_targetDot->setRect(rect);
+
+        initializeDotAnimations();
+    }
+}
+
+void Edge::connectLabel()
+{
+    connect(m_label, &TextEdit::textChanged, this, [=](const QString & text) {
+        updateLabel();
+        m_edgeModel->text = text;
+    });
+
+    connect(m_label, &TextEdit::undoPointRequested, this, &Edge::undoPointRequested);
+
+    connect(m_label, &EdgeTextEdit::hoverEntered, this, [=] {
+        setLabelVisible(true, EdgeTextEdit::VisibilityChangeReason::Focused);
+    });
+
+    connect(m_label, &EdgeTextEdit::visibilityTimeout, this, [=] {
+        setLabelVisible(false);
+    });
+}
+
+void Edge::initializeLabelVisibilityTimer()
+{
+    m_labelVisibilityTimer.setSingleShot(true);
+
+    const int labelDurationMs = 2000;
+    m_labelVisibilityTimer.setInterval(labelDurationMs);
+
+    connect(&m_labelVisibilityTimer, &QTimer::timeout, this, [=] {
+        setLabelVisible(false);
+    });
+}
+
+void Edge::initializeLabels()
+{
+    if (m_enableLabel) {
+
+        const QColor labelColor { 0xff, 0xee, 0xaa };
+
+        m_label->setZValue(static_cast<int>(Layers::EdgeLabel));
+        m_label->setBackgroundColor(labelColor);
+
+        m_condensedLabel->setZValue(static_cast<int>(Layers::EdgeCondensedLabel));
+        m_condensedLabel->setAcceptHoverEvents(false);
+        m_condensedLabel->setBackgroundColor(labelColor);
+        m_condensedLabel->setText(tr("..."));
+        m_condensedLabel->setEnabled(false);
+
+        connectLabel();
+
+        initializeLabelVisibilityTimer();
     }
 }
 
@@ -245,48 +262,79 @@ void Edge::setArrowHeadPen(const QPen & pen)
     m_arrowheadBeginLeft->update();
     m_arrowheadBeginRight->setPen(pen);
     m_arrowheadBeginRight->update();
+
     m_arrowheadEndLeft->setPen(pen);
     m_arrowheadEndLeft->update();
     m_arrowheadEndRight->setPen(pen);
     m_arrowheadEndRight->update();
 }
 
-void Edge::setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason vcr)
+bool Edge::isEnoughSpaceForLabel() const
+{
+    return m_label->scene() && !m_label->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && //
+      !m_label->sceneBoundingRect().intersects(targetNode().sceneBoundingRect());
+}
+
+bool Edge::isEnoughSpaceForCondensedLabel() const
+{
+    return m_condensedLabel->scene() && !m_condensedLabel->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && //
+      !m_condensedLabel->sceneBoundingRect().intersects(targetNode().sceneBoundingRect());
+}
+
+bool Edge::isCondensedLabelTextShoterThanLabelText() const
+{
+    return m_condensedLabel->text().length() < m_label->text().length();
+}
+
+void Edge::toggleLabelVisibilityOnGeometryChange()
+{
+    const bool isLabelVisible = isEnoughSpaceForLabel() && !m_label->text().isEmpty();
+    m_label->setVisible(isLabelVisible);
+    m_condensedLabel->setVisible(!isLabelVisible && isEnoughSpaceForCondensedLabel() && isCondensedLabelTextShoterThanLabelText());
+}
+
+void Edge::showLabelWhenFocused()
+{
+    m_label->setVisible(true);
+    m_label->setParentItem(nullptr);
+    m_label->setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_settingsProxy->shadowEffect(), false));
+    m_condensedLabel->setVisible(false);
+}
+
+void Edge::showOrHideLabelExplicitly(bool show)
+{
+    m_label->setVisible(show);
+    m_condensedLabel->setVisible(show);
+}
+
+void Edge::hideLabelOnTimeout()
+{
+    if ((m_label->text().isEmpty() || (!m_label->text().isEmpty() && !isEnoughSpaceForLabel())) && !m_label->hasFocus()) {
+        m_label->setVisible(false);
+        m_condensedLabel->setVisible(isEnoughSpaceForCondensedLabel() && isCondensedLabelTextShoterThanLabelText());
+    }
+}
+
+void Edge::setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason visibilityChangeReason)
 {
     if (m_enableLabel) {
-        // Note: We need to test for scene(), because sceneBoundingRect() will crash if the item has not been added to any scene (yet).
-        const bool isEnoughSpaceForLabel = m_label->scene() && !m_label->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && //
-          !m_label->sceneBoundingRect().intersects(targetNode().sceneBoundingRect());
-        const bool dummyLabelTextIsShoterThanLabelText = m_dummyLabel->text().length() < m_label->text().length();
-        const bool isEnoughSpaceForDummyLabel = m_dummyLabel->scene() && !m_dummyLabel->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && //
-          !m_dummyLabel->sceneBoundingRect().intersects(targetNode().sceneBoundingRect());
-        switch (vcr) {
-        case EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged: {
-            // Toggle visibility according to space available if geometry changed
-            const bool isLabelVisible = isEnoughSpaceForLabel && !m_label->text().isEmpty();
-            m_label->setVisible(isLabelVisible);
-            m_dummyLabel->setVisible(!isLabelVisible && isEnoughSpaceForDummyLabel && dummyLabelTextIsShoterThanLabelText);
-        } break;
-        case EdgeTextEdit::VisibilityChangeReason::Explicit: {
-            m_label->setVisible(visible);
-            m_dummyLabel->setVisible(visible);
-        } break;
-        case EdgeTextEdit::VisibilityChangeReason::Focused: {
+        switch (visibilityChangeReason) {
+        case EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged:
+            toggleLabelVisibilityOnGeometryChange();
+            break;
+        case EdgeTextEdit::VisibilityChangeReason::Explicit:
+            showOrHideLabelExplicitly(visible);
+            break;
+        case EdgeTextEdit::VisibilityChangeReason::Focused:
             if (visible) {
-                m_label->setVisible(true);
-                m_label->setParentItem(nullptr);
-                m_label->setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_settingsProxy->shadowEffect(), false));
-                m_dummyLabel->setVisible(false);
+                showLabelWhenFocused();
             }
-        } break;
-        case EdgeTextEdit::VisibilityChangeReason::Timeout: {
+            break;
+        case EdgeTextEdit::VisibilityChangeReason::Timeout:
             if (!visible) {
-                if ((m_label->text().isEmpty() || (!m_label->text().isEmpty() && !isEnoughSpaceForLabel)) && !m_label->hasFocus()) {
-                    m_label->setVisible(false);
-                    m_dummyLabel->setVisible(isEnoughSpaceForDummyLabel && dummyLabelTextIsShoterThanLabelText);
-                }
+                hideLabelOnTimeout();
             }
-        } break;
+            break;
         }
     }
 }
@@ -345,7 +393,7 @@ void Edge::setTextSize(int textSize)
 {
     if (m_enableLabel && textSize > 0) {
         m_label->setTextSize(textSize);
-        m_dummyLabel->setTextSize(textSize);
+        m_condensedLabel->setTextSize(textSize);
     }
 }
 
@@ -516,7 +564,7 @@ void Edge::updateLabel(LabelUpdateReason lur)
 {
     if (m_enableLabel) {
         m_label->setPos((m_line->line().p1() + m_line->line().p2()) * 0.5 - QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()) * 0.5);
-        m_dummyLabel->setPos((m_line->line().p1() + m_line->line().p2()) * 0.5 - QPointF(m_dummyLabel->boundingRect().width(), m_dummyLabel->boundingRect().height()) * 0.5);
+        m_condensedLabel->setPos((m_line->line().p1() + m_line->line().p2()) * 0.5 - QPointF(m_condensedLabel->boundingRect().width(), m_condensedLabel->boundingRect().height()) * 0.5);
         // Toggle visibility according to space available if geometry changed
         if (lur == LabelUpdateReason::EdgeGeometryChanged) {
             setLabelVisible(m_label->isVisible(), EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged);

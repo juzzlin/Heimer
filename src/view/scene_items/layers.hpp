@@ -23,7 +23,7 @@ enum class Layers
     Edge = 1,
     Node = 10,
     EdgeDot = 20,
-    EdgeDummyLabel = 25,
+    EdgeCondensedLabel = 25,
     NodeHandle = 30,
     EdgeLabel = 45,
     Last = 50

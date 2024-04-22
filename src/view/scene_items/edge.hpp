@@ -138,13 +138,35 @@ signals:
 private:
     QPen buildPen(bool ignoreDashSetting = false) const;
 
+    void connectLabel();
+
     void copyData(EdgeCR other);
 
-    void initDots();
+    void hideLabelOnTimeout();
+
+    void initializeDots();
+
+    void initializeDotAnimations();
+
+    void initializeLabels();
+
+    void initializeLabelVisibilityTimer();
+
+    bool isEnoughSpaceForLabel() const;
+
+    bool isEnoughSpaceForCondensedLabel() const;
+
+    bool isCondensedLabelTextShoterThanLabelText() const;
 
     void setArrowHeadPen(const QPen & pen);
 
-    void setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason vcr = EdgeTextEdit::VisibilityChangeReason::Timeout);
+    void setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason visibilityChangeReason = EdgeTextEdit::VisibilityChangeReason::Timeout);
+
+    void toggleLabelVisibilityOnGeometryChange();
+
+    void showLabelWhenFocused();
+
+    void showOrHideLabelExplicitly(bool show);
 
     void triggerAnimationOnRelativeConnectionLocationChangeAtSourcePosition();
 
@@ -198,7 +220,7 @@ private:
 
     EdgeTextEdit * m_label;
 
-    EdgeTextEdit * m_dummyLabel;
+    EdgeTextEdit * m_condensedLabel;
 
     QGraphicsLineItem * m_line;
 

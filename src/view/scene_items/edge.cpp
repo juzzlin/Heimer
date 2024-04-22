@@ -57,10 +57,10 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
   , m_label(enableLabel ? new EdgeTextEdit(this) : nullptr)
   , m_dummyLabel(enableLabel ? new EdgeTextEdit(this) : nullptr)
   , m_line(new QGraphicsLineItem(this))
-  , m_arrowheadL0(new QGraphicsLineItem(this))
-  , m_arrowheadR0(new QGraphicsLineItem(this))
-  , m_arrowheadL1(new QGraphicsLineItem(this))
-  , m_arrowheadR1(new QGraphicsLineItem(this))
+  , m_arrowheadBeginLeft(new QGraphicsLineItem(this))
+  , m_arrowheadBeginRight(new QGraphicsLineItem(this))
+  , m_arrowheadEndLeft(new QGraphicsLineItem(this))
+  , m_arrowheadEndRight(new QGraphicsLineItem(this))
   , m_sourceDotSizeAnimation(enableAnimations ? new QPropertyAnimation(m_sourceDot, "scale", this) : nullptr)
   , m_targetDotSizeAnimation(enableAnimations ? new QPropertyAnimation(m_targetDot, "scale", this) : nullptr)
 {
@@ -241,14 +241,14 @@ void Edge::initDots()
 
 void Edge::setArrowHeadPen(const QPen & pen)
 {
-    m_arrowheadL0->setPen(pen);
-    m_arrowheadL0->update();
-    m_arrowheadR0->setPen(pen);
-    m_arrowheadR0->update();
-    m_arrowheadL1->setPen(pen);
-    m_arrowheadL1->update();
-    m_arrowheadR1->setPen(pen);
-    m_arrowheadR1->update();
+    m_arrowheadBeginLeft->setPen(pen);
+    m_arrowheadBeginLeft->update();
+    m_arrowheadBeginRight->setPen(pen);
+    m_arrowheadBeginRight->update();
+    m_arrowheadEndLeft->setPen(pen);
+    m_arrowheadEndLeft->update();
+    m_arrowheadEndRight->setPen(pen);
+    m_arrowheadEndRight->update();
 }
 
 void Edge::setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason vcr)
@@ -385,67 +385,94 @@ NodeR Edge::targetNode() const
     return *m_targetNode;
 }
 
+void Edge::updateDoubleArrowhead()
+{
+    QLineF lineBeginLeft, lineBeginRight, lineEndLeft, lineEndRight;
+
+    const double arrowOpening = 150;
+
+    const auto reversedEdge = m_edgeModel->reversed;
+    const auto pointBegin = reversedEdge ? m_line->line().p1() : m_line->line().p2();
+    lineBeginLeft.setP1(pointBegin);
+
+    const auto angleBegin = reversedEdge ? -m_line->line().angle() + 180 : -m_line->line().angle();
+    const auto angleBeginLeft = qDegreesToRadians(angleBegin + arrowOpening);
+    lineBeginLeft.setP2(pointBegin + QPointF(std::cos(angleBeginLeft), std::sin(angleBeginLeft)) * m_edgeModel->style.arrowSize);
+    lineBeginRight.setP1(pointBegin);
+
+    const auto angleBeginRight = qDegreesToRadians(angleBegin - arrowOpening);
+    lineBeginRight.setP2(pointBegin + QPointF(std::cos(angleBeginRight), std::sin(angleBeginRight)) * m_edgeModel->style.arrowSize);
+    const auto pointEnd = reversedEdge ? m_line->line().p2() : m_line->line().p1();
+    lineEndLeft.setP1(pointEnd);
+
+    m_arrowheadBeginLeft->setLine(lineBeginLeft);
+    m_arrowheadBeginRight->setLine(lineBeginRight);
+    m_arrowheadBeginLeft->show();
+    m_arrowheadBeginRight->show();
+
+    const auto angleEnd = reversedEdge ? -m_line->line().angle() : -m_line->line().angle() + 180;
+    const auto angleEndLeft = qDegreesToRadians(angleEnd + arrowOpening);
+    lineEndLeft.setP2(pointEnd + QPointF(std::cos(angleEndLeft), std::sin(angleEndLeft)) * m_edgeModel->style.arrowSize);
+    lineEndRight.setP1(pointEnd);
+
+    const auto angleEndRight = qDegreesToRadians(angleEnd - arrowOpening);
+    lineEndRight.setP2(pointEnd + QPointF(std::cos(angleEndRight), std::sin(angleEndRight)) * m_edgeModel->style.arrowSize);
+
+    m_arrowheadEndLeft->setLine(lineEndLeft);
+    m_arrowheadEndRight->setLine(lineEndRight);
+    m_arrowheadEndLeft->show();
+    m_arrowheadEndRight->show();
+}
+
+void Edge::updateHiddenArrowhead()
+{
+    m_arrowheadBeginLeft->hide();
+    m_arrowheadBeginRight->hide();
+
+    m_arrowheadEndLeft->hide();
+    m_arrowheadEndRight->hide();
+}
+
+void Edge::updateSingleArrowhead()
+{
+    QLineF lineBeginLeft, lineBeginRight;
+
+    const auto reversedEdge = m_edgeModel->reversed;
+    const auto pointBegin = reversedEdge ? m_line->line().p1() : m_line->line().p2();
+    lineBeginLeft.setP1(pointBegin);
+
+    const double arrowOpening = 150;
+    const auto angleBegin = reversedEdge ? -m_line->line().angle() + 180 : -m_line->line().angle();
+    const auto angleLeft = qDegreesToRadians(angleBegin + arrowOpening);
+    lineBeginLeft.setP2(pointBegin + QPointF(std::cos(angleLeft), std::sin(angleLeft)) * m_edgeModel->style.arrowSize);
+    lineBeginRight.setP1(pointBegin);
+
+    const auto angleRight = qDegreesToRadians(angleBegin - arrowOpening);
+    lineBeginRight.setP2(pointBegin + QPointF(std::cos(angleRight), std::sin(angleRight)) * m_edgeModel->style.arrowSize);
+
+    m_arrowheadBeginLeft->setLine(lineBeginLeft);
+    m_arrowheadBeginRight->setLine(lineBeginRight);
+
+    m_arrowheadBeginLeft->show();
+    m_arrowheadBeginRight->show();
+
+    m_arrowheadEndLeft->hide();
+    m_arrowheadEndRight->hide();
+}
+
 void Edge::updateArrowhead()
 {
     setArrowHeadPen(buildPen(true));
 
-    const auto reversed = m_edgeModel->reversed;
-    const auto point0 = reversed ? m_line->line().p1() : m_line->line().p2();
-    const auto angle0 = reversed ? -m_line->line().angle() + 180 : -m_line->line().angle();
-    const auto point1 = reversed ? m_line->line().p2() : m_line->line().p1();
-    const auto angle1 = reversed ? -m_line->line().angle() : -m_line->line().angle() + 180;
-
-    QLineF lineL0;
-    QLineF lineR0;
-    QLineF lineL1;
-    QLineF lineR1;
-
-    const double arrowOpening = 150;
-
     switch (m_edgeModel->style.arrowMode) {
-    case EdgeModel::ArrowMode::Single: {
-        lineL0.setP1(point0);
-        const auto angleL = qDegreesToRadians(angle0 + arrowOpening);
-        lineL0.setP2(point0 + QPointF(std::cos(angleL), std::sin(angleL)) * m_edgeModel->style.arrowSize);
-        lineR0.setP1(point0);
-        const auto angleR = qDegreesToRadians(angle0 - arrowOpening);
-        lineR0.setP2(point0 + QPointF(std::cos(angleR), std::sin(angleR)) * m_edgeModel->style.arrowSize);
-        m_arrowheadL0->setLine(lineL0);
-        m_arrowheadR0->setLine(lineR0);
-        m_arrowheadL0->show();
-        m_arrowheadR0->show();
-        m_arrowheadL1->hide();
-        m_arrowheadR1->hide();
+    case EdgeModel::ArrowMode::Single:
+        updateSingleArrowhead();
         break;
-    }
-    case EdgeModel::ArrowMode::Double: {
-        lineL0.setP1(point0);
-        const auto angleL0 = qDegreesToRadians(angle0 + arrowOpening);
-        lineL0.setP2(point0 + QPointF(std::cos(angleL0), std::sin(angleL0)) * m_edgeModel->style.arrowSize);
-        lineR0.setP1(point0);
-        const auto angleR0 = qDegreesToRadians(angle0 - arrowOpening);
-        lineR0.setP2(point0 + QPointF(std::cos(angleR0), std::sin(angleR0)) * m_edgeModel->style.arrowSize);
-        lineL1.setP1(point1);
-        m_arrowheadL0->setLine(lineL0);
-        m_arrowheadR0->setLine(lineR0);
-        m_arrowheadL0->show();
-        m_arrowheadR0->show();
-        const auto angleL1 = qDegreesToRadians(angle1 + arrowOpening);
-        lineL1.setP2(point1 + QPointF(std::cos(angleL1), std::sin(angleL1)) * m_edgeModel->style.arrowSize);
-        lineR1.setP1(point1);
-        const auto angleR1 = qDegreesToRadians(angle1 - arrowOpening);
-        lineR1.setP2(point1 + QPointF(std::cos(angleR1), std::sin(angleR1)) * m_edgeModel->style.arrowSize);
-        m_arrowheadL1->setLine(lineL1);
-        m_arrowheadR1->setLine(lineR1);
-        m_arrowheadL1->show();
-        m_arrowheadR1->show();
+    case EdgeModel::ArrowMode::Double:
+        updateDoubleArrowhead();
         break;
-    }
     case EdgeModel::ArrowMode::Hidden:
-        m_arrowheadL0->hide();
-        m_arrowheadR0->hide();
-        m_arrowheadL1->hide();
-        m_arrowheadR1->hide();
+        updateHiddenArrowhead();
         break;
     }
 }

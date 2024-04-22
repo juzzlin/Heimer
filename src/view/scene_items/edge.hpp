@@ -148,6 +148,12 @@ private:
 
     void updateArrowhead();
 
+    void updateDoubleArrowhead();
+
+    void updateHiddenArrowhead();
+
+    void updateSingleArrowhead();
+
     void updateDots();
 
     enum class LabelUpdateReason
@@ -190,13 +196,13 @@ private:
 
     QGraphicsLineItem * m_line;
 
-    QGraphicsLineItem * m_arrowheadL0;
+    QGraphicsLineItem * m_arrowheadBeginLeft;
 
-    QGraphicsLineItem * m_arrowheadR0;
+    QGraphicsLineItem * m_arrowheadBeginRight;
 
-    QGraphicsLineItem * m_arrowheadL1;
+    QGraphicsLineItem * m_arrowheadEndLeft;
 
-    QGraphicsLineItem * m_arrowheadR1;
+    QGraphicsLineItem * m_arrowheadEndRight;
 
     QPropertyAnimation * m_sourceDotSizeAnimation;
 

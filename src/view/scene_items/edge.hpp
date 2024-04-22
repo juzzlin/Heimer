@@ -146,6 +146,10 @@ private:
 
     void setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason vcr = EdgeTextEdit::VisibilityChangeReason::Timeout);
 
+    void triggerAnimationOnRelativeConnectionLocationChangeAtSourcePosition();
+
+    void triggerAnimationOnRelativeConnectionLocationChangeAtTargetPosition();
+
     void updateArrowhead();
 
     void updateDoubleArrowhead();
@@ -154,11 +158,9 @@ private:
 
     void updateSingleArrowhead();
 
-    void triggerAnimationOnRelativeConnectionLocationChangeAtSourcePosition();
-
-    void triggerAnimationOnRelativeConnectionLocationChangeAtTargetPosition();
-
     void updateDots();
+
+    void updateLineGeometry();
 
     enum class LabelUpdateReason
     {

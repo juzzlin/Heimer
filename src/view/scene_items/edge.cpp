@@ -598,31 +598,41 @@ void Edge::unselectText()
     m_label->unselectText();
 }
 
+void Edge::updateLineGeometry()
+{
+    auto && nearestPoints = Node::getNearestEdgePoints(sourceNode(), targetNode());
+    const auto pointBegin = nearestPoints.first.location + sourceNode().pos();
+
+    QVector2D directionTowardsSourceNode(sourceNode().pos() - pointBegin);
+    directionTowardsSourceNode.normalize();
+
+    const auto pointEnd = nearestPoints.second.location + targetNode().pos();
+    QVector2D directionTowardsTargetNode(targetNode().pos() - pointEnd);
+    directionTowardsTargetNode.normalize();
+
+    const double widthScale = 0.5;
+    const double cornerRadiusScale = 0.3;
+
+    m_line->setLine(QLineF {
+      pointBegin + (nearestPoints.first.isCorner ? cornerRadiusScale * (directionTowardsSourceNode * static_cast<float>(sourceNode().cornerRadius())).toPointF() : QPointF { 0, 0 }),
+      pointEnd + (nearestPoints.second.isCorner ? cornerRadiusScale * (directionTowardsTargetNode * static_cast<float>(targetNode().cornerRadius())).toPointF() : QPointF { 0, 0 }) - //
+        (directionTowardsTargetNode * static_cast<float>(m_edgeModel->style.edgeWidth)).toPointF() * widthScale });
+
+    // Set correct origin for scale animations
+    setTransformOriginPoint(m_line->line().center());
+}
+
 void Edge::updateLine()
 {
     m_line->setPen(buildPen());
 
-    auto && nearestPoints = Node::getNearestEdgePoints(sourceNode(), targetNode());
-    const auto p1 = nearestPoints.first.location + sourceNode().pos();
-    QVector2D direction1(sourceNode().pos() - p1);
-    direction1.normalize();
-    const auto p2 = nearestPoints.second.location + targetNode().pos();
-    QVector2D direction2(targetNode().pos() - p2);
-    direction2.normalize();
-
-    const double widthScale = 0.5;
-    const double cornerRadiusScale = 0.3;
-    m_line->setLine(QLineF {
-      p1 + (nearestPoints.first.isCorner ? cornerRadiusScale * (direction1 * static_cast<float>(sourceNode().cornerRadius())).toPointF() : QPointF { 0, 0 }),
-      p2 + (nearestPoints.second.isCorner ? cornerRadiusScale * (direction2 * static_cast<float>(targetNode().cornerRadius())).toPointF() : QPointF { 0, 0 }) - //
-        (direction2 * static_cast<float>(m_edgeModel->style.edgeWidth)).toPointF() * widthScale });
+    updateLineGeometry();
 
     updateDots();
-    updateLabel(LabelUpdateReason::EdgeGeometryChanged);
-    updateArrowhead();
 
-    // Set correct origin for scale animations
-    setTransformOriginPoint(m_line->line().center());
+    updateLabel(LabelUpdateReason::EdgeGeometryChanged);
+
+    updateArrowhead();
 }
 
 Edge::~Edge()

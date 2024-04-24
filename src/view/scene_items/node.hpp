@@ -149,6 +149,8 @@ protected:
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
 
 private:
+    void addHandlesToScene();
+
     void createEdgePoints();
 
     void createHandles();
@@ -156,6 +158,14 @@ private:
     QRectF expandedTextEditRect() const;
 
     void initTextField();
+
+    void paintBackground(QPainter & painter);
+
+    void paintBackgroundWithPixmap(QPainter & painter);
+
+    void paintBackgroundWithSolidColor(QPainter & painter);
+
+    void paintPatchForTextEdit(QPainter & painter);
 
     void raiseBody();
 

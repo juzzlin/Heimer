@@ -356,59 +356,87 @@ void Node::initTextField()
     }
 }
 
+void Node::addHandlesToScene()
+{
+    for (auto && handle : m_handles) {
+        if (!handle.second->scene())
+            scene()->addItem(handle.second);
+    }
+}
+
+void Node::paintBackgroundWithPixmap(QPainter & painter)
+{
+    const auto size = m_nodeModel->size;
+
+    QPixmap scaledPixmap(static_cast<int>(size.width()), static_cast<int>(size.height()));
+    scaledPixmap.fill(Qt::transparent);
+
+    QPainter pixmapPainter(&scaledPixmap);
+    QPainterPath scaledPath;
+    const QRectF scaledRect(0, 0, size.width(), size.height());
+    scaledPath.addRoundedRect(scaledRect, m_cornerRadius, m_cornerRadius);
+
+    const auto pixmapAspect = static_cast<double>(m_pixmap.width()) / m_pixmap.height();
+    if (const auto nodeAspect = size.width() / size.height(); nodeAspect > 1.0) {
+        if (pixmapAspect > nodeAspect) {
+            pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToHeight(static_cast<int>(size.height()))));
+        } else {
+            pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToWidth(static_cast<int>(size.width()))));
+        }
+    } else {
+        if (pixmapAspect < nodeAspect) {
+            pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToWidth(static_cast<int>(size.width()))));
+        } else {
+            pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToHeight(static_cast<int>(size.height()))));
+        }
+    }
+
+    const QRectF rect(-size.width() / 2, -size.height() / 2, size.width(), size.height());
+    painter.drawPixmap(rect, scaledPixmap, scaledRect);
+}
+
+void Node::paintBackgroundWithSolidColor(QPainter & painter)
+{
+    QPainterPath path;
+    const auto size = m_nodeModel->size;
+    const QRectF rect(-size.width() / 2, -size.height() / 2, size.width(), size.height());
+    path.addRoundedRect(rect, m_cornerRadius, m_cornerRadius);
+
+    const auto color = m_nodeModel->color;
+    painter.fillPath(path, QBrush(color));
+    painter.strokePath(path, GraphicsFactory::createOutlinePen(color, 0.33));
+}
+
+void Node::paintBackground(QPainter & painter)
+{
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    if (!m_pixmap.isNull()) {
+        paintBackgroundWithPixmap(painter);
+    } else {
+        paintBackgroundWithSolidColor(painter);
+    }
+}
+
+void Node::paintPatchForTextEdit(QPainter & painter)
+{
+    painter.fillRect(expandedTextEditRect(),
+                     Utils::isColorBright(m_nodeModel->color) ? m_textEditBackgroundColorDark : m_textEditBackgroundColorLight);
+}
+
 void Node::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
     Q_UNUSED(widget)
     Q_UNUSED(option)
 
-    for (auto && handle : m_handles) {
-        if (!handle.second->scene())
-            scene()->addItem(handle.second);
-    }
+    addHandlesToScene();
 
     painter->save();
 
-    // Background
+    paintBackground(*painter);
 
-    QPainterPath path;
-    const auto size = m_nodeModel->size;
-    const QRectF rect(-size.width() / 2, -size.height() / 2, size.width(), size.height());
-    path.addRoundedRect(rect, m_cornerRadius, m_cornerRadius);
-    painter->setRenderHint(QPainter::Antialiasing);
+    paintPatchForTextEdit(*painter);
 
-    if (!m_pixmap.isNull()) {
-        QPixmap scaledPixmap(static_cast<int>(size.width()), static_cast<int>(size.height()));
-        scaledPixmap.fill(Qt::transparent);
-        QPainter pixmapPainter(&scaledPixmap);
-        QPainterPath scaledPath;
-        const QRectF scaledRect(0, 0, size.width(), size.height());
-        scaledPath.addRoundedRect(scaledRect, m_cornerRadius, m_cornerRadius);
-        const auto pixmapAspect = static_cast<double>(m_pixmap.width()) / m_pixmap.height();
-        if (const auto nodeAspect = size.width() / size.height(); nodeAspect > 1.0) {
-            if (pixmapAspect > nodeAspect) {
-                pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToHeight(static_cast<int>(size.height()))));
-            } else {
-                pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToWidth(static_cast<int>(size.width()))));
-            }
-        } else {
-            if (pixmapAspect < nodeAspect) {
-                pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToWidth(static_cast<int>(size.width()))));
-            } else {
-                pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToHeight(static_cast<int>(size.height()))));
-            }
-        }
-
-        painter->drawPixmap(rect, scaledPixmap, scaledRect);
-    } else {
-        const auto color = m_nodeModel->color;
-        painter->fillPath(path, QBrush(color));
-        painter->strokePath(path, GraphicsFactory::createOutlinePen(color, 0.33));
-    }
-
-    // Patch for TextEdit
-
-    painter->fillRect(expandedTextEditRect(),
-                      Utils::isColorBright(m_nodeModel->color) ? m_textEditBackgroundColorDark : m_textEditBackgroundColorLight);
     painter->restore();
 }
 

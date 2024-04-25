@@ -54,10 +54,7 @@ void AboutDialog::initWidgets()
       + "<p>" + copyright() + ".</p>"
       + "<p>" + tr("Package type: ") + applicationPackageType() + "</p>"
       + tr("Project website: ") + "<a href='" + webSiteUrl() + "'>"
-      + webSiteUrl() + "</a>"
-      + "<p>" + tr("Support ") + applicationName() + tr(" via PayPal: ")
-      + "<a href='" + supportSiteUrl() + "'>"
-      + supportSiteUrl() + "</a></p>");
+      + webSiteUrl() + "</a>");
     infoLabel->setFrameStyle(QFrame::NoFrame);
     infoLabel->viewport()->setAutoFillBackground(false);
     hLayout->addWidget(infoLabel);

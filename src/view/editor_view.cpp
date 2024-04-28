@@ -307,7 +307,7 @@ void EditorView::handleCreateOrConnectNodeAction()
 {
     showDummyDragNode(true);
     showDummyDragEdge(true);
-    m_dummyDragNode->setPos(m_grid.snapToGrid(m_mousePositionOnScene - SC::instance().applicationService()->mouseAction().sourcePosOnNode()));
+    m_dummyDragNode->setPos(m_grid.snapToGrid(m_mousePositionOnScene));
     m_dummyDragEdge->updateLine();
     SC::instance().applicationService()->mouseAction().sourceNode()->setHandlesVisible(false);
 
@@ -405,7 +405,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent * event)
                     m_connectionTargetNode->setSelected(false);
                     m_connectionTargetNode = nullptr;
                 } else {
-                    SC::instance().applicationService()->createAndAddNode(sourceNode->index(), m_grid.snapToGrid(m_mousePositionOnScene - SC::instance().applicationService()->mouseAction().sourcePosOnNode()));
+                    SC::instance().applicationService()->createAndAddNode(sourceNode->index(), m_grid.snapToGrid(m_mousePositionOnScene));
                 }
                 resetDummyDragItems();
             }

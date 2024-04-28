@@ -420,7 +420,6 @@ void ApplicationService::initiateNewNodeDrag(SceneItems::NodeHandle & nodeHandle
     clearNodeSelectionGroup();
     saveUndoPoint();
     mouseAction().setSourceNode(&nodeHandle.parentNode(), MouseAction::Action::CreateOrConnectNode);
-    mouseAction().setSourcePosOnNode(nodeHandle.pos() - nodeHandle.parentNode().pos());
     nodeHandle.parentNode().setHandlesVisible(false);
 
     // Change cursor to the closed hand cursor.

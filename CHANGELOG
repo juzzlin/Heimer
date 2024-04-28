@@ -19,6 +19,8 @@ Bug fixes:
 
 * Fix zooming when searching text on labels
 
+* Fix position offset issues when creating a new node by dragging
+
 Other:
 
 4.4.0

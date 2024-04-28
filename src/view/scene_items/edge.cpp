@@ -286,6 +286,11 @@ bool Edge::isCondensedLabelTextShoterThanLabelText() const
     return m_condensedLabel->text().length() < m_label->text().length();
 }
 
+QPointF Edge::lineCenter() const
+{
+    return m_line->line().center();
+}
+
 void Edge::toggleLabelVisibilityOnGeometryChange()
 {
     const bool isLabelVisible = isEnoughSpaceForLabel() && !m_label->text().isEmpty();
@@ -563,8 +568,8 @@ void Edge::updateDots()
 void Edge::updateLabel(LabelUpdateReason lur)
 {
     if (m_enableLabel) {
-        m_label->setPos((m_line->line().p1() + m_line->line().p2()) * 0.5 - QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()) * 0.5);
-        m_condensedLabel->setPos((m_line->line().p1() + m_line->line().p2()) * 0.5 - QPointF(m_condensedLabel->boundingRect().width(), m_condensedLabel->boundingRect().height()) * 0.5);
+        m_label->setPos(lineCenter() - QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()) * 0.5);
+        m_condensedLabel->setPos(lineCenter() - QPointF(m_condensedLabel->boundingRect().width(), m_condensedLabel->boundingRect().height()) * 0.5);
         // Toggle visibility according to space available if geometry changed
         if (lur == LabelUpdateReason::EdgeGeometryChanged) {
             setLabelVisible(m_label->isVisible(), EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged);
@@ -638,7 +643,7 @@ QString Edge::text() const
 
 QRectF Edge::translatedLabelBoundingRect() const
 {
-    return m_label->boundingRect().translated(m_line->line().center());
+    return m_label->boundingRect().translated(lineCenter());
 }
 
 void Edge::unselectText()
@@ -667,7 +672,7 @@ void Edge::updateLineGeometry()
         (directionTowardsTargetNode * static_cast<float>(m_edgeModel->style.edgeWidth)).toPointF() * widthScale });
 
     // Set correct origin for scale animations
-    setTransformOriginPoint(m_line->line().center());
+    setTransformOriginPoint(lineCenter());
 }
 
 void Edge::updateLine()

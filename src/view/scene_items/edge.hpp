@@ -158,6 +158,8 @@ private:
 
     bool isCondensedLabelTextShoterThanLabelText() const;
 
+    QPointF lineCenter() const;
+
     void setArrowHeadPen(const QPen & pen);
 
     void setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason visibilityChangeReason = EdgeTextEdit::VisibilityChangeReason::Timeout);

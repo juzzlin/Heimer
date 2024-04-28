@@ -47,11 +47,11 @@ class Edge : public SceneItemBase
 public:
     //! Constructor.
     //! Note!!: We are using raw pointers here because the edge only must only refer to the nodes.
-    Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations = true, bool enableLabel = true);
+    Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations = true, bool enableLabels = true);
 
     //! Constructor.
     //! Note!!: We are using raw pointers from the shared pointers here because the edge only must only refer to the nodes.
-    Edge(NodeS sourceNode, NodeS targetNode, bool enableAnimations = true, bool enableLabel = true);
+    Edge(NodeS sourceNode, NodeS targetNode, bool enableAnimations = true, bool enableLabels = true);
 
     //! Copy edge data and find connected node instances from the given graph.
     Edge(EdgeCR other, GraphCR graph);
@@ -170,6 +170,10 @@ private:
 
     void showOrHideLabelExplicitly(bool show);
 
+    void removeSelfFromNodes();
+
+    void stopAnimations();
+
     void triggerAnimationOnRelativeConnectionLocationChangeAtSourcePosition();
 
     void triggerAnimationOnRelativeConnectionLocationChangeAtTargetPosition();
@@ -202,15 +206,13 @@ private:
 
     NodeP m_targetNode = nullptr;
 
-    int m_textSize = 11; // Not sure if we should set yet another default value here..
-
     QColor m_color;
 
     bool m_selected = false;
 
     bool m_enableAnimations;
 
-    bool m_enableLabel;
+    bool m_enableLabels;
 
     EdgeDot * m_sourceDot;
 

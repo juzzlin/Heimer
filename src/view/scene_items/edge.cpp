@@ -44,27 +44,27 @@
 
 namespace SceneItems {
 
-Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enableLabel)
+Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enableLabels)
   : m_settingsProxy(SC::instance().settingsProxy())
   , m_edgeModel(std::make_unique<EdgeModel>(m_settingsProxy->reversedEdgeDirection(),
                                             EdgeModel::Style { m_settingsProxy->edgeArrowMode() }))
   , m_sourceNode(sourceNode)
   , m_targetNode(targetNode)
   , m_enableAnimations(enableAnimations)
-  , m_enableLabel(enableLabel)
-  , m_sourceDot(enableAnimations ? new EdgeDot(this) : nullptr)
-  , m_targetDot(enableAnimations ? new EdgeDot(this) : nullptr)
-  , m_label(enableLabel ? new EdgeTextEdit(this) : nullptr)
-  , m_condensedLabel(enableLabel ? new EdgeTextEdit(this) : nullptr)
+  , m_enableLabels(enableLabels)
+  , m_sourceDot(new EdgeDot(this))
+  , m_targetDot(new EdgeDot(this))
+  , m_label(new EdgeTextEdit(this))
+  , m_condensedLabel(new EdgeTextEdit(this))
   , m_line(new QGraphicsLineItem(this))
   , m_arrowheadBeginLeft(new QGraphicsLineItem(this))
   , m_arrowheadBeginRight(new QGraphicsLineItem(this))
   , m_arrowheadEndLeft(new QGraphicsLineItem(this))
   , m_arrowheadEndRight(new QGraphicsLineItem(this))
-  , m_sourceDotSizeAnimation(enableAnimations ? new QPropertyAnimation(m_sourceDot, "scale", this) : nullptr)
-  , m_targetDotSizeAnimation(enableAnimations ? new QPropertyAnimation(m_targetDot, "scale", this) : nullptr)
+  , m_sourceDotSizeAnimation(new QPropertyAnimation(m_sourceDot, "scale", this))
+  , m_targetDotSizeAnimation(new QPropertyAnimation(m_targetDot, "scale", this))
 {
-    setAcceptHoverEvents(true && enableAnimations);
+    setAcceptHoverEvents(enableAnimations);
 
     setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_settingsProxy->shadowEffect(), false));
 
@@ -72,7 +72,9 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
 
     initializeDots();
 
-    initializeLabels();
+    if (m_enableLabels) {
+        initializeLabels();
+    }
 }
 
 Edge::Edge(NodeS sourceNode, NodeS targetNode, bool enableAnimations, bool enableLabel)
@@ -127,15 +129,13 @@ void Edge::copyData(EdgeCR other)
 
 void Edge::changeFont(const QFont & font)
 {
-    if (m_enableLabel) {
-        // Handle size and family separately to maintain backwards compatibility
-        QFont newFont(font);
-        if (m_label->font().pointSize() >= 0) {
-            newFont.setPointSize(m_label->font().pointSize());
-        }
-        m_label->setFont(newFont);
-        m_condensedLabel->setFont(newFont);
+    // Handle size and family separately to maintain backwards compatibility
+    QFont newFont { font };
+    if (m_label->font().pointSize() >= 0) {
+        newFont.setPointSize(m_label->font().pointSize());
     }
+    m_label->setFont(newFont);
+    m_condensedLabel->setFont(newFont);
 }
 
 bool Edge::dashedLine() const
@@ -237,23 +237,20 @@ void Edge::initializeLabelVisibilityTimer()
 
 void Edge::initializeLabels()
 {
-    if (m_enableLabel) {
+    const QColor labelColor { 0xff, 0xee, 0xaa };
 
-        const QColor labelColor { 0xff, 0xee, 0xaa };
+    m_label->setZValue(static_cast<int>(Layers::EdgeLabel));
+    m_label->setBackgroundColor(labelColor);
 
-        m_label->setZValue(static_cast<int>(Layers::EdgeLabel));
-        m_label->setBackgroundColor(labelColor);
+    m_condensedLabel->setZValue(static_cast<int>(Layers::EdgeCondensedLabel));
+    m_condensedLabel->setAcceptHoverEvents(false);
+    m_condensedLabel->setBackgroundColor(labelColor);
+    m_condensedLabel->setText(tr("..."));
+    m_condensedLabel->setEnabled(false);
 
-        m_condensedLabel->setZValue(static_cast<int>(Layers::EdgeCondensedLabel));
-        m_condensedLabel->setAcceptHoverEvents(false);
-        m_condensedLabel->setBackgroundColor(labelColor);
-        m_condensedLabel->setText(tr("..."));
-        m_condensedLabel->setEnabled(false);
+    connectLabel();
 
-        connectLabel();
-
-        initializeLabelVisibilityTimer();
-    }
+    initializeLabelVisibilityTimer();
 }
 
 void Edge::setArrowHeadPen(const QPen & pen)
@@ -322,25 +319,23 @@ void Edge::hideLabelOnTimeout()
 
 void Edge::setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason visibilityChangeReason)
 {
-    if (m_enableLabel) {
-        switch (visibilityChangeReason) {
-        case EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged:
-            toggleLabelVisibilityOnGeometryChange();
-            break;
-        case EdgeTextEdit::VisibilityChangeReason::Explicit:
-            showOrHideLabelExplicitly(visible);
-            break;
-        case EdgeTextEdit::VisibilityChangeReason::Focused:
-            if (visible) {
-                showLabelWhenFocused();
-            }
-            break;
-        case EdgeTextEdit::VisibilityChangeReason::Timeout:
-            if (!visible) {
-                hideLabelOnTimeout();
-            }
-            break;
+    switch (visibilityChangeReason) {
+    case EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged:
+        toggleLabelVisibilityOnGeometryChange();
+        break;
+    case EdgeTextEdit::VisibilityChangeReason::Explicit:
+        showOrHideLabelExplicitly(visible);
+        break;
+    case EdgeTextEdit::VisibilityChangeReason::Focused:
+        if (visible) {
+            showLabelWhenFocused();
         }
+        break;
+    case EdgeTextEdit::VisibilityChangeReason::Timeout:
+        if (!visible) {
+            hideLabelOnTimeout();
+        }
+        break;
     }
 }
 
@@ -388,7 +383,7 @@ void Edge::setDashedLine(bool enable)
 void Edge::setText(const QString & text)
 {
     m_edgeModel->text = text;
-    if (m_enableLabel) {
+    if (m_enableLabels) {
         m_label->setText(text);
         setLabelVisible(!text.isEmpty());
     }
@@ -396,7 +391,7 @@ void Edge::setText(const QString & text)
 
 void Edge::setTextSize(int textSize)
 {
-    if (m_enableLabel && textSize > 0) {
+    if (m_enableLabels && textSize > 0) {
         m_label->setTextSize(textSize);
         m_condensedLabel->setTextSize(textSize);
     }
@@ -413,7 +408,7 @@ void Edge::setSelected(bool selected)
 {
     m_selected = selected;
     GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_settingsProxy->shadowEffect(), selected);
-    if (m_label && m_label->parentItem() != this) {
+    if (m_enableLabels && m_label->parentItem() != this) {
         GraphicsFactory::updateDropShadowEffect(m_label->graphicsEffect(), m_settingsProxy->shadowEffect(), selected);
     }
     update();
@@ -422,7 +417,7 @@ void Edge::setSelected(bool selected)
 void Edge::setShadowEffect(const ShadowEffectParams & params)
 {
     GraphicsFactory::updateDropShadowEffect(graphicsEffect(), params, m_selected);
-    if (m_label && m_label->parentItem() != this) {
+    if (m_enableLabels && m_label->parentItem() != this) {
         GraphicsFactory::updateDropShadowEffect(m_label->graphicsEffect(), m_settingsProxy->shadowEffect(), m_selected);
     }
     update();
@@ -567,13 +562,11 @@ void Edge::updateDots()
 
 void Edge::updateLabel(LabelUpdateReason lur)
 {
-    if (m_enableLabel) {
-        m_label->setPos(lineCenter() - QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()) * 0.5);
-        m_condensedLabel->setPos(lineCenter() - QPointF(m_condensedLabel->boundingRect().width(), m_condensedLabel->boundingRect().height()) * 0.5);
-        // Toggle visibility according to space available if geometry changed
-        if (lur == LabelUpdateReason::EdgeGeometryChanged) {
-            setLabelVisible(m_label->isVisible(), EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged);
-        }
+    m_label->setPos(lineCenter() - QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()) * 0.5);
+    m_condensedLabel->setPos(lineCenter() - QPointF(m_condensedLabel->boundingRect().width(), m_condensedLabel->boundingRect().height()) * 0.5);
+    // Toggle visibility according to space available if geometry changed
+    if (lur == LabelUpdateReason::EdgeGeometryChanged) {
+        setLabelVisible(m_label->isVisible(), EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged);
     }
 }
 
@@ -611,9 +604,7 @@ bool Edge::reversed() const
 
 void Edge::restoreLabelParent()
 {
-    if (m_label) {
-        m_label->setParentItem(this);
-    }
+    m_label->setParentItem(this);
 }
 
 bool Edge::selected() const
@@ -683,9 +674,27 @@ void Edge::updateLine()
 
     updateDots();
 
-    updateLabel(LabelUpdateReason::EdgeGeometryChanged);
-
     updateArrowhead();
+
+    if (m_enableLabels) {
+        updateLabel(LabelUpdateReason::EdgeGeometryChanged);
+    }
+}
+
+void Edge::removeSelfFromNodes()
+{
+    if (m_sourceNode) {
+        m_sourceNode->removeGraphicsEdge(*this);
+    }
+    if (m_targetNode) {
+        m_targetNode->removeGraphicsEdge(*this);
+    }
+}
+
+void Edge::stopAnimations()
+{
+    m_sourceDotSizeAnimation->stop();
+    m_targetDotSizeAnimation->stop();
 }
 
 Edge::~Edge()
@@ -694,16 +703,8 @@ Edge::~Edge()
                          << (m_targetNode ? std::to_string(m_targetNode->index()) : "(none)") << ")";
 
     if (!TestMode::enabled()) {
-        if (m_enableAnimations) {
-            m_sourceDotSizeAnimation->stop();
-            m_targetDotSizeAnimation->stop();
-        }
-        if (m_sourceNode) {
-            m_sourceNode->removeGraphicsEdge(*this);
-        }
-        if (m_targetNode) {
-            m_targetNode->removeGraphicsEdge(*this);
-        }
+        stopAnimations();
+        removeSelfFromNodes();
     } else {
         TestMode::logDisabledCode("Edge destructor");
     }

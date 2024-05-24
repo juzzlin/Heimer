@@ -15,6 +15,8 @@
 
 #include "constants.hpp"
 
+#include <QDebug>
+
 namespace Constants {
 
 namespace Application {

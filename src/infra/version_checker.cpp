@@ -26,19 +26,17 @@
 using juzzlin::L;
 
 VersionChecker::VersionChecker(QObject * parent)
-  : QObject(parent)
+  : QObject { parent }
 {
 }
 
 Version parseLatestReleasedVersion(QString data)
 {
     Version newest;
+    static QRegularExpression tagMatch("^.*tag/(\\d.\\d.\\d).*$");
     for (auto && line : data.split("\n")) {
-        QRegularExpression tagMatch("^.*tag/(\\d.\\d.\\d).*$");
-        const auto match = tagMatch.match(line);
-        if (match.hasMatch()) {
-            const Version version(match.captured(1));
-            if (version.isValid() && version > newest) {
+        if (const auto match = tagMatch.match(line); match.hasMatch()) {
+            if (const Version version { match.captured(1) }; version.isValid() && version > newest) {
                 newest = version;
             }
         }
@@ -49,17 +47,16 @@ Version parseLatestReleasedVersion(QString data)
 void VersionChecker::checkForNewReleases()
 {
     L().debug() << "Checking for new releases..";
-    const auto manager = new QNetworkAccessManager(this);
+    const auto manager = new QNetworkAccessManager { this };
     connect(manager, &QNetworkAccessManager::finished,
             this, [this](auto reply) {
-                const auto latestReleasedVersion = parseLatestReleasedVersion(reply->readAll());
-                L().debug() << "The latest released version is " << latestReleasedVersion;
-                if (latestReleasedVersion.isValid()) {
-                    if (const Version currentVersion { Constants::Application::applicationVersion() }; latestReleasedVersion > currentVersion) {
-                        L().debug() << "=> NEW version available: " << latestReleasedVersion << " @ " << Constants::Application::releasesUrl();
+                if (const auto latestReleasedVersion = parseLatestReleasedVersion(reply->readAll()); latestReleasedVersion.isValid()) {
+                    L().debug() << "The latest released version is " << latestReleasedVersion;
+                    if (latestReleasedVersion > Version { Constants::Application::applicationVersion() }) {
+                        L().debug() << "=> NEW version available: " << latestReleasedVersion << " @ " << Constants::Application::releasesUrl().toStdString();
                         emit newVersionFound(latestReleasedVersion, Constants::Application::releasesUrl());
                     } else {
-                        L().debug() << "=> " << Constants::Application::applicationName() << " is up-to-date";
+                        L().debug() << "=> " << Constants::Application::applicationName().toStdString() << " is up-to-date";
                     }
                 } else {
                     L().warning() << "Could not determine the latest released version!";

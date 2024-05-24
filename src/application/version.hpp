@@ -28,9 +28,7 @@
 
 struct Version
 {
-    Version()
-    {
-    }
+    Version() = default;
 
     Version(int major, int minor, int patch)
       : major(major)
@@ -39,7 +37,7 @@ struct Version
     {
     }
 
-    Version(QString version)
+    explicit Version(QString version)
     {
         if (const auto splitVersion = version.split("."); splitVersion.size() == 3) {
             major = splitVersion.at(0).toInt();
@@ -104,7 +102,7 @@ struct Version
     {
         std::stringstream ss;
         ss << *this;
-        return ss.str().c_str();
+        return { ss.str().c_str() };
     }
 
     int major = -1;

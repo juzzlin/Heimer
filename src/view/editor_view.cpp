@@ -605,7 +605,7 @@ void EditorView::showStatusText(QString statusText)
 {
     const auto label = new Widgets::StatusLabel(*this, statusText);
     label->show();
-    label->updateGeometryKakkaPissa();
+    label->updateGeometry();
 }
 
 void EditorView::wheelEvent(QWheelEvent * event)

@@ -29,12 +29,15 @@ namespace Widgets {
 class StatusLabel : public QLabel
 {
     Q_OBJECT
-    Q_PROPERTY(qreal scale READ scale WRITE setScale CONSTANT)
+    Q_PROPERTY(qreal scale READ scale WRITE setScale NOTIFY scaleChanged)
 
 public:
     StatusLabel(EditorView & editorView, QString message);
 
-    void updateGeometryKakkaPissa();
+    void updateGeometry();
+
+signals:
+    void scaleChanged(qreal scale);
 
 private:
     qreal scale() const;

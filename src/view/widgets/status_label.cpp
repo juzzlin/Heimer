@@ -31,7 +31,7 @@ StatusLabel::StatusLabel(EditorView & editorView, QString message)
     m_scaleAnimation.setEndValue(0.0);
     m_scaleAnimation.setDuration(250);
 
-    connect(&m_scaleAnimation, &QPropertyAnimation::valueChanged, this, &StatusLabel::updateGeometryKakkaPissa);
+    connect(&m_scaleAnimation, &QPropertyAnimation::valueChanged, this, &StatusLabel::updateGeometry);
 
     m_scaleAnimationDelayTimer.setSingleShot(true);
     m_scaleAnimationDelayTimer.setInterval(10000);
@@ -44,7 +44,7 @@ StatusLabel::StatusLabel(EditorView & editorView, QString message)
     m_scaleAnimationDelayTimer.start();
 }
 
-void StatusLabel::updateGeometryKakkaPissa()
+void StatusLabel::updateGeometry()
 {
     if (!m_initialSize.has_value()) {
         m_initialSize = size();
@@ -66,7 +66,10 @@ qreal StatusLabel::scale() const
 
 void StatusLabel::setScale(qreal scale)
 {
-    m_scale = scale;
+    if (!qFuzzyCompare(m_scale, scale)) {
+        m_scale = scale;
+        emit scaleChanged(scale);
+    }
 }
 
 } // namespace Widgets

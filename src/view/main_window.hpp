@@ -50,7 +50,7 @@ class QSpinBox;
 class QTextEdit;
 class QWidgetAction;
 
-struct ShadowEffectParams;
+class ShadowEffectParams;
 
 class MainWindow : public QMainWindow
 {

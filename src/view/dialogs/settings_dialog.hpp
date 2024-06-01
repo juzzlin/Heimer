@@ -20,7 +20,7 @@
 
 #include <vector>
 
-struct ShadowEffectParams;
+class ShadowEffectParams;
 
 namespace Dialogs {
 

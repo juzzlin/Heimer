@@ -35,7 +35,7 @@ class Image;
 class QGraphicsTextItem;
 class TextEdit;
 
-struct ShadowEffectParams;
+class ShadowEffectParams;
 
 class SettingsProxy;
 

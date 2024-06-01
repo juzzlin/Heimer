@@ -20,7 +20,7 @@
 
 class QCheckBox;
 class QSpinBox;
-struct ShadowEffectParams;
+class ShadowEffectParams;
 
 namespace Dialogs {
 

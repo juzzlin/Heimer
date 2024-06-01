@@ -21,6 +21,8 @@ Bug fixes:
 
 * Fix position offset issues when creating a new node by dragging
 
+* Fix GitHub Issue #259: 2 build errors in Windows
+
 Other:
 
 4.4.0

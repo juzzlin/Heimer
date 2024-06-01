@@ -20,7 +20,7 @@
 #include <QPen>
 
 class QGraphicsEffect;
-struct ShadowEffectParams;
+class ShadowEffectParams;
 
 namespace GraphicsFactory {
 

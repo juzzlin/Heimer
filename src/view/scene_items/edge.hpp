@@ -30,7 +30,7 @@ class QGraphicsEllipseItem;
 class QGraphicsLineItem;
 class QPropertyAnimation;
 
-struct ShadowEffectParams;
+class ShadowEffectParams;
 
 class SettingsProxy;
 

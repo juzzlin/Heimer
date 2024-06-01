@@ -36,7 +36,7 @@ class MainWindow;
 class MouseAction;
 class NodeAction;
 class QGraphicsItem;
-struct ShadowEffectParams;
+class ShadowEffectParams;
 
 namespace SceneItems {
 class NodeHandle;

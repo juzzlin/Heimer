@@ -30,7 +30,7 @@
 class Grid;
 class ImageManager;
 class ObjectModelLoader;
-struct ShadowEffectParams;
+class ShadowEffectParams;
 
 class Graph;
 

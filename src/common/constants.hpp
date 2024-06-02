@@ -138,12 +138,6 @@ static const int MIN_WIDTH = 200;
 
 } // namespace Node
 
-namespace RecentFiles {
-
-static const int MAX_FILES = 8;
-
-} // namespace RecentFiles
-
 namespace LayoutOptimizer {
 
 double minEdgeLength();

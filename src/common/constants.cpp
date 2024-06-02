@@ -131,6 +131,30 @@ QColor defaultShadowEffectSelectedItemShadowColor()
 
 } // namespace Settings
 
+namespace LayoutOptimizer {
+
+double minEdgeLength()
+{
+    return 10;
+}
+
+double maxEdgeLength()
+{
+    return 1000;
+}
+
+double minAspectRatio()
+{
+    return 0.01;
+}
+
+double maxAspectRatio()
+{
+    return 100;
+}
+
+} // namespace LayoutOptimizer
+
 namespace Misc {
 
 QString threeDots()

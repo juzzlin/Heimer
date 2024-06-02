@@ -540,13 +540,13 @@ static EdgeU readEdge(const QDomElement & element, MindMapData & data)
 static void readLayoutOptimizer(const QDomElement & element, MindMapData & data)
 {
     double aspectRatio = element.attribute(DataKeywords::MindMap::LayoutOptimizer::ATTRIBUTE_ASPECT_RATIO, "-1").toDouble() / SCALE;
-    aspectRatio = std::min(aspectRatio, Constants::LayoutOptimizer::MAX_ASPECT_RATIO);
-    aspectRatio = std::max(aspectRatio, Constants::LayoutOptimizer::MIN_ASPECT_RATIO);
+    aspectRatio = std::min(aspectRatio, Constants::LayoutOptimizer::maxAspectRatio());
+    aspectRatio = std::max(aspectRatio, Constants::LayoutOptimizer::minAspectRatio());
     data.setAspectRatio(aspectRatio);
 
     double minEdgeLength = element.attribute(DataKeywords::MindMap::LayoutOptimizer::ATTRIBUTE_MIN_EDGE_LENGTH, "-1").toDouble() / SCALE;
-    minEdgeLength = std::min(minEdgeLength, Constants::LayoutOptimizer::MAX_EDGE_LENGTH);
-    minEdgeLength = std::max(minEdgeLength, Constants::LayoutOptimizer::MIN_EDGE_LENGTH);
+    minEdgeLength = std::min(minEdgeLength, Constants::LayoutOptimizer::maxEdgeLength());
+    minEdgeLength = std::max(minEdgeLength, Constants::LayoutOptimizer::minEdgeLength());
     data.setMinEdgeLength(minEdgeLength);
 }
 

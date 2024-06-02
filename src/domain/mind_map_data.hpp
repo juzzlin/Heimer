@@ -116,9 +116,9 @@ private:
 
     struct LayoutOptimizerParameters
     {
-        double aspectRatio = Constants::LayoutOptimizer::Defaults::ASPECT_RATIO;
+        double aspectRatio = 1.0;
 
-        double minEdgeLength = Constants::LayoutOptimizer::Defaults::MIN_EDGE_LENGTH;
+        double minEdgeLength = 100;
     };
 
     QString m_fileName;

@@ -146,21 +146,13 @@ static const int MAX_FILES = 8;
 
 namespace LayoutOptimizer {
 
-namespace Defaults {
+double minEdgeLength();
 
-static const int MIN_EDGE_LENGTH = 100;
+double maxEdgeLength();
 
-static const double ASPECT_RATIO = 1.0;
+double minAspectRatio();
 
-} // namespace Defaults
-
-static const double MIN_EDGE_LENGTH = 10;
-
-static const double MAX_EDGE_LENGTH = 1000;
-
-static const double MIN_ASPECT_RATIO = 0.01;
-
-static const double MAX_ASPECT_RATIO = 100;
+double maxAspectRatio();
 
 } // namespace LayoutOptimizer
 

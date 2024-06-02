@@ -82,8 +82,8 @@ void LayoutOptimizationDialog::initWidgets(MindMapDataCR mindMapData)
     imageWidthLabel->setToolTip(tr("Aspect ratio = layout width / layout height"));
     parameterWidgetLayout->addWidget(imageWidthLabel, 0, 0);
     m_aspectRatioSpinBox = new QDoubleSpinBox;
-    m_aspectRatioSpinBox->setMinimum(Constants::LayoutOptimizer::MIN_ASPECT_RATIO);
-    m_aspectRatioSpinBox->setMaximum(Constants::LayoutOptimizer::MAX_ASPECT_RATIO);
+    m_aspectRatioSpinBox->setMinimum(Constants::LayoutOptimizer::minAspectRatio());
+    m_aspectRatioSpinBox->setMaximum(Constants::LayoutOptimizer::maxAspectRatio());
     m_aspectRatioSpinBox->setSingleStep(0.1);
     m_aspectRatioSpinBox->setValue(mindMapData.aspectRatio());
     parameterWidgetLayout->addWidget(m_aspectRatioSpinBox, 0, 1);
@@ -110,8 +110,8 @@ void LayoutOptimizationDialog::initWidgets(MindMapDataCR mindMapData)
     minEdgeLengthLabel->setToolTip(tr("Minimum edge length in the optimized layout"));
     parameterWidgetLayout->addWidget(minEdgeLengthLabel, 1, 0);
     m_minEdgeLengthSpinBox = new QDoubleSpinBox;
-    m_minEdgeLengthSpinBox->setMinimum(Constants::LayoutOptimizer::MIN_EDGE_LENGTH);
-    m_minEdgeLengthSpinBox->setMaximum(Constants::LayoutOptimizer::MAX_EDGE_LENGTH);
+    m_minEdgeLengthSpinBox->setMinimum(Constants::LayoutOptimizer::minEdgeLength());
+    m_minEdgeLengthSpinBox->setMaximum(Constants::LayoutOptimizer::maxEdgeLength());
     m_minEdgeLengthSpinBox->setSingleStep(1);
     m_minEdgeLengthSpinBox->setValue(mindMapData.minEdgeLength());
     parameterWidgetLayout->addWidget(m_minEdgeLengthSpinBox, 1, 1);

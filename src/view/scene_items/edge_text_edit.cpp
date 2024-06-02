@@ -31,13 +31,13 @@ EdgeTextEdit::EdgeTextEdit(EdgeP parentItem)
 {
     setAcceptHoverEvents(true);
 
-    m_opacityAnimation.setDuration(Constants::Edge::TEXT_EDIT_ANIMATION_DURATION);
+    m_opacityAnimation.setDuration(150);
 
     QGraphicsItem::setVisible(false);
     setOpacity(0);
 
     m_visibilityTimer.setSingleShot(true);
-    m_visibilityTimer.setInterval(Constants::Edge::TEXT_EDIT_DURATION);
+    m_visibilityTimer.setInterval(2000);
 
     connect(&m_visibilityTimer, &QTimer::timeout, this, [=] {
         emit visibilityTimeout();

@@ -47,7 +47,7 @@ EditorService::EditorService()
   , m_undoStack(std::make_unique<UndoStack>())
 {
     m_undoTimer.setSingleShot(true);
-    m_undoTimer.setInterval(Constants::View::TOO_QUICK_ACTION_DELAY_MS);
+    m_undoTimer.setInterval(Constants::View::tooQuickActionDelay());
 }
 
 void EditorService::addEdgeToSelectionGroup(EdgeR edge, bool isImplicit)

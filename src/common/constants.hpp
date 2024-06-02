@@ -20,6 +20,8 @@
 #include <QString>
 #include <QVector>
 
+#include <chrono>
+
 #include "../infra/io/alz_file_io_version.hpp"
 
 namespace Constants {
@@ -85,10 +87,6 @@ static const double MIN_EDGE_WIDTH = 0.1;
 static const double MAX_EDGE_WIDTH = 5.0;
 
 static const double EDGE_WIDTH_STEP = 0.25;
-
-static const int TEXT_EDIT_ANIMATION_DURATION = 150;
-
-static const int TEXT_EDIT_DURATION = 2000;
 
 static const int TEXT_EDIT_HOR_PADDING = 3;
 
@@ -192,11 +190,7 @@ static const double DRAG_NODE_OPACITY = 0.5;
 
 static const int SHADOW_EFFECT_OPTIMIZATION_MARGIN_FRACTION = 20;
 
-static const int SHADOW_EFFECT_OPTIMIZATION_UPDATE_DELAY_MS = 250;
-
-static const int TEXT_SEARCH_DELAY_MS = 250;
-
-static const int TOO_QUICK_ACTION_DELAY_MS = 500;
+std::chrono::milliseconds tooQuickActionDelay();
 
 static const double ZOOM_MAX = 2.0;
 

@@ -140,4 +140,13 @@ QString threeDots()
 
 } // namespace Misc
 
+namespace View {
+
+std::chrono::milliseconds tooQuickActionDelay()
+{
+    return std::chrono::milliseconds { 500 };
+};
+
+} // namespace View
+
 } // namespace Constants

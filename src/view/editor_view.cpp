@@ -68,7 +68,7 @@ EditorView::EditorView()
     connect(m_mainContextMenu, &Menus::MainContextMenu::actionTriggered, this, &EditorView::actionTriggered);
     connect(m_mainContextMenu, &Menus::MainContextMenu::newNodeRequested, this, &EditorView::newNodeRequested);
 
-    m_updateShadowEffectsOnZoomTimer.setInterval(Constants::View::SHADOW_EFFECT_OPTIMIZATION_UPDATE_DELAY_MS);
+    m_updateShadowEffectsOnZoomTimer.setInterval(250);
     m_updateShadowEffectsOnZoomTimer.setSingleShot(true);
     connect(&m_updateShadowEffectsOnZoomTimer, &QTimer::timeout, this, &EditorView::updateShadowEffectsBasedOnItemVisiblity);
 }

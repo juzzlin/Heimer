@@ -199,7 +199,7 @@ QWidgetAction * ToolBar::createSearchAction()
         if (text.isEmpty()) {
             searchTimer->start(0);
         } else {
-            searchTimer->start(Constants::View::TEXT_SEARCH_DELAY_MS);
+            searchTimer->start(250);
         }
     });
     connect(m_searchLineEdit, &QLineEdit::returnPressed, this, [searchTimer = &m_searchTimer] {

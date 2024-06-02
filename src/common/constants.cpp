@@ -131,6 +131,25 @@ QColor defaultShadowEffectSelectedItemShadowColor()
 
 } // namespace Settings
 
+namespace Node {
+
+int defaultCornerRadius()
+{
+    return 5;
+}
+
+int minHeight()
+{
+    return 75;
+}
+
+int minWidth()
+{
+    return 200;
+}
+
+} // namespace Node
+
 namespace LayoutOptimizer {
 
 double minEdgeLength()

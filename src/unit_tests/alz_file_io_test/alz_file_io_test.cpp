@@ -59,7 +59,7 @@ void AlzFileIOTest::testStyle_BackgroundColor()
 void AlzFileIOTest::testStyle_CornerRadius()
 {
     const auto outData = std::make_shared<MindMapData>();
-    outData->setCornerRadius(Constants::Node::Defaults::CORNER_RADIUS + 1);
+    outData->setCornerRadius(Constants::Node::defaultCornerRadius() + 1);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->cornerRadius(), outData->cornerRadius());
 }
@@ -407,7 +407,7 @@ void AlzFileIOTest::testV1_BackgroundColor()
 void AlzFileIOTest::testV1_CornerRadius()
 {
     const auto outData = std::make_shared<MindMapData>();
-    outData->setCornerRadius(Constants::Node::Defaults::CORNER_RADIUS + 1);
+    outData->setCornerRadius(Constants::Node::defaultCornerRadius() + 1);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO(IO::AlzFormatVersion::V1).toXml(outData));
     QVERIFY(inData->alzFormatVersion() == IO::AlzFormatVersion::V1);
     QCOMPARE(inData->cornerRadius(), outData->cornerRadius());

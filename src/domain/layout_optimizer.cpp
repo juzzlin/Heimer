@@ -78,23 +78,23 @@ public:
         const double height = std::sqrt(area / aspectRatio);
         const double width = area / height;
         m_layout = std::make_unique<Layout>();
-        m_layout->cols = static_cast<size_t>(width / (Constants::Node::MIN_WIDTH + minEdgeLength)) + 1;
+        m_layout->cols = static_cast<size_t>(width / (Constants::Node::minWidth() + minEdgeLength)) + 1;
         m_layout->minEdgeLength = minEdgeLength;
         std::map<int, std::shared_ptr<Cell>> nodesToCells; // Used when building connections
         std::vector<std::shared_ptr<Cell>> cells;
-        const auto rows = static_cast<size_t>(height / (Constants::Node::MIN_HEIGHT + minEdgeLength)) + 1;
+        const auto rows = static_cast<size_t>(height / (Constants::Node::minHeight() + minEdgeLength)) + 1;
         for (size_t j = 0; j < rows; j++) {
             const auto row = std::make_shared<Row>();
             row->rect.x = 0;
-            row->rect.y = static_cast<int>(j) * Constants::Node::MIN_HEIGHT;
+            row->rect.y = static_cast<int>(j) * Constants::Node::minHeight();
             for (size_t i = 0; i < m_layout->cols; i++) {
                 const auto cell = std::make_shared<Cell>();
                 row->cells.push_back(cell);
                 cells.push_back(cell);
-                cell->rect = { row->rect.x + static_cast<int>(i) * Constants::Node::MIN_WIDTH,
+                cell->rect = { row->rect.x + static_cast<int>(i) * Constants::Node::minWidth(),
                                row->rect.y,
-                               Constants::Node::MIN_HEIGHT,
-                               Constants::Node::MIN_WIDTH };
+                               Constants::Node::minHeight(),
+                               Constants::Node::minWidth() };
             }
             m_layout->rows.push_back(row);
         }
@@ -300,10 +300,10 @@ private:
         change.sourceRow->cells.at(change.sourceIndex) = change.targetCell;
         change.targetRow->cells.at(change.targetIndex) = change.sourceCell;
         change.sourceCell->pushRect();
-        change.sourceCell->rect.x = change.targetRow->rect.x + static_cast<int>(change.targetIndex) * Constants::Node::MIN_WIDTH;
+        change.sourceCell->rect.x = change.targetRow->rect.x + static_cast<int>(change.targetIndex) * Constants::Node::minWidth();
         change.sourceCell->rect.y = change.targetRow->rect.y;
         change.targetCell->pushRect();
-        change.targetCell->rect.x = change.sourceRow->rect.x + static_cast<int>(change.sourceIndex) * Constants::Node::MIN_WIDTH;
+        change.targetCell->rect.x = change.sourceRow->rect.x + static_cast<int>(change.sourceIndex) * Constants::Node::minWidth();
         change.targetCell->rect.y = change.sourceRow->rect.y;
     }
 

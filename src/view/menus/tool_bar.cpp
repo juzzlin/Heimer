@@ -108,7 +108,7 @@ bool ToolBar::copyOnDragEnabled() const
 QWidgetAction * ToolBar::createCornerRadiusAction()
 {
     m_cornerRadiusSpinBox->setMinimum(0);
-    m_cornerRadiusSpinBox->setMaximum(Constants::Node::MAX_CORNER_RADIUS);
+    m_cornerRadiusSpinBox->setMaximum(20);
     m_cornerRadiusSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))

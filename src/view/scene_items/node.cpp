@@ -58,7 +58,7 @@ Node::Node()
 
     setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_settingsProxy->shadowEffect(), false));
 
-    m_nodeModel->size = QSize(Constants::Node::MIN_WIDTH, Constants::Node::MIN_HEIGHT);
+    m_nodeModel->size = QSize { Constants::Node::minWidth(), Constants::Node::minHeight() };
 
     setZValue(static_cast<int>(Layers::Node));
 
@@ -151,18 +151,18 @@ void Node::raiseBody()
 
 void Node::raiseHandles()
 {
-    for (auto && handle : m_handles) {
-        handle.second->raiseWithAnimation(targetScale());
-        handle.second->setZValue(static_cast<int>(Layers::Last) + static_cast<int>(Layers::NodeHandle));
+    for (auto && [role, handle] : m_handles) {
+        handle->raiseWithAnimation(targetScale());
+        handle->setZValue(static_cast<int>(Layers::Last) + static_cast<int>(Layers::NodeHandle));
     }
 }
 
 void Node::removeHandles()
 {
-    for (auto && handle : m_handles) {
-        if (handle.second->scene()) {
-            handle.second->hide();
-            handle.second->scene()->removeItem(handle.second);
+    for (auto && [role, handle] : m_handles) {
+        if (handle->scene()) {
+            handle->hide();
+            handle->scene()->removeItem(handle);
         }
     }
 }
@@ -172,8 +172,8 @@ void Node::adjustSize()
     prepareGeometryChange();
 
     const auto newSize = QSize {
-        std::max(Constants::Node::MIN_WIDTH, static_cast<int>(m_textEdit->boundingRect().width() + m_contentPadding * 2)),
-        std::max(Constants::Node::MIN_HEIGHT, static_cast<int>(m_textEdit->boundingRect().height() + m_contentPadding * 2))
+        std::max(Constants::Node::minWidth(), static_cast<int>(m_textEdit->boundingRect().width() + m_contentPadding * 2)),
+        std::max(Constants::Node::minHeight(), static_cast<int>(m_textEdit->boundingRect().height() + m_contentPadding * 2))
     };
 
     m_nodeModel->size = newSize;
@@ -276,11 +276,12 @@ std::pair<EdgePoint, EdgePoint> Node::getNearestEdgePoints(NodeCR node1, NodeCR 
 
 bool Node::pointBeyondHideHandlesDistance(const QPointF & point) const
 {
-    const auto hhd = Constants::Node::HIDE_HANDLES_DISTANCE * targetScale();
-    return point.x() > pos().x() + hhd + boundingRect().width() / 2 || //
-      point.x() < pos().x() - hhd - boundingRect().width() / 2 || //
-      point.y() > pos().y() + hhd + boundingRect().height() / 2 || //
-      point.y() < pos().y() - hhd - boundingRect().height() / 2;
+    static const int hideHandlesDistance = 32;
+    const auto scaledHideHandlesDistance = hideHandlesDistance * targetScale();
+    return point.x() > pos().x() + scaledHideHandlesDistance + boundingRect().width() / 2 || //
+      point.x() < pos().x() - scaledHideHandlesDistance - boundingRect().width() / 2 || //
+      point.y() > pos().y() + scaledHideHandlesDistance + boundingRect().height() / 2 || //
+      point.y() < pos().y() - scaledHideHandlesDistance - boundingRect().height() / 2;
 }
 
 void Node::hideHandlesWithAnimation()
@@ -489,6 +490,7 @@ QPointF Node::location() const
 void Node::setLocation(QPointF newLocation)
 {
     m_nodeModel->location = newLocation;
+
     setPos(newLocation);
 
     updateEdgeLines();
@@ -673,8 +675,8 @@ Node::~Node()
 
     juzzlin::L().trace() << "Deleting handles of node id=" << index();
 
-    for (auto && handle : m_handles) {
-        delete handle.second;
+    for (auto && [role, handle] : m_handles) {
+        delete handle;
     }
 
     juzzlin::L().trace() << "Deleting Node id=" << index();

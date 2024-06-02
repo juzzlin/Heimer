@@ -50,7 +50,7 @@ struct MindMapData::Style
 
     int textSize;
 
-    int cornerRadius = Constants::Node::Defaults::CORNER_RADIUS;
+    int cornerRadius = Constants::Node::defaultCornerRadius();
 };
 
 MindMapData::MindMapData(QString name)

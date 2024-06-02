@@ -122,19 +122,11 @@ QString threeDots();
 
 namespace Node {
 
-namespace Defaults {
+int defaultCornerRadius();
 
-static const int CORNER_RADIUS = 5;
+int minHeight();
 
-} // namespace Defaults
-
-static const int HIDE_HANDLES_DISTANCE = 32;
-
-static const int MAX_CORNER_RADIUS = 20;
-
-static const int MIN_HEIGHT = 75;
-
-static const int MIN_WIDTH = 200;
+int minWidth();
 
 } // namespace Node
 

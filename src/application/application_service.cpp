@@ -963,12 +963,12 @@ void ApplicationService::unselectText()
 
 void ApplicationService::zoomIn()
 {
-    m_editorView->zoom(std::pow(Constants::View::ZOOM_SENSITIVITY, 2));
+    m_editorView->zoom(std::pow(Constants::View::zoomSensitivity(), 2));
 }
 
 void ApplicationService::zoomOut()
 {
-    m_editorView->zoom(1.0 / std::pow(Constants::View::ZOOM_SENSITIVITY, 2));
+    m_editorView->zoom(1.0 / std::pow(Constants::View::zoomSensitivity(), 2));
 }
 
 QSize ApplicationService::calculateExportImageSize()

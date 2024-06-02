@@ -142,10 +142,25 @@ QString threeDots()
 
 namespace View {
 
+int minTextSize()
+{
+    return 6;
+}
+
+int maxTextSize()
+{
+    return 72;
+}
+
 std::chrono::milliseconds tooQuickActionDelay()
 {
     return std::chrono::milliseconds { 500 };
 };
+
+double zoomSensitivity()
+{
+    return 1.1;
+}
 
 } // namespace View
 

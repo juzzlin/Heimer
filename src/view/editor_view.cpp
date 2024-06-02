@@ -230,7 +230,7 @@ bool EditorView::isModifierPressed() const
 void EditorView::mouseDoubleClickEvent(QMouseEvent * event)
 {
     const auto clickedScenePos = mapToScene(event->pos());
-    if (const auto result = ItemFilter::getFirstItemAtPosition(*scene(), clickedScenePos, Constants::View::CLICK_TOLERANCE); result.success) {
+    if (const auto result = ItemFilter::getFirstItemAtPosition(*scene(), clickedScenePos, m_clickTolerance); result.success) {
         if (result.node) {
             juzzlin::L().debug() << "Node double-clicked";
             zoomToFit(MagicZoom::calculateRectangleByItems({ result.node }, false));
@@ -330,7 +330,7 @@ void EditorView::mousePressEvent(QMouseEvent * event)
     const auto clickedScenePos = mapToScene(m_clickedPos);
     SC::instance().applicationService()->mouseAction().setClickedScenePos(clickedScenePos);
 
-    if (const auto result = ItemFilter::getFirstItemAtPosition(*scene(), clickedScenePos, Constants::View::CLICK_TOLERANCE); result.success) {
+    if (const auto result = ItemFilter::getFirstItemAtPosition(*scene(), clickedScenePos, m_clickTolerance); result.success) {
         if (result.edge) {
             juzzlin::L().debug() << "Edge pressed";
             if (!handleMousePressEventOnEdge(*event, *result.edge)) {
@@ -476,7 +476,7 @@ void EditorView::showDummyDragNode(bool show)
     }
 
     m_dummyDragNode->setCornerRadius(m_cornerRadius);
-    m_dummyDragNode->setOpacity(Constants::View::DRAG_NODE_OPACITY);
+    m_dummyDragNode->setOpacity(0.5);
     m_dummyDragNode->setVisible(show);
 }
 
@@ -516,7 +516,8 @@ void EditorView::updateShadowEffectsBasedOnItemVisiblity()
 {
     std::unordered_set<SceneItems::SceneItemBase *> enabledItems;
 
-    const int glitchMargin = rect().width() / Constants::View::SHADOW_EFFECT_OPTIMIZATION_MARGIN_FRACTION;
+    const int marginFraction = 20;
+    const int glitchMargin = rect().width() / marginFraction;
     for (auto && item : scene()->items(mapToScene(rect().adjusted(-glitchMargin, -glitchMargin, glitchMargin, glitchMargin)))) {
         if (const auto sceneItem = dynamic_cast<SceneItems::SceneItemBase *>(item); sceneItem) {
             sceneItem->enableShadowEffect(true);
@@ -610,7 +611,7 @@ void EditorView::showStatusText(QString statusText)
 
 void EditorView::wheelEvent(QWheelEvent * event)
 {
-    zoom(event->angleDelta().y() > 0 ? Constants::View::ZOOM_SENSITIVITY : 1.0 / Constants::View::ZOOM_SENSITIVITY);
+    zoom(event->angleDelta().y() > 0 ? Constants::View::zoomSensitivity() : 1.0 / Constants::View::zoomSensitivity());
 }
 
 void EditorView::dropEvent(QDropEvent * event)
@@ -642,8 +643,8 @@ void EditorView::zoom(double amount)
     const auto testScale = amount * amount;
     if (amount > 1.0 || (mappedSceneRect.width() * testScale > rect().width() && mappedSceneRect.height() * testScale > rect().height())) {
         m_scale *= amount;
-        m_scale = std::min(m_scale, Constants::View::ZOOM_MAX);
-        m_scale = std::max(m_scale, Constants::View::ZOOM_MIN);
+        m_scale = std::min(m_scale, 2.00);
+        m_scale = std::max(m_scale, 0.02);
         updateScale();
     } else {
         juzzlin::L().debug() << "Zoom end";

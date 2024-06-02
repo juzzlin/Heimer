@@ -179,8 +179,8 @@ void DefaultsTab::createTextWidgets(QVBoxLayout & mainLayout)
     const auto textGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Text Style"), mainLayout);
     const auto textLayout = new QHBoxLayout;
 
-    m_textSizeSpinBox->setMinimum(Constants::Text::MIN_SIZE);
-    m_textSizeSpinBox->setMaximum(Constants::Text::MAX_SIZE);
+    m_textSizeSpinBox->setMinimum(Constants::View::minTextSize());
+    m_textSizeSpinBox->setMaximum(Constants::View::maxTextSize());
 
     textLayout->addWidget(new QLabel(tr("Text size:")));
     textLayout->addWidget(m_textSizeSpinBox);

@@ -211,8 +211,8 @@ QWidgetAction * ToolBar::createSearchAction()
 
 QWidgetAction * ToolBar::createTextSizeAction()
 {
-    m_textSizeSpinBox->setMinimum(Constants::Text::MIN_SIZE);
-    m_textSizeSpinBox->setMaximum(Constants::Text::MAX_SIZE);
+    m_textSizeSpinBox->setMinimum(Constants::View::minTextSize());
+    m_textSizeSpinBox->setMaximum(Constants::View::maxTextSize());
     m_textSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))

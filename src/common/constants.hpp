@@ -174,29 +174,15 @@ static const int INITIAL_SIZE = 10000;
 
 } // namespace Scene
 
-namespace Text {
-
-static const int MIN_SIZE = 6;
-
-static const int MAX_SIZE = 72;
-
-} // namespace Text
-
 namespace View {
 
-static const int CLICK_TOLERANCE = 5;
+int minTextSize();
 
-static const double DRAG_NODE_OPACITY = 0.5;
-
-static const int SHADOW_EFFECT_OPTIMIZATION_MARGIN_FRACTION = 20;
+int maxTextSize();
 
 std::chrono::milliseconds tooQuickActionDelay();
 
-static const double ZOOM_MAX = 2.0;
-
-static const double ZOOM_MIN = .02;
-
-static const double ZOOM_SENSITIVITY = 1.1;
+double zoomSensitivity();
 
 } // namespace View
 

@@ -232,6 +232,8 @@ private:
     ControlStrategyS m_controlStrategy;
 
     QTimer m_updateShadowEffectsOnZoomTimer;
+
+    const int m_clickTolerance = 5;
 };
 
 #endif // EDITOR_VIEW_HPP

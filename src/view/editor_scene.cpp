@@ -31,9 +31,7 @@
 
 EditorScene::EditorScene()
 {
-    const auto rW = Constants::Scene::INITIAL_SIZE;
-    const auto rH = Constants::Scene::INITIAL_SIZE;
-    setSceneRect(-rW, -rH, rW * 2, rH * 2);
+    setSceneRect(-m_initialSize, -m_initialSize, m_initialSize * 2, m_initialSize * 2);
 
     connect(this, &QGraphicsScene::focusItemChanged, this, [](QGraphicsItem *, QGraphicsItem * oldFocus, Qt::FocusReason) {
         if (const auto edgeTextEdit = dynamic_cast<SceneItems::EdgeTextEdit *>(oldFocus); edgeTextEdit) {
@@ -44,10 +42,8 @@ EditorScene::EditorScene()
 
 void EditorScene::adjustSceneRect()
 {
-    const auto adjustmentX = Constants::Scene::INITIAL_SIZE;
-    const auto adjustmentY = Constants::Scene::INITIAL_SIZE;
     while (!containsAll()) {
-        setSceneRect(sceneRect().adjusted(-adjustmentX, -adjustmentY, adjustmentX, adjustmentY));
+        setSceneRect(sceneRect().adjusted(-m_initialSize, -m_initialSize, m_initialSize, m_initialSize));
         juzzlin::L().debug() << "New scene rect: " << sceneRect().x() << " " << sceneRect().y() << " " << sceneRect().width() << " " << sceneRect().height();
     }
 }
@@ -64,8 +60,9 @@ QRectF EditorScene::calculateZoomToFitRectangleByNodes(const std::vector<NodeP> 
 
 bool EditorScene::containsAll() const
 {
-    const auto testMarginX = sceneRect().width() * Constants::Scene::ADJUSTMENT_MARGIN;
-    const auto testMarginY = sceneRect().height() * Constants::Scene::ADJUSTMENT_MARGIN;
+    const double marginFactor = .25;
+    const auto testMarginX = sceneRect().width() * marginFactor;
+    const auto testMarginY = sceneRect().height() * marginFactor;
     const auto testRect = sceneRect().adjusted(testMarginX, testMarginY, -testMarginX, -testMarginY);
     for (auto && item : items()) {
         if (const auto node = dynamic_cast<NodeP>(item); node && !testRect.contains(item->sceneBoundingRect())) {

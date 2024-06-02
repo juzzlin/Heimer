@@ -53,6 +53,8 @@ private:
 
     using ItemPtr = std::unique_ptr<QGraphicsItem>;
     std::vector<ItemPtr> m_ownItems;
+
+    const int m_initialSize = 10000;
 };
 
 #endif // EDITOR_SCENE_HPP

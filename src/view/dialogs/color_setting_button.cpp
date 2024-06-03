@@ -84,11 +84,11 @@ void ColorSettingButton::apply(QColor color)
 void ColorSettingButton::resetToDefault()
 {
     if (const std::map<ColorDialog::Role, QColor> roleToColorMap = {
-          { ColorDialog::Role::Background, Constants::MindMap::Defaults::BACKGROUND_COLOR },
-          { ColorDialog::Role::Edge, Constants::MindMap::Defaults::EDGE_COLOR },
-          { ColorDialog::Role::Grid, Constants::MindMap::Defaults::GRID_COLOR },
-          { ColorDialog::Role::Node, Constants::MindMap::Defaults::NODE_COLOR },
-          { ColorDialog::Role::Text, Constants::MindMap::Defaults::NODE_TEXT_COLOR },
+          { ColorDialog::Role::Background, Constants::MindMap::defaultBackgroundColor() },
+          { ColorDialog::Role::Edge, Constants::MindMap::defaultEdgeColor() },
+          { ColorDialog::Role::Grid, Constants::MindMap::defaultGridColor() },
+          { ColorDialog::Role::Node, Constants::MindMap::defaultNodeColor() },
+          { ColorDialog::Role::Text, Constants::MindMap::defaultNodeTextColor() },
           { ColorDialog::Role::ShadowColor, Constants::Settings::defaultShadowEffectShadowColor() },
           { ColorDialog::Role::SelectedItemShadowColor, Constants::Settings::defaultShadowEffectSelectedItemShadowColor() } };
         roleToColorMap.count(m_role)) {

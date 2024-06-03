@@ -90,7 +90,7 @@ void EditorService::requestAutosave(AutosaveContext context, bool async)
 QColor EditorService::backgroundColor() const
 {
     // Background color of "empty" editor is not the same as default color of new design
-    return m_mindMapData ? m_mindMapData->backgroundColor() : Constants::MindMap::Defaults::BACKGROUND_COLOR;
+    return m_mindMapData ? m_mindMapData->backgroundColor() : Constants::MindMap::defaultBackgroundColor();
 }
 
 MouseAction & EditorService::mouseAction()

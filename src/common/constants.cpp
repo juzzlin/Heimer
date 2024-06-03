@@ -165,6 +165,40 @@ double edgeWidthStep()
 
 } // namespace Edge
 
+namespace MindMap {
+
+QColor defaultBackgroundColor()
+{
+    return { 0xba, 0xbd, 0xb6 };
+}
+
+QColor defaultEdgeColor()
+{
+    return { 0, 0, 0, 200 };
+}
+
+QColor defaultGridColor()
+{
+    return Qt::gray;
+}
+
+QColor defaultNodeColor()
+{
+    return Qt::white;
+}
+
+QColor defaultNodeTextColor()
+{
+    return Qt::black;
+}
+
+int defaultTextSize()
+{
+    return 14;
+}
+
+} // namespace MindMap
+
 namespace Node {
 
 int defaultCornerRadius()

@@ -192,7 +192,7 @@ void DefaultsTab::createTextWidgets(QVBoxLayout & mainLayout)
     const auto resetToDefaultsButton = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
     connect(resetToDefaultsButton.first, &QPushButton::clicked, this, [=] {
         m_fontButton->setFont({});
-        m_textSizeSpinBox->setValue(Constants::MindMap::Defaults::TEXT_SIZE);
+        m_textSizeSpinBox->setValue(Constants::MindMap::defaultTextSize());
     });
 
     connect(m_fontButton, &Widgets::FontButton::defaultFontSizeRequested, this, [=] {

@@ -60,7 +60,7 @@ ColorDialog::ColorDialog(Role role)
         "#AD7FA8", // Purple
         "#75507B",
         "#5C3566",
-        Constants::MindMap::Defaults::BACKGROUND_COLOR,
+        Constants::MindMap::defaultBackgroundColor(),
         "#bbbbbb",
         "#bbbbbb",
         "#E9B96E", // Brown

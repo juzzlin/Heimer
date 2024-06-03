@@ -92,21 +92,17 @@ double edgeWidthStep();
 
 namespace MindMap {
 
-namespace Defaults {
+QColor defaultBackgroundColor();
 
-static const QColor BACKGROUND_COLOR { 0xba, 0xbd, 0xb6 };
+QColor defaultEdgeColor();
 
-static const QColor EDGE_COLOR { 0, 0, 0, 200 };
+QColor defaultGridColor();
 
-static const QColor GRID_COLOR { Qt::gray };
+QColor defaultNodeColor();
 
-static const QColor NODE_COLOR { Qt::white };
+QColor defaultNodeTextColor();
 
-static const QColor NODE_TEXT_COLOR { Qt::black };
-
-static const int TEXT_SIZE = 14;
-
-} // namespace Defaults
+int defaultTextSize();
 
 } // namespace MindMap
 

@@ -37,7 +37,7 @@
 namespace Dialogs {
 
 DefaultsTab::DefaultsTab(QString name, QWidget * parent)
-  : SettingsTabBase(name, parent)
+  : SettingsTabBase { name, parent }
   , m_edgeDirectionCheckBox(new QCheckBox(tr("Reversed direction"), this))
   , m_arrowSizeSpinBox(new QDoubleSpinBox(this))
   , m_edgeWidthSpinBox(new QDoubleSpinBox(this))
@@ -54,10 +54,10 @@ DefaultsTab::DefaultsTab(QString name, QWidget * parent)
 
 void DefaultsTab::apply()
 {
-    for (auto && iter : m_edgeArrowStyleRadioMap) {
-        if (iter.second->isChecked()) {
-            settingsProxy()->setEdgeArrowMode(iter.first);
-            juzzlin::L().info() << "'" << iter.second->text().toStdString() << "' set as new default";
+    for (auto && [arrowMode, radioButton] : m_edgeArrowStyleRadioMap) {
+        if (radioButton->isChecked()) {
+            settingsProxy()->setEdgeArrowMode(arrowMode);
+            juzzlin::L().info() << "'" << radioButton->text().toStdString() << "' set as new default";
         }
     }
 
@@ -118,9 +118,9 @@ void DefaultsTab::createEdgeWidgets(QVBoxLayout & mainLayout)
     const auto edgeArrowRadioGroup = new QButtonGroup;
     edgeArrowRadioGroup->setParent(this); // Set parent explicitly instead of a constructor arg to silence analyzer warning
     const auto edgeArrowRadioLayout = new QVBoxLayout;
-    for (auto && iter : m_edgeArrowStyleRadioMap) {
-        edgeArrowRadioGroup->addButton(iter.second);
-        edgeArrowRadioLayout->addWidget(iter.second);
+    for (auto && [arrowMode, radioButton] : m_edgeArrowStyleRadioMap) {
+        edgeArrowRadioGroup->addButton(radioButton);
+        edgeArrowRadioLayout->addWidget(radioButton);
     }
     edgeArrowRadioLayout->addWidget(m_edgeDirectionCheckBox);
     edgeGroup.second->addLayout(edgeArrowRadioLayout);
@@ -137,9 +137,9 @@ void DefaultsTab::createEdgeWidgets(QVBoxLayout & mainLayout)
     edgeGroup.second->addLayout(arrowSizeEdgeWidthLayout);
 
     // Reset to defaults button for edge style
-    const auto resetToDefaultsButton = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
-    arrowSizeEdgeWidthLayout->addLayout(resetToDefaultsButton.second);
-    connect(resetToDefaultsButton.first, &QPushButton::clicked, this, [=] {
+    const auto && [resetToDefaultsButton, resetToDefaultsButtonLayout] = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
+    arrowSizeEdgeWidthLayout->addLayout(resetToDefaultsButtonLayout);
+    connect(resetToDefaultsButton, &QPushButton::clicked, this, [=] {
         m_edgeArrowStyleRadioMap.at(EdgeModel::ArrowMode::Single)->setChecked(true);
         m_edgeDirectionCheckBox->setChecked(false);
         m_arrowSizeSpinBox->setValue(Constants::Settings::defaultArrowSize());
@@ -149,7 +149,7 @@ void DefaultsTab::createEdgeWidgets(QVBoxLayout & mainLayout)
 
 void DefaultsTab::createColorWidgets(QVBoxLayout & mainLayout)
 {
-    const auto colorsGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Colors"), mainLayout);
+    const auto && [colorsGroup, colorsGroupLayout] = WidgetFactory::buildGroupBoxWithVLayout(tr("Colors"), mainLayout);
     const auto colorButtonLayout = new QVBoxLayout;
     colorButtonLayout->addWidget(m_backgroundColorButton);
     m_colorSettingButtons.push_back(m_backgroundColorButton);
@@ -161,13 +161,13 @@ void DefaultsTab::createColorWidgets(QVBoxLayout & mainLayout)
     m_colorSettingButtons.push_back(m_nodeColorButton);
     colorButtonLayout->addWidget(m_nodeTextColorButton);
     m_colorSettingButtons.push_back(m_nodeTextColorButton);
-    colorsGroup.second->addLayout(colorButtonLayout);
+    colorsGroupLayout->addLayout(colorButtonLayout);
     colorButtonLayout->addSpacing(3);
 
     // Reset to defaults button for colors
-    const auto resetToDefaultsButton = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
-    colorsGroup.second->addLayout(resetToDefaultsButton.second);
-    connect(resetToDefaultsButton.first, &QPushButton::clicked, this, [=] {
+    const auto && [resetToDefaultsButton, resetToDefaultsButtonLayout] = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
+    colorsGroupLayout->addLayout(resetToDefaultsButtonLayout);
+    connect(resetToDefaultsButton, &QPushButton::clicked, this, [=] {
         for (auto && colorSettingButton : m_colorSettingButtons) {
             colorSettingButton->resetToDefault();
         }
@@ -189,8 +189,8 @@ void DefaultsTab::createTextWidgets(QVBoxLayout & mainLayout)
     textLayout->addStretch();
 
     // Reset to defaults button for text styles
-    const auto resetToDefaultsButton = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
-    connect(resetToDefaultsButton.first, &QPushButton::clicked, this, [=] {
+    const auto && [resetToDefaultsButton, resetToDefaultsButtonLayout] = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
+    connect(resetToDefaultsButton, &QPushButton::clicked, this, [=] {
         m_fontButton->setFont({});
         m_textSizeSpinBox->setValue(Constants::MindMap::defaultTextSize());
     });
@@ -201,7 +201,7 @@ void DefaultsTab::createTextWidgets(QVBoxLayout & mainLayout)
 
     connect(m_fontButton, &Widgets::FontButton::fontSizeChanged, m_textSizeSpinBox, &QSpinBox::setValue);
 
-    textLayout->addLayout(resetToDefaultsButton.second);
+    textLayout->addLayout(resetToDefaultsButtonLayout);
 
     textGroup.second->addLayout(textLayout);
 }

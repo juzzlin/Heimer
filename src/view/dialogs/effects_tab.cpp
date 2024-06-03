@@ -32,7 +32,7 @@
 namespace Dialogs {
 
 EffectsTab::EffectsTab(QString name, QWidget * parent)
-  : SettingsTabBase(name, parent)
+  : SettingsTabBase { name, parent }
   , m_shadowOffsetSpinBox(new QSpinBox(this))
   , m_shadowBlurRadiusSpinBox(new QSpinBox(this))
   , m_selectedItemShadowBlurRadiusSpinBox(new QSpinBox(this))
@@ -92,46 +92,46 @@ void EffectsTab::apply(const ShadowEffectParams & params)
 void EffectsTab::initWidgets()
 {
     const auto mainLayout = new QVBoxLayout;
-    const auto shadowsGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Shadows"), *mainLayout);
+    const auto && [shadowsGroup, shadowsGroupLayout] = WidgetFactory::buildGroupBoxWithVLayout(tr("Shadows"), *mainLayout);
 
     const auto offsetLayout = new QHBoxLayout;
     offsetLayout->addWidget(new QLabel(tr("Shadow effect offset:")));
-    const auto spacer1 = new QWidget;
-    spacer1->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    offsetLayout->addWidget(spacer1);
+    const auto offsetLayoutSpacer = new QWidget;
+    offsetLayoutSpacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    offsetLayout->addWidget(offsetLayoutSpacer);
     offsetLayout->addWidget(m_shadowOffsetSpinBox);
-    shadowsGroup.second->addLayout(offsetLayout);
+    shadowsGroupLayout->addLayout(offsetLayout);
 
     const auto blurRadiusLayout = new QHBoxLayout;
     blurRadiusLayout->addWidget(new QLabel(tr("Shadow blur radius:")));
-    const auto spacer2 = new QWidget;
-    spacer2->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    blurRadiusLayout->addWidget(spacer2);
+    const auto blurRadiusLayoutSpacer = new QWidget;
+    blurRadiusLayoutSpacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    blurRadiusLayout->addWidget(blurRadiusLayoutSpacer);
     blurRadiusLayout->addWidget(m_shadowBlurRadiusSpinBox);
-    shadowsGroup.second->addLayout(blurRadiusLayout);
+    shadowsGroupLayout->addLayout(blurRadiusLayout);
 
-    shadowsGroup.second->addWidget(m_shadowColorButton);
+    shadowsGroupLayout->addWidget(m_shadowColorButton);
 
     const auto selectedItemBlurRadiusLayout = new QHBoxLayout;
     selectedItemBlurRadiusLayout->addWidget(new QLabel(tr("Selected item shadow blur radius:")));
-    const auto spacer3 = new QWidget;
-    spacer3->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    selectedItemBlurRadiusLayout->addWidget(spacer3);
+    const auto selectedItemBlurRadiusLayoutSpacer = new QWidget;
+    selectedItemBlurRadiusLayoutSpacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    selectedItemBlurRadiusLayout->addWidget(selectedItemBlurRadiusLayoutSpacer);
     selectedItemBlurRadiusLayout->addWidget(m_selectedItemShadowBlurRadiusSpinBox);
-    shadowsGroup.second->addLayout(selectedItemBlurRadiusLayout);
+    shadowsGroupLayout->addLayout(selectedItemBlurRadiusLayout);
 
-    shadowsGroup.second->addWidget(m_selectedItemShadowColorButton);
+    shadowsGroupLayout->addWidget(m_selectedItemShadowColorButton);
 
-    shadowsGroup.second->addWidget(WidgetFactory::buildHorizontalLine());
+    shadowsGroupLayout->addWidget(WidgetFactory::buildHorizontalLine());
 
-    shadowsGroup.second->addWidget(m_optimizeShadowsCheckBox);
+    shadowsGroupLayout->addWidget(m_optimizeShadowsCheckBox);
     m_optimizeShadowsCheckBox->setToolTip(tr("Optimizing shadow effects makes the performance better, but might introduce some visual glitches."));
 
-    shadowsGroup.second->addWidget(WidgetFactory::buildHorizontalLine());
+    shadowsGroupLayout->addWidget(WidgetFactory::buildHorizontalLine());
 
-    const auto resetToDefaultsButton = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
-    shadowsGroup.second->addLayout(resetToDefaultsButton.second);
-    connect(resetToDefaultsButton.first, &QPushButton::clicked, this, [=] {
+    const auto && [resetToDefaultsButton, resetToDefaultsButtonLayout] = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
+    shadowsGroupLayout->addLayout(resetToDefaultsButtonLayout);
+    connect(resetToDefaultsButton, &QPushButton::clicked, this, [=] {
         m_shadowOffsetSpinBox->setValue(Constants::Settings::defaultShadowEffectOffset());
         m_shadowBlurRadiusSpinBox->setValue(Constants::Settings::defaultShadowEffectBlurRadius());
         m_selectedItemShadowBlurRadiusSpinBox->setValue(Constants::Settings::defaultSelectedItemShadowEffectBlurRadius());

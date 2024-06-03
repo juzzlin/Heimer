@@ -51,10 +51,9 @@ EdgeP EdgeTextEdit::edge() const
 
 QRectF EdgeTextEdit::boundingRect() const
 {
-    QRectF rect = QGraphicsTextItem::boundingRect();
-    rect.adjust(-Constants::Edge::TEXT_EDIT_HOR_PADDING, -Constants::Edge::TEXT_EDIT_VER_PADDING,
-                Constants::Edge::TEXT_EDIT_HOR_PADDING, Constants::Edge::TEXT_EDIT_VER_PADDING);
-    return rect;
+    const int horPadding = 3;
+    const int verPadding = 1;
+    return QGraphicsTextItem::boundingRect().adjusted(-horPadding, -verPadding, horPadding, verPadding);
 }
 
 void EdgeTextEdit::hoverEnterEvent(QGraphicsSceneHoverEvent * event)

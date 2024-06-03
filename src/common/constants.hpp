@@ -76,21 +76,17 @@ QColor defaultShadowEffectSelectedItemShadowColor();
 
 namespace Edge {
 
-static const double ARROW_SIZE_STEP = 5;
+double arrowSizeStep();
 
-static const double MIN_ARROW_SIZE = 5;
+double minArrowSize();
 
-static const double MAX_ARROW_SIZE = 99;
+double maxArrowSize();
 
-static const double MIN_EDGE_WIDTH = 0.1;
+double minEdgeWidth();
 
-static const double MAX_EDGE_WIDTH = 5.0;
+double maxEdgeWidth();
 
-static const double EDGE_WIDTH_STEP = 0.25;
-
-static const int TEXT_EDIT_HOR_PADDING = 3;
-
-static const int TEXT_EDIT_VER_PADDING = 1;
+double edgeWidthStep();
 
 } // namespace Edge
 

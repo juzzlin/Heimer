@@ -95,14 +95,14 @@ void DefaultsTab::initWidgets()
 
 void DefaultsTab::createEdgeWidgets(QVBoxLayout & mainLayout)
 {
-    m_arrowSizeSpinBox->setSingleStep(Constants::Edge::ARROW_SIZE_STEP);
-    m_arrowSizeSpinBox->setMinimum(Constants::Edge::MIN_ARROW_SIZE);
-    m_arrowSizeSpinBox->setMaximum(Constants::Edge::MAX_ARROW_SIZE);
+    m_arrowSizeSpinBox->setSingleStep(Constants::Edge::arrowSizeStep());
+    m_arrowSizeSpinBox->setMinimum(Constants::Edge::minArrowSize());
+    m_arrowSizeSpinBox->setMaximum(Constants::Edge::maxArrowSize());
     m_arrowSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
-    m_edgeWidthSpinBox->setSingleStep(Constants::Edge::EDGE_WIDTH_STEP);
-    m_edgeWidthSpinBox->setMinimum(Constants::Edge::MIN_EDGE_WIDTH);
-    m_edgeWidthSpinBox->setMaximum(Constants::Edge::MAX_EDGE_WIDTH);
+    m_edgeWidthSpinBox->setSingleStep(Constants::Edge::edgeWidthStep());
+    m_edgeWidthSpinBox->setMinimum(Constants::Edge::minEdgeWidth());
+    m_edgeWidthSpinBox->setMaximum(Constants::Edge::maxEdgeWidth());
     m_edgeWidthSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
     const auto edgeGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Edge Arrow Style"), mainLayout);

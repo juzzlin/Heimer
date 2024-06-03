@@ -131,6 +131,40 @@ QColor defaultShadowEffectSelectedItemShadowColor()
 
 } // namespace Settings
 
+namespace Edge {
+
+double arrowSizeStep()
+{
+    return 5;
+}
+
+double minArrowSize()
+{
+    return 5;
+}
+
+double maxArrowSize()
+{
+    return 99;
+}
+
+double minEdgeWidth()
+{
+    return 0.1;
+}
+
+double maxEdgeWidth()
+{
+    return 5.0;
+}
+
+double edgeWidthStep()
+{
+    return 0.25;
+}
+
+} // namespace Edge
+
 namespace Node {
 
 int defaultCornerRadius()

@@ -24,12 +24,8 @@
 QRectF MagicZoom::calculateRectangleByItems(const ItemList & items, bool isForExport)
 {
     NodeList nodes;
-    for (auto && item : items) {
-        if (const auto node = dynamic_cast<NodeP>(item); node) {
-            nodes.push_back(node);
-        }
-    }
-
+    std::transform(items.begin(), items.end(), std::back_inserter(nodes), [](const auto & item) { return dynamic_cast<NodeP>(item); });
+    nodes.erase(std::remove(nodes.begin(), nodes.end(), nullptr), nodes.end());
     return calculateRectangleByNodes(nodes, isForExport);
 }
 

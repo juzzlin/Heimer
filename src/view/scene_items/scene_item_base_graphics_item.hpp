@@ -48,6 +48,8 @@ public:
 
     virtual void lowerWithAnimation();
 
+    virtual QRectF positionedBoundingRect() const;
+
     bool isRaised() const;
 
     void setAnimationDuration(int durationMs);

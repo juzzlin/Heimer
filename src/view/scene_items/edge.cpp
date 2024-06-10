@@ -266,14 +266,14 @@ void Edge::setArrowHeadPen(const QPen & pen)
 
 bool Edge::isEnoughSpaceForLabel() const
 {
-    return m_label->scene() && !m_label->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && //
-      !m_label->sceneBoundingRect().intersects(targetNode().sceneBoundingRect());
+    return m_label->scene() && !m_label->sceneBoundingRect().intersects(sourceNode().positionedBoundingRect()) && //
+      !m_label->sceneBoundingRect().intersects(targetNode().positionedBoundingRect());
 }
 
 bool Edge::isEnoughSpaceForCondensedLabel() const
 {
-    return m_condensedLabel->scene() && !m_condensedLabel->sceneBoundingRect().intersects(sourceNode().sceneBoundingRect()) && //
-      !m_condensedLabel->sceneBoundingRect().intersects(targetNode().sceneBoundingRect());
+    return m_condensedLabel->scene() && !m_condensedLabel->sceneBoundingRect().intersects(sourceNode().positionedBoundingRect()) && //
+      !m_condensedLabel->sceneBoundingRect().intersects(targetNode().positionedBoundingRect());
 }
 
 bool Edge::isCondensedLabelTextShorterThanLabelText() const

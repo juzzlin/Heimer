@@ -88,6 +88,11 @@ void SceneItemBaseGraphicsItem::lowerWithAnimation()
     m_scaleAnimation.start();
 }
 
+QRectF SceneItemBaseGraphicsItem::positionedBoundingRect() const
+{
+    return boundingRect().translated(pos());
+}
+
 void SceneItemBaseGraphicsItem::enableShadowEffect(bool)
 {
 }

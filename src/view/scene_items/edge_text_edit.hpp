@@ -36,12 +36,6 @@ public:
 
     EdgeP edge() const;
 
-    enum class VisibilityChangeReason
-    {
-        Timeout,
-        Explicit
-    };
-
     void setVisible(bool visible);
 
     void updateDueToLostFocus();

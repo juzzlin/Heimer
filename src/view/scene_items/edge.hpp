@@ -166,13 +166,17 @@ private:
 
     void setLabelFocused();
 
-    void setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason visibilityChangeReason = EdgeTextEdit::VisibilityChangeReason::Timeout);
-
     void updateLabelAndCondensedLabelVisibilitiesBasedOnSpaceAvailable();
 
     void showLabelAndHideCondensedLabel();
 
     void showLabelAndCondensedLabel();
+
+    void showLabelExplicitly();
+
+    void hideLabelExplicitly();
+
+    void hideLabelOnTimeout();
 
     void hideLabelAndCondensedLabel();
 
@@ -196,13 +200,9 @@ private:
 
     void updateLineGeometry();
 
-    enum class LabelUpdateReason
-    {
-        Default,
-        EdgeGeometryChanged
-    };
+    void updateLabel();
 
-    void updateLabel(LabelUpdateReason lur = LabelUpdateReason::Default);
+    void updateLabelOnGeometryChange();
 
     SettingsProxyS m_settingsProxy;
 

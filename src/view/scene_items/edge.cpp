@@ -176,13 +176,13 @@ double Edge::length() const
 
 void Edge::initializeDotAnimations()
 {
-    const int animationDurationMs = 2000;
+    const auto animationDuration = std::chrono::milliseconds { 2000 };
 
-    m_sourceDotSizeAnimation->setDuration(animationDurationMs);
+    m_sourceDotSizeAnimation->setDuration(animationDuration.count());
     m_sourceDotSizeAnimation->setStartValue(1.0);
     m_sourceDotSizeAnimation->setEndValue(0.0);
 
-    m_targetDotSizeAnimation->setDuration(animationDurationMs);
+    m_targetDotSizeAnimation->setDuration(animationDuration.count());
     m_targetDotSizeAnimation->setStartValue(1.0);
     m_targetDotSizeAnimation->setEndValue(0.0);
 }
@@ -221,21 +221,16 @@ void Edge::connectLabel()
 
     connect(m_label, &EdgeTextEdit::hoverEntered, this, &Edge::setLabelFocused);
 
-    connect(m_label, &EdgeTextEdit::visibilityTimeout, this, [=] {
-        setLabelVisible(false);
-    });
+    connect(m_label, &EdgeTextEdit::visibilityTimeout, this, &Edge::hideLabelOnTimeout);
 }
 
 void Edge::initializeLabelVisibilityTimer()
 {
     m_labelVisibilityTimer.setSingleShot(true);
 
-    const int labelDurationMs = 2000;
-    m_labelVisibilityTimer.setInterval(labelDurationMs);
+    m_labelVisibilityTimer.setInterval(std::chrono::milliseconds { 2000 });
 
-    connect(&m_labelVisibilityTimer, &QTimer::timeout, this, [=] {
-        setLabelVisible(false);
-    });
+    connect(&m_labelVisibilityTimer, &QTimer::timeout, this, &Edge::hideLabelOnTimeout);
 }
 
 void Edge::initializeLabels()
@@ -310,6 +305,24 @@ void Edge::showLabelAndCondensedLabel()
     m_condensedLabel->setVisible(true);
 }
 
+void Edge::showLabelExplicitly()
+{
+    showLabelAndCondensedLabel();
+    // m_label->setZValue(static_cast<int>(Layers::Last) + static_cast<int>(Layers::Node));
+    m_label->setTransformOriginPoint(m_line->line().center());
+    m_label->raiseWithAnimation(calculateTargetScale());
+}
+
+void Edge::hideLabelExplicitly()
+{
+    hideLabelAndCondensedLabel();
+}
+
+void Edge::hideLabelOnTimeout()
+{
+    hideLabelAndShowCondensedLabelIfEmptyOrNotEnoughSpace();
+}
+
 void Edge::hideLabelAndCondensedLabel()
 {
     m_label->setVisible(false);
@@ -340,27 +353,6 @@ void Edge::setLabelFocused()
     // m_label->setZValue(static_cast<int>(Layers::Last) + static_cast<int>(Layers::Node));
     m_label->setTransformOriginPoint(m_line->line().center());
     m_label->raiseWithAnimation(calculateTargetScale());
-}
-
-void Edge::setLabelVisible(bool visible, EdgeTextEdit::VisibilityChangeReason visibilityChangeReason)
-{
-    switch (visibilityChangeReason) {
-    case EdgeTextEdit::VisibilityChangeReason::Explicit:
-        if (visible) {
-            showLabelAndCondensedLabel();
-            // m_label->setZValue(static_cast<int>(Layers::Last) + static_cast<int>(Layers::Node));
-            m_label->setTransformOriginPoint(m_line->line().center());
-            m_label->raiseWithAnimation(calculateTargetScale());
-        } else {
-            hideLabelAndCondensedLabel();
-        }
-        break;
-    case EdgeTextEdit::VisibilityChangeReason::Timeout:
-        if (!visible) {
-            hideLabelAndShowCondensedLabelIfEmptyOrNotEnoughSpace();
-        }
-        break;
-    }
 }
 
 void Edge::setEdgeWidth(double edgeWidth)
@@ -409,7 +401,11 @@ void Edge::setText(const QString & text)
     m_edgeModel->text = text;
     if (m_enableLabels) {
         m_label->setText(text);
-        setLabelVisible(!text.isEmpty());
+        if (!text.isEmpty()) {
+            showLabelExplicitly();
+        } else {
+            hideLabelExplicitly();
+        }
     }
 }
 
@@ -551,8 +547,7 @@ void Edge::updateArrowhead()
 
 void Edge::triggerAnimationOnRelativeConnectionLocationChangeAtSourcePosition()
 {
-    const auto newRelativeSourcePos = m_line->line().p1() - sourceNode().pos();
-    if (m_previousRelativeSourcePos != newRelativeSourcePos) {
+    if (const auto newRelativeSourcePos = m_line->line().p1() - sourceNode().pos(); m_previousRelativeSourcePos != newRelativeSourcePos) {
         m_previousRelativeSourcePos = newRelativeSourcePos;
         m_sourceDotSizeAnimation->stop();
         m_sourceDotSizeAnimation->start();
@@ -565,8 +560,7 @@ void Edge::triggerAnimationOnRelativeConnectionLocationChangeAtSourcePosition()
 void Edge::triggerAnimationOnRelativeConnectionLocationChangeAtTargetPosition()
 {
     // Trigger new animation if relative connection location has changed
-    const auto newRelativeTargetPos = m_line->line().p2() - targetNode().pos();
-    if (m_previousRelativeTargetPos != newRelativeTargetPos) {
+    if (const auto newRelativeTargetPos = m_line->line().p2() - targetNode().pos(); m_previousRelativeTargetPos != newRelativeTargetPos) {
         m_previousRelativeTargetPos = newRelativeTargetPos;
         m_targetDotSizeAnimation->stop();
         m_targetDotSizeAnimation->start();
@@ -584,15 +578,17 @@ void Edge::updateDots()
     }
 }
 
-void Edge::updateLabel(LabelUpdateReason labelUpdateReason)
+void Edge::updateLabel()
 {
     m_label->setPos(lineCenter() - QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()) * 0.5);
     m_condensedLabel->setPos(lineCenter() - QPointF(m_condensedLabel->boundingRect().width(), m_condensedLabel->boundingRect().height()) * 0.5);
+}
 
-    // Toggle visibility according to space available if geometry changed
-    if (labelUpdateReason == LabelUpdateReason::EdgeGeometryChanged) {
-        updateLabelAndCondensedLabelVisibilitiesBasedOnSpaceAvailable();
-    }
+void Edge::updateLabelOnGeometryChange()
+{
+    updateLabel();
+
+    updateLabelAndCondensedLabelVisibilitiesBasedOnSpaceAvailable();
 }
 
 void Edge::setTargetNode(NodeR targetNode)
@@ -702,7 +698,7 @@ void Edge::updateLine()
     updateArrowhead();
 
     if (m_enableLabels) {
-        updateLabel(LabelUpdateReason::EdgeGeometryChanged);
+        updateLabelOnGeometryChange();
     }
 }
 

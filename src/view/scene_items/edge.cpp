@@ -79,18 +79,18 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
 }
 
 Edge::Edge(NodeS sourceNode, NodeS targetNode, bool enableAnimations, bool enableLabel)
-  : Edge(sourceNode.get(), targetNode.get(), enableAnimations, enableLabel)
+  : Edge { sourceNode.get(), targetNode.get(), enableAnimations, enableLabel }
 {
 }
 
 Edge::Edge(EdgeCR other, GraphCR graph)
-  : Edge(graph.getNode(other.m_sourceNode->index()).get(), graph.getNode(other.m_targetNode->index()).get())
+  : Edge { graph.getNode(other.m_sourceNode->index()).get(), graph.getNode(other.m_targetNode->index()).get() }
 {
     copyData(other);
 }
 
 Edge::Edge(EdgeCR other)
-  : Edge(nullptr, nullptr)
+  : Edge { nullptr, nullptr }
 {
     copyData(other);
 }

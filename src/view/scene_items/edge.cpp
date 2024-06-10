@@ -308,9 +308,6 @@ void Edge::showLabelAndCondensedLabel()
 void Edge::showLabelExplicitly()
 {
     showLabelAndCondensedLabel();
-    // m_label->setZValue(static_cast<int>(Layers::Last) + static_cast<int>(Layers::Node));
-    m_label->setTransformOriginPoint(m_line->line().center());
-    m_label->raiseWithAnimation(calculateTargetScale());
 }
 
 void Edge::hideLabelExplicitly()
@@ -347,10 +344,8 @@ double Edge::calculateTargetScale() const
 
 void Edge::setLabelFocused()
 {
-
     showLabelAndHideCondensedLabel();
 
-    // m_label->setZValue(static_cast<int>(Layers::Last) + static_cast<int>(Layers::Node));
     m_label->setTransformOriginPoint(m_line->line().center());
     m_label->raiseWithAnimation(calculateTargetScale());
 }

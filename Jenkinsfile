@@ -1,30 +1,29 @@
 pipeline {
     agent none
     stages {
-        stage('Debug build and unit tests') {
-            agent {
-                docker {
-                    image 'juzzlin/qt5-20.04:latest'
-                    args '--privileged -t -v $WORKSPACE:/heimer'
+        stage('Build and run tests') {
+            matrix {
+                agent {
+                    docker {
+                        image 'juzzlin/qt5-20.04:latest'
+                        args '--privileged -t -v $WORKSPACE:/heimer'
+                    }
                 }
-            }
-            steps {
-                sh "mkdir -p build-debug"
-                sh "cd build-debug && cmake -GNinja -DCMAKE_BUILD_TYPE=Debug .."
-                sh "cd build-debug && cmake --build . && ctest"
-            }
-        }
-        stage('Release build and unit tests') {
-            agent {
-                docker {
-                    image 'juzzlin/qt5-20.04:latest'
-                    args '--privileged -t -v $WORKSPACE:/heimer'
+                axes {
+                    axis {
+                        name 'BUILD_TYPE'
+                        values 'Debug', 'Release'    
+                    }
                 }
-            }
-            steps {
-                sh "mkdir -p build-release"
-                sh "cd build-debug && cmake -GNinja -DCMAKE_BUILD_TYPE=Release .."
-                sh "cd build-debug && cmake --build . && ctest"
+                stages {
+                    stage('Build and test') {
+                        steps {
+                            sh "mkdir -p build-$BUILD_TYPE"
+                            sh "cd build-$BUILD_TYPE && cmake -GNinja -DCMAKE_BUILD_TYPE=$BUILD_TYPE .."
+                            sh "cd build-$BUILD_TYPE && cmake --build . && ctest"
+                        }
+                    }
+                }
             }
         }
         stage('Debian package / Ubuntu 20.04') {

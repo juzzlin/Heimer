@@ -76,7 +76,7 @@ pipeline {
         stage('Windows NSIS installer') {
             agent {
                 docker {
-                    image 'juzzlin/mxe-qt5-20.04:latest'
+                    image 'juzzlin/mxe-qt6-22.04:latest'
                     args '-t -v $WORKSPACE:/heimer'
                 }
             }
@@ -92,7 +92,7 @@ pipeline {
         stage('Windows ZIP') {
             agent {
                 docker {
-                    image 'juzzlin/mxe-qt5-20.04:latest'
+                    image 'juzzlin/mxe-qt6-22.04:latest'
                     args '-t -v $WORKSPACE:/heimer'
                 }
             }

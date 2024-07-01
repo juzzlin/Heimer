@@ -1,14 +1,10 @@
-project(Heimer)
-
 cmake_minimum_required(VERSION 3.10)
 cmake_policy(VERSION 3.10)
 
+project(Heimer)
+
 if(POLICY CMP0005)
     cmake_policy(SET CMP0005 NEW)
-endif()
-
-if(POLICY CMP0020)
-    cmake_policy(SET CMP0020 NEW)
 endif()
 
 if(POLICY CMP0043)
@@ -55,6 +51,8 @@ option(BUILD_TESTS "Build unit tests." ON)
 
 option(BUILD_WITH_QT6 "Build with Qt 6 instead of Qt 5" OFF)
 
+option(ENABLE_CCACHE "Use CCache if found." ON)
+
 # Default to release C++ flags if CMAKE_BUILD_TYPE not set
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING
@@ -79,14 +77,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR MINGW OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
-
     # Automatically use ccache if found
-    find_program(CCACHE_FOUND ccache)
-    if(CCACHE_FOUND)
-        set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
-        set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
-    endif(CCACHE_FOUND)
-
+    if(ENABLE_CCACHE)
+        find_program(CCACHE_FOUND ccache)
+        if(CCACHE_FOUND)
+            set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
+            set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
+        endif()
+    endif()
 elseif(MSVC)
     add_definitions(-DNOMINMAX)
 endif()

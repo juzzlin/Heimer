@@ -17,9 +17,13 @@
 
 void HashSeed::init()
 {
-#if QT_VERSION >= 0x50600
+#if QT_VERSION < QT_VERSION_CHECK(5, 6, 0)
+    qt_qhash_seed.store(0);
+#else
+#if QT_VERSION < QT_VERSION_CHECK(6, 2, 0)
     qSetGlobalQHashSeed(0);
 #else
-    qt_qhash_seed.store(0);
+    QHashSeed::setDeterministicGlobalSeed();
+#endif
 #endif
 }

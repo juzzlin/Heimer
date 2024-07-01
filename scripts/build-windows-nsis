@@ -8,16 +8,17 @@ CPACK=/mxe/usr/bin/i686-w64-mingw32.static-cpack
 CMD="export LANG=en_US.UTF-8 && \
      export LC_ALL=en_US.UTF-8 && \
      export PATH='$PATH':/mxe/usr/bin && \
+     export CCACHE_DISABLE=1 && \
      cd /heimer && \
      rm -rf build-windows-nsis && mkdir -p build-windows-nsis && \
-     cd build-windows-nsis && ${CMAKE} -GNinja -DPACKAGE_TYPE=NSIS .. && \
-     ${CMAKE} --build . && ${CPACK} -G NSIS"
+     cd build-windows-nsis && ${CMAKE} -GNinja -DBUILD_WITH_QT6=ON -DPACKAGE_TYPE=NSIS .. && \
+    ninja && ${CPACK} -G NSIS"
 
 if [ -f /.dockerenv ]; then
     echo "Script inside Docker"
     bash -c "${CMD}"
 else
     echo "Script outside Docker"
-    docker run --user $(id -u):$(id -g) -t -v $(pwd):/heimer juzzlin/mxe-qt5-20.04:latest bash -c "${CMD}"
+    docker run --user $(id -u):$(id -g) -t -v $(pwd):/heimer juzzlin/mxe-qt6-22.04:latest bash -c "${CMD}"
 fi
 

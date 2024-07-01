@@ -26,7 +26,7 @@ pipeline {
                 }
             }
         }
-        stage('Debian package / Ubuntu 20.04') {
+        stage('Debian package / Ubuntu 20.04 / Qt 5') {
             agent {
                 docker {
                     image 'juzzlin/qt5-20.04:latest'
@@ -41,24 +41,6 @@ pipeline {
             post {
                 always {
                     archiveArtifacts artifacts: 'build-deb-ubuntu-20.04/*.deb', fingerprint: true
-                }
-            }
-        }
-        stage('Debian package / Ubuntu 22.04 / Qt 5') {
-            agent {
-                docker {
-                    image 'juzzlin/qt6-22.04:latest'
-                    args '--privileged -t -v $WORKSPACE:/heimer'
-                }
-            }
-            steps {
-                sh "mkdir -p build-deb-ubuntu-22.04-qt5"
-                sh "cd build-deb-ubuntu-22.04-qt5 && cmake -GNinja -DDISTRO_VERSION=ubuntu-22.04 -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DPACKAGE_TYPE=Deb .. && cmake --build ."
-                sh "cd build-deb-ubuntu-22.04-qt5 && cpack -G DEB"
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'build-deb-ubuntu-22.04-qt5/*.deb', fingerprint: true
                 }
             }
         }

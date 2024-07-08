@@ -22,10 +22,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef JUZZLIN_LOGGER_HPP
-#define JUZZLIN_LOGGER_HPP
+#ifndef JUZZLIN_SIMPLE_LOGGER_HPP
+#define JUZZLIN_SIMPLE_LOGGER_HPP
 
-#include <cstdio>
 #include <memory>
 #include <sstream>
 
@@ -36,14 +35,14 @@ namespace juzzlin {
  *
  * using juzzlin::L;
  *
- * L::init("myLog.txt");
+ * L::initialize("myLog.txt");
  *
  * Example logging:
  *
  * L().info() << "Initialization finished.";
  * L().error() << "Foo happened!";
  */
-class Logger
+class SimpleLogger
 {
 public:
     enum class Level
@@ -63,20 +62,26 @@ public:
         DateTime,
         EpochSeconds,
         EpochMilliseconds,
-        EpochMicroseconds
+        EpochMicroseconds,
+        ISODateTime,
+        Custom
     };
 
     //! Constructor.
-    Logger();
+    SimpleLogger();
+
+    //! Constructor.
+    //! \param tag Tag that will be added to the message.
+    SimpleLogger(const std::string & tag);
 
     //! Destructor.
-    ~Logger();
+    ~SimpleLogger();
 
     /*! Initialize the logger.
      *  \param filename Log to filename. Disabled if empty.
      *  \param append The existing log will be appended if true.
      *  Throws on error. */
-    static void init(std::string filename, bool append = false);
+    static void initialize(std::string filename, bool append = false);
 
     //! Enable/disable echo mode.
     //! \param enable Echo everything if true. Default is false.
@@ -93,8 +98,15 @@ public:
 
     //! Set/enable timestamp mode.
     //! \param timestampMode Timestamp mode enumeration.
+    static void setTimestampMode(TimestampMode timestampMode);
+
+    //! Set custom timestamp format. Sets timestamp mode to TimestampMode::Custom.
+    //! \param customTimestampFormat Timestamp format e.g. "%Y-%m-%dT%H:%M:%S".
+    static void setCustomTimestampFormat(std::string customTimestampFormat);
+
+    //! Set/enable timestamp separator.
     //! \param separator Separator string outputted after timestamp.
-    static void setTimestampMode(TimestampMode timestampMode, std::string separator = " ");
+    static void setTimestampSeparator(std::string separator);
 
     //! Set specific stream.
     //! \param level The level.
@@ -123,15 +135,15 @@ public:
     std::ostringstream & fatal();
 
 private:
-    Logger(const Logger & r) = delete;
-    Logger & operator=(const Logger & r) = delete;
+    SimpleLogger(const SimpleLogger &) = delete;
+    SimpleLogger & operator=(const SimpleLogger &) = delete;
 
     class Impl;
     std::unique_ptr<Impl> m_impl;
 };
 
-using L = Logger;
+using L = SimpleLogger;
 
-} // juzzlin
+} // namespace juzzlin
 
-#endif // JUZZLIN_LOGGER_HPP
+#endif // JUZZLIN_SIMPLE_LOGGER_HPP

@@ -7,7 +7,7 @@ Looking for a simple logger for your C++ project? `SimpleLogger` might be for yo
 
 * Based on RAII
 * Configurable level symbols
-* Datetime / EPOCH timestamps
+* Datetime, ISO Datetime, EPOCH, and custom timestamp formats
 * Logging levels: `Trace`, `Debug`, `Info`, `Warning`, `Error`, `Fatal`
 * Log to file and/or console
 * Thread-safe
@@ -34,7 +34,7 @@ include_directories(SimpleLogger/src)
 Link to the library:
 
 ```
-target_link_libraries(${YOUR_TARGET_NAME} SimpleLogger)
+target_link_libraries(${YOUR_TARGET_NAME} SimpleLogger_static)
 ```
 
 In your code:
@@ -78,7 +78,7 @@ Outputs something like this:
 ```
 using juzzlin::L;
 
-L::init("/tmp/myLog.txt");
+L::initialize("/tmp/myLog.txt");
 
 L().info() << "Something happened";
 ```
@@ -88,7 +88,7 @@ L().info() << "Something happened";
 ```
 using juzzlin::L;
 
-L::init("/tmp/myLog.txt");
+L::initialize("/tmp/myLog.txt");
 L::enableEchoMode(false);
 
 L().info() << "Something happened";
@@ -111,6 +111,20 @@ Outputs something like this:
 
 `Sat Oct 13 22:38:42 2018 D: A debug thing happened`
 
+## Log with a tag
+
+```
+using juzzlin::L;
+
+L::setLoggingLevel(L::Level::Info);
+
+L("MyTag").info() << "Something happened";
+```
+
+Outputs something like this:
+
+`Sat Oct 13 22:38:42 2018 I: MyTag: Something happened`
+
 ## Set custom level symbols
 
 ```
@@ -126,14 +140,15 @@ Outputs something like this:
 
 `Sat Oct 13 22:38:42 2018 <DEBUG> A debug thing happened`
 
-## Set timestamp mode and optional custom separator
+## Set timestamp mode and optional timestamp separator
 
-Possible modes: `None`, `EpochSeconds`, `EpochMilliseconds`, `EpochMicroseconds`, `DateTime`.
+Possible timestamp modes: `None`, `EpochSeconds`, `EpochMilliseconds`, `EpochMicroseconds`, `DateTime`, `ISODateTime`.
 
 ```
 using juzzlin::L;
 
-L::setTimestampMode(L::TimestampMode::EpochMilliseconds, " ## ");
+L::setTimestampMode(L::TimestampMode::EpochMilliseconds);
+L::setTimestampSeparator(" ## ");
 
 L().info() << "Something happened";
 ```
@@ -141,6 +156,23 @@ L().info() << "Something happened";
 Outputs something like this:
 
 `1562955750677 ## I: Something happened`
+
+## Set custom timestamp format
+
+By setting a custom timestamp format the timestamp mode is set to `Custom`:
+
+```
+using juzzlin::L;
+
+L::setCustomTimestampFormat("%H:%M:%S_%Y-%m-%d");
+L::setTimestampSeparator(" ## ");
+
+L().info() << "Something happened";
+```
+
+Outputs something like this:
+
+`12:34:58_2024-07-06 ## I: Something happened`
 
 ## Set custom output stream
 
@@ -153,7 +185,7 @@ L::setStream(L::Level::Info, ssI);
 
 # Requirements
 
-C++11
+C++17
 
 # Licence
 

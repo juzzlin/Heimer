@@ -35,9 +35,10 @@ static void initLogger()
     using juzzlin::L;
 
     const QString logPath { QDir::tempPath() + QDir::separator() + "heimer-" + std::to_string(Utils::tsMs()).c_str() + ".log" };
-    L::init(logPath.toStdString());
+    L::initialize(logPath.toStdString());
     L::enableEchoMode(true);
-    L::setTimestampMode(L::TimestampMode::DateTime, " ");
+    L::setTimestampMode(L::TimestampMode::ISODateTime);
+    L::setTimestampSeparator(" ");
     const std::map<L::Level, std::string> symbols = {
         { L::Level::Debug, "D" },
         { L::Level::Error, "E" },

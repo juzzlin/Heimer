@@ -22,30 +22,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "simple_logger.hpp"
+#include "../../simple_logger.hpp"
 
 // Don't compile asserts away
 #ifdef NDEBUG
-    #undef NDEBUG
+#undef NDEBUG
 #endif
 
 #include <cassert>
 #include <cstdlib>
 #include <fstream>
 
-int main(int, char **)
+namespace juzzlin::FileTest {
+
+void verifyLogFile(const std::string & logFile, const std::string & message, const std::string & timestampSeparator, int expectedLines)
 {
-    using juzzlin::L;
+    std::ifstream fin { logFile };
+    assert(fin.is_open());
 
-    const auto logFile = "file_test.log";
+    int lines = 0;
+    std::string line;
+    while (std::getline(fin, line)) {
+        assert(line.find(message) != std::string::npos);
+        assert(line.find(timestampSeparator) != std::string::npos);
+        lines++;
+    }
 
-    L::init(logFile);
-    L::enableEchoMode(true);
-    L::setLoggingLevel(L::Level::Trace);
+    assert(lines == expectedLines);
+}
 
+void testAllLoggingLevels_allMessagesShouldBeFoundInFile(const std::string & logFileName, const std::string & timestampSeparator)
+{
     const std::string message = "Hello, world!";
-    const std::string timestampSeparator = " ## ";
-    L::setTimestampMode(L::TimestampMode::DateTime, timestampSeparator);
 
     L().trace() << message;
     L().debug() << message;
@@ -54,19 +62,28 @@ int main(int, char **)
     L().error() << message;
     L().fatal() << message;
 
-    std::ifstream fin{logFile};
-    assert(fin.is_open());
+    verifyLogFile(logFileName, message, timestampSeparator, 6);
+}
 
-    int lines = 0;
-    std::string line;
-    while (std::getline(fin, line))
-    {
-        assert(line.find(message) != std::string::npos);
-        assert(line.find(timestampSeparator) != std::string::npos);
-        lines++;
-    }
+void initializeLoggger(const std::string & logFileName, const std::string & timestampSeparator)
+{
+    L::initialize(logFileName);
+    L::enableEchoMode(true);
+    L::setLoggingLevel(L::Level::Trace);
+    L::setTimestampMode(L::TimestampMode::DateTime);
+    L::setTimestampSeparator(timestampSeparator);
+}
 
-    assert(lines == 6);
+} // namespace juzzlin::FileTest
+
+int main(int, char **)
+{
+    const std::string logFileName = "file_test.log";
+    const std::string timestampSeparator = " ## ";
+
+    juzzlin::FileTest::initializeLoggger(logFileName, timestampSeparator);
+
+    juzzlin::FileTest::testAllLoggingLevels_allMessagesShouldBeFoundInFile(logFileName, timestampSeparator);
 
     return EXIT_SUCCESS;
 }

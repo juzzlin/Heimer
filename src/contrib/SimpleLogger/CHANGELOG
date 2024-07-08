@@ -1,3 +1,19 @@
+2.0.0
+=====
+
+New features:
+
+* Fix GitHub Issue #5: Add support for tags
+* Add support for customized timestamp format
+* Add ISODateTime option to TimestampMode
+
+Other:
+
+* Add SimpleLogger::setTimestampSeparator()
+* Rename init() to initialize()
+* Rename Logger to SimpleLogger
+* Require C++17
+
 1.4.0
 =====
 

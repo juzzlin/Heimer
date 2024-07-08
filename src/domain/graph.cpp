@@ -21,16 +21,9 @@
 #include <stdexcept>
 #include <string>
 
-namespace {
-int64_t getKey(int c0, int c1)
-{
-    return (int64_t(c0) << 32) + c1;
-}
-} // namespace
+static const auto TAG = "Graph";
 
-Graph::Graph()
-{
-}
+Graph::Graph() = default;
 
 void Graph::clear()
 {
@@ -56,7 +49,7 @@ void Graph::addNode(NodeS node)
 EdgeS Graph::deleteEdge(int index0, int index1)
 {
     EdgeS deletedEdge;
-    if (const auto edgeIter = m_edges.find(getKey(index0, index1)); edgeIter != m_edges.end()) {
+    if (const auto edgeIter = m_edges.find(buildKeyFromIndices(index0, index1)); edgeIter != m_edges.end()) {
         deletedEdge = (*edgeIter).second;
         m_deletedEdges.push_back(deletedEdge);
         m_edges.erase(edgeIter);
@@ -92,8 +85,8 @@ void Graph::addEdge(EdgeS newEdge)
     // Add if such edge doesn't already exist
     const auto c0 = newEdge->sourceNode().index();
     const auto c1 = newEdge->targetNode().index();
-    if (!m_edges.count(getKey(c0, c1))) {
-        m_edges.insert({ getKey(c0, c1), newEdge });
+    if (!m_edges.count(buildKeyFromIndices(c0, c1))) {
+        m_edges.insert({ buildKeyFromIndices(c0, c1), newEdge });
     }
 }
 
@@ -109,7 +102,7 @@ bool Graph::areDirectlyConnected(NodeS node0, NodeS node1) const
 
 bool Graph::areDirectlyConnected(int index0, int index1) const
 {
-    return m_edges.count(getKey(index0, index1)) || m_edges.count(getKey(index1, index0));
+    return m_edges.count(buildKeyFromIndices(index0, index1)) || m_edges.count(buildKeyFromIndices(index1, index0));
 }
 
 size_t Graph::nodeCount() const
@@ -119,7 +112,7 @@ size_t Graph::nodeCount() const
 
 EdgeS Graph::getEdge(int index0, int index1) const
 {
-    const auto iter = m_edges.find(getKey(index0, index1));
+    const auto iter = m_edges.find(buildKeyFromIndices(index0, index1));
     return iter != m_edges.end() ? iter->second : nullptr;
 }
 
@@ -179,10 +172,15 @@ Graph::NodeVector Graph::getNodesConnectedToNode(NodeS node) const
     return result;
 }
 
+int64_t Graph::buildKeyFromIndices(int index0, int index1) const
+{
+    return (int64_t(index0) << 32) + index1;
+}
+
 Graph::~Graph()
 {
     // Ensure that edges are always deleted before nodes
     clear();
 
-    juzzlin::L().debug() << "Graph deleted";
+    juzzlin::L(TAG).debug() << "Graph deleted";
 }

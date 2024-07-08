@@ -30,6 +30,8 @@
 
 using namespace Constants::Application;
 
+static const auto TAG = "main";
+
 static void initLogger()
 {
     using juzzlin::L;
@@ -57,9 +59,9 @@ static void initLogger()
     L::setLoggingLevel(L::Level::Debug);
 #endif
 
-    L().info() << applicationName().toStdString() << " version " << applicationVersion().toStdString();
-    L().info() << copyright().toStdString();
-    L().info() << "Compiled against Qt version " << QT_VERSION_STR;
+    L(TAG).info() << applicationName().toStdString() << " version " << applicationVersion().toStdString();
+    L(TAG).info() << copyright().toStdString();
+    L(TAG).info() << "Compiled against Qt version " << QT_VERSION_STR;
 }
 
 int main(int argc, char ** argv)

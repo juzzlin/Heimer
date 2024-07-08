@@ -33,6 +33,8 @@
 
 namespace Menus {
 
+static const auto TAG = "ToolBar";
+
 ToolBar::ToolBar()
   : m_autoSnapCheckBox(new QCheckBox(tr("Auto snap"), this))
   , m_copyOnDragCheckBox(new QCheckBox(tr("Copy on drag"), this))
@@ -192,7 +194,7 @@ QWidgetAction * ToolBar::createSearchAction()
     m_searchTimer.setSingleShot(true);
     connect(&m_searchTimer, &QTimer::timeout, this, [this, searchLineEdit = m_searchLineEdit]() {
         const auto text = searchLineEdit->text();
-        juzzlin::L().debug() << "Search text changed: " << text.toStdString();
+        juzzlin::L(TAG).debug() << "Search text changed: " << text.toStdString();
         emit searchTextChanged(text);
     });
     connect(m_searchLineEdit, &QLineEdit::textChanged, this, [searchTimer = &m_searchTimer](const QString & text) {

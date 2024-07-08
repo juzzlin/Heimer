@@ -48,11 +48,10 @@
 #include <QProgressDialog>
 #include <QStandardPaths>
 
-#include <iostream>
-#include <thread>
-
 using juzzlin::Argengine;
 using juzzlin::L;
+
+static const auto TAG = "Application";
 
 Application::Application(int & argc, char ** argv)
   : m_application(argc, argv)
@@ -131,34 +130,34 @@ void Application::initTranslations()
         langs = QLocale().uiLanguages();
     } else {
         langs << m_lang;
-        L().info() << "Language forced to '" << m_lang.toStdString() << "'";
+        L(TAG).info() << "Language forced to '" << m_lang.toStdString() << "'";
     }
 
     // Qt's built-in translations
     for (auto && lang : langs) {
-        L().debug() << "Trying Qt translations for '" << lang.toStdString() << "'";
+        L(TAG).debug() << "Trying Qt translations for '" << lang.toStdString() << "'";
 #if QT_VERSION >= 0x60000
         if (m_qtTranslator.load("qt_" + lang, QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
 #else
         if (m_qtTranslator.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
 #endif
             m_application.installTranslator(&m_qtTranslator);
-            L().debug() << "Loaded Qt translations for '" << lang.toStdString() << "'";
+            L(TAG).debug() << "Loaded Qt translations for '" << lang.toStdString() << "'";
             break;
         } else {
-            L().warning() << "Failed to load Qt translations for '" << lang.toStdString() << "'";
+            L(TAG).warning() << "Failed to load Qt translations for '" << lang.toStdString() << "'";
         }
     }
 
     // Application's translations
     for (auto && lang : langs) {
-        L().debug() << "Trying application translations for '" << lang.toStdString() << "'";
+        L(TAG).debug() << "Trying application translations for '" << lang.toStdString() << "'";
         if (m_appTranslator.load(Constants::Application::translationsResourceBase() + lang)) {
             m_application.installTranslator(&m_appTranslator);
-            L().debug() << "Loaded application translations for '" << lang.toStdString() << "'";
+            L(TAG).debug() << "Loaded application translations for '" << lang.toStdString() << "'";
             break;
         } else {
-            L().warning() << "Failed to load application translations for '" << lang.toStdString() << "'";
+            L(TAG).warning() << "Failed to load application translations for '" << lang.toStdString() << "'";
         }
     }
 }
@@ -191,7 +190,7 @@ void Application::parseArgs(int argc, char ** argv)
     ae.addOption(
       { "--lang" }, [this, languages](std::string value) {
           if (!languages.count(value)) {
-              L().error() << "Unsupported language: " << value;
+              L(TAG).error() << "Unsupported language: " << value;
           } else {
               m_lang = value.c_str();
           }
@@ -300,7 +299,7 @@ void Application::openArgMindMap()
 
 void Application::openMindMap()
 {
-    L().debug() << "Open file";
+    L(TAG).debug() << "Open file";
 
     const auto path = Settings::Custom::loadRecentPath();
     if (const auto fileName = QFileDialog::getOpenFileName(m_mainWindow.get(), tr("Open File"), path, getFileDialogFileText()); !fileName.isEmpty()) {
@@ -312,7 +311,7 @@ void Application::openMindMap()
 
 void Application::doOpenMindMap(QString fileName)
 {
-    L().debug() << "Opening '" << fileName.toStdString();
+    L(TAG).debug() << "Opening '" << fileName.toStdString();
     m_mainWindow->showSpinnerDialog(true, tr("Opening '%1'..").arg(fileName));
     updateProgress();
     if (m_sc->applicationService()->openMindMap(fileName)) {
@@ -334,11 +333,11 @@ void Application::doOpenMindMap(QString fileName)
 
 void Application::saveMindMap()
 {
-    L().debug() << "Save..";
+    L(TAG).debug() << "Save..";
 
     if (!m_sc->applicationService()->saveMindMap()) {
         const auto msg = QString(tr("Failed to save file."));
-        L().error() << msg.toStdString();
+        L(TAG).error() << msg.toStdString();
         showMessageBox(msg);
         emit actionTriggered(StateMachine::Action::MindMapSaveFailed);
         return;
@@ -350,7 +349,7 @@ void Application::saveMindMap()
 
 void Application::saveMindMapAs()
 {
-    L().debug() << "Save as..";
+    L(TAG).debug() << "Save as..";
 
     QString fileName = QFileDialog::getSaveFileName(
       m_mainWindow.get(),
@@ -369,13 +368,13 @@ void Application::saveMindMapAs()
 
     if (m_sc->applicationService()->saveMindMapAs(fileName)) {
         const auto msg = QString(tr("File '")) + fileName + tr("' saved.");
-        L().debug() << msg.toStdString();
+        L(TAG).debug() << msg.toStdString();
         m_mainWindow->enableSave(false);
         Settings::Custom::saveRecentPath(fileName);
         emit actionTriggered(StateMachine::Action::MindMapSavedAs);
     } else {
         const auto msg = QString(tr("Failed to save file as '") + fileName + "'.");
-        L().error() << msg.toStdString();
+        L(TAG).error() << msg.toStdString();
         showMessageBox(msg);
         emit actionTriggered(StateMachine::Action::MindMapSaveAsFailed);
     }

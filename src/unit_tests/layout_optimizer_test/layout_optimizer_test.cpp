@@ -30,6 +30,8 @@
 using SceneItems::Edge;
 using SceneItems::Node;
 
+static const auto TAG = "LayoutOptimizerTest";
+
 LayoutOptimizerTest::LayoutOptimizerTest()
 {
     TestMode::setEnabled(true);
@@ -131,7 +133,7 @@ void LayoutOptimizerTest::testMultipleNodes_ShouldReduceCost()
         QCOMPARE(progress, 1.0);
         QVERIFY(optimizationInfo.changes > 100);
         const double gain = (optimizationInfo.finalCost - optimizationInfo.initialCost) / optimizationInfo.initialCost;
-        juzzlin::L().info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
+        juzzlin::L(TAG).info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
         QVERIFY(gain < -0.25);
 
         lol.extract();

@@ -44,6 +44,8 @@
 
 namespace SceneItems {
 
+static const auto TAG = "Edge";
+
 Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enableLabels)
   : m_settingsProxy(SC::instance().settingsProxy())
   , m_edgeModel(std::make_unique<EdgeModel>(m_settingsProxy->reversedEdgeDirection(),
@@ -699,7 +701,7 @@ void Edge::stopAnimations()
 
 Edge::~Edge()
 {
-    juzzlin::L().trace() << "Deleting edge (" << (m_sourceNode ? std::to_string(m_sourceNode->index()) : "(none)") << ", " //
+    juzzlin::L(TAG).trace() << "Deleting edge (" << (m_sourceNode ? std::to_string(m_sourceNode->index()) : "(none)") << ", " //
                          << (m_targetNode ? std::to_string(m_targetNode->index()) : "(none)") << ")";
 
     if (!TestMode::enabled()) {

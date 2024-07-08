@@ -37,6 +37,8 @@
 
 namespace Dialogs {
 
+static const auto TAG = "LayoutOptimizationDialog";
+
 LayoutOptimizationDialog::LayoutOptimizationDialog(QWidget & parent, MindMapDataR mindMapData, LayoutOptimizer & layoutOptimizer, EditorView & editorView)
   : QDialog(&parent)
   , m_mindMapData(mindMapData)
@@ -157,9 +159,9 @@ void LayoutOptimizationDialog::initWidgets(MindMapDataCR mindMapData)
             if (m_layoutOptimizer.initialize(m_aspectRatioSpinBox->value(), m_minEdgeLengthSpinBox->value())) {
                 if (const auto optimizationInfo = m_layoutOptimizer.optimize(); optimizationInfo.changes) {
                     const double gain = (optimizationInfo.finalCost - optimizationInfo.initialCost) / optimizationInfo.initialCost;
-                    juzzlin::L().info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
+                    juzzlin::L(TAG).info() << "Final cost: " << optimizationInfo.finalCost << " (" << gain * 100 << "%)";
                 } else {
-                    juzzlin::L().info() << "No changes";
+                    juzzlin::L(TAG).info() << "No changes";
                 }
                 m_layoutOptimizer.extract();
             }

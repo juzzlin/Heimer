@@ -47,6 +47,8 @@
 
 namespace SceneItems {
 
+static const auto TAG = "Node";
+
 NodeP Node::m_lastHoveredNode = nullptr;
 
 Node::Node()
@@ -673,13 +675,13 @@ Node::~Node()
         Node::m_lastHoveredNode = nullptr;
     }
 
-    juzzlin::L().trace() << "Deleting handles of node id=" << index();
+    juzzlin::L(TAG).trace() << "Deleting handles of node id=" << index();
 
     for (auto && [role, handle] : m_handles) {
         delete handle;
     }
 
-    juzzlin::L().trace() << "Deleting Node id=" << index();
+    juzzlin::L(TAG).trace() << "Deleting Node id=" << index();
 }
 
 } // namespace SceneItems

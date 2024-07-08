@@ -36,6 +36,8 @@
 
 namespace Dialogs {
 
+static const auto TAG = "DefaultsTab";
+
 DefaultsTab::DefaultsTab(QString name, QWidget * parent)
   : SettingsTabBase { name, parent }
   , m_edgeDirectionCheckBox(new QCheckBox(tr("Reversed direction"), this))
@@ -57,7 +59,7 @@ void DefaultsTab::apply()
     for (auto && [arrowMode, radioButton] : m_edgeArrowStyleRadioMap) {
         if (radioButton->isChecked()) {
             settingsProxy()->setEdgeArrowMode(arrowMode);
-            juzzlin::L().info() << "'" << radioButton->text().toStdString() << "' set as new default";
+            juzzlin::L(TAG).info() << "'" << radioButton->text().toStdString() << "' set as new default";
         }
     }
 
@@ -212,7 +214,7 @@ void DefaultsTab::setActiveDefaults()
         const auto radio = m_edgeArrowStyleRadioMap[defaultArrowStyle];
         radio->setChecked(true);
     } else {
-        juzzlin::L().error() << "Invalid arrow style: " << static_cast<int>(defaultArrowStyle);
+        juzzlin::L(TAG).error() << "Invalid arrow style: " << static_cast<int>(defaultArrowStyle);
     }
 
     m_edgeDirectionCheckBox->setChecked(settingsProxy()->reversedEdgeDirection());

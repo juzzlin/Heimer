@@ -25,6 +25,8 @@
 
 using juzzlin::L;
 
+static const auto TAG = "VersionChecker";
+
 VersionChecker::VersionChecker(QObject * parent)
   : QObject { parent }
 {
@@ -46,20 +48,20 @@ Version parseLatestReleasedVersion(QString data)
 
 void VersionChecker::checkForNewReleases()
 {
-    L().debug() << "Checking for new releases..";
+    L(TAG).debug() << "Checking for new releases..";
     const auto manager = new QNetworkAccessManager { this };
     connect(manager, &QNetworkAccessManager::finished,
             this, [this](auto reply) {
                 if (const auto latestReleasedVersion = parseLatestReleasedVersion(reply->readAll()); latestReleasedVersion.isValid()) {
-                    L().debug() << "The latest released version is " << latestReleasedVersion;
+                    L(TAG).debug() << "The latest released version is " << latestReleasedVersion;
                     if (latestReleasedVersion > Version { Constants::Application::applicationVersion() }) {
-                        L().debug() << "=> NEW version available: " << latestReleasedVersion << " @ " << Constants::Application::releasesUrl().toStdString();
+                        L(TAG).debug() << "=> NEW version available: " << latestReleasedVersion << " @ " << Constants::Application::releasesUrl().toStdString();
                         emit newVersionFound(latestReleasedVersion, Constants::Application::releasesUrl());
                     } else {
-                        L().debug() << "=> " << Constants::Application::applicationName().toStdString() << " is up-to-date";
+                        L(TAG).debug() << "=> " << Constants::Application::applicationName().toStdString() << " is up-to-date";
                     }
                 } else {
-                    L().warning() << "Could not determine the latest released version!";
+                    L(TAG).warning() << "Could not determine the latest released version!";
                 }
             });
     manager->get(QNetworkRequest(QUrl { Constants::Application::releasesUrl() }));

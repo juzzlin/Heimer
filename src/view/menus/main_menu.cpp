@@ -31,6 +31,8 @@
 
 namespace Menus {
 
+static const auto TAG = "MainMenu";
+
 MainMenu::MainMenu()
   : m_connectSelectedNodesAction(new QAction(tr("Connect selected nodes"), this))
   , m_disconnectSelectedNodesAction(new QAction(tr("Disconnect selected nodes"), this))
@@ -57,7 +59,7 @@ void MainMenu::addConnectSelectedNodesAction(QMenu & menu)
 {
     m_connectSelectedNodesAction->setShortcut(QKeySequence("Ctrl+Shift+C"));
     connect(m_connectSelectedNodesAction, &QAction::triggered, this, [] {
-        juzzlin::L().debug() << "Connect selected triggered";
+        juzzlin::L(TAG).debug() << "Connect selected triggered";
         SC::instance().applicationService()->performNodeAction({ NodeAction::Type::ConnectSelected });
     });
     menu.addAction(m_connectSelectedNodesAction);
@@ -70,7 +72,7 @@ void MainMenu::addDisconnectSelectedNodesAction(QMenu & menu)
 {
     m_disconnectSelectedNodesAction->setShortcut(QKeySequence("Ctrl+Shift+D"));
     connect(m_disconnectSelectedNodesAction, &QAction::triggered, this, [] {
-        juzzlin::L().debug() << "Disconnect selected triggered";
+        juzzlin::L(TAG).debug() << "Disconnect selected triggered";
         SC::instance().applicationService()->performNodeAction({ NodeAction::Type::DisconnectSelected });
     });
     menu.addAction(m_disconnectSelectedNodesAction);

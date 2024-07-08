@@ -81,6 +81,8 @@ public:
     NodeVector getNodesConnectedToNode(NodeS node) const;
 
 private:
+    int64_t buildKeyFromIndices(int index0, int index1) const;
+
     // Maps node id (index) to a Node object
     using NodeId = int32_t;
     std::unordered_map<NodeId, NodeS> m_nodes;

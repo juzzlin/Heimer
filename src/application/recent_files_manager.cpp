@@ -15,13 +15,14 @@
 
 #include "recent_files_manager.hpp"
 
-#include "../common/constants.hpp"
 #include "../infra/settings.hpp"
 
 #include "contrib/SimpleLogger/src/simple_logger.hpp"
 
 #include <QFileInfo>
 #include <QSettings>
+
+static const auto TAG = "RecentFilesManager";
 
 RecentFilesManager::RecentFilesManager()
 {
@@ -42,8 +43,8 @@ void RecentFilesManager::addRecentFile(QString filePath)
         m_recentFiles.pop_back();
     }
 
-    juzzlin::L().debug() << "Added recent file: " << filePath.toStdString();
-    juzzlin::L().debug() << "Recent file count: " << m_recentFiles.size();
+    juzzlin::L(TAG).debug() << "Added recent file: " << filePath.toStdString();
+    juzzlin::L(TAG).debug() << "Recent file count: " << m_recentFiles.size();
 
     Settings::Custom::saveRecentFiles(m_recentFiles);
 }
@@ -65,7 +66,7 @@ bool RecentFilesManager::hasRecentFiles() const
 
 void RecentFilesManager::setSelectedFile(QString selectedFile)
 {
-    juzzlin::L().debug() << "Recent file selected: " << selectedFile.toStdString();
+    juzzlin::L(TAG).debug() << "Recent file selected: " << selectedFile.toStdString();
 
     m_selectedFile = selectedFile;
 }

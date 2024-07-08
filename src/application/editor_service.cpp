@@ -39,6 +39,8 @@ using juzzlin::L;
 
 using std::make_shared;
 
+static const auto TAG = "EditorService";
+
 EditorService::EditorService()
   : m_alzFileIO(std::make_unique<IO::AlzFileIO>())
   , m_copyContext(std::make_unique<CopyContext>())
@@ -52,14 +54,14 @@ EditorService::EditorService()
 
 void EditorService::addEdgeToSelectionGroup(EdgeR edge, bool isImplicit)
 {
-    L().debug() << "Adding edge " << edge.id().toStdString() << " to selection group";
+    L(TAG).debug() << "Adding edge " << edge.id().toStdString() << " to selection group";
 
     m_edgeSelectionGroup->add(edge, isImplicit);
 }
 
 void EditorService::addNodeToSelectionGroup(NodeR node, bool isImplicit)
 {
-    L().debug() << "Adding node " << node.index() << " to selection group";
+    L(TAG).debug() << "Adding node " << node.index() << " to selection group";
 
     m_nodeSelectionGroup->add(node, isImplicit);
 }
@@ -68,7 +70,7 @@ void EditorService::requestAutosave(AutosaveContext context, bool async)
 {
     const auto doRequestAutosave = [this](bool async) {
         if (SC::instance().settingsProxy()->autosave() && !m_fileName.isEmpty()) {
-            L().debug() << "Autosaving to '" << m_fileName.toStdString() << "'";
+            L(TAG).debug() << "Autosaving to '" << m_fileName.toStdString() << "'";
             saveMindMapAs(m_fileName, async);
         }
     };
@@ -192,11 +194,11 @@ void EditorService::saveUndoPoint(bool dontClearRedoStack)
 {
     if (!TestMode::enabled()) {
         if (m_undoTimer.isActive()) {
-            L().debug() << "Saving undo point skipped";
+            L(TAG).debug() << "Saving undo point skipped";
             m_undoTimer.start();
             return;
         }
-        L().debug() << "Saving undo point";
+        L(TAG).debug() << "Saving undo point";
         m_undoTimer.start();
     }
 
@@ -214,7 +216,7 @@ void EditorService::saveUndoPoint(bool dontClearRedoStack)
 
 void EditorService::saveRedoPoint()
 {
-    L().debug() << "Saving redo point";
+    L(TAG).debug() << "Saving redo point";
 
     assert(m_mindMapData);
     m_undoStack->pushRedoPoint(*m_mindMapData);
@@ -263,7 +265,7 @@ void EditorService::setGridSize(int size, bool autoSnap)
 void EditorService::setImageRefForSelectedNodes(size_t id)
 {
     for (auto && node : m_nodeSelectionGroup->nodes()) {
-        juzzlin::L().info() << "Setting image id=" << id << " to node " << node->index();
+        juzzlin::L(TAG).info() << "Setting image id=" << id << " to node " << node->index();
         node->setImageRef(id);
     }
 }
@@ -308,14 +310,14 @@ void EditorService::selectNodesByText(QString text)
 
 void EditorService::toggleEdgeInSelectionGroup(EdgeR edge)
 {
-    L().debug() << "Toggling edge " << edge.id().toStdString() << " in selection group";
+    L(TAG).debug() << "Toggling edge " << edge.id().toStdString() << " in selection group";
 
     m_edgeSelectionGroup->toggle(edge);
 }
 
 void EditorService::toggleNodeInSelectionGroup(NodeR node)
 {
-    L().debug() << "Toggling node " << node.index() << " in selection group";
+    L(TAG).debug() << "Toggling node " << node.index() << " in selection group";
 
     m_nodeSelectionGroup->toggle(node);
 }
@@ -491,7 +493,7 @@ void EditorService::copySelectedNodes()
     if (m_nodeSelectionGroup->size()) {
         clearCopyStack();
         m_copyContext->push(m_nodeSelectionGroup->nodes(), m_mindMapData->graph());
-        L().debug() << m_nodeSelectionGroup->size() << " nodes copied. Reference point calculated at (" << m_copyContext->copiedData().copyReferencePoint.x() << ", " << m_copyContext->copiedData().copyReferencePoint.y() << ")";
+        L(TAG).debug() << m_nodeSelectionGroup->size() << " nodes copied. Reference point calculated at (" << m_copyContext->copiedData().copyReferencePoint.x() << ", " << m_copyContext->copiedData().copyReferencePoint.y() << ")";
     }
 }
 
@@ -507,14 +509,14 @@ void EditorService::clearCopyStack()
 
 void EditorService::clearEdgeSelectionGroup(bool implicitOnly)
 {
-    L().trace() << "Clearing edge selection group: implicitOnly == " << implicitOnly;
+    L(TAG).trace() << "Clearing edge selection group: implicitOnly == " << implicitOnly;
 
     m_edgeSelectionGroup->clear(implicitOnly);
 }
 
 void EditorService::clearNodeSelectionGroup(bool implicitOnly)
 {
-    L().trace() << "Clearing node selection group: implicitOnly == " << implicitOnly;
+    L(TAG).trace() << "Clearing node selection group: implicitOnly == " << implicitOnly;
 
     m_nodeSelectionGroup->clear(implicitOnly);
 }
@@ -611,5 +613,5 @@ EditorService::~EditorService()
 {
     requestAutosave(AutosaveContext::QuitApplication, false);
 
-    L().debug() << "EditorService deleted";
+    L(TAG).debug() << "EditorService deleted";
 }

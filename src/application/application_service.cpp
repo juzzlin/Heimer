@@ -50,6 +50,8 @@
 
 using juzzlin::L;
 
+static const auto TAG = "ApplicationService";
+
 ApplicationService::ApplicationService(MainWindowS mainWindow)
   : m_editorService(std::make_unique<EditorService>())
   , m_mainWindow(mainWindow)
@@ -85,7 +87,7 @@ void ApplicationService::addExistingGraphToScene(bool zoomToFitAfterNodesLoaded)
             node->setCornerRadius(m_editorService->mindMapData()->cornerRadius());
             node->setTextSize(m_editorService->mindMapData()->textSize());
             node->changeFont(m_editorService->mindMapData()->font());
-            L().trace() << "Added existing node id=" << node->index() << " to scene";
+            L(TAG).trace() << "Added existing node id=" << node->index() << " to scene";
         }
     }
 
@@ -109,7 +111,7 @@ void ApplicationService::addExistingGraphToScene(bool zoomToFitAfterNodesLoaded)
             node0->addGraphicsEdge(*edge);
             node1->addGraphicsEdge(*edge);
             edge->updateLine();
-            L().trace() << "Added existing edge (" << node0->index() << ", " << node1->index() << ") to scene";
+            L(TAG).trace() << "Added existing edge (" << node0->index() << ", " << node1->index() << ") to scene";
         }
         if (++progressCounter % 100 == 0) {
             updateProgress();
@@ -145,7 +147,7 @@ void ApplicationService::addEdge(NodeR node1, NodeR node2)
 {
     // Add edge from node1 to node2
     connectEdgeToUndoMechanism(m_editorService->addEdge(std::make_shared<SceneItems::Edge>(&node1, &node2)));
-    L().debug() << "Created a new edge " << node1.index() << " -> " << node2.index();
+    L(TAG).debug() << "Created a new edge " << node1.index() << " -> " << node2.index();
 
     addExistingGraphToScene();
 }
@@ -231,7 +233,7 @@ void ApplicationService::connectGraphToImageManager()
 
 void ApplicationService::connectSelectedNodes()
 {
-    L().debug() << "Connecting selected nodes: " << m_editorService->nodeSelectionGroupSize();
+    L(TAG).debug() << "Connecting selected nodes: " << m_editorService->nodeSelectionGroupSize();
     if (areSelectedNodesConnectable()) {
         saveUndoPoint();
         for (auto && edge : m_editorService->connectSelectedNodes()) {
@@ -244,7 +246,7 @@ void ApplicationService::connectSelectedNodes()
 
 void ApplicationService::disconnectSelectedNodes()
 {
-    L().debug() << "Disconnecting selected nodes: " << m_editorService->nodeSelectionGroupSize();
+    L(TAG).debug() << "Disconnecting selected nodes: " << m_editorService->nodeSelectionGroupSize();
     if (areSelectedNodesDisconnectable()) {
         saveUndoPoint();
         m_editorService->disconnectSelectedNodes();
@@ -264,11 +266,11 @@ NodeS ApplicationService::createAndAddNode(int sourceNodeIndex, QPointF pos)
     const auto node1 = m_mainWindow->copyOnDragEnabled() ? m_editorService->copyNodeAt(*node0, pos) : m_editorService->addNodeAt(pos);
     connectNodeToUndoMechanism(node1);
     connectNodeToImageManager(node1);
-    L().debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
+    L(TAG).debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
 
     // Add edge from the parent node.
     connectEdgeToUndoMechanism(m_editorService->addEdge(std::make_shared<SceneItems::Edge>(node0.get(), node1.get())));
-    L().debug() << "Created a new edge " << node0->index() << " -> " << node1->index();
+    L(TAG).debug() << "Created a new edge " << node0->index() << " -> " << node1->index();
 
     addExistingGraphToScene();
 
@@ -283,7 +285,7 @@ NodeS ApplicationService::createAndAddNode(QPointF pos)
     const auto node1 = m_editorService->addNodeAt(m_editorView->grid().snapToGrid(pos));
     connectNodeToUndoMechanism(node1);
     connectNodeToImageManager(node1);
-    L().debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
+    L(TAG).debug() << "Created a new node at (" << pos.x() << "," << pos.y() << ")";
 
     addExistingGraphToScene();
 
@@ -299,7 +301,7 @@ NodeS ApplicationService::pasteNodeAt(NodeR source, QPointF pos)
     const auto copiedNode = m_editorService->copyNodeAt(source, pos);
     connectNodeToUndoMechanism(copiedNode);
     connectNodeToImageManager(copiedNode);
-    L().debug() << "Pasted node at (" << pos.x() << "," << pos.y() << ")";
+    L(TAG).debug() << "Pasted node at (" << pos.x() << "," << pos.y() << ")";
     return copiedNode;
 }
 
@@ -355,7 +357,7 @@ void ApplicationService::exportToPng(const ExportParams & exportParams)
     m_editorView->saveZoom();
     zoomForExport();
 
-    L().info() << "Exporting a PNG image of size (" << exportParams.imageSize.width() << "x" << exportParams.imageSize.height() << ") to " << exportParams.fileName.toStdString();
+    L(TAG).info() << "Exporting a PNG image of size (" << exportParams.imageSize.width() << "x" << exportParams.imageSize.height() << ") to " << exportParams.fileName.toStdString();
     const auto lines = addGridForExport();
     const auto image = m_editorScene->toImage(exportParams.imageSize, m_editorService->backgroundColor(), exportParams.transparentBackground);
     m_editorView->restoreZoom();
@@ -369,7 +371,7 @@ void ApplicationService::exportToSvg(const ExportParams & exportParams)
     m_editorView->saveZoom();
     zoomForExport();
 
-    L().info() << "Exporting an SVG image to " << exportParams.fileName.toStdString();
+    L(TAG).info() << "Exporting an SVG image to " << exportParams.fileName.toStdString();
     const auto lines = addGridForExport();
     m_editorScene->toSvg(exportParams.fileName, QFileInfo { exportParams.fileName }.fileName());
     m_editorView->restoreZoom();
@@ -395,7 +397,7 @@ bool ApplicationService::hasNodes() const
 
 void ApplicationService::initializeNewMindMap()
 {
-    L().debug() << "Initializing a new mind map";
+    L(TAG).debug() << "Initializing a new mind map";
 
     m_editorScene = std::make_unique<EditorScene>();
     m_editorService->initializeNewMindMap();
@@ -415,7 +417,7 @@ void ApplicationService::initializeNewMindMap()
 
 void ApplicationService::initiateNewNodeDrag(SceneItems::NodeHandle & nodeHandle)
 {
-    L().debug() << "Initiating new node drag";
+    L(TAG).debug() << "Initiating new node drag";
 
     clearNodeSelectionGroup();
     saveUndoPoint();
@@ -428,7 +430,7 @@ void ApplicationService::initiateNewNodeDrag(SceneItems::NodeHandle & nodeHandle
 
 void ApplicationService::initiateNodeDrag(NodeR node)
 {
-    L().debug() << "Initiating node drag";
+    L(TAG).debug() << "Initiating node drag";
 
     saveUndoPoint();
     node.setZValue(node.zValue() + 1);
@@ -442,7 +444,7 @@ void ApplicationService::initiateNodeDrag(NodeR node)
 
 void ApplicationService::initializeView()
 {
-    L().debug() << "Initializing view";
+    L(TAG).debug() << "Initializing view";
 
     // Set scene to the view
     m_editorView->setScene(m_editorScene.get());
@@ -558,12 +560,12 @@ void ApplicationService::paste()
         if (m_editorService->copyStackSize()) {
             saveUndoPoint();
             std::map<int, NodeS> nodeMapping;
-            juzzlin::L().debug() << "Pasting nodes";
+            juzzlin::L(TAG).debug() << "Pasting nodes";
             for (auto && copiedNode : m_editorService->copiedData().nodes) {
                 const auto pastedNode = pasteNodeAt(*copiedNode, m_editorView->grid().snapToGrid(mouseAction().mappedPos() - m_editorService->copiedData().copyReferencePoint + copiedNode->pos()));
                 nodeMapping[copiedNode->index()] = pastedNode;
             }
-            juzzlin::L().debug() << "Pasting edges";
+            juzzlin::L(TAG).debug() << "Pasting edges";
             for (auto && copiedEdge : m_editorService->copiedData().edges) {
                 const auto pastedEdge = std::make_shared<SceneItems::Edge>(*copiedEdge.edge);
                 pastedEdge->setSourceNode(*nodeMapping[copiedEdge.sourceNodeIndex]);
@@ -577,7 +579,7 @@ void ApplicationService::paste()
 
 void ApplicationService::performEdgeAction(const EdgeAction & action)
 {
-    juzzlin::L().debug() << "Handling EdgeAction: " << static_cast<int>(action.type());
+    juzzlin::L(TAG).debug() << "Handling EdgeAction: " << static_cast<int>(action.type());
 
     switch (action.type()) {
     case EdgeAction::Type::None:
@@ -591,7 +593,7 @@ void ApplicationService::performEdgeAction(const EdgeAction & action)
 
 void ApplicationService::performNodeAction(const NodeAction & action)
 {
-    juzzlin::L().debug() << "Handling NodeAction: " << static_cast<int>(action.type());
+    juzzlin::L(TAG).debug() << "Handling NodeAction: " << static_cast<int>(action.type());
 
     switch (action.type()) {
     case NodeAction::Type::None:
@@ -621,7 +623,7 @@ void ApplicationService::performNodeAction(const NodeAction & action)
             m_editorView->resetDummyDragItems();
             m_editorService->deleteSelectedNodes();
         } else {
-            juzzlin::L().warning() << "Cannot delete node due to incompleted MouseAction: " << static_cast<int>(mouseAction().action());
+            juzzlin::L(TAG).warning() << "Cannot delete node due to incompleted MouseAction: " << static_cast<int>(mouseAction().action());
         }
         break;
     case NodeAction::Type::DisconnectSelected:
@@ -662,7 +664,7 @@ void ApplicationService::performNodeAction(const NodeAction & action)
 bool ApplicationService::openMindMap(QString fileName)
 {
     try {
-        juzzlin::L().info() << "Loading '" << fileName.toStdString() << "'";
+        juzzlin::L(TAG).info() << "Loading '" << fileName.toStdString() << "'";
         SC::instance().progressManager()->setEnabled(true);
         m_editorService->loadMindMapData(fileName);
         updateProgress();
@@ -697,7 +699,7 @@ bool ApplicationService::openMindMap(QString fileName)
 
 void ApplicationService::redo()
 {
-    L().debug() << "Undo..";
+    L(TAG).debug() << "Undo..";
 
     m_editorView->resetDummyDragItems();
     m_editorService->redo();
@@ -872,16 +874,16 @@ void ApplicationService::setSearchText(QString text)
         m_editorService->selectEdgesByText(text);
         const auto edgeRect = MagicZoom::calculateRectangleByEdges(m_editorService->selectedEdges());
         if (edgeRect.isValid() && nodeRect.isValid()) {
-            L().trace() << "edgeRect and nodeRect valid";
+            L(TAG).trace() << "edgeRect and nodeRect valid";
             m_editorView->zoomToFit(edgeRect.united(nodeRect));
         } else if (edgeRect.isValid()) {
-            L().trace() << "edgeRect valid";
+            L(TAG).trace() << "edgeRect valid";
             m_editorView->zoomToFit(edgeRect);
         } else if (nodeRect.isValid()) {
-            L().trace() << "nodeRect valid";
+            L(TAG).trace() << "nodeRect valid";
             m_editorView->zoomToFit(nodeRect);
         } else {
-            L().trace() << "Default zoom-to-fit";
+            L(TAG).trace() << "Default zoom-to-fit";
             zoomToFit();
         }
     }
@@ -948,7 +950,7 @@ void ApplicationService::updateProgress()
 
 void ApplicationService::undo()
 {
-    L().debug() << "Undo..";
+    L(TAG).debug() << "Undo..";
 
     m_editorView->resetDummyDragItems();
     m_editorService->undo();

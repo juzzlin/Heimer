@@ -32,17 +32,7 @@
 
 class Graph;
 
-namespace {
-inline bool equals(double x, double y)
-{
-    return std::fabs(x - y) < 0.001;
-}
-
-inline double dot(double x1, double y1, double x2, double y2)
-{
-    return x1 * x2 + y1 * y2;
-}
-} // namespace
+static const auto TAG = "LayoutOptimizer";
 
 class LayoutOptimizer::Impl
 {
@@ -57,11 +47,11 @@ public:
 
     bool initialize(double aspectRatio, double minEdgeLength)
     {
-        juzzlin::L().info() << "Initializing LayoutOptimizer: aspectRatio=" << aspectRatio << ", minEdgeLength=" << minEdgeLength;
+        juzzlin::L(TAG).info() << "Initializing LayoutOptimizer: aspectRatio=" << aspectRatio << ", minEdgeLength=" << minEdgeLength;
 
         const auto nodes = m_mindMapData->graph().getNodes();
         if (nodes.empty()) {
-            juzzlin::L().info() << "No nodes";
+            juzzlin::L(TAG).info() << "No nodes";
             return false;
         }
 
@@ -85,7 +75,7 @@ public:
         optimizationInfo.t0 = 33;
         optimizationInfo.tC = optimizationInfo.t0;
 
-        juzzlin::L().info() << "Initial cost: " << optimizationInfo.initialCost;
+        juzzlin::L(TAG).info() << "Initial cost: " << optimizationInfo.initialCost;
 
         while (optimizationInfo.tC > optimizationInfo.t1 && optimizationInfo.currentCost > 0) {
             optimizationInfo.acceptRatio = 0;
@@ -99,7 +89,7 @@ public:
                 }
                 optimizationInfo.acceptRatio = static_cast<double>(optimizationInfo.accepts) / static_cast<double>(optimizationInfo.rejects + 1);
                 const double gain = (optimizationInfo.currentCost - sliceCost) / sliceCost;
-                juzzlin::L().debug() << "Cost: " << optimizationInfo.currentCost << " (" << gain * 100 << "%)"
+                juzzlin::L(TAG).debug() << "Cost: " << optimizationInfo.currentCost << " (" << gain * 100 << "%)"
                                      << " acc: " << optimizationInfo.acceptRatio << " t: " << optimizationInfo.tC;
                 stuckCounter = gain < optimizationInfo.stuckTh ? stuckCounter + 1 : 0;
 
@@ -168,7 +158,7 @@ private:
     {
         const auto originalLayoutDimensions = calculateLayoutDimensions(nodes);
 
-        juzzlin::L().info() << "Area: " << originalLayoutDimensions.height() * originalLayoutDimensions.width();
+        juzzlin::L(TAG).info() << "Area: " << originalLayoutDimensions.height() * originalLayoutDimensions.width();
 
         double minX = std::numeric_limits<double>::max();
         double maxX = -minX;
@@ -467,6 +457,16 @@ private:
             const auto dx = x() - other.x();
             const auto dy = y() - other.y();
             return std::sqrt(dx * dx + dy * dy);
+        }
+
+        double dot(double x1, double y1, double x2, double y2) const
+        {
+            return x1 * x2 + y1 * y2;
+        }
+
+        bool equals(double x, double y) const
+        {
+            return std::fabs(x - y) < 0.001;
         }
 
         double overlapCost(Cell & c1, Cell & c2) const

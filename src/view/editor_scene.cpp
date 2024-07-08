@@ -29,6 +29,8 @@
 #include <QPainter>
 #include <QtSvg/QSvgGenerator>
 
+static const auto TAG = "EditorScene";
+
 EditorScene::EditorScene()
 {
     setSceneRect(-m_initialSize, -m_initialSize, m_initialSize * 2, m_initialSize * 2);
@@ -44,7 +46,7 @@ void EditorScene::adjustSceneRect()
 {
     while (!containsAll()) {
         setSceneRect(sceneRect().adjusted(-m_initialSize, -m_initialSize, m_initialSize, m_initialSize));
-        juzzlin::L().debug() << "New scene rect: " << sceneRect().x() << " " << sceneRect().y() << " " << sceneRect().width() << " " << sceneRect().height();
+        juzzlin::L(TAG).debug() << "New scene rect: " << sceneRect().x() << " " << sceneRect().y() << " " << sceneRect().width() << " " << sceneRect().height();
     }
 }
 
@@ -137,5 +139,5 @@ EditorScene::~EditorScene()
 {
     removeItems();
 
-    juzzlin::L().debug() << "EditorScene deleted";
+    juzzlin::L(TAG).debug() << "EditorScene deleted";
 }

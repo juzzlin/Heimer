@@ -51,6 +51,8 @@
 
 using juzzlin::L;
 
+static const auto TAG = "EditorView";
+
 EditorView::EditorView()
   : m_edgeContextMenu(new Menus::EdgeContextMenu(this))
   , m_mainContextMenu(new Menus::MainContextMenu(this, m_grid))
@@ -203,7 +205,7 @@ void EditorView::handleSecondaryButtonClickOnNode(NodeR node)
 
 void EditorView::initiateBackgroundDrag()
 {
-    juzzlin::L().debug() << "Initiating background drag";
+    juzzlin::L(TAG).debug() << "Initiating background drag";
 
     SC::instance().applicationService()->mouseAction().setSourceNode(nullptr, MouseAction::Action::Scroll);
 
@@ -212,7 +214,7 @@ void EditorView::initiateBackgroundDrag()
 
 void EditorView::initiateRubberBand()
 {
-    juzzlin::L().debug() << "Initiating rubber band";
+    juzzlin::L(TAG).debug() << "Initiating rubber band";
 
     SC::instance().applicationService()->mouseAction().setRubberBandOrigin(m_clickedPos);
     if (!m_rubberBand) {
@@ -232,11 +234,11 @@ void EditorView::mouseDoubleClickEvent(QMouseEvent * event)
     const auto clickedScenePos = mapToScene(event->pos());
     if (const auto result = ItemFilter::getFirstItemAtPosition(*scene(), clickedScenePos, m_clickTolerance); result.success) {
         if (result.node) {
-            juzzlin::L().debug() << "Node double-clicked";
+            juzzlin::L(TAG).debug() << "Node double-clicked";
             zoomToFit(MagicZoom::calculateRectangleByItems({ result.node }, false));
         } else if (result.nodeTextEdit) {
             if (const auto node = dynamic_cast<NodeP>(result.nodeTextEdit->parentItem()); node) {
-                juzzlin::L().debug() << "Node text edit double-clicked";
+                juzzlin::L(TAG).debug() << "Node text edit double-clicked";
                 zoomToFit(MagicZoom::calculateRectangleByItems({ node }, false));
             }
         }
@@ -332,16 +334,16 @@ void EditorView::mousePressEvent(QMouseEvent * event)
 
     if (const auto result = ItemFilter::getFirstItemAtPosition(*scene(), clickedScenePos, m_clickTolerance); result.success) {
         if (result.edge) {
-            juzzlin::L().debug() << "Edge pressed";
+            juzzlin::L(TAG).debug() << "Edge pressed";
             if (!handleMousePressEventOnEdge(*event, *result.edge)) {
-                juzzlin::L().debug() << "Background pressed via edge";
+                juzzlin::L(TAG).debug() << "Background pressed via edge";
                 handleMousePressEventOnBackground(*event);
             }
         } else if (result.nodeHandle) {
-            juzzlin::L().debug() << "Node handle pressed";
+            juzzlin::L(TAG).debug() << "Node handle pressed";
             handleMousePressEventOnNodeHandle(*event, *result.nodeHandle);
         } else if (result.node) {
-            juzzlin::L().debug() << "Node pressed";
+            juzzlin::L(TAG).debug() << "Node pressed";
             handleMousePressEventOnNode(*event, *result.node);
             if (isModifierPressed()) { // User was just selecting
                 result.node->setTextInputActive(false);
@@ -351,7 +353,7 @@ void EditorView::mousePressEvent(QMouseEvent * event)
         } else if (result.edgeTextEdit) {
             if (m_controlStrategy->secondaryButtonClicked(*event)) {
                 if (const auto edge = result.edgeTextEdit->edge(); edge) {
-                    juzzlin::L().debug() << "Edge text edit pressed";
+                    juzzlin::L(TAG).debug() << "Edge text edit pressed";
                     handleMousePressEventOnEdge(*event, *edge);
                     return;
                 }
@@ -360,7 +362,7 @@ void EditorView::mousePressEvent(QMouseEvent * event)
         } else if (result.nodeTextEdit) {
             if (m_controlStrategy->secondaryButtonClicked(*event) || (m_controlStrategy->primaryButtonClicked(*event) && isModifierPressed())) {
                 if (const auto node = dynamic_cast<NodeP>(result.nodeTextEdit->parentItem()); node) {
-                    juzzlin::L().debug() << "Node text edit pressed";
+                    juzzlin::L(TAG).debug() << "Node text edit pressed";
                     handleMousePressEventOnNode(*event, *node);
                     node->setTextInputActive(false);
                     return;
@@ -368,7 +370,7 @@ void EditorView::mousePressEvent(QMouseEvent * event)
             }
         }
     } else {
-        juzzlin::L().debug() << "Background pressed";
+        juzzlin::L(TAG).debug() << "Background pressed";
         handleMousePressEventOnBackground(*event);
     }
 
@@ -444,14 +446,14 @@ void EditorView::resetDummyDragItems()
     m_dummyDragEdge.reset();
     m_dummyDragNode.reset();
 
-    L().debug() << "Dummy drag item reset";
+    L(TAG).debug() << "Dummy drag item reset";
 }
 
 void EditorView::showDummyDragEdge(bool show)
 {
     if (const auto sourceNode = SC::instance().applicationService()->mouseAction().sourceNode()) {
         if (!m_dummyDragEdge) {
-            L().debug() << "Creating a new dummy drag edge";
+            L(TAG).debug() << "Creating a new dummy drag edge";
             m_dummyDragEdge = std::make_unique<SceneItems::Edge>(sourceNode, m_dummyDragNode.get(), false, false);
             m_dummyDragEdge->setOpacity(0.5);
             scene()->addItem(m_dummyDragEdge.get());
@@ -470,7 +472,7 @@ void EditorView::showDummyDragEdge(bool show)
 void EditorView::showDummyDragNode(bool show)
 {
     if (!m_dummyDragNode) {
-        L().debug() << "Creating a new dummy drag node";
+        L(TAG).debug() << "Creating a new dummy drag node";
         m_dummyDragNode = std::make_unique<SceneItems::Node>();
         scene()->addItem(m_dummyDragNode.get());
     }
@@ -546,7 +548,7 @@ void EditorView::updateRubberBand()
 void EditorView::restoreZoom()
 {
     if (m_savedZoom.has_value()) {
-        juzzlin::L().debug() << "Restoring zoom";
+        juzzlin::L(TAG).debug() << "Restoring zoom";
         scene()->setSceneRect(m_savedZoom->sceneRect);
         m_scale = m_savedZoom->scale;
         updateScale();
@@ -557,7 +559,7 @@ void EditorView::restoreZoom()
 
 void EditorView::saveZoom()
 {
-    juzzlin::L().debug() << "Saving zoom";
+    juzzlin::L(TAG).debug() << "Saving zoom";
     m_savedZoom = { scene()->sceneRect(), mapToScene(viewport()->rect().center()), m_scale };
 }
 
@@ -637,9 +639,9 @@ void EditorView::zoom(double amount)
     const auto mappedSceneRect = QRectF(
       mapFromScene(scene()->sceneRect().topLeft()),
       mapFromScene(scene()->sceneRect().bottomRight()));
-    juzzlin::L().debug() << "Current scale: " << m_scale;
-    juzzlin::L().debug() << "Mapped scene rectangle width: " << mappedSceneRect.width();
-    juzzlin::L().debug() << "View rectangle width: " << rect().width();
+    juzzlin::L(TAG).debug() << "Current scale: " << m_scale;
+    juzzlin::L(TAG).debug() << "Mapped scene rectangle width: " << mappedSceneRect.width();
+    juzzlin::L(TAG).debug() << "View rectangle width: " << rect().width();
     const auto testScale = amount * amount;
     if (amount > 1.0 || (mappedSceneRect.width() * testScale > rect().width() && mappedSceneRect.height() * testScale > rect().height())) {
         m_scale *= amount;
@@ -647,7 +649,7 @@ void EditorView::zoom(double amount)
         m_scale = std::max(m_scale, 0.02);
         updateScale();
     } else {
-        juzzlin::L().debug() << "Zoom end";
+        juzzlin::L(TAG).debug() << "Zoom end";
     }
 }
 

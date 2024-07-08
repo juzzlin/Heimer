@@ -24,6 +24,8 @@
 
 namespace Widgets {
 
+static const auto TAG = "FontButton";
+
 FontButton::FontButton(QWidget * parent)
   : QPushButton(parent)
 {
@@ -37,8 +39,8 @@ FontButton::FontButton(QWidget * parent)
         const auto font = QFontDialog::getFont(&ok, defaultFont, this);
         if (ok) {
             // Note: Support for multiple families implemented in Qt 5.13 =>
-            juzzlin::L().debug() << "Font family selected: '" << font.family().toStdString() << "'";
-            juzzlin::L().debug() << "Font weight selected: " << font.weight();
+            juzzlin::L(TAG).debug() << "Font family selected: '" << font.family().toStdString() << "'";
+            juzzlin::L(TAG).debug() << "Font weight selected: " << font.weight();
             updateFont(font);
             emit fontSizeChanged(font.pointSize());
             emit fontChanged(font);

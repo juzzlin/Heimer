@@ -19,6 +19,8 @@
 #include "service_container.hpp"
 #include "simple_logger.hpp"
 
+static const auto TAG = "StateMachine";
+
 StateMachine::StateMachine(QObject * parent)
   : QObject(parent)
 {
@@ -172,7 +174,7 @@ void StateMachine::calculateState(StateMachine::Action action)
         break;
 
     default:
-        juzzlin::L().warning() << "Action " << static_cast<int>(action) << " not handled!";
+        juzzlin::L(TAG).warning() << "Action " << static_cast<int>(action) << " not handled!";
     }
 
     emit stateChanged(m_state);

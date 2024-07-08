@@ -21,6 +21,8 @@
 
 #include <algorithm>
 
+static const auto TAG = "ImageManager";
+
 ImageManager::ImageManager() = default;
 
 ImageManager::ImageManager(const ImageManager & other)
@@ -45,21 +47,21 @@ size_t ImageManager::addImage(const Image & image)
     m_images[id] = image;
     m_images[id].setId(id);
 
-    juzzlin::L().debug() << "Adding new image, path=" << image.path() << ", id=" << id;
+    juzzlin::L(TAG).debug() << "Adding new image, path=" << image.path() << ", id=" << id;
 
     return id;
 }
 
 void ImageManager::setImage(const Image & image)
 {
-    juzzlin::L().debug() << "Setting image, path=" << image.path() << ", id=" << image.id();
+    juzzlin::L(TAG).debug() << "Setting image, path=" << image.path() << ", id=" << image.id();
 
     if (!image.id()) {
         throw std::runtime_error("Image must have id > 0 !");
     }
 
     if (!image.image().size().height() || !image.image().size().width()) {
-        juzzlin::L().warning() << "QImage size is zero!";
+        juzzlin::L(TAG).warning() << "QImage size is zero!";
     }
 
     m_count = std::max(image.id(), m_count);
@@ -77,10 +79,10 @@ std::optional<Image> ImageManager::getImage(size_t id)
 void ImageManager::handleImageRequest(size_t id, NodeR node)
 {
     if (const auto && imagePair = getImage(id); imagePair.has_value()) {
-        juzzlin::L().debug() << "Applying image id=" << id << " to node " << node.index();
+        juzzlin::L(TAG).debug() << "Applying image id=" << id << " to node " << node.index();
         node.applyImage(*imagePair);
     } else {
-        juzzlin::L().warning() << "Cannot find image with id=" << id;
+        juzzlin::L(TAG).warning() << "Cannot find image with id=" << id;
     }
 }
 

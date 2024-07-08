@@ -43,6 +43,8 @@
 
 namespace IO {
 
+static const auto TAG = "AlzFileIOWorker";
+
 namespace DataKeywords::MindMap {
 
 const auto ATTRIBUTE_APPLICATION_VERSION = "version";
@@ -355,14 +357,14 @@ static QString getBase64Data(std::string path)
 
 static QImage base64ToQImage(const std::string & base64, size_t imageId, std::string imagePath)
 {
-    juzzlin::L().debug() << "Extracting embedded Image id=" << imageId << ", path=" << imagePath;
+    juzzlin::L(TAG).debug() << "Extracting embedded Image id=" << imageId << ", path=" << imagePath;
     const auto ba = QByteArray::fromBase64(base64.c_str(), QByteArray::Base64Encoding);
     QImage in;
     if (!in.loadFromData(ba)) {
-        juzzlin::L().error() << "Could not load embedded Image id=" << imageId << ", path=" << imagePath;
+        juzzlin::L(TAG).error() << "Could not load embedded Image id=" << imageId << ", path=" << imagePath;
     }
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
-    juzzlin::L().debug() << "Image size: " << in.sizeInBytes() << " bytes";
+    juzzlin::L(TAG).debug() << "Image size: " << in.sizeInBytes() << " bytes";
 #endif
     return in;
 }
@@ -373,7 +375,7 @@ static void writeImages(MindMapDataS mindMapData, QDomElement & root, QDomDocume
     for (auto && node : mindMapData->graph().getNodes()) {
         if (node->imageRef()) {
             if (writtenImageRefs.count(node->imageRef())) {
-                juzzlin::L().debug() << "Image id=" << node->imageRef() << " already written";
+                juzzlin::L(TAG).debug() << "Image id=" << node->imageRef() << " already written";
             } else {
                 if (const auto image = mindMapData->imageManager().getImage(node->imageRef()); image.has_value()) {
                     auto imageElement = doc.createElement(DataKeywords::MindMap::ELEMENT_IMAGE);
@@ -447,7 +449,7 @@ static QString readFirstTextNodeContent(const QDomElement & element)
 
 static void elementWarning(const QDomElement & element)
 {
-    juzzlin::L().warning() << "Unknown element '" << element.nodeName().toStdString() << "'";
+    juzzlin::L(TAG).warning() << "Unknown element '" << element.nodeName().toStdString() << "'";
 }
 
 // Generic helper that loops through element's children

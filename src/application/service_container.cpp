@@ -25,6 +25,8 @@
 
 #include <stdexcept>
 
+static const auto TAG = "ServiceContainer";
+
 ServiceContainer * ServiceContainer::m_instance = nullptr;
 
 ServiceContainer::ServiceContainer()
@@ -50,7 +52,7 @@ ApplicationServiceS ServiceContainer::applicationService()
             throw std::runtime_error("ApplicatonService requested while SIC is deleting!");
         }
         m_applicationService = std::make_unique<ApplicationService>(m_mainWindow);
-        juzzlin::L().debug() << "ApplicationService instantiated";
+        juzzlin::L(TAG).debug() << "ApplicationService instantiated";
     }
     return m_applicationService;
 }

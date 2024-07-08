@@ -20,9 +20,9 @@
 
 #include "simple_logger.hpp"
 
-CopyContext::CopyContext()
-{
-}
+static const auto TAG = "CopyContext";
+
+CopyContext::CopyContext() = default;
 
 void CopyContext::clear()
 {
@@ -63,8 +63,8 @@ void CopyContext::push(NodePVector nodes, GraphCR graph)
         push(*node);
     }
 
-    juzzlin::L().debug() << m_copiedData.edges.size() << " edge(s) in copy stack";
-    juzzlin::L().debug() << m_copiedData.nodes.size() << " node(s) in copy stack";
+    juzzlin::L(TAG).debug() << m_copiedData.edges.size() << " edge(s) in copy stack";
+    juzzlin::L(TAG).debug() << m_copiedData.nodes.size() << " node(s) in copy stack";
 }
 
 void CopyContext::push(NodeCR node)

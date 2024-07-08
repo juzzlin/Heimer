@@ -17,6 +17,8 @@
 
 #include "simple_logger.hpp"
 
+static const auto TAG = "TestMode";
+
 bool TestMode::m_enabled = false;
 
 bool TestMode::enabled()
@@ -31,5 +33,5 @@ void TestMode::setEnabled(bool testModeEnabled)
 
 void TestMode::logDisabledCode(const std::string & message)
 {
-    juzzlin::L().debug() << "TestMode: '" << message << "' disabled";
+    juzzlin::L(TAG).debug() << "TestMode: '" << message << "' disabled";
 }

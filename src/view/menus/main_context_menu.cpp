@@ -29,6 +29,8 @@
 
 namespace Menus {
 
+static const auto TAG = "MainContextMenu";
+
 MainContextMenu::MainContextMenu(QWidget * parent, Grid & grid)
   : QMenu(parent)
   , m_copyNodeAction(new QAction(tr("Copy node"), this))
@@ -41,7 +43,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Grid & grid)
     const auto copyNodeShortCut = new QShortcut(copyNodeSequence, parent);
     connect(copyNodeShortCut, &QShortcut::activated, m_copyNodeAction, &QAction::trigger);
     connect(m_copyNodeAction, &QAction::triggered, this, [] {
-        juzzlin::L().debug() << "Copy node triggered";
+        juzzlin::L(TAG).debug() << "Copy node triggered";
         SC::instance().applicationService()->performNodeAction({ NodeAction::Type::Copy });
     });
     m_mainContextMenuActions[Mode::All].push_back(m_copyNodeAction);
@@ -53,7 +55,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Grid & grid)
     const auto pasteNodeShortCut = new QShortcut(pasteNodeSequence, parent);
     connect(pasteNodeShortCut, &QShortcut::activated, m_pasteNodeAction, &QAction::trigger);
     connect(m_pasteNodeAction, &QAction::triggered, this, [] {
-        juzzlin::L().debug() << "Paste node triggered";
+        juzzlin::L(TAG).debug() << "Paste node triggered";
         SC::instance().applicationService()->performNodeAction({ NodeAction::Type::Paste });
     });
     m_mainContextMenuActions[Mode::All].push_back(m_pasteNodeAction);

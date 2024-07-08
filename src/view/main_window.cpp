@@ -46,6 +46,8 @@
 #include <QVBoxLayout>
 #include <QWidgetAction>
 
+static const auto TAG = "MainWindow";
+
 MainWindow::MainWindow()
   : m_aboutDlg(new Dialogs::AboutDialog(this))
   , m_settingsDlg(new Dialogs::SettingsDialog(this))
@@ -69,7 +71,7 @@ MainWindow::MainWindow()
 
     m_statusText->setOpenExternalLinks(true);
 
-    juzzlin::L().debug() << "MainWindow instantiated";
+    juzzlin::L(TAG).debug() << "MainWindow instantiated";
 }
 
 void MainWindow::changeFont(const QFont & font)

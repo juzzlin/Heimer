@@ -367,35 +367,58 @@ void Node::addHandlesToScene()
     }
 }
 
-void Node::paintBackgroundWithPixmap(QPainter & painter)
+QBrush Node::scaledBackgroundPixmapBrush() const
 {
     const auto size = m_nodeModel->size;
-
-    QPixmap scaledPixmap(static_cast<int>(size.width()), static_cast<int>(size.height()));
-    scaledPixmap.fill(Qt::transparent);
-
-    QPainter pixmapPainter(&scaledPixmap);
-    QPainterPath scaledPath;
-    const QRectF scaledRect(0, 0, size.width(), size.height());
-    scaledPath.addRoundedRect(scaledRect, m_cornerRadius, m_cornerRadius);
-
     const auto pixmapAspect = static_cast<double>(m_pixmap.width()) / m_pixmap.height();
     if (const auto nodeAspect = size.width() / size.height(); nodeAspect > 1.0) {
         if (pixmapAspect > nodeAspect) {
-            pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToHeight(static_cast<int>(size.height()))));
+            return QBrush { m_pixmap.scaledToHeight(static_cast<int>(size.height())) };
         } else {
-            pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToWidth(static_cast<int>(size.width()))));
+            return QBrush { m_pixmap.scaledToWidth(static_cast<int>(size.width())) };
         }
     } else {
         if (pixmapAspect < nodeAspect) {
-            pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToWidth(static_cast<int>(size.width()))));
+            return QBrush { m_pixmap.scaledToWidth(static_cast<int>(size.width())) };
         } else {
-            pixmapPainter.fillPath(scaledPath, QBrush(m_pixmap.scaledToHeight(static_cast<int>(size.height()))));
+            return QBrush { m_pixmap.scaledToHeight(static_cast<int>(size.height())) };
         }
     }
+}
 
+QPixmap Node::createEmptyBackgroundPixmap() const
+{
+    const auto size = m_nodeModel->size;
+    QPixmap backgroundPixmap(static_cast<int>(size.width()), static_cast<int>(size.height()));
+    backgroundPixmap.fill(Qt::transparent);
+    return backgroundPixmap;
+}
+
+void Node::paintPixmapOnEmptyBackgroundPixmap(QPixmap & emptyBackgroundPixmap)
+{
+    QPainter pixmapPainter(&emptyBackgroundPixmap);
+    QPainterPath scaledPath;
+    const auto size = m_nodeModel->size;
+    const QRectF scaledRect(0, 0, size.width(), size.height());
+    scaledPath.addRoundedRect(scaledRect, m_cornerRadius, m_cornerRadius);
+    pixmapPainter.fillPath(scaledPath, scaledBackgroundPixmapBrush());
+}
+
+void Node::paintBackgroundPixmapOnNode(QPainter & painter, const QPixmap & backgroundPixmap)
+{
+    const auto size = m_nodeModel->size;
+    const QRectF scaledRect(0, 0, size.width(), size.height());
     const QRectF rect(-size.width() / 2, -size.height() / 2, size.width(), size.height());
-    painter.drawPixmap(rect, scaledPixmap, scaledRect);
+    painter.drawPixmap(rect, backgroundPixmap, scaledRect);
+}
+
+void Node::paintBackgroundWithPixmap(QPainter & painter)
+{
+    auto && backgroundPixmap = createEmptyBackgroundPixmap();
+
+    paintPixmapOnEmptyBackgroundPixmap(backgroundPixmap);
+
+    paintBackgroundPixmapOnNode(painter, backgroundPixmap);
 }
 
 void Node::paintBackgroundWithSolidColor(QPainter & painter)

@@ -153,6 +153,8 @@ private:
 
     void createEdgePoints();
 
+    QPixmap createEmptyBackgroundPixmap() const;
+
     void createHandles();
 
     QRectF expandedTextEditRect() const;
@@ -161,17 +163,23 @@ private:
 
     void paintBackground(QPainter & painter);
 
+    void paintBackgroundPixmapOnNode(QPainter & painter, const QPixmap & emptyBackgroundPixmap);
+
     void paintBackgroundWithPixmap(QPainter & painter);
 
     void paintBackgroundWithSolidColor(QPainter & painter);
 
     void paintPatchForTextEdit(QPainter & painter);
 
+    void paintPixmapOnEmptyBackgroundPixmap(QPixmap & emptyBackgroundPixmap);
+
     void raiseBody();
 
     void raiseHandles();
 
     void removeHandles();
+
+    QBrush scaledBackgroundPixmapBrush() const;
 
     void updateEdgeLines();
 

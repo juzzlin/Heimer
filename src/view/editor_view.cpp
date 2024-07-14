@@ -232,15 +232,10 @@ bool EditorView::isModifierPressed() const
 void EditorView::mouseDoubleClickEvent(QMouseEvent * event)
 {
     const auto clickedScenePos = mapToScene(event->pos());
-    if (const auto result = ItemFilter::getFirstItemAtPosition(*scene(), clickedScenePos, m_clickTolerance); result.success) {
-        if (result.node) {
+    if (const auto itemAtPosition = ItemFilter::getFirstItemAtPosition(*scene(), clickedScenePos, m_clickTolerance); itemAtPosition.hasItem()) {
+        if (itemAtPosition.is<SceneItems::Node>()) {
             juzzlin::L(TAG).debug() << "Node double-clicked";
-            zoomToFit(MagicZoom::calculateRectangleByItems({ result.node }, false));
-        } else if (result.nodeTextEdit) {
-            if (const auto node = dynamic_cast<NodeP>(result.nodeTextEdit->parentItem()); node) {
-                juzzlin::L(TAG).debug() << "Node text edit double-clicked";
-                zoomToFit(MagicZoom::calculateRectangleByItems({ node }, false));
-            }
+            zoomToFit(MagicZoom::calculateRectangleByItems({ itemAtPosition.get<SceneItems::Node>() }, false));
         }
     } else {
         emit newNodeRequested(clickedScenePos);
@@ -332,39 +327,29 @@ void EditorView::mousePressEvent(QMouseEvent * event)
     const auto clickedScenePos = mapToScene(m_clickedPos);
     SC::instance().applicationService()->mouseAction().setClickedScenePos(clickedScenePos);
 
-    if (const auto result = ItemFilter::getFirstItemAtPosition(*scene(), clickedScenePos, m_clickTolerance); result.success) {
-        if (result.edge) {
+    if (const auto itemAtPosition = ItemFilter::getFirstItemAtPosition(*scene(), clickedScenePos, m_clickTolerance); itemAtPosition.hasItem()) {
+        if (itemAtPosition.is<SceneItems::Edge>()) {
             juzzlin::L(TAG).debug() << "Edge pressed";
-            if (!handleMousePressEventOnEdge(*event, *result.edge)) {
+            if (!handleMousePressEventOnEdge(*event, *itemAtPosition.get<SceneItems::Edge>())) {
                 juzzlin::L(TAG).debug() << "Background pressed via edge";
                 handleMousePressEventOnBackground(*event);
             }
-        } else if (result.nodeHandle) {
+        } else if (itemAtPosition.is<SceneItems::NodeHandle>()) {
             juzzlin::L(TAG).debug() << "Node handle pressed";
-            handleMousePressEventOnNodeHandle(*event, *result.nodeHandle);
-        } else if (result.node) {
+            handleMousePressEventOnNodeHandle(*event, *itemAtPosition.get<SceneItems::NodeHandle>());
+        } else if (itemAtPosition.is<SceneItems::Node>()) {
             juzzlin::L(TAG).debug() << "Node pressed";
-            handleMousePressEventOnNode(*event, *result.node);
+            const auto node = itemAtPosition.get<SceneItems::Node>();
+            handleMousePressEventOnNode(*event, *node);
             if (isModifierPressed()) { // User was just selecting
-                result.node->setTextInputActive(false);
+                node->setTextInputActive(false);
                 return;
             }
-            // This hack enables edge context menu even if user clicks on the edge text edit.
-        } else if (result.edgeTextEdit) {
+        } else if (itemAtPosition.is<SceneItems::EdgeTextEdit>()) {
             if (m_controlStrategy->secondaryButtonClicked(*event)) {
-                if (const auto edge = result.edgeTextEdit->edge(); edge) {
+                if (const auto edge = itemAtPosition.get<SceneItems::EdgeTextEdit>()->edge(); edge) {
                     juzzlin::L(TAG).debug() << "Edge text edit pressed";
                     handleMousePressEventOnEdge(*event, *edge);
-                    return;
-                }
-            }
-            // This hack enables node context menu even if user clicks on the node text edit.
-        } else if (result.nodeTextEdit) {
-            if (m_controlStrategy->secondaryButtonClicked(*event) || (m_controlStrategy->primaryButtonClicked(*event) && isModifierPressed())) {
-                if (const auto node = dynamic_cast<NodeP>(result.nodeTextEdit->parentItem()); node) {
-                    juzzlin::L(TAG).debug() << "Node text edit pressed";
-                    handleMousePressEventOnNode(*event, *node);
-                    node->setTextInputActive(false);
                     return;
                 }
             }

@@ -15,45 +15,35 @@
 
 #include "item_filter.hpp"
 
-#include "../common/types.hpp"
-
 #include "scene_items/edge.hpp"
 #include "scene_items/edge_text_edit.hpp"
 #include "scene_items/node.hpp"
 #include "scene_items/node_handle.hpp"
-#include "scene_items/text_edit.hpp"
 
 #include <QGraphicsScene>
 
 namespace ItemFilter {
 
-Result getFirstItemAtPosition(QGraphicsScene & scene, QPointF scenePos, double tolerance)
+ItemAtPosition getFirstItemAtPosition(QGraphicsScene & scene, QPointF scenePos, double tolerance)
 {
-    Result result;
+    ItemAtPosition itemAtPosition;
+
     const QRectF clickRect(scenePos.x() - tolerance, scenePos.y() - tolerance, tolerance * 2, tolerance * 2);
 
-    // Fetch all items at the location
-    if (const auto items = scene.items(clickRect, Qt::IntersectsItemShape, Qt::DescendingOrder); items.size()) {
-        const auto item = *items.begin();
-        if (const auto edge = dynamic_cast<EdgeP>(item)) {
-            result.edge = edge;
-            result.success = true;
-        } else if (const auto nodeHandle = dynamic_cast<SceneItems::NodeHandle *>(item)) {
-            result.nodeHandle = nodeHandle;
-            result.success = true;
-        } else if (const auto node = dynamic_cast<NodeP>(item)) {
-            result.node = node;
-            result.success = true;
-        } else if (const auto edgeTextEdit = dynamic_cast<SceneItems::EdgeTextEdit *>(item)) {
-            result.edgeTextEdit = edgeTextEdit;
-            result.success = true;
-        } else if (const auto nodeTextEdit = dynamic_cast<SceneItems::TextEdit *>(item)) {
-            result.nodeTextEdit = nodeTextEdit;
-            result.success = true;
+    if (const auto itemsAtPosition = scene.items(clickRect, Qt::IntersectsItemShape, Qt::DescendingOrder); !itemsAtPosition.empty()) {
+        const auto firstItem = *itemsAtPosition.begin();
+        if (const auto edge = dynamic_cast<EdgeP>(firstItem); edge) {
+            itemAtPosition.itemOptional = edge;
+        } else if (const auto nodeHandle = dynamic_cast<SceneItems::NodeHandle *>(firstItem); nodeHandle) {
+            itemAtPosition.itemOptional = nodeHandle;
+        } else if (const auto node = dynamic_cast<NodeP>(firstItem); node) {
+            itemAtPosition.itemOptional = node;
+        } else if (const auto edgeTextEdit = dynamic_cast<SceneItems::EdgeTextEdit *>(firstItem); edgeTextEdit) {
+            itemAtPosition.itemOptional = edgeTextEdit;
         }
     }
 
-    return result;
+    return itemAtPosition;
 }
 
 } // namespace ItemFilter

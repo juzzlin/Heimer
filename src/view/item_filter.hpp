@@ -16,38 +16,43 @@
 #ifndef ITEM_FILTER_HPP
 #define ITEM_FILTER_HPP
 
+#include "scene_items/edge.hpp"
+#include "scene_items/edge_text_edit.hpp"
+#include "scene_items/node.hpp"
+#include "scene_items/node_handle.hpp"
+
 #include <QPointF>
 
-#include "../common/types.hpp"
+#include <optional>
+#include <variant>
 
 class QGraphicsScene;
 
-namespace SceneItems {
-class Node;
-class NodeHandle;
-class Edge;
-class EdgeTextEdit;
-class TextEdit;
-} // namespace SceneItems
-
 namespace ItemFilter {
 
-struct Result
+struct ItemAtPosition
 {
-    EdgeP edge = nullptr;
+    template<typename T>
+    T * get() const
+    {
+        return std::get<T *>(*itemOptional);
+    }
 
-    SceneItems::EdgeTextEdit * edgeTextEdit = nullptr;
+    bool hasItem() const
+    {
+        return itemOptional.has_value();
+    }
 
-    NodeP node = nullptr;
+    template<typename T>
+    bool is() const
+    {
+        return itemOptional.has_value() && std::holds_alternative<T *>(*itemOptional);
+    }
 
-    SceneItems::NodeHandle * nodeHandle = nullptr;
-
-    SceneItems::TextEdit * nodeTextEdit = nullptr;
-
-    bool success = false;
+    std::optional<std::variant<SceneItems::Edge *, SceneItems::EdgeTextEdit *, SceneItems::Node *, SceneItems::NodeHandle *>> itemOptional;
 };
 
-Result getFirstItemAtPosition(QGraphicsScene & scene, QPointF scenePos, double tolerance);
+ItemAtPosition getFirstItemAtPosition(QGraphicsScene & scene, QPointF scenePos, double tolerance);
 
 } // namespace ItemFilter
 

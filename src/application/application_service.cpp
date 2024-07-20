@@ -78,24 +78,9 @@ ApplicationService::ApplicationService(MainWindowS mainWindow)
     connect(m_editorService.get(), &EditorService::undoEnabled, this, &ApplicationService::enableUndo);
 }
 
-void ApplicationService::addExistingGraphToScene(bool zoomToFitAfterNodesLoaded)
+void ApplicationService::addExistingEdgesToScene()
 {
-
-    for (auto && node : m_editorService->mindMapData()->graph().getNodes()) {
-        if (node->scene() != m_editorScene.get()) {
-            addItem(*node);
-            node->setCornerRadius(m_editorService->mindMapData()->cornerRadius());
-            node->setTextSize(m_editorService->mindMapData()->textSize());
-            node->changeFont(m_editorService->mindMapData()->font());
-            L(TAG).trace() << "Added existing node id=" << node->index() << " to scene";
-        }
-    }
-
-    if (zoomToFitAfterNodesLoaded) {
-        zoomToFit();
-    }
-
-    updateProgress();
+    L(TAG).debug() << "Adding existing edges to scene";
 
     size_t progressCounter = 0;
     for (auto && edge : m_editorService->mindMapData()->graph().getEdges()) {
@@ -117,30 +102,71 @@ void ApplicationService::addExistingGraphToScene(bool zoomToFitAfterNodesLoaded)
             updateProgress();
         }
     }
+}
 
-    updateProgress();
+void ApplicationService::addExistingNodesToScene()
+{
+    L(TAG).debug() << "Adding existing nodes to scene";
 
-    // This is to prevent nasty updated loops like in https://github.com/juzzlin/Heimer/issues/96
-    m_mainWindow->enableWidgetSignals(false);
+    for (auto && node : m_editorService->mindMapData()->graph().getNodes()) {
+        if (node->scene() != m_editorScene.get()) {
+            addItem(*node);
+            node->setCornerRadius(m_editorService->mindMapData()->cornerRadius());
+            node->setTextSize(m_editorService->mindMapData()->textSize());
+            node->changeFont(m_editorService->mindMapData()->font());
+            L(TAG).trace() << "Added existing node id=" << node->index() << " to scene";
+        }
+    }
+}
 
-    updateProgress();
-
+void ApplicationService::setMindMapPropertiesOnMainWindow()
+{
     m_mainWindow->setArrowSize(m_editorService->mindMapData()->arrowSize());
     m_mainWindow->setCornerRadius(m_editorService->mindMapData()->cornerRadius());
     m_mainWindow->setEdgeWidth(m_editorService->mindMapData()->edgeWidth());
     m_mainWindow->setTextSize(m_editorService->mindMapData()->textSize());
     m_mainWindow->changeFont(m_editorService->mindMapData()->font());
+}
 
-    updateProgress();
-
+void ApplicationService::setMindMapPropertiesOnEditorView()
+{
     m_editorView->setArrowSize(m_editorService->mindMapData()->arrowSize());
     m_editorView->setCornerRadius(m_editorService->mindMapData()->cornerRadius());
     m_editorView->setEdgeColor(m_editorService->mindMapData()->edgeColor());
     m_editorView->setEdgeWidth(m_editorService->mindMapData()->edgeWidth());
+}
+
+void ApplicationService::setMindMapProperties()
+{
+    // This is to prevent nasty update loops like in https://github.com/juzzlin/Heimer/issues/96
+    m_mainWindow->enableWidgetSignals(false);
+
+    setMindMapPropertiesOnMainWindow();
+
+    updateProgress();
+
+    setMindMapPropertiesOnEditorView();
 
     updateProgress();
 
     m_mainWindow->enableWidgetSignals(true);
+}
+
+void ApplicationService::addExistingGraphToScene(bool zoomToFitAfterNodesLoaded)
+{
+    addExistingNodesToScene();
+
+    if (zoomToFitAfterNodesLoaded) {
+        zoomToFit();
+    }
+
+    updateProgress();
+
+    addExistingEdgesToScene();
+
+    updateProgress();
+
+    setMindMapProperties();
 }
 
 void ApplicationService::addEdge(NodeR node1, NodeR node2)

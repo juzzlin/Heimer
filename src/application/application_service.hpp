@@ -243,6 +243,10 @@ signals:
     void svgExportFinished(bool success);
 
 private:
+    void addExistingEdgesToScene();
+
+    void addExistingNodesToScene();
+
     void addExistingGraphToScene(bool zoomToFitAfterNodesLoaded = false);
 
     using GridLineVector = std::vector<QGraphicsLineItem *>;
@@ -265,6 +269,12 @@ private:
     void removeLineItems(const GridLineVector & lines);
 
     void setupMindMapAfterUndoOrRedo();
+
+    void setMindMapProperties();
+
+    void setMindMapPropertiesOnMainWindow();
+
+    void setMindMapPropertiesOnEditorView();
 
     void updateNodeConnectionActions();
 

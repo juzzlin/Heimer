@@ -58,7 +58,7 @@ public:
 
     void addEdge(NodeR node1, NodeR node2);
 
-    void addItem(QGraphicsItem & item, bool adjustSceneRect = true);
+    void addItemToEditorScene(QGraphicsItem & item, bool adjustSceneRect = true);
 
     void addEdgeToSelectionGroup(EdgeR edge, bool isImplicit = false);
 
@@ -264,6 +264,12 @@ private:
 
     void disconnectSelectedNodes();
 
+    bool isEdgeAddedToEditorScene(EdgeR edge) const;
+
+    bool isNodeAddedToEditorScene(NodeR node) const;
+
+    void linkAddedEdgeToExistingNodes(EdgeR edge);
+
     void paste();
 
     void removeLineItems(const GridLineVector & lines);
@@ -275,6 +281,10 @@ private:
     void setMindMapPropertiesOnMainWindow();
 
     void setMindMapPropertiesOnEditorView();
+
+    void setPropertiesOfAddedEdge(EdgeR edge);
+
+    void setPropertiesOfAddedNode(NodeR node);
 
     void updateNodeConnectionActions();
 

@@ -78,26 +78,56 @@ ApplicationService::ApplicationService(MainWindowS mainWindow)
     connect(m_editorService.get(), &EditorService::undoEnabled, this, &ApplicationService::enableUndo);
 }
 
+void ApplicationService::setPropertiesOfAddedEdge(EdgeR edge)
+{
+    const auto mindMapData = m_editorService->mindMapData();
+
+    edge.setArrowSize(mindMapData->arrowSize());
+    edge.setColor(mindMapData->edgeColor());
+    edge.setEdgeWidth(mindMapData->edgeWidth());
+    edge.setTextSize(mindMapData->textSize());
+    edge.changeFont(mindMapData->font());
+}
+
+void ApplicationService::linkAddedEdgeToExistingNodes(EdgeR edge)
+{
+    getNodeByIndex(edge.sourceNode().index())->addGraphicsEdge(edge);
+    getNodeByIndex(edge.targetNode().index())->addGraphicsEdge(edge);
+
+    edge.updateLine();
+}
+
+bool ApplicationService::isEdgeAddedToEditorScene(EdgeR edge) const
+{
+    return edge.scene() == m_editorScene.get();
+}
+
 void ApplicationService::addExistingEdgesToScene()
 {
     L(TAG).debug() << "Adding existing edges to scene";
 
     for (auto && edge : m_editorService->mindMapData()->graph().getEdges()) {
-        if (edge->scene() != m_editorScene.get()) {
-            addItem(*edge, false);
-            edge->setArrowSize(m_editorService->mindMapData()->arrowSize());
-            edge->setColor(m_editorService->mindMapData()->edgeColor());
-            edge->setEdgeWidth(m_editorService->mindMapData()->edgeWidth());
-            edge->setTextSize(m_editorService->mindMapData()->textSize());
-            edge->changeFont(m_editorService->mindMapData()->font());
-            const auto node0 = getNodeByIndex(edge->sourceNode().index());
-            const auto node1 = getNodeByIndex(edge->targetNode().index());
-            node0->addGraphicsEdge(*edge);
-            node1->addGraphicsEdge(*edge);
-            edge->updateLine();
-            L(TAG).trace() << "Added existing edge (" << node0->index() << ", " << node1->index() << ") to scene";
+        if (!isEdgeAddedToEditorScene(*edge)) {
+            addItemToEditorScene(*edge, false);
+            setPropertiesOfAddedEdge(*edge);
+            linkAddedEdgeToExistingNodes(*edge);
+            L(TAG).trace() << "Added existing edge (" << edge->sourceNode().index() << ", " << edge->targetNode().index() << ") to scene";
         }
     }
+}
+
+void ApplicationService::setPropertiesOfAddedNode(NodeR node)
+{
+    const auto mindMapData = m_editorService->mindMapData();
+
+    node.setCornerRadius(m_editorService->mindMapData()->cornerRadius());
+    node.setTextSize(m_editorService->mindMapData()->textSize());
+    node.changeFont(m_editorService->mindMapData()->font());
+}
+
+bool ApplicationService::isNodeAddedToEditorScene(NodeR node) const
+{
+    return node.scene() == m_editorScene.get();
 }
 
 void ApplicationService::addExistingNodesToScene()
@@ -105,11 +135,9 @@ void ApplicationService::addExistingNodesToScene()
     L(TAG).debug() << "Adding existing nodes to scene";
 
     for (auto && node : m_editorService->mindMapData()->graph().getNodes()) {
-        if (node->scene() != m_editorScene.get()) {
-            addItem(*node);
-            node->setCornerRadius(m_editorService->mindMapData()->cornerRadius());
-            node->setTextSize(m_editorService->mindMapData()->textSize());
-            node->changeFont(m_editorService->mindMapData()->font());
+        if (!isNodeAddedToEditorScene(*node)) {
+            addItemToEditorScene(*node);
+            setPropertiesOfAddedNode(*node);
             L(TAG).trace() << "Added existing node id=" << node->index() << " to scene";
         }
     }
@@ -174,7 +202,7 @@ void ApplicationService::addEdge(NodeR node1, NodeR node2)
     addExistingGraphToScene();
 }
 
-void ApplicationService::addItem(QGraphicsItem & item, bool adjustSceneRect)
+void ApplicationService::addItemToEditorScene(QGraphicsItem & item, bool adjustSceneRect)
 {
     m_editorScene->addItem(&item);
     if (adjustSceneRect) {

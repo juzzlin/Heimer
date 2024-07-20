@@ -23,6 +23,8 @@ Bug fixes:
 
 * Fix GitHub Issue #259: 2 build errors in Windows
 
+* Fix very slow node insertion on large mind maps
+
 Other:
 
 4.4.0

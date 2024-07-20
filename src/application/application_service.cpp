@@ -82,24 +82,20 @@ void ApplicationService::addExistingEdgesToScene()
 {
     L(TAG).debug() << "Adding existing edges to scene";
 
-    size_t progressCounter = 0;
     for (auto && edge : m_editorService->mindMapData()->graph().getEdges()) {
-        const auto node0 = getNodeByIndex(edge->sourceNode().index());
-        const auto node1 = getNodeByIndex(edge->targetNode().index());
-        if (!m_editorScene->hasEdge(*node0, *node1)) {
+        if (edge->scene() != m_editorScene.get()) {
             addItem(*edge, false);
             edge->setArrowSize(m_editorService->mindMapData()->arrowSize());
             edge->setColor(m_editorService->mindMapData()->edgeColor());
             edge->setEdgeWidth(m_editorService->mindMapData()->edgeWidth());
             edge->setTextSize(m_editorService->mindMapData()->textSize());
             edge->changeFont(m_editorService->mindMapData()->font());
+            const auto node0 = getNodeByIndex(edge->sourceNode().index());
+            const auto node1 = getNodeByIndex(edge->targetNode().index());
             node0->addGraphicsEdge(*edge);
             node1->addGraphicsEdge(*edge);
             edge->updateLine();
             L(TAG).trace() << "Added existing edge (" << node0->index() << ", " << node1->index() << ") to scene";
-        }
-        if (++progressCounter % 100 == 0) {
-            updateProgress();
         }
     }
 }

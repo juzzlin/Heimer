@@ -60,7 +60,7 @@
     <message>
         <location filename="../application.cpp" line="223"/>
         <source>A new version %1 available at &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</source>
-        <translation type="unfinished">%1 bertsio berria <a href='%2'>%2</a> helbidean eskuragarri</translation>
+        <translation type="unfinished">%1 bertsio berria eskuragarri</translation>
     </message>
     <message>
         <location filename="../application.cpp" line="230"/>

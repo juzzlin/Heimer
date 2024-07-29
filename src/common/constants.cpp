@@ -266,7 +266,7 @@ int maxTextSize()
 std::chrono::milliseconds tooQuickActionDelay()
 {
     return std::chrono::milliseconds { 500 };
-};
+}
 
 double zoomSensitivity()
 {

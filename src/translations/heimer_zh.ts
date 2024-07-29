@@ -58,77 +58,77 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="../application/application.cpp" line="115"/>
+        <location filename="../application/application.cpp" line="114"/>
         <source>A new version %1 available at &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/application.cpp" line="122"/>
+        <location filename="../application/application.cpp" line="121"/>
         <source>Heimer Files</source>
         <translation>Heimer 文件</translation>
     </message>
     <message>
-        <location filename="../application/application.cpp" line="306"/>
+        <location filename="../application/application.cpp" line="305"/>
         <source>Open File</source>
         <translation>打开文件</translation>
     </message>
     <message>
-        <location filename="../application/application.cpp" line="316"/>
+        <location filename="../application/application.cpp" line="315"/>
         <source>Opening &apos;%1&apos;..</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../application/application.cpp" line="340"/>
+        <location filename="../application/application.cpp" line="339"/>
         <source>Failed to save file.</source>
         <translation>保存失败。</translation>
     </message>
     <message>
-        <location filename="../application/application.cpp" line="357"/>
+        <location filename="../application/application.cpp" line="356"/>
         <source>Save File As</source>
         <translation>另存为</translation>
     </message>
     <message>
-        <location filename="../application/application.cpp" line="371"/>
+        <location filename="../application/application.cpp" line="370"/>
         <source>File &apos;</source>
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="../application/application.cpp" line="371"/>
+        <location filename="../application/application.cpp" line="370"/>
         <source>&apos; saved.</source>
         <translation>保存。</translation>
     </message>
     <message>
-        <location filename="../application/application.cpp" line="377"/>
+        <location filename="../application/application.cpp" line="376"/>
         <source>Failed to save file as &apos;</source>
         <translation>另存为失败</translation>
     </message>
     <message>
-        <location filename="../application/application.cpp" line="428"/>
+        <location filename="../application/application.cpp" line="427"/>
         <source>Open an image</source>
         <translation>打开图片</translation>
     </message>
     <message>
-        <location filename="../application/application.cpp" line="428"/>
+        <location filename="../application/application.cpp" line="427"/>
         <source>Image Files</source>
         <translation>图片路径</translation>
     </message>
     <message>
-        <location filename="../application/application.cpp" line="434"/>
+        <location filename="../application/application.cpp" line="433"/>
         <source>Load image</source>
         <translation>加载图片</translation>
     </message>
     <message>
-        <location filename="../application/application.cpp" line="434"/>
+        <location filename="../application/application.cpp" line="433"/>
         <source>Failed to load image &apos;</source>
         <translation>加载图片失败</translation>
     </message>
     <message>
-        <location filename="../application/application.cpp" line="480"/>
+        <location filename="../application/application.cpp" line="479"/>
         <source>The mind map has been modified.</source>
         <translation>思维导图已被修改。</translation>
     </message>
     <message>
-        <location filename="../application/application.cpp" line="481"/>
+        <location filename="../application/application.cpp" line="480"/>
         <source>Do you want to save your changes?</source>
         <translation>是否要保存更改？</translation>
     </message>
@@ -183,95 +183,93 @@
         <translation type="unfinished">项目网站： </translation>
     </message>
     <message>
-        <location filename="../view/dialogs/about_dialog.cpp" line="58"/>
         <source>Support </source>
-        <translation type="unfinished">支持 </translation>
+        <translation type="obsolete">支持 </translation>
     </message>
     <message>
-        <location filename="../view/dialogs/about_dialog.cpp" line="58"/>
         <source> via PayPal: </source>
-        <translation type="unfinished"> PayPal: </translation>
+        <translation type="obsolete"> PayPal: </translation>
     </message>
 </context>
 <context>
     <name>Dialogs::DefaultsTab</name>
     <message>
-        <location filename="../view/dialogs/defaults_tab.cpp" line="41"/>
+        <location filename="../view/dialogs/defaults_tab.cpp" line="43"/>
         <source>Reversed direction</source>
         <translation type="unfinished">反向</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/defaults_tab.cpp" line="44"/>
+        <location filename="../view/dialogs/defaults_tab.cpp" line="46"/>
         <source>Background</source>
         <translation type="unfinished">背景</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/defaults_tab.cpp" line="45"/>
+        <location filename="../view/dialogs/defaults_tab.cpp" line="47"/>
         <source>Edge color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/defaults_tab.cpp" line="46"/>
+        <location filename="../view/dialogs/defaults_tab.cpp" line="48"/>
         <source>Grid color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/defaults_tab.cpp" line="47"/>
+        <location filename="../view/dialogs/defaults_tab.cpp" line="49"/>
         <source>Node color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/defaults_tab.cpp" line="48"/>
+        <location filename="../view/dialogs/defaults_tab.cpp" line="50"/>
         <source>Node text color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/defaults_tab.cpp" line="81"/>
+        <location filename="../view/dialogs/defaults_tab.cpp" line="83"/>
         <source>These default settings will be applied each time a new mind map is created.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/defaults_tab.cpp" line="108"/>
+        <location filename="../view/dialogs/defaults_tab.cpp" line="110"/>
         <source>Edge Arrow Style</source>
         <translation type="unfinished">箭头样式</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/defaults_tab.cpp" line="113"/>
+        <location filename="../view/dialogs/defaults_tab.cpp" line="115"/>
         <source>No arrow</source>
         <translation type="unfinished">无箭头</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/defaults_tab.cpp" line="114"/>
+        <location filename="../view/dialogs/defaults_tab.cpp" line="116"/>
         <source>Single arrow</source>
         <translation type="unfinished">单箭头</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/defaults_tab.cpp" line="115"/>
+        <location filename="../view/dialogs/defaults_tab.cpp" line="117"/>
         <source>Double arrow</source>
         <translation type="unfinished">双箭头</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/defaults_tab.cpp" line="131"/>
+        <location filename="../view/dialogs/defaults_tab.cpp" line="133"/>
         <source>Arrow size:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/defaults_tab.cpp" line="134"/>
+        <location filename="../view/dialogs/defaults_tab.cpp" line="136"/>
         <source>Edge width:</source>
         <translation type="unfinished">边缘宽度：</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/defaults_tab.cpp" line="152"/>
+        <location filename="../view/dialogs/defaults_tab.cpp" line="154"/>
         <source>Colors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/defaults_tab.cpp" line="179"/>
+        <location filename="../view/dialogs/defaults_tab.cpp" line="181"/>
         <source>Text Style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/defaults_tab.cpp" line="185"/>
+        <location filename="../view/dialogs/defaults_tab.cpp" line="187"/>
         <source>Text size:</source>
         <translation type="unfinished">文本大小：</translation>
     </message>
@@ -481,87 +479,87 @@
 <context>
     <name>Dialogs::LayoutOptimizationDialog</name>
     <message>
-        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="46"/>
+        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="48"/>
         <source>Optimize Layout</source>
         <translation type="unfinished">优化布局</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="77"/>
+        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="79"/>
         <source>Parameters</source>
         <translation type="unfinished">参数</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="81"/>
+        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="83"/>
         <source>Aspect Ratio:</source>
         <translation type="unfinished">纵横比：</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="82"/>
+        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="84"/>
         <source>Aspect ratio = layout width / layout height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="91"/>
+        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="93"/>
         <source>&lt;--</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="94"/>
+        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="96"/>
         <source>From layout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="95"/>
+        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="97"/>
         <source>Calculate aspect ratio from current layout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="101"/>
+        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="103"/>
         <source>From view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="102"/>
+        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="104"/>
         <source>Calculate aspect ratio from current view geometry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="109"/>
+        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="111"/>
         <source>Minimum Edge Length:</source>
         <translation type="unfinished">最小边缘长度：</translation>
     </message>
     <message>
-        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="110"/>
+        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="112"/>
         <source>Minimum edge length in the optimized layout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="121"/>
+        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="123"/>
         <source>Min from layout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="125"/>
+        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="127"/>
         <source>Calculate minimum edge length from current layout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="128"/>
+        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="130"/>
         <source>Max from layout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="132"/>
+        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="134"/>
         <source>Calculate maximum edge length from current layout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="135"/>
+        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="137"/>
         <source>Avg from layout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="139"/>
+        <location filename="../view/dialogs/layout_optimization_dialog.cpp" line="141"/>
         <source>Calculate average edge length from current layout</source>
         <translation type="unfinished"></translation>
     </message>
@@ -840,7 +838,7 @@
         <translation type="vanished">关于&amp;Qt</translation>
     </message>
     <message>
-        <location filename="../view/main_window.cpp" line="85"/>
+        <location filename="../view/main_window.cpp" line="87"/>
         <source>About Qt</source>
         <translation>关于Qt</translation>
     </message>
@@ -869,12 +867,12 @@
         <translation type="vanished">&amp;缩放以适应</translation>
     </message>
     <message>
-        <location filename="../view/main_window.cpp" line="180"/>
+        <location filename="../view/main_window.cpp" line="182"/>
         <source>New File</source>
         <translation>新文件</translation>
     </message>
     <message>
-        <location filename="../view/main_window.cpp" line="182"/>
+        <location filename="../view/main_window.cpp" line="184"/>
         <source>Not Saved</source>
         <translation>未保存</translation>
     </message>
@@ -910,79 +908,79 @@
 <context>
     <name>Menus::MainContextMenu</name>
     <message>
-        <location filename="../view/menus/main_context_menu.cpp" line="34"/>
-        <location filename="../view/menus/main_context_menu.cpp" line="171"/>
+        <location filename="../view/menus/main_context_menu.cpp" line="36"/>
+        <location filename="../view/menus/main_context_menu.cpp" line="173"/>
         <source>Copy node</source>
         <translation type="unfinished">复制节点</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_context_menu.cpp" line="35"/>
-        <location filename="../view/menus/main_context_menu.cpp" line="174"/>
+        <location filename="../view/menus/main_context_menu.cpp" line="37"/>
+        <location filename="../view/menus/main_context_menu.cpp" line="176"/>
         <source>Paste node</source>
         <translation type="unfinished">粘贴节点</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_context_menu.cpp" line="61"/>
+        <location filename="../view/menus/main_context_menu.cpp" line="63"/>
         <source>Set background color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/menus/main_context_menu.cpp" line="67"/>
+        <location filename="../view/menus/main_context_menu.cpp" line="69"/>
         <source>Set edge color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/menus/main_context_menu.cpp" line="73"/>
+        <location filename="../view/menus/main_context_menu.cpp" line="75"/>
         <source>Set grid color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/menus/main_context_menu.cpp" line="79"/>
+        <location filename="../view/menus/main_context_menu.cpp" line="81"/>
         <source>Create floating node</source>
         <translation type="unfinished">创建浮动节点</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_context_menu.cpp" line="93"/>
+        <location filename="../view/menus/main_context_menu.cpp" line="95"/>
         <source>Set node color</source>
         <translation type="unfinished">节点颜色</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_context_menu.cpp" line="99"/>
+        <location filename="../view/menus/main_context_menu.cpp" line="101"/>
         <source>Set text color</source>
         <translation type="unfinished">下一个颜色</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_context_menu.cpp" line="105"/>
+        <location filename="../view/menus/main_context_menu.cpp" line="107"/>
         <source>Delete node</source>
         <translation type="unfinished">删除节点</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_context_menu.cpp" line="121"/>
+        <location filename="../view/menus/main_context_menu.cpp" line="123"/>
         <source>Attach image...</source>
         <translation type="unfinished">附加图像...</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_context_menu.cpp" line="128"/>
+        <location filename="../view/menus/main_context_menu.cpp" line="130"/>
         <source>Remove attached image</source>
         <translation type="unfinished">移除附加图像</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_context_menu.cpp" line="168"/>
+        <location filename="../view/menus/main_context_menu.cpp" line="170"/>
         <source>Node &amp;colors</source>
         <translation type="unfinished">节点&amp;颜色</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_context_menu.cpp" line="168"/>
+        <location filename="../view/menus/main_context_menu.cpp" line="170"/>
         <source>General &amp;colors</source>
         <translation type="unfinished">通用&amp;颜色</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_context_menu.cpp" line="171"/>
+        <location filename="../view/menus/main_context_menu.cpp" line="173"/>
         <source>Copy nodes</source>
         <translation type="unfinished">复制多节点</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_context_menu.cpp" line="174"/>
+        <location filename="../view/menus/main_context_menu.cpp" line="176"/>
         <source>Paste nodes</source>
         <translation type="unfinished">粘贴多节点</translation>
     </message>
@@ -990,167 +988,167 @@
 <context>
     <name>Menus::MainMenu</name>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="35"/>
+        <location filename="../view/menus/main_menu.cpp" line="37"/>
         <source>Connect selected nodes</source>
         <translation type="unfinished">连接选定节点</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="36"/>
+        <location filename="../view/menus/main_menu.cpp" line="38"/>
         <source>Disconnect selected nodes</source>
         <translation type="unfinished">断开所选节点的连接</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="37"/>
+        <location filename="../view/menus/main_menu.cpp" line="39"/>
         <source>Undo</source>
         <translation type="unfinished">撤消</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="38"/>
+        <location filename="../view/menus/main_menu.cpp" line="40"/>
         <source>Redo</source>
         <translation type="unfinished">重做</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="39"/>
+        <location filename="../view/menus/main_menu.cpp" line="41"/>
         <source>&amp;Save</source>
         <translation type="unfinished">&amp;保存</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="40"/>
+        <location filename="../view/menus/main_menu.cpp" line="42"/>
         <source>&amp;Save as</source>
         <translation type="unfinished">&amp;另存为</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="148"/>
+        <location filename="../view/menus/main_menu.cpp" line="150"/>
         <source>General &amp;colors</source>
         <translation type="unfinished">通用&amp;颜色</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="150"/>
+        <location filename="../view/menus/main_menu.cpp" line="152"/>
         <source>Set background color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="161"/>
+        <location filename="../view/menus/main_menu.cpp" line="163"/>
         <source>Set edge color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="172"/>
+        <location filename="../view/menus/main_menu.cpp" line="174"/>
         <source>Set grid color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="184"/>
+        <location filename="../view/menus/main_menu.cpp" line="186"/>
         <source>&amp;Edit</source>
         <translation type="unfinished">&amp;编辑</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="206"/>
+        <location filename="../view/menus/main_menu.cpp" line="208"/>
         <source>Optimize layout</source>
         <translation type="unfinished">优化布局</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="220"/>
+        <location filename="../view/menus/main_menu.cpp" line="222"/>
         <source>&amp;Export</source>
         <translation type="unfinished">&amp;导出</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="223"/>
+        <location filename="../view/menus/main_menu.cpp" line="225"/>
         <source>&amp;PNG</source>
         <translation type="unfinished">&amp;PNG</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="232"/>
+        <location filename="../view/menus/main_menu.cpp" line="234"/>
         <source>&amp;SVG</source>
         <translation type="unfinished">&amp;SVG</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="246"/>
+        <location filename="../view/menus/main_menu.cpp" line="248"/>
         <source>&amp;File</source>
         <translation type="unfinished">&amp;文件</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="249"/>
+        <location filename="../view/menus/main_menu.cpp" line="251"/>
         <source>&amp;New</source>
         <translation type="unfinished">&amp;新建</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="257"/>
+        <location filename="../view/menus/main_menu.cpp" line="259"/>
         <source>&amp;Open</source>
         <translation type="unfinished">&amp;打开</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="267"/>
+        <location filename="../view/menus/main_menu.cpp" line="269"/>
         <source>Recent &amp;Files</source>
         <translation type="unfinished">最近使用的文件（&amp;F）</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="297"/>
+        <location filename="../view/menus/main_menu.cpp" line="299"/>
         <source>Settings</source>
         <translation type="unfinished">设置</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="304"/>
+        <location filename="../view/menus/main_menu.cpp" line="306"/>
         <source>&amp;Quit</source>
         <translation type="unfinished">&amp;退出</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="320"/>
+        <location filename="../view/menus/main_menu.cpp" line="322"/>
         <source>&amp;Mirror layout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="322"/>
+        <location filename="../view/menus/main_menu.cpp" line="324"/>
         <source>Horizontally</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="330"/>
+        <location filename="../view/menus/main_menu.cpp" line="332"/>
         <source>Vertically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="340"/>
+        <location filename="../view/menus/main_menu.cpp" line="342"/>
         <source>&amp;Help</source>
         <translation type="unfinished">&amp;帮助</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="343"/>
+        <location filename="../view/menus/main_menu.cpp" line="345"/>
         <source>&amp;About</source>
         <translation type="unfinished">&amp;关于</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="348"/>
+        <location filename="../view/menus/main_menu.cpp" line="350"/>
         <source>About &amp;Qt</source>
         <translation type="unfinished">关于&amp;Qt</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="355"/>
+        <location filename="../view/menus/main_menu.cpp" line="357"/>
         <source>What&apos;s New</source>
         <translation type="unfinished">更新日志</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="362"/>
+        <location filename="../view/menus/main_menu.cpp" line="364"/>
         <source>&amp;View</source>
         <translation type="unfinished">&amp;视图</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="365"/>
+        <location filename="../view/menus/main_menu.cpp" line="367"/>
         <source>Full Screen</source>
         <translation type="unfinished">全屏</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="375"/>
+        <location filename="../view/menus/main_menu.cpp" line="377"/>
         <source>Zoom In</source>
         <translation type="unfinished">放大</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="381"/>
+        <location filename="../view/menus/main_menu.cpp" line="383"/>
         <source>Zoom Out</source>
         <translation type="unfinished">缩小</translation>
     </message>
     <message>
-        <location filename="../view/menus/main_menu.cpp" line="389"/>
+        <location filename="../view/menus/main_menu.cpp" line="391"/>
         <source>&amp;Zoom To Fit</source>
         <translation type="unfinished">&amp;缩放以适应</translation>
     </message>
@@ -1158,57 +1156,57 @@
 <context>
     <name>Menus::ToolBar</name>
     <message>
-        <location filename="../view/menus/tool_bar.cpp" line="37"/>
+        <location filename="../view/menus/tool_bar.cpp" line="39"/>
         <source>Auto snap</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/menus/tool_bar.cpp" line="38"/>
+        <location filename="../view/menus/tool_bar.cpp" line="40"/>
         <source>Copy on drag</source>
         <translation type="unfinished">拖动复制</translation>
     </message>
     <message>
-        <location filename="../view/menus/tool_bar.cpp" line="45"/>
+        <location filename="../view/menus/tool_bar.cpp" line="47"/>
         <source>Show grid</source>
         <translation type="unfinished">显示网格</translation>
     </message>
     <message>
-        <location filename="../view/menus/tool_bar.cpp" line="86"/>
+        <location filename="../view/menus/tool_bar.cpp" line="88"/>
         <source>Copy style from parent node on drag</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/menus/tool_bar.cpp" line="88"/>
+        <location filename="../view/menus/tool_bar.cpp" line="90"/>
         <source>Automatically snap existing nodes to the grid when grid size changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/menus/tool_bar.cpp" line="121"/>
+        <location filename="../view/menus/tool_bar.cpp" line="123"/>
         <source>Corner radius:</source>
         <translation type="unfinished">圆角：</translation>
     </message>
     <message>
-        <location filename="../view/menus/tool_bar.cpp" line="138"/>
+        <location filename="../view/menus/tool_bar.cpp" line="140"/>
         <source>Arrow size:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../view/menus/tool_bar.cpp" line="155"/>
+        <location filename="../view/menus/tool_bar.cpp" line="157"/>
         <source>Edge width:</source>
         <translation type="unfinished">边缘宽度：</translation>
     </message>
     <message>
-        <location filename="../view/menus/tool_bar.cpp" line="187"/>
+        <location filename="../view/menus/tool_bar.cpp" line="189"/>
         <source>Grid size:</source>
         <translation type="unfinished">网格大小：</translation>
     </message>
     <message>
-        <location filename="../view/menus/tool_bar.cpp" line="209"/>
+        <location filename="../view/menus/tool_bar.cpp" line="211"/>
         <source>Search:</source>
         <translation type="unfinished">搜索：</translation>
     </message>
     <message>
-        <location filename="../view/menus/tool_bar.cpp" line="225"/>
+        <location filename="../view/menus/tool_bar.cpp" line="227"/>
         <source>Text size:</source>
         <translation type="unfinished">文本大小：</translation>
     </message>
@@ -1281,7 +1279,7 @@
 <context>
     <name>SceneItems::Edge</name>
     <message>
-        <location filename="../view/scene_items/edge.cpp" line="91"/>
+        <location filename="../view/scene_items/edge.cpp" line="250"/>
         <source>...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1404,7 +1402,7 @@
 <context>
     <name>Widgets::FontButton</name>
     <message>
-        <location filename="../view/widgets/font_button.cpp" line="30"/>
+        <location filename="../view/widgets/font_button.cpp" line="32"/>
         <source>Font</source>
         <translation type="unfinished"></translation>
     </message>

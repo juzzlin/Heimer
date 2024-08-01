@@ -22,7 +22,6 @@
 #include <QApplication>
 #include <QColor>
 #include <QObject>
-#include <QTranslator>
 
 #include <memory>
 
@@ -69,10 +68,6 @@ private:
     void doOpenMindMap(QString fileName);
 
     QString getFileDialogFileText() const;
-
-    void installTranslatorForApplicationTranslations(QStringList languages);
-
-    void installTranslatorForBuiltInQtTranslations(QStringList languages);
 
     void initializeTranslations();
 
@@ -126,13 +121,7 @@ private:
 
     StateMachine * m_stateMachine;
 
-    QTranslator m_appTranslator;
-
-    QTranslator m_qtTranslator;
-
     QString m_mindMapFile;
-
-    QString m_userLanguage;
 
     EditorView * m_editorView = nullptr;
 

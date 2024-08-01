@@ -23,6 +23,7 @@ set(HEIMER_LIB_SRC
     ${HEIMER_SRC_ROOT}/application/control_strategy.cpp
     ${HEIMER_SRC_ROOT}/application/editor_service.cpp
     ${HEIMER_SRC_ROOT}/application/hash_seed.cpp
+    ${HEIMER_SRC_ROOT}/application/language_service.cpp
     ${HEIMER_SRC_ROOT}/application/progress_manager.cpp
     ${HEIMER_SRC_ROOT}/application/recent_files_manager.cpp
     ${HEIMER_SRC_ROOT}/application/service_container.cpp
@@ -94,6 +95,7 @@ set(HEIMER_LIB_HDR
     ${HEIMER_SRC_ROOT}/application/control_strategy.hpp
     ${HEIMER_SRC_ROOT}/application/editor_service.hpp
     ${HEIMER_SRC_ROOT}/application/hash_seed.hpp
+    ${HEIMER_SRC_ROOT}/application/language_service.hpp
     ${HEIMER_SRC_ROOT}/application/progress_manager.hpp
     ${HEIMER_SRC_ROOT}/application/recent_files_manager.hpp
     ${HEIMER_SRC_ROOT}/application/service_container.hpp

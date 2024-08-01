@@ -29,6 +29,10 @@ class EditorService;
 
 using EditorServiceS = std::shared_ptr<EditorService>;
 
+class LanguageService;
+
+using LanguageServiceS = std::shared_ptr<LanguageService>;
+
 namespace SceneItems {
 class Edge;
 }

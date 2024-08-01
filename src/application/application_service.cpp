@@ -15,7 +15,7 @@
 
 #include "application_service.hpp"
 
-#include "../application//editor_service.hpp"
+#include "../application/editor_service.hpp"
 #include "../application/progress_manager.hpp"
 #include "../application/service_container.hpp"
 #include "../application/settings_proxy.hpp"
@@ -585,10 +585,6 @@ QSizeF ApplicationService::normalizedSizeInView(const QRectF & rectInScene) cons
 {
     const auto rectInView = m_editorView->mapFromScene(rectInScene).boundingRect();
     return { static_cast<double>(rectInView.width()) / m_editorView->width(), static_cast<double>(rectInView.height()) / m_editorView->height() };
-}
-
-QString ApplicationService::language() const
-{
 }
 
 void ApplicationService::paste()

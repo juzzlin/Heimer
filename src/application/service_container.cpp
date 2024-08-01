@@ -17,6 +17,7 @@
 
 #include "application_service.hpp"
 #include "control_strategy.hpp"
+#include "language_service.hpp"
 #include "progress_manager.hpp"
 #include "recent_files_manager.hpp"
 #include "settings_proxy.hpp"
@@ -32,6 +33,7 @@ ServiceContainer * ServiceContainer::m_instance = nullptr;
 ServiceContainer::ServiceContainer()
   : m_settingsProxy(std::make_unique<SettingsProxy>())
   , m_controlStrategy(std::make_unique<ControlStrategy>())
+  , m_languageService(std::make_unique<LanguageService>())
   , m_progressManager(std::make_unique<ProgressManager>())
   , m_recentFilesManager(std::make_unique<RecentFilesManager>())
 {
@@ -60,6 +62,11 @@ ApplicationServiceS ServiceContainer::applicationService()
 ControlStrategyS ServiceContainer::controlStrategy()
 {
     return m_controlStrategy;
+}
+
+LanguageServiceS ServiceContainer::languageService()
+{
+    return m_languageService;
 }
 
 ProgressManagerS ServiceContainer::progressManager() const

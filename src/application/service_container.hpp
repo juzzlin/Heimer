@@ -21,6 +21,7 @@
 class ApplicationService;
 class EditorService;
 class ControlStrategy;
+class LanguageService;
 class RecentFilesManager;
 
 class ProgressManager;
@@ -40,6 +41,8 @@ public:
 
     ControlStrategyS controlStrategy();
 
+    LanguageServiceS languageService();
+
     ProgressManagerS progressManager() const;
 
     RecentFilesManagerS recentFilesManager() const;
@@ -58,6 +61,8 @@ private:
     ApplicationServiceS m_applicationService;
 
     ControlStrategyS m_controlStrategy;
+
+    LanguageServiceS m_languageService;
 
     ProgressManagerS m_progressManager;
 

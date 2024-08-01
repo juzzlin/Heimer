@@ -16,6 +16,7 @@
 #include "application.hpp"
 
 #include "../application/application_service.hpp"
+#include "../application/language_service.hpp"
 #include "../application/progress_manager.hpp"
 #include "../application/recent_files_manager.hpp"
 #include "../application/service_container.hpp"
@@ -37,7 +38,6 @@
 #include "simple_logger.hpp"
 
 #include <QFileDialog>
-#include <QLibraryInfo>
 #include <QLocale>
 #include <QMessageBox>
 #include <QObject>
@@ -146,55 +146,9 @@ QString Application::getFileDialogFileText() const
     return tr("Heimer Files") + " (*" + Constants::Application::fileExtension() + ")";
 }
 
-void Application::installTranslatorForApplicationTranslations(QStringList languages)
-{
-    for (auto && language : languages) {
-        L(TAG).debug() << "Trying application translations for '" << language.toStdString() << "'";
-        if (m_appTranslator.load(Constants::Application::translationsResourceBase() + language)) {
-            m_application.installTranslator(&m_appTranslator);
-            L(TAG).info() << "Loaded application translations for '" << language.toStdString() << "'";
-            break;
-        } else {
-            L(TAG).warning() << "Failed to load application translations for '" << language.toStdString() << "'";
-        }
-    }
-}
-
-void Application::installTranslatorForBuiltInQtTranslations(QStringList languages)
-{
-    for (auto && language : languages) {
-        L(TAG).debug() << "Trying Qt translations for '" << language.toStdString() << "'";
-#if QT_VERSION >= 0x60000
-        if (m_qtTranslator.load("qt_" + lang, QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
-#else
-        if (m_qtTranslator.load("qt_" + language, QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
-#endif
-            m_application.installTranslator(&m_qtTranslator);
-            L(TAG).info() << "Loaded Qt translations for '" << language.toStdString() << "'";
-            break;
-        } else {
-            L(TAG).warning() << "Failed to load Qt translations for '" << language.toStdString() << "'";
-        }
-    }
-}
-
-QStringList Application::userLanguageOrAvailableSystemUiLanguages() const
-{
-    // See https://doc.qt.io/qt-5/qtranslator.html#load-1
-    if (!m_userLanguage.isEmpty()) {
-        return { m_userLanguage };
-    } else {
-        return QLocale {}.uiLanguages();
-    }
-}
-
 void Application::initializeTranslations()
 {
-    const auto languageOptions = userLanguageOrAvailableSystemUiLanguages();
-
-    installTranslatorForBuiltInQtTranslations(languageOptions);
-
-    installTranslatorForApplicationTranslations(languageOptions);
+    m_serviceContainer->languageService()->initializeTranslations(m_application);
 }
 
 std::string Application::buildAvailableLanguagesHelpString() const
@@ -227,7 +181,7 @@ void Application::parseArgs(int argc, char ** argv)
           if (!Constants::Application::languages().count(value)) {
               L(TAG).error() << "Unsupported language: '" << value << "'";
           } else {
-              m_userLanguage = value.c_str();
+              m_serviceContainer->languageService()->setUserLanguage(value.c_str());
           }
       },
       false, "Force language: " + buildAvailableLanguagesHelpString());

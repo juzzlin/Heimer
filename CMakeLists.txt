@@ -84,6 +84,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR MINGW OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang
             set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
             set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
         endif()
+        message(STATUS "Ccache            : ${CCACHE_FOUND}")
     endif()
 elseif(MSVC)
     add_definitions(-DNOMINMAX)

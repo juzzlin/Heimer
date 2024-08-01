@@ -58,6 +58,8 @@ signals:
     void backgroundColorChanged(QColor color);
 
 private:
+    std::string availableLanguages() const;
+
     void doOpenMindMap(QString fileName);
 
     QString getFileDialogFileText() const;

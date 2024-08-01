@@ -55,6 +55,11 @@ QString fileExtension()
     return ".alz";
 }
 
+LanguageSet languages()
+{
+    return { "de", "en", "es", "eu", "fi", "fr", "it", "nl", "zh" };
+}
+
 QString qSettingsCompanyName()
 {
     return "Heimer";

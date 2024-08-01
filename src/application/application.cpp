@@ -162,18 +162,18 @@ void Application::initTranslations()
     }
 }
 
+std::string Application::availableLanguages() const
+{
+    QStringList languageHelpStrings;
+    for (auto && language : Constants::Application::languages()) {
+        languageHelpStrings << language.c_str();
+    }
+    return languageHelpStrings.join(", ").toStdString() + ".";
+}
+
 void Application::parseArgs(int argc, char ** argv)
 {
     Argengine ae(argc, argv);
-
-    const std::set<std::string> languages = { "de", "en", "es", "eu", "fi", "fr", "it", "nl", "zh" };
-    std::string languageHelp;
-    for (auto && lang : languages) {
-        languageHelp += lang + ", ";
-    }
-    languageHelp.pop_back();
-    languageHelp.pop_back();
-    languageHelp += ".";
 
     ae.addOption(
       { "-d", "--debug" }, [] {
@@ -188,14 +188,14 @@ void Application::parseArgs(int argc, char ** argv)
       false, "Show trace logging.");
 
     ae.addOption(
-      { "--lang" }, [this, languages](std::string value) {
-          if (!languages.count(value)) {
+      { "--lang" }, [this](std::string value) {
+          if (!Constants::Application::languages().count(value)) {
               L(TAG).error() << "Unsupported language: " << value;
           } else {
               m_lang = value.c_str();
           }
       },
-      false, "Force language: " + languageHelp);
+      false, "Force language: " + availableLanguages());
 
     ae.setPositionalArgumentCallback([=](Argengine::ArgumentVector args) {
         m_mindMapFile = args.at(0).c_str();

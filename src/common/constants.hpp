@@ -21,6 +21,7 @@
 #include <QVector>
 
 #include <chrono>
+#include <set>
 
 #include "../infra/io/alz_file_io_version.hpp"
 
@@ -39,6 +40,10 @@ QString applicationVersion();
 QString copyright();
 
 QString fileExtension();
+
+using LanguageSet = std::set<std::string>;
+
+LanguageSet languages();
 
 QString qSettingsCompanyName();
 

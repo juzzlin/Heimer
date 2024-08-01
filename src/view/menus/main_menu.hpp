@@ -89,6 +89,8 @@ private:
 
     void createHelpMenu();
 
+    void createLanguageMenu();
+
     void createMirrorSubMenu(QMenu & editMenu);
 
     void createViewMenu();

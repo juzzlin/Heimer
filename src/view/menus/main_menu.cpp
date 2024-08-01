@@ -53,6 +53,8 @@ void MainMenu::initialize()
     createViewMenu();
 
     createHelpMenu();
+
+    createLanguageMenu();
 }
 
 void MainMenu::addConnectSelectedNodesAction(QMenu & menu)
@@ -313,6 +315,17 @@ void MainMenu::createFileMenu()
     connect(fileMenu, &QMenu::aboutToShow, this, [=] {
         recentFilesMenuAction->setEnabled(SC::instance().recentFilesManager()->hasRecentFiles());
     });
+}
+
+void MainMenu::createLanguageMenu()
+{
+    const auto languageMenuBar = new QMenuBar;
+    const auto languageMenu = languageMenuBar->addMenu(tr("&Language"));
+    for (auto && language : Constants::Application::languages()) {
+        const auto languageAction = new QAction(QString { language.c_str() }.toUpper(), this);
+        languageMenu->addAction(languageAction);
+    }
+    setCornerWidget(languageMenuBar, Qt::TopRightCorner);
 }
 
 void MainMenu::createMirrorSubMenu(QMenu & editMenu)

@@ -27,6 +27,7 @@
 #include <cstddef>
 #include <memory>
 #include <numeric>
+#include <optional>
 #include <random>
 #include <vector>
 
@@ -128,7 +129,7 @@ public:
     }
 
 private:
-    QRectF calculateLayoutDimensions(const Graph::NodeVector & nodes) const
+    QRectF calculateNodeLayoutRect(const Graph::NodeVector & nodes) const
     {
         if (nodes.empty()) {
             return {};
@@ -154,44 +155,75 @@ private:
 
     using CellVector = std::vector<std::shared_ptr<Cell>>;
 
+    void assignNodeToCell(const NodeS & node, CellVector::iterator nearestCellIter, CellVector & cells)
+    {
+        const auto cell = *nearestCellIter;
+        cell->setNode(node);
+        std::swap(*nearestCellIter, cells.back());
+        cells.pop_back();
+        m_nodesToCells[node->index()] = cell;
+        m_layout->all.push_back(cell);
+    }
+
+    struct CellLayoutMetrics
+    {
+        const double minX;
+
+        const double maxX;
+
+        const double minY;
+
+        const double maxY;
+
+        const double cellAreaW;
+
+        const double cellAreaH;
+    };
+
+    CellLayoutMetrics calculateCellLayoutMetrics(const CellVector & cells)
+    {
+        const auto [minXIt, maxXIt] = std::minmax_element(cells.begin(), cells.end(), [](const auto & lhs, const auto & rhs) {
+            return lhs->x() < rhs->x();
+        });
+        const auto [minYIt, maxYIt] = std::minmax_element(cells.begin(), cells.end(), [](const auto & lhs, const auto & rhs) {
+            return lhs->y() < rhs->y();
+        });
+
+        return {
+            (*minXIt)->x(),
+            (*maxXIt)->x(),
+            (*minYIt)->y(),
+            (*maxYIt)->y(),
+            (*maxXIt)->x() - (*minXIt)->x(),
+            (*maxYIt)->y() - (*minYIt)->y()
+        };
+    }
+
+    double normalizeDistanceFromCellToNode(const std::shared_ptr<Cell> & cell, const NodeS & node, const QRectF & nodeLayoutRect, const CellLayoutMetrics & cellMetrics)
+    {
+        const auto deltaX = (cell->x() - cellMetrics.minX - cellMetrics.cellAreaW / 2) / cellMetrics.cellAreaW - (node->location().x() - nodeLayoutRect.x() - nodeLayoutRect.width() / 2) / nodeLayoutRect.width();
+        const auto deltaY = (cell->y() - cellMetrics.minY - cellMetrics.cellAreaH / 2) / cellMetrics.cellAreaH - (node->location().y() - nodeLayoutRect.y() - nodeLayoutRect.height() / 2) / nodeLayoutRect.height();
+        return deltaX * deltaX + deltaY * deltaY;
+    }
+
     void assignNodesToNearestCells(const Graph::NodeVector & nodes, CellVector cells)
     {
-        const auto originalLayoutDimensions = calculateLayoutDimensions(nodes);
+        const auto nodeLayoutRect = calculateNodeLayoutRect(nodes);
+        juzzlin::L(TAG).info() << "Area: " << nodeLayoutRect.height() * nodeLayoutRect.width();
 
-        juzzlin::L(TAG).info() << "Area: " << originalLayoutDimensions.height() * originalLayoutDimensions.width();
-
-        double minX = std::numeric_limits<double>::max();
-        double maxX = -minX;
-        double minY = std::numeric_limits<double>::max();
-        double maxY = -minY;
-        for (auto && cell : cells) {
-            minX = std::min(minX, cell->x());
-            maxX = std::max(maxX, cell->x());
-            minY = std::min(minY, cell->y());
-            maxY = std::max(maxY, cell->y());
-        }
-        const double cellAreaW = maxX - minX;
-        const double cellAreaH = maxY - minY;
-
+        const auto cellMetrics = calculateCellLayoutMetrics(cells);
         for (auto && node : nodes) {
             if (!cells.empty()) {
-                size_t nearestCellIndex = 0;
-                double nearestDistance = std::numeric_limits<double>::max();
-                for (size_t i = 0; i < cells.size(); i++) {
-                    const auto cell = cells.at(i);
-                    const auto dx = (cell->x() - minX - cellAreaW / 2) / cellAreaW - (node->location().x() - originalLayoutDimensions.x() - originalLayoutDimensions.width() / 2) / originalLayoutDimensions.width();
-                    const auto dy = (cell->y() - minY - cellAreaH / 2) / cellAreaH - (node->location().y() - originalLayoutDimensions.y() - originalLayoutDimensions.height() / 2) / originalLayoutDimensions.height();
-                    if (double distance = dx * dx + dy * dy; distance < nearestDistance) {
-                        nearestDistance = distance;
-                        nearestCellIndex = i;
-                    }
+                if (const auto nearestCellIter = std::min_element(cells.begin(), cells.end(),
+                                                                  [&](const std::shared_ptr<Cell> & lhs, const std::shared_ptr<Cell> & rhs) {
+                                                                      return normalizeDistanceFromCellToNode(lhs, node, nodeLayoutRect, cellMetrics) < //
+                                                                        normalizeDistanceFromCellToNode(rhs, node, nodeLayoutRect, cellMetrics);
+                                                                  });
+                    nearestCellIter != cells.end()) {
+                    assignNodeToCell(node, nearestCellIter, cells);
+                } else {
+                    throw std::runtime_error("All nodes cannot be mapped to cells!");
                 }
-                const auto cell = cells.at(nearestCellIndex);
-                cell->setNode(node);
-                cells.at(nearestCellIndex) = cells.back();
-                cells.pop_back();
-                m_nodesToCells[node->index()] = cell;
-                m_layout->all.push_back(cell);
             } else {
                 throw std::runtime_error("All nodes cannot be mapped to cells!");
             }
@@ -250,14 +282,6 @@ private:
 
     struct Change
     {
-        enum class Type : uint64_t
-        {
-            Move,
-            Swap
-        };
-
-        Type type;
-
         std::shared_ptr<Cell> sourceCell;
 
         std::shared_ptr<Cell> targetCell;
@@ -278,7 +302,7 @@ private:
         double newCost = optimizationInfo.currentCost;
         newCost -= change.sourceCell->calculateCost();
         newCost -= change.targetCell->calculateCost();
-        doChange(change);
+        applyChangeAsSwap(change);
         optimizationInfo.changes++;
         LayoutOptimizer::Impl::Cell::globalMoveId++;
         newCost += change.sourceCell->calculateCost();
@@ -297,13 +321,15 @@ private:
         }
     }
 
-    void doChange(const Change & change)
+    void applyChangeAsSwap(const Change & change)
     {
         change.sourceRow->cells.at(change.sourceIndex) = change.targetCell;
         change.targetRow->cells.at(change.targetIndex) = change.sourceCell;
+
         change.sourceCell->pushRect();
         change.sourceCell->setRectXY(change.targetRow->rect.x + static_cast<int>(change.targetIndex) * Constants::Node::minWidth(),
                                      change.targetRow->rect.y);
+
         change.targetCell->pushRect();
         change.targetCell->setRectXY(change.sourceRow->rect.x + static_cast<int>(change.sourceIndex) * Constants::Node::minWidth(),
                                      change.sourceRow->rect.y);
@@ -317,34 +343,40 @@ private:
         change.targetCell->popRect();
     }
 
+    size_t getTargetRowIndex(size_t sourceRowIndex, size_t rowDelta)
+    {
+        return sourceRowIndex + rowDelta < m_layout->rows.size() ? sourceRowIndex + rowDelta : sourceRowIndex;
+    }
+
+    void setSource(Change & change, size_t sourceRowIndex)
+    {
+        change.sourceRow = m_layout->rows.at(sourceRowIndex);
+        std::uniform_int_distribution<size_t> sourceCellDist { 0, change.sourceRow->cells.size() - 1 };
+        change.sourceIndex = sourceCellDist(m_engine);
+        change.sourceCell = change.sourceRow->cells.at(change.sourceIndex);
+    }
+
+    void setTarget(Change & change, size_t targetRowIndex)
+    {
+        change.targetRow = m_layout->rows.at(targetRowIndex);
+        const auto cellDelta = m_oneOrTwoDist(m_engine);
+        change.targetIndex = change.sourceIndex + cellDelta < change.targetRow->cells.size() ? change.sourceIndex + cellDelta : change.sourceIndex;
+        change.targetCell = change.targetRow->cells.at(change.targetIndex);
+    }
+
     // Note: Here we plan only very local changes with a very small search radius as we assume that the nodes are already relatively well placed globally.
     Change planChange()
     {
         Change change;
-        change.type = Change::Type::Swap;
-        size_t sourceRowIndex = 0;
-        size_t targetRowIndex = 0;
 
         do {
-            sourceRowIndex = m_rowDist(m_engine);
-            change.sourceRow = m_layout->rows.at(sourceRowIndex);
-            if (change.sourceRow->cells.empty()) {
-                continue;
-            }
-            std::uniform_int_distribution<size_t> sourceCellDist { 0, change.sourceRow->cells.size() - 1 };
-            change.sourceIndex = sourceCellDist(m_engine);
-            change.sourceCell = change.sourceRow->cells.at(change.sourceIndex);
+            if (const auto sourceRowIndex = m_rowDist(m_engine); !m_layout->rows.at(sourceRowIndex)->cells.empty()) {
+                setSource(change, sourceRowIndex);
 
-            const auto rowDelta = m_oneOrTwoDist(m_engine);
-            targetRowIndex = sourceRowIndex + rowDelta < m_layout->rows.size() ? sourceRowIndex + rowDelta : sourceRowIndex;
-            change.targetRow = m_layout->rows.at(targetRowIndex);
-            if (change.targetRow->cells.empty()) {
-                continue;
+                if (const auto targetRowIndex = getTargetRowIndex(sourceRowIndex, m_oneOrTwoDist(m_engine)); !m_layout->rows.at(targetRowIndex)->cells.empty()) {
+                    setTarget(change, targetRowIndex);
+                }
             }
-
-            const auto cellDelta = m_oneOrTwoDist(m_engine);
-            change.targetIndex = change.sourceIndex + cellDelta < change.targetRow->cells.size() ? change.sourceIndex + cellDelta : change.sourceIndex;
-            change.targetCell = change.targetRow->cells.at(change.targetIndex);
 
         } while (change.sourceCell == change.targetCell);
 
@@ -357,7 +389,13 @@ private:
 
     struct Rect
     {
-        Rect() = default;
+        Rect()
+          : x(0)
+          , y(0)
+          , w(0)
+          , h(0)
+        {
+        }
 
         Rect(int x, int y, int w, int h)
           : x(x)
@@ -367,13 +405,13 @@ private:
         {
         }
 
-        int x = 0;
+        int x;
 
-        int y = 0;
+        int y;
 
-        int w = 0;
+        int w;
 
-        int h = 0;
+        int h;
     };
 
     class Cell
@@ -538,16 +576,24 @@ private:
     {
         void applyCoordinates(const Grid & grid)
         {
-            double maxWidth = 0;
-            double maxHeight = 0;
+            if (all.empty()) {
+                return;
+            }
+
+            const auto maxWidthIt = std::max_element(all.begin(), all.end(), [](const auto & lhs, const auto & rhs) {
+                return lhs->rect().x + lhs->rect().w < rhs->rect().x + rhs->rect().w;
+            });
+            const double maxWidth = (*maxWidthIt)->rect().x + (*maxWidthIt)->rect().w;
+
+            const auto maxHeightIt = std::max_element(all.begin(), all.end(), [](const auto & lhs, const auto & rhs) {
+                return lhs->rect().y + lhs->rect().h < rhs->rect().y + rhs->rect().h;
+            });
+            const double maxHeight = (*maxHeightIt)->rect().y + (*maxHeightIt)->rect().h;
+
             for (auto && cell : all) {
                 if (cell) {
-                    maxHeight = std::fmax(maxHeight, cell->rect().y + cell->rect().h);
-                    maxWidth = std::fmax(maxWidth, cell->rect().x + cell->rect().w);
+                    cell->node().lock()->setLocation(grid.snapToGrid({ cell->rect().x - maxWidth / 2, cell->rect().y - maxHeight / 2 }));
                 }
-            }
-            for (auto && cell : all) {
-                cell->node().lock()->setLocation(grid.snapToGrid({ cell->rect().x - maxWidth / 2, cell->rect().y - maxHeight / 2 }));
             }
         }
 
@@ -562,12 +608,12 @@ private:
             return maxX;
         }
 
-        std::pair<double, bool> getMinColX(size_t colIndex)
+        std::optional<double> getMinColX(size_t colIndex)
         {
-            std::pair<double, bool> minX { std::numeric_limits<double>::max(), false };
+            std::optional<double> minX;
             for (auto && row : rows) {
                 if (const auto cell = row->cells.at(colIndex); cell && cell->node().lock()) {
-                    minX = { std::min(minX.first, cell->x() - cell->node().lock()->size().width() / 2), true };
+                    minX = std::min(minX.value_or(std::numeric_limits<double>::max()), cell->x() - cell->node().lock()->size().width() / 2);
                 }
             }
             return minX;
@@ -584,12 +630,12 @@ private:
             return maxY;
         }
 
-        std::pair<double, bool> getMinRowY(size_t rowIndex)
+        std::optional<double> getMinRowY(size_t rowIndex)
         {
-            std::pair<double, bool> minY { std::numeric_limits<double>::max(), false };
+            std::optional<double> minY;
             for (auto && cell : rows.at(rowIndex)->cells) {
                 if (cell && cell->node().lock()) {
-                    minY = { std::min(minY.first, cell->y() - cell->node().lock()->size().height() / 2), true };
+                    minY = std::min(minY.value_or(std::numeric_limits<double>::max()), cell->y() - cell->node().lock()->size().height() / 2);
                 }
             }
             return minY;
@@ -600,10 +646,10 @@ private:
             for (size_t i = 1; i < cols; i++) {
                 const auto prevMaxX = getMaxColX(i - 1) + minEdgeLength;
                 const auto minX = getMinColX(i);
-                if (minX.second && minX.first < prevMaxX) {
+                if (minX.has_value() && *minX < prevMaxX) {
                     for (auto && row : rows) {
                         if (const auto cell = row->cells.at(i); cell) {
-                            cell->moveRectXByDelta(static_cast<int>(prevMaxX - minX.first));
+                            cell->moveRectXByDelta(static_cast<int>(prevMaxX - *minX));
                         }
                     }
                 }
@@ -612,10 +658,10 @@ private:
             for (size_t j = 1; j < rows.size(); j++) {
                 const auto prevMaxY = getMaxRowY(j - 1) + minEdgeLength;
                 const auto minY = getMinRowY(j);
-                if (minY.second && minY.first < prevMaxY) {
+                if (minY.has_value() && *minY < prevMaxY) {
                     for (auto && cell : rows.at(j)->cells) {
                         if (cell) {
-                            cell->moveRectYByDelta(static_cast<int>(prevMaxY - minY.first));
+                            cell->moveRectYByDelta(static_cast<int>(prevMaxY - *minY));
                         }
                     }
                 }

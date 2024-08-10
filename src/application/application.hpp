@@ -58,7 +58,9 @@ signals:
     void backgroundColorChanged(QColor color);
 
 private:
-    std::string availableLanguages() const;
+    QStringList userLanguageOrAvailableSystemUiLanguages() const;
+
+    std::string buildAvailableLanguagesHelpString() const;
 
     void checkForNewReleases();
 
@@ -120,7 +122,7 @@ private:
 
     MainWindowS m_mainWindow;
 
-    std::unique_ptr<SC> m_sc;
+    std::unique_ptr<SC> m_serviceContainer;
 
     StateMachine * m_stateMachine;
 
@@ -130,7 +132,7 @@ private:
 
     QString m_mindMapFile;
 
-    QString m_lang;
+    QString m_userLanguage;
 
     EditorView * m_editorView = nullptr;
 

@@ -51,7 +51,7 @@ static const auto TAG = "Application";
 
 Application::Application(int & argc, char ** argv)
   : m_application(argc, argv)
-  , m_sc(std::make_unique<SC>())
+  , m_serviceContainer(std::make_unique<SC>())
   , m_stateMachine(new StateMachine { this }) // Parented to this
   , m_versionChecker(new VersionChecker { this }) // Parented to this
 {
@@ -80,11 +80,11 @@ void Application::connectComponents()
     connect(m_mainWindow.get(), &MainWindow::actionTriggered, m_stateMachine, &StateMachine::calculateState);
     connect(m_stateMachine, &StateMachine::stateChanged, this, &Application::runState);
 
-    connect(m_pngExportDialog, &Dialogs::Export::PngExportDialog::pngExportRequested, m_sc->applicationService().get(), &ApplicationService::exportToPng);
-    connect(m_svgExportDialog, &Dialogs::Export::SvgExportDialog::svgExportRequested, m_sc->applicationService().get(), &ApplicationService::exportToSvg);
+    connect(m_pngExportDialog, &Dialogs::Export::PngExportDialog::pngExportRequested, m_serviceContainer->applicationService().get(), &ApplicationService::exportToPng);
+    connect(m_svgExportDialog, &Dialogs::Export::SvgExportDialog::svgExportRequested, m_serviceContainer->applicationService().get(), &ApplicationService::exportToSvg);
 
-    connect(m_sc->applicationService().get(), &ApplicationService::pngExportFinished, m_pngExportDialog, &Dialogs::Export::PngExportDialog::finishExport);
-    connect(m_sc->applicationService().get(), &ApplicationService::svgExportFinished, m_svgExportDialog, &Dialogs::Export::SvgExportDialog::finishExport);
+    connect(m_serviceContainer->applicationService().get(), &ApplicationService::pngExportFinished, m_pngExportDialog, &Dialogs::Export::PngExportDialog::finishExport);
+    connect(m_serviceContainer->applicationService().get(), &ApplicationService::svgExportFinished, m_svgExportDialog, &Dialogs::Export::SvgExportDialog::finishExport);
 
     connect(m_mainWindow.get(), &MainWindow::gridVisibleChanged, m_editorView, [this](int state) {
         bool visible = state == Qt::Checked;
@@ -95,11 +95,11 @@ void Application::connectComponents()
 void Application::instantiateComponents()
 {
     m_mainWindow = std::make_unique<MainWindow>();
-    m_sc->setMainWindow(m_mainWindow);
+    m_serviceContainer->setMainWindow(m_mainWindow);
 
     m_editorView = new EditorView;
     m_editorView->setParent(m_mainWindow.get());
-    m_sc->applicationService()->setEditorView(*m_editorView);
+    m_serviceContainer->applicationService()->setEditorView(*m_editorView);
 
     // Use raw pointers because the dialogs are parented to m_mainWindow which takes
     // the ownership and handles deletion.
@@ -136,7 +136,7 @@ void Application::openGivenMindMapOrAutoloadRecentMindMap()
 void Application::checkForNewReleases()
 {
     connect(m_versionChecker, &VersionChecker::newVersionFound, this, [this](Version version, QString downloadUrl) {
-        m_sc->applicationService()->showStatusText(QString(tr("A new version %1 available at <a href='%2'>%2</a>")).arg(version.toString(), downloadUrl));
+        m_serviceContainer->applicationService()->showStatusText(QString { tr("A new version %1 available at <a href='%2'>%2</a>") }.arg(version.toString(), downloadUrl));
     });
     m_versionChecker->checkForNewReleases();
 }
@@ -152,7 +152,7 @@ void Application::installTranslatorForApplicationTranslations(QStringList langua
         L(TAG).debug() << "Trying application translations for '" << language.toStdString() << "'";
         if (m_appTranslator.load(Constants::Application::translationsResourceBase() + language)) {
             m_application.installTranslator(&m_appTranslator);
-            L(TAG).debug() << "Loaded application translations for '" << language.toStdString() << "'";
+            L(TAG).info() << "Loaded application translations for '" << language.toStdString() << "'";
             break;
         } else {
             L(TAG).warning() << "Failed to load application translations for '" << language.toStdString() << "'";
@@ -170,7 +170,7 @@ void Application::installTranslatorForBuiltInQtTranslations(QStringList language
         if (m_qtTranslator.load("qt_" + language, QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
 #endif
             m_application.installTranslator(&m_qtTranslator);
-            L(TAG).debug() << "Loaded Qt translations for '" << language.toStdString() << "'";
+            L(TAG).info() << "Loaded Qt translations for '" << language.toStdString() << "'";
             break;
         } else {
             L(TAG).warning() << "Failed to load Qt translations for '" << language.toStdString() << "'";
@@ -178,24 +178,26 @@ void Application::installTranslatorForBuiltInQtTranslations(QStringList language
     }
 }
 
-// Forces the language to the given one or chooses the best UI language
-void Application::initializeTranslations()
+QStringList Application::userLanguageOrAvailableSystemUiLanguages() const
 {
     // See https://doc.qt.io/qt-5/qtranslator.html#load-1
-    QStringList availableLanguages;
-    if (m_lang.isEmpty()) {
-        availableLanguages = QLocale().uiLanguages();
+    if (!m_userLanguage.isEmpty()) {
+        return { m_userLanguage };
     } else {
-        availableLanguages << m_lang;
-        L(TAG).info() << "Language forced to '" << m_lang.toStdString() << "'";
+        return QLocale {}.uiLanguages();
     }
-
-    installTranslatorForBuiltInQtTranslations(availableLanguages);
-
-    installTranslatorForApplicationTranslations(availableLanguages);
 }
 
-std::string Application::availableLanguages() const
+void Application::initializeTranslations()
+{
+    const auto languageOptions = userLanguageOrAvailableSystemUiLanguages();
+
+    installTranslatorForBuiltInQtTranslations(languageOptions);
+
+    installTranslatorForApplicationTranslations(languageOptions);
+}
+
+std::string Application::buildAvailableLanguagesHelpString() const
 {
     QStringList languageHelpStrings;
     for (auto && language : Constants::Application::languages()) {
@@ -223,12 +225,12 @@ void Application::parseArgs(int argc, char ** argv)
     ae.addOption(
       { "--lang" }, [this](std::string value) {
           if (!Constants::Application::languages().count(value)) {
-              L(TAG).error() << "Unsupported language: " << value;
+              L(TAG).error() << "Unsupported language: '" << value << "'";
           } else {
-              m_lang = value.c_str();
+              m_userLanguage = value.c_str();
           }
       },
-      false, "Force language: " + availableLanguages());
+      false, "Force language: " + buildAvailableLanguagesHelpString());
 
     ae.setPositionalArgumentCallback([=](Argengine::ArgumentVector args) {
         m_mindMapFile = args.at(0).c_str();
@@ -260,7 +262,7 @@ void Application::runState(StateMachine::State state)
         m_mainWindow->setTitle();
         break;
     case StateMachine::State::InitializeNewMindMap:
-        m_sc->applicationService()->initializeNewMindMap();
+        m_serviceContainer->applicationService()->initializeNewMindMap();
         break;
     case StateMachine::State::OpenRecent:
         doOpenMindMap(SC::instance().recentFilesManager()->selectedFile());
@@ -347,7 +349,7 @@ void Application::doOpenMindMap(QString fileName)
     L(TAG).debug() << "Opening '" << fileName.toStdString();
     m_mainWindow->showSpinnerDialog(true, tr("Opening '%1'..").arg(fileName));
     updateProgress();
-    if (m_sc->applicationService()->openMindMap(fileName)) {
+    if (m_serviceContainer->applicationService()->openMindMap(fileName)) {
         m_mainWindow->disableUndoAndRedo();
         updateProgress();
         m_mainWindow->setSaveActionStatesOnOpenedMindMap();
@@ -368,7 +370,7 @@ void Application::saveMindMap()
 {
     L(TAG).debug() << "Save..";
 
-    if (!m_sc->applicationService()->saveMindMap()) {
+    if (!m_serviceContainer->applicationService()->saveMindMap()) {
         const auto msg = QString(tr("Failed to save file."));
         L(TAG).error() << msg.toStdString();
         showMessageBox(msg);
@@ -399,7 +401,7 @@ void Application::saveMindMapAs()
         fileName += Constants::Application::fileExtension();
     }
 
-    if (m_sc->applicationService()->saveMindMapAs(fileName)) {
+    if (m_serviceContainer->applicationService()->saveMindMapAs(fileName)) {
         const auto msg = QString(tr("File '")) + fileName + tr("' saved.");
         L(TAG).debug() << msg.toStdString();
         m_mainWindow->enableSave(false);
@@ -423,7 +425,7 @@ void Application::showEdgeColorDialog()
 {
     if (Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Edge).exec() != QDialog::Accepted) {
         // Clear implicitly selected edges on cancel
-        m_sc->applicationService()->clearEdgeSelectionGroup(true);
+        m_serviceContainer->applicationService()->clearEdgeSelectionGroup(true);
     }
     emit actionTriggered(StateMachine::Action::EdgeColorChanged);
 }
@@ -438,7 +440,7 @@ void Application::showNodeColorDialog()
 {
     if (Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Node).exec() != QDialog::Accepted) {
         // Clear implicitly selected nodes on cancel
-        m_sc->applicationService()->clearNodeSelectionGroup(true);
+        m_serviceContainer->applicationService()->clearNodeSelectionGroup(true);
     }
     emit actionTriggered(StateMachine::Action::NodeColorChanged);
 }
@@ -447,7 +449,7 @@ void Application::showTextColorDialog()
 {
     if (Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Text).exec() != QDialog::Accepted) {
         // Clear implicitly selected nodes on cancel
-        m_sc->applicationService()->clearNodeSelectionGroup(true);
+        m_serviceContainer->applicationService()->clearNodeSelectionGroup(true);
     }
     emit actionTriggered(StateMachine::Action::TextColorChanged);
 }
@@ -460,7 +462,7 @@ void Application::showImageFileDialog()
       m_mainWindow.get(), tr("Open an image"), path, tr("Image Files") + " " + extensions);
 
     if (QImage image; image.load(fileName)) {
-        m_sc->applicationService()->performNodeAction({ NodeAction::Type::AttachImage, image, fileName });
+        m_serviceContainer->applicationService()->performNodeAction({ NodeAction::Type::AttachImage, image, fileName });
         Settings::Custom::saveRecentImagePath(fileName);
     } else if (fileName != "") {
         QMessageBox::critical(m_mainWindow.get(), tr("Load image"), tr("Failed to load image '") + fileName + "'");
@@ -469,8 +471,8 @@ void Application::showImageFileDialog()
 
 void Application::showPngExportDialog()
 {
-    m_pngExportDialog->setCurrentMindMapFileName(m_sc->applicationService()->fileName());
-    m_pngExportDialog->setDefaultImageSize(m_sc->applicationService()->calculateExportImageSize());
+    m_pngExportDialog->setCurrentMindMapFileName(m_serviceContainer->applicationService()->fileName());
+    m_pngExportDialog->setDefaultImageSize(m_serviceContainer->applicationService()->calculateExportImageSize());
     m_pngExportDialog->exec();
 
     // Doesn't matter if canceled or not
@@ -479,7 +481,7 @@ void Application::showPngExportDialog()
 
 void Application::showSvgExportDialog()
 {
-    m_svgExportDialog->setCurrentMindMapFileName(m_sc->applicationService()->fileName());
+    m_svgExportDialog->setCurrentMindMapFileName(m_serviceContainer->applicationService()->fileName());
     m_svgExportDialog->exec();
 
     // Doesn't matter if canceled or not
@@ -488,12 +490,12 @@ void Application::showSvgExportDialog()
 
 void Application::showLayoutOptimizationDialog()
 {
-    LayoutOptimizer layoutOptimizer { m_sc->applicationService()->mindMapData(), m_editorView->grid() };
-    Dialogs::LayoutOptimizationDialog dialog { *m_mainWindow, *m_sc->applicationService()->mindMapData(), layoutOptimizer, *m_editorView };
-    connect(&dialog, &Dialogs::LayoutOptimizationDialog::undoPointRequested, m_sc->applicationService().get(), &ApplicationService::saveUndoPoint);
+    LayoutOptimizer layoutOptimizer { m_serviceContainer->applicationService()->mindMapData(), m_editorView->grid() };
+    Dialogs::LayoutOptimizationDialog dialog { *m_mainWindow, *m_serviceContainer->applicationService()->mindMapData(), layoutOptimizer, *m_editorView };
+    connect(&dialog, &Dialogs::LayoutOptimizationDialog::undoPointRequested, m_serviceContainer->applicationService().get(), &ApplicationService::saveUndoPoint);
 
     if (dialog.exec() == QDialog::Accepted) {
-        m_sc->applicationService()->zoomToFit();
+        m_serviceContainer->applicationService()->zoomToFit();
     }
 
     emit actionTriggered(StateMachine::Action::LayoutOptimized);

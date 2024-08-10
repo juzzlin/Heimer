@@ -60,6 +60,10 @@ signals:
 private:
     std::string availableLanguages() const;
 
+    void checkForNewReleases();
+
+    void connectComponents();
+
     void doOpenMindMap(QString fileName);
 
     QString getFileDialogFileText() const;
@@ -70,7 +74,13 @@ private:
 
     void initializeTranslations();
 
+    void instantiateComponents();
+
+    void instantiateAndConnectComponents();
+
     void openArgMindMap();
+
+    void openGivenMindMapOrAutoloadRecentMindMap();
 
     void openMindMap();
 
@@ -97,6 +107,8 @@ private:
     void showTextColorDialog();
 
     void showMessageBox(QString message);
+
+    void initializeAndShowMainWindow();
 
     int showNotSavedDialog();
 

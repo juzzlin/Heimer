@@ -134,6 +134,8 @@ public:
 
     QSizeF normalizedSizeInView(const QRectF & rectInScene) const;
 
+    QString language() const;
+
     NodeS pasteNodeAt(NodeR source, QPointF pos);
 
     MindMapDataS mindMapData() const;

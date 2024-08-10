@@ -16,15 +16,12 @@
 #include "application.hpp"
 
 #include "../application/application_service.hpp"
-#include "../application/editor_service.hpp"
 #include "../application/progress_manager.hpp"
 #include "../application/recent_files_manager.hpp"
 #include "../application/service_container.hpp"
 #include "../application/settings_proxy.hpp"
 #include "../application/state_machine.hpp"
-#include "../application/user_exception.hpp"
 #include "../common/constants.hpp"
-#include "../domain/image_manager.hpp"
 #include "../domain/layout_optimizer.hpp"
 #include "../infra/settings.hpp"
 #include "../infra/version_checker.hpp"
@@ -32,7 +29,6 @@
 #include "../view/dialogs/export/svg_export_dialog.hpp"
 #include "../view/dialogs/layout_optimization_dialog.hpp"
 #include "../view/dialogs/scene_color_dialog.hpp"
-#include "../view/editor_scene.hpp"
 #include "../view/editor_view.hpp"
 #include "../view/main_window.hpp"
 #include "../view/node_action.hpp"
@@ -56,8 +52,8 @@ static const auto TAG = "Application";
 Application::Application(int & argc, char ** argv)
   : m_application(argc, argv)
   , m_sc(std::make_unique<SC>())
-  , m_stateMachine(new StateMachine(this)) // Parented to this
-  , m_versionChecker(new VersionChecker(this)) // Parented to this
+  , m_stateMachine(new StateMachine { this }) // Parented to this
+  , m_versionChecker(new VersionChecker { this }) // Parented to this
 {
     parseArgs(argc, argv);
 
@@ -65,18 +61,17 @@ Application::Application(int & argc, char ** argv)
 
     // Instantiate components here because the possible language given
     // in the command line must have been loaded before this
-    m_mainWindow = std::make_unique<MainWindow>();
-    m_sc->setMainWindow(m_mainWindow);
-    m_editorView = new EditorView;
+    instantiateAndConnectComponents();
 
-    // Use raw pointers because the dialogs are parented to m_mainWindow which takes
-    // the ownership and handles deletion.
-    m_pngExportDialog = new Dialogs::Export::PngExportDialog(*m_mainWindow);
-    m_svgExportDialog = new Dialogs::Export::SvgExportDialog(*m_mainWindow);
+    initializeAndShowMainWindow();
 
-    // Note!!: EditorView will be parented to MainWindow.
-    m_sc->applicationService()->setEditorView(*m_editorView);
+    openGivenMindMapOrAutoloadRecentMindMap();
 
+    checkForNewReleases();
+}
+
+void Application::connectComponents()
+{
     // Connect views and StateMachine together
     connect(this, &Application::actionTriggered, m_stateMachine, &StateMachine::calculateState);
     connect(m_editorView, &EditorView::actionTriggered, m_stateMachine, [this](StateMachine::Action action) {
@@ -95,11 +90,38 @@ Application::Application(int & argc, char ** argv)
         bool visible = state == Qt::Checked;
         m_editorView->setGridVisible(visible);
     });
+}
 
+void Application::instantiateComponents()
+{
+    m_mainWindow = std::make_unique<MainWindow>();
+    m_sc->setMainWindow(m_mainWindow);
+
+    m_editorView = new EditorView;
+    m_editorView->setParent(m_mainWindow.get());
+    m_sc->applicationService()->setEditorView(*m_editorView);
+
+    // Use raw pointers because the dialogs are parented to m_mainWindow which takes
+    // the ownership and handles deletion.
+    m_pngExportDialog = new Dialogs::Export::PngExportDialog { *m_mainWindow };
+    m_svgExportDialog = new Dialogs::Export::SvgExportDialog { *m_mainWindow };
+}
+
+void Application::instantiateAndConnectComponents()
+{
+    instantiateComponents();
+
+    connectComponents();
+}
+
+void Application::initializeAndShowMainWindow()
+{
     m_mainWindow->initialize();
     m_mainWindow->appear();
+}
 
-    // Open mind map according to CLI argument (if exists) or autoload the recent mind map (if enabled)
+void Application::openGivenMindMapOrAutoloadRecentMindMap()
+{
     if (!m_mindMapFile.isEmpty()) {
         QTimer::singleShot(0, this, &Application::openArgMindMap);
     } else if (SC::instance().settingsProxy()->autoload()) {
@@ -109,7 +131,10 @@ Application::Application(int & argc, char ** argv)
             QTimer::singleShot(0, this, &Application::openArgMindMap);
         }
     }
+}
 
+void Application::checkForNewReleases()
+{
     connect(m_versionChecker, &VersionChecker::newVersionFound, this, [this](Version version, QString downloadUrl) {
         m_sc->applicationService()->showStatusText(QString(tr("A new version %1 available at <a href='%2'>%2</a>")).arg(version.toString(), downloadUrl));
     });

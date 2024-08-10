@@ -587,6 +587,10 @@ QSizeF ApplicationService::normalizedSizeInView(const QRectF & rectInScene) cons
     return { static_cast<double>(rectInView.width()) / m_editorView->width(), static_cast<double>(rectInView.height()) / m_editorView->height() };
 }
 
+QString ApplicationService::language() const
+{
+}
+
 void ApplicationService::paste()
 {
     // Create a new node from OS clipboard if text has been copied
@@ -876,8 +880,6 @@ void ApplicationService::setGridColor(QColor color)
 void ApplicationService::setEditorView(EditorView & editorView)
 {
     m_editorView = &editorView;
-
-    m_editorView->setParent(m_mainWindow.get());
 
     connect(m_editorView, &EditorView::newNodeRequested, this, [=](QPointF position) {
         saveUndoPoint();

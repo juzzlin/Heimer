@@ -61,7 +61,7 @@ Application::Application(int & argc, char ** argv)
 {
     parseArgs(argc, argv);
 
-    initTranslations();
+    initializeTranslations();
 
     // Instantiate components here because the possible language given
     // in the command line must have been loaded before this
@@ -121,45 +121,53 @@ QString Application::getFileDialogFileText() const
     return tr("Heimer Files") + " (*" + Constants::Application::fileExtension() + ")";
 }
 
-// Forces the language to the given one or chooses the best UI language
-void Application::initTranslations()
+void Application::installTranslatorForApplicationTranslations(QStringList languages)
 {
-    // See https://doc.qt.io/qt-5/qtranslator.html#load-1
-    QStringList langs;
-    if (m_lang.isEmpty()) {
-        langs = QLocale().uiLanguages();
-    } else {
-        langs << m_lang;
-        L(TAG).info() << "Language forced to '" << m_lang.toStdString() << "'";
+    for (auto && language : languages) {
+        L(TAG).debug() << "Trying application translations for '" << language.toStdString() << "'";
+        if (m_appTranslator.load(Constants::Application::translationsResourceBase() + language)) {
+            m_application.installTranslator(&m_appTranslator);
+            L(TAG).debug() << "Loaded application translations for '" << language.toStdString() << "'";
+            break;
+        } else {
+            L(TAG).warning() << "Failed to load application translations for '" << language.toStdString() << "'";
+        }
     }
+}
 
-    // Qt's built-in translations
-    for (auto && lang : langs) {
-        L(TAG).debug() << "Trying Qt translations for '" << lang.toStdString() << "'";
+void Application::installTranslatorForBuiltInQtTranslations(QStringList languages)
+{
+    for (auto && language : languages) {
+        L(TAG).debug() << "Trying Qt translations for '" << language.toStdString() << "'";
 #if QT_VERSION >= 0x60000
         if (m_qtTranslator.load("qt_" + lang, QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
 #else
-        if (m_qtTranslator.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
+        if (m_qtTranslator.load("qt_" + language, QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
 #endif
             m_application.installTranslator(&m_qtTranslator);
-            L(TAG).debug() << "Loaded Qt translations for '" << lang.toStdString() << "'";
+            L(TAG).debug() << "Loaded Qt translations for '" << language.toStdString() << "'";
             break;
         } else {
-            L(TAG).warning() << "Failed to load Qt translations for '" << lang.toStdString() << "'";
+            L(TAG).warning() << "Failed to load Qt translations for '" << language.toStdString() << "'";
         }
+    }
+}
+
+// Forces the language to the given one or chooses the best UI language
+void Application::initializeTranslations()
+{
+    // See https://doc.qt.io/qt-5/qtranslator.html#load-1
+    QStringList availableLanguages;
+    if (m_lang.isEmpty()) {
+        availableLanguages = QLocale().uiLanguages();
+    } else {
+        availableLanguages << m_lang;
+        L(TAG).info() << "Language forced to '" << m_lang.toStdString() << "'";
     }
 
-    // Application's translations
-    for (auto && lang : langs) {
-        L(TAG).debug() << "Trying application translations for '" << lang.toStdString() << "'";
-        if (m_appTranslator.load(Constants::Application::translationsResourceBase() + lang)) {
-            m_application.installTranslator(&m_appTranslator);
-            L(TAG).debug() << "Loaded application translations for '" << lang.toStdString() << "'";
-            break;
-        } else {
-            L(TAG).warning() << "Failed to load application translations for '" << lang.toStdString() << "'";
-        }
-    }
+    installTranslatorForBuiltInQtTranslations(availableLanguages);
+
+    installTranslatorForApplicationTranslations(availableLanguages);
 }
 
 std::string Application::availableLanguages() const

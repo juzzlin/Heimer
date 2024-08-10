@@ -64,7 +64,11 @@ private:
 
     QString getFileDialogFileText() const;
 
-    void initTranslations();
+    void installTranslatorForApplicationTranslations(QStringList languages);
+
+    void installTranslatorForBuiltInQtTranslations(QStringList languages);
+
+    void initializeTranslations();
 
     void openArgMindMap();
 

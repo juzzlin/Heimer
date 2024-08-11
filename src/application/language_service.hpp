@@ -31,9 +31,9 @@ public:
 
     void setActiveLanguage(QString activeLanguage);
 
-    QString userLanguage() const;
+    QString commandLineLanguage() const;
 
-    void setUserLanguage(QString cliLanguage);
+    void setCommandLineLanguage(QString cliLanguage);
 
     void initializeTranslations(QCoreApplication & application);
 
@@ -43,11 +43,13 @@ public:
 
     QStringList uiLanguages() const;
 
+    QString savedUserLanguage() const;
+
 signals:
     void activeLanguageChanged(QString language);
 
 private:
-    QStringList userLanguageOrAvailableSystemUiLanguages() const;
+    QStringList commandLineLanguageOrSavedLanguageOrAvailableSystemUiLanguages() const;
 
     void installTranslatorForApplicationTranslations(QCoreApplication & application, QStringList languages);
 
@@ -55,7 +57,7 @@ private:
 
     QString m_activeLanguage;
 
-    QString m_userLanguage;
+    QString m_commandLineLanguage;
 
     QTranslator m_appTranslator;
 

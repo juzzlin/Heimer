@@ -54,9 +54,9 @@ using juzzlin::L;
 static const auto TAG = "EditorView";
 
 EditorView::EditorView()
-  : m_edgeContextMenu(new Menus::EdgeContextMenu(this))
-  , m_mainContextMenu(new Menus::MainContextMenu(this, m_grid))
-  , m_controlStrategy(SC::instance().controlStrategy())
+  : m_edgeContextMenu { new Menus::EdgeContextMenu { this } }
+  , m_mainContextMenu { new Menus::MainContextMenu { this, m_grid } }
+  , m_controlStrategy { SC::instance().controlStrategy() }
 {
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

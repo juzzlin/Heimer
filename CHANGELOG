@@ -5,6 +5,11 @@ Release date:
 
 New features:
 
+* Add a language menu
+  - The active Language can be now set via a menu at the top-right corner
+  - The selected language will saved and automatically loaded again
+  - Setting language in the CLI will override the selected language
+
 * Add basque translation (eu)
 
 * Make zoom-to-fit take possibly selected nodes into account

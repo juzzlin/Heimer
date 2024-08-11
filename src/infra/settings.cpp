@@ -374,6 +374,23 @@ void setNumber(QString group, QString key, double value)
     settings.endGroup();
 }
 
+QString getString(QString group, QString key, QString defaultValue)
+{
+    QSettings settings;
+    settings.beginGroup(group);
+    const auto val = settings.value(key, defaultValue).toString();
+    settings.endGroup();
+    return val;
+}
+
+void setString(QString group, QString key, QString value)
+{
+    QSettings settings;
+    settings.beginGroup(group);
+    settings.setValue(key, value);
+    settings.endGroup();
+}
+
 QFont getFont(QString group, QString key, QFont defaultValue)
 {
     QSettings settings;

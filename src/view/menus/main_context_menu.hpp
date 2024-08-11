@@ -27,6 +27,8 @@
 class Grid;
 class Node;
 
+class QShortcut;
+
 namespace Menus {
 
 class MainContextMenu : public QMenu
@@ -41,7 +43,7 @@ public:
         Node
     };
 
-    MainContextMenu(QWidget * parent, Grid & grid);
+    MainContextMenu(QWidget * parent, const Grid & grid);
 
     void setMode(const Mode & mode);
 
@@ -53,14 +55,63 @@ signals:
     //! Request a new node at given position.
     void newNodeRequested(QPointF position);
 
+protected:
+    void changeEvent(QEvent * event) override;
+
 private:
+    void addGlobalShortcutsToParent(QWidget & parent);
+
+    QMenu & createColorSubMenu();
+
+    void createActions(const Grid & grid);
+
+    void createCopyNodeAction();
+
+    void createImageActions();
+
+    void createNodeCreationActions(const Grid & grid);
+
+    void createNodeDeletionActions();
+
+    void createPasteNodeAction();
+
+    void initialize();
+
+    void populateWithActions();
+
+    void retranslate();
+
+    const Grid & m_grid;
+
+    QAction * m_attachImageAction = nullptr;
+
     QAction * m_colorMenuAction = nullptr;
 
     QAction * m_copyNodeAction = nullptr;
 
+    QAction * m_createNodeAction = nullptr;
+
+    QAction * m_deleteNodeAction = nullptr;
+
     QAction * m_pasteNodeAction = nullptr;
 
     QAction * m_removeImageAction = nullptr;
+
+    QShortcut * m_copyNodeShortcut = nullptr;
+
+    QShortcut * m_pasteNodeShortcut = nullptr;
+
+    QShortcut * m_createNodeShortcut = nullptr;
+
+    QShortcut * m_deleteNodesAndEdgesShortCut = nullptr;
+
+    const QKeySequence m_copyNodeSequence = QKeySequence::Copy;
+
+    const QKeySequence m_pasteNodeSequence = QKeySequence::Paste;
+
+    const QKeySequence m_createNodeSequence = { "Ctrl+Shift+F" };
+
+    const QKeySequence m_deleteNodeSequence = QKeySequence::Delete;
 
     NodeP m_selectedNode = nullptr;
 

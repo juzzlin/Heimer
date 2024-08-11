@@ -24,6 +24,7 @@
 
 #include <QCheckBox>
 #include <QDoubleSpinBox>
+#include <QEvent>
 #include <QFont>
 #include <QFontDialog>
 #include <QLineEdit>
@@ -36,16 +37,25 @@ namespace Menus {
 static const auto TAG = "ToolBar";
 
 ToolBar::ToolBar()
-  : m_autoSnapCheckBox(new QCheckBox(tr("Auto snap"), this))
-  , m_copyOnDragCheckBox(new QCheckBox(tr("Copy on drag"), this))
-  , m_cornerRadiusSpinBox(new QSpinBox(this))
-  , m_arrowSizeSpinBox(new QDoubleSpinBox(this))
-  , m_edgeWidthSpinBox(new QDoubleSpinBox(this))
-  , m_fontButton(new Widgets::FontButton(this))
-  , m_gridSizeSpinBox(new QSpinBox(this))
-  , m_searchLineEdit(new QLineEdit(this))
-  , m_showGridCheckBox(new QCheckBox(tr("Show grid"), this))
-  , m_textSizeSpinBox(new QSpinBox(this))
+{
+    initialize();
+}
+
+void ToolBar::createComponents()
+{
+    m_autoSnapCheckBox = new QCheckBox { tr("Auto snap"), this };
+    m_copyOnDragCheckBox = new QCheckBox { tr("Copy on drag"), this };
+    m_cornerRadiusSpinBox = new QSpinBox { this };
+    m_arrowSizeSpinBox = new QDoubleSpinBox { this };
+    m_edgeWidthSpinBox = new QDoubleSpinBox { this };
+    m_fontButton = new Widgets::FontButton { this };
+    m_gridSizeSpinBox = new QSpinBox { this };
+    m_searchLineEdit = new QLineEdit { this };
+    m_showGridCheckBox = new QCheckBox { tr("Show grid"), this };
+    m_textSizeSpinBox = new QSpinBox { this };
+}
+
+void ToolBar::addActions()
 {
     addAction(createArrowSizeAction());
 
@@ -90,6 +100,26 @@ ToolBar::ToolBar()
     m_autoSnapCheckBox->setToolTip(tr("Automatically snap existing nodes to the grid when grid size changes"));
 
     m_searchLineEdit->setClearButtonEnabled(true);
+}
+
+void ToolBar::initialize()
+{
+    createComponents();
+
+    addActions();
+}
+
+void ToolBar::changeEvent(QEvent * event)
+{
+    if (event->type() == QEvent::LanguageChange) {
+        retranslate();
+    }
+}
+
+void ToolBar::retranslate()
+{
+    clear();
+    initialize();
 }
 
 bool ToolBar::autoSnapEnabled() const

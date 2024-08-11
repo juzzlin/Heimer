@@ -64,6 +64,8 @@ protected:
 
     void hoverMoveEvent(QGraphicsSceneHoverEvent * event) override;
 
+    void retranslate() override;
+
 private:
     QColor calculateBackgroundColor() const;
 

@@ -20,15 +20,27 @@
 #include "../edge_action.hpp"
 #include "../scene_items/edge.hpp"
 
-#include <cassert>
-
 namespace Menus {
 
 EdgeContextMenu::EdgeContextMenu(QWidget * parent)
   : QMenu(parent)
 {
-    const auto changeEdgeDirectionAction(new QAction(tr("Change direction"), this));
-    QObject::connect(changeEdgeDirectionAction, &QAction::triggered, this, [=] {
+    initialize();
+}
+
+void EdgeContextMenu::initialize()
+{
+    createActions();
+
+    populateMenuWithActions();
+
+    connectVisibilitySignals();
+}
+
+void EdgeContextMenu::createActions()
+{
+    m_changeEdgeDirectionAction = new QAction(tr("Change direction"), this);
+    QObject::connect(m_changeEdgeDirectionAction, &QAction::triggered, this, [=] {
         if (const auto selectedEdge = SC::instance().applicationService()->selectedEdge(); selectedEdge.has_value()) {
             SC::instance().applicationService()->saveUndoPoint();
             selectedEdge.value()->setReversed(!selectedEdge.value()->reversed());
@@ -37,59 +49,74 @@ EdgeContextMenu::EdgeContextMenu(QWidget * parent)
 
     using SceneItems::EdgeModel;
 
-    const auto showEdgeArrowAction(new QAction(tr("Show arrow"), this));
-    QObject::connect(showEdgeArrowAction, &QAction::triggered, this, [=] {
+    m_showEdgeArrowAction = new QAction(tr("Show arrow"), this);
+    QObject::connect(m_showEdgeArrowAction, &QAction::triggered, this, [=] {
         if (const auto selectedEdge = SC::instance().applicationService()->selectedEdge(); selectedEdge.has_value()) {
             SC::instance().applicationService()->saveUndoPoint();
-            selectedEdge.value()->setArrowMode(showEdgeArrowAction->isChecked() ? EdgeModel::ArrowMode::Single : EdgeModel::ArrowMode::Hidden);
+            selectedEdge.value()->setArrowMode(m_showEdgeArrowAction->isChecked() ? EdgeModel::ArrowMode::Single : EdgeModel::ArrowMode::Hidden);
         }
     });
-    showEdgeArrowAction->setCheckable(true);
+    m_showEdgeArrowAction->setCheckable(true);
 
-    const auto doubleArrowAction(new QAction(tr("Double arrow"), this));
-    QObject::connect(doubleArrowAction, &QAction::triggered, this, [=] {
+    m_doubleArrowAction = new QAction(tr("Double arrow"), this);
+    QObject::connect(m_doubleArrowAction, &QAction::triggered, this, [=] {
         if (const auto selectedEdge = SC::instance().applicationService()->selectedEdge(); selectedEdge.has_value()) {
             SC::instance().applicationService()->saveUndoPoint();
-            selectedEdge.value()->setArrowMode(doubleArrowAction->isChecked() ? EdgeModel::ArrowMode::Double : EdgeModel::ArrowMode::Single);
+            selectedEdge.value()->setArrowMode(m_doubleArrowAction->isChecked() ? EdgeModel::ArrowMode::Double : EdgeModel::ArrowMode::Single);
         }
     });
-    doubleArrowAction->setCheckable(true);
+    m_doubleArrowAction->setCheckable(true);
 
-    const auto dashedLineAction(new QAction(tr("Dashed line"), this));
-    QObject::connect(dashedLineAction, &QAction::triggered, this, [=] {
+    m_dashedLineAction = new QAction(tr("Dashed line"), this);
+    QObject::connect(m_dashedLineAction, &QAction::triggered, this, [=] {
         if (const auto selectedEdge = SC::instance().applicationService()->selectedEdge(); selectedEdge.has_value()) {
             SC::instance().applicationService()->saveUndoPoint();
-            selectedEdge.value()->setDashedLine(dashedLineAction->isChecked());
+            selectedEdge.value()->setDashedLine(m_dashedLineAction->isChecked());
         }
     });
-    dashedLineAction->setCheckable(true);
+    m_dashedLineAction->setCheckable(true);
 
-    const auto deleteEdgeAction(new QAction(tr("Delete edge"), this));
-    QObject::connect(deleteEdgeAction, &QAction::triggered, this, [=] {
+    m_deleteEdgeAction = new QAction(tr("Delete edge"), this);
+    QObject::connect(m_deleteEdgeAction, &QAction::triggered, this, [=] {
         if (SC::instance().applicationService()->edgeSelectionGroupSize()) {
             SC::instance().applicationService()->saveUndoPoint();
             SC::instance().applicationService()->performEdgeAction({ EdgeAction::Type::Delete });
         }
     });
+}
 
-    // Populate the menu
-    addAction(changeEdgeDirectionAction);
+void EdgeContextMenu::populateMenuWithActions()
+{
+    addAction(m_changeEdgeDirectionAction);
+
     addSeparator();
-    addAction(showEdgeArrowAction);
+
+    addAction(m_showEdgeArrowAction);
+
     addSeparator();
-    addAction(doubleArrowAction);
+
+    addAction(m_doubleArrowAction);
+
     addSeparator();
-    addAction(dashedLineAction);
+
+    addAction(m_dashedLineAction);
+
     addSeparator();
-    addAction(deleteEdgeAction);
+
+    addAction(m_deleteEdgeAction);
+}
+
+void EdgeContextMenu::connectVisibilitySignals()
+{
+    using SceneItems::EdgeModel;
 
     // Set correct edge config when the menu opens.
     connect(this, &QMenu::aboutToShow, this, [=] {
         if (const auto selectedEdge = SC::instance().applicationService()->selectedEdge(); selectedEdge.has_value()) {
-            changeEdgeDirectionAction->setEnabled(selectedEdge.value()->arrowMode() != EdgeModel::ArrowMode::Double && selectedEdge.value()->arrowMode() != EdgeModel::ArrowMode::Hidden);
-            dashedLineAction->setChecked(selectedEdge.value()->dashedLine());
-            doubleArrowAction->setChecked(selectedEdge.value()->arrowMode() == EdgeModel::ArrowMode::Double);
-            showEdgeArrowAction->setChecked(selectedEdge.value()->arrowMode() != EdgeModel::ArrowMode::Hidden);
+            m_changeEdgeDirectionAction->setEnabled(selectedEdge.value()->arrowMode() != EdgeModel::ArrowMode::Double && selectedEdge.value()->arrowMode() != EdgeModel::ArrowMode::Hidden);
+            m_dashedLineAction->setChecked(selectedEdge.value()->dashedLine());
+            m_doubleArrowAction->setChecked(selectedEdge.value()->arrowMode() == EdgeModel::ArrowMode::Double);
+            m_showEdgeArrowAction->setChecked(selectedEdge.value()->arrowMode() != EdgeModel::ArrowMode::Hidden);
         }
     });
 
@@ -99,6 +126,20 @@ EdgeContextMenu::EdgeContextMenu(QWidget * parent)
             SC::instance().applicationService()->clearEdgeSelectionGroup();
         });
     });
+}
+
+void EdgeContextMenu::changeEvent(QEvent * event)
+{
+    if (event->type() == QEvent::LanguageChange) {
+        retranslate();
+    }
+}
+
+void EdgeContextMenu::retranslate()
+{
+    clear();
+
+    initialize();
 }
 
 } // namespace Menus

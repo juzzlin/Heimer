@@ -41,6 +41,7 @@ SettingsProxy::SettingsProxy()
       Settings::Generic::getColor(m_effectsSettingGroup, m_shadowEffectSelectedItemShadowColorSettingKey, Constants::Settings::defaultShadowEffectSelectedItemShadowColor())
   }
   , m_optimizeShadowEffects { Settings::Generic::getBoolean(m_effectsSettingGroup, m_optimizeShadowEffectsSettingKey, true) }
+  , m_userLanguage { Settings::Generic::getString(m_defaultsSettingGroup, m_userLanguageSettingKey, {}) }
 {
 }
 
@@ -210,6 +211,19 @@ void SettingsProxy::setFont(const QFont & font)
     if (m_font != font) {
         m_font = font;
         Settings::Generic::setFont(m_defaultsSettingGroup, m_fontSettingKey, font);
+    }
+}
+
+QString SettingsProxy::userLanguage() const
+{
+    return m_userLanguage;
+}
+
+void SettingsProxy::setUserLanguage(const QString & userLanguage)
+{
+    if (m_userLanguage != userLanguage) {
+        m_userLanguage = userLanguage;
+        Settings::Generic::setString(m_defaultsSettingGroup, m_userLanguageSettingKey, userLanguage);
     }
 }
 

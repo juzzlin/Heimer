@@ -95,6 +95,10 @@ double getNumber(QString group, QString key, double defaultValue);
 
 void setNumber(QString group, QString key, double value);
 
+QString getString(QString group, QString key, QString defaultValue);
+
+void setString(QString group, QString key, QString value);
+
 QFont getFont(QString group, QString key, QFont defaultValue);
 
 void setFont(QString group, QString key, QFont value);

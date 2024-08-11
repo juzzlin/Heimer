@@ -54,6 +54,9 @@ public:
 
     qreal targetScale() const;
 
+protected slots:
+    virtual void retranslate();
+
 private:
     int m_animationDuration = 75;
 

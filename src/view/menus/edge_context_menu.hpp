@@ -23,6 +23,8 @@
 class Edge;
 class ApplicationService;
 
+class QAction;
+
 namespace Menus {
 
 class EdgeContextMenu : public QMenu
@@ -32,7 +34,30 @@ class EdgeContextMenu : public QMenu
 public:
     EdgeContextMenu(QWidget * parent);
 
+protected:
+    void changeEvent(QEvent * event) override;
+
 private:
+    void connectVisibilitySignals();
+
+    void createActions();
+
+    void initialize();
+
+    void populateMenuWithActions();
+
+    void retranslate();
+
+    QAction * m_changeEdgeDirectionAction = nullptr;
+
+    QAction * m_showEdgeArrowAction = nullptr;
+
+    QAction * m_doubleArrowAction = nullptr;
+
+    QAction * m_dashedLineAction = nullptr;
+
+    QAction * m_deleteEdgeAction = nullptr;
+
     EdgeP m_selectedEdge = nullptr;
 };
 

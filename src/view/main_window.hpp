@@ -26,10 +26,7 @@
 #include "../common/types.hpp"
 
 namespace Dialogs {
-class AboutDialog;
-class SettingsDialog;
 class SpinnerDialog;
-class WhatsNewDialog;
 } // namespace Dialogs
 
 namespace Menus {
@@ -153,17 +150,11 @@ private:
 
     void resizeWindow();
 
-    Dialogs::AboutDialog * m_aboutDlg;
-
-    Dialogs::SettingsDialog * m_settingsDlg;
-
     Dialogs::SpinnerDialog * m_spinnerDlg;
 
     Menus::MainMenu * m_mainMenu;
 
     Menus::ToolBar * m_toolBar;
-
-    Dialogs::WhatsNewDialog * m_whatsNewDlg;
 
     QString m_argMindMapFile;
 

@@ -17,6 +17,8 @@
 
 #include "argengine.hpp"
 #include "common/constants.hpp"
+#include "service_container.hpp"
+#include "settings_proxy.hpp"
 #include "simple_logger.hpp"
 
 #include <QCoreApplication>
@@ -36,25 +38,34 @@ QString LanguageService::activeLanguage() const
 void LanguageService::setActiveLanguage(QString activeLanguage)
 {
     if (m_activeLanguage != activeLanguage) {
+        L(TAG).info() << "Changing active language via UI: '" << activeLanguage.toStdString() << "'";
         m_activeLanguage = activeLanguage;
-        emit activeLanguageChanged(activeLanguage);
+        installTranslatorForBuiltInQtTranslations(*QCoreApplication::instance(), { m_activeLanguage });
+        installTranslatorForApplicationTranslations(*QCoreApplication::instance(), { m_activeLanguage });
+        SC::instance().settingsProxy()->setUserLanguage(m_activeLanguage);
+        emit activeLanguageChanged(m_activeLanguage);
     }
 }
 
-QString LanguageService::userLanguage() const
+QString LanguageService::commandLineLanguage() const
 {
-    return m_userLanguage;
+    return m_commandLineLanguage;
 }
 
-void LanguageService::setUserLanguage(QString userLanguage)
+void LanguageService::setCommandLineLanguage(QString commandLineLanguage)
 {
-    L(TAG).info() << "User language: '" << userLanguage.toStdString() << "'";
+    m_commandLineLanguage = commandLineLanguage;
+}
 
-    m_userLanguage = userLanguage;
+QString LanguageService::savedUserLanguage() const
+{
+    return SC::instance().settingsProxy()->userLanguage();
 }
 
 void LanguageService::installTranslatorForApplicationTranslations(QCoreApplication & application, QStringList languages)
 {
+    // See https://doc.qt.io/qt-5/qtranslator.html#load-1
+
     for (auto && language : languages) {
         L(TAG).debug() << "Trying application translations for '" << language.toStdString() << "'";
         if (m_appTranslator.load(Constants::Application::translationsResourceBase() + language)) {
@@ -70,6 +81,8 @@ void LanguageService::installTranslatorForApplicationTranslations(QCoreApplicati
 
 void LanguageService::installTranslatorForBuiltInQtTranslations(QCoreApplication & application, QStringList languages)
 {
+    // See https://doc.qt.io/qt-5/qtranslator.html#load-1
+
     for (auto && language : languages) {
         L(TAG).debug() << "Trying Qt translations for '" << language.toStdString() << "'";
 #if QT_VERSION >= 0x60000
@@ -86,11 +99,14 @@ void LanguageService::installTranslatorForBuiltInQtTranslations(QCoreApplication
     }
 }
 
-QStringList LanguageService::userLanguageOrAvailableSystemUiLanguages() const
+QStringList LanguageService::commandLineLanguageOrSavedLanguageOrAvailableSystemUiLanguages() const
 {
-    // See https://doc.qt.io/qt-5/qtranslator.html#load-1
-    if (!m_userLanguage.isEmpty()) {
-        return { m_userLanguage };
+    if (!commandLineLanguage().isEmpty()) {
+        L(TAG).info() << "Selecting language given via CLI: '" << commandLineLanguage().toStdString() << "'";
+        return { commandLineLanguage() };
+    } else if (!savedUserLanguage().isEmpty()) {
+        L(TAG).info() << "Selecting previous language set via UI: '" << savedUserLanguage().toStdString() << "'";
+        return { savedUserLanguage() };
     } else {
         return uiLanguages();
     }
@@ -98,7 +114,7 @@ QStringList LanguageService::userLanguageOrAvailableSystemUiLanguages() const
 
 void LanguageService::initializeTranslations(QCoreApplication & application)
 {
-    const auto languageOptions = userLanguageOrAvailableSystemUiLanguages();
+    const auto languageOptions = commandLineLanguageOrSavedLanguageOrAvailableSystemUiLanguages();
 
     installTranslatorForBuiltInQtTranslations(application, languageOptions);
 
@@ -109,7 +125,14 @@ QStringList LanguageService::selectableLanguages() const
 {
     QStringList selectableLanguages;
 
-    const auto languageOptions = Constants::Application::languages();
+    auto languageOptions = Constants::Application::supportedLanguages();
+
+    // Add UI languages so that the user can switch back to the original language,
+    // even though it might not be supported by Heimer, it might be supported by Qt
+    for (auto && uiLanguage : uiLanguages()) {
+        languageOptions.insert(uiLanguage.toStdString());
+    }
+
     std::transform(languageOptions.begin(), languageOptions.end(),
                    std::back_inserter(selectableLanguages),
                    [](const std::string & language) {
@@ -121,7 +144,7 @@ QStringList LanguageService::selectableLanguages() const
 
 QStringList LanguageService::selectableLanguagesWithoutActiveLanguage() const
 {
-    auto languageOptions = Constants::Application::languages();
+    auto languageOptions = Constants::Application::supportedLanguages();
     languageOptions.erase(m_activeLanguage.toStdString());
     QStringList selectableLanguages;
 

@@ -17,6 +17,7 @@
 
 #include "../../../application/application_service.hpp"
 #include "../../../application/control_strategy.hpp"
+#include "../../../application/language_service.hpp"
 #include "../../../application/recent_files_manager.hpp"
 #include "../../../application/service_container.hpp"
 #include "../../../application/state_machine.hpp"
@@ -33,19 +34,23 @@ namespace Menus {
 
 static const auto TAG = "MainMenu";
 
-MainMenu::MainMenu()
-  : m_connectSelectedNodesAction(new QAction(tr("Connect selected nodes"), this))
-  , m_disconnectSelectedNodesAction(new QAction(tr("Disconnect selected nodes"), this))
-  , m_undoAction(new QAction(tr("Undo"), this))
-  , m_redoAction(new QAction(tr("Redo"), this))
-  , m_saveAction(new QAction(tr("&Save"), this))
-  , m_saveAsAction(new QAction(tr("&Save as") + Constants::Misc::threeDots(), this))
-
+void MainMenu::createComponents()
 {
+    m_connectSelectedNodesAction = new QAction { tr("Connect selected nodes"), this };
+
+    m_disconnectSelectedNodesAction = new QAction { tr("Disconnect selected nodes"), this };
+
+    m_undoAction = new QAction { tr("Undo"), this };
+    m_redoAction = new QAction { tr("Redo"), this };
+
+    m_saveAction = new QAction { tr("&Save"), this };
+    m_saveAsAction = new QAction { tr("&Save as") + Constants::Misc::threeDots(), this };
 }
 
 void MainMenu::initialize()
 {
+    createComponents();
+
     createFileMenu();
 
     createEditMenu();
@@ -53,6 +58,21 @@ void MainMenu::initialize()
     createViewMenu();
 
     createHelpMenu();
+
+    createLanguageMenu();
+}
+
+void MainMenu::changeEvent(QEvent * event)
+{
+    if (event->type() == QEvent::LanguageChange) {
+        retranslate();
+    }
+}
+
+void MainMenu::retranslate()
+{
+    clear();
+    initialize();
 }
 
 void MainMenu::addConnectSelectedNodesAction(QMenu & menu)
@@ -313,6 +333,23 @@ void MainMenu::createFileMenu()
     connect(fileMenu, &QMenu::aboutToShow, this, [=] {
         recentFilesMenuAction->setEnabled(SC::instance().recentFilesManager()->hasRecentFiles());
     });
+}
+
+void MainMenu::createLanguageMenu()
+{
+    m_languageMenuBar = !m_languageMenuBar ? new QMenuBar { this } : m_languageMenuBar;
+    m_languageMenuBar->clear();
+
+    const auto languageService = SC::instance().languageService();
+    const auto languageMenu = m_languageMenuBar->addMenu(languageService->activeLanguage().toUpper());
+    for (auto && language : languageService->selectableLanguagesWithoutActiveLanguage()) {
+        const auto languageAction = new QAction { language.toUpper(), this };
+        languageMenu->addAction(languageAction);
+        connect(languageAction, &QAction::triggered, this, [=] {
+            languageService->setActiveLanguage(language);
+        });
+    }
+    setCornerWidget(m_languageMenuBar, Qt::TopRightCorner);
 }
 
 void MainMenu::createMirrorSubMenu(QMenu & editMenu)

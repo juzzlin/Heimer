@@ -43,7 +43,7 @@ QString fileExtension();
 
 using LanguageSet = std::set<std::string>;
 
-LanguageSet languages();
+LanguageSet supportedLanguages();
 
 QString qSettingsCompanyName();
 

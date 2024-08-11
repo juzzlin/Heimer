@@ -31,8 +31,6 @@ class MainMenu : public QMenuBar
     Q_OBJECT
 
 public:
-    MainMenu();
-
     void initialize();
 
     bool isFullScreenActionChecked() const;
@@ -70,6 +68,9 @@ signals:
 
     void whatsNewDialogRequested();
 
+protected:
+    void changeEvent(QEvent * event) override;
+
 private:
     void addConnectSelectedNodesAction(QMenu & menu);
 
@@ -78,6 +79,8 @@ private:
     void addRedoAction(QMenu & menu);
 
     void addUndoAction(QMenu & menu);
+
+    void createComponents();
 
     void createColorSubMenu(QMenu & editMenu);
 
@@ -89,9 +92,13 @@ private:
 
     void createHelpMenu();
 
+    void createLanguageMenu();
+
     void createMirrorSubMenu(QMenu & editMenu);
 
     void createViewMenu();
+
+    void retranslate();
 
     QAction * m_connectSelectedNodesAction = nullptr;
 
@@ -106,6 +113,8 @@ private:
     QAction * m_saveAction = nullptr;
 
     QAction * m_saveAsAction = nullptr;
+
+    QMenuBar * m_languageMenuBar = nullptr;
 };
 
 } // namespace Menus

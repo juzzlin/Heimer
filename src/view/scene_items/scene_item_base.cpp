@@ -14,6 +14,8 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
 #include "scene_item_base.hpp"
+#include "application/language_service.hpp"
+#include "application/service_container.hpp"
 
 namespace SceneItems {
 
@@ -21,6 +23,7 @@ SceneItemBase::SceneItemBase()
   : m_opacityAnimation(this, "opacity")
   , m_scaleAnimation(this, "scale")
 {
+    connect(ServiceContainer::instance().languageService().get(), &LanguageService::activeLanguageChanged, this, &SceneItemBase::retranslate);
 }
 
 void SceneItemBase::appearWithAnimation()
@@ -105,6 +108,10 @@ void SceneItemBase::setAnimationOpacity(qreal animationOpacity)
 qreal SceneItemBase::targetScale() const
 {
     return m_targetScale;
+}
+
+void SceneItemBase::retranslate()
+{
 }
 
 SceneItemBase::~SceneItemBase() = default;

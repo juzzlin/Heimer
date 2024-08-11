@@ -22,6 +22,7 @@
 
 class QCheckBox;
 class QDoubleSpinBox;
+class QEvent;
 class QFont;
 class QLineEdit;
 class QPushButton;
@@ -78,6 +79,9 @@ signals:
 
     void textSizeChanged(int value);
 
+protected:
+    void changeEvent(QEvent * event) override;
+
 private:
     QWidgetAction * createCornerRadiusAction();
 
@@ -92,6 +96,14 @@ private:
     QWidgetAction * createSearchAction();
 
     QWidgetAction * createTextSizeAction();
+
+    void addActions();
+
+    void createComponents();
+
+    void initialize();
+
+    void retranslate();
 
     QCheckBox * m_autoSnapCheckBox = nullptr;
 

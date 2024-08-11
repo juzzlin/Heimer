@@ -49,12 +49,9 @@
 static const auto TAG = "MainWindow";
 
 MainWindow::MainWindow()
-  : m_aboutDlg(new Dialogs::AboutDialog(this))
-  , m_settingsDlg(new Dialogs::SettingsDialog(this))
-  , m_spinnerDlg(new Dialogs::SpinnerDialog(this))
+  : m_spinnerDlg(new Dialogs::SpinnerDialog(this))
   , m_mainMenu(new Menus::MainMenu)
   , m_toolBar(new Menus::ToolBar)
-  , m_whatsNewDlg(new Dialogs::WhatsNewDialog(this))
   , m_statusText(new QLabel(this))
 {
     addToolBar(Qt::BottomToolBarArea, m_toolBar);
@@ -64,10 +61,6 @@ MainWindow::MainWindow()
     setMenuBar(m_mainMenu);
 
     connectMainMenu();
-
-    connect(m_settingsDlg, &Dialogs::SettingsDialog::shadowEffectChanged, this, &MainWindow::shadowEffectChanged);
-
-    connect(m_settingsDlg, &Dialogs::SettingsDialog::autosaveEnabled, this, &MainWindow::autosaveEnabled);
 
     m_statusText->setOpenExternalLinks(true);
 
@@ -81,7 +74,9 @@ void MainWindow::changeFont(const QFont & font)
 
 void MainWindow::connectMainMenu()
 {
-    connect(m_mainMenu, &Menus::MainMenu::aboutDialogRequested, m_aboutDlg, &Dialogs::AboutDialog::exec);
+    connect(m_mainMenu, &Menus::MainMenu::aboutDialogRequested, this, [] {
+        Dialogs::AboutDialog {}.exec();
+    });
 
     connect(m_mainMenu, &Menus::MainMenu::aboutQtDialogRequested, this, [=] {
         QMessageBox::aboutQt(this, tr("About Qt"));
@@ -99,7 +94,12 @@ void MainWindow::connectMainMenu()
         }
     });
 
-    connect(m_mainMenu, &Menus::MainMenu::settingsDialogRequested, m_settingsDlg, &Dialogs::SettingsDialog::exec);
+    connect(m_mainMenu, &Menus::MainMenu::settingsDialogRequested, this, [=] {
+        Dialogs::SettingsDialog settingsDialog;
+        connect(&settingsDialog, &Dialogs::SettingsDialog::shadowEffectChanged, this, &MainWindow::shadowEffectChanged);
+        connect(&settingsDialog, &Dialogs::SettingsDialog::autosaveEnabled, this, &MainWindow::autosaveEnabled);
+        settingsDialog.exec();
+    });
 
     connect(m_mainMenu, &Menus::MainMenu::zoomInRequested, this, &MainWindow::zoomInRequested);
 
@@ -108,8 +108,9 @@ void MainWindow::connectMainMenu()
     connect(m_mainMenu, &Menus::MainMenu::zoomToFitRequested, this, &MainWindow::zoomToFitRequested);
 
     connect(m_mainMenu, &Menus::MainMenu::whatsNewDialogRequested, this, [=] {
-        m_whatsNewDlg->resize(3 * width() / 5, 3 * height() / 5);
-        m_whatsNewDlg->exec();
+        Dialogs::WhatsNewDialog whatsNewDialog;
+        whatsNewDialog.resize(3 * width() / 5, 3 * height() / 5);
+        whatsNewDialog.exec();
     });
 }
 

@@ -30,11 +30,6 @@ class ImageManager;
 class MainWindow;
 class VersionChecker;
 
-namespace Dialogs::Export {
-class PngExportDialog;
-class SvgExportDialog;
-} // namespace Dialogs::Export
-
 class Application : public QObject
 {
     Q_OBJECT
@@ -124,10 +119,6 @@ private:
     QString m_mindMapFile;
 
     EditorView * m_editorView = nullptr;
-
-    Dialogs::Export::PngExportDialog * m_pngExportDialog = nullptr;
-
-    Dialogs::Export::SvgExportDialog * m_svgExportDialog = nullptr;
 
     VersionChecker * m_versionChecker;
 };

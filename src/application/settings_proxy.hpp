@@ -108,6 +108,10 @@ public:
 
     void setFont(const QFont & font);
 
+    QString userLanguage() const;
+
+    void setUserLanguage(const QString & language);
+
 private:
     SettingsProxy(const SettingsProxy & other) = delete;
 
@@ -144,6 +148,8 @@ private:
     const QString m_shadowEffectShadowColorSettingKey = "shadowEffectShadowColor";
 
     const QString m_shadowEffectSelectedItemShadowColorSettingKey = "shadowEffectSelectedItemShadowColor";
+
+    const QString m_userLanguageSettingKey = "userLanguage";
 
     const QString m_optimizeShadowEffectsSettingKey = "optimizeShadowEffects";
 
@@ -188,6 +194,8 @@ private:
     ShadowEffectParams m_shadowEffectParams;
 
     bool m_optimizeShadowEffects = true;
+
+    QString m_userLanguage;
 };
 
 #endif // SETTINGS_PROXY_HPP

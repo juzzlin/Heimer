@@ -80,12 +80,6 @@ void Application::connectComponents()
     connect(m_mainWindow.get(), &MainWindow::actionTriggered, m_stateMachine, &StateMachine::calculateState);
     connect(m_stateMachine, &StateMachine::stateChanged, this, &Application::runState);
 
-    connect(m_pngExportDialog, &Dialogs::Export::PngExportDialog::pngExportRequested, m_serviceContainer->applicationService().get(), &ApplicationService::exportToPng);
-    connect(m_svgExportDialog, &Dialogs::Export::SvgExportDialog::svgExportRequested, m_serviceContainer->applicationService().get(), &ApplicationService::exportToSvg);
-
-    connect(m_serviceContainer->applicationService().get(), &ApplicationService::pngExportFinished, m_pngExportDialog, &Dialogs::Export::PngExportDialog::finishExport);
-    connect(m_serviceContainer->applicationService().get(), &ApplicationService::svgExportFinished, m_svgExportDialog, &Dialogs::Export::SvgExportDialog::finishExport);
-
     connect(m_mainWindow.get(), &MainWindow::gridVisibleChanged, m_editorView, [this](int state) {
         bool visible = state == Qt::Checked;
         m_editorView->setGridVisible(visible);
@@ -100,11 +94,6 @@ void Application::instantiateComponents()
     m_editorView = new EditorView;
     m_editorView->setParent(m_mainWindow.get());
     m_serviceContainer->applicationService()->setEditorView(*m_editorView);
-
-    // Use raw pointers because the dialogs are parented to m_mainWindow which takes
-    // the ownership and handles deletion.
-    m_pngExportDialog = new Dialogs::Export::PngExportDialog { *m_mainWindow };
-    m_svgExportDialog = new Dialogs::Export::SvgExportDialog { *m_mainWindow };
 }
 
 void Application::instantiateAndConnectComponents()
@@ -154,7 +143,7 @@ void Application::initializeTranslations()
 std::string Application::buildAvailableLanguagesHelpString() const
 {
     QStringList languageHelpStrings;
-    for (auto && language : Constants::Application::languages()) {
+    for (auto && language : Constants::Application::supportedLanguages()) {
         languageHelpStrings << language.c_str();
     }
     return languageHelpStrings.join(", ").toStdString() + ".";
@@ -178,10 +167,10 @@ void Application::parseArgs(int argc, char ** argv)
 
     ae.addOption(
       { "--lang" }, [this](std::string value) {
-          if (!Constants::Application::languages().count(value)) {
+          if (!Constants::Application::supportedLanguages().count(value)) {
               L(TAG).error() << "Unsupported language: '" << value << "'";
           } else {
-              m_serviceContainer->languageService()->setUserLanguage(value.c_str());
+              m_serviceContainer->languageService()->setCommandLineLanguage(value.c_str());
           }
       },
       false, "Force language: " + buildAvailableLanguagesHelpString());
@@ -425,9 +414,14 @@ void Application::showImageFileDialog()
 
 void Application::showPngExportDialog()
 {
-    m_pngExportDialog->setCurrentMindMapFileName(m_serviceContainer->applicationService()->fileName());
-    m_pngExportDialog->setDefaultImageSize(m_serviceContainer->applicationService()->calculateExportImageSize());
-    m_pngExportDialog->exec();
+    Dialogs::Export::PngExportDialog pngExportDialog { *m_mainWindow };
+
+    connect(&pngExportDialog, &Dialogs::Export::PngExportDialog::pngExportRequested, m_serviceContainer->applicationService().get(), &ApplicationService::exportToPng);
+    connect(m_serviceContainer->applicationService().get(), &ApplicationService::pngExportFinished, &pngExportDialog, &Dialogs::Export::PngExportDialog::finishExport);
+
+    pngExportDialog.setCurrentMindMapFileName(m_serviceContainer->applicationService()->fileName());
+    pngExportDialog.setDefaultImageSize(m_serviceContainer->applicationService()->calculateExportImageSize());
+    pngExportDialog.exec();
 
     // Doesn't matter if canceled or not
     emit actionTriggered(StateMachine::Action::PngExported);
@@ -435,8 +429,13 @@ void Application::showPngExportDialog()
 
 void Application::showSvgExportDialog()
 {
-    m_svgExportDialog->setCurrentMindMapFileName(m_serviceContainer->applicationService()->fileName());
-    m_svgExportDialog->exec();
+    Dialogs::Export::SvgExportDialog svgExportDialog { *m_mainWindow };
+
+    connect(&svgExportDialog, &Dialogs::Export::SvgExportDialog::svgExportRequested, m_serviceContainer->applicationService().get(), &ApplicationService::exportToSvg);
+    connect(m_serviceContainer->applicationService().get(), &ApplicationService::svgExportFinished, &svgExportDialog, &Dialogs::Export::SvgExportDialog::finishExport);
+
+    svgExportDialog.setCurrentMindMapFileName(m_serviceContainer->applicationService()->fileName());
+    svgExportDialog.exec();
 
     // Doesn't matter if canceled or not
     emit actionTriggered(StateMachine::Action::SvgExported);

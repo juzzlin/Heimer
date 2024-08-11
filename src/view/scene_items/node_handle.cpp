@@ -94,6 +94,11 @@ void NodeHandle::hoverMoveEvent(QGraphicsSceneHoverEvent * event)
     QGraphicsItem::hoverMoveEvent(event);
 }
 
+void NodeHandle::retranslate()
+{
+    setToolTip(getToolTipTextByRole(m_role));
+}
+
 void NodeHandle::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
     Q_UNUSED(widget)

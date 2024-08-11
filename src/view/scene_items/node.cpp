@@ -17,6 +17,7 @@
 
 #include "../../../common/test_mode.hpp"
 #include "../../application/application_service.hpp"
+#include "../../application/language_service.hpp"
 #include "../../application/service_container.hpp"
 #include "../../application/settings_proxy.hpp"
 #include "../../common/constants.hpp"

@@ -21,7 +21,6 @@
 #include "../grid.hpp"
 #include "../mouse_action.hpp"
 #include "../node_action.hpp"
-#include "../scene_items/node.hpp"
 
 #include "simple_logger.hpp"
 
@@ -31,115 +30,197 @@ namespace Menus {
 
 static const auto TAG = "MainContextMenu";
 
-MainContextMenu::MainContextMenu(QWidget * parent, Grid & grid)
-  : QMenu(parent)
-  , m_copyNodeAction(new QAction(tr("Copy node"), this))
-  , m_pasteNodeAction(new QAction(tr("Paste node"), this))
+MainContextMenu::MainContextMenu(QWidget * parent, const Grid & grid)
+  : QMenu { parent }
+  , m_grid { grid }
+{
+    addGlobalShortcutsToParent(*parent);
+
+    initialize();
+}
+
+void MainContextMenu::addGlobalShortcutsToParent(QWidget & parent)
+{
+    m_copyNodeShortcut = new QShortcut { m_copyNodeSequence, &parent };
+
+    m_pasteNodeShortcut = new QShortcut { m_pasteNodeSequence, &parent };
+
+    m_createNodeShortcut = new QShortcut { m_createNodeSequence, &parent };
+
+    m_deleteNodesAndEdgesShortCut = new QShortcut { m_deleteNodeSequence, &parent };
+}
+
+void MainContextMenu::initialize()
+{
+    m_mainContextMenuActions.clear();
+
+    createActions(m_grid);
+
+    populateWithActions();
+}
+
+void MainContextMenu::createActions(const Grid & grid)
+{
+    createCopyNodeAction();
+
+    createPasteNodeAction();
+
+    createNodeCreationActions(grid);
+
+    createNodeDeletionActions();
+
+    createImageActions();
+}
+
+void MainContextMenu::populateWithActions()
+{
+    addAction(m_createNodeAction);
+
+    addSeparator();
+
+    addAction(m_copyNodeAction);
+
+    addAction(m_pasteNodeAction);
+
+    addSeparator();
+
+    m_colorMenuAction = addMenu(&createColorSubMenu());
+
+    addAction(m_deleteNodeAction);
+
+    addSeparator();
+
+    addAction(m_attachImageAction);
+
+    addAction(m_removeImageAction);
+}
+
+void MainContextMenu::changeEvent(QEvent * event)
+{
+    if (event->type() == QEvent::LanguageChange) {
+        retranslate();
+    }
+}
+
+void MainContextMenu::retranslate()
+{
+    clear();
+
+    initialize();
+}
+
+void MainContextMenu::createCopyNodeAction()
 {
     // Here we add a shortcut to the context menu action. However, the action cannot be triggered unless the context menu
     // is open. As a "solution" we create another shortcut and add it to the parent widget.
-    const auto copyNodeSequence = QKeySequence(QKeySequence::Copy);
-    m_copyNodeAction->setShortcut(copyNodeSequence);
-    const auto copyNodeShortCut = new QShortcut(copyNodeSequence, parent);
-    connect(copyNodeShortCut, &QShortcut::activated, m_copyNodeAction, &QAction::trigger);
+    m_copyNodeAction = new QAction { tr("Copy node"), this };
+    m_copyNodeAction->setShortcut(m_copyNodeSequence);
+
+    connect(m_copyNodeShortcut, &QShortcut::activated, m_copyNodeAction, &QAction::trigger);
     connect(m_copyNodeAction, &QAction::triggered, this, [] {
         juzzlin::L(TAG).debug() << "Copy node triggered";
         SC::instance().applicationService()->performNodeAction({ NodeAction::Type::Copy });
     });
     m_mainContextMenuActions[Mode::All].push_back(m_copyNodeAction);
+}
 
+void MainContextMenu::createPasteNodeAction()
+{
     // Here we add a shortcut to the context menu action. However, the action cannot be triggered unless the context menu
     // is open. As a "solution" we create another shortcut and add it to the parent widget.
-    const auto pasteNodeSequence = QKeySequence(QKeySequence::Paste);
-    m_pasteNodeAction->setShortcut(pasteNodeSequence);
-    const auto pasteNodeShortCut = new QShortcut(pasteNodeSequence, parent);
-    connect(pasteNodeShortCut, &QShortcut::activated, m_pasteNodeAction, &QAction::trigger);
+    m_pasteNodeAction = new QAction { tr("Paste node"), this };
+    m_pasteNodeAction->setShortcut(m_pasteNodeSequence);
+
+    connect(m_pasteNodeShortcut, &QShortcut::activated, m_pasteNodeAction, &QAction::trigger);
     connect(m_pasteNodeAction, &QAction::triggered, this, [] {
         juzzlin::L(TAG).debug() << "Paste node triggered";
         SC::instance().applicationService()->performNodeAction({ NodeAction::Type::Paste });
     });
     m_mainContextMenuActions[Mode::All].push_back(m_pasteNodeAction);
+}
 
-    const auto setBackgroundColorAction(new QAction(tr("Set background color"), this));
-    connect(setBackgroundColorAction, &QAction::triggered, this, [this] {
-        emit actionTriggered(StateMachine::Action::BackgroundColorChangeRequested);
-    });
-    m_mainContextMenuActions[Mode::Background].push_back(setBackgroundColorAction);
-
-    const auto setEdgeColorAction(new QAction(tr("Set edge color"), this));
-    connect(setEdgeColorAction, &QAction::triggered, this, [this] {
-        emit actionTriggered(StateMachine::Action::EdgeColorChangeRequested);
-    });
-    m_mainContextMenuActions[Mode::Background].push_back(setEdgeColorAction);
-
-    const auto setGridColorAction(new QAction(tr("Set grid color"), this));
-    connect(setGridColorAction, &QAction::triggered, this, [this] {
-        emit actionTriggered(StateMachine::Action::GridColorChangeRequested);
-    });
-    m_mainContextMenuActions[Mode::Background].push_back(setGridColorAction);
-
-    const auto createNodeAction(new QAction(tr("Create floating node"), this));
+void MainContextMenu::createNodeCreationActions(const Grid & grid)
+{
     // Here we add a shortcut to the context menu action. However, the action cannot be triggered unless the context menu
     // is open. As a "solution" we create another shortcut and add it to the parent widget.
-    const auto createNodeSequence = QKeySequence("Ctrl+Shift+F");
-    createNodeAction->setShortcut(createNodeSequence);
-    const auto createNodeShortCut = new QShortcut(createNodeSequence, parent);
-    connect(createNodeShortCut, &QShortcut::activated, this, [this, grid] {
+    m_createNodeAction = new QAction { tr("Create floating node"), this };
+    m_createNodeAction->setShortcut(m_createNodeSequence);
+
+    connect(m_createNodeShortcut, &QShortcut::activated, this, [this, grid] {
         emit newNodeRequested(grid.snapToGrid(SC::instance().applicationService()->mouseAction().mappedPos()));
     });
-    connect(createNodeAction, &QAction::triggered, this, [this, grid] {
+    connect(m_createNodeAction, &QAction::triggered, this, [this, grid] {
         emit newNodeRequested(grid.snapToGrid(SC::instance().applicationService()->mouseAction().clickedScenePos()));
     });
-    m_mainContextMenuActions[Mode::Background].push_back(createNodeAction);
+    m_mainContextMenuActions[Mode::Background].push_back(m_createNodeAction);
+}
 
-    const auto setNodeColorAction(new QAction(tr("Set node color"), this));
-    connect(setNodeColorAction, &QAction::triggered, this, [this] {
-        emit actionTriggered(StateMachine::Action::NodeColorChangeRequested);
-    });
-    m_mainContextMenuActions[Mode::Node].push_back(setNodeColorAction);
-
-    const auto setNodeTextColorAction(new QAction(tr("Set text color"), this));
-    connect(setNodeTextColorAction, &QAction::triggered, this, [this] {
-        emit actionTriggered(StateMachine::Action::TextColorChangeRequested);
-    });
-    m_mainContextMenuActions[Mode::Node].push_back(setNodeTextColorAction);
-
-    const auto deleteNodeAction(new QAction(tr("Delete node"), this));
+void MainContextMenu::createNodeDeletionActions()
+{
     // Here we add a shortcut to the context menu action. However, the action cannot be triggered unless the context menu
     // is open. As a "solution" we create another shortcut and add it to the parent widget.
-    const auto deleteNodeSequence = QKeySequence(QKeySequence::Delete);
-    deleteNodeAction->setShortcut(deleteNodeSequence);
-    const auto deleteNodesAndEdgesShortCut = new QShortcut(deleteNodeSequence, parent);
-    connect(deleteNodesAndEdgesShortCut, &QShortcut::activated, this, [] {
+    m_deleteNodeAction = new QAction { tr("Delete node"), this };
+    m_deleteNodeAction->setShortcut(m_deleteNodeSequence);
+
+    connect(m_deleteNodesAndEdgesShortCut, &QShortcut::activated, this, [] {
         SC::instance().applicationService()->performEdgeAction({ EdgeAction::Type::Delete });
         SC::instance().applicationService()->performNodeAction({ NodeAction::Type::Delete });
     });
-    connect(deleteNodeAction, &QAction::triggered, this, [] {
+    connect(m_deleteNodeAction, &QAction::triggered, this, [] {
         SC::instance().applicationService()->performNodeAction({ NodeAction::Type::Delete });
     });
 
-    m_mainContextMenuActions[Mode::Node].push_back(deleteNodeAction);
+    m_mainContextMenuActions[Mode::Node].push_back(m_deleteNodeAction);
+}
 
-    const auto attachImageAction(new QAction(tr("Attach image..."), this));
-    connect(attachImageAction, &QAction::triggered, this, [this] {
+void MainContextMenu::createImageActions()
+{
+    m_attachImageAction = new QAction { tr("Attach image..."), this };
+    connect(m_attachImageAction, &QAction::triggered, this, [this] {
         emit actionTriggered(StateMachine::Action::ImageAttachmentRequested);
     });
 
-    m_mainContextMenuActions[Mode::Node].push_back(attachImageAction);
+    m_mainContextMenuActions[Mode::Node].push_back(m_attachImageAction);
 
-    m_removeImageAction = new QAction(tr("Remove attached image"), this);
+    m_removeImageAction = new QAction { tr("Remove attached image"), this };
     connect(m_removeImageAction, &QAction::triggered, this, [] {
         SC::instance().applicationService()->performNodeAction({ NodeAction::Type::RemoveAttachedImage });
     });
 
     m_mainContextMenuActions[Mode::Node].push_back(m_removeImageAction);
+}
 
-    // Populate the menu
-    addAction(createNodeAction);
-    addSeparator();
-    addAction(m_copyNodeAction);
-    addAction(m_pasteNodeAction);
-    addSeparator();
+QMenu & MainContextMenu::createColorSubMenu()
+{
+    const auto setBackgroundColorAction { new QAction { tr("Set background color"), this } };
+    connect(setBackgroundColorAction, &QAction::triggered, this, [this] {
+        emit actionTriggered(StateMachine::Action::BackgroundColorChangeRequested);
+    });
+    m_mainContextMenuActions[Mode::Background].push_back(setBackgroundColorAction);
+
+    const auto setEdgeColorAction { new QAction { tr("Set edge color"), this } };
+    connect(setEdgeColorAction, &QAction::triggered, this, [this] {
+        emit actionTriggered(StateMachine::Action::EdgeColorChangeRequested);
+    });
+    m_mainContextMenuActions[Mode::Background].push_back(setEdgeColorAction);
+
+    const auto setGridColorAction { new QAction { tr("Set grid color"), this } };
+    connect(setGridColorAction, &QAction::triggered, this, [this] {
+        emit actionTriggered(StateMachine::Action::GridColorChangeRequested);
+    });
+    m_mainContextMenuActions[Mode::Background].push_back(setGridColorAction);
+
+    const auto setNodeColorAction { new QAction { tr("Set node color"), this } };
+    connect(setNodeColorAction, &QAction::triggered, this, [this] {
+        emit actionTriggered(StateMachine::Action::NodeColorChangeRequested);
+    });
+    m_mainContextMenuActions[Mode::Node].push_back(setNodeColorAction);
+
+    const auto setNodeTextColorAction { new QAction { tr("Set text color"), this } };
+    connect(setNodeTextColorAction, &QAction::triggered, this, [this] {
+        emit actionTriggered(StateMachine::Action::TextColorChangeRequested);
+    });
+    m_mainContextMenuActions[Mode::Node].push_back(setNodeTextColorAction);
 
     const auto colorMenu = new QMenu;
     m_colorMenuAction = addMenu(colorMenu);
@@ -153,10 +234,7 @@ MainContextMenu::MainContextMenu(QWidget * parent, Grid & grid)
     addSeparator();
     colorMenu->addAction(setNodeTextColorAction);
 
-    addAction(deleteNodeAction);
-    addSeparator();
-    addAction(attachImageAction);
-    addAction(m_removeImageAction);
+    return *colorMenu;
 }
 
 void MainContextMenu::setMode(const Mode & mode)

@@ -17,29 +17,30 @@
 #include "../infra/settings.hpp"
 
 SettingsProxy::SettingsProxy()
-  : m_autoload(Settings::Custom::loadAutoload())
-  , m_autosave(Settings::Custom::loadAutosave())
-  , m_backgroundColor(Settings::Generic::getColor(m_defaultsSettingGroup, m_backgroundColorSettingKey, Constants::MindMap::defaultBackgroundColor()))
-  , m_edgeColor(Settings::Generic::getColor(m_defaultsSettingGroup, m_edgeColorSettingKey, Constants::MindMap::defaultEdgeColor()))
-  , m_gridColor(Settings::Generic::getColor(m_defaultsSettingGroup, m_gridColorSettingKey, Constants::MindMap::defaultGridColor()))
-  , m_nodeColor(Settings::Generic::getColor(m_defaultsSettingGroup, m_nodeColorSettingKey, Constants::MindMap::defaultNodeColor()))
-  , m_nodeTextColor(Settings::Generic::getColor(m_defaultsSettingGroup, m_nodeTextColorSettingKey, Constants::MindMap::defaultNodeTextColor()))
-  , m_edgeArrowMode(Settings::Custom::loadEdgeArrowMode(SceneItems::EdgeModel::ArrowMode::Single))
-  , m_arrowSize(Settings::Generic::getNumber(m_defaultsSettingGroup, m_arrowSizeSettingKey, Constants::Settings::defaultArrowSize()))
-  , m_edgeWidth(Settings::Generic::getNumber(m_defaultsSettingGroup, m_edgeWidthSettingKey, Constants::Settings::defaultEdgeWidth()))
-  , m_invertedControls(Settings::Generic::getBoolean(m_editingSettingGroup, m_invertedControlsSettingKey, false))
-  , m_reversedEdgeDirection(Settings::Custom::loadReversedEdgeDirection(false))
-  , m_raiseNodeOnMouseHover(Settings::Generic::getBoolean(m_editingSettingGroup, m_raiseNodeOnMouseHoverKey, true))
-  , m_selectNodeGroupByIntersection(Settings::Custom::loadSelectNodeGroupByIntersection())
-  , m_textSize(static_cast<int>(Settings::Generic::getNumber(m_defaultsSettingGroup, m_textSizeSettingKey, Constants::MindMap::defaultTextSize())))
-  , m_font(Settings::Generic::getFont(m_defaultsSettingGroup, m_fontSettingKey, {}))
-  , m_shadowEffectParams(
+  : m_autoload { Settings::Custom::loadAutoload() }
+  , m_autosave { Settings::Custom::loadAutosave() }
+  , m_backgroundColor { Settings::Generic::getColor(m_defaultsSettingGroup, m_backgroundColorSettingKey, Constants::MindMap::defaultBackgroundColor()) }
+  , m_edgeColor { Settings::Generic::getColor(m_defaultsSettingGroup, m_edgeColorSettingKey, Constants::MindMap::defaultEdgeColor()) }
+  , m_gridColor { Settings::Generic::getColor(m_defaultsSettingGroup, m_gridColorSettingKey, Constants::MindMap::defaultGridColor()) }
+  , m_nodeColor { Settings::Generic::getColor(m_defaultsSettingGroup, m_nodeColorSettingKey, Constants::MindMap::defaultNodeColor()) }
+  , m_nodeTextColor { Settings::Generic::getColor(m_defaultsSettingGroup, m_nodeTextColorSettingKey, Constants::MindMap::defaultNodeTextColor()) }
+  , m_edgeArrowMode { Settings::Custom::loadEdgeArrowMode(SceneItems::EdgeModel::ArrowMode::Single) }
+  , m_arrowSize { Settings::Generic::getNumber(m_defaultsSettingGroup, m_arrowSizeSettingKey, Constants::Settings::defaultArrowSize()) }
+  , m_edgeWidth { Settings::Generic::getNumber(m_defaultsSettingGroup, m_edgeWidthSettingKey, Constants::Settings::defaultEdgeWidth()) }
+  , m_invertedControls { Settings::Generic::getBoolean(m_editingSettingGroup, m_invertedControlsSettingKey, false) }
+  , m_reversedEdgeDirection { Settings::Custom::loadReversedEdgeDirection(false) }
+  , m_raiseNodeOnMouseHover { Settings::Generic::getBoolean(m_editingSettingGroup, m_raiseNodeOnMouseHoverKey, true) }
+  , m_selectNodeGroupByIntersection { Settings::Custom::loadSelectNodeGroupByIntersection() }
+  , m_textSize { static_cast<int>(Settings::Generic::getNumber(m_defaultsSettingGroup, m_textSizeSettingKey, Constants::MindMap::defaultTextSize())) }
+  , m_font { Settings::Generic::getFont(m_defaultsSettingGroup, m_fontSettingKey, {}) }
+  , m_shadowEffectParams {
       static_cast<int>(Settings::Generic::getNumber(m_effectsSettingGroup, m_shadowEffectOffsetSettingKey, Constants::Settings::defaultShadowEffectOffset())),
       static_cast<int>(Settings::Generic::getNumber(m_effectsSettingGroup, m_shadowEffectNormalBlurRadiusSettingKey, Constants::Settings::defaultShadowEffectBlurRadius())),
       static_cast<int>(Settings::Generic::getNumber(m_effectsSettingGroup, m_shadowEffectSelectedItemBlurRadiusSettingKey, Constants::Settings::defaultSelectedItemShadowEffectBlurRadius())),
       Settings::Generic::getColor(m_effectsSettingGroup, m_shadowEffectShadowColorSettingKey, Constants::Settings::defaultShadowEffectShadowColor()),
-      Settings::Generic::getColor(m_effectsSettingGroup, m_shadowEffectSelectedItemShadowColorSettingKey, Constants::Settings::defaultShadowEffectSelectedItemShadowColor()))
-  , m_optimizeShadowEffects(Settings::Generic::getBoolean(m_effectsSettingGroup, m_optimizeShadowEffectsSettingKey, true))
+      Settings::Generic::getColor(m_effectsSettingGroup, m_shadowEffectSelectedItemShadowColorSettingKey, Constants::Settings::defaultShadowEffectSelectedItemShadowColor())
+  }
+  , m_optimizeShadowEffects { Settings::Generic::getBoolean(m_effectsSettingGroup, m_optimizeShadowEffectsSettingKey, true) }
 {
 }
 

@@ -368,7 +368,7 @@
     <message>
         <location filename="../view/dialogs/editing_tab.cpp" line="33"/>
         <source>Raise node on mouse hover</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Solleva il nodo al passaggio del mouse</translation>
     </message>
     <message>
         <location filename="../view/dialogs/editing_tab.cpp" line="61"/>
@@ -378,7 +378,7 @@
     <message>
         <location filename="../view/dialogs/editing_tab.cpp" line="64"/>
         <source>Moving mouse cursor on a zoomed-out node will raise it for easier editing.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Spostando il cursore del mouse su un nodo ingrandito, questo verrà sollevato per facilitarne la modifica.</translation>
     </message>
     <message>
         <location filename="../view/dialogs/editing_tab.cpp" line="67"/>
@@ -766,7 +766,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="vanished">Cancella</translation>
+        <translation type="vanished">Annulla</translation>
     </message>
     <message>
         <source>Optimize</source>
@@ -1439,7 +1439,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="vanished">Cancella</translation>
+        <translation type="vanished">Annulla</translation>
     </message>
     <message>
         <source>Export</source>
@@ -1547,7 +1547,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="vanished">Cancella</translation>
+        <translation type="vanished">Annulla</translation>
     </message>
     <message>
         <source>Export</source>

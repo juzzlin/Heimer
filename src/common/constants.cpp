@@ -57,7 +57,7 @@ QString fileExtension()
 
 LanguageSet supportedLanguages()
 {
-    return { "de", "en", "es", "eu", "fi", "fr", "it", "nl", "zh" };
+    return { "de", "en", "es", "eu", "fi", "fr", "it", "pt_Br", "pt_Pt", "nl", "zh" };
 }
 
 QString qSettingsCompanyName()

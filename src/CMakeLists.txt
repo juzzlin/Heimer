@@ -7,7 +7,7 @@ include_directories(contrib/Argengine/src)
 set(HEIMER_SRC_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Translation files in src/translations (without .ts)
-set(TS heimer_de heimer_en heimer_es heimer_eu heimer_fi heimer_fr heimer_it heimer_nl heimer_zh)
+set(TS heimer_de heimer_en heimer_es heimer_eu heimer_fi heimer_fr heimer_it heimer_nl heimer_pt_Br heimer_pt_Pt heimer_zh)
 set(TS_FILES)
 set(QM_FILES)
 foreach(TS_FILE ${TS})
@@ -267,7 +267,7 @@ else()
         get_filename_component(TS_FILE_NAME ${TS_FILE} NAME)
         add_custom_command(
             TARGET update_translations
-            COMMAND ${LUPDATE_EXECUTABLE}
+            COMMAND ${LUPDATE_EXECUTABLE} -locations none -no-ui-lines -no-obsolete
             ARGS ${HEIMER_LIB_SRC} -ts ${TS_FILE}
             COMMENT "Updating translation source ${TS_FILE_NAME}"
         )

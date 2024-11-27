@@ -8,6 +8,8 @@
         <file>heimer_fr.qm</file>
         <file>heimer_it.qm</file>
         <file>heimer_nl.qm</file>
+        <file>heimer_pt_Br.qm</file>
+        <file>heimer_pt_Pt.qm</file>
         <file>heimer_zh.qm</file>
     </qresource>
 </RCC>

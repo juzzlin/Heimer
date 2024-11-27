@@ -12,6 +12,8 @@ New features:
 
 * Add basque translation (eu)
 
+* Add Portuguese translation (pt_Pt, pt_Br)
+
 * Make zoom-to-fit take possibly selected nodes into account
 
 * Fix GitHub Issue #165: Keep node handles usable

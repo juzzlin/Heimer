@@ -5,6 +5,19 @@ Release date:
 
 New features:
 
+Bug fixes:
+
+Other:
+
+4.5.0
+=====
+
+Release date:
+
+Sun, 16 Mar 2025 12:04:52 +0200
+
+New features:
+
 * Add a language menu
   - The active Language can be now set via a menu at the top-right corner
   - The selected language will saved and automatically loaded again
@@ -33,8 +46,6 @@ Bug fixes:
 * Fix GitHub Issue #259: 2 build errors in Windows
 
 * Fix very slow node insertion on large mind maps
-
-Other:
 
 4.4.0
 =====

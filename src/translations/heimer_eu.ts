@@ -178,7 +178,7 @@
     </message>
     <message>
         <source>Raise node on mouse hover</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nabarmendu nodoa sagua gainetik pasatzean</translation>
     </message>
     <message>
         <source>The rectangle selection will select nodes also by intersection instead of inclusion only.</source>
@@ -186,11 +186,11 @@
     </message>
     <message>
         <source>Moving mouse cursor on a zoomed-out node will raise it for easier editing.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sagua nodoaren gainetik pasatzean nodoa handituko da edizioa errazteko.</translation>
     </message>
     <message>
         <source>File Operations</source>
-        <translation type="unfinished">Fitxategi ekintzak</translation>
+        <translation type="unfinished">Fitxategi-ekintzak</translation>
     </message>
     <message>
         <source>Controls</source>
@@ -198,7 +198,7 @@
     </message>
     <message>
         <source>Scroll the view with a modifier key pressed and select a group of items without a modifier key being pressed.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Korritu pantaila tekla aldatzaile bat sakatuta eta hautatu elementu multzo bat tekla aldatzailerik sakatu gabe.</translation>
     </message>
     <message>
         <source>Inverted controls</source>
@@ -217,7 +217,7 @@
     </message>
     <message>
         <source>Optimize shadow effects</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Optimizatu itzal-efektuak</translation>
     </message>
     <message>
         <source>Shadows</source>
@@ -229,22 +229,22 @@
     </message>
     <message>
         <source>Shadow blur radius:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Itzal lausoaren erradioa</translation>
     </message>
     <message>
         <source>Selected item shadow blur radius:</source>
-        <translation type="unfinished">Itzala lausotzeko erradioa:</translation>
+        <translation type="unfinished">Hautatutako elementuaren itzal lausoaren erradioa:</translation>
     </message>
     <message>
         <source>Optimizing shadow effects makes the performance better, but might introduce some visual glitches.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Itzal-efektuak optimizatzeak errendimendua hobetzen du, baina ikusizko akats teknikoak sor ditzake</translation>
     </message>
 </context>
 <context>
     <name>Dialogs::Export::PngExportDialog</name>
     <message>
         <source>Export to PNG Image</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Esportatu PNG gisa</translation>
     </message>
     <message>
         <source>Export As</source>
@@ -584,7 +584,7 @@
     </message>
     <message>
         <source>&amp;Open</source>
-        <translation type="unfinished">&amp;Abrir</translation>
+        <translation type="unfinished">&amp;Ireki</translation>
     </message>
     <message>
         <source>Recent &amp;Files</source>
@@ -596,7 +596,7 @@
     </message>
     <message>
         <source>&amp;Quit</source>
-        <translation type="unfinished">&amp;Salir</translation>
+        <translation type="unfinished">&amp;Irten</translation>
     </message>
     <message>
         <source>&amp;Mirror layout</source>
@@ -663,7 +663,7 @@
     </message>
     <message>
         <source>Copy style from parent node on drag</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Arrastatzean kopiatu gurasoaren estiloa</translation>
     </message>
     <message>
         <source>Automatically snap existing nodes to the grid when grid size changes</source>
@@ -675,7 +675,7 @@
     </message>
     <message>
         <source>Arrow size:</source>
-        <translation type="unfinished">Geziaren tamaina:</translation>
+        <translation type="unfinished">Gezi-puntaren tamaina:</translation>
     </message>
     <message>
         <source>Edge width:</source>

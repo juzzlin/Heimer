@@ -64,6 +64,7 @@ public:
         EpochMilliseconds,
         EpochMicroseconds,
         ISODateTime,
+        ISODateTimeMilliseconds,
         Custom
     };
 

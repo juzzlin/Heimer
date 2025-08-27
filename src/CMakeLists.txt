@@ -248,7 +248,7 @@ else()
     set(ALL_SOURCE_FILES ${HEIMER_LIB_SRC} ${HEIMER_LIB_HDR} ${APP_SRC})
     foreach(SOURCE_FILE ${ALL_SOURCE_FILES})
         add_custom_command(
-            TARGET style
+            TARGET style POST_BUILD
             COMMAND ${CLANG_FORMAT_EXECUTABLE} -i ${SOURCE_FILE}
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             COMMENT "Formatting ${SOURCE_FILE} with clang-format"
@@ -266,7 +266,7 @@ else()
     foreach(TS_FILE ${TS_FILES})
         get_filename_component(TS_FILE_NAME ${TS_FILE} NAME)
         add_custom_command(
-            TARGET update_translations
+            TARGET update_translations POST_BUILD
             COMMAND ${LUPDATE_EXECUTABLE} -locations none -no-ui-lines -no-obsolete
             ARGS ${HEIMER_LIB_SRC} -ts ${TS_FILE}
             COMMENT "Updating translation source ${TS_FILE_NAME}"

@@ -1,30 +1,33 @@
 pipeline {
-    agent any
+    agent none
     stages {
-        stage('CMake Debug build') {
-            agent {
-                docker {
-                    image 'juzzlin/qt5-18.04:latest'
-                    args '--privileged -t -v $WORKSPACE:/Argengine'
+        stage('Matrix Build') {
+            matrix {
+                axes {
+                    axis {
+                        name 'IMAGE'
+                        values 'qt5-20.04', 'qt6-22.04', 'qt6-24.04'
+                    }
+                    axis {
+                        name 'BUILD_TYPE'
+                        values 'Debug', 'Release'
+                    }
                 }
-            }
-            steps {
-                sh "mkdir -p build-debug"
-                sh "cd build-debug && cmake -DCMAKE_BUILD_TYPE=Debug .."
-                sh "cd build-debug && cmake --build . --target all -- -j3 && ctest"
-            }
-        }
-        stage('CMake Release build') {
-            agent {
-                docker {
-                    image 'juzzlin/qt5-18.04:latest'
-                    args '--privileged -t -v $WORKSPACE:/Argengine'
+                stages {
+                    stage('Build and Test') {
+                        agent any
+                        steps {
+                            script {
+                                docker.image("juzzlin/${IMAGE}:latest").inside('--privileged -t -v $WORKSPACE:/Argengine') {
+                                    def buildDir = "build-${BUILD_TYPE.toLowerCase()}-${IMAGE}"
+                                    sh "mkdir -p ${buildDir}"
+                                    sh "cd ${buildDir} && cmake -GNinja -DCMAKE_BUILD_TYPE=${BUILD_TYPE} .."
+                                    sh "cd ${buildDir} && cmake --build . && ctest"
+                                }
+                            }
+                        }
+                    }
                 }
-            }
-            steps {
-                sh "mkdir -p build-release"
-                sh "cd build-release && cmake -DCMAKE_BUILD_TYPE=Release .."
-                sh "cd build-release && cmake --build . --target all -- -j3 && ctest"
             }
         }
     }

@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2023 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (c) 2024 Jussi Lind <jussi.lind@iki.fi>
 //
 // https://github.com/juzzlin/Argengine
 //
@@ -37,7 +37,7 @@ using juzzlin::Argengine;
 
 const auto name = "Argengine";
 
-void testConflictingArguments_ConflictingArgumentsGiven_ShouldFail()
+void testOptionGroup_optionsExist_shouldSucceed()
 {
     const auto a1 = "a1";
     const auto a2 = "a2";
@@ -51,7 +51,33 @@ void testConflictingArguments_ConflictingArgumentsGiven_ShouldFail()
     ae.addOption({ a3 }, [&] {
         a3Called = true;
     });
-    ae.addConflictingOptions({ a2, a3 });
+    ae.addOptionGroup({ a2, a3 });
+    std::string error;
+    try {
+        ae.parse();
+    } catch (std::runtime_error & e) {
+        error = e.what();
+    }
+    assert(a2Called);
+    assert(a3Called);
+    assert(error.empty());
+}
+
+void testOptionGroup_optionMissing_shouldFail()
+{
+    const auto a1 = "a1";
+    const auto a2 = "a2";
+    const auto a3 = "a3";
+    Argengine ae({ a1, a3 });
+    bool a2Called {};
+    ae.addOption({ a2 }, [&] {
+        a2Called = true;
+    });
+    bool a3Called {};
+    ae.addOption({ a3 }, [&] {
+        a3Called = true;
+    });
+    ae.addOptionGroup({ a2, a3 });
     std::string error;
     try {
         ae.parse();
@@ -60,36 +86,15 @@ void testConflictingArguments_ConflictingArgumentsGiven_ShouldFail()
     }
     assert(!a2Called);
     assert(!a3Called);
-    assert(error == std::string(name) + ": Conflicting options: '" + a2 + "', '" + a3 + "'. These options cannot coexist.");
+    assert(error == std::string(name) + ": These options must coexist: '" + a2 + "', '" + a3 + "'. Missing options: '" + a2 + "'.");
 }
 
-void testConflictingArguments_ConflictingArgumentsSetButNotEnoughGiven_ShouldSucceed()
-{
-    const auto a1 = "a1";
-    const auto a2 = "a2";
-    const auto a3 = "a2";
-    Argengine ae({ a1, a2 });
-    bool a2Called {};
-    ae.addOption({ a2 }, [&] {
-        a2Called = true;
-    });
-    ae.addConflictingOptions({ a2, a3 });
-    std::string error;
-    try {
-        ae.parse();
-    } catch (std::runtime_error & e) {
-        error = e.what();
-    }
-    assert(a2Called);
-    assert(error.empty());
-}
-
-void testConflictingArguments_ConflictingArgumentsGiven_ShouldNotReferToVariants()
+void testOptionGroup_optionMissing_shouldNotReferToVariants_shouldFail()
 {
     const auto a1 = "a1";
     const auto a2 = "a2";
     const auto a3 = "a3";
-    Argengine ae({ a1, a2, a3 });
+    Argengine ae({ a1, a3 });
     bool a2Called {};
     ae.addOption({ a2, std::string("--") + a2 }, [&] {
         a2Called = true;
@@ -98,7 +103,7 @@ void testConflictingArguments_ConflictingArgumentsGiven_ShouldNotReferToVariants
     ae.addOption({ a3, std::string("--") + a3 }, [&] {
         a3Called = true;
     });
-    ae.addConflictingOptions({ a2, a3 });
+    ae.addOptionGroup({ a2, a3 });
     std::string error;
     try {
         ae.parse();
@@ -107,16 +112,16 @@ void testConflictingArguments_ConflictingArgumentsGiven_ShouldNotReferToVariants
     }
     assert(!a2Called);
     assert(!a3Called);
-    assert(error == std::string(name) + ": Conflicting options: '" + a2 + "', '" + a3 + "'. These options cannot coexist.");
+    assert(error == std::string(name) + ": These options must coexist: '" + a2 + "', '" + a3 + "'. Missing options: '" + a2 + "'.");
 }
 
 int main(int, char **)
 {
-    testConflictingArguments_ConflictingArgumentsGiven_ShouldFail();
+    testOptionGroup_optionsExist_shouldSucceed();
 
-    testConflictingArguments_ConflictingArgumentsSetButNotEnoughGiven_ShouldSucceed();
+    testOptionGroup_optionMissing_shouldFail();
 
-    testConflictingArguments_ConflictingArgumentsGiven_ShouldNotReferToVariants();
+    testOptionGroup_optionMissing_shouldNotReferToVariants_shouldFail();
 
     return EXIT_SUCCESS;
 }

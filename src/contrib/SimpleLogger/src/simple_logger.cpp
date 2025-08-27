@@ -24,6 +24,7 @@
 
 #include "simple_logger.hpp"
 
+#include <array>
 #include <chrono>
 #include <ctime>
 #include <fstream>
@@ -220,6 +221,26 @@ void SimpleLogger::Impl::prefixWithLevelAndTag(SimpleLogger::Level level)
     m_message << m_symbols[level] << (!m_tag.empty() ? " " + m_tag + ":" : "") << " ";
 }
 
+static std::string isoDateTimeMilliseconds()
+{
+    using std::chrono::duration_cast;
+    using std::chrono::system_clock;
+
+    const auto now = system_clock::now();
+    const auto nowMs = duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000; // Milliseconds part
+    const auto timeTNow = system_clock::to_time_t(now); // Convert to time_t for strftime
+
+    // Format the datetime part
+    std::array<char, 64> datetimeBuffer;
+    std::strftime(datetimeBuffer.data(), datetimeBuffer.size(), "%Y-%m-%dT%H:%M:%S", std::localtime(&timeTNow));
+
+    // Append milliseconds
+    std::ostringstream oss;
+    oss << datetimeBuffer.data() << '.' << std::setfill('0') << std::setw(3) << nowMs.count();
+
+    return oss.str();
+}
+
 void SimpleLogger::Impl::prefixWithTimestamp()
 {
     std::string timestamp;
@@ -235,6 +256,9 @@ void SimpleLogger::Impl::prefixWithTimestamp()
     } break;
     case SimpleLogger::TimestampMode::ISODateTime: {
         timestamp = currentDateTime(system_clock::now(), "%Y-%m-%dT%H:%M:%S");
+    } break;
+    case SimpleLogger::TimestampMode::ISODateTimeMilliseconds: {
+        timestamp = isoDateTimeMilliseconds();
     } break;
     case SimpleLogger::TimestampMode::EpochSeconds:
         timestamp = std::to_string(duration_cast<std::chrono::seconds>(system_clock::now().time_since_epoch()).count());

@@ -1,7 +1,7 @@
-project(Argengine)
+cmake_minimum_required(VERSION 3.10)
+cmake_policy(VERSION 3.10)
 
-cmake_minimum_required(VERSION 2.8.12)
-cmake_policy(VERSION 2.8.12)
+project(Argengine)
 
 option(BUILD_EXAMPLES "Build example apps" ON)
 
@@ -18,11 +18,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR MINGW OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
-
-    # CMAKE_CXX_STANDARD supported only by versions >= 3.1
-    if (CMAKE_VERSION VERSION_LESS "3.1")
-        set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
-    endif ()
 endif()
 
 set(LIBRARY_NAME "Argengine")

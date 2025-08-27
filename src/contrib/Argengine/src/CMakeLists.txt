@@ -3,7 +3,7 @@ set(HDR argengine.hpp)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-add_library(ArgengineLib OBJECT ${SRC})
+add_library(ArgengineLib OBJECT ${HDR} ${SRC})
 set_property(TARGET ArgengineLib PROPERTY POSITION_INDEPENDENT_CODE 1)
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})

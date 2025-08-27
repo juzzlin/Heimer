@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2020 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (c) 2024 Jussi Lind <jussi.lind@iki.fi>
 //
 // https://github.com/juzzlin/Argengine
 //
@@ -22,58 +22,48 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "../../argengine.hpp"
+#include "argengine.hpp"
 
-// Don't compile asserts away
-#ifdef NDEBUG
-    #undef NDEBUG
-#endif
-
-#include <cassert>
 #include <cstdlib>
 #include <iostream>
-#include <sstream>
 
 using juzzlin::Argengine;
 
-const auto name = "Argengine";
+//
+// Ex3: Demonstrate option groups.
+//
 
-void testUnknownArgumentBehavior_ShouldThrow()
+int main(int argc, char ** argv)
 {
-    Argengine ae({ "test", "--foo2" });
-    ae.addOption({ "--bar" }, [] {
-    });
+    // Instantiate Argengine and give it the raw argument data.
+    Argengine ae(argc, argv);
 
-    std::string error;
-    try {
-        ae.parse();
-    } catch (std::runtime_error & e) {
-        error = e.what();
+    // Add a minimal dummy option "foo".
+    ae.addOption(
+      { "foo" }, [] {
+          std::cout << "Foo enabled!" << std::endl;
+      });
+
+    // Add a minimal dummy option "bar".
+    ae.addOption(
+      { "bar" }, [] {
+          std::cout << "Bar enabled!" << std::endl;
+      });
+
+    // Set "foo" and "bar" as an option group.
+    ae.addOptionGroup({ "foo", "bar" });
+
+    // Parse the arguments and store possible error to variable error.
+    Argengine::Error error;
+    ae.parse(error);
+
+    // Check error and print the possible error message.
+    if (error.code != Argengine::Error::Code::Ok) {
+        std::cerr << error.message << std::endl
+                  << std::endl;
+        ae.printHelp(); // Print the auto-generated help.
+        return EXIT_FAILURE;
     }
-    assert(error == std::string(name) + ": Unknown option '" + ae.options().at(1) + "'!");
-    assert(error == std::string(name) + ": Unknown option '" + ae.arguments().at(1) + "'!");
-}
-
-void testUnknownArgument_SingleValueAssignment_ShouldThrow()
-{
-    Argengine ae({ "test", "--foo=42" });
-    ae.addOption({ "--bar" }, [](std::string) {
-    });
-
-    std::string error;
-    try {
-        ae.parse();
-    } catch (std::runtime_error & e) {
-        error = e.what();
-    }
-    assert(error == std::string(name) + ": Unknown option '--foo=42'!");
-}
-
-int main(int, char **)
-{
-    testUnknownArgumentBehavior_ShouldThrow();
-
-    testUnknownArgument_SingleValueAssignment_ShouldThrow();
 
     return EXIT_SUCCESS;
 }

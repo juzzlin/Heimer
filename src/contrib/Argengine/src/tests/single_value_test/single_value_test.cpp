@@ -64,6 +64,7 @@ void testSingleValue_ValueGiven_ShouldSucceed()
     });
     std::string error;
     ae.parse();
+    assert(f == ae.options().at(2));
     assert(f == ae.arguments().at(2));
 }
 

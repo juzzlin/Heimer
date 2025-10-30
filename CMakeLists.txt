@@ -49,7 +49,7 @@ option(BIN_PATH "Optional BIN_PATH for Linux release build." "")
 
 option(BUILD_TESTS "Build unit tests." ON)
 
-option(BUILD_WITH_QT6 "Build with Qt 6 instead of Qt 5" OFF)
+option(BUILD_WITH_QT6 "Build with Qt 6 instead of Qt 5" ON)
 
 option(ENABLE_CCACHE "Use CCache if found." ON)
 

@@ -5,7 +5,7 @@ pipeline {
             matrix {
                 agent {
                     docker {
-                        image 'juzzlin/qt5-20.04:latest'
+                        image 'juzzlin/qt6-22.04:latest'
                         args '--privileged -t -v $WORKSPACE:/heimer'
                     }
                 }
@@ -23,24 +23,6 @@ pipeline {
                             sh "cd build-$BUILD_TYPE && cmake --build . && ctest"
                         }
                     }
-                }
-            }
-        }
-        stage('Debian package / Ubuntu 20.04 / Qt 5') {
-            agent {
-                docker {
-                    image 'juzzlin/qt5-20.04:latest'
-                    args '--privileged -t -v $WORKSPACE:/heimer'
-                }
-            }
-            steps {
-                sh "mkdir -p build-deb-ubuntu-20.04"
-                sh "cd build-deb-ubuntu-20.04 && cmake -GNinja -DDISTRO_VERSION=ubuntu-20.04 -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DPACKAGE_TYPE=Deb .. && cmake --build ."
-                sh "cd build-deb-ubuntu-20.04 && cpack -G DEB"
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'build-deb-ubuntu-20.04/*.deb', fingerprint: true
                 }
             }
         }
@@ -119,7 +101,7 @@ pipeline {
         stage('Source .tar.gz') {
             agent {
                 docker {
-                    image 'juzzlin/qt5-22.04:latest'
+                    image 'juzzlin/qt6-22.04:latest'
                     args '--privileged -t -v $WORKSPACE:/heimer'
                 }
             }

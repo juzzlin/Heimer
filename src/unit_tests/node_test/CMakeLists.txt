@@ -5,4 +5,6 @@ set(SRC ../unit_test_base.cpp ${NAME}.cpp ${NAME}.hpp)
 add_executable(${NAME} ${SRC})
 set_target_properties(${NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${UNIT_TEST_BASE_DIR})
 add_test(${NAME} ${UNIT_TEST_BASE_DIR}/${NAME})
-target_link_libraries(${NAME} PRIVATE ${HEIMER_LIB_NAME} Qt6::Test)
+# Widget test: run without a display server
+set_tests_properties(${NAME} PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+target_link_libraries(${NAME} PRIVATE ${HEIMER_LIB_NAME} Qt6::Widgets Qt6::Test)

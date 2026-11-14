@@ -28,7 +28,11 @@ QGraphicsEffect * createDropShadowEffect(const ShadowEffectParams & params, bool
 
 QPen createOutlinePen(const QColor & backgroundColor, double brightness = 0.5);
 
-void updateDropShadowEffect(QGraphicsEffect * effect, const ShadowEffectParams & params, bool selected, bool disabled = false);
+//! \return A subtle, translucent outline pen that works on both bright and dark fill colors.
+QPen createSubtleOutlinePen(const QColor & fillColor);
+
+//! \param hovered Lifts the item by making the shadow larger. Has no effect on selected items.
+void updateDropShadowEffect(QGraphicsEffect * effect, const ShadowEffectParams & params, bool selected, bool disabled = false, bool hovered = false);
 } // namespace GraphicsFactory
 
 #endif // GRAPHICS_FACTORY_HPP

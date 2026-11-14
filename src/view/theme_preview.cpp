@@ -16,6 +16,7 @@
 #include "theme_preview.hpp"
 
 #include "../domain/theme.hpp"
+#include "scene_items/graphics_factory.hpp"
 
 #include <QPainter>
 #include <QPainterPath>
@@ -30,10 +31,10 @@ static void drawShadowedRoundedRect(QPainter & painter, const QRectF & rect, dou
     if (shadowOffset > 0 && theme.shadowEffect.shadowColor().alpha() > 0) {
         painter.setPen(Qt::NoPen);
         painter.setBrush(theme.shadowEffect.shadowColor());
-        painter.drawRoundedRect(rect.translated(shadowOffset, shadowOffset), radius, radius);
+        painter.drawRoundedRect(rect.translated(shadowOffset * 0.5, shadowOffset), radius, radius);
     }
 
-    painter.setPen(QPen { color.darker(130), 1 });
+    painter.setPen(GraphicsFactory::createSubtleOutlinePen(color));
     painter.setBrush(color);
     painter.drawRoundedRect(rect, radius, radius);
 }

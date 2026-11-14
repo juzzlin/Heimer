@@ -83,6 +83,11 @@ Node::Node()
 
     connect(m_textEdit, &TextEdit::undoPointRequested, this, &Node::undoPointRequested);
 
+    // The text area is highlighted only while editing
+    connect(m_textEdit, &TextEdit::focusChanged, this, [this] {
+        update();
+    });
+
     // Set the background transparent as the TextEdit background will be rendered in Node::paint().
     // The reason for this is that TextEdit's background affects only the area that includes letters
     // and we want to render a larger area.
@@ -146,7 +151,7 @@ void Node::removeFromScene()
 
 void Node::raiseBody()
 {
-    const auto currentSizeRatio = SC::instance().applicationService()->normalizedSizeInView(boundingRect()).width();
+    const auto currentSizeRatio = SC::instance().applicationService()->normalizedSizeInView(bodyRect()).width();
     const auto targetSizeRatio = 0.1;
     const auto targetScale = currentSizeRatio < targetSizeRatio ? targetSizeRatio / currentSizeRatio : 1.1;
     raiseWithAnimation(targetScale);
@@ -195,8 +200,21 @@ void Node::adjustSize()
 
 QRectF Node::boundingRect() const
 {
+    const auto margin = (m_selectionRingGap + m_selectionRingWidth) * targetScale();
+    return bodyRect().adjusted(-margin, -margin, margin, margin);
+}
+
+QRectF Node::bodyRect() const
+{
     const auto size = m_nodeModel->size * targetScale();
     return { -size.width() / 2, -size.height() / 2, size.width(), size.height() };
+}
+
+QPainterPath Node::shape() const
+{
+    QPainterPath path;
+    path.addRect(bodyRect());
+    return path;
 }
 
 void Node::changeFont(const QFont & font)
@@ -282,10 +300,10 @@ bool Node::pointBeyondHideHandlesDistance(const QPointF & point) const
 {
     static const int hideHandlesDistance = 32;
     const auto scaledHideHandlesDistance = hideHandlesDistance * targetScale();
-    return point.x() > pos().x() + scaledHideHandlesDistance + boundingRect().width() / 2 || //
-      point.x() < pos().x() - scaledHideHandlesDistance - boundingRect().width() / 2 || //
-      point.y() > pos().y() + scaledHideHandlesDistance + boundingRect().height() / 2 || //
-      point.y() < pos().y() - scaledHideHandlesDistance - boundingRect().height() / 2;
+    return point.x() > pos().x() + scaledHideHandlesDistance + bodyRect().width() / 2 || //
+      point.x() < pos().x() - scaledHideHandlesDistance - bodyRect().width() / 2 || //
+      point.y() > pos().y() + scaledHideHandlesDistance + bodyRect().height() / 2 || //
+      point.y() < pos().y() - scaledHideHandlesDistance - bodyRect().height() / 2;
 }
 
 void Node::hideHandlesWithAnimation()
@@ -318,6 +336,9 @@ void Node::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 
     setHandlesVisible(true);
 
+    m_hovered = true;
+    updateShadowEffect();
+
     if (m_settingsProxy->raiseNodeOnMouseHover()) {
         raiseBody();
         raiseHandles();
@@ -325,6 +346,14 @@ void Node::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
     }
 
     QGraphicsItem::hoverEnterEvent(event);
+}
+
+void Node::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
+{
+    m_hovered = false;
+    updateShadowEffect();
+
+    QGraphicsItem::hoverLeaveEvent(event);
 }
 
 void Node::hoverMoveEvent(QGraphicsSceneHoverEvent * event)
@@ -431,8 +460,12 @@ void Node::paintBackgroundWithSolidColor(QPainter & painter)
     path.addRoundedRect(rect, m_cornerRadius, m_cornerRadius);
 
     const auto color = m_nodeModel->color;
-    painter.fillPath(path, QBrush(color));
-    painter.strokePath(path, GraphicsFactory::createOutlinePen(color, 0.33));
+    painter.fillPath(path, QBrush { color });
+    // Stroke inside the body so that the outline doesn't make the node larger
+    const auto pen = GraphicsFactory::createSubtleOutlinePen(color);
+    QPainterPath outlinePath;
+    outlinePath.addRoundedRect(rect.adjusted(0.5, 0.5, -0.5, -0.5), m_cornerRadius, m_cornerRadius);
+    painter.strokePath(outlinePath, pen);
 }
 
 void Node::paintBackground(QPainter & painter)
@@ -448,8 +481,33 @@ void Node::paintBackground(QPainter & painter)
 
 void Node::paintPatchForTextEdit(QPainter & painter)
 {
-    painter.fillRect(expandedTextEditRect(),
-                     Utils::isColorBright(m_nodeModel->color) ? m_textEditBackgroundColorDark : m_textEditBackgroundColorLight);
+    if (!m_textEdit->hasFocus()) {
+        return;
+    }
+
+    QPainterPath path;
+    const auto radius = std::min(m_cornerRadius, 4);
+    path.addRoundedRect(expandedTextEditRect().adjusted(-3, -2, 3, 2), radius, radius);
+    painter.fillPath(path, Utils::isColorBright(m_nodeModel->color) ? m_textEditBackgroundColorDark : m_textEditBackgroundColorLight);
+}
+
+void Node::paintSelectionRing(QPainter & painter)
+{
+    if (!m_selected) {
+        return;
+    }
+
+    auto color = m_shadowEffectParams.selectedItemShadowColor();
+    color.setAlpha(255);
+    QPen pen { color, m_selectionRingWidth };
+    painter.setPen(pen);
+    painter.setBrush(Qt::NoBrush);
+
+    const auto size = m_nodeModel->size;
+    const QRectF rect { -size.width() / 2, -size.height() / 2, size.width(), size.height() };
+    const auto offset = m_selectionRingGap + m_selectionRingWidth / 2;
+    const auto radius = m_cornerRadius > 0 ? m_cornerRadius + offset : 0;
+    painter.drawRoundedRect(rect.adjusted(-offset, -offset, offset, offset), radius, radius);
 }
 
 void Node::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
@@ -464,6 +522,8 @@ void Node::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
     paintBackground(*painter);
 
     paintPatchForTextEdit(*painter);
+
+    paintSelectionRing(*painter);
 
     painter->restore();
 }
@@ -498,7 +558,23 @@ void Node::setCornerRadius(int value)
 
 void Node::enableShadowEffect(bool enable)
 {
-    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_shadowEffectParams, m_selected, !enable);
+    m_shadowEffectEnabled = enable;
+    updateShadowEffect();
+}
+
+void Node::updateShadowEffect()
+{
+    // Only a soft glow for the selection, as the selection ring is the primary indicator
+    auto glowColor = m_shadowEffectParams.selectedItemShadowColor();
+    glowColor.setAlphaF(glowColor.alphaF() * 0.5f);
+    const ShadowEffectParams params {
+        m_shadowEffectParams.offset(),
+        m_shadowEffectParams.blurRadius(),
+        m_shadowEffectParams.selectedItemBlurRadius(),
+        m_shadowEffectParams.shadowColor(),
+        glowColor
+    };
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), params, m_selected, !m_shadowEffectEnabled, m_hovered);
     update();
 }
 
@@ -539,8 +615,7 @@ bool Node::selected() const
 void Node::setSelected(bool selected)
 {
     m_selected = selected;
-    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_shadowEffectParams, m_selected);
-    update();
+    updateShadowEffect();
 }
 
 const ShadowEffectParams & Node::shadowEffect() const
@@ -551,8 +626,7 @@ const ShadowEffectParams & Node::shadowEffect() const
 void Node::setShadowEffect(const ShadowEffectParams & params)
 {
     m_shadowEffectParams = params;
-    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_shadowEffectParams, m_selected);
-    update();
+    updateShadowEffect();
 }
 
 void Node::setTextInputActive(bool active)

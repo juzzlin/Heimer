@@ -16,8 +16,6 @@
 #ifndef NODE_TEST_HPP
 #define NODE_TEST_HPP
 
-#include <QTest>
-
 #include "../unit_test_base.hpp"
 
 class NodeTest : public UnitTestBase
@@ -30,6 +28,10 @@ public:
 private slots:
 
     void test_containsText();
+
+    void test_bodyRect_shouldExcludeSelectionRing();
+
+    void test_paint_shouldDrawSelectionRingOnlyWhenSelected();
 };
 
 #endif // NODE_TEST_HPP

@@ -52,6 +52,20 @@ bool TextEdit::event(QEvent * event)
     return QGraphicsTextItem::event(event);
 }
 
+void TextEdit::focusInEvent(QFocusEvent * event)
+{
+    QGraphicsTextItem::focusInEvent(event);
+
+    emit focusChanged(true);
+}
+
+void TextEdit::focusOutEvent(QFocusEvent * event)
+{
+    QGraphicsTextItem::focusOutEvent(event);
+
+    emit focusChanged(false);
+}
+
 void TextEdit::keyPressEvent(QKeyEvent * event)
 {
     // Don't mix the global undo and text edit's internal undo

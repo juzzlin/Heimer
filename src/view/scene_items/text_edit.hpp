@@ -51,10 +51,16 @@ signals:
 
     void textChanged(QString text);
 
+    void focusChanged(bool hasFocus);
+
     void undoPointRequested();
 
 protected:
     virtual bool event(QEvent * event) override;
+
+    virtual void focusInEvent(QFocusEvent * event) override;
+
+    virtual void focusOutEvent(QFocusEvent * event) override;
 
     virtual void keyPressEvent(QKeyEvent * event) override;
 

@@ -15,6 +15,7 @@
 
 #include "graphics_factory.hpp"
 
+#include "../../common/utils.hpp"
 #include "../../domain/shadow_effect_params.hpp"
 
 #include <QGraphicsDropShadowEffect>
@@ -35,7 +36,14 @@ QPen GraphicsFactory::createOutlinePen(const QColor & backgroundColor, double br
                   width };
 }
 
-void GraphicsFactory::updateDropShadowEffect(QGraphicsEffect * effect, const ShadowEffectParams & params, bool selected, bool disabled)
+QPen GraphicsFactory::createSubtleOutlinePen(const QColor & fillColor)
+{
+    QPen pen { Utils::isColorBright(fillColor) ? QColor { 0, 0, 0, 40 } : QColor { 255, 255, 255, 36 }, 1 };
+    pen.setCosmetic(true);
+    return pen;
+}
+
+void GraphicsFactory::updateDropShadowEffect(QGraphicsEffect * effect, const ShadowEffectParams & params, bool selected, bool disabled, bool hovered)
 {
     if (!effect) {
         return;
@@ -44,9 +52,11 @@ void GraphicsFactory::updateDropShadowEffect(QGraphicsEffect * effect, const Sha
     if (const auto shadow = qobject_cast<QGraphicsDropShadowEffect *>(effect)) {
         if (!disabled) {
             if (!selected) {
-                shadow->setOffset(params.offset(), params.offset());
+                // The shadow falls mostly downwards, as from a light above the canvas
+                const auto offset = params.offset() + (hovered ? 1 : 0);
+                shadow->setOffset(offset * 0.5, offset);
                 shadow->setColor(params.shadowColor());
-                shadow->setBlurRadius(params.blurRadius());
+                shadow->setBlurRadius(hovered ? params.blurRadius() * 1.5 + 2 : params.blurRadius());
             } else {
                 shadow->setOffset({});
                 shadow->setColor(params.selectedItemShadowColor());

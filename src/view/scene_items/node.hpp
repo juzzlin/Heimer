@@ -62,7 +62,13 @@ public:
 
     void applyImage(const Image & image);
 
+    //! \return The bounding rect including the selection ring.
     QRectF boundingRect() const override;
+
+    //! \return The rect of the node body, i.e. without the selection ring.
+    QRectF bodyRect() const;
+
+    QPainterPath shape() const override;
 
     QColor color() const;
 
@@ -145,6 +151,8 @@ protected:
 
     void hoverMoveEvent(QGraphicsSceneHoverEvent * event) override;
 
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
+
     void mousePressEvent(QGraphicsSceneMouseEvent * event) override;
 
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
@@ -172,6 +180,8 @@ private:
 
     void paintPatchForTextEdit(QPainter & painter);
 
+    void paintSelectionRing(QPainter & painter);
+
     void paintPixmapOnEmptyBackgroundPixmap(QPixmap & emptyBackgroundPixmap);
 
     void raiseBody();
@@ -186,6 +196,8 @@ private:
 
     void updateHandlePositions();
 
+    void updateShadowEffect();
+
     SettingsProxyS m_settingsProxy;
 
     ShadowEffectParams m_shadowEffectParams;
@@ -199,6 +211,10 @@ private:
     QFont m_font;
 
     bool m_selected = false;
+
+    bool m_hovered = false;
+
+    bool m_shadowEffectEnabled = true;
 
     std::map<NodeHandle::Role, NodeHandle *> m_handles;
 
@@ -215,6 +231,11 @@ private:
     static NodeP m_lastHoveredNode;
 
     const int m_contentPadding = 10;
+
+    //! Space between the node body and the selection ring
+    const double m_selectionRingGap = 2.5;
+
+    const double m_selectionRingWidth = 2;
 
     const int m_handleRadius = 28;
 

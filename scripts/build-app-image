@@ -1,28 +1,32 @@
 #!/bin/bash
 
-# Builds AppImage in Docker
+# Builds AppImage in Docker by using linuxdeploy and its Qt plugin
 
 HEIMER_VERSION=4.5.0
 
+LINUXDEPLOY_URL=https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+LINUXDEPLOY_QT_URL=https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage
+
+# The AppImages of linuxdeploy are extracted instead of mounted, as FUSE is typically not available in Docker
 CMD="export LANG=en_US.UTF-8 && \
      export LC_ALL=en_US.UTF-8 && \
-     rm -rf /heimer-build-appimage && mkdir -p /heimer/build-appimage && \
+     rm -rf /heimer/build-appimage && mkdir -p /heimer/build-appimage && \
      cd /heimer/build-appimage && \
-     cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_TESTS=OFF -DPACKAGE_TYPE=AppImage && \
-     make -j$(nproc) && \
-     make DESTDIR=appdir -j$(nproc) install && find appdir/ && \
-     wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"  && \
-     chmod a+x linuxdeployqt-continuous-x86_64.AppImage  && \
-     unset QTDIR && unset QT_PLUGIN_PATH && unset LD_LIBRARY_PATH  && \
+     cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_TESTS=OFF -DPACKAGE_TYPE=AppImage && \
+     cmake --build . && \
+     DESTDIR=appdir cmake --install . && find appdir/ && \
+     wget -c -nv ${LINUXDEPLOY_URL} && \
+     wget -c -nv ${LINUXDEPLOY_QT_URL} && \
+     chmod a+x linuxdeploy*.AppImage && \
+     export APPIMAGE_EXTRACT_AND_RUN=1 && \
+     export QMAKE=/usr/lib/qt6/bin/qmake && \
      export VERSION=${HEIMER_VERSION} && \
-     ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs && \
-     ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage"
+     ./linuxdeploy-x86_64.AppImage --appdir appdir --plugin qt --output appimage"
 
 if [ -f /.dockerenv ]; then
     echo "Script inside Docker"
     bash -c "${CMD}"
 else
     echo "Script outside Docker"
-    docker run --privileged -t -v $(pwd):/heimer juzzlin/qt5-18.04:latest bash -c "${CMD}"
+    docker run --privileged -t -v $(pwd):/heimer juzzlin/qt6-22.04:latest bash -c "${CMD}"
 fi
-

@@ -235,6 +235,40 @@ void AlzFileIOTest::test_metadata_LayoutOptimizer()
     QCOMPARE(inData->minEdgeLength(), outData->minEdgeLength());
 }
 
+void AlzFileIOTest::test_graph_NodeText()
+{
+    const auto outData = std::make_shared<MindMapData>();
+    const auto outNode = std::make_shared<Node>();
+    outData->graph().addNode(outNode);
+    const QString text { "  Leading and trailing spaces  \nSecond line\n\tTabbed <&> \u00e4\u00f6\u00e5 \u4e2d\u6587 " };
+    outNode->setText(text);
+
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
+
+    const auto node = inData->graph().getNode(outNode->index());
+    QVERIFY(node != nullptr);
+    QCOMPARE(node->text(), text);
+}
+
+void AlzFileIOTest::test_graph_EdgeText()
+{
+    const auto outData = std::make_shared<MindMapData>();
+    const auto outNode0 = std::make_shared<Node>();
+    outData->graph().addNode(outNode0);
+    const auto outNode1 = std::make_shared<Node>();
+    outData->graph().addNode(outNode1);
+    const auto outEdge = std::make_shared<Edge>(outNode0, outNode1);
+    const QString text { " Edge <&> text\nwith two lines " };
+    outEdge->setText(text);
+    outData->graph().addEdge(outEdge);
+
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
+
+    const auto edges = inData->graph().getEdgesFromNode(outNode0);
+    QCOMPARE(edges.size(), static_cast<size_t>(1));
+    QCOMPARE(edges.at(0)->text(), text);
+}
+
 void AlzFileIOTest::test_loadJpg()
 {
     const QString xml =

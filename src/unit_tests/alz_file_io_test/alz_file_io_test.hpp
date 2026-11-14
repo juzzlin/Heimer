@@ -81,6 +81,10 @@ private slots:
 
     void test_graph_SingleNode();
 
+    void test_graph_NodeText();
+
+    void test_graph_EdgeText();
+
     void test_loadJpg();
 
     void test_loadPng();

@@ -5,9 +5,51 @@ Release date:
 
 New features:
 
+* Add themes
+  - A theme defines the colors, fonts, sizes and shadows of a mind map
+  - Built-in themes: Classic, High Contrast, Black, White, Accent and Paper
+  - User themes can be created from the current mind map, duplicated from
+    other themes, edited, renamed and deleted in Settings => Themes
+  - The default theme for new mind maps can be selected
+  - Applying a theme can be undone
+  - Customized default colors, fonts and shadows of earlier versions are
+    automatically saved as a user theme "My defaults"
+
+* Make edge labels themable
+  - The background and text colors of edge labels can be set via
+    Edit => General colors and in the themes
+
+* Save shadows in the mind map as a part of the theme
+
+* Add generic Portuguese translation (pt)
+
 Bug fixes:
 
+* Fix GitHub Issue #267: Menu bar not loading
+  - The language menu replaced the main menu with KDE's global menu
+
+* Fix GitHub Issue #163: Improve how the undo stack works on redo
+
+* Fix GitHub Issue #237: Undo stack takes too much memory
+  - Undo points are now saved as compact snapshots
+  - The undo history is limited to 100 steps
+
+* Fix default font weight
+  - The default font of a fresh installation had the weight "Black"
+
+* Fix main menu state on language change
+  - E.g. "Save as" was disabled and "Full Screen" unchecked after
+    changing the language
+
 Other:
+
+* Fix GitHub Issue #250: Refactor CMakeLists.txt for Qt 6
+  - Qt 5 is no longer supported
+  - Requires Qt >= 6.2.4 and CMake >= 3.16
+
+* Snap: Migrate from core20 and Qt 5 to core22 and Qt 6
+
+* Complete translations
 
 4.5.0
 =====

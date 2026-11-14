@@ -1,6 +1,7 @@
 README
 ======
 
-windows/ contains NSIS packaging script for Windows.
+Linux and Windows packages are generated with CPack.
 
-Linux packages are generated with CPack.
+See InstallLinux.cmake and InstallWindows.cmake for the package settings
+(e.g. NSIS for Windows) and Jenkinsfile on how the packages are built.

@@ -29,6 +29,7 @@ Here are some example mind maps running on Ubuntu:
 * Nice animations
 * Quickly add node text and edge labels
 * Save/load in XML-based .ALZ-files
+* Themes: built-in and user-defined color, font and shadow presets
 * Translations in English (default), Basque, Chinese, Dutch, Finnish, French, German, Italian, Portuguese (Brazil, Portugal), Spanish
 * Very fast
 * Zoom in/out/fit
@@ -56,15 +57,15 @@ Run:
 
     $ heimer
 
-For more information see https://snapcraft.io/heimer and https://docs.snapcraft.io/core/install
+For more information see https://snapcraft.io/heimer and https://snapcraft.io/docs/installing-snapd
 
 Snap is the recommended way to install Heimer on Linux.
 
 ### Linux: Deb
 
-There are Debian packages for Ubuntu/Debian. Use some graphical tool to install, or as an example on `Ubuntu 20.04`:
+There are Debian packages for Ubuntu/Debian. Use some graphical tool to install, or as an example on `Ubuntu 22.04`:
 
-    $ sudo apt install ./heimer-2.5.0-ubuntu-20.04_amd64.deb
+    $ sudo apt install ./heimer-4.5.0-ubuntu-22.04_amd64.deb
 
 Run:
 
@@ -72,15 +73,17 @@ Run:
 
 ### Linux: AppImage
 
-`AppImage` is a "universal" package that can (in theory) be run on all Linux platforms:
+`AppImage` is a "universal" package that can (in theory) be run on all Linux platforms.
+
+Note: `AppImage` packages are currently not available for releases built with `Qt 6`.
 
 Make the image executable e.g. like this:
 
-    $ chmod 755 Heimer-2.4.0-x86_64.AppImage
+    $ chmod 755 Heimer-4.5.0-x86_64.AppImage
 
 Run:
 
-    $ ./Heimer-2.4.0-x86_64.AppImage
+    $ ./Heimer-4.5.0-x86_64.AppImage
 
 ### Windows
 
@@ -108,7 +111,7 @@ Use the official `Qt SDK` or install the needed development tools from a package
 
 Command to install needed `Qt 6` dev packages on `Ubuntu` (>= `22.04`):
 
-    $ sudo apt install build-essential cmake libqt6svg6-dev libqt6uitools6 linguist-qt6 qt6-base-dev qt6-l10n-tools qt6-tools-dev-tools qt6-tools-private-dev qtchooser
+    $ sudo apt install build-essential cmake libqt6svg6-dev libqt6uitools6 linguist-qt6 qt6-base-dev qt6-l10n-tools qt6-tools-dev-tools qt6-tools-private-dev
 
 Building for Linux in a nutshell:
 

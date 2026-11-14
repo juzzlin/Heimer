@@ -47,7 +47,7 @@ IO::AlzFormatVersion alzFormatVersion()
 
 QString copyright()
 {
-    return "Copyright (c) 2018-2024 Jussi Lind";
+    return "Copyright (c) 2018-2026 Jussi Lind";
 }
 
 QString fileExtension()

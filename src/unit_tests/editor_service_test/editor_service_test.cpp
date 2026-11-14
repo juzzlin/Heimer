@@ -319,6 +319,72 @@ void EditorServiceTest::test_redoAddNodes()
     QCOMPARE(editorService.mindMapData()->graph().nodeCount(), static_cast<size_t>(2));
 }
 
+void EditorServiceTest::test_saveUndoPoint_quickSuccessionShouldBeMerged()
+{
+    EditorService editorService;
+    editorService.setMindMapData(std::make_shared<MindMapData>());
+    editorService.setUndoPointMergingEnabled(true);
+
+    editorService.saveUndoPoint();
+    editorService.addNodeAt(QPointF(0, 0));
+    editorService.saveUndoPoint(); // Merged with the previous one
+    editorService.addNodeAt(QPointF(1, 1));
+
+    editorService.undo();
+    QCOMPARE(editorService.mindMapData()->graph().nodeCount(), static_cast<size_t>(0));
+    QCOMPARE(editorService.isUndoable(), false);
+}
+
+void EditorServiceTest::test_undoRedo_quickSuccessionShouldNotLoseStates()
+{
+    // Regression test for https://github.com/juzzlin/Heimer/issues/163
+    EditorService editorService;
+    editorService.setMindMapData(std::make_shared<MindMapData>());
+    for (int i = 0; i < 3; i++) {
+        editorService.saveUndoPoint();
+        editorService.addNodeAt(QPointF(i, i));
+    }
+    QCOMPARE(editorService.mindMapData()->graph().nodeCount(), static_cast<size_t>(3));
+
+    // The undo/redo cycles below happen well within the merging delay
+    editorService.setUndoPointMergingEnabled(true);
+    for (int cycle = 0; cycle < 2; cycle++) {
+        for (size_t expectedNodeCount : { 2, 1, 0 }) {
+            QVERIFY(editorService.isUndoable());
+            editorService.undo();
+            QCOMPARE(editorService.mindMapData()->graph().nodeCount(), expectedNodeCount);
+        }
+        QVERIFY(!editorService.isUndoable());
+
+        for (size_t expectedNodeCount : { 1, 2, 3 }) {
+            QVERIFY(editorService.isRedoable());
+            editorService.redo();
+            QCOMPARE(editorService.mindMapData()->graph().nodeCount(), expectedNodeCount);
+        }
+        QVERIFY(!editorService.isRedoable());
+    }
+}
+
+void EditorServiceTest::test_undo_modificationRightAfterUndoShouldGetOwnUndoPoint()
+{
+    EditorService editorService;
+    editorService.setMindMapData(std::make_shared<MindMapData>());
+    editorService.saveUndoPoint();
+    editorService.addNodeAt(QPointF(0, 0));
+
+    editorService.setUndoPointMergingEnabled(true);
+    editorService.saveUndoPoint();
+    editorService.addNodeAt(QPointF(1, 1));
+    editorService.undo();
+    QCOMPARE(editorService.mindMapData()->graph().nodeCount(), static_cast<size_t>(1));
+
+    // Must not be merged with the undo point saved before undo
+    editorService.saveUndoPoint();
+    editorService.addNodeAt(QPointF(2, 2));
+    editorService.undo();
+    QCOMPARE(editorService.mindMapData()->graph().nodeCount(), static_cast<size_t>(1));
+}
+
 void EditorServiceTest::test_textSearch()
 {
     const auto data = std::make_shared<MindMapData>();

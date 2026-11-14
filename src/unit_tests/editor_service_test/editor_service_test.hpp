@@ -53,6 +53,12 @@ private slots:
 
     void test_redoAddNodes();
 
+    void test_saveUndoPoint_quickSuccessionShouldBeMerged();
+
+    void test_undoRedo_quickSuccessionShouldNotLoseStates();
+
+    void test_undo_modificationRightAfterUndoShouldGetOwnUndoPoint();
+
     void test_redoState();
 
     void test_textSearch();

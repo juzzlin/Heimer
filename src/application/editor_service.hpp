@@ -148,9 +148,15 @@ public:
 
     bool saveMindMapAs(QString fileName, bool async);
 
-    void saveUndoPoint(bool dontClearRedoStack = false);
+    //! Saves an undo point and clears the redo stack.
+    //! Undo points saved in quick succession are merged, see setUndoPointMergingEnabled().
+    void saveUndoPoint();
 
     void saveRedoPoint();
+
+    //! Undo points saved in quick succession (e.g. while dragging) are merged into one.
+    //! Enabled by default, except in test mode.
+    void setUndoPointMergingEnabled(bool enabled);
 
     void setColorForSelectedNodes(QColor color);
 
@@ -240,6 +246,8 @@ private:
     QString m_fileName;
 
     QTimer m_undoTimer;
+
+    bool m_undoPointMergingEnabled;
 
     Grid m_grid;
 };

@@ -47,6 +47,7 @@ EditorService::EditorService()
   , m_edgeSelectionGroup(std::make_unique<EdgeSelectionGroup>())
   , m_nodeSelectionGroup(std::make_unique<NodeSelectionGroup>())
   , m_undoStack(std::make_unique<UndoStack>())
+  , m_undoPointMergingEnabled(!TestMode::enabled())
 {
     m_undoTimer.setSingleShot(true);
     m_undoTimer.setInterval(Constants::View::tooQuickActionDelay());
@@ -138,6 +139,8 @@ void EditorService::undo()
     if (m_undoStack->isUndoable()) {
         clearSelectionGroups();
         m_dragAndDropNode = nullptr;
+        // Don't merge the next modification with the modification before undo
+        m_undoTimer.stop();
         saveRedoPoint();
         m_mindMapData = m_undoStack->undo();
         setIsModified(true);
@@ -167,7 +170,9 @@ void EditorService::redo()
     if (m_undoStack->isRedoable()) {
         clearSelectionGroups();
         m_dragAndDropNode = nullptr;
-        saveUndoPoint(true);
+        // Undo/redo must always save their points: skipping merged undo points here would lose states
+        m_undoTimer.stop();
+        m_undoStack->pushUndoPoint(*m_mindMapData);
         m_mindMapData = m_undoStack->redo();
         setIsModified(true);
         sendUndoAndRedoSignals();
@@ -190,9 +195,9 @@ bool EditorService::saveMindMap(bool async)
     return false;
 }
 
-void EditorService::saveUndoPoint(bool dontClearRedoStack)
+void EditorService::saveUndoPoint()
 {
-    if (!TestMode::enabled()) {
+    if (m_undoPointMergingEnabled) {
         if (m_undoTimer.isActive()) {
             L(TAG).debug() << "Saving undo point skipped";
             m_undoTimer.start();
@@ -204,9 +209,7 @@ void EditorService::saveUndoPoint(bool dontClearRedoStack)
 
     assert(m_mindMapData);
     m_undoStack->pushUndoPoint(*m_mindMapData);
-    if (!dontClearRedoStack) {
-        m_undoStack->clearRedoStack();
-    }
+    m_undoStack->clearRedoStack();
     setIsModified(true);
     sendUndoAndRedoSignals();
     requestAutosave(AutosaveContext::Modification, true);
@@ -236,6 +239,11 @@ bool EditorService::saveMindMapAs(QString fileName, bool async)
     }
 
     return false;
+}
+
+void EditorService::setUndoPointMergingEnabled(bool enabled)
+{
+    m_undoPointMergingEnabled = enabled;
 }
 
 void EditorService::setColorForSelectedNodes(QColor color)

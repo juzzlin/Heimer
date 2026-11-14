@@ -16,7 +16,7 @@
 #include "mind_map_data.hpp"
 
 #include "../application/service_container.hpp"
-#include "../application/settings_proxy.hpp"
+#include "../application/theme_service.hpp"
 #include "../domain/graph.hpp"
 #include "../domain/image_manager.hpp"
 #include "../view/grid.hpp"
@@ -26,7 +26,7 @@
 
 MindMapData::MindMapData(QString name)
   : MindMapDataBase(name)
-  , m_theme(std::make_unique<Theme>(SC::instance().settingsProxy()->defaultTheme()))
+  , m_theme(std::make_unique<Theme>(SC::instance().themeService()->defaultTheme()))
   , m_graph(std::make_unique<Graph>())
   , m_imageManager(std::make_unique<ImageManager>())
 {

@@ -42,6 +42,8 @@ SettingsProxy::SettingsProxy()
   }
   , m_optimizeShadowEffects { Settings::Generic::getBoolean(m_effectsSettingGroup, m_optimizeShadowEffectsSettingKey, true) }
   , m_userLanguage { Settings::Generic::getString(m_defaultsSettingGroup, m_userLanguageSettingKey, {}) }
+  , m_defaultThemeName { Settings::Generic::getString(m_defaultsSettingGroup, m_defaultThemeNameSettingKey, {}) }
+  , m_legacyDefaultsMigrated { Settings::Generic::getBoolean(m_defaultsSettingGroup, m_legacyDefaultsMigratedSettingKey, false) }
 {
 }
 
@@ -271,7 +273,33 @@ const ShadowEffectParams SettingsProxy::shadowEffect() const
     return m_shadowEffectParams;
 }
 
-Theme SettingsProxy::defaultTheme() const
+QString SettingsProxy::defaultThemeName() const
+{
+    return m_defaultThemeName;
+}
+
+void SettingsProxy::setDefaultThemeName(const QString & defaultThemeName)
+{
+    if (m_defaultThemeName != defaultThemeName) {
+        m_defaultThemeName = defaultThemeName;
+        Settings::Generic::setString(m_defaultsSettingGroup, m_defaultThemeNameSettingKey, defaultThemeName);
+    }
+}
+
+bool SettingsProxy::legacyDefaultsMigrated() const
+{
+    return m_legacyDefaultsMigrated;
+}
+
+void SettingsProxy::setLegacyDefaultsMigrated(bool migrated)
+{
+    if (m_legacyDefaultsMigrated != migrated) {
+        m_legacyDefaultsMigrated = migrated;
+        Settings::Generic::setBoolean(m_defaultsSettingGroup, m_legacyDefaultsMigratedSettingKey, migrated);
+    }
+}
+
+Theme SettingsProxy::legacyDefaultTheme() const
 {
     Theme theme;
     theme.arrowSize = arrowSize();

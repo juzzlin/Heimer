@@ -22,6 +22,7 @@ set(HEIMER_LIB_SRC
     ${HEIMER_SRC_ROOT}/application/application_service.cpp
     ${HEIMER_SRC_ROOT}/application/control_strategy.cpp
     ${HEIMER_SRC_ROOT}/application/editor_service.cpp
+    ${HEIMER_SRC_ROOT}/application/factory_themes.cpp
     ${HEIMER_SRC_ROOT}/application/hash_seed.cpp
     ${HEIMER_SRC_ROOT}/application/language_service.cpp
     ${HEIMER_SRC_ROOT}/application/mind_map_snapshot.cpp
@@ -29,6 +30,7 @@ set(HEIMER_LIB_SRC
     ${HEIMER_SRC_ROOT}/application/recent_files_manager.cpp
     ${HEIMER_SRC_ROOT}/application/service_container.cpp
     ${HEIMER_SRC_ROOT}/application/settings_proxy.cpp
+    ${HEIMER_SRC_ROOT}/application/theme_service.cpp
     ${HEIMER_SRC_ROOT}/application/state_machine.cpp
     ${HEIMER_SRC_ROOT}/common/constants.cpp
     ${HEIMER_SRC_ROOT}/common/test_mode.cpp
@@ -45,6 +47,7 @@ set(HEIMER_LIB_SRC
     ${HEIMER_SRC_ROOT}/infra/io/xml_reader.cpp
     ${HEIMER_SRC_ROOT}/infra/io/xml_writer.cpp
     ${HEIMER_SRC_ROOT}/infra/settings.cpp
+    ${HEIMER_SRC_ROOT}/infra/theme_json.cpp
     ${HEIMER_SRC_ROOT}/infra/version_checker.cpp
     ${HEIMER_SRC_ROOT}/view/dialogs/about_dialog.cpp
     ${HEIMER_SRC_ROOT}/view/dialogs/color_dialog.cpp
@@ -95,6 +98,7 @@ set(HEIMER_LIB_HDR
     ${HEIMER_SRC_ROOT}/application/application_service.hpp
     ${HEIMER_SRC_ROOT}/application/control_strategy.hpp
     ${HEIMER_SRC_ROOT}/application/editor_service.hpp
+    ${HEIMER_SRC_ROOT}/application/factory_themes.hpp
     ${HEIMER_SRC_ROOT}/application/hash_seed.hpp
     ${HEIMER_SRC_ROOT}/application/language_service.hpp
     ${HEIMER_SRC_ROOT}/application/mind_map_snapshot.hpp
@@ -102,6 +106,7 @@ set(HEIMER_LIB_HDR
     ${HEIMER_SRC_ROOT}/application/recent_files_manager.hpp
     ${HEIMER_SRC_ROOT}/application/service_container.hpp
     ${HEIMER_SRC_ROOT}/application/settings_proxy.hpp
+    ${HEIMER_SRC_ROOT}/application/theme_service.hpp
     ${HEIMER_SRC_ROOT}/application/state_machine.hpp
     ${HEIMER_SRC_ROOT}/application/user_exception.hpp
     ${HEIMER_SRC_ROOT}/application/version.hpp
@@ -129,6 +134,7 @@ set(HEIMER_LIB_HDR
     ${HEIMER_SRC_ROOT}/infra/io/xml_reader.hpp
     ${HEIMER_SRC_ROOT}/infra/io/xml_writer.hpp
     ${HEIMER_SRC_ROOT}/infra/settings.hpp
+    ${HEIMER_SRC_ROOT}/infra/theme_json.hpp
     ${HEIMER_SRC_ROOT}/infra/version_checker.hpp
     ${HEIMER_SRC_ROOT}/view/dialogs/about_dialog.hpp
     ${HEIMER_SRC_ROOT}/view/dialogs/color_dialog.hpp

@@ -95,8 +95,17 @@ public:
 
     const ShadowEffectParams shadowEffect() const;
 
-    //! \return The theme for new mind maps based on the current default settings.
-    Theme defaultTheme() const;
+    //! \return A theme based on the legacy default settings (colors, font, shadows, ...).
+    Theme legacyDefaultTheme() const;
+
+    //! The name of the theme preset for new mind maps.
+    QString defaultThemeName() const;
+
+    void setDefaultThemeName(const QString & defaultThemeName);
+
+    bool legacyDefaultsMigrated() const;
+
+    void setLegacyDefaultsMigrated(bool migrated);
 
     void setShadowEffect(const ShadowEffectParams & params);
 
@@ -155,6 +164,10 @@ private:
 
     const QString m_userLanguageSettingKey = "userLanguage";
 
+    const QString m_defaultThemeNameSettingKey = "defaultThemeName";
+
+    const QString m_legacyDefaultsMigratedSettingKey = "legacyDefaultsMigrated";
+
     const QString m_optimizeShadowEffectsSettingKey = "optimizeShadowEffects";
 
     const QString m_editingSettingGroup = "Editing";
@@ -200,6 +213,10 @@ private:
     bool m_optimizeShadowEffects = true;
 
     QString m_userLanguage;
+
+    QString m_defaultThemeName;
+
+    bool m_legacyDefaultsMigrated;
 };
 
 #endif // SETTINGS_PROXY_HPP

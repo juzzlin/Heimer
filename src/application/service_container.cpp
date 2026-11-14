@@ -21,6 +21,7 @@
 #include "progress_manager.hpp"
 #include "recent_files_manager.hpp"
 #include "settings_proxy.hpp"
+#include "theme_service.hpp"
 
 #include "simple_logger.hpp"
 
@@ -36,6 +37,7 @@ ServiceContainer::ServiceContainer()
   , m_languageService(std::make_unique<LanguageService>())
   , m_progressManager(std::make_unique<ProgressManager>())
   , m_recentFilesManager(std::make_unique<RecentFilesManager>())
+  , m_themeService(std::make_unique<ThemeService>(m_settingsProxy, ThemeService::defaultUserThemesFilePath()))
 {
     if (!ServiceContainer::m_instance) {
         ServiceContainer::m_instance = this;
@@ -82,6 +84,11 @@ RecentFilesManagerS ServiceContainer::recentFilesManager() const
 SettingsProxyS ServiceContainer::settingsProxy()
 {
     return m_settingsProxy;
+}
+
+ThemeServiceS ServiceContainer::themeService()
+{
+    return m_themeService;
 }
 
 ServiceContainer & SC::instance()

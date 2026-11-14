@@ -26,6 +26,7 @@ class RecentFilesManager;
 
 class ProgressManager;
 class SettingsProxy;
+class ThemeService;
 
 //! A poor man's single instance DI.
 class ServiceContainer
@@ -49,6 +50,8 @@ public:
 
     SettingsProxyS settingsProxy();
 
+    ThemeServiceS themeService();
+
     void setMainWindow(MainWindowS mainWindow);
 
 private:
@@ -67,6 +70,8 @@ private:
     ProgressManagerS m_progressManager;
 
     RecentFilesManagerS m_recentFilesManager;
+
+    ThemeServiceS m_themeService;
 
     MainWindowS m_mainWindow;
 

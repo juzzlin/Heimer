@@ -68,7 +68,8 @@ struct Theme
     {
         return backgroundColor == other.backgroundColor && gridColor == other.gridColor && //
           nodeColor == other.nodeColor && nodeTextColor == other.nodeTextColor && cornerRadius == other.cornerRadius && //
-          font == other.font && textSize == other.textSize && //
+          // QFont::operator==() also compares e.g. an explicitly set empty family list, which is not visible
+          font.toString() == other.font.toString() && textSize == other.textSize && //
           edgeColor == other.edgeColor && qFuzzyCompare(edgeWidth, other.edgeWidth) && qFuzzyCompare(arrowSize, other.arrowSize) && //
           edgeLabelColor == other.edgeLabelColor && edgeLabelTextColor == other.edgeLabelTextColor && //
           shadowEffect == other.shadowEffect;

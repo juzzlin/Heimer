@@ -91,7 +91,7 @@ public:
                 optimizationInfo.acceptRatio = static_cast<double>(optimizationInfo.accepts) / static_cast<double>(optimizationInfo.rejects + 1);
                 const double gain = (optimizationInfo.currentCost - sliceCost) / sliceCost;
                 juzzlin::L(TAG).debug() << "Cost: " << optimizationInfo.currentCost << " (" << gain * 100 << "%)"
-                                     << " acc: " << optimizationInfo.acceptRatio << " t: " << optimizationInfo.tC;
+                                        << " acc: " << optimizationInfo.acceptRatio << " t: " << optimizationInfo.tC;
                 stuckCounter = gain < optimizationInfo.stuckTh ? stuckCounter + 1 : 0;
 
             } while (stuckCounter < optimizationInfo.stuckLimit);

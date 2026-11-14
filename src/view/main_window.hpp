@@ -47,7 +47,6 @@ class QSpinBox;
 class QTextEdit;
 class QWidgetAction;
 
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -125,7 +124,6 @@ signals:
     void gridVisibleChanged(int state);
 
     void searchTextChanged(QString text);
-
 
     void textSizeChanged(int value);
 

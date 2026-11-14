@@ -620,8 +620,8 @@ static void readShadow(const QDomElement & element, MindMapData & data)
     QColor shadowColor = defaults.shadowColor();
     QColor selectedItemShadowColor = defaults.selectedItemShadowColor();
     readChildren(element, { { QString(ELEMENT_COLOR), [&shadowColor](const QDomElement & e) {
-                               shadowColor = readColorElement(e);
-                           } },
+                                 shadowColor = readColorElement(e);
+                             } },
                             { QString(ELEMENT_SELECTED_ITEM_COLOR), [&selectedItemShadowColor](const QDomElement & e) {
                                  selectedItemShadowColor = readColorElement(e);
                              } } });

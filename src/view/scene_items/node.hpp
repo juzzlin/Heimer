@@ -36,7 +36,6 @@ class Image;
 class QGraphicsTextItem;
 class TextEdit;
 
-
 class SettingsProxy;
 
 namespace SceneItems {

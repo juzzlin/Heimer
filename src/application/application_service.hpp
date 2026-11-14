@@ -228,7 +228,6 @@ public slots:
 
     void setSearchText(QString text);
 
-
     void setTextSize(int textSize);
 
     QSize calculateExportImageSize();

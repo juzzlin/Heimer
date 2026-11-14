@@ -34,7 +34,6 @@ public:
 signals:
     void autosaveEnabled(bool enabled);
 
-
 private:
     void accept() override;
 

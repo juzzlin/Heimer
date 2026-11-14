@@ -736,7 +736,7 @@ void Edge::stopAnimations()
 Edge::~Edge()
 {
     juzzlin::L(TAG).trace() << "Deleting edge (" << (m_sourceNode ? std::to_string(m_sourceNode->index()) : "(none)") << ", " //
-                         << (m_targetNode ? std::to_string(m_targetNode->index()) : "(none)") << ")";
+                            << (m_targetNode ? std::to_string(m_targetNode->index()) : "(none)") << ")";
 
     if (!TestMode::enabled()) {
         stopAnimations();

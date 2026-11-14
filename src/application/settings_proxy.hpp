@@ -16,9 +16,9 @@
 #ifndef SETTINGS_PROXY_HPP
 #define SETTINGS_PROXY_HPP
 
-#include "../view/scene_items/edge_model.hpp"
 #include "../domain/shadow_effect_params.hpp"
 #include "../domain/theme.hpp"
+#include "../view/scene_items/edge_model.hpp"
 
 #include <QFont>
 

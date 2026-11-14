@@ -31,7 +31,6 @@ class QGraphicsEllipseItem;
 class QGraphicsLineItem;
 class QPropertyAnimation;
 
-
 class SettingsProxy;
 
 namespace SceneItems {

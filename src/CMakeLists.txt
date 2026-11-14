@@ -261,18 +261,16 @@ else()
     endforeach()
 endif()
 
-# Specify the path to lupdate executable
-set(LUPDATE_COMMAND "lupdate")
-find_program(LUPDATE_EXECUTABLE ${LUPDATE_COMMAND})
-if(NOT LUPDATE_EXECUTABLE)
-    message(WARNING "${LUPDATE_COMMAND} not found. The 'update_translations' target will not be available.")
+# Use lupdate of Qt 6 (LinguistTools) instead of e.g. the one in PATH, which might be from Qt 5
+if(NOT TARGET Qt6::lupdate)
+    message(WARNING "Qt6::lupdate not found. The 'update_translations' target will not be available.")
 else()
     add_custom_target(update_translations)
     foreach(TS_FILE ${TS_FILES})
         get_filename_component(TS_FILE_NAME ${TS_FILE} NAME)
         add_custom_command(
             TARGET update_translations POST_BUILD
-            COMMAND ${LUPDATE_EXECUTABLE} -locations none -no-ui-lines -no-obsolete
+            COMMAND Qt6::lupdate -locations none -no-ui-lines -no-obsolete
             ARGS ${HEIMER_LIB_SRC} -ts ${TS_FILE}
             COMMENT "Updating translation source ${TS_FILE_NAME}"
         )

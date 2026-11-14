@@ -45,7 +45,7 @@ static Theme highContrast()
     theme.edgeLabelColor = QColor { "#00ffff" };
     theme.edgeLabelTextColor = QColor { "#000000" };
     // Shadows only reduce the contrast, but keep a strong selection highlight
-    theme.shadowEffect = { 0, 0, 50, QColor { 0, 0, 0, 0 }, QColor { "#ff00ff" } };
+    theme.shadowEffect = { 0, 0, 16, QColor { 0, 0, 0, 0 }, QColor { "#ff00ff" } };
     return theme;
 }
 
@@ -60,7 +60,7 @@ static Theme black()
     theme.edgeColor = QColor { "#8a8a8a" };
     theme.edgeLabelColor = QColor { "#3a3a3a" };
     theme.edgeLabelTextColor = QColor { "#eeeeee" };
-    theme.shadowEffect = { 3, 8, 50, QColor { 0, 0, 0, 220 }, QColor { "#4fc3f7" } };
+    theme.shadowEffect = { 2, 14, 16, QColor { 0, 0, 0, 180 }, QColor { "#4fc3f7" } };
     return theme;
 }
 
@@ -75,7 +75,7 @@ static Theme white()
     theme.edgeColor = QColor { "#9e9e9e" };
     theme.edgeLabelColor = QColor { "#f2f2f2" };
     theme.edgeLabelTextColor = QColor { "#212121" };
-    theme.shadowEffect = { 2, 8, 50, QColor { 0, 0, 0, 60 }, QColor { "#2196f3" } };
+    theme.shadowEffect = { 2, 12, 16, QColor { 0, 0, 0, 40 }, QColor { "#2196f3" } };
     return theme;
 }
 
@@ -92,7 +92,7 @@ static Theme accent()
     theme.edgeColor = accentColor;
     theme.edgeLabelColor = accentColor;
     theme.edgeLabelTextColor = QColor { "#ffffff" };
-    theme.shadowEffect = { 2, 6, 50, QColor { 0, 0, 0, 50 }, accentColor };
+    theme.shadowEffect = { 2, 12, 16, QColor { 0, 0, 0, 48 }, accentColor };
     return theme;
 }
 
@@ -112,7 +112,7 @@ static Theme paper()
     theme.edgeWidth = 1.5;
     theme.edgeLabelColor = QColor { "#efe3c8" };
     theme.edgeLabelTextColor = QColor { "#2e3a59" };
-    theme.shadowEffect = { 2, 4, 40, QColor { 90, 70, 40, 70 }, QColor { "#b5651d" } };
+    theme.shadowEffect = { 2, 8, 16, QColor { 90, 70, 40, 64 }, QColor { "#b5651d" } };
     return theme;
 }
 

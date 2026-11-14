@@ -116,22 +116,22 @@ double defaultEdgeWidth()
 
 int defaultShadowEffectOffset()
 {
-    return 3;
+    return 2;
 }
 
 int defaultShadowEffectBlurRadius()
 {
-    return 5;
+    return 12;
 }
 
 int defaultSelectedItemShadowEffectBlurRadius()
 {
-    return 50;
+    return 16;
 }
 
 QColor defaultShadowEffectShadowColor()
 {
-    return { 96, 96, 96 };
+    return { 0, 0, 0, 64 };
 }
 
 QColor defaultShadowEffectSelectedItemShadowColor()
@@ -223,7 +223,7 @@ namespace Node {
 
 int defaultCornerRadius()
 {
-    return 5;
+    return 8;
 }
 
 int minHeight()

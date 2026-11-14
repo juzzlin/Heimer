@@ -1,24 +1,7 @@
-cmake_minimum_required(VERSION 3.10)
-cmake_policy(VERSION 3.10)
+# Qt 6 requires CMake 3.16
+cmake_minimum_required(VERSION 3.16)
 
 project(Heimer)
-
-if(POLICY CMP0005)
-    cmake_policy(SET CMP0005 NEW)
-endif()
-
-if(POLICY CMP0043)
-    cmake_policy(SET CMP0043 NEW)
-endif()
-
-if(POLICY CMP0071)
-    cmake_policy(SET CMP0071 NEW)
-endif()
-
-# Default to GLVND
-if(POLICY CMP0072)
-    cmake_policy(SET CMP0072 NEW)
-endif()
 
 # Global version
 set(APPLICATION_VERSION_MAJOR 4)
@@ -48,8 +31,6 @@ set(CPACK_RESOURCE_FILE_README ${CMAKE_SOURCE_DIR}/README.md)
 option(BIN_PATH "Optional BIN_PATH for Linux release build." "")
 
 option(BUILD_TESTS "Build unit tests." ON)
-
-option(BUILD_WITH_QT6 "Build with Qt 6 instead of Qt 5" ON)
 
 option(ENABLE_CCACHE "Use CCache if found." ON)
 
@@ -98,19 +79,10 @@ add_definitions(-DAPPLICATION_VERSION="${APPLICATION_VERSION}")
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-if (BUILD_WITH_QT6)
-    set(QT_MINIMUM_VERSION 6.2.4)
-    find_package(QT NAMES Qt6 COMPONENTS Core REQUIRED)
-    find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Xml Widgets LinguistTools Svg Test Network REQUIRED)
-else()
-    set(QT_MINIMUM_VERSION 5.9.5)
-    find_package(QT NAMES Qt5 COMPONENTS Core REQUIRED)
-    find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Xml Widgets LinguistTools Svg Test Network REQUIRED)
-endif()
-message(STATUS "Qt version found  : ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR}.${QT_VERSION_PATCH}\n")
-if(QT_VERSION VERSION_LESS QT_MINIMUM_VERSION)
-    message(FATAL_ERROR "\nMinimum supported Qt version: ${QT_MINIMUM_VERSION}\n")
-endif()
+
+# Minimum supported Qt version: the version in Ubuntu 22.04 LTS
+find_package(Qt6 6.2.4 REQUIRED COMPONENTS Core Xml Widgets LinguistTools Svg Test Network)
+message(STATUS "Qt version found  : ${Qt6_VERSION}\n")
 
 # Install paths depend on the build type and target platform
 setup_install_targets()

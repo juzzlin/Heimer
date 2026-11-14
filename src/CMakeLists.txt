@@ -194,19 +194,8 @@ set(RCS
     ${CMAKE_BINARY_DIR}/data/translations/translations.qrc
 )
 
-if(${QT_VERSION_MAJOR} STREQUAL "6")
-    qt_add_resources(RC_SRC ${RCS})
-    qt_add_translation(QM ${TS_FILES})
-    qt_wrap_ui(UI_HDRS ${UIS})
-# This is needed for Qt < 5.15
-else()
-    qt5_add_resources(RC_SRC ${RCS})
-    qt5_add_translation(QM ${TS_FILES})
-    qt5_wrap_ui(UI_HDRS ${UIS})
-endif()
-
-# We need this to be able to include headers produced by uic in our code
-include_directories(${CMAKE_BINARY_DIR})
+qt_add_resources(RC_SRC ${RCS})
+qt_add_translation(QM ${TS_FILES})
 
 # Resource compilation for MinGW
 if(MINGW)
@@ -234,13 +223,13 @@ if(UNIX)
 endif()
 
 # Add the library
-add_library(${HEIMER_LIB_NAME} STATIC ${HEIMER_LIB_HDR} ${HEIMER_LIB_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
-target_link_libraries(${HEIMER_LIB_NAME} Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Network Qt${QT_VERSION_MAJOR}::Svg Qt${QT_VERSION_MAJOR}::Xml SimpleLogger_static Argengine_static)
+add_library(${HEIMER_LIB_NAME} STATIC ${HEIMER_LIB_HDR} ${HEIMER_LIB_SRC} ${RC_SRC} ${QM})
+target_link_libraries(${HEIMER_LIB_NAME} PUBLIC Qt6::Widgets Qt6::Network Qt6::Svg Qt6::Xml SimpleLogger_static Argengine_static)
 
 # Add the executable
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-add_executable(${BINARY_NAME} WIN32 ${APP_SRC} ${MOC_SRC} ${RC_SRC} ${UI_HDRS} ${QM})
-target_link_libraries(${BINARY_NAME} ${HEIMER_LIB_NAME})
+qt_add_executable(${BINARY_NAME} WIN32 ${APP_SRC} ${RC_SRC} ${QM})
+target_link_libraries(${BINARY_NAME} PRIVATE ${HEIMER_LIB_NAME})
 
 # Add target for running clang-format
 find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)

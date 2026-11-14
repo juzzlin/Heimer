@@ -56,13 +56,8 @@ EffectsTab::EffectsTab(QString name, QWidget * parent)
 
     initWidgets();
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
     const auto signal = QOverload<int>::of(&QSpinBox::valueChanged);
     const auto target = QOverload<>::of(&EffectsTab::apply);
-#else
-    const auto signal = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
-    const auto target = static_cast<void (EffectsTab::*)()>(&EffectsTab::apply);
-#endif
     connect(m_shadowOffsetSpinBox, signal, this, target);
     connect(m_shadowBlurRadiusSpinBox, signal, this, target);
     connect(m_selectedItemShadowBlurRadiusSpinBox, signal, this, target);

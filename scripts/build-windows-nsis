@@ -11,7 +11,7 @@ CMD="export LANG=en_US.UTF-8 && \
      export CCACHE_DISABLE=1 && \
      cd /heimer && \
      rm -rf build-windows-nsis && mkdir -p build-windows-nsis && \
-     cd build-windows-nsis && ${CMAKE} -GNinja -DBUILD_WITH_QT6=ON -DPACKAGE_TYPE=NSIS .. && \
+     cd build-windows-nsis && ${CMAKE} -GNinja -DPACKAGE_TYPE=NSIS .. && \
     ninja && ${CPACK} -G NSIS"
 
 if [ -f /.dockerenv ]; then

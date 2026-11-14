@@ -85,11 +85,7 @@ void LanguageService::installTranslatorForBuiltInQtTranslations(QCoreApplication
 
     for (auto && language : languages) {
         L(TAG).debug() << "Trying Qt translations for '" << language.toStdString() << "'";
-#if QT_VERSION >= 0x60000
         if (m_qtTranslator.load("qt_" + language, QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
-#else
-        if (m_qtTranslator.load("qt_" + language, QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
-#endif
             application.installTranslator(&m_qtTranslator);
             L(TAG).info() << "Loaded Qt translations for '" << language.toStdString() << "'";
             break;

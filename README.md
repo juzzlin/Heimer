@@ -98,17 +98,13 @@ Show all available options:
 
 ## Building the project
 
-Currently the build depends on `Qt 5` and `CMake` only. Support for `Qt 6` is preliminary and can be explicitly enabled.
+The build depends on `Qt 6` (>= `6.2.4`) and `CMake` (>= `3.16`) only.
 
 Use the official `Qt SDK` or install the needed development tools from a package repository.
 
 ### Linux / Unix
 
 `Heimer` is being developed on `Ubuntu`, but these instructions should work on any `Debian`-based distro with little or no modifications.
-
-Command to install needed `Qt 5` dev packages on `Ubuntu` (>= `18.04`):
-
-    $ sudo apt install build-essential cmake qtbase5-dev qtchooser qt5-qmake qtbase5-dev-tools qttools5-dev-tools qttools5-dev libqt5svg5-dev
 
 Command to install needed `Qt 6` dev packages on `Ubuntu` (>= `22.04`):
 
@@ -121,10 +117,6 @@ Building for Linux in a nutshell:
     $ cmake ..
 
     $ cmake --build . -j4
-
-`Qt 6` can be explicitly enabled by:
-
-    $ cmake -DBUILD_WITH_QT6=ON ..
 
 Run unit tests:
 

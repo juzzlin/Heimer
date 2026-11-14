@@ -18,10 +18,6 @@
 
 #include <QtCore>
 
-#if QT_VERSION < 0x50600
-extern Q_CORE_EXPORT QBasicAtomicInt qt_qhash_seed;
-#endif
-
 namespace HashSeed {
 
 void init();

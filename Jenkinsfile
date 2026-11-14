@@ -41,7 +41,7 @@ pipeline {
                                 def imageName = "juzzlin/qt6-${UBUNTU_VERSION}:latest"
                                 docker.image(imageName).inside('--privileged -t -v $WORKSPACE:/heimer') {
                                     sh "mkdir -p build-deb-ubuntu-${UBUNTU_VERSION}-qt6"
-                                    sh "cd build-deb-ubuntu-${UBUNTU_VERSION}-qt6 && cmake -GNinja -DDISTRO_VERSION=ubuntu-${UBUNTU_VERSION} -DCMAKE_BUILD_TYPE=Release -DBUILD_WITH_QT6=ON -DBUILD_TESTS=OFF -DPACKAGE_TYPE=Deb .. && cmake --build ."
+                                    sh "cd build-deb-ubuntu-${UBUNTU_VERSION}-qt6 && cmake -GNinja -DDISTRO_VERSION=ubuntu-${UBUNTU_VERSION} -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DPACKAGE_TYPE=Deb .. && cmake --build ."
                                     sh "cd build-deb-ubuntu-${UBUNTU_VERSION}-qt6 && cpack -G DEB"
                                 }
                             }

@@ -363,9 +363,7 @@ static QImage base64ToQImage(const std::string & base64, size_t imageId, std::st
     if (!in.loadFromData(ba)) {
         juzzlin::L(TAG).error() << "Could not load embedded Image id=" << imageId << ", path=" << imagePath;
     }
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     juzzlin::L(TAG).debug() << "Image size: " << in.sizeInBytes() << " bytes";
-#endif
     return in;
 }
 

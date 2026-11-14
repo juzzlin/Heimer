@@ -148,11 +148,7 @@ QWidgetAction * ToolBar::createCornerRadiusAction()
     m_cornerRadiusSpinBox->setMaximum(20);
     m_cornerRadiusSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
     const auto signal = QOverload<int>::of(&QSpinBox::valueChanged);
-#else
-    const auto signal = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
-#endif
     connect(m_cornerRadiusSpinBox, signal, this, &ToolBar::cornerRadiusChanged);
 
     return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Corner radius:"), *m_cornerRadiusSpinBox, *this).second;
@@ -165,11 +161,7 @@ QWidgetAction * ToolBar::createArrowSizeAction()
     m_arrowSizeSpinBox->setMaximum(Constants::Edge::maxArrowSize());
     m_arrowSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
     const auto signal = QOverload<double>::of(&QDoubleSpinBox::valueChanged);
-#else
-    const auto signal = static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged);
-#endif
     connect(m_arrowSizeSpinBox, signal, this, &ToolBar::arrowSizeChanged);
 
     return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Arrow size:"), *m_arrowSizeSpinBox, *this).second;
@@ -182,11 +174,7 @@ QWidgetAction * ToolBar::createEdgeWidthAction()
     m_edgeWidthSpinBox->setMaximum(Constants::Edge::maxEdgeWidth());
     m_edgeWidthSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
     const auto signal = QOverload<double>::of(&QDoubleSpinBox::valueChanged);
-#else
-    const auto signal = static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged);
-#endif
     connect(m_edgeWidthSpinBox, signal, this, &ToolBar::edgeWidthChanged);
 
     return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Edge width:"), *m_edgeWidthSpinBox, *this).second;
@@ -211,11 +199,7 @@ QWidgetAction * ToolBar::createGridSizeAction()
     m_gridSizeSpinBox->setMaximum(m_maxGridSize);
     m_gridSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
     const auto signal = QOverload<int>::of(&QSpinBox::valueChanged);
-#else
-    const auto signal = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
-#endif
     connect(m_gridSizeSpinBox, signal, this, [=](int size) {
         emit gridSizeChanged(size, autoSnapEnabled());
     });
@@ -252,11 +236,7 @@ QWidgetAction * ToolBar::createTextSizeAction()
     m_textSizeSpinBox->setMaximum(Constants::View::maxTextSize());
     m_textSizeSpinBox->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
     const auto signal = QOverload<int>::of(&QSpinBox::valueChanged);
-#else
-    const auto signal = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
-#endif
     connect(m_textSizeSpinBox, signal, this, &ToolBar::textSizeChanged);
 
     return WidgetFactory::buildToolBarWidgetActionWithLabel(tr("Text size:"), *m_textSizeSpinBox, *this).second;

@@ -55,11 +55,7 @@ PngExportDialog::PngExportDialog(QWidget & parent)
         }
     });
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
     const auto spinBoxIntSignal = QOverload<int>::of(&QSpinBox::valueChanged);
-#else
-    const auto spinBoxIntSignal = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
-#endif
 
     connect(m_imageWidthSpinBox, spinBoxIntSignal, this, [&](int value) {
         if (m_enableSpinBoxConnection) {

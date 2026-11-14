@@ -37,7 +37,7 @@ LayoutOptimizerTest::LayoutOptimizerTest()
     TestMode::setEnabled(true);
 }
 
-void LayoutOptimizerTest::testNoNodes_ShouldNotInitialize()
+void LayoutOptimizerTest::test_noNodes_ShouldNotInitialize()
 {
     auto data = std::make_shared<MindMapData>();
 
@@ -46,7 +46,7 @@ void LayoutOptimizerTest::testNoNodes_ShouldNotInitialize()
     QCOMPARE(lol.initialize(1.0, 50), false);
 }
 
-void LayoutOptimizerTest::testSingleNode_ShouldNotDoAnything()
+void LayoutOptimizerTest::test_singleNode_ShouldNotDoAnything()
 {
     auto data = std::make_shared<MindMapData>();
     auto node = std::make_shared<Node>();
@@ -65,7 +65,7 @@ void LayoutOptimizerTest::testSingleNode_ShouldNotDoAnything()
     QCOMPARE(optimizationInfo.changes, static_cast<size_t>(0));
 }
 
-void LayoutOptimizerTest::testMultipleNodes_NoEdges_ShouldSpread()
+void LayoutOptimizerTest::test_multipleNodes_NoEdges_ShouldSpread()
 {
     auto data = std::make_shared<MindMapData>();
     const size_t nodeCount = 50;
@@ -99,7 +99,7 @@ void LayoutOptimizerTest::testMultipleNodes_NoEdges_ShouldSpread()
     }
 }
 
-void LayoutOptimizerTest::testMultipleNodes_ShouldReduceCost()
+void LayoutOptimizerTest::test_multipleNodes_ShouldReduceCost()
 {
     auto data = std::make_shared<MindMapData>();
     const size_t nodeCount = 50;

@@ -25,7 +25,7 @@ NodeTest::NodeTest()
     TestMode::setEnabled(true);
 }
 
-void NodeTest::testContainsText()
+void NodeTest::test_containsText()
 {
     Node node;
     node.setText("Foobar");

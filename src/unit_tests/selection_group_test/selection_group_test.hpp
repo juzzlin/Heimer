@@ -29,29 +29,29 @@ public:
 
 private slots:
 
-    void testAddEdges_Explicit();
+    void test_addEdges_Explicit();
 
-    void testAddEdges_Implicit();
+    void test_addEdges_Implicit();
 
-    void testAddEdges_ImplicitAndExplicit();
+    void test_addEdges_ImplicitAndExplicit();
 
-    void testEdges();
+    void test_edges();
 
-    void testSelectedEdge();
+    void test_selectedEdge();
 
-    void testToggleEdge();
+    void test_toggleEdge();
 
-    void testAddNodes_Explicit();
+    void test_addNodes_Explicit();
 
-    void testAddNodes_Implicit();
+    void test_addNodes_Implicit();
 
-    void testAddNodes_ImplicitAndExplicit();
+    void test_addNodes_ImplicitAndExplicit();
 
-    void testNodes();
+    void test_nodes();
 
-    void testSelectedNode();
+    void test_selectedNode();
 
-    void testToggleNode();
+    void test_toggleNode();
 };
 
 #endif // SELECTION_GROUP_TEST_HPP

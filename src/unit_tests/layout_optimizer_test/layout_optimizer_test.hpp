@@ -29,13 +29,13 @@ public:
 
 private slots:
 
-    void testNoNodes_ShouldNotInitialize();
+    void test_noNodes_ShouldNotInitialize();
 
-    void testSingleNode_ShouldNotDoAnything();
+    void test_singleNode_ShouldNotDoAnything();
 
-    void testMultipleNodes_ShouldReduceCost();
+    void test_multipleNodes_ShouldReduceCost();
 
-    void testMultipleNodes_NoEdges_ShouldSpread();
+    void test_multipleNodes_NoEdges_ShouldSpread();
 };
 
 #endif // LAYOUT_OPTIMIZER_TEST_HPP

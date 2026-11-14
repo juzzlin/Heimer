@@ -24,15 +24,15 @@ class VersionTest : public QObject
 
 private slots:
 
-    void testInitialization_defaultShouldNotBeValid();
+    void test_initialization_defaultShouldNotBeValid();
 
-    void testInitialization_copyConstructor();
+    void test_initialization_copyConstructor();
 
-    void testInitialization_initializeWithString();
+    void test_initialization_initializeWithString();
 
-    void testInitialization_initializeWithVersion();
+    void test_initialization_initializeWithVersion();
 
-    void testEquality();
+    void test_equality();
 };
 
 #endif // VERSION_TEST_HPP

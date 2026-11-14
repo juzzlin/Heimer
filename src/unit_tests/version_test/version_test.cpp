@@ -17,12 +17,12 @@
 
 #include "../../application/version.hpp"
 
-void VersionTest::testInitialization_defaultShouldNotBeValid()
+void VersionTest::test_initialization_defaultShouldNotBeValid()
 {
     QVERIFY(!Version().isValid());
 }
 
-void VersionTest::testInitialization_copyConstructor()
+void VersionTest::test_initialization_copyConstructor()
 {
     const Version version({ 1, 42, 666 });
     QVERIFY(version.isValid());
@@ -31,7 +31,7 @@ void VersionTest::testInitialization_copyConstructor()
     QVERIFY(version.patch == 666);
 }
 
-void VersionTest::testInitialization_initializeWithString()
+void VersionTest::test_initialization_initializeWithString()
 {
     const Version version("1.42.666");
     QVERIFY(version.isValid());
@@ -40,7 +40,7 @@ void VersionTest::testInitialization_initializeWithString()
     QVERIFY(version.patch == 666);
 }
 
-void VersionTest::testInitialization_initializeWithVersion()
+void VersionTest::test_initialization_initializeWithVersion()
 {
     const Version version(1, 42, 666);
     QVERIFY(version.isValid());
@@ -49,7 +49,7 @@ void VersionTest::testInitialization_initializeWithVersion()
     QVERIFY(version.patch == 666);
 }
 
-void VersionTest::testEquality()
+void VersionTest::test_equality()
 {
     QVERIFY(Version(1, 42, 666) == Version(1, 42, 666));
     QVERIFY(Version(1, 42, 666) >= Version(1, 42, 666));

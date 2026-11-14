@@ -29,29 +29,29 @@ public:
 
 private slots:
 
-    void testAddEdge();
+    void test_addEdge();
 
-    void testAddNode();
+    void test_addNode();
 
-    void testAddTwoNodes();
+    void test_addTwoNodes();
 
-    void testAreNodesDirectlyConnected();
+    void test_areNodesDirectlyConnected();
 
-    void testDeleteEdge();
+    void test_deleteEdge();
 
-    void testDeleteNode();
+    void test_deleteNode();
 
-    void testDeleteNodeInvolvingEdge();
+    void test_deleteNodeInvolvingEdge();
 
-    void testGetEdges();
+    void test_getEdges();
 
-    void testGetNodes();
+    void test_getNodes();
 
-    void testGetNodesConnectedToNode();
+    void test_getNodesConnectedToNode();
 
-    void testGetNodeByIndex();
+    void test_getNodeByIndex();
 
-    void testGetNodeByIndex_NotFound();
+    void test_getNodeByIndex_NotFound();
 };
 
 #endif // GRAPH_TEST_HPP

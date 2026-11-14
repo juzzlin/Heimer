@@ -29,81 +29,81 @@ public:
 
 private slots:
 
-    void testAddAndDeleteEdge();
+    void test_addAndDeleteEdge();
 
-    void testGroupConnection();
+    void test_groupConnection();
 
-    void testGroupDisconnection();
+    void test_groupDisconnection();
 
-    void testGroupDeletionOfEdges_shouldDeleteSelectedEdges();
+    void test_groupDeletionOfEdges_shouldDeleteSelectedEdges();
 
-    void testGroupDeletionOfNodes_shouldDeleteSelectedNodes();
+    void test_groupDeletionOfNodes_shouldDeleteSelectedNodes();
 
-    void testGroupMove();
+    void test_groupMove();
 
-    void testGroupSelectionOfEdges();
+    void test_groupSelectionOfEdges();
 
-    void testGroupSelectionOfNodes();
+    void test_groupSelectionOfNodes();
 
-    void testInitializationResetsFileName();
+    void test_initializationResetsFileName();
 
-    void testLoadState();
+    void test_loadState();
 
-    void testUndoAddNodes();
+    void test_undoAddNodes();
 
-    void testRedoAddNodes();
+    void test_redoAddNodes();
 
-    void testRedoState();
+    void test_redoState();
 
-    void testTextSearch();
+    void test_textSearch();
 
-    void testUndoAddEdge();
+    void test_undoAddEdge();
 
-    void testUndoArrowMode();
+    void test_undoArrowMode();
 
-    void testUndoArrowSize();
+    void test_undoArrowSize();
 
-    void testUndoDeleteEdge();
+    void test_undoDeleteEdge();
 
-    void testUndoBackgroundColor();
+    void test_undoBackgroundColor();
 
-    void testUndoCornerRadius();
+    void test_undoCornerRadius();
 
-    void testUndoEdgeColor();
+    void test_undoEdgeColor();
 
-    void testUndoEdgeDashedLine();
+    void test_undoEdgeDashedLine();
 
-    void testUndoEdgeWidth();
+    void test_undoEdgeWidth();
 
-    void testUndoEdgeText();
+    void test_undoEdgeText();
 
-    void testUndoEdgeReversed();
+    void test_undoEdgeReversed();
 
-    void testUndoFontChange();
+    void test_undoFontChange();
 
-    void testUndoGroupConnection();
+    void test_undoGroupConnection();
 
-    void testUndoGroupDisconnection();
+    void test_undoGroupDisconnection();
 
-    void testUndoNodeColor();
+    void test_undoNodeColor();
 
-    void testUndoNodeImage();
+    void test_undoNodeImage();
 
-    void testUndoNodeLocation();
+    void test_undoNodeLocation();
 
-    void testUndoNodeTextColor();
+    void test_undoNodeTextColor();
 
-    void testUndoTextSize();
+    void test_undoTextSize();
 
-    void testUndoState();
+    void test_undoState();
 
-    void testUndoStackResetOnNewDesign();
+    void test_undoStackResetOnNewDesign();
 
-    void testUndoStackResetOnLoadDesign();
+    void test_undoStackResetOnLoadDesign();
 
-    void testUndoModificationFlagOnNewDesign();
+    void test_undoModificationFlagOnNewDesign();
 
-    void testUndoModificationFlagOnLoadDesign();
+    void test_undoModificationFlagOnLoadDesign();
 };
 
 #endif // EDITOR_SERVICE_TEST_HPP

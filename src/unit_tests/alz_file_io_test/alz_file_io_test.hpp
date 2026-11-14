@@ -31,113 +31,113 @@ public:
 
 private slots:
 
-    void testEmptyDesign();
+    void test_emptyDesign();
 
-    void testStyle_ArrowSize();
+    void test_style_ArrowSize();
 
-    void testStyle_BackgroundColor();
+    void test_style_BackgroundColor();
 
-    void testStyle_CornerRadius();
+    void test_style_CornerRadius();
 
-    void testStyle_EdgeColor();
+    void test_style_EdgeColor();
 
-    void testStyle_EdgeWidth();
+    void test_style_EdgeWidth();
 
-    void testStyle_FontItalic();
+    void test_style_FontItalic();
 
-    void testStyle_FontNonItalic();
+    void test_style_FontNonItalic();
 
-    void testStyle_FontBold();
+    void test_style_FontBold();
 
-    void testStyle_FontNonBold();
+    void test_style_FontNonBold();
 
-    void testStyle_FontOverline();
+    void test_style_FontOverline();
 
-    void testStyle_FontNonOverline();
+    void test_style_FontNonOverline();
 
-    void testStyle_FontStrikeOut();
+    void test_style_FontStrikeOut();
 
-    void testStyle_FontNonStrikeOut();
+    void test_style_FontNonStrikeOut();
 
-    void testStyle_FontUnderline();
+    void test_style_FontUnderline();
 
-    void testStyle_FontNonUnderline();
+    void test_style_FontNonUnderline();
 
-    void testStyle_FontWeight_Light();
+    void test_style_FontWeight_Light();
 
-    void testStyle_FontWeight_Medium();
+    void test_style_FontWeight_Medium();
 
-    void testStyle_FontWeight_Bold();
+    void test_style_FontWeight_Bold();
 
-    void testStyle_GridColor();
+    void test_style_GridColor();
 
-    void testStyle_TextSize();
+    void test_style_TextSize();
 
-    void testMetadata_LayoutOptimizer();
+    void test_metadata_LayoutOptimizer();
 
-    void testGraph_NodeDeletion();
+    void test_graph_NodeDeletion();
 
-    void testGraph_SingleEdge();
+    void test_graph_SingleEdge();
 
-    void testGraph_SingleNode();
+    void test_graph_SingleNode();
 
-    void testLoadJpg();
+    void test_loadJpg();
 
-    void testLoadPng();
+    void test_loadPng();
 
-    void testNotUsedImages();
+    void test_notUsedImages();
 
-    void testUsedImages();
+    void test_usedImages();
 
-    void testV1_ArrowSize();
+    void test_v1_ArrowSize();
 
-    void testV1_BackgroundColor();
+    void test_v1_BackgroundColor();
 
-    void testV1_CornerRadius();
+    void test_v1_CornerRadius();
 
-    void testV1_EdgeColor();
+    void test_v1_EdgeColor();
 
-    void testV1_EdgeWidth();
+    void test_v1_EdgeWidth();
 
-    void testV1_FontItalic();
+    void test_v1_FontItalic();
 
-    void testV1_FontNonItalic();
+    void test_v1_FontNonItalic();
 
-    void testV1_FontBold();
+    void test_v1_FontBold();
 
-    void testV1_FontNonBold();
+    void test_v1_FontNonBold();
 
-    void testV1_FontOverline();
+    void test_v1_FontOverline();
 
-    void testV1_FontNonOverline();
+    void test_v1_FontNonOverline();
 
-    void testV1_FontStrikeOut();
+    void test_v1_FontStrikeOut();
 
-    void testV1_FontNonStrikeOut();
+    void test_v1_FontNonStrikeOut();
 
-    void testV1_FontUnderline();
+    void test_v1_FontUnderline();
 
-    void testV1_FontNonUnderline();
+    void test_v1_FontNonUnderline();
 
-    void testV1_FontWeight_Light();
+    void test_v1_FontWeight_Light();
 
-    void testV1_FontWeight_Medium();
+    void test_v1_FontWeight_Medium();
 
-    void testV1_FontWeight_Bold();
+    void test_v1_FontWeight_Bold();
 
-    void testV1_GridColor();
+    void test_v1_GridColor();
 
-    void testV1_TextSize();
+    void test_v1_TextSize();
 
-    void testV1_LayoutOptimizer();
+    void test_v1_LayoutOptimizer();
 
-    void testV1_Graph_SingleEdge();
+    void test_v1_Graph_SingleEdge();
 
-    void testV1_Graph_SingleNode();
+    void test_v1_Graph_SingleNode();
 
-    void testV1_Version();
+    void test_v1_Version();
 
-    void testV2_Version();
+    void test_v2_Version();
 };
 
 #endif // ALZ_FILE_IO_TEST_HPP

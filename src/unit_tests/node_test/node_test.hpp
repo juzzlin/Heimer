@@ -29,7 +29,7 @@ public:
 
 private slots:
 
-    void testContainsText();
+    void test_containsText();
 };
 
 #endif // NODE_TEST_HPP

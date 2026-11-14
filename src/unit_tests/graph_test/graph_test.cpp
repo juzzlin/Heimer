@@ -32,7 +32,7 @@ GraphTest::GraphTest()
     TestMode::setEnabled(true);
 }
 
-void GraphTest::testAddEdge()
+void GraphTest::test_addEdge()
 {
     Graph dut;
 
@@ -61,7 +61,7 @@ void GraphTest::testAddEdge()
     QCOMPARE(dut.getEdgesToNode(node0).size(), static_cast<size_t>(0));
 }
 
-void GraphTest::testAddNode()
+void GraphTest::test_addNode()
 {
     Graph dut;
     auto node = make_shared<Node>();
@@ -89,7 +89,7 @@ void GraphTest::testAddNode()
     QCOMPARE(node->index(), 667); // Node index should be automatically 667
 }
 
-void GraphTest::testAddTwoNodes()
+void GraphTest::test_addTwoNodes()
 {
     Graph dut;
 
@@ -106,7 +106,7 @@ void GraphTest::testAddTwoNodes()
     QCOMPARE(node1->index(), 1);
 }
 
-void GraphTest::testAreNodesDirectlyConnected()
+void GraphTest::test_areNodesDirectlyConnected()
 {
     Graph dut;
 
@@ -129,7 +129,7 @@ void GraphTest::testAreNodesDirectlyConnected()
     QVERIFY(!dut.areDirectlyConnected(node0->index(), node2->index()));
 }
 
-void GraphTest::testDeleteEdge()
+void GraphTest::test_deleteEdge()
 {
     Graph dut;
 
@@ -156,7 +156,7 @@ void GraphTest::testDeleteEdge()
     QCOMPARE(dut.areDirectlyConnected(node0, node1), false);
 }
 
-void GraphTest::testDeleteNode()
+void GraphTest::test_deleteNode()
 {
     Graph dut;
     const auto node = make_shared<Node>();
@@ -170,7 +170,7 @@ void GraphTest::testDeleteNode()
     QCOMPARE(dut.nodeCount(), static_cast<size_t>(0));
 }
 
-void GraphTest::testDeleteNodeInvolvingEdge()
+void GraphTest::test_deleteNodeInvolvingEdge()
 {
     Graph dut;
 
@@ -195,7 +195,7 @@ void GraphTest::testDeleteNodeInvolvingEdge()
     QCOMPARE(dut.getEdgesToNode(node1).size(), static_cast<size_t>(0));
 }
 
-void GraphTest::testGetEdges()
+void GraphTest::test_getEdges()
 {
     Graph dut;
 
@@ -222,7 +222,7 @@ void GraphTest::testGetEdges()
             == 1);
 }
 
-void GraphTest::testGetNodes()
+void GraphTest::test_getNodes()
 {
     Graph dut;
 
@@ -246,7 +246,7 @@ void GraphTest::testGetNodes()
             == 1);
 }
 
-void GraphTest::testGetNodesConnectedToNode()
+void GraphTest::test_getNodesConnectedToNode()
 {
     Graph dut;
 
@@ -272,7 +272,7 @@ void GraphTest::testGetNodesConnectedToNode()
     QVERIFY(nodes.at(1)->index() == node1->index());
 }
 
-void GraphTest::testGetNodeByIndex()
+void GraphTest::test_getNodeByIndex()
 {
     Graph dut;
     const auto node = make_shared<Node>();
@@ -282,7 +282,7 @@ void GraphTest::testGetNodeByIndex()
     QCOMPARE(node, dut.getNode(0));
 }
 
-void GraphTest::testGetNodeByIndex_NotFound()
+void GraphTest::test_getNodeByIndex_NotFound()
 {
     Graph dut;
     auto node = make_shared<Node>();

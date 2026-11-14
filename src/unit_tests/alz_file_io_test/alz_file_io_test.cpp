@@ -33,14 +33,14 @@ AlzFileIOTest::AlzFileIOTest()
     TestMode::setEnabled(true);
 }
 
-void AlzFileIOTest::testEmptyDesign()
+void AlzFileIOTest::test_emptyDesign()
 {
     const auto outData = std::make_shared<MindMapData>();
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(QString(inData->applicationVersion()), Constants::Application::applicationVersion());
 }
 
-void AlzFileIOTest::testStyle_ArrowSize()
+void AlzFileIOTest::test_style_ArrowSize()
 {
     const auto outData = std::make_shared<MindMapData>();
     outData->setArrowSize(42.42);
@@ -48,7 +48,7 @@ void AlzFileIOTest::testStyle_ArrowSize()
     QCOMPARE(inData->arrowSize(), outData->arrowSize());
 }
 
-void AlzFileIOTest::testStyle_BackgroundColor()
+void AlzFileIOTest::test_style_BackgroundColor()
 {
     const auto outData = std::make_shared<MindMapData>();
     outData->setBackgroundColor(QColor(1, 2, 3));
@@ -56,7 +56,7 @@ void AlzFileIOTest::testStyle_BackgroundColor()
     QCOMPARE(inData->backgroundColor(), outData->backgroundColor());
 }
 
-void AlzFileIOTest::testStyle_CornerRadius()
+void AlzFileIOTest::test_style_CornerRadius()
 {
     const auto outData = std::make_shared<MindMapData>();
     outData->setCornerRadius(Constants::Node::defaultCornerRadius() + 1);
@@ -64,7 +64,7 @@ void AlzFileIOTest::testStyle_CornerRadius()
     QCOMPARE(inData->cornerRadius(), outData->cornerRadius());
 }
 
-void AlzFileIOTest::testStyle_EdgeColor()
+void AlzFileIOTest::test_style_EdgeColor()
 {
     const auto outData = std::make_shared<MindMapData>();
     outData->setEdgeColor(QColor(1, 2, 3));
@@ -72,7 +72,7 @@ void AlzFileIOTest::testStyle_EdgeColor()
     QCOMPARE(inData->edgeColor(), outData->edgeColor());
 }
 
-void AlzFileIOTest::testStyle_EdgeWidth()
+void AlzFileIOTest::test_style_EdgeWidth()
 {
     const auto outData = std::make_shared<MindMapData>();
     outData->setEdgeWidth(666.42);
@@ -80,7 +80,7 @@ void AlzFileIOTest::testStyle_EdgeWidth()
     QCOMPARE(inData->edgeWidth(), outData->edgeWidth());
 }
 
-void AlzFileIOTest::testStyle_FontItalic()
+void AlzFileIOTest::test_style_FontItalic()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font("Foobar", 12, -1, true);
@@ -94,7 +94,7 @@ void AlzFileIOTest::testStyle_FontItalic()
     QCOMPARE(inData->textSize(), outData->textSize()); // Font shouldn't change text size
 }
 
-void AlzFileIOTest::testStyle_FontNonItalic()
+void AlzFileIOTest::test_style_FontNonItalic()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font;
@@ -103,7 +103,7 @@ void AlzFileIOTest::testStyle_FontNonItalic()
     QCOMPARE(inData->font().italic(), false);
 }
 
-void AlzFileIOTest::testStyle_FontBold()
+void AlzFileIOTest::test_style_FontBold()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font;
@@ -113,7 +113,7 @@ void AlzFileIOTest::testStyle_FontBold()
     QCOMPARE(inData->font().bold(), true);
 }
 
-void AlzFileIOTest::testStyle_FontNonBold()
+void AlzFileIOTest::test_style_FontNonBold()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font;
@@ -122,7 +122,7 @@ void AlzFileIOTest::testStyle_FontNonBold()
     QCOMPARE(inData->font().bold(), false);
 }
 
-void AlzFileIOTest::testStyle_FontOverline()
+void AlzFileIOTest::test_style_FontOverline()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font;
@@ -132,7 +132,7 @@ void AlzFileIOTest::testStyle_FontOverline()
     QCOMPARE(inData->font().overline(), true);
 }
 
-void AlzFileIOTest::testStyle_FontNonOverline()
+void AlzFileIOTest::test_style_FontNonOverline()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font;
@@ -141,7 +141,7 @@ void AlzFileIOTest::testStyle_FontNonOverline()
     QCOMPARE(inData->font().overline(), false);
 }
 
-void AlzFileIOTest::testStyle_FontStrikeOut()
+void AlzFileIOTest::test_style_FontStrikeOut()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font;
@@ -151,7 +151,7 @@ void AlzFileIOTest::testStyle_FontStrikeOut()
     QCOMPARE(inData->font().strikeOut(), true);
 }
 
-void AlzFileIOTest::testStyle_FontNonStrikeOut()
+void AlzFileIOTest::test_style_FontNonStrikeOut()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font;
@@ -160,7 +160,7 @@ void AlzFileIOTest::testStyle_FontNonStrikeOut()
     QCOMPARE(inData->font().strikeOut(), false);
 }
 
-void AlzFileIOTest::testStyle_FontUnderline()
+void AlzFileIOTest::test_style_FontUnderline()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font("Foobar");
@@ -170,7 +170,7 @@ void AlzFileIOTest::testStyle_FontUnderline()
     QCOMPARE(inData->font().underline(), true);
 }
 
-void AlzFileIOTest::testStyle_FontNonUnderline()
+void AlzFileIOTest::test_style_FontNonUnderline()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font("Foobar");
@@ -179,7 +179,7 @@ void AlzFileIOTest::testStyle_FontNonUnderline()
     QCOMPARE(inData->font().underline(), false);
 }
 
-void AlzFileIOTest::testStyle_FontWeight_Light()
+void AlzFileIOTest::test_style_FontWeight_Light()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font("Foobar", 12);
@@ -189,7 +189,7 @@ void AlzFileIOTest::testStyle_FontWeight_Light()
     QCOMPARE(inData->font().weight(), outData->font().weight());
 }
 
-void AlzFileIOTest::testStyle_FontWeight_Medium()
+void AlzFileIOTest::test_style_FontWeight_Medium()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font("Foobar", 12);
@@ -199,7 +199,7 @@ void AlzFileIOTest::testStyle_FontWeight_Medium()
     QCOMPARE(inData->font().weight(), outData->font().weight());
 }
 
-void AlzFileIOTest::testStyle_FontWeight_Bold()
+void AlzFileIOTest::test_style_FontWeight_Bold()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font("Foobar", 12);
@@ -209,7 +209,7 @@ void AlzFileIOTest::testStyle_FontWeight_Bold()
     QCOMPARE(inData->font().weight(), outData->font().weight());
 }
 
-void AlzFileIOTest::testStyle_GridColor()
+void AlzFileIOTest::test_style_GridColor()
 {
     const auto outData = std::make_shared<MindMapData>();
     outData->setGridColor(QColor(1, 2, 3));
@@ -217,7 +217,7 @@ void AlzFileIOTest::testStyle_GridColor()
     QCOMPARE(inData->gridColor(), outData->gridColor());
 }
 
-void AlzFileIOTest::testStyle_TextSize()
+void AlzFileIOTest::test_style_TextSize()
 {
     const auto outData = std::make_shared<MindMapData>();
     outData->setTextSize(42);
@@ -225,7 +225,7 @@ void AlzFileIOTest::testStyle_TextSize()
     QCOMPARE(inData->textSize(), outData->textSize());
 }
 
-void AlzFileIOTest::testMetadata_LayoutOptimizer()
+void AlzFileIOTest::test_metadata_LayoutOptimizer()
 {
     const auto outData = std::make_shared<MindMapData>();
     outData->setAspectRatio(3.14);
@@ -235,7 +235,7 @@ void AlzFileIOTest::testMetadata_LayoutOptimizer()
     QCOMPARE(inData->minEdgeLength(), outData->minEdgeLength());
 }
 
-void AlzFileIOTest::testLoadJpg()
+void AlzFileIOTest::test_loadJpg()
 {
     const QString xml =
       "<?xml version='1.0' encoding='UTF-8'?>"
@@ -257,7 +257,7 @@ void AlzFileIOTest::testLoadJpg()
     QCOMPARE(image->path(), std::string("test.jpg"));
 }
 
-void AlzFileIOTest::testLoadPng()
+void AlzFileIOTest::test_loadPng()
 {
     const QString xml =
       "<?xml version='1.0' encoding='UTF-8'?>"
@@ -279,7 +279,7 @@ void AlzFileIOTest::testLoadPng()
     QCOMPARE(image->path(), std::string("test.png"));
 }
 
-void AlzFileIOTest::testNotUsedImages()
+void AlzFileIOTest::test_notUsedImages()
 {
     const auto outData = std::make_shared<MindMapData>();
     outData->imageManager().addImage(Image {});
@@ -291,7 +291,7 @@ void AlzFileIOTest::testNotUsedImages()
     QCOMPARE(inData->imageManager().images().size(), size_t { 0 });
 }
 
-void AlzFileIOTest::testUsedImages()
+void AlzFileIOTest::test_usedImages()
 {
     const auto outData = std::make_shared<MindMapData>();
     const auto id1 = outData->imageManager().addImage(Image {});
@@ -309,7 +309,7 @@ void AlzFileIOTest::testUsedImages()
     QCOMPARE(inData->imageManager().images().size(), size_t { 2 });
 }
 
-void AlzFileIOTest::testGraph_NodeDeletion()
+void AlzFileIOTest::test_graph_NodeDeletion()
 {
     const auto outData = std::make_shared<MindMapData>();
 
@@ -333,7 +333,7 @@ void AlzFileIOTest::testGraph_NodeDeletion()
     QCOMPARE(edges.size(), static_cast<size_t>(1));
 }
 
-void AlzFileIOTest::testGraph_SingleEdge()
+void AlzFileIOTest::test_graph_SingleEdge()
 {
     const auto outData = std::make_shared<MindMapData>();
     const auto outNode0 = std::make_shared<Node>();
@@ -358,7 +358,7 @@ void AlzFileIOTest::testGraph_SingleEdge()
     QCOMPARE(edges.at(0)->text(), edge->text());
 }
 
-void AlzFileIOTest::testGraph_SingleNode()
+void AlzFileIOTest::test_graph_SingleNode()
 {
     const auto outData = std::make_shared<MindMapData>();
 
@@ -386,7 +386,7 @@ void AlzFileIOTest::testGraph_SingleNode()
     QCOMPARE(node->textColor(), outNode->textColor());
 }
 
-void AlzFileIOTest::testV1_ArrowSize()
+void AlzFileIOTest::test_v1_ArrowSize()
 {
     const auto outData = std::make_shared<MindMapData>();
     outData->setArrowSize(42.42);
@@ -395,7 +395,7 @@ void AlzFileIOTest::testV1_ArrowSize()
     QCOMPARE(inData->arrowSize(), outData->arrowSize());
 }
 
-void AlzFileIOTest::testV1_BackgroundColor()
+void AlzFileIOTest::test_v1_BackgroundColor()
 {
     const auto outData = std::make_shared<MindMapData>();
     outData->setBackgroundColor(QColor(1, 2, 3));
@@ -404,7 +404,7 @@ void AlzFileIOTest::testV1_BackgroundColor()
     QCOMPARE(inData->backgroundColor(), outData->backgroundColor());
 }
 
-void AlzFileIOTest::testV1_CornerRadius()
+void AlzFileIOTest::test_v1_CornerRadius()
 {
     const auto outData = std::make_shared<MindMapData>();
     outData->setCornerRadius(Constants::Node::defaultCornerRadius() + 1);
@@ -413,7 +413,7 @@ void AlzFileIOTest::testV1_CornerRadius()
     QCOMPARE(inData->cornerRadius(), outData->cornerRadius());
 }
 
-void AlzFileIOTest::testV1_EdgeColor()
+void AlzFileIOTest::test_v1_EdgeColor()
 {
     const auto outData = std::make_shared<MindMapData>();
     outData->setEdgeColor(QColor(1, 2, 3));
@@ -422,7 +422,7 @@ void AlzFileIOTest::testV1_EdgeColor()
     QCOMPARE(inData->edgeColor(), outData->edgeColor());
 }
 
-void AlzFileIOTest::testV1_EdgeWidth()
+void AlzFileIOTest::test_v1_EdgeWidth()
 {
     const auto outData = std::make_shared<MindMapData>();
     outData->setEdgeWidth(666.42);
@@ -431,7 +431,7 @@ void AlzFileIOTest::testV1_EdgeWidth()
     QCOMPARE(inData->edgeWidth(), outData->edgeWidth());
 }
 
-void AlzFileIOTest::testV1_FontItalic()
+void AlzFileIOTest::test_v1_FontItalic()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font("Foobar", 12, -1, true);
@@ -446,7 +446,7 @@ void AlzFileIOTest::testV1_FontItalic()
     QCOMPARE(inData->textSize(), outData->textSize()); // Font shouldn't change text size
 }
 
-void AlzFileIOTest::testV1_FontNonItalic()
+void AlzFileIOTest::test_v1_FontNonItalic()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font;
@@ -456,7 +456,7 @@ void AlzFileIOTest::testV1_FontNonItalic()
     QCOMPARE(inData->font().italic(), false);
 }
 
-void AlzFileIOTest::testV1_FontBold()
+void AlzFileIOTest::test_v1_FontBold()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font;
@@ -467,7 +467,7 @@ void AlzFileIOTest::testV1_FontBold()
     QCOMPARE(inData->font().bold(), true);
 }
 
-void AlzFileIOTest::testV1_FontNonBold()
+void AlzFileIOTest::test_v1_FontNonBold()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font;
@@ -477,7 +477,7 @@ void AlzFileIOTest::testV1_FontNonBold()
     QCOMPARE(inData->font().bold(), false);
 }
 
-void AlzFileIOTest::testV1_FontOverline()
+void AlzFileIOTest::test_v1_FontOverline()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font;
@@ -488,7 +488,7 @@ void AlzFileIOTest::testV1_FontOverline()
     QCOMPARE(inData->font().overline(), true);
 }
 
-void AlzFileIOTest::testV1_FontNonOverline()
+void AlzFileIOTest::test_v1_FontNonOverline()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font;
@@ -498,7 +498,7 @@ void AlzFileIOTest::testV1_FontNonOverline()
     QCOMPARE(inData->font().overline(), false);
 }
 
-void AlzFileIOTest::testV1_FontStrikeOut()
+void AlzFileIOTest::test_v1_FontStrikeOut()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font;
@@ -509,7 +509,7 @@ void AlzFileIOTest::testV1_FontStrikeOut()
     QCOMPARE(inData->font().strikeOut(), true);
 }
 
-void AlzFileIOTest::testV1_FontNonStrikeOut()
+void AlzFileIOTest::test_v1_FontNonStrikeOut()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font;
@@ -519,7 +519,7 @@ void AlzFileIOTest::testV1_FontNonStrikeOut()
     QCOMPARE(inData->font().strikeOut(), false);
 }
 
-void AlzFileIOTest::testV1_FontUnderline()
+void AlzFileIOTest::test_v1_FontUnderline()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font("Foobar");
@@ -530,7 +530,7 @@ void AlzFileIOTest::testV1_FontUnderline()
     QCOMPARE(inData->font().underline(), true);
 }
 
-void AlzFileIOTest::testV1_FontNonUnderline()
+void AlzFileIOTest::test_v1_FontNonUnderline()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font("Foobar");
@@ -540,7 +540,7 @@ void AlzFileIOTest::testV1_FontNonUnderline()
     QCOMPARE(inData->font().underline(), false);
 }
 
-void AlzFileIOTest::testV1_FontWeight_Light()
+void AlzFileIOTest::test_v1_FontWeight_Light()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font("Foobar", 12);
@@ -551,7 +551,7 @@ void AlzFileIOTest::testV1_FontWeight_Light()
     QCOMPARE(inData->font().weight(), outData->font().weight());
 }
 
-void AlzFileIOTest::testV1_FontWeight_Medium()
+void AlzFileIOTest::test_v1_FontWeight_Medium()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font("Foobar", 12);
@@ -562,7 +562,7 @@ void AlzFileIOTest::testV1_FontWeight_Medium()
     QCOMPARE(inData->font().weight(), outData->font().weight());
 }
 
-void AlzFileIOTest::testV1_FontWeight_Bold()
+void AlzFileIOTest::test_v1_FontWeight_Bold()
 {
     const auto outData = std::make_shared<MindMapData>();
     QFont font("Foobar", 12);
@@ -573,7 +573,7 @@ void AlzFileIOTest::testV1_FontWeight_Bold()
     QCOMPARE(inData->font().weight(), outData->font().weight());
 }
 
-void AlzFileIOTest::testV1_GridColor()
+void AlzFileIOTest::test_v1_GridColor()
 {
     const auto outData = std::make_shared<MindMapData>();
     outData->setGridColor(QColor(1, 2, 3));
@@ -582,7 +582,7 @@ void AlzFileIOTest::testV1_GridColor()
     QCOMPARE(inData->gridColor(), outData->gridColor());
 }
 
-void AlzFileIOTest::testV1_TextSize()
+void AlzFileIOTest::test_v1_TextSize()
 {
     const auto outData = std::make_shared<MindMapData>();
     outData->setTextSize(42);
@@ -591,7 +591,7 @@ void AlzFileIOTest::testV1_TextSize()
     QCOMPARE(inData->textSize(), outData->textSize());
 }
 
-void AlzFileIOTest::testV1_LayoutOptimizer()
+void AlzFileIOTest::test_v1_LayoutOptimizer()
 {
     const auto outData = std::make_shared<MindMapData>();
     outData->setAspectRatio(3.14);
@@ -602,7 +602,7 @@ void AlzFileIOTest::testV1_LayoutOptimizer()
     QCOMPARE(inData->minEdgeLength(), outData->minEdgeLength());
 }
 
-void AlzFileIOTest::testV1_Graph_SingleEdge()
+void AlzFileIOTest::test_v1_Graph_SingleEdge()
 {
     const auto outData = std::make_shared<MindMapData>();
     const auto outNode0 = std::make_shared<Node>();
@@ -622,7 +622,7 @@ void AlzFileIOTest::testV1_Graph_SingleEdge()
     QCOMPARE(edges.at(0)->targetNode().index(), outNode1->index());
 }
 
-void AlzFileIOTest::testV1_Graph_SingleNode()
+void AlzFileIOTest::test_v1_Graph_SingleNode()
 {
     const auto outData = std::make_shared<MindMapData>();
 
@@ -639,7 +639,7 @@ void AlzFileIOTest::testV1_Graph_SingleNode()
     QCOMPARE(node->index(), outNode->index());
 }
 
-void AlzFileIOTest::testV1_Version()
+void AlzFileIOTest::test_v1_Version()
 {
     const auto outData = std::make_shared<MindMapData>();
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO(IO::AlzFormatVersion::V1).toXml(outData));
@@ -648,7 +648,7 @@ void AlzFileIOTest::testV1_Version()
     QCOMPARE(inData->alzFormatVersion(), IO::AlzFormatVersion::V1);
 }
 
-void AlzFileIOTest::testV2_Version()
+void AlzFileIOTest::test_v2_Version()
 {
     const auto outData = std::make_shared<MindMapData>();
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));

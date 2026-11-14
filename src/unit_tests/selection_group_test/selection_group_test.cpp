@@ -29,7 +29,7 @@ SelectionGroupTest::SelectionGroupTest()
     TestMode::setEnabled(true);
 }
 
-void SelectionGroupTest::testAddEdges_Explicit()
+void SelectionGroupTest::test_addEdges_Explicit()
 {
     const auto edge1 = std::make_unique<Edge>(nullptr, nullptr);
     const auto edge2 = std::make_unique<Edge>(nullptr, nullptr);
@@ -52,7 +52,7 @@ void SelectionGroupTest::testAddEdges_Explicit()
     QCOMPARE(selectionGroup.size(), size_t(0));
 }
 
-void SelectionGroupTest::testAddEdges_Implicit()
+void SelectionGroupTest::test_addEdges_Implicit()
 {
     const auto edge = std::make_unique<Edge>(nullptr, nullptr);
 
@@ -70,7 +70,7 @@ void SelectionGroupTest::testAddEdges_Implicit()
     QCOMPARE(selectionGroup.size(), size_t(0));
 }
 
-void SelectionGroupTest::testAddEdges_ImplicitAndExplicit()
+void SelectionGroupTest::test_addEdges_ImplicitAndExplicit()
 {
     const auto edge1 = std::make_unique<Edge>(nullptr, nullptr);
     const auto edge2 = std::make_unique<Edge>(nullptr, nullptr);
@@ -102,7 +102,7 @@ void SelectionGroupTest::testAddEdges_ImplicitAndExplicit()
     QCOMPARE(selectionGroup.size(), size_t(0));
 }
 
-void SelectionGroupTest::testEdges()
+void SelectionGroupTest::test_edges()
 {
     const auto edge1 = std::make_unique<Edge>(nullptr, nullptr);
     const auto edge2 = std::make_unique<Edge>(nullptr, nullptr);
@@ -120,7 +120,7 @@ void SelectionGroupTest::testEdges()
     QCOMPARE(edges.at(2), edge3.get());
 }
 
-void SelectionGroupTest::testSelectedEdge()
+void SelectionGroupTest::test_selectedEdge()
 {
     const auto edge1 = std::make_unique<Edge>(nullptr, nullptr);
     const auto edge2 = std::make_unique<Edge>(nullptr, nullptr);
@@ -138,7 +138,7 @@ void SelectionGroupTest::testSelectedEdge()
     QCOMPARE(selectionGroup.selectedEdge().value(), edge1.get());
 }
 
-void SelectionGroupTest::testToggleEdge()
+void SelectionGroupTest::test_toggleEdge()
 {
     const auto edge = std::make_unique<Edge>(nullptr, nullptr);
 
@@ -153,7 +153,7 @@ void SelectionGroupTest::testToggleEdge()
     QVERIFY(!selectionGroup.contains(*edge));
     QVERIFY(!edge->selected());
 }
-void SelectionGroupTest::testAddNodes_Explicit()
+void SelectionGroupTest::test_addNodes_Explicit()
 {
     const auto node1 = std::make_unique<Node>();
     const auto node2 = std::make_unique<Node>();
@@ -176,7 +176,7 @@ void SelectionGroupTest::testAddNodes_Explicit()
     QCOMPARE(selectionGroup.size(), size_t(0));
 }
 
-void SelectionGroupTest::testAddNodes_Implicit()
+void SelectionGroupTest::test_addNodes_Implicit()
 {
     const auto node = std::make_unique<Node>();
 
@@ -194,7 +194,7 @@ void SelectionGroupTest::testAddNodes_Implicit()
     QCOMPARE(selectionGroup.size(), size_t(0));
 }
 
-void SelectionGroupTest::testAddNodes_ImplicitAndExplicit()
+void SelectionGroupTest::test_addNodes_ImplicitAndExplicit()
 {
     const auto node1 = std::make_unique<Node>();
     const auto node2 = std::make_unique<Node>();
@@ -226,7 +226,7 @@ void SelectionGroupTest::testAddNodes_ImplicitAndExplicit()
     QCOMPARE(selectionGroup.size(), size_t(0));
 }
 
-void SelectionGroupTest::testNodes()
+void SelectionGroupTest::test_nodes()
 {
     const auto node1 = std::make_unique<Node>();
     const auto node2 = std::make_unique<Node>();
@@ -244,7 +244,7 @@ void SelectionGroupTest::testNodes()
     QCOMPARE(nodes.at(2), node3.get());
 }
 
-void SelectionGroupTest::testSelectedNode()
+void SelectionGroupTest::test_selectedNode()
 {
     const auto node1 = std::make_unique<Node>();
     const auto node2 = std::make_unique<Node>();
@@ -262,7 +262,7 @@ void SelectionGroupTest::testSelectedNode()
     QCOMPARE(selectionGroup.selectedNode().value(), node1.get());
 }
 
-void SelectionGroupTest::testToggleNode()
+void SelectionGroupTest::test_toggleNode()
 {
     const auto node = std::make_unique<Node>();
 

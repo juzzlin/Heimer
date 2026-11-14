@@ -30,7 +30,7 @@ EditorServiceTest::EditorServiceTest()
     TestMode::setEnabled(true);
 }
 
-void EditorServiceTest::testAddAndDeleteEdge()
+void EditorServiceTest::test_addAndDeleteEdge()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -62,7 +62,7 @@ void EditorServiceTest::testAddAndDeleteEdge()
     node1.reset();
 }
 
-void EditorServiceTest::testGroupConnection()
+void EditorServiceTest::test_groupConnection()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -88,7 +88,7 @@ void EditorServiceTest::testGroupConnection()
     QCOMPARE(editorService.areSelectedNodesConnectable(), false);
 }
 
-void EditorServiceTest::testGroupDisconnection()
+void EditorServiceTest::test_groupDisconnection()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -114,7 +114,7 @@ void EditorServiceTest::testGroupDisconnection()
     QCOMPARE(editorService.mindMapData()->graph().areDirectlyConnected(node2, node1), false);
 }
 
-void EditorServiceTest::testGroupDeletionOfEdges_shouldDeleteSelectedEdges()
+void EditorServiceTest::test_groupDeletionOfEdges_shouldDeleteSelectedEdges()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -130,7 +130,7 @@ void EditorServiceTest::testGroupDeletionOfEdges_shouldDeleteSelectedEdges()
     QVERIFY(editorService.mindMapData()->graph().getEdges().empty());
 }
 
-void EditorServiceTest::testGroupDeletionOfNodes_shouldDeleteSelectedNodes()
+void EditorServiceTest::test_groupDeletionOfNodes_shouldDeleteSelectedNodes()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -146,7 +146,7 @@ void EditorServiceTest::testGroupDeletionOfNodes_shouldDeleteSelectedNodes()
     QVERIFY(editorService.mindMapData()->graph().getNodes().empty());
 }
 
-void EditorServiceTest::testGroupMove()
+void EditorServiceTest::test_groupMove()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -164,7 +164,7 @@ void EditorServiceTest::testGroupMove()
     QCOMPARE(qFuzzyCompare(node1->location().y(), 2), true);
 }
 
-void EditorServiceTest::testInitializationResetsFileName()
+void EditorServiceTest::test_initializationResetsFileName()
 {
     EditorService editorService;
     const QString fileName = "dummy";
@@ -174,7 +174,7 @@ void EditorServiceTest::testInitializationResetsFileName()
     QCOMPARE(editorService.fileName(), QString { "" });
 }
 
-void EditorServiceTest::testGroupSelectionOfEdges()
+void EditorServiceTest::test_groupSelectionOfEdges()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -206,7 +206,7 @@ void EditorServiceTest::testGroupSelectionOfEdges()
     QCOMPARE(editorService.edgeSelectionGroupSize(), size_t(0));
 }
 
-void EditorServiceTest::testGroupSelectionOfNodes()
+void EditorServiceTest::test_groupSelectionOfNodes()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -241,7 +241,7 @@ void EditorServiceTest::testGroupSelectionOfNodes()
     QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(0));
 }
 
-void EditorServiceTest::testLoadState()
+void EditorServiceTest::test_loadState()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -266,7 +266,7 @@ void EditorServiceTest::testLoadState()
     QVERIFY(!editorService.selectedNode().has_value());
 }
 
-void EditorServiceTest::testUndoAddNodes()
+void EditorServiceTest::test_undoAddNodes()
 {
     EditorService editorService;
 
@@ -300,7 +300,7 @@ void EditorServiceTest::testUndoAddNodes()
     QCOMPARE(editorService.mindMapData()->graph().nodeCount(), static_cast<size_t>(0));
 }
 
-void EditorServiceTest::testRedoAddNodes()
+void EditorServiceTest::test_redoAddNodes()
 {
     EditorService editorService;
 
@@ -319,7 +319,7 @@ void EditorServiceTest::testRedoAddNodes()
     QCOMPARE(editorService.mindMapData()->graph().nodeCount(), static_cast<size_t>(2));
 }
 
-void EditorServiceTest::testTextSearch()
+void EditorServiceTest::test_textSearch()
 {
     const auto data = std::make_shared<MindMapData>();
     EditorService editorService;
@@ -353,7 +353,7 @@ void EditorServiceTest::testTextSearch()
     QCOMPARE(node2->selected(), false);
 }
 
-void EditorServiceTest::testUndoAddEdge()
+void EditorServiceTest::test_undoAddEdge()
 {
     const auto data = std::make_shared<MindMapData>();
     EditorService editorService;
@@ -409,7 +409,7 @@ void EditorServiceTest::testUndoAddEdge()
     QCOMPARE(editorService.mindMapData()->graph().areDirectlyConnected(undoneNode2, undoneNode1), false);
 }
 
-void EditorServiceTest::testUndoArrowMode()
+void EditorServiceTest::test_undoArrowMode()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -438,7 +438,7 @@ void EditorServiceTest::testUndoArrowMode()
     QCOMPARE(editorService.mindMapData()->graph().getEdges().at(0)->arrowMode(), EdgeModel::ArrowMode::Hidden);
 }
 
-void EditorServiceTest::testUndoArrowSize()
+void EditorServiceTest::test_undoArrowSize()
 {
     EditorService editorService;
 
@@ -461,7 +461,7 @@ void EditorServiceTest::testUndoArrowSize()
     QCOMPARE(editorService.mindMapData()->arrowSize(), 12.5);
 }
 
-void EditorServiceTest::testUndoDeleteEdge()
+void EditorServiceTest::test_undoDeleteEdge()
 {
     const auto data = std::make_shared<MindMapData>();
     EditorService editorService;
@@ -501,7 +501,7 @@ void EditorServiceTest::testUndoDeleteEdge()
     QCOMPARE(editorService.mindMapData()->graph().areDirectlyConnected(undoneNode0, undoneNode1), false);
 }
 
-void EditorServiceTest::testUndoBackgroundColor()
+void EditorServiceTest::test_undoBackgroundColor()
 {
     EditorService editorService;
 
@@ -524,7 +524,7 @@ void EditorServiceTest::testUndoBackgroundColor()
     QCOMPARE(editorService.mindMapData()->backgroundColor(), QColor(1, 1, 1));
 }
 
-void EditorServiceTest::testUndoCornerRadius()
+void EditorServiceTest::test_undoCornerRadius()
 {
     EditorService editorService;
 
@@ -547,7 +547,7 @@ void EditorServiceTest::testUndoCornerRadius()
     QCOMPARE(editorService.mindMapData()->cornerRadius(), 11);
 }
 
-void EditorServiceTest::testUndoEdgeColor()
+void EditorServiceTest::test_undoEdgeColor()
 {
     EditorService editorService;
 
@@ -570,7 +570,7 @@ void EditorServiceTest::testUndoEdgeColor()
     QCOMPARE(editorService.mindMapData()->edgeColor(), QColor(2, 3, 4));
 }
 
-void EditorServiceTest::testUndoEdgeDashedLine()
+void EditorServiceTest::test_undoEdgeDashedLine()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -597,7 +597,7 @@ void EditorServiceTest::testUndoEdgeDashedLine()
     QCOMPARE(editorService.mindMapData()->graph().getEdges().at(0)->dashedLine(), true);
 }
 
-void EditorServiceTest::testUndoEdgeWidth()
+void EditorServiceTest::test_undoEdgeWidth()
 {
     EditorService editorService;
 
@@ -620,7 +620,7 @@ void EditorServiceTest::testUndoEdgeWidth()
     QCOMPARE(editorService.mindMapData()->edgeWidth(), 2.0);
 }
 
-void EditorServiceTest::testUndoEdgeText()
+void EditorServiceTest::test_undoEdgeText()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -650,7 +650,7 @@ void EditorServiceTest::testUndoEdgeText()
     QCOMPARE(editorService.mindMapData()->graph().getEdges().at(0)->text(), QString(text1));
 }
 
-void EditorServiceTest::testUndoEdgeReversed()
+void EditorServiceTest::test_undoEdgeReversed()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -679,7 +679,7 @@ void EditorServiceTest::testUndoEdgeReversed()
     QCOMPARE(editorService.mindMapData()->graph().getEdges().at(0)->reversed(), true);
 }
 
-void EditorServiceTest::testUndoFontChange()
+void EditorServiceTest::test_undoFontChange()
 {
     EditorService editorService;
 
@@ -700,7 +700,7 @@ void EditorServiceTest::testUndoFontChange()
     QCOMPARE(editorService.mindMapData()->font().family(), newFont.family());
 }
 
-void EditorServiceTest::testUndoGroupConnection()
+void EditorServiceTest::test_undoGroupConnection()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -732,7 +732,7 @@ void EditorServiceTest::testUndoGroupConnection()
     QCOMPARE(editorService.areSelectedNodesConnectable(), true);
 }
 
-void EditorServiceTest::testUndoGroupDisconnection()
+void EditorServiceTest::test_undoGroupDisconnection()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -766,7 +766,7 @@ void EditorServiceTest::testUndoGroupDisconnection()
     QCOMPARE(editorService.areSelectedNodesDisconnectable(), true);
 }
 
-void EditorServiceTest::testUndoNodeColor()
+void EditorServiceTest::test_undoNodeColor()
 {
     const auto data = std::make_shared<MindMapData>();
     const auto node = std::make_shared<Node>();
@@ -800,7 +800,7 @@ void EditorServiceTest::testUndoNodeColor()
     QCOMPARE(redoneNode->color(), color);
 }
 
-void EditorServiceTest::testUndoNodeImage()
+void EditorServiceTest::test_undoNodeImage()
 {
     const auto data = std::make_shared<MindMapData>();
     const auto node = std::make_shared<Node>();
@@ -832,7 +832,7 @@ void EditorServiceTest::testUndoNodeImage()
     QCOMPARE(redoneNode->imageRef(), size_t { 2 });
 }
 
-void EditorServiceTest::testUndoNodeLocation()
+void EditorServiceTest::test_undoNodeLocation()
 {
     const auto data = std::make_shared<MindMapData>();
     const auto node = std::make_shared<Node>();
@@ -866,7 +866,7 @@ void EditorServiceTest::testUndoNodeLocation()
     QCOMPARE(redoneNode->location(), location);
 }
 
-void EditorServiceTest::testUndoNodeTextColor()
+void EditorServiceTest::test_undoNodeTextColor()
 {
     const auto data = std::make_shared<MindMapData>();
     const auto node = std::make_shared<Node>();
@@ -895,7 +895,7 @@ void EditorServiceTest::testUndoNodeTextColor()
     QCOMPARE(redoneNode->textColor(), color);
 }
 
-void EditorServiceTest::testUndoTextSize()
+void EditorServiceTest::test_undoTextSize()
 {
     EditorService editorService;
 
@@ -918,7 +918,7 @@ void EditorServiceTest::testUndoTextSize()
     QCOMPARE(editorService.mindMapData()->textSize(), 41);
 }
 
-void EditorServiceTest::testUndoState()
+void EditorServiceTest::test_undoState()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -941,7 +941,7 @@ void EditorServiceTest::testUndoState()
     QVERIFY(!editorService.selectedNode().has_value());
 }
 
-void EditorServiceTest::testRedoState()
+void EditorServiceTest::test_redoState()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -974,7 +974,7 @@ void EditorServiceTest::testRedoState()
     QCOMPARE(editorService.isRedoable(), false);
 }
 
-void EditorServiceTest::testUndoStackResetOnNewDesign()
+void EditorServiceTest::test_undoStackResetOnNewDesign()
 {
     EditorService editorService;
 
@@ -991,7 +991,7 @@ void EditorServiceTest::testUndoStackResetOnNewDesign()
     QCOMPARE(editorService.isUndoable(), false);
 }
 
-void EditorServiceTest::testUndoStackResetOnLoadDesign()
+void EditorServiceTest::test_undoStackResetOnLoadDesign()
 {
     EditorService editorService;
 
@@ -1008,7 +1008,7 @@ void EditorServiceTest::testUndoStackResetOnLoadDesign()
     QCOMPARE(editorService.isUndoable(), false);
 }
 
-void EditorServiceTest::testUndoModificationFlagOnNewDesign()
+void EditorServiceTest::test_undoModificationFlagOnNewDesign()
 {
     EditorService editorService;
 
@@ -1025,7 +1025,7 @@ void EditorServiceTest::testUndoModificationFlagOnNewDesign()
     QCOMPARE(editorService.isModified(), false);
 }
 
-void EditorServiceTest::testUndoModificationFlagOnLoadDesign()
+void EditorServiceTest::test_undoModificationFlagOnLoadDesign()
 {
     EditorService editorService;
 

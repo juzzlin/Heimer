@@ -2,18 +2,25 @@
 
 Heimer is a desktop application for creating mind maps and other suitable diagrams. It's written in Qt and targeted for Linux and Windows.
 
-Here are some example mind maps running on Ubuntu:
+Here are some example mind maps with the built-in themes White, Accent, Black and Paper:
 
 <table>
   <tr>
-    <td colspan="3"><img src="/screenshots/4.4.0/Heimer.png" width="100%"></td>
+    <td colspan="3"><img src="/screenshots/4.5.0/Heimer.png" width="100%"></td>
   </tr>
   <tr>
-    <td><img src="/screenshots/4.4.0/Large.png" width="100%"></td>
-    <td><img src="/screenshots/4.4.0/Family_TextSearch.png" width="100%"></td>
-    <td><img src="/screenshots/4.4.0/Matrix.png" width="100%"></td>
+    <td><img src="/screenshots/4.5.0/ThemeAccent.png" width="100%"></td>
+    <td><img src="/screenshots/4.5.0/ThemeBlack.png" width="100%"></td>
+    <td><img src="/screenshots/4.5.0/ThemePaper.png" width="100%"></td>
+  </tr>
+  <tr>
+    <td><img src="/screenshots/4.5.0/Family_TextSearch.png" width="100%"></td>
+    <td><img src="/screenshots/4.5.0/Company.png" width="100%"></td>
+    <td><img src="/screenshots/4.5.0/Matrix.png" width="100%"></td>
   </tr>
  </table>
+
+The project website is at https://juzzlin.github.io/Heimer/
 
 <a href="https://www.youtube.com/watch?feature=player_embedded&v=NXJp6tmmZdE">A very short introduction video to Heimer 1.9.0</a>
 

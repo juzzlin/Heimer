@@ -23,6 +23,7 @@
 #include "../../../application/state_machine.hpp"
 #include "../../../common/constants.hpp"
 #include "../../../infra/settings.hpp"
+#include "../../../view/menus/language_menu.hpp"
 #include "../../../view/menus/recent_files_menu.hpp"
 #include "../../../view/node_action.hpp"
 
@@ -337,28 +338,7 @@ void MainMenu::createFileMenu()
 
 void MainMenu::createLanguageMenu()
 {
-    const auto languageService = SC::instance().languageService();
-    QMenu * languageMenu = nullptr;
-    if (isNativeMenuBar()) {
-        // With a native/global menu bar (e.g. KDE global menu, macOS) a second QMenuBar would
-        // replace the main menu bar and corner widgets are not shown anyway, so add the language
-        // menu as a normal top-level menu instead.
-        languageMenu = addMenu(languageService->activeLanguage().toUpper());
-    } else {
-        m_languageMenuBar = !m_languageMenuBar ? new QMenuBar { this } : m_languageMenuBar;
-        m_languageMenuBar->setNativeMenuBar(false);
-        m_languageMenuBar->clear();
-        languageMenu = m_languageMenuBar->addMenu(languageService->activeLanguage().toUpper());
-        setCornerWidget(m_languageMenuBar, Qt::TopRightCorner);
-    }
-
-    for (auto && language : languageService->selectableLanguagesWithoutActiveLanguage()) {
-        const auto languageAction = new QAction { language.toUpper(), this };
-        languageMenu->addAction(languageAction);
-        connect(languageAction, &QAction::triggered, this, [=] {
-            languageService->setActiveLanguage(language);
-        });
-    }
+    addLanguageMenu(*this, isNativeMenuBar(), *SC::instance().languageService());
 }
 
 void MainMenu::createMirrorSubMenu(QMenu & editMenu)

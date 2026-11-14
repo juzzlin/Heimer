@@ -69,6 +69,7 @@ set(HEIMER_LIB_SRC
     ${HEIMER_SRC_ROOT}/view/magic_zoom.cpp
     ${HEIMER_SRC_ROOT}/view/main_window.cpp
     ${HEIMER_SRC_ROOT}/view/menus/edge_context_menu.cpp
+    ${HEIMER_SRC_ROOT}/view/menus/language_menu.cpp
     ${HEIMER_SRC_ROOT}/view/menus/main_context_menu.cpp
     ${HEIMER_SRC_ROOT}/view/menus/main_menu.cpp
     ${HEIMER_SRC_ROOT}/view/menus/recent_files_menu.cpp
@@ -150,6 +151,7 @@ set(HEIMER_LIB_HDR
     ${HEIMER_SRC_ROOT}/view/magic_zoom.hpp
     ${HEIMER_SRC_ROOT}/view/main_window.hpp
     ${HEIMER_SRC_ROOT}/view/menus/edge_context_menu.hpp
+    ${HEIMER_SRC_ROOT}/view/menus/language_menu.hpp
     ${HEIMER_SRC_ROOT}/view/menus/main_context_menu.hpp
     ${HEIMER_SRC_ROOT}/view/menus/main_menu.hpp
     ${HEIMER_SRC_ROOT}/view/menus/recent_files_menu.hpp

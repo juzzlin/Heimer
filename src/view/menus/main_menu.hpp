@@ -113,8 +113,6 @@ private:
     QAction * m_saveAction = nullptr;
 
     QAction * m_saveAsAction = nullptr;
-
-    QMenuBar * m_languageMenuBar = nullptr;
 };
 
 } // namespace Menus

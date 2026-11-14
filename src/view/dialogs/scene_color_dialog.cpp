@@ -50,9 +50,6 @@ SceneColorDialog::SceneColorDialog(Role role)
         case Role::Text:
             SC::instance().applicationService()->performNodeAction({ NodeAction::Type::SetTextColor, color });
             break;
-        case Role::ShadowColor:
-        case Role::SelectedItemShadowColor:
-            break;
         }
     });
 }

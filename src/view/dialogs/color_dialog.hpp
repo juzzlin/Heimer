@@ -31,9 +31,7 @@ public:
         EdgeLabelText,
         Grid,
         Text,
-        Background,
-        ShadowColor,
-        SelectedItemShadowColor
+        Background
     };
 
     ColorDialog(Role role);

@@ -18,8 +18,9 @@
 #include "defaults_tab.hpp"
 #include "editing_tab.hpp"
 #include "effects_tab.hpp"
+#include "themes_tab.hpp"
 
-#include "../../domain/shadow_effect_params.hpp"
+#include "../../application/service_container.hpp"
 
 #include <QDialogButtonBox>
 #include <QTabWidget>
@@ -56,15 +57,15 @@ void SettingsDialog::reject()
 
 void SettingsDialog::initWidgets()
 {
-    m_tabs.push_back(new DefaultsTab(tr("Defaults"), this));
+    m_tabs.push_back(new ThemesTab { tr("Themes"), SC::instance().themeService(), this });
+
+    m_tabs.push_back(new DefaultsTab { tr("Defaults"), this });
 
     const auto editingTab = new EditingTab(tr("Editing"), this);
     connect(editingTab, &EditingTab::autosaveEnabled, this, &SettingsDialog::autosaveEnabled);
     m_tabs.push_back(editingTab);
 
-    const auto effectsTab = new EffectsTab(tr("Effects"), this);
-    connect(effectsTab, &EffectsTab::shadowEffectChanged, this, &SettingsDialog::shadowEffectChanged);
-    m_tabs.push_back(effectsTab);
+    m_tabs.push_back(new EffectsTab { tr("Effects"), this });
 
     const auto tabWidget = new QTabWidget;
 

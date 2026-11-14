@@ -19,12 +19,8 @@
 #include "settings_tab_base.hpp"
 
 class QCheckBox;
-class QSpinBox;
-class ShadowEffectParams;
 
 namespace Dialogs {
-
-class ColorSettingButton;
 
 class EffectsTab : public SettingsTabBase
 {
@@ -35,33 +31,10 @@ public:
 
     void apply() override;
 
-signals:
-    void shadowEffectChanged(const ShadowEffectParams & params);
-
 private:
-    void apply(const ShadowEffectParams & params);
-
     void initWidgets();
 
-    QSpinBox * m_shadowOffsetSpinBox;
-
-    QSpinBox * m_shadowBlurRadiusSpinBox;
-
-    QSpinBox * m_selectedItemShadowBlurRadiusSpinBox;
-
-    ColorSettingButton * m_shadowColorButton;
-
-    ColorSettingButton * m_selectedItemShadowColorButton;
-
     QCheckBox * m_optimizeShadowsCheckBox;
-
-    const int m_shadowEffectMaxOffset = 10;
-
-    const int m_shadowEffectMinOffset = 0;
-
-    const int m_shadowEffectMaxBlurRadius = 100;
-
-    const int m_shadowEffectMinBlurRadius = 0;
 };
 
 } // namespace Dialogs

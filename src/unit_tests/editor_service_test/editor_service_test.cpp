@@ -21,6 +21,7 @@
 #include "../../domain/graph.hpp"
 #include "../../domain/mind_map_data.hpp"
 #include "../../domain/shadow_effect_params.hpp"
+#include "../../domain/theme.hpp"
 
 using SceneItems::Edge;
 using SceneItems::EdgeModel;
@@ -1147,6 +1148,61 @@ void EditorServiceTest::test_undoShadowEffect()
     editorService.redo();
 
     QVERIFY(editorService.mindMapData()->shadowEffect() == shadowEffect);
+}
+
+void EditorServiceTest::test_applyTheme_shouldBeUndoable()
+{
+    EditorService editorService;
+    editorService.setMindMapData(std::make_shared<MindMapData>());
+    editorService.addNodeAt({ 0, 0 });
+    const auto originalTheme = editorService.mindMapData()->theme();
+    Theme theme;
+    theme.backgroundColor = { 1, 2, 3 };
+    theme.edgeLabelColor = { 4, 5, 6 };
+    theme.nodeColor = { 7, 8, 9 };
+
+    editorService.applyTheme(theme, true);
+
+    QVERIFY(editorService.mindMapData()->theme().isVisuallyEqual(theme));
+    QCOMPARE(editorService.mindMapData()->graph().getNodes().at(0)->color(), QColor(7, 8, 9));
+    QVERIFY(editorService.isUndoable());
+
+    editorService.undo();
+
+    QVERIFY(editorService.mindMapData()->theme().isVisuallyEqual(originalTheme));
+    QCOMPARE(editorService.mindMapData()->graph().getNodes().at(0)->color(), originalTheme.nodeColor);
+}
+
+void EditorServiceTest::test_applyTheme_shouldKeepIndividualNodeColorsIfRequested()
+{
+    EditorService editorService;
+    editorService.setMindMapData(std::make_shared<MindMapData>());
+    const auto node = editorService.addNodeAt({ 0, 0 });
+    node->setColor({ 100, 0, 0 });
+    Theme theme;
+    theme.nodeColor = { 7, 8, 9 };
+
+    editorService.applyTheme(theme, false);
+
+    QCOMPARE(editorService.mindMapData()->nodeColor(), QColor(7, 8, 9));
+    QCOMPARE(node->color(), QColor(100, 0, 0));
+}
+
+void EditorServiceTest::test_hasIndividualNodeColors()
+{
+    EditorService editorService;
+    editorService.setMindMapData(std::make_shared<MindMapData>());
+    QVERIFY(!editorService.hasIndividualNodeColors());
+
+    const auto node = editorService.addNodeAt({ 0, 0 });
+    QVERIFY(!editorService.hasIndividualNodeColors());
+
+    node->setTextColor({ 1, 2, 3 });
+    QVERIFY(editorService.hasIndividualNodeColors());
+
+    node->setTextColor(editorService.mindMapData()->nodeTextColor());
+    node->setColor({ 1, 2, 3 });
+    QVERIFY(editorService.hasIndividualNodeColors());
 }
 
 void EditorServiceTest::test_undoModificationFlagOnNewDesign()

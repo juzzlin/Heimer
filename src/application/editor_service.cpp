@@ -23,6 +23,7 @@
 #include "../common/test_mode.hpp"
 #include "../domain/graph.hpp"
 #include "../domain/mind_map_data.hpp"
+#include "../domain/theme.hpp"
 #include "../domain/undo_stack.hpp"
 #include "../infra/io/alz_file_io.hpp"
 #include "../view/edge_selection_group.hpp"
@@ -245,6 +246,26 @@ bool EditorService::saveMindMapAs(QString fileName, bool async)
 void EditorService::setUndoPointMergingEnabled(bool enabled)
 {
     m_undoPointMergingEnabled = enabled;
+}
+
+void EditorService::applyTheme(const Theme & theme, bool applyNodeColors)
+{
+    assert(m_mindMapData);
+
+    // A theme change is a modification of its own: don't merge it with a previous one
+    m_undoTimer.stop();
+    saveUndoPoint();
+    m_mindMapData->setTheme(theme, applyNodeColors);
+}
+
+bool EditorService::hasIndividualNodeColors() const
+{
+    assert(m_mindMapData);
+
+    const auto nodes = m_mindMapData->graph().getNodes();
+    return std::any_of(nodes.begin(), nodes.end(), [this](auto && node) {
+        return node->color() != m_mindMapData->nodeColor() || node->textColor() != m_mindMapData->nodeTextColor();
+    });
 }
 
 void EditorService::setColorForSelectedNodes(QColor color)

@@ -22,6 +22,7 @@
 #include "../application/service_container.hpp"
 #include "../application/settings_proxy.hpp"
 #include "../application/state_machine.hpp"
+#include "../application/theme_service.hpp"
 #include "../common/constants.hpp"
 #include "../domain/layout_optimizer.hpp"
 #include "../infra/settings.hpp"
@@ -56,6 +57,9 @@ Application::Application(int & argc, char ** argv)
   , m_versionChecker(new VersionChecker { this }) // Parented to this
 {
     parseArgs(argc, argv);
+
+    // Default colors, fonts and shadows of earlier versions => theme preset
+    m_serviceContainer->themeService()->migrateLegacyDefaults();
 
     initializeTranslations();
 

@@ -51,7 +51,6 @@ set(HEIMER_LIB_SRC
     ${HEIMER_SRC_ROOT}/infra/version_checker.cpp
     ${HEIMER_SRC_ROOT}/view/dialogs/about_dialog.cpp
     ${HEIMER_SRC_ROOT}/view/dialogs/color_dialog.cpp
-    ${HEIMER_SRC_ROOT}/view/dialogs/color_setting_button.cpp
     ${HEIMER_SRC_ROOT}/view/dialogs/defaults_tab.cpp
     ${HEIMER_SRC_ROOT}/view/dialogs/editing_tab.cpp
     ${HEIMER_SRC_ROOT}/view/dialogs/effects_tab.cpp
@@ -62,6 +61,8 @@ set(HEIMER_LIB_SRC
     ${HEIMER_SRC_ROOT}/view/dialogs/settings_dialog.cpp
     ${HEIMER_SRC_ROOT}/view/dialogs/settings_tab_base.cpp
     ${HEIMER_SRC_ROOT}/view/dialogs/spinner_dialog.cpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/theme_editor_dialog.cpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/themes_tab.cpp
     ${HEIMER_SRC_ROOT}/view/dialogs/whats_new_dialog.cpp
     ${HEIMER_SRC_ROOT}/view/dialogs/widget_factory.cpp
     ${HEIMER_SRC_ROOT}/view/edge_selection_group.cpp
@@ -88,6 +89,8 @@ set(HEIMER_LIB_SRC
     ${HEIMER_SRC_ROOT}/view/scene_items/node_handle.cpp
     ${HEIMER_SRC_ROOT}/view/scene_items/scene_item_base.cpp
     ${HEIMER_SRC_ROOT}/view/scene_items/text_edit.cpp
+    ${HEIMER_SRC_ROOT}/view/theme_preview.cpp
+    ${HEIMER_SRC_ROOT}/view/widgets/color_button.cpp
     ${HEIMER_SRC_ROOT}/view/widgets/font_button.cpp
     ${HEIMER_SRC_ROOT}/view/widgets/status_label.cpp
 )
@@ -138,7 +141,6 @@ set(HEIMER_LIB_HDR
     ${HEIMER_SRC_ROOT}/infra/version_checker.hpp
     ${HEIMER_SRC_ROOT}/view/dialogs/about_dialog.hpp
     ${HEIMER_SRC_ROOT}/view/dialogs/color_dialog.hpp
-    ${HEIMER_SRC_ROOT}/view/dialogs/color_setting_button.hpp
     ${HEIMER_SRC_ROOT}/view/dialogs/defaults_tab.hpp
     ${HEIMER_SRC_ROOT}/view/dialogs/editing_tab.hpp
     ${HEIMER_SRC_ROOT}/view/dialogs/effects_tab.hpp
@@ -149,6 +151,8 @@ set(HEIMER_LIB_HDR
     ${HEIMER_SRC_ROOT}/view/dialogs/settings_dialog.hpp
     ${HEIMER_SRC_ROOT}/view/dialogs/settings_tab_base.hpp
     ${HEIMER_SRC_ROOT}/view/dialogs/spinner_dialog.hpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/theme_editor_dialog.hpp
+    ${HEIMER_SRC_ROOT}/view/dialogs/themes_tab.hpp
     ${HEIMER_SRC_ROOT}/view/dialogs/whats_new_dialog.hpp
     ${HEIMER_SRC_ROOT}/view/dialogs/widget_factory.hpp
     ${HEIMER_SRC_ROOT}/view/edge_action.hpp
@@ -181,6 +185,8 @@ set(HEIMER_LIB_HDR
     ${HEIMER_SRC_ROOT}/view/scene_items/node_model.hpp
     ${HEIMER_SRC_ROOT}/view/scene_items/scene_item_base.hpp
     ${HEIMER_SRC_ROOT}/view/scene_items/text_edit.hpp
+    ${HEIMER_SRC_ROOT}/view/theme_preview.hpp
+    ${HEIMER_SRC_ROOT}/view/widgets/color_button.hpp
     ${HEIMER_SRC_ROOT}/view/widgets/font_button.hpp
     ${HEIMER_SRC_ROOT}/view/widgets/status_label.hpp
 )

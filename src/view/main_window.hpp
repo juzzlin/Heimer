@@ -47,7 +47,6 @@ class QSpinBox;
 class QTextEdit;
 class QWidgetAction;
 
-class ShadowEffectParams;
 
 class MainWindow : public QMainWindow
 {
@@ -127,7 +126,6 @@ signals:
 
     void searchTextChanged(QString text);
 
-    void shadowEffectChanged(const ShadowEffectParams & params);
 
     void textSizeChanged(int value);
 

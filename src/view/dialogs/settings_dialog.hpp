@@ -20,8 +20,6 @@
 
 #include <vector>
 
-class ShadowEffectParams;
-
 namespace Dialogs {
 
 class SettingsTabBase;
@@ -36,7 +34,6 @@ public:
 signals:
     void autosaveEnabled(bool enabled);
 
-    void shadowEffectChanged(const ShadowEffectParams & params);
 
 private:
     void accept() override;

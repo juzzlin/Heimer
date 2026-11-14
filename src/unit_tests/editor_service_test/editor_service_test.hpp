@@ -115,6 +115,12 @@ private slots:
 
     void test_undoShadowEffect();
 
+    void test_applyTheme_shouldBeUndoable();
+
+    void test_applyTheme_shouldKeepIndividualNodeColorsIfRequested();
+
+    void test_hasIndividualNodeColors();
+
     void test_undoModificationFlagOnNewDesign();
 
     void test_undoModificationFlagOnLoadDesign();

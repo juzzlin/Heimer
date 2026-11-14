@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2022 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2026 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,45 +13,38 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef COLOR_SETTING_BUTTON_HPP
-#define COLOR_SETTING_BUTTON_HPP
+#ifndef COLOR_BUTTON_HPP
+#define COLOR_BUTTON_HPP
 
-#include "color_dialog.hpp"
 #include <QColor>
 #include <QPushButton>
 
-#include "../../common/types.hpp"
+namespace Widgets {
 
-class SettingsProxy;
-
-namespace Dialogs {
-
-class ColorSettingButton : public QPushButton
+//! A button that shows a color and opens a color dialog when clicked.
+class ColorButton : public QPushButton
 {
     Q_OBJECT
 
 public:
-    explicit ColorSettingButton(QString text, ColorDialog::Role role, QWidget * parent = nullptr);
+    //! \param alphaChannel If true, the color dialog allows choosing the transparency.
+    explicit ColorButton(QString text, bool alphaChannel = false, QWidget * parent = nullptr);
 
-    const QColor & selectedColor() const;
+    QColor color() const;
 
-    void resetToDefault();
-
-    void setColor(QColor color);
+    void setColor(const QColor & color);
 
 signals:
-    void colorSelected(const QColor & color);
+    void colorChanged(const QColor & color);
 
 private:
-    void apply(QColor color);
+    void updateIcon();
 
-    ColorDialog::Role m_role;
+    QColor m_color;
 
-    QColor m_selectedColor;
-
-    SettingsProxyS m_settingsProxy;
+    bool m_alphaChannel;
 };
 
-} // namespace Dialogs
+} // namespace Widgets
 
-#endif // COLOR_SETTING_BUTTON_HPP
+#endif // COLOR_BUTTON_HPP

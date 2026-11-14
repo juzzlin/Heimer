@@ -96,7 +96,6 @@ void MainWindow::connectMainMenu()
 
     connect(m_mainMenu, &Menus::MainMenu::settingsDialogRequested, this, [=] {
         Dialogs::SettingsDialog settingsDialog;
-        connect(&settingsDialog, &Dialogs::SettingsDialog::shadowEffectChanged, this, &MainWindow::shadowEffectChanged);
         connect(&settingsDialog, &Dialogs::SettingsDialog::autosaveEnabled, this, &MainWindow::autosaveEnabled);
         settingsDialog.exec();
     });

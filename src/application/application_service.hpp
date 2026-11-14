@@ -37,6 +37,7 @@ class MouseAction;
 class NodeAction;
 class QGraphicsItem;
 class ShadowEffectParams;
+struct Theme;
 
 namespace SceneItems {
 class NodeHandle;
@@ -212,6 +213,11 @@ public slots:
 
     void setEdgeColor(QColor color);
 
+    //! Applies the theme to the current mind map as a single undoable modification.
+    void applyTheme(const Theme & theme, bool applyNodeColors);
+
+    bool hasIndividualNodeColors() const;
+
     void setEdgeLabelColor(QColor color);
 
     void setEdgeLabelTextColor(QColor color);
@@ -222,7 +228,6 @@ public slots:
 
     void setSearchText(QString text);
 
-    void setShadowEffect(const ShadowEffectParams & params);
 
     void setTextSize(int textSize);
 

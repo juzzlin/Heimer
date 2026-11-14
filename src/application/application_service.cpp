@@ -22,6 +22,7 @@
 #include "../domain/graph.hpp"
 #include "../domain/image_manager.hpp"
 #include "../domain/shadow_effect_params.hpp"
+#include "../domain/theme.hpp"
 #include "../infra/export_params.hpp"
 #include "../infra/io/file_exception.hpp"
 #include "../infra/settings.hpp"
@@ -63,7 +64,6 @@ ApplicationService::ApplicationService(MainWindowS mainWindow)
     connect(m_mainWindow.get(), &MainWindow::fontChanged, this, &ApplicationService::changeFont);
     connect(m_mainWindow.get(), &MainWindow::gridSizeChanged, this, &ApplicationService::setGridSize);
     connect(m_mainWindow.get(), &MainWindow::searchTextChanged, this, &ApplicationService::setSearchText);
-    connect(m_mainWindow.get(), &MainWindow::shadowEffectChanged, this, &ApplicationService::setShadowEffect);
     connect(m_mainWindow.get(), &MainWindow::textSizeChanged, this, &ApplicationService::setTextSize);
     connect(m_mainWindow.get(), &MainWindow::zoomInRequested, this, &ApplicationService::zoomIn);
     connect(m_mainWindow.get(), &MainWindow::zoomOutRequested, this, &ApplicationService::zoomOut);
@@ -856,6 +856,20 @@ void ApplicationService::setEdgeColor(QColor color)
     }
 }
 
+void ApplicationService::applyTheme(const Theme & theme, bool applyNodeColors)
+{
+    L(TAG).info() << "Applying theme '" << theme.name.toStdString() << "'";
+    m_editorService->applyTheme(theme, applyNodeColors);
+    m_editorView->setBackgroundBrush(QBrush { theme.backgroundColor });
+    setMindMapProperties();
+    m_editorView->viewport()->update();
+}
+
+bool ApplicationService::hasIndividualNodeColors() const
+{
+    return m_editorService->hasIndividualNodeColors();
+}
+
 void ApplicationService::setEdgeLabelColor(QColor color)
 {
     const auto mindMapData = m_editorService->mindMapData();
@@ -958,14 +972,6 @@ void ApplicationService::setSearchText(QString text)
     }
 
     updateNodeConnectionActions();
-}
-
-void ApplicationService::setShadowEffect(const ShadowEffectParams & params)
-{
-    if (m_editorService->mindMapData()->shadowEffect() != params) {
-        saveUndoPoint();
-        m_editorService->mindMapData()->setShadowEffect(params);
-    }
 }
 
 void ApplicationService::setGridSize(int size, bool autoSnap)

@@ -33,6 +33,7 @@
 
 class EdgeSelectionGroup;
 class MindMapSnapshot;
+struct Theme;
 class MindMapTile;
 class NodeSelectionGroup;
 class QGraphicsLineItem;
@@ -160,6 +161,13 @@ public:
     //! Undo points saved in quick succession (e.g. while dragging) are merged into one.
     //! Enabled by default, except in test mode.
     void setUndoPointMergingEnabled(bool enabled);
+
+    //! Applies the theme to the mind map as a single undoable modification.
+    //! \param applyNodeColors If true, also the individual colors of the existing nodes are replaced.
+    void applyTheme(const Theme & theme, bool applyNodeColors);
+
+    //! \return true if any node has colors different from the node colors of the current theme.
+    bool hasIndividualNodeColors() const;
 
     void setColorForSelectedNodes(QColor color);
 

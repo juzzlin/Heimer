@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+
+import datetime
+import email.utils
+import zoneinfo
+
+# Set the timezone to Helsinki/Finland. zoneinfo is in the standard library from Python 3.9,
+# so this needs nothing installed; pytz did, and its absence failed the release silently.
+helsinki_tz = zoneinfo.ZoneInfo('Europe/Helsinki')
+dt = datetime.datetime.now(tz=helsinki_tz)
+
+# Format the datetime using email.utils.format_datetime
+formatted_dt = email.utils.format_datetime(dt)
+print(formatted_dt)

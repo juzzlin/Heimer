@@ -224,6 +224,18 @@ void MainMenu::createColorSubMenu(QMenu & editMenu)
 
     colorMenu->addAction(edgeColorAction);
 
+    const auto edgeLabelColorAction = new QAction(tr("Set edge label color") + Constants::Misc::threeDots(), this);
+    connect(edgeLabelColorAction, &QAction::triggered, this, [=] {
+        emit actionTriggered(StateMachine::Action::EdgeLabelColorChangeRequested);
+    });
+    colorMenu->addAction(edgeLabelColorAction);
+
+    const auto edgeLabelTextColorAction = new QAction(tr("Set edge label text color") + Constants::Misc::threeDots(), this);
+    connect(edgeLabelTextColorAction, &QAction::triggered, this, [=] {
+        emit actionTriggered(StateMachine::Action::EdgeLabelTextColorChangeRequested);
+    });
+    colorMenu->addAction(edgeLabelTextColorAction);
+
     colorMenu->addSeparator();
 
     const auto gridColorAction = new QAction(tr("Set grid color") + Constants::Misc::threeDots(), this);

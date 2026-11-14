@@ -21,41 +21,12 @@
 #include "../domain/image_manager.hpp"
 #include "../view/grid.hpp"
 #include "../view/scene_items/node.hpp"
-#include "../view/shadow_effect_params.hpp"
-
-struct MindMapData::Style
-{
-    Style(const SettingsProxy & settingsProxy)
-      : arrowSize(settingsProxy.arrowSize())
-      , backgroundColor(settingsProxy.backgroundColor())
-      , edgeColor(settingsProxy.edgeColor())
-      , edgeWidth(settingsProxy.edgeWidth())
-      , font(settingsProxy.font())
-      , gridColor(settingsProxy.gridColor())
-      , textSize(settingsProxy.textSize())
-    {
-    }
-
-    double arrowSize;
-
-    QColor backgroundColor;
-
-    QColor edgeColor;
-
-    double edgeWidth;
-
-    QFont font;
-
-    QColor gridColor;
-
-    int textSize;
-
-    int cornerRadius = Constants::Node::defaultCornerRadius();
-};
+#include "shadow_effect_params.hpp"
+#include "theme.hpp"
 
 MindMapData::MindMapData(QString name)
   : MindMapDataBase(name)
-  , m_style(std::make_unique<Style>(*SC::instance().settingsProxy()))
+  , m_theme(std::make_unique<Theme>(SC::instance().settingsProxy()->defaultTheme()))
   , m_graph(std::make_unique<Graph>())
   , m_imageManager(std::make_unique<ImageManager>())
 {
@@ -65,7 +36,7 @@ MindMapData::MindMapData(const MindMapData & other)
   : MindMapDataBase(other)
   , m_fileName(other.m_fileName)
   , m_applicationVersion(other.m_applicationVersion)
-  , m_style(std::make_unique<Style>(*other.m_style))
+  , m_theme(std::make_unique<Theme>(*other.m_theme))
   , m_graph(std::make_unique<Graph>())
   , m_imageManager(std::make_unique<ImageManager>(*other.m_imageManager))
   , m_layoutOptimizerParameters(other.m_layoutOptimizerParameters)
@@ -127,22 +98,22 @@ void MindMapData::setAspectRatio(double aspectRatio)
 
 QColor MindMapData::backgroundColor() const
 {
-    return m_style->backgroundColor;
+    return m_theme->backgroundColor;
 }
 
 void MindMapData::setBackgroundColor(const QColor & backgroundColor)
 {
-    m_style->backgroundColor = backgroundColor;
+    m_theme->backgroundColor = backgroundColor;
 }
 
 int MindMapData::cornerRadius() const
 {
-    return m_style->cornerRadius;
+    return m_theme->cornerRadius;
 }
 
 void MindMapData::setCornerRadius(int cornerRadius)
 {
-    m_style->cornerRadius = cornerRadius;
+    m_theme->cornerRadius = cornerRadius;
 
     for (auto && node : m_graph->getNodes()) {
         node->setCornerRadius(cornerRadius);
@@ -151,12 +122,12 @@ void MindMapData::setCornerRadius(int cornerRadius)
 
 QColor MindMapData::edgeColor() const
 {
-    return m_style->edgeColor;
+    return m_theme->edgeColor;
 }
 
 void MindMapData::setEdgeColor(const QColor & edgeColor)
 {
-    m_style->edgeColor = edgeColor;
+    m_theme->edgeColor = edgeColor;
 
     for (auto && edge : m_graph->getEdges()) {
         edge->setColor(edgeColor);
@@ -165,22 +136,22 @@ void MindMapData::setEdgeColor(const QColor & edgeColor)
 
 QColor MindMapData::gridColor() const
 {
-    return m_style->gridColor;
+    return m_theme->gridColor;
 }
 
 void MindMapData::setGridColor(const QColor & gridColor)
 {
-    m_style->gridColor = gridColor;
+    m_theme->gridColor = gridColor;
 }
 
 double MindMapData::arrowSize() const
 {
-    return m_style->arrowSize;
+    return m_theme->arrowSize;
 }
 
 void MindMapData::setArrowSize(double arrowSize)
 {
-    m_style->arrowSize = arrowSize;
+    m_theme->arrowSize = arrowSize;
 
     for (auto && edge : m_graph->getEdges()) {
         edge->setArrowSize(arrowSize);
@@ -189,12 +160,12 @@ void MindMapData::setArrowSize(double arrowSize)
 
 double MindMapData::edgeWidth() const
 {
-    return m_style->edgeWidth;
+    return m_theme->edgeWidth;
 }
 
 void MindMapData::setEdgeWidth(double edgeWidth)
 {
-    m_style->edgeWidth = edgeWidth;
+    m_theme->edgeWidth = edgeWidth;
 
     for (auto && edge : m_graph->getEdges()) {
         edge->setEdgeWidth(edgeWidth);
@@ -269,12 +240,12 @@ void MindMapData::mirror(bool vertically)
 
 QFont MindMapData::font() const
 {
-    return m_style->font;
+    return m_theme->font;
 }
 
 void MindMapData::changeFont(QFont font)
 {
-    m_style->font = font;
+    m_theme->font = font;
 
     for (auto && edge : m_graph->getEdges()) {
         edge->changeFont(font);
@@ -287,6 +258,8 @@ void MindMapData::changeFont(QFont font)
 
 void MindMapData::setShadowEffect(const ShadowEffectParams & params)
 {
+    m_theme->shadowEffect = params;
+
     for (auto && node : m_graph->getNodes()) {
         node->setShadowEffect(params);
     }
@@ -296,14 +269,90 @@ void MindMapData::setShadowEffect(const ShadowEffectParams & params)
     }
 }
 
+const ShadowEffectParams & MindMapData::shadowEffect() const
+{
+    return m_theme->shadowEffect;
+}
+
+QColor MindMapData::edgeLabelColor() const
+{
+    return m_theme->edgeLabelColor;
+}
+
+QColor MindMapData::edgeLabelTextColor() const
+{
+    return m_theme->edgeLabelTextColor;
+}
+
+void MindMapData::setEdgeLabelColors(const QColor & labelColor, const QColor & labelTextColor)
+{
+    m_theme->edgeLabelColor = labelColor;
+    m_theme->edgeLabelTextColor = labelTextColor;
+
+    for (auto && edge : m_graph->getEdges()) {
+        edge->setLabelColors(labelColor, labelTextColor);
+    }
+}
+
+QColor MindMapData::nodeColor() const
+{
+    return m_theme->nodeColor;
+}
+
+void MindMapData::setNodeColor(const QColor & nodeColor)
+{
+    m_theme->nodeColor = nodeColor;
+}
+
+QColor MindMapData::nodeTextColor() const
+{
+    return m_theme->nodeTextColor;
+}
+
+void MindMapData::setNodeTextColor(const QColor & nodeTextColor)
+{
+    m_theme->nodeTextColor = nodeTextColor;
+}
+
+const Theme & MindMapData::theme() const
+{
+    return *m_theme;
+}
+
+void MindMapData::setTheme(const Theme & theme, bool applyNodeColors)
+{
+    *m_theme = theme;
+
+    for (auto && edge : m_graph->getEdges()) {
+        edge->setColor(theme.edgeColor);
+        edge->setEdgeWidth(theme.edgeWidth);
+        edge->setArrowSize(theme.arrowSize);
+        edge->changeFont(theme.font);
+        edge->setTextSize(theme.textSize);
+        edge->setLabelColors(theme.edgeLabelColor, theme.edgeLabelTextColor);
+        edge->setShadowEffect(theme.shadowEffect);
+    }
+
+    for (auto && node : m_graph->getNodes()) {
+        node->setCornerRadius(theme.cornerRadius);
+        node->changeFont(theme.font);
+        node->setTextSize(theme.textSize);
+        node->setShadowEffect(theme.shadowEffect);
+        if (applyNodeColors) {
+            node->setColor(theme.nodeColor);
+            node->setTextColor(theme.nodeTextColor);
+        }
+    }
+}
+
 int MindMapData::textSize() const
 {
-    return m_style->textSize;
+    return m_theme->textSize;
 }
 
 void MindMapData::setTextSize(int textSize)
 {
-    m_style->textSize = textSize;
+    m_theme->textSize = textSize;
 
     for (auto && edge : m_graph->getEdges()) {
         edge->setTextSize(textSize);

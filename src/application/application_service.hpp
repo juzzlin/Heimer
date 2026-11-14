@@ -212,6 +212,10 @@ public slots:
 
     void setEdgeColor(QColor color);
 
+    void setEdgeLabelColor(QColor color);
+
+    void setEdgeLabelTextColor(QColor color);
+
     void setEdgeWidth(double value);
 
     void setGridColor(QColor color);

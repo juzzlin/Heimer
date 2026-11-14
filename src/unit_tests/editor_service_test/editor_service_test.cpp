@@ -20,6 +20,7 @@
 #include "../../common/test_mode.hpp"
 #include "../../domain/graph.hpp"
 #include "../../domain/mind_map_data.hpp"
+#include "../../domain/shadow_effect_params.hpp"
 
 using SceneItems::Edge;
 using SceneItems::EdgeModel;
@@ -1095,6 +1096,57 @@ void EditorServiceTest::test_undoHistory_shouldBeLimited()
 
     QCOMPARE(undoCount, maxHistorySize);
     QCOMPARE(editorService.mindMapData()->graph().nodeCount(), extraUndoPoints);
+}
+
+void EditorServiceTest::test_addNodeAt_shouldUseThemeNodeColors()
+{
+    EditorService editorService;
+    editorService.setMindMapData(std::make_shared<MindMapData>());
+    editorService.mindMapData()->setNodeColor({ 1, 2, 3 });
+    editorService.mindMapData()->setNodeTextColor({ 4, 5, 6 });
+
+    const auto node = editorService.addNodeAt({ 0, 0 });
+
+    QCOMPARE(node->color(), QColor(1, 2, 3));
+    QCOMPARE(node->textColor(), QColor(4, 5, 6));
+}
+
+void EditorServiceTest::test_undoEdgeLabelColors()
+{
+    EditorService editorService;
+    editorService.setMindMapData(std::make_shared<MindMapData>());
+    const auto originalLabelColor = editorService.mindMapData()->edgeLabelColor();
+    const auto originalLabelTextColor = editorService.mindMapData()->edgeLabelTextColor();
+
+    editorService.saveUndoPoint();
+    editorService.mindMapData()->setEdgeLabelColors({ 1, 2, 3 }, { 4, 5, 6 });
+    editorService.undo();
+
+    QCOMPARE(editorService.mindMapData()->edgeLabelColor(), originalLabelColor);
+    QCOMPARE(editorService.mindMapData()->edgeLabelTextColor(), originalLabelTextColor);
+
+    editorService.redo();
+
+    QCOMPARE(editorService.mindMapData()->edgeLabelColor(), QColor(1, 2, 3));
+    QCOMPARE(editorService.mindMapData()->edgeLabelTextColor(), QColor(4, 5, 6));
+}
+
+void EditorServiceTest::test_undoShadowEffect()
+{
+    EditorService editorService;
+    editorService.setMindMapData(std::make_shared<MindMapData>());
+    const auto originalShadowEffect = editorService.mindMapData()->shadowEffect();
+    const ShadowEffectParams shadowEffect { 1, 2, 3, QColor { 1, 2, 3, 4 }, QColor { 5, 6, 7, 8 } };
+
+    editorService.saveUndoPoint();
+    editorService.mindMapData()->setShadowEffect(shadowEffect);
+    editorService.undo();
+
+    QVERIFY(editorService.mindMapData()->shadowEffect() == originalShadowEffect);
+
+    editorService.redo();
+
+    QVERIFY(editorService.mindMapData()->shadowEffect() == shadowEffect);
 }
 
 void EditorServiceTest::test_undoModificationFlagOnNewDesign()

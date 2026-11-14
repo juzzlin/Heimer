@@ -71,6 +71,10 @@ void ColorSettingButton::apply(QColor color)
         case ColorDialog::Role::Text:
             m_settingsProxy->setNodeTextColor(color);
             break;
+        case ColorDialog::Role::EdgeLabel:
+        case ColorDialog::Role::EdgeLabelText:
+            // Not default settings: edge label colors are part of the mind map theme
+            break;
         case ColorDialog::Role::ShadowColor:
             // Saving shadow effect handled in effects_tab.cpp
         case ColorDialog::Role::SelectedItemShadowColor:

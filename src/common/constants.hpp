@@ -97,6 +97,10 @@ double maxEdgeWidth();
 
 double edgeWidthStep();
 
+QColor defaultLabelColor();
+
+QColor defaultLabelTextColor();
+
 } // namespace Edge
 
 namespace MindMap {

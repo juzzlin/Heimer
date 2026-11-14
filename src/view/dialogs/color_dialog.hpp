@@ -27,6 +27,8 @@ public:
     {
         Node,
         Edge,
+        EdgeLabel,
+        EdgeLabelText,
         Grid,
         Text,
         Background,

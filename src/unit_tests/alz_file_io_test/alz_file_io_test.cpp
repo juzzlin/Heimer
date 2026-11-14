@@ -20,6 +20,7 @@
 #include "../../domain/graph.hpp"
 #include "../../domain/image_manager.hpp"
 #include "../../domain/mind_map_data.hpp"
+#include "../../domain/shadow_effect_params.hpp"
 #include "../../infra/io/alz_file_io.hpp"
 #include "../../infra/io/alz_file_io_version.hpp"
 
@@ -223,6 +224,65 @@ void AlzFileIOTest::test_style_TextSize()
     outData->setTextSize(42);
     const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
     QCOMPARE(inData->textSize(), outData->textSize());
+}
+
+void AlzFileIOTest::test_style_NodeColors()
+{
+    const auto outData = std::make_shared<MindMapData>();
+    outData->setNodeColor({ 1, 2, 3 });
+    outData->setNodeTextColor({ 4, 5, 6 });
+
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
+
+    QCOMPARE(inData->nodeColor(), QColor(1, 2, 3));
+    QCOMPARE(inData->nodeTextColor(), QColor(4, 5, 6));
+}
+
+void AlzFileIOTest::test_style_EdgeLabelColors()
+{
+    const auto outData = std::make_shared<MindMapData>();
+    outData->setEdgeLabelColors({ 10, 20, 30 }, { 40, 50, 60 });
+
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
+
+    QCOMPARE(inData->edgeLabelColor(), QColor(10, 20, 30));
+    QCOMPARE(inData->edgeLabelTextColor(), QColor(40, 50, 60));
+}
+
+void AlzFileIOTest::test_style_ShadowEffect()
+{
+    const auto outData = std::make_shared<MindMapData>();
+    const ShadowEffectParams shadowEffect { 7, 8, 9, QColor { 1, 2, 3, 100 }, QColor { 4, 5, 6, 200 } };
+    outData->setShadowEffect(shadowEffect);
+
+    const auto inData = IO::AlzFileIO().fromXml(IO::AlzFileIO().toXml(outData));
+
+    // Also checks that the alpha channel is preserved
+    QCOMPARE(inData->shadowEffect().shadowColor(), QColor(1, 2, 3, 100));
+    QCOMPARE(inData->shadowEffect().selectedItemShadowColor(), QColor(4, 5, 6, 200));
+    QVERIFY(inData->shadowEffect() == shadowEffect);
+}
+
+void AlzFileIOTest::test_style_missingThemeElementsShouldKeepDefaults()
+{
+    // A file written by an older version without the theme elements
+    const QString xml =
+      "<?xml version='1.0' encoding='UTF-8'?>"
+      "<heimer-mind-map application-version=\"4.4.0\" alz-format-version=\"2\">"
+      " <style>"
+      "  <color r=\"1\" g=\"2\" b=\"3\"/>"
+      " </style>"
+      "</heimer-mind-map>";
+    const MindMapData defaults;
+
+    const auto inData = IO::AlzFileIO().fromXml(xml);
+
+    QCOMPARE(inData->backgroundColor(), QColor(1, 2, 3));
+    QCOMPARE(inData->nodeColor(), defaults.nodeColor());
+    QCOMPARE(inData->nodeTextColor(), defaults.nodeTextColor());
+    QCOMPARE(inData->edgeLabelColor(), defaults.edgeLabelColor());
+    QCOMPARE(inData->edgeLabelTextColor(), defaults.edgeLabelTextColor());
+    QVERIFY(inData->shadowEffect() == defaults.shadowEffect());
 }
 
 void AlzFileIOTest::test_metadata_LayoutOptimizer()

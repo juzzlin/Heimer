@@ -117,6 +117,8 @@ set(HEIMER_LIB_HDR
     ${HEIMER_SRC_ROOT}/domain/mind_map_data.hpp
     ${HEIMER_SRC_ROOT}/domain/mind_map_data_base.hpp
     ${HEIMER_SRC_ROOT}/domain/mind_map_stats.hpp
+    ${HEIMER_SRC_ROOT}/domain/shadow_effect_params.hpp
+    ${HEIMER_SRC_ROOT}/domain/theme.hpp
     ${HEIMER_SRC_ROOT}/domain/undo_stack.hpp
     ${HEIMER_SRC_ROOT}/infra/export_params.hpp
     ${HEIMER_SRC_ROOT}/infra/io/alz_file_io.hpp
@@ -173,7 +175,6 @@ set(HEIMER_LIB_HDR
     ${HEIMER_SRC_ROOT}/view/scene_items/node_model.hpp
     ${HEIMER_SRC_ROOT}/view/scene_items/scene_item_base.hpp
     ${HEIMER_SRC_ROOT}/view/scene_items/text_edit.hpp
-    ${HEIMER_SRC_ROOT}/view/shadow_effect_params.hpp
     ${HEIMER_SRC_ROOT}/view/widgets/font_button.hpp
     ${HEIMER_SRC_ROOT}/view/widgets/status_label.hpp
 )

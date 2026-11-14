@@ -271,6 +271,22 @@ const ShadowEffectParams SettingsProxy::shadowEffect() const
     return m_shadowEffectParams;
 }
 
+Theme SettingsProxy::defaultTheme() const
+{
+    Theme theme;
+    theme.arrowSize = arrowSize();
+    theme.backgroundColor = backgroundColor();
+    theme.edgeColor = edgeColor();
+    theme.edgeWidth = edgeWidth();
+    theme.font = font();
+    theme.gridColor = gridColor();
+    theme.nodeColor = nodeColor();
+    theme.nodeTextColor = nodeTextColor();
+    theme.shadowEffect = shadowEffect();
+    theme.textSize = textSize();
+    return theme;
+}
+
 void SettingsProxy::setShadowEffect(const ShadowEffectParams & params)
 {
     if (m_shadowEffectParams != params) {

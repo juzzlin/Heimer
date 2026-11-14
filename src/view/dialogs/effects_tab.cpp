@@ -17,7 +17,7 @@
 
 #include "../../application/settings_proxy.hpp"
 #include "../../common/constants.hpp"
-#include "../shadow_effect_params.hpp"
+#include "../../domain/shadow_effect_params.hpp"
 #include "color_setting_button.hpp"
 #include "widget_factory.hpp"
 

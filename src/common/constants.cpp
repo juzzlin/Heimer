@@ -173,6 +173,16 @@ double edgeWidthStep()
     return 0.25;
 }
 
+QColor defaultLabelColor()
+{
+    return { 0xff, 0xee, 0xaa };
+}
+
+QColor defaultLabelTextColor()
+{
+    return Qt::black;
+}
+
 } // namespace Edge
 
 namespace MindMap {

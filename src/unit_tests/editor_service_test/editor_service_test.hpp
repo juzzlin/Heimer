@@ -109,6 +109,12 @@ private slots:
 
     void test_undoHistory_shouldBeLimited();
 
+    void test_addNodeAt_shouldUseThemeNodeColors();
+
+    void test_undoEdgeLabelColors();
+
+    void test_undoShadowEffect();
+
     void test_undoModificationFlagOnNewDesign();
 
     void test_undoModificationFlagOnLoadDesign();

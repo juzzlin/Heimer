@@ -25,6 +25,7 @@
 #include <vector>
 
 #include "../../common/types.hpp"
+#include "../../domain/shadow_effect_params.hpp"
 
 #include "edge.hpp"
 #include "edge_point.hpp"
@@ -35,7 +36,6 @@ class Image;
 class QGraphicsTextItem;
 class TextEdit;
 
-class ShadowEffectParams;
 
 class SettingsProxy;
 
@@ -113,6 +113,8 @@ public:
 
     void setSelected(bool selected);
 
+    const ShadowEffectParams & shadowEffect() const;
+
     void setShadowEffect(const ShadowEffectParams & params);
 
     void setSize(const QSizeF & size);
@@ -186,6 +188,8 @@ private:
     void updateHandlePositions();
 
     SettingsProxyS m_settingsProxy;
+
+    ShadowEffectParams m_shadowEffectParams;
 
     std::unique_ptr<NodeModel> m_nodeModel;
 

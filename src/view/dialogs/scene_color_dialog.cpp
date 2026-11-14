@@ -35,6 +35,12 @@ SceneColorDialog::SceneColorDialog(Role role)
         case Role::Edge:
             SC::instance().applicationService()->setEdgeColor(color);
             break;
+        case Role::EdgeLabel:
+            SC::instance().applicationService()->setEdgeLabelColor(color);
+            break;
+        case Role::EdgeLabelText:
+            SC::instance().applicationService()->setEdgeLabelTextColor(color);
+            break;
         case Role::Grid:
             SC::instance().applicationService()->setGridColor(color);
             break;

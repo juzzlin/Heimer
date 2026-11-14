@@ -24,6 +24,7 @@
 #include "../../domain/graph.hpp"
 #include "../../domain/image_manager.hpp"
 #include "../../domain/mind_map_data.hpp"
+#include "../../domain/shadow_effect_params.hpp"
 #include "../../view/scene_items/edge.hpp"
 #include "../../view/scene_items/node.hpp"
 #include "xml_reader.hpp"
@@ -64,6 +65,30 @@ const auto ELEMENT_METADATA = "metadata";
 namespace Style {
 
 const auto ELEMENT_STYLE = "style";
+
+const auto ELEMENT_NODE_COLOR = "node-color";
+
+const auto ELEMENT_NODE_TEXT_COLOR = "node-text-color";
+
+const auto ELEMENT_EDGE_LABEL_COLOR = "edge-label-color";
+
+const auto ELEMENT_EDGE_LABEL_TEXT_COLOR = "edge-label-text-color";
+
+namespace Shadow {
+
+const auto ELEMENT_SHADOW = "shadow";
+
+const auto ATTRIBUTE_OFFSET = "offset";
+
+const auto ATTRIBUTE_BLUR_RADIUS = "blur-radius";
+
+const auto ATTRIBUTE_SELECTED_ITEM_BLUR_RADIUS = "selected-item-blur-radius";
+
+const auto ELEMENT_COLOR = "color";
+
+const auto ELEMENT_SELECTED_ITEM_COLOR = "selected-item-color";
+
+} // namespace Shadow
 
 } // namespace Style
 
@@ -111,6 +136,10 @@ const auto ATTRIBUTE_R = "r";
 const auto ATTRIBUTE_G = "g";
 
 const auto ATTRIBUTE_B = "b";
+
+//! Optional, written only if not opaque
+const auto ATTRIBUTE_A = "a";
+
 } // namespace Color
 
 namespace Graph {
@@ -203,6 +232,9 @@ static void writeColor(QDomElement & parent, QDomDocument & doc, QColor color, Q
     colorElement.setAttribute(DataKeywords::MindMap::Color::ATTRIBUTE_R, color.red());
     colorElement.setAttribute(DataKeywords::MindMap::Color::ATTRIBUTE_G, color.green());
     colorElement.setAttribute(DataKeywords::MindMap::Color::ATTRIBUTE_B, color.blue());
+    if (color.alpha() != 255) {
+        colorElement.setAttribute(DataKeywords::MindMap::Color::ATTRIBUTE_A, color.alpha());
+    }
     parent.appendChild(colorElement);
 }
 
@@ -321,11 +353,34 @@ static void writeStyle(MindMapDataS mindMapData, QDomElement & root, QDomDocumen
         root.appendChild(cornerRadiusElement);
     };
 
+    // Theme properties added after V2 was introduced. Older versions ignore these.
+    const auto doWriteThemeStyle = [](MindMapDataS mindMapData, QDomElement & root, QDomDocument & doc) {
+        using namespace DataKeywords::MindMap::V2::Style;
+
+        writeColor(root, doc, mindMapData->nodeColor(), ELEMENT_NODE_COLOR);
+
+        writeColor(root, doc, mindMapData->nodeTextColor(), ELEMENT_NODE_TEXT_COLOR);
+
+        writeColor(root, doc, mindMapData->edgeLabelColor(), ELEMENT_EDGE_LABEL_COLOR);
+
+        writeColor(root, doc, mindMapData->edgeLabelTextColor(), ELEMENT_EDGE_LABEL_TEXT_COLOR);
+
+        const auto & shadowEffect = mindMapData->shadowEffect();
+        auto shadowElement = doc.createElement(Shadow::ELEMENT_SHADOW);
+        shadowElement.setAttribute(Shadow::ATTRIBUTE_OFFSET, shadowEffect.offset());
+        shadowElement.setAttribute(Shadow::ATTRIBUTE_BLUR_RADIUS, shadowEffect.blurRadius());
+        shadowElement.setAttribute(Shadow::ATTRIBUTE_SELECTED_ITEM_BLUR_RADIUS, shadowEffect.selectedItemBlurRadius());
+        writeColor(shadowElement, doc, shadowEffect.shadowColor(), Shadow::ELEMENT_COLOR);
+        writeColor(shadowElement, doc, shadowEffect.selectedItemShadowColor(), Shadow::ELEMENT_SELECTED_ITEM_COLOR);
+        root.appendChild(shadowElement);
+    };
+
     if (outputVersion == AlzFormatVersion::V1) {
         doWriteStyle(mindMapData, root, doc);
     } else {
         auto styleElement = doc.createElement(DataKeywords::MindMap::V2::Style::ELEMENT_STYLE);
         doWriteStyle(mindMapData, styleElement, doc);
+        doWriteThemeStyle(mindMapData, styleElement, doc);
         root.appendChild(styleElement);
     }
 }
@@ -424,7 +479,8 @@ static QColor readColorElement(const QDomElement & element)
     return {
         element.attribute(DataKeywords::MindMap::Color::ATTRIBUTE_R, "255").toInt(),
         element.attribute(DataKeywords::MindMap::Color::ATTRIBUTE_G, "255").toInt(),
-        element.attribute(DataKeywords::MindMap::Color::ATTRIBUTE_B, "255").toInt()
+        element.attribute(DataKeywords::MindMap::Color::ATTRIBUTE_B, "255").toInt(),
+        element.attribute(DataKeywords::MindMap::Color::ATTRIBUTE_A, "255").toInt()
     };
 }
 
@@ -557,6 +613,25 @@ static void readMetadata(const QDomElement & element, MindMapData & data)
                              } } });
 }
 
+static void readShadow(const QDomElement & element, MindMapData & data)
+{
+    using namespace DataKeywords::MindMap::V2::Style::Shadow;
+    const auto & defaults = data.shadowEffect();
+    QColor shadowColor = defaults.shadowColor();
+    QColor selectedItemShadowColor = defaults.selectedItemShadowColor();
+    readChildren(element, { { QString(ELEMENT_COLOR), [&shadowColor](const QDomElement & e) {
+                               shadowColor = readColorElement(e);
+                           } },
+                            { QString(ELEMENT_SELECTED_ITEM_COLOR), [&selectedItemShadowColor](const QDomElement & e) {
+                                 selectedItemShadowColor = readColorElement(e);
+                             } } });
+    data.setShadowEffect({ element.attribute(ATTRIBUTE_OFFSET, QString::number(defaults.offset())).toInt(),
+                           element.attribute(ATTRIBUTE_BLUR_RADIUS, QString::number(defaults.blurRadius())).toInt(),
+                           element.attribute(ATTRIBUTE_SELECTED_ITEM_BLUR_RADIUS, QString::number(defaults.selectedItemBlurRadius())).toInt(),
+                           shadowColor,
+                           selectedItemShadowColor });
+}
+
 static void readStyle(const QDomElement & element, MindMapData & data)
 {
     readChildren(element, { { QString(DataKeywords::MindMap::ELEMENT_ARROW_SIZE), [&data](const QDomElement & e) {
@@ -590,6 +665,21 @@ static void readStyle(const QDomElement & element, MindMapData & data)
                              } },
                             { QString(DataKeywords::MindMap::ELEMENT_CORNER_RADIUS), [&data](const QDomElement & e) {
                                  data.setCornerRadius(static_cast<int>(readFirstTextNodeContent(e).toDouble() / SCALE));
+                             } },
+                            { QString(DataKeywords::MindMap::V2::Style::ELEMENT_NODE_COLOR), [&data](const QDomElement & e) {
+                                 data.setNodeColor(readColorElement(e));
+                             } },
+                            { QString(DataKeywords::MindMap::V2::Style::ELEMENT_NODE_TEXT_COLOR), [&data](const QDomElement & e) {
+                                 data.setNodeTextColor(readColorElement(e));
+                             } },
+                            { QString(DataKeywords::MindMap::V2::Style::ELEMENT_EDGE_LABEL_COLOR), [&data](const QDomElement & e) {
+                                 data.setEdgeLabelColors(readColorElement(e), data.edgeLabelTextColor());
+                             } },
+                            { QString(DataKeywords::MindMap::V2::Style::ELEMENT_EDGE_LABEL_TEXT_COLOR), [&data](const QDomElement & e) {
+                                 data.setEdgeLabelColors(data.edgeLabelColor(), readColorElement(e));
+                             } },
+                            { QString(DataKeywords::MindMap::V2::Style::Shadow::ELEMENT_SHADOW), [&data](const QDomElement & e) {
+                                 readShadow(e, data);
                              } } });
 }
 

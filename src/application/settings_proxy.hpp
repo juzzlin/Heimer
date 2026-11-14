@@ -17,7 +17,8 @@
 #define SETTINGS_PROXY_HPP
 
 #include "../view/scene_items/edge_model.hpp"
-#include "../view/shadow_effect_params.hpp"
+#include "../domain/shadow_effect_params.hpp"
+#include "../domain/theme.hpp"
 
 #include <QFont>
 
@@ -93,6 +94,9 @@ public:
     void setSelectNodeGroupByIntersection(bool selectNodeGroupByIntersection);
 
     const ShadowEffectParams shadowEffect() const;
+
+    //! \return The theme for new mind maps based on the current default settings.
+    Theme defaultTheme() const;
 
     void setShadowEffect(const ShadowEffectParams & params);
 

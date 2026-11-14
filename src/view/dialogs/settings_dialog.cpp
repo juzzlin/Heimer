@@ -19,7 +19,7 @@
 #include "editing_tab.hpp"
 #include "effects_tab.hpp"
 
-#include "../shadow_effect_params.hpp"
+#include "../../domain/shadow_effect_params.hpp"
 
 #include <QDialogButtonBox>
 #include <QTabWidget>

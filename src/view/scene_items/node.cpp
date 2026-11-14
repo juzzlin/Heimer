@@ -23,7 +23,7 @@
 #include "../../common/constants.hpp"
 #include "../../common/utils.hpp"
 #include "../../domain/image.hpp"
-#include "../shadow_effect_params.hpp"
+#include "../../domain/shadow_effect_params.hpp"
 #include "edge.hpp"
 #include "graphics_factory.hpp"
 #include "layers.hpp"
@@ -54,12 +54,13 @@ NodeP Node::m_lastHoveredNode = nullptr;
 
 Node::Node()
   : m_settingsProxy(SC::instance().settingsProxy())
+  , m_shadowEffectParams(m_settingsProxy->shadowEffect())
   , m_nodeModel(std::make_unique<NodeModel>(m_settingsProxy->nodeColor(), m_settingsProxy->nodeTextColor()))
   , m_textEdit(new TextEdit(this))
 {
     setAcceptHoverEvents(true);
 
-    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_settingsProxy->shadowEffect(), false));
+    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_shadowEffectParams, false));
 
     m_nodeModel->size = QSize { Constants::Node::minWidth(), Constants::Node::minHeight() };
 
@@ -497,7 +498,7 @@ void Node::setCornerRadius(int value)
 
 void Node::enableShadowEffect(bool enable)
 {
-    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_settingsProxy->shadowEffect(), m_selected, !enable);
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_shadowEffectParams, m_selected, !enable);
     update();
 }
 
@@ -538,13 +539,19 @@ bool Node::selected() const
 void Node::setSelected(bool selected)
 {
     m_selected = selected;
-    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_settingsProxy->shadowEffect(), m_selected);
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_shadowEffectParams, m_selected);
     update();
+}
+
+const ShadowEffectParams & Node::shadowEffect() const
+{
+    return m_shadowEffectParams;
 }
 
 void Node::setShadowEffect(const ShadowEffectParams & params)
 {
-    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), params, m_selected);
+    m_shadowEffectParams = params;
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_shadowEffectParams, m_selected);
     update();
 }
 

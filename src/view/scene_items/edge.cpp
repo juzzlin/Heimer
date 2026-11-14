@@ -19,7 +19,7 @@
 #include "../../application/settings_proxy.hpp"
 #include "../../common/test_mode.hpp"
 #include "../../domain/graph.hpp"
-#include "../shadow_effect_params.hpp"
+#include "../../domain/shadow_effect_params.hpp"
 #include "edge_dot.hpp"
 #include "edge_text_edit.hpp"
 #include "graphics_factory.hpp"
@@ -48,6 +48,7 @@ static const auto TAG = "Edge";
 
 Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enableLabels)
   : m_settingsProxy(SC::instance().settingsProxy())
+  , m_shadowEffectParams(m_settingsProxy->shadowEffect())
   , m_edgeModel(std::make_unique<EdgeModel>(m_settingsProxy->reversedEdgeDirection(),
                                             EdgeModel::Style { m_settingsProxy->edgeArrowMode() }))
   , m_sourceNode(sourceNode)
@@ -68,7 +69,7 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
 {
     setAcceptHoverEvents(enableAnimations);
 
-    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_settingsProxy->shadowEffect(), false));
+    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_shadowEffectParams, false));
 
     setZValue(static_cast<int>(Layers::Edge));
 
@@ -147,7 +148,7 @@ bool Edge::dashedLine() const
 
 void Edge::enableShadowEffect(bool enable)
 {
-    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_settingsProxy->shadowEffect(), m_selected, !enable);
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_shadowEffectParams, m_selected, !enable);
     update();
 }
 
@@ -239,14 +240,12 @@ void Edge::initializeLabelVisibilityTimer()
 
 void Edge::initializeLabels()
 {
-    const QColor labelColor { 0xff, 0xee, 0xaa };
-
     m_label->setZValue(static_cast<int>(Layers::EdgeLabel));
-    m_label->setBackgroundColor(labelColor);
 
     m_condensedLabel->setZValue(static_cast<int>(Layers::EdgeCondensedLabel));
     m_condensedLabel->setAcceptHoverEvents(false);
-    m_condensedLabel->setBackgroundColor(labelColor);
+
+    setLabelColors(Constants::Edge::defaultLabelColor(), Constants::Edge::defaultLabelTextColor());
     m_condensedLabel->setText(tr("..."));
     m_condensedLabel->setEnabled(false);
 
@@ -301,7 +300,7 @@ void Edge::showLabelWhenFocused()
 {
     m_label->setVisible(true);
     m_label->setParentItem(nullptr);
-    m_label->setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_settingsProxy->shadowEffect(), false));
+    m_label->setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_shadowEffectParams, false));
     m_condensedLabel->setVisible(false);
 }
 
@@ -409,20 +408,55 @@ void Edge::setReversed(bool reversed)
 void Edge::setSelected(bool selected)
 {
     m_selected = selected;
-    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_settingsProxy->shadowEffect(), selected);
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_shadowEffectParams, selected);
     if (m_enableLabels && m_label->parentItem() != this) {
-        GraphicsFactory::updateDropShadowEffect(m_label->graphicsEffect(), m_settingsProxy->shadowEffect(), selected);
+        GraphicsFactory::updateDropShadowEffect(m_label->graphicsEffect(), m_shadowEffectParams, selected);
     }
     update();
 }
 
 void Edge::setShadowEffect(const ShadowEffectParams & params)
 {
-    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), params, m_selected);
+    m_shadowEffectParams = params;
+    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_shadowEffectParams, m_selected);
     if (m_enableLabels && m_label->parentItem() != this) {
-        GraphicsFactory::updateDropShadowEffect(m_label->graphicsEffect(), m_settingsProxy->shadowEffect(), m_selected);
+        GraphicsFactory::updateDropShadowEffect(m_label->graphicsEffect(), m_shadowEffectParams, m_selected);
     }
     update();
+}
+
+QColor Edge::color() const
+{
+    return m_color;
+}
+
+QColor Edge::labelColor() const
+{
+    return m_labelColor;
+}
+
+QColor Edge::labelTextColor() const
+{
+    return m_labelTextColor;
+}
+
+const ShadowEffectParams & Edge::shadowEffect() const
+{
+    return m_shadowEffectParams;
+}
+
+void Edge::setLabelColors(const QColor & labelColor, const QColor & labelTextColor)
+{
+    m_labelColor = labelColor;
+    m_labelTextColor = labelTextColor;
+    if (m_enableLabels) {
+        for (auto && label : { m_label, m_condensedLabel }) {
+            label->setBackgroundColor(labelColor);
+            if (!TestMode::enabled()) {
+                label->setDefaultTextColor(labelTextColor);
+            }
+        }
+    }
 }
 
 NodeR Edge::sourceNode() const

@@ -31,6 +31,7 @@ class Grid;
 class ImageManager;
 class ObjectModelLoader;
 class ShadowEffectParams;
+struct Theme;
 
 class Graph;
 
@@ -91,7 +92,31 @@ public:
 
     void changeFont(QFont font);
 
+    const ShadowEffectParams & shadowEffect() const;
+
     void setShadowEffect(const ShadowEffectParams & params);
+
+    QColor edgeLabelColor() const;
+
+    QColor edgeLabelTextColor() const;
+
+    void setEdgeLabelColors(const QColor & labelColor, const QColor & labelTextColor);
+
+    //! Color of new nodes
+    QColor nodeColor() const;
+
+    void setNodeColor(const QColor & nodeColor);
+
+    //! Text color of new nodes
+    QColor nodeTextColor() const;
+
+    void setNodeTextColor(const QColor & nodeTextColor);
+
+    const Theme & theme() const;
+
+    //! Sets the theme and applies it to all nodes and edges.
+    //! \param applyNodeColors If true, also the individual colors of the existing nodes are set to the node colors of the theme.
+    void setTheme(const Theme & theme, bool applyNodeColors);
 
     int textSize() const;
 
@@ -127,8 +152,7 @@ private:
 
     std::optional<IO::AlzFormatVersion> m_alzFormatVersion;
 
-    struct Style;
-    std::unique_ptr<Style> m_style;
+    std::unique_ptr<Theme> m_theme;
 
     std::unique_ptr<Graph> m_graph;
 

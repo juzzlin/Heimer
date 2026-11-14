@@ -84,6 +84,10 @@ private:
 
     void showEdgeColorDialog();
 
+    void showEdgeLabelColorDialog();
+
+    void showEdgeLabelTextColorDialog();
+
     void showGridColorDialog();
 
     void showImageFileDialog();

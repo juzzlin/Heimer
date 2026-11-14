@@ -399,6 +399,8 @@ NodeS EditorService::addNodeAt(QPointF pos)
     assert(m_mindMapData);
 
     const auto node = make_shared<SceneItems::Node>();
+    node->setColor(m_mindMapData->nodeColor());
+    node->setTextColor(m_mindMapData->nodeTextColor());
     node->setLocation(pos);
     m_mindMapData->graph().addNode(node);
     return node;

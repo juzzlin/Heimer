@@ -21,6 +21,7 @@
 #include <memory>
 
 #include "../../common/types.hpp"
+#include "../../domain/shadow_effect_params.hpp"
 #include "edge_model.hpp"
 #include "edge_text_edit.hpp"
 #include "scene_item_base.hpp"
@@ -30,7 +31,6 @@ class QGraphicsEllipseItem;
 class QGraphicsLineItem;
 class QPropertyAnimation;
 
-class ShadowEffectParams;
 
 class SettingsProxy;
 
@@ -131,6 +131,16 @@ public slots:
 
     void setShadowEffect(const ShadowEffectParams & params);
 
+    QColor color() const;
+
+    QColor labelColor() const;
+
+    QColor labelTextColor() const;
+
+    void setLabelColors(const QColor & labelColor, const QColor & labelTextColor);
+
+    const ShadowEffectParams & shadowEffect() const;
+
 signals:
 
     void undoPointRequested();
@@ -199,6 +209,12 @@ private:
     void updateLabel(LabelUpdateReason lur = LabelUpdateReason::Default);
 
     SettingsProxyS m_settingsProxy;
+
+    ShadowEffectParams m_shadowEffectParams;
+
+    QColor m_labelColor = Constants::Edge::defaultLabelColor();
+
+    QColor m_labelTextColor = Constants::Edge::defaultLabelTextColor();
 
     std::unique_ptr<EdgeModel> m_edgeModel;
 

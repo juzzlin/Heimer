@@ -222,6 +222,12 @@ void Application::runState(StateMachine::State state)
     case StateMachine::State::ShowEdgeColorDialog:
         showEdgeColorDialog();
         break;
+    case StateMachine::State::ShowEdgeLabelColorDialog:
+        showEdgeLabelColorDialog();
+        break;
+    case StateMachine::State::ShowEdgeLabelTextColorDialog:
+        showEdgeLabelTextColorDialog();
+        break;
     case StateMachine::State::ShowGridColorDialog:
         showGridColorDialog();
         break;
@@ -371,6 +377,18 @@ void Application::showEdgeColorDialog()
         m_serviceContainer->applicationService()->clearEdgeSelectionGroup(true);
     }
     emit actionTriggered(StateMachine::Action::EdgeColorChanged);
+}
+
+void Application::showEdgeLabelColorDialog()
+{
+    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::EdgeLabel).exec();
+    emit actionTriggered(StateMachine::Action::EdgeLabelColorChanged);
+}
+
+void Application::showEdgeLabelTextColorDialog()
+{
+    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::EdgeLabelText).exec();
+    emit actionTriggered(StateMachine::Action::EdgeLabelTextColorChanged);
 }
 
 void Application::showGridColorDialog()

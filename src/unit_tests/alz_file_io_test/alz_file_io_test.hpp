@@ -73,6 +73,14 @@ private slots:
 
     void test_style_TextSize();
 
+    void test_style_NodeColors();
+
+    void test_style_EdgeLabelColors();
+
+    void test_style_ShadowEffect();
+
+    void test_style_missingThemeElementsShouldKeepDefaults();
+
     void test_metadata_LayoutOptimizer();
 
     void test_graph_NodeDeletion();

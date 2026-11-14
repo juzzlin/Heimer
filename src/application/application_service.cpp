@@ -21,6 +21,7 @@
 #include "../application/settings_proxy.hpp"
 #include "../domain/graph.hpp"
 #include "../domain/image_manager.hpp"
+#include "../domain/shadow_effect_params.hpp"
 #include "../infra/export_params.hpp"
 #include "../infra/io/file_exception.hpp"
 #include "../infra/settings.hpp"
@@ -32,7 +33,6 @@
 #include "../view/mouse_action.hpp"
 #include "../view/node_action.hpp"
 #include "../view/scene_items/node_handle.hpp"
-#include "../view/shadow_effect_params.hpp"
 
 #include "simple_logger.hpp"
 
@@ -87,6 +87,8 @@ void ApplicationService::setPropertiesOfAddedEdge(EdgeR edge)
     edge.setEdgeWidth(mindMapData->edgeWidth());
     edge.setTextSize(mindMapData->textSize());
     edge.changeFont(mindMapData->font());
+    edge.setLabelColors(mindMapData->edgeLabelColor(), mindMapData->edgeLabelTextColor());
+    edge.setShadowEffect(mindMapData->shadowEffect());
 }
 
 void ApplicationService::linkAddedEdgeToExistingNodes(EdgeR edge)
@@ -120,9 +122,10 @@ void ApplicationService::setPropertiesOfAddedNode(NodeR node)
 {
     const auto mindMapData = m_editorService->mindMapData();
 
-    node.setCornerRadius(m_editorService->mindMapData()->cornerRadius());
-    node.setTextSize(m_editorService->mindMapData()->textSize());
-    node.changeFont(m_editorService->mindMapData()->font());
+    node.setCornerRadius(mindMapData->cornerRadius());
+    node.setTextSize(mindMapData->textSize());
+    node.changeFont(mindMapData->font());
+    node.setShadowEffect(mindMapData->shadowEffect());
 }
 
 bool ApplicationService::isNodeAddedToEditorScene(NodeR node) const
@@ -853,6 +856,24 @@ void ApplicationService::setEdgeColor(QColor color)
     }
 }
 
+void ApplicationService::setEdgeLabelColor(QColor color)
+{
+    const auto mindMapData = m_editorService->mindMapData();
+    if (mindMapData->edgeLabelColor() != color) {
+        saveUndoPoint();
+        mindMapData->setEdgeLabelColors(color, mindMapData->edgeLabelTextColor());
+    }
+}
+
+void ApplicationService::setEdgeLabelTextColor(QColor color)
+{
+    const auto mindMapData = m_editorService->mindMapData();
+    if (mindMapData->edgeLabelTextColor() != color) {
+        saveUndoPoint();
+        mindMapData->setEdgeLabelColors(mindMapData->edgeLabelColor(), color);
+    }
+}
+
 void ApplicationService::setEdgeWidth(double value)
 {
     // Break loop with the spinbox
@@ -941,7 +962,10 @@ void ApplicationService::setSearchText(QString text)
 
 void ApplicationService::setShadowEffect(const ShadowEffectParams & params)
 {
-    m_editorService->mindMapData()->setShadowEffect(params);
+    if (m_editorService->mindMapData()->shadowEffect() != params) {
+        saveUndoPoint();
+        m_editorService->mindMapData()->setShadowEffect(params);
+    }
 }
 
 void ApplicationService::setGridSize(int size, bool autoSnap)

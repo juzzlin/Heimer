@@ -37,6 +37,14 @@ void StateMachine::calculateState(StateMachine::Action action)
         m_state = State::ShowEdgeColorDialog;
         break;
 
+    case Action::EdgeLabelColorChangeRequested:
+        m_state = State::ShowEdgeLabelColorDialog;
+        break;
+
+    case Action::EdgeLabelTextColorChangeRequested:
+        m_state = State::ShowEdgeLabelTextColorDialog;
+        break;
+
     case Action::GridColorChangeRequested:
         m_state = State::ShowGridColorDialog;
         break;
@@ -97,6 +105,8 @@ void StateMachine::calculateState(StateMachine::Action action)
 
     case Action::BackgroundColorChanged:
     case Action::EdgeColorChanged:
+    case Action::EdgeLabelColorChanged:
+    case Action::EdgeLabelTextColorChanged:
     case Action::GridColorChanged:
     case Action::ImageLoadFailed:
     case Action::LayoutOptimized:

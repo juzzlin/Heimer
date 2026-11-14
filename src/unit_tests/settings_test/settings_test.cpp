@@ -17,10 +17,10 @@
 #include "../../application/settings_proxy.hpp"
 #include "../../common/constants.hpp"
 #include "../../infra/settings.hpp"
+#include "../test_settings.hpp"
 
 #include <QFont>
 #include <QSettings>
-#include <QStandardPaths>
 #include <QTest>
 
 static const auto group = "SettingsTest";
@@ -28,7 +28,7 @@ static const auto group = "SettingsTest";
 void SettingsTest::initTestCase()
 {
     // Never touch the real user settings
-    QStandardPaths::setTestModeEnabled(true);
+    TestSettings::isolate();
 }
 
 void SettingsTest::init()

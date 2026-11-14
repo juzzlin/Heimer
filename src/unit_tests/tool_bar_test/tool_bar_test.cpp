@@ -18,11 +18,11 @@
 #include "../../common/test_mode.hpp"
 #include "../../infra/settings.hpp"
 #include "../../view/menus/tool_bar.hpp"
+#include "../test_settings.hpp"
 
 #include <QCheckBox>
 #include <QSettings>
 #include <QSignalSpy>
-#include <QStandardPaths>
 #include <QTest>
 
 namespace {
@@ -54,7 +54,7 @@ void ToolBarTest::initTestCase()
     TestMode::setEnabled(true);
 
     // Never touch the real user settings
-    QStandardPaths::setTestModeEnabled(true);
+    TestSettings::isolate();
 }
 
 void ToolBarTest::init()

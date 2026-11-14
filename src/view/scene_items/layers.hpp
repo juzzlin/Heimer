@@ -22,7 +22,7 @@ enum class Layers
 {
     Edge = 1,
     Node = 10,
-    EdgeDot = 20,
+    ConnectionPulse = 20,
     EdgeCondensedLabel = 25,
     NodeHandle = 30,
     EdgeLabel = 45,

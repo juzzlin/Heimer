@@ -29,13 +29,12 @@
 class QFont;
 class QGraphicsEllipseItem;
 class QGraphicsLineItem;
-class QPropertyAnimation;
 
 class SettingsProxy;
 
 namespace SceneItems {
 
-class EdgeDot;
+class ConnectionPulse;
 class Node;
 
 //! A graphic representation of a graph edge between nodes.
@@ -153,9 +152,7 @@ private:
 
     void hideLabelOnTimeout();
 
-    void initializeDots();
-
-    void initializeDotAnimations();
+    void initializeConnectionPulses();
 
     void initializeLabels();
 
@@ -195,7 +192,7 @@ private:
 
     void updateSingleArrowhead();
 
-    void updateDots();
+    void updateConnectionPulses();
 
     void updateLineGeometry();
 
@@ -229,9 +226,9 @@ private:
 
     bool m_enableLabels;
 
-    EdgeDot * m_sourceDot;
+    ConnectionPulse * m_sourcePulse;
 
-    EdgeDot * m_targetDot;
+    ConnectionPulse * m_targetPulse;
 
     QPointF m_previousRelativeSourcePos;
 
@@ -250,10 +247,6 @@ private:
     QGraphicsLineItem * m_arrowheadEndLeft;
 
     QGraphicsLineItem * m_arrowheadEndRight;
-
-    QPropertyAnimation * m_sourceDotSizeAnimation;
-
-    QPropertyAnimation * m_targetDotSizeAnimation;
 
     QTimer m_labelVisibilityTimer;
 };

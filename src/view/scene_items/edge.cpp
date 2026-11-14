@@ -20,7 +20,7 @@
 #include "../../common/test_mode.hpp"
 #include "../../domain/graph.hpp"
 #include "../../domain/shadow_effect_params.hpp"
-#include "edge_dot.hpp"
+#include "connection_pulse.hpp"
 #include "edge_text_edit.hpp"
 #include "graphics_factory.hpp"
 #include "layers.hpp"
@@ -34,7 +34,6 @@
 #include <QGraphicsLineItem>
 #include <QGraphicsScene>
 #include <QPen>
-#include <QPropertyAnimation>
 #include <QTimer>
 #include <QVector2D>
 
@@ -55,8 +54,8 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
   , m_targetNode(targetNode)
   , m_enableAnimations(enableAnimations)
   , m_enableLabels(enableLabels)
-  , m_sourceDot(new EdgeDot(this))
-  , m_targetDot(new EdgeDot(this))
+  , m_sourcePulse(new ConnectionPulse { this })
+  , m_targetPulse(new ConnectionPulse { this })
   , m_label(new EdgeTextEdit(this))
   , m_condensedLabel(new EdgeTextEdit(this))
   , m_line(new QGraphicsLineItem(this))
@@ -64,8 +63,6 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
   , m_arrowheadBeginRight(new QGraphicsLineItem(this))
   , m_arrowheadEndLeft(new QGraphicsLineItem(this))
   , m_arrowheadEndRight(new QGraphicsLineItem(this))
-  , m_sourceDotSizeAnimation(new QPropertyAnimation(m_sourceDot, "scale", this))
-  , m_targetDotSizeAnimation(new QPropertyAnimation(m_targetDot, "scale", this))
 {
     setAcceptHoverEvents(enableAnimations);
 
@@ -73,7 +70,7 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
 
     setZValue(static_cast<int>(Layers::Edge));
 
-    initializeDots();
+    initializeConnectionPulses();
 
     if (m_enableLabels) {
         initializeLabels();
@@ -172,39 +169,11 @@ double Edge::length() const
     return m_line->line().length();
 }
 
-void Edge::initializeDotAnimations()
+void Edge::initializeConnectionPulses()
 {
-    const int animationDurationMs = 2000;
-
-    m_sourceDotSizeAnimation->setDuration(animationDurationMs);
-    m_sourceDotSizeAnimation->setStartValue(1.0);
-    m_sourceDotSizeAnimation->setEndValue(0.0);
-
-    m_targetDotSizeAnimation->setDuration(animationDurationMs);
-    m_targetDotSizeAnimation->setStartValue(1.0);
-    m_targetDotSizeAnimation->setEndValue(0.0);
-}
-
-void Edge::initializeDots()
-{
-    if (m_enableAnimations) {
-
-        const QColor dotColor { 255, 0, 0, 192 };
-
-        m_sourceDot->setPen(QPen(dotColor));
-        m_sourceDot->setBrush(QBrush(dotColor));
-        m_sourceDot->setZValue(zValue() + 10);
-
-        const int dotRadius = 10;
-        const QRectF rect { -dotRadius, -dotRadius, dotRadius * 2, dotRadius * 2 };
-        m_sourceDot->setRect(rect);
-
-        m_targetDot->setPen(QPen(dotColor));
-        m_targetDot->setBrush(QBrush(dotColor));
-        m_targetDot->setZValue(zValue() + 10);
-        m_targetDot->setRect(rect);
-
-        initializeDotAnimations();
+    for (auto && pulse : { m_sourcePulse, m_targetPulse }) {
+        pulse->setColor(m_shadowEffectParams.selectedItemShadowColor());
+        pulse->setZValue(zValue() + 10);
     }
 }
 
@@ -419,6 +388,9 @@ void Edge::setShadowEffect(const ShadowEffectParams & params)
 {
     m_shadowEffectParams = params;
     GraphicsFactory::updateDropShadowEffect(graphicsEffect(), m_shadowEffectParams, m_selected);
+    for (auto && pulse : { m_sourcePulse, m_targetPulse }) {
+        pulse->setColor(m_shadowEffectParams.selectedItemShadowColor());
+    }
     if (m_enableLabels && m_label->parentItem() != this) {
         GraphicsFactory::updateDropShadowEffect(m_label->graphicsEffect(), m_shadowEffectParams, m_selected);
     }
@@ -566,12 +538,11 @@ void Edge::triggerAnimationOnRelativeConnectionLocationChangeAtSourcePosition()
     const auto newRelativeSourcePos = m_line->line().p1() - sourceNode().pos();
     if (m_previousRelativeSourcePos != newRelativeSourcePos) {
         m_previousRelativeSourcePos = newRelativeSourcePos;
-        m_sourceDotSizeAnimation->stop();
-        m_sourceDotSizeAnimation->start();
+        m_sourcePulse->start();
     }
 
     // Update location of possibly active animation
-    m_sourceDot->setPos(m_line->line().p1());
+    m_sourcePulse->setPos(m_line->line().p1());
 }
 
 void Edge::triggerAnimationOnRelativeConnectionLocationChangeAtTargetPosition()
@@ -580,15 +551,14 @@ void Edge::triggerAnimationOnRelativeConnectionLocationChangeAtTargetPosition()
     const auto newRelativeTargetPos = m_line->line().p2() - targetNode().pos();
     if (m_previousRelativeTargetPos != newRelativeTargetPos) {
         m_previousRelativeTargetPos = newRelativeTargetPos;
-        m_targetDotSizeAnimation->stop();
-        m_targetDotSizeAnimation->start();
+        m_targetPulse->start();
     }
 
     // Update location of possibly active animation
-    m_targetDot->setPos(m_line->line().p2());
+    m_targetPulse->setPos(m_line->line().p2());
 }
 
-void Edge::updateDots()
+void Edge::updateConnectionPulses()
 {
     if (m_enableAnimations) {
         triggerAnimationOnRelativeConnectionLocationChangeAtSourcePosition();
@@ -708,7 +678,7 @@ void Edge::updateLine()
 
     updateLineGeometry();
 
-    updateDots();
+    updateConnectionPulses();
 
     updateArrowhead();
 
@@ -729,8 +699,8 @@ void Edge::removeSelfFromNodes()
 
 void Edge::stopAnimations()
 {
-    m_sourceDotSizeAnimation->stop();
-    m_targetDotSizeAnimation->stop();
+    m_sourcePulse->stop();
+    m_targetPulse->stop();
 }
 
 Edge::~Edge()

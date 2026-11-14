@@ -1,5 +1,5 @@
 // This file is part of Heimer.
-// Copyright (C) 2018 Jussi Lind <jussi.lind@iki.fi>
+// Copyright (C) 2026 Jussi Lind <jussi.lind@iki.fi>
 //
 // Heimer is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,13 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 
-#include "edge_dot.hpp"
+#ifndef CONNECTION_PULSE_TEST_HPP
+#define CONNECTION_PULSE_TEST_HPP
 
-namespace SceneItems {
+#include <QObject>
 
-EdgeDot::EdgeDot(QGraphicsItem * parentItem)
-  : QGraphicsEllipseItem(parentItem)
+class ConnectionPulseTest : public QObject
 {
-}
+    Q_OBJECT
 
-} // namespace SceneItems
+private slots:
+
+    void test_start_shouldShowAndFinallyHide();
+
+    void test_stop_shouldHide();
+
+    void test_paint_shouldDrawRingsInColorAndNothingWhenFinished();
+};
+
+#endif // CONNECTION_PULSE_TEST_HPP

@@ -1,6 +1,7 @@
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../contrib/SimpleLogger/src)
 set(UNIT_TEST_BASE_DIR ${CMAKE_BINARY_DIR}/unit_tests)
 add_subdirectory(alz_file_io_test)
+add_subdirectory(connection_pulse_test)
 add_subdirectory(editor_service_test)
 add_subdirectory(graph_test)
 add_subdirectory(language_menu_test)

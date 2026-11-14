@@ -82,7 +82,7 @@ set(HEIMER_LIB_SRC
     ${HEIMER_SRC_ROOT}/view/mouse_action.cpp
     ${HEIMER_SRC_ROOT}/view/node_selection_group.cpp
     ${HEIMER_SRC_ROOT}/view/scene_items/edge.cpp
-    ${HEIMER_SRC_ROOT}/view/scene_items/edge_dot.cpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/connection_pulse.cpp
     ${HEIMER_SRC_ROOT}/view/scene_items/edge_text_edit.cpp
     ${HEIMER_SRC_ROOT}/view/scene_items/graphics_factory.cpp
     ${HEIMER_SRC_ROOT}/view/scene_items/node.cpp
@@ -174,7 +174,7 @@ set(HEIMER_LIB_HDR
     ${HEIMER_SRC_ROOT}/view/node_action.hpp
     ${HEIMER_SRC_ROOT}/view/node_selection_group.hpp
     ${HEIMER_SRC_ROOT}/view/scene_items/edge.hpp
-    ${HEIMER_SRC_ROOT}/view/scene_items/edge_dot.hpp
+    ${HEIMER_SRC_ROOT}/view/scene_items/connection_pulse.hpp
     ${HEIMER_SRC_ROOT}/view/scene_items/edge_model.hpp
     ${HEIMER_SRC_ROOT}/view/scene_items/edge_point.hpp
     ${HEIMER_SRC_ROOT}/view/scene_items/edge_text_edit.hpp

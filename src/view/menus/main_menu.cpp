@@ -68,12 +68,42 @@ void MainMenu::changeEvent(QEvent * event)
     if (event->type() == QEvent::LanguageChange) {
         retranslate();
     }
+
+    QMenuBar::changeEvent(event);
 }
 
 void MainMenu::retranslate()
 {
+    // The menus are re-created with the new language, so preserve the dynamic state of the actions
+    const auto saveEnabled = m_saveAction->isEnabled();
+    const auto saveAsEnabled = m_saveAsAction->isEnabled();
+    const auto undoEnabled = m_undoAction->isEnabled();
+    const auto redoEnabled = m_redoAction->isEnabled();
+    const auto connectSelectedNodesEnabled = m_connectSelectedNodesAction->isEnabled();
+    const auto disconnectSelectedNodesEnabled = m_disconnectSelectedNodesAction->isEnabled();
+    const auto fullScreenChecked = m_fullScreenAction->isChecked();
+
+    // Delete the old menus and actions. Use deleteLater(), because the language change
+    // is typically triggered by an action of the (old) language menu itself.
+    const auto oldMenus = findChildren<QMenu *>(QString {}, Qt::FindDirectChildrenOnly);
+    const auto oldActions = findChildren<QAction *>(QString {}, Qt::FindDirectChildrenOnly);
     clear();
+    for (auto && menu : oldMenus) {
+        menu->deleteLater();
+    }
+    for (auto && action : oldActions) {
+        action->deleteLater();
+    }
+
     initialize();
+
+    m_saveAction->setEnabled(saveEnabled);
+    m_saveAsAction->setEnabled(saveAsEnabled);
+    m_undoAction->setEnabled(undoEnabled);
+    m_redoAction->setEnabled(redoEnabled);
+    m_connectSelectedNodesAction->setEnabled(connectSelectedNodesEnabled);
+    m_disconnectSelectedNodesAction->setEnabled(disconnectSelectedNodesEnabled);
+    m_fullScreenAction->setChecked(fullScreenChecked);
 }
 
 void MainMenu::addConnectSelectedNodesAction(QMenu & menu)
@@ -146,7 +176,9 @@ void MainMenu::addRedoAction(QMenu & menu)
 {
     m_redoAction->setShortcut(QKeySequence(QKeySequence::Redo));
 
-    connect(m_redoAction, &QAction::triggered, SC::instance().applicationService().get(), &ApplicationService::redo);
+    connect(m_redoAction, &QAction::triggered, this, [] {
+        SC::instance().applicationService()->redo();
+    });
 
     m_redoAction->setEnabled(false);
 
@@ -157,7 +189,9 @@ void MainMenu::addUndoAction(QMenu & menu)
 {
     m_undoAction->setShortcut(QKeySequence(QKeySequence::Undo));
 
-    connect(m_undoAction, &QAction::triggered, SC::instance().applicationService().get(), &ApplicationService::undo);
+    connect(m_undoAction, &QAction::triggered, this, [] {
+        SC::instance().applicationService()->undo();
+    });
 
     m_undoAction->setEnabled(false);
 
@@ -166,7 +200,7 @@ void MainMenu::addUndoAction(QMenu & menu)
 
 void MainMenu::createColorSubMenu(QMenu & editMenu)
 {
-    const auto colorMenu = new QMenu;
+    const auto colorMenu = new QMenu { &editMenu };
     const auto colorMenuAction = editMenu.addMenu(colorMenu);
     colorMenuAction->setText(tr("General &colors"));
 
@@ -238,7 +272,7 @@ void MainMenu::createEditMenu()
 
 void MainMenu::createExportSubMenu(QMenu & fileMenu)
 {
-    const auto exportMenu = new QMenu;
+    const auto exportMenu = new QMenu { &fileMenu };
     const auto exportMenuAction = fileMenu.addMenu(exportMenu);
     exportMenuAction->setText(tr("&Export"));
 
@@ -285,7 +319,7 @@ void MainMenu::createFileMenu()
     });
 
     // Add "Recent Files"-menu
-    const auto recentFilesMenu = new Menus::RecentFilesMenu;
+    const auto recentFilesMenu = new Menus::RecentFilesMenu { fileMenu };
     const auto recentFilesMenuAction = fileMenu->addMenu(recentFilesMenu);
     recentFilesMenuAction->setText(tr("Recent &Files"));
     connect(recentFilesMenu, &Menus::RecentFilesMenu::fileSelected, this, [=] {
@@ -343,7 +377,7 @@ void MainMenu::createLanguageMenu()
 
 void MainMenu::createMirrorSubMenu(QMenu & editMenu)
 {
-    const auto mirrorMenu = new QMenu;
+    const auto mirrorMenu = new QMenu { &editMenu };
     auto mirrorAction = editMenu.addMenu(mirrorMenu);
     mirrorAction->setText(tr("&Mirror layout"));
 

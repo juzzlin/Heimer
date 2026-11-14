@@ -27,9 +27,7 @@ RecentFilesMenu::RecentFilesMenu(QWidget * parent)
   : QMenu(parent)
 {
     connect(this, &QMenu::aboutToShow, [=] {
-        for (auto && action : actions()) {
-            removeAction(action);
-        }
+        clear(); // Deletes the actions owned by this menu
         for (auto && filePath : SC::instance().recentFilesManager()->recentFiles()) {
             const auto action = addAction(filePath);
             const auto handler = std::bind([=](QString filePath) {

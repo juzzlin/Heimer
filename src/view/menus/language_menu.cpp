@@ -37,7 +37,13 @@ QMenu * addLanguageMenu(QMenuBar & menuBar, bool nativeMenuBar, LanguageService 
             cornerMenuBar->setNativeMenuBar(false);
             menuBar.setCornerWidget(cornerMenuBar, Qt::TopRightCorner);
         }
+        // Delete the old language menu, if any. Use deleteLater(), because this is typically
+        // called due to a language change triggered by an action of the old menu itself.
+        const auto oldMenus = cornerMenuBar->findChildren<QMenu *>(QString {}, Qt::FindDirectChildrenOnly);
         cornerMenuBar->clear();
+        for (auto && menu : oldMenus) {
+            menu->deleteLater();
+        }
         languageMenu = cornerMenuBar->addMenu(title);
     }
 

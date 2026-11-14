@@ -43,6 +43,9 @@ public:
 private:
     void applySelectedTheme();
 
+    //! Applies the theme to the current mind map. Asks about individual node colors using dialogParent.
+    void applyTheme(const Theme & theme, QWidget * dialogParent);
+
     std::optional<QString> askNewThemeName(QString title, QString initialName);
 
     void createThemeFromCurrentMindMap();

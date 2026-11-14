@@ -46,6 +46,8 @@ private slots:
 
     void test_themeEditorDialog_resetShouldRestoreClassic();
 
+    void test_themeEditorDialog_applyShouldEmitEditedTheme();
+
     void test_themesTab_shouldListAllThemes();
 
     void test_themesTab_factoryThemesShouldNotBeEditable();

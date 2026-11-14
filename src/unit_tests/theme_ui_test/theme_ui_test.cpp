@@ -130,6 +130,25 @@ void ThemeUiTest::test_themeEditorDialog_resetShouldRestoreClassic()
     QCOMPARE(dialog.theme().name, QString { "Custom" });
 }
 
+void ThemeUiTest::test_themeEditorDialog_applyShouldEmitEditedTheme()
+{
+    Dialogs::ThemeEditorDialog dialog { createUserTheme("Custom") };
+    const auto buttonBox = dialog.findChild<QDialogButtonBox *>();
+    QVERIFY(buttonBox);
+    std::vector<Theme> appliedThemes;
+    connect(&dialog, &Dialogs::ThemeEditorDialog::applied, this, [&appliedThemes](const Theme & theme) {
+        appliedThemes.push_back(theme);
+    });
+    buttonBox->button(QDialogButtonBox::Reset)->click();
+
+    buttonBox->button(QDialogButtonBox::Apply)->click();
+
+    QCOMPARE(appliedThemes.size(), size_t { 1 });
+    QVERIFY(appliedThemes.at(0) == dialog.theme());
+    QVERIFY(appliedThemes.at(0).isVisuallyEqual(Theme {}));
+    QCOMPARE(dialog.result(), int { QDialog::Rejected });
+}
+
 void ThemeUiTest::test_themesTab_shouldListAllThemes()
 {
     const auto themeService = createThemeService();

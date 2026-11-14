@@ -171,15 +171,17 @@ std::optional<QString> ThemesTab::askNewThemeName(QString title, QString initial
 
 void ThemesTab::applySelectedTheme()
 {
-    const auto theme = m_themeService->theme(selectedThemeName());
-    if (!theme) {
-        return;
+    if (const auto theme = m_themeService->theme(selectedThemeName()); theme) {
+        applyTheme(*theme, this);
     }
+}
 
+void ThemesTab::applyTheme(const Theme & theme, QWidget * dialogParent)
+{
     const auto applicationService = SC::instance().applicationService();
     bool applyNodeColors = true;
     if (applicationService->hasIndividualNodeColors()) {
-        QMessageBox messageBox { this };
+        QMessageBox messageBox { dialogParent };
         messageBox.setWindowTitle(tr("Apply Theme"));
         messageBox.setIcon(QMessageBox::Question);
         messageBox.setText(tr("Some nodes have individual colors."));
@@ -198,7 +200,7 @@ void ThemesTab::applySelectedTheme()
         }
     }
 
-    applicationService->applyTheme(*theme, applyNodeColors);
+    applicationService->applyTheme(theme, applyNodeColors);
 }
 
 void ThemesTab::setSelectedThemeAsDefault()
@@ -240,6 +242,12 @@ void ThemesTab::editSelectedTheme()
     const auto name = selectedThemeName();
     if (const auto theme = m_themeService->theme(name); theme && m_themeService->isUserTheme(name)) {
         ThemeEditorDialog editor { *theme, this };
+        connect(&editor, &ThemeEditorDialog::applied, this, [this, &editor, name](const Theme & editedTheme) {
+            if (m_themeService->saveUserTheme(editedTheme)) {
+                refresh(name);
+                applyTheme(editedTheme, &editor);
+            }
+        });
         if (editor.exec() == QDialog::Accepted && m_themeService->saveUserTheme(editor.theme())) {
             refresh(name);
         }

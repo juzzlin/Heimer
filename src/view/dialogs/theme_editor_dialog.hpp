@@ -41,6 +41,10 @@ public:
 
     Theme theme() const;
 
+signals:
+    //! Emitted when the Apply button is clicked. The dialog stays open.
+    void applied(const Theme & theme);
+
 private:
     void initWidgets();
 

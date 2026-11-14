@@ -143,12 +143,15 @@ void ThemeEditorDialog::initWidgets()
     m_preview->setAlignment(Qt::AlignCenter);
     m_preview->setMinimumSize(previewSize);
 
-    const auto buttonBox = new QDialogButtonBox { QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Reset, this };
+    const auto buttonBox = new QDialogButtonBox { QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel | QDialogButtonBox::Reset, this };
     buttonBox->button(QDialogButtonBox::Reset)->setText(tr("Reset to Classic"));
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     connect(buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked, this, [this] {
         setTheme({});
+    });
+    connect(buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, this, [this] {
+        emit applied(theme());
     });
 
     const auto mainLayout = new QVBoxLayout;

@@ -402,7 +402,8 @@ QFont getFont(QString group, QString key, QFont defaultValue)
     font.setOverline(settings.value(key + fontOverlinePostfix, defaultValue.overline()).toBool());
     font.setStrikeOut(settings.value(key + fontStrikeOutPostfix, defaultValue.strikeOut()).toBool());
     font.setUnderline(settings.value(key + fontUnderlinePostfix, defaultValue.underline()).toBool());
-    font.setWeight(Utils::intToFontWeight(settings.value(key + fontWeightPostfix, defaultValue.weight()).toInt()));
+    // The weight is saved as fontWeightToInt(), so the default value needs to be converted, too
+    font.setWeight(Utils::intToFontWeight(settings.value(key + fontWeightPostfix, Utils::fontWeightToInt(defaultValue.weight())).toInt()));
     settings.endGroup();
     return font;
 }

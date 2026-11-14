@@ -119,6 +119,13 @@ void LanguageService::initializeTranslations(QCoreApplication & application)
     installTranslatorForBuiltInQtTranslations(application, languageOptions);
 
     installTranslatorForApplicationTranslations(application, languageOptions);
+
+    if (m_activeLanguage.isEmpty()) {
+        // Don't save the fallback as the user language so that possible future translations
+        // for the UI languages are still automatically selected.
+        m_activeLanguage = Constants::Application::defaultLanguage();
+        L(TAG).info() << "No translations available, using default language '" << m_activeLanguage.toStdString() << "'";
+    }
 }
 
 QStringList LanguageService::selectableLanguages() const

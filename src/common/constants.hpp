@@ -39,6 +39,9 @@ QString applicationVersion();
 
 QString copyright();
 
+//! The language of the source strings. Used if no translations are available for the UI languages.
+QString defaultLanguage();
+
 QString fileExtension();
 
 using LanguageSet = std::set<std::string>;

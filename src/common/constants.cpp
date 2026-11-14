@@ -55,6 +55,11 @@ QString fileExtension()
     return ".alz";
 }
 
+QString defaultLanguage()
+{
+    return "en";
+}
+
 LanguageSet supportedLanguages()
 {
     return { "de", "en", "es", "eu", "fi", "fr", "it", "pt_Br", "pt_Pt", "nl", "zh" };

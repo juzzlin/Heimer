@@ -82,7 +82,7 @@ Run:
 
 `AppImage` is a "universal" package that can (in theory) be run on all Linux platforms.
 
-Note: `AppImage` packages are currently not available for releases built with `Qt 6`.
+The `AppImage` is built on Ubuntu 22.04 LTS with `Qt 6` included, so it runs on distributions of the same age or newer.
 
 Make the image executable e.g. like this:
 

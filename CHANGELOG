@@ -23,6 +23,20 @@ New features:
 
 * Add generic Portuguese translation (pt)
 
+* Modernize the look of nodes and node handles
+  - Subtle outlines, softer shadows and rounder corners by default
+  - Selected nodes are shown with a ring
+  - The handles are drawn outside the node and keep their size when zooming
+  - The text area is highlighted only while editing
+
+* Replace the connection dots with a pulse animation
+
+* Add Apply buttons to the settings dialog and the theme editor
+
+* Add setting for mouse wheel zoom speed
+  - Zooming follows the wheel rotation, so high-resolution wheels no longer
+    zoom too fast
+
 Bug fixes:
 
 * Fix GitHub Issue #267: Menu bar not loading
@@ -41,6 +55,11 @@ Bug fixes:
   - E.g. "Save as" was disabled and "Full Screen" unchecked after
     changing the language
 
+* Fix selecting a color for a fully transparent color, e.g. the shadow
+  color of High Contrast and its copies
+
+* Don't zoom out on horizontal scrolling
+
 Other:
 
 * Fix GitHub Issue #250: Refactor CMakeLists.txt for Qt 6
@@ -48,6 +67,12 @@ Other:
   - Requires Qt >= 6.2.4 and CMake >= 3.16
 
 * Snap: Migrate from core20 and Qt 5 to core22 and Qt 6
+
+* AppImage: Build with Qt 6 on Ubuntu 22.04 LTS
+
+* Paint node shadows instead of using graphics effects
+
+* Update the screenshots and the website
 
 * Complete translations
 

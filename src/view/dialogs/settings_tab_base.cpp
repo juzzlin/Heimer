@@ -26,8 +26,9 @@ SettingsTabBase::SettingsTabBase(QString name, QWidget * parent)
 {
 }
 
-void SettingsTabBase::apply()
+bool SettingsTabBase::apply()
 {
+    return true;
 }
 
 void SettingsTabBase::reject()

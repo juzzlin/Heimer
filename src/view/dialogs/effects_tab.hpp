@@ -29,7 +29,7 @@ class EffectsTab : public SettingsTabBase
 public:
     explicit EffectsTab(QString name, QWidget * parent = nullptr);
 
-    void apply() override;
+    bool apply() override;
 
 private:
     void initWidgets();

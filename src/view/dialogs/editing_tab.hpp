@@ -29,7 +29,7 @@ class EditingTab : public SettingsTabBase
 public:
     explicit EditingTab(QString name, QWidget * parent = nullptr);
 
-    void apply() override;
+    bool apply() override;
 
 signals:
     void autosaveEnabled(bool enabled);

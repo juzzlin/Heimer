@@ -40,7 +40,7 @@ DefaultsTab::DefaultsTab(QString name, QWidget * parent)
     initWidgets();
 }
 
-void DefaultsTab::apply()
+bool DefaultsTab::apply()
 {
     for (auto && [arrowMode, radioButton] : m_edgeArrowStyleRadioMap) {
         if (radioButton->isChecked()) {
@@ -50,6 +50,8 @@ void DefaultsTab::apply()
     }
 
     settingsProxy()->setReversedEdgeDirection(m_edgeDirectionCheckBox->isChecked());
+
+    return true;
 }
 
 void DefaultsTab::reject()

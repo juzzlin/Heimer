@@ -34,7 +34,7 @@ class DefaultsTab : public SettingsTabBase
 public:
     explicit DefaultsTab(QString name, QWidget * parent = nullptr);
 
-    void apply() override;
+    bool apply() override;
 
     void reject() override;
 

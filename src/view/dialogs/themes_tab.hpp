@@ -27,7 +27,8 @@ struct Theme;
 namespace Dialogs {
 
 //! Lists the theme presets and allows applying and managing them.
-//! The actions take effect immediately, i.e. OK/Cancel of the settings dialog don't affect them.
+//! A newly selected theme is applied to the current mind map with Apply/OK of the settings dialog.
+//! The management actions take effect immediately, i.e. Cancel of the settings dialog doesn't revert them.
 class ThemesTab : public SettingsTabBase
 {
     Q_OBJECT
@@ -35,16 +36,20 @@ class ThemesTab : public SettingsTabBase
 public:
     ThemesTab(QString name, ThemeServiceS themeService, QWidget * parent = nullptr);
 
+    //! Applies the selected theme to the current mind map if the user has selected a theme since the last apply.
+    bool apply() override;
+
     //! \return The name of the selected theme or an empty string.
     QString selectedThemeName() const;
 
     void selectTheme(const QString & name);
 
 private:
-    void applySelectedTheme();
+    bool applySelectedTheme();
 
     //! Applies the theme to the current mind map. Asks about individual node colors using dialogParent.
-    void applyTheme(const Theme & theme, QWidget * dialogParent);
+    //! \return false if the user cancelled.
+    bool applyTheme(const Theme & theme, QWidget * dialogParent);
 
     std::optional<QString> askNewThemeName(QString title, QString initialName);
 
@@ -70,8 +75,6 @@ private:
 
     QListWidget * m_themeList;
 
-    QPushButton * m_applyButton;
-
     QPushButton * m_setDefaultButton;
 
     QPushButton * m_newButton;
@@ -83,6 +86,12 @@ private:
     QPushButton * m_renameButton;
 
     QPushButton * m_deleteButton;
+
+    //! True if the user has selected a theme that hasn't been applied yet
+    bool m_themeSelectionChanged = false;
+
+    //! True while the list is being rebuilt, so that programmatic selections are not user selections
+    bool m_refreshing = false;
 };
 
 } // namespace Dialogs

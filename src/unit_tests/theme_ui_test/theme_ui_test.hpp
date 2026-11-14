@@ -56,6 +56,10 @@ private slots:
 
     void test_themesTab_shouldMarkDefaultTheme();
 
+    void test_themesTab_applyShouldIgnoreUnchangedSelection();
+
+    void test_settingsDialog_applyShouldKeepDialogOpen();
+
 private:
     std::shared_ptr<ThemeService> createThemeService() const;
 

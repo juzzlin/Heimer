@@ -19,6 +19,7 @@
 #include "../../application/theme_service.hpp"
 #include "../../common/test_mode.hpp"
 #include "../../domain/theme.hpp"
+#include "../../view/dialogs/settings_dialog.hpp"
 #include "../../view/dialogs/theme_editor_dialog.hpp"
 #include "../../view/dialogs/themes_tab.hpp"
 #include "../../view/theme_preview.hpp"
@@ -171,7 +172,6 @@ void ThemeUiTest::test_themesTab_factoryThemesShouldNotBeEditable()
     themesTab.selectTheme("Black");
 
     QCOMPARE(themesTab.selectedThemeName(), QString { "Black" });
-    QVERIFY(findButton(themesTab, "Apply")->isEnabled());
     QVERIFY(findButton(themesTab, "Duplicate")->isEnabled());
     QVERIFY(!findButton(themesTab, "Edit")->isEnabled());
     QVERIFY(!findButton(themesTab, "Rename")->isEnabled());
@@ -208,6 +208,29 @@ void ThemeUiTest::test_themesTab_shouldMarkDefaultTheme()
         QCOMPARE(item->font().bold(), item->data(Qt::UserRole).toString() == "White");
     }
     QCOMPARE(themesTab.selectedThemeName(), QString { "White" });
+}
+
+void ThemeUiTest::test_themesTab_applyShouldIgnoreUnchangedSelection()
+{
+    Dialogs::ThemesTab themesTab { "Themes", createThemeService() };
+
+    // Would need the application service if the theme was applied
+    QVERIFY(themesTab.apply());
+}
+
+void ThemeUiTest::test_settingsDialog_applyShouldKeepDialogOpen()
+{
+    Dialogs::SettingsDialog dialog;
+    const auto buttonBox = dialog.findChild<QDialogButtonBox *>();
+    QVERIFY(buttonBox);
+    QVERIFY(buttonBox->button(QDialogButtonBox::Ok));
+    QVERIFY(buttonBox->button(QDialogButtonBox::Cancel));
+    QVERIFY(buttonBox->button(QDialogButtonBox::Apply));
+    dialog.show();
+
+    buttonBox->button(QDialogButtonBox::Apply)->click();
+
+    QVERIFY(dialog.isVisible());
 }
 
 QTEST_MAIN(ThemeUiTest)

@@ -34,9 +34,11 @@ EffectsTab::EffectsTab(QString name, QWidget * parent)
     initWidgets();
 }
 
-void EffectsTab::apply()
+bool EffectsTab::apply()
 {
     settingsProxy()->setOptimizeShadowEffects(m_optimizeShadowsCheckBox->isChecked());
+
+    return true;
 }
 
 void EffectsTab::initWidgets()

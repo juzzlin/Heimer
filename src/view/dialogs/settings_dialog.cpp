@@ -23,6 +23,7 @@
 #include "../../application/service_container.hpp"
 
 #include <QDialogButtonBox>
+#include <QPushButton>
 #include <QTabWidget>
 #include <QVBoxLayout>
 
@@ -37,13 +38,22 @@ SettingsDialog::SettingsDialog(QWidget * parent)
     initWidgets();
 }
 
-void SettingsDialog::accept()
+bool SettingsDialog::apply()
 {
     for (auto && tab : m_tabs) {
-        tab->apply();
+        if (!tab->apply()) {
+            return false;
+        }
     }
 
-    QDialog::accept();
+    return true;
+}
+
+void SettingsDialog::accept()
+{
+    if (apply()) {
+        QDialog::accept();
+    }
 }
 
 void SettingsDialog::reject()
@@ -73,11 +83,11 @@ void SettingsDialog::initWidgets()
         tabWidget->addTab(tab, tab->name());
     }
 
-    const auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
-                                                | QDialogButtonBox::Cancel);
+    const auto buttonBox = new QDialogButtonBox { QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel, this };
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+    connect(buttonBox->button(QDialogButtonBox::Apply), &QPushButton::clicked, this, &SettingsDialog::apply);
 
     const auto mainLayout = new QVBoxLayout;
     mainLayout->addWidget(tabWidget);

@@ -35,6 +35,8 @@ signals:
     void autosaveEnabled(bool enabled);
 
 private:
+    bool apply();
+
     void accept() override;
 
     void reject() override;

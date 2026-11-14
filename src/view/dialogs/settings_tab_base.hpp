@@ -30,7 +30,8 @@ class SettingsTabBase : public QWidget
 public:
     explicit SettingsTabBase(QString name, QWidget * parent = nullptr);
 
-    virtual void apply();
+    //! \return false if the user cancelled applying.
+    virtual bool apply();
 
     virtual void reject();
 

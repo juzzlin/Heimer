@@ -38,7 +38,7 @@ EditingTab::EditingTab(QString name, QWidget * parent)
     initWidgets();
 }
 
-void EditingTab::apply()
+bool EditingTab::apply()
 {
     settingsProxy()->setSelectNodeGroupByIntersection(m_selectNodeGroupByIntersectionCheckBox->isChecked());
 
@@ -51,6 +51,8 @@ void EditingTab::apply()
     settingsProxy()->setAutoload(m_autoloadCheckBox->isChecked());
 
     settingsProxy()->setInvertedControls(m_invertedControlsCheckBox->isChecked());
+
+    return true;
 }
 
 void EditingTab::initWidgets()

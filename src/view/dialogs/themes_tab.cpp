@@ -40,7 +40,6 @@ ThemesTab::ThemesTab(QString name, ThemeServiceS themeService, QWidget * parent)
   : SettingsTabBase { name, parent }
   , m_themeService(themeService)
   , m_themeList(new QListWidget { this })
-  , m_applyButton(new QPushButton { tr("Apply to current mind map"), this })
   , m_setDefaultButton(new QPushButton { tr("Set as default for new mind maps"), this })
   , m_newButton(new QPushButton { tr("New from current mind map") + Constants::Misc::threeDots(), this })
   , m_duplicateButton(new QPushButton { tr("Duplicate") + Constants::Misc::threeDots(), this })
@@ -57,10 +56,17 @@ void ThemesTab::initWidgets()
 {
     m_themeList->setIconSize(iconSize);
     m_themeList->setSpacing(2);
-    connect(m_themeList, &QListWidget::currentItemChanged, this, &ThemesTab::updateButtons);
+    connect(m_themeList, &QListWidget::currentItemChanged, this, [this] {
+        if (!m_refreshing) {
+            m_themeSelectionChanged = true;
+        }
+        updateButtons();
+    });
+    connect(m_themeList, &QListWidget::itemClicked, this, [this] {
+        m_themeSelectionChanged = true;
+    });
     connect(m_themeList, &QListWidget::itemDoubleClicked, this, &ThemesTab::applySelectedTheme);
 
-    connect(m_applyButton, &QPushButton::clicked, this, &ThemesTab::applySelectedTheme);
     connect(m_setDefaultButton, &QPushButton::clicked, this, &ThemesTab::setSelectedThemeAsDefault);
     connect(m_newButton, &QPushButton::clicked, this, &ThemesTab::createThemeFromCurrentMindMap);
     connect(m_duplicateButton, &QPushButton::clicked, this, &ThemesTab::duplicateSelectedTheme);
@@ -69,9 +75,7 @@ void ThemesTab::initWidgets()
     connect(m_deleteButton, &QPushButton::clicked, this, &ThemesTab::deleteSelectedTheme);
 
     const auto buttonLayout = new QVBoxLayout;
-    for (auto && button : { m_applyButton, m_setDefaultButton }) {
-        buttonLayout->addWidget(button);
-    }
+    buttonLayout->addWidget(m_setDefaultButton);
     buttonLayout->addSpacing(12);
     for (auto && button : { m_newButton, m_duplicateButton, m_editButton, m_renameButton, m_deleteButton }) {
         buttonLayout->addWidget(button);
@@ -82,7 +86,7 @@ void ThemesTab::initWidgets()
     listLayout->addWidget(m_themeList, 1);
     listLayout->addLayout(buttonLayout);
 
-    const auto help = new QLabel { tr("A theme defines the colors, fonts and effects of a mind map. Built-in themes can't be modified, but they can be duplicated."), this };
+    const auto help = new QLabel { tr("A theme defines the colors, fonts and effects of a mind map. Built-in themes can't be modified, but they can be duplicated.") + " " + tr("Select a theme and click Apply or OK to apply it to the current mind map."), this };
     help->setWordWrap(true);
 
     const auto mainLayout = new QVBoxLayout;
@@ -93,6 +97,7 @@ void ThemesTab::initWidgets()
 
 void ThemesTab::refresh(QString selectedName)
 {
+    m_refreshing = true;
     m_themeList->clear();
 
     const auto defaultThemeName = m_themeService->defaultTheme().name;
@@ -115,6 +120,7 @@ void ThemesTab::refresh(QString selectedName)
     }
 
     selectTheme(selectedName);
+    m_refreshing = false;
     updateButtons();
 }
 
@@ -141,7 +147,6 @@ void ThemesTab::updateButtons()
     const auto isSelected = !name.isEmpty();
     const auto isUserTheme = m_themeService->isUserTheme(name);
 
-    m_applyButton->setEnabled(isSelected);
     m_setDefaultButton->setEnabled(isSelected);
     m_duplicateButton->setEnabled(isSelected);
     m_editButton->setEnabled(isUserTheme);
@@ -169,14 +174,20 @@ std::optional<QString> ThemesTab::askNewThemeName(QString title, QString initial
     }
 }
 
-void ThemesTab::applySelectedTheme()
+bool ThemesTab::apply()
 {
-    if (const auto theme = m_themeService->theme(selectedThemeName()); theme) {
-        applyTheme(*theme, this);
-    }
+    return !m_themeSelectionChanged || applySelectedTheme();
 }
 
-void ThemesTab::applyTheme(const Theme & theme, QWidget * dialogParent)
+bool ThemesTab::applySelectedTheme()
+{
+    if (const auto theme = m_themeService->theme(selectedThemeName()); theme) {
+        return applyTheme(*theme, this);
+    }
+    return true;
+}
+
+bool ThemesTab::applyTheme(const Theme & theme, QWidget * dialogParent)
 {
     const auto applicationService = SC::instance().applicationService();
     bool applyNodeColors = true;
@@ -196,11 +207,13 @@ void ThemesTab::applyTheme(const Theme & theme, QWidget * dialogParent)
         } else if (messageBox.clickedButton() == keepColorsButton) {
             applyNodeColors = false;
         } else {
-            return;
+            return false;
         }
     }
 
     applicationService->applyTheme(theme, applyNodeColors);
+    m_themeSelectionChanged = false;
+    return true;
 }
 
 void ThemesTab::setSelectedThemeAsDefault()

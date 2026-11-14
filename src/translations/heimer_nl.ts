@@ -161,6 +161,14 @@
         <translation>Verschuif de weergave door een bewerktoets ingedrukt te houden en selecteer een groep items zonder indrukken.</translation>
     </message>
     <message>
+        <source>Speed of zooming with the mouse wheel. 100% is the default speed.</source>
+        <translation>Snelheid van zoomen met het muiswiel. 100% is de standaardsnelheid.</translation>
+    </message>
+    <message>
+        <source>Mouse wheel zoom speed:</source>
+        <translation>Zoomsnelheid van het muiswiel:</translation>
+    </message>
+    <message>
         <source>Inverted controls</source>
         <translation>Omgekeerde bediening</translation>
     </message>

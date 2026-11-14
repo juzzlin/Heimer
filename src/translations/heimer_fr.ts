@@ -161,6 +161,14 @@
         <translation>Faire défiler la vue avec une touche de modification enfoncée et sélectionner un groupe d&apos;éléments sans touche de modification.</translation>
     </message>
     <message>
+        <source>Speed of zooming with the mouse wheel. 100% is the default speed.</source>
+        <translation>Vitesse du zoom avec la molette de la souris. 100% correspond à la vitesse par défaut.</translation>
+    </message>
+    <message>
+        <source>Mouse wheel zoom speed:</source>
+        <translation>Vitesse du zoom à la molette :</translation>
+    </message>
+    <message>
         <source>Inverted controls</source>
         <translation>Contrôles inversés</translation>
     </message>

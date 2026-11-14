@@ -161,6 +161,14 @@
         <translation>Vieritä näkymää muokkausnäppäintä painamalla ja valitse joukko objekteja ilman muokkausnäppäimen painamista.</translation>
     </message>
     <message>
+        <source>Speed of zooming with the mouse wheel. 100% is the default speed.</source>
+        <translation>Hiiren rullalla zoomaamisen nopeus. 100% on oletusnopeus.</translation>
+    </message>
+    <message>
+        <source>Mouse wheel zoom speed:</source>
+        <translation>Hiiren rullan zoomausnopeus:</translation>
+    </message>
+    <message>
         <source>Inverted controls</source>
         <translation>Käänteiset kontrollit</translation>
     </message>

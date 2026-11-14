@@ -161,6 +161,14 @@
         <translation>Scorri la vista tenendo premuto un tasto modificatore e seleziona un gruppo di elementi senza tasti modificatori.</translation>
     </message>
     <message>
+        <source>Speed of zooming with the mouse wheel. 100% is the default speed.</source>
+        <translation>Velocità dello zoom con la rotellina del mouse. 100% è la velocità predefinita.</translation>
+    </message>
+    <message>
+        <source>Mouse wheel zoom speed:</source>
+        <translation>Velocità dello zoom con la rotellina:</translation>
+    </message>
+    <message>
         <source>Inverted controls</source>
         <translation>Controlli invertiti</translation>
     </message>

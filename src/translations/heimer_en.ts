@@ -161,6 +161,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Speed of zooming with the mouse wheel. 100% is the default speed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mouse wheel zoom speed:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Inverted controls</source>
         <translation type="unfinished"></translation>
     </message>

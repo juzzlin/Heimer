@@ -161,6 +161,14 @@
         <translation>Korritu ikuspegia tekla aldatzaile bat sakatuta, eta hautatu elementu-talde bat tekla aldatzailerik sakatu gabe.</translation>
     </message>
     <message>
+        <source>Speed of zooming with the mouse wheel. 100% is the default speed.</source>
+        <translation>Saguaren gurpilarekin zooma egiteko abiadura. % 100 da abiadura lehenetsia.</translation>
+    </message>
+    <message>
+        <source>Mouse wheel zoom speed:</source>
+        <translation>Saguaren gurpilaren zoom-abiadura:</translation>
+    </message>
+    <message>
         <source>Inverted controls</source>
         <translation>Kontrol alderantzikatuak</translation>
     </message>

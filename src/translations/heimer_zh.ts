@@ -161,6 +161,14 @@
         <translation>按住修饰键移动视图，不按修饰键可以选择进行框选。</translation>
     </message>
     <message>
+        <source>Speed of zooming with the mouse wheel. 100% is the default speed.</source>
+        <translation>使用鼠标滚轮缩放的速度。100% 为默认速度。</translation>
+    </message>
+    <message>
+        <source>Mouse wheel zoom speed:</source>
+        <translation>鼠标滚轮缩放速度：</translation>
+    </message>
+    <message>
         <source>Inverted controls</source>
         <translation>反向控制</translation>
     </message>

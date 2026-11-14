@@ -161,6 +161,14 @@
         <translation>Die Ansicht mit gedrückter Zusatztaste verschieben und eine Gruppe von Elementen ohne Zusatztaste auswählen.</translation>
     </message>
     <message>
+        <source>Speed of zooming with the mouse wheel. 100% is the default speed.</source>
+        <translation>Geschwindigkeit des Zoomens mit dem Mausrad. 100% ist die Standardgeschwindigkeit.</translation>
+    </message>
+    <message>
+        <source>Mouse wheel zoom speed:</source>
+        <translation>Zoomgeschwindigkeit des Mausrads:</translation>
+    </message>
+    <message>
         <source>Inverted controls</source>
         <translation>Invertierte Steuerung</translation>
     </message>

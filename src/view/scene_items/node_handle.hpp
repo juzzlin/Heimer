@@ -46,6 +46,8 @@ public:
 
     QRectF boundingRect() const override;
 
+    QPainterPath shape() const override;
+
     void paint(QPainter * painter,
                const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr) override;
 
@@ -67,39 +69,22 @@ protected:
     void retranslate() override;
 
 private:
-    QColor calculateBackgroundColor() const;
-
-    void drawArrow(QPainter & painter, QPointF arrowStart, QPointF arrowEnd) const;
-
     void drawBackground(QPainter & painter) const;
 
-    void drawColorHandle(QPainter & painter) const;
+    void drawConnectOrCreateIcon(QPainter & painter) const;
 
-    void drawConnectOrCreateHandle(QPainter & painter) const;
+    void drawMoveIcon(QPainter & painter) const;
 
-    void drawMoveHandle(QPainter & painter) const;
+    void drawNodeColorIcon(QPainter & painter) const;
 
-    void drawPixmapHandle(QPainter & painter) const;
+    void drawTextColorIcon(QPainter & painter) const;
 
-    void drawTextColorHandle(QPainter & painter) const;
+    QPen iconPen() const;
 
-    void drawCenteredRect(QPainter & painter, qreal relW, qreal relH, qreal relY) const;
+    //! \return True if the canvas behind the handle is dark.
+    bool isOnDarkBackground() const;
 
     QString getToolTipTextByRole(NodeHandle::Role role) const;
-
-    qreal relXToX(qreal relX) const;
-
-    qreal relYToY(qreal relY) const;
-
-    qreal relWToW(qreal relW) const;
-
-    qreal relHToH(qreal relH) const;
-
-    QPointF relPToP(const QPointF & relP) const;
-
-    QPen getForegroundPen() const;
-
-    const double m_handleOpacity = 0.75;
 
     const int m_handleAnimationDuration = 150;
 
@@ -111,12 +96,12 @@ private:
 
     int m_radius;
 
-    QSize m_size;
-
     QTimer m_visibilityTimer;
 
     // Logical state
     bool m_visible = false;
+
+    bool m_hovered = false;
 };
 
 } // namespace SceneItems

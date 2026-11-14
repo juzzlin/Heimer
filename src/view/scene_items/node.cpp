@@ -37,6 +37,7 @@
 #include <QGraphicsEffect>
 #include <QGraphicsScene>
 #include <QGraphicsSceneHoverEvent>
+#include <QGraphicsView>
 #include <QImage>
 #include <QPainter>
 #include <QPen>
@@ -161,7 +162,7 @@ void Node::raiseBody()
 void Node::raiseHandles()
 {
     for (auto && [role, handle] : m_handles) {
-        handle->raiseWithAnimation(targetScale());
+        // The handles have a constant size on the screen, so they are not scaled up
         handle->setZValue(static_cast<int>(Layers::Last) + static_cast<int>(Layers::NodeHandle));
     }
 }
@@ -259,7 +260,7 @@ void Node::createHandles()
 
     m_handles[NodeHandle::Role::TextColor] = new NodeHandle(*this, NodeHandle::Role::TextColor, m_handleRadiusSmall);
 
-    m_handles[NodeHandle::Role::Move] = new NodeHandle(*this, NodeHandle::Role::Move, m_handleRadiusMedium);
+    m_handles[NodeHandle::Role::Move] = new NodeHandle(*this, NodeHandle::Role::Move, m_handleRadiusSmall);
 }
 
 QRectF Node::expandedTextEditRect() const
@@ -299,7 +300,9 @@ std::pair<EdgePoint, EdgePoint> Node::getNearestEdgePoints(NodeCR node1, NodeCR 
 bool Node::pointBeyondHideHandlesDistance(const QPointF & point) const
 {
     static const int hideHandlesDistance = 32;
-    const auto scaledHideHandlesDistance = hideHandlesDistance * targetScale();
+    // The handles must be reachable at all zoom levels
+    const auto handleReach = (m_handleGap + m_handleRadius * 2 + 4) / viewScale();
+    const auto scaledHideHandlesDistance = std::max(hideHandlesDistance * targetScale(), handleReach);
     return point.x() > pos().x() + scaledHideHandlesDistance + bodyRect().width() / 2 || //
       point.x() < pos().x() - scaledHideHandlesDistance - bodyRect().width() / 2 || //
       point.y() > pos().y() + scaledHideHandlesDistance + bodyRect().height() / 2 || //
@@ -339,6 +342,8 @@ void Node::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
     m_hovered = true;
     updateShadowEffect();
 
+    updateHandlePositions();
+
     if (m_settingsProxy->raiseNodeOnMouseHover()) {
         raiseBody();
         raiseHandles();
@@ -359,6 +364,9 @@ void Node::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
 void Node::hoverMoveEvent(QGraphicsSceneHoverEvent * event)
 {
     setHandlesVisible(true);
+
+    // The zoom level might have changed
+    updateHandlePositions();
 
     if (m_settingsProxy->raiseNodeOnMouseHover()) {
         raiseHandles();
@@ -714,19 +722,33 @@ void Node::updateEdgeLines()
     }
 }
 
+double Node::viewScale() const
+{
+    if (scene() && !scene()->views().isEmpty()) {
+        if (const auto scale = scene()->views().first()->transform().m11(); scale > 0) {
+            return scale;
+        }
+    }
+    return 1.0;
+}
+
 void Node::updateHandlePositions()
 {
-    const auto height = m_nodeModel->size.height();
+    // The handles are placed outside the node: create below, move on the left and the colors on the right.
+    // Their sizes and gaps are in pixels, so they are converted to scene units.
+    const auto halfWidth = m_nodeModel->size.width() * 0.5 * targetScale();
+    const auto halfHeight = m_nodeModel->size.height() * 0.5 * targetScale();
+    const auto pixel = 1.0 / viewScale();
 
-    const auto width = m_nodeModel->size.width();
+    m_handles[NodeHandle::Role::ConnectOrCreate]->setPos(pos() + QPointF { 0, halfHeight + (m_handleGap + m_handleRadius) * pixel });
 
-    m_handles[NodeHandle::Role::ConnectOrCreate]->setPos(pos() + QPointF { 0, height * 0.5 } * targetScale());
+    m_handles[NodeHandle::Role::Move]->setPos(pos() + QPointF { -halfWidth - (m_handleGap + m_handleRadiusSmall) * pixel, 0 });
 
-    m_handles[NodeHandle::Role::NodeColor]->setPos(pos() + QPointF { width * 0.5, height * 0.5 - m_handleRadiusSmall * 0.5 } * targetScale());
+    const auto colorHandleX = halfWidth + (m_handleGap + m_handleRadiusSmall) * pixel;
+    const auto colorHandleDy = (m_handleRadiusSmall + 3) * pixel;
+    m_handles[NodeHandle::Role::NodeColor]->setPos(pos() + QPointF { colorHandleX, -colorHandleDy });
 
-    m_handles[NodeHandle::Role::TextColor]->setPos(pos() + QPointF { width * 0.5, -height * 0.5 + m_handleRadiusSmall * 0.5 } * targetScale());
-
-    m_handles[NodeHandle::Role::Move]->setPos(pos() + QPointF { -width * 0.5 - m_handleRadiusSmall * 0.15, -height * 0.5 - m_handleRadiusSmall * 0.15 } * targetScale());
+    m_handles[NodeHandle::Role::TextColor]->setPos(pos() + QPointF { colorHandleX, colorHandleDy });
 }
 
 NodeP Node::lastHoveredNode()

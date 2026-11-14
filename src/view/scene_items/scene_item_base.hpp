@@ -52,6 +52,8 @@ public:
 
     void setAnimationOpacity(qreal newAnimationOpacity);
 
+    void setAnimationEasingCurve(const QEasingCurve & easingCurve);
+
     qreal targetScale() const;
 
 protected slots:

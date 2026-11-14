@@ -32,6 +32,8 @@ private slots:
     void test_bodyRect_shouldExcludeSelectionRing();
 
     void test_paint_shouldDrawSelectionRingOnlyWhenSelected();
+
+    void test_handles_shouldBeOutsideNodeAtAllZoomLevels();
 };
 
 #endif // NODE_TEST_HPP

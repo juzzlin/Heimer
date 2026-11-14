@@ -198,6 +198,9 @@ private:
 
     void updateShadowEffect();
 
+    //! \return The zoom factor of the view showing the node.
+    double viewScale() const;
+
     SettingsProxyS m_settingsProxy;
 
     ShadowEffectParams m_shadowEffectParams;
@@ -237,11 +240,13 @@ private:
 
     const double m_selectionRingWidth = 2;
 
-    const int m_handleRadius = 28;
+    //! The handles have a constant size on the screen, so these are in pixels
+    const int m_handleRadius = 15;
 
-    const int m_handleRadiusMedium = 24;
+    const int m_handleRadiusSmall = 13;
 
-    const int m_handleRadiusSmall = 20;
+    //! Space between the node and its handles in pixels
+    const int m_handleGap = 8;
 
     const QColor m_textEditBackgroundColorDark { 0x00, 0x00, 0x00, 0x10 };
 

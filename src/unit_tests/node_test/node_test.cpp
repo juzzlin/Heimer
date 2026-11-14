@@ -15,14 +15,22 @@
 
 #include "node_test.hpp"
 
+#include "../../application/service_container.hpp"
+#include "../../application/settings_proxy.hpp"
 #include "../../common/test_mode.hpp"
 #include "../../domain/shadow_effect_params.hpp"
 #include "../../view/scene_items/node.hpp"
+#include "../../view/scene_items/node_handle.hpp"
 
 #include <QGraphicsScene>
+#include <QGraphicsSceneHoverEvent>
+#include <QGraphicsView>
 #include <QImage>
 #include <QPainter>
 #include <QTest>
+
+#include <algorithm>
+#include <cmath>
 
 using SceneItems::Node;
 
@@ -88,6 +96,51 @@ void NodeTest::test_paint_shouldDrawSelectionRingOnlyWhenSelected()
     node.setSelected(true);
     const auto ringColor = renderPixelAtSelectionRing(node);
     QVERIFY2(ringColor.red() > 200 && ringColor.green() < 80 && ringColor.blue() < 80, qPrintable(ringColor.name()));
+}
+
+void NodeTest::test_handles_shouldBeOutsideNodeAtAllZoomLevels()
+{
+    SC::instance().settingsProxy()->setRaiseNodeOnMouseHover(false);
+
+    for (auto && zoom : { 0.25, 0.5, 1.0, 2.0, 4.0 }) {
+        QGraphicsScene scene;
+        Node node;
+        node.setIndex(0);
+        node.setText("Foo");
+        scene.addItem(&node);
+        QGraphicsView view { &scene };
+        view.scale(zoom, zoom);
+        view.resize(400, 300);
+        view.show();
+
+        QGraphicsSceneHoverEvent hoverEvent { QEvent::GraphicsSceneHoverEnter };
+        scene.sendEvent(&node, &hoverEvent);
+        view.grab(); // Adds the handles to the scene
+
+        std::vector<SceneItems::NodeHandle *> handles;
+        for (auto && item : scene.items()) {
+            if (const auto handle = dynamic_cast<SceneItems::NodeHandle *>(item); handle) {
+                handles.push_back(handle);
+            }
+        }
+        QCOMPARE(handles.size(), size_t { 4 });
+
+        const auto body = node.bodyRect().translated(node.pos());
+        for (auto && handle : handles) {
+            // The handles have a constant size on the screen
+            const auto radiusInScene = handle->radius() / zoom;
+            const auto center = handle->pos();
+            const auto dx = std::max({ body.left() - center.x(), 0.0, center.x() - body.right() });
+            const auto dy = std::max({ body.top() - center.y(), 0.0, center.y() - body.bottom() });
+            QVERIFY2(std::hypot(dx, dy) > radiusInScene, qPrintable(QString { "zoom %1, role %2" }.arg(zoom).arg(static_cast<int>(handle->role()))));
+            // ..but close enough to be reachable
+            QVERIFY(!node.pointBeyondHideHandlesDistance(center));
+        }
+
+        for (auto && item : scene.items()) {
+            scene.removeItem(item);
+        }
+    }
 }
 
 QTEST_MAIN(NodeTest)

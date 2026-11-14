@@ -105,6 +105,12 @@ void SceneItemBase::setAnimationOpacity(qreal animationOpacity)
     m_animationOpacity = animationOpacity;
 }
 
+void SceneItemBase::setAnimationEasingCurve(const QEasingCurve & easingCurve)
+{
+    m_opacityAnimation.setEasingCurve(easingCurve);
+    m_scaleAnimation.setEasingCurve(easingCurve);
+}
+
 qreal SceneItemBase::targetScale() const
 {
     return m_targetScale;

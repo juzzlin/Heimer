@@ -20,7 +20,11 @@
 #include "layers.hpp"
 #include "node.hpp"
 
+#include <QConicalGradient>
+#include <QGraphicsScene>
+#include <QGraphicsView>
 #include <QPainter>
+#include <QPainterPath>
 #include <QPen>
 
 namespace SceneItems {
@@ -29,12 +33,14 @@ NodeHandle::NodeHandle(NodeR parentNode, NodeHandle::Role role, int radius)
   : m_parentNode(parentNode)
   , m_role(role)
   , m_radius(radius)
-  , m_size({ m_radius * 2, m_radius * 2 })
 {
     setAcceptHoverEvents(true);
 
+    // Keep the size constant regardless of the zoom level
+    setFlag(QGraphicsItem::ItemIgnoresTransformations);
+
     setAnimationDuration(m_handleAnimationDuration);
-    setAnimationOpacity(m_handleOpacity);
+    setAnimationEasingCurve(QEasingCurve::OutCubic);
 
     m_visibilityTimer.setSingleShot(true);
     m_visibilityTimer.setInterval(m_handleVisibilityDuration);
@@ -65,15 +71,28 @@ QString NodeHandle::getToolTipTextByRole(NodeHandle::Role role) const
     return "";
 }
 
+//! Room for the shadow
+static const double shadowMargin = 3;
+
 QRectF NodeHandle::boundingRect() const
 {
-    const int margin = 1;
-    return QRectF(-m_size.width() / 2, -m_size.height() / 2, m_size.width(), m_size.height()).adjusted(margin, margin, -margin, -margin);
+    const auto extent = m_radius + shadowMargin;
+    return { -extent, -extent, extent * 2, extent * 2 };
+}
+
+QPainterPath NodeHandle::shape() const
+{
+    QPainterPath path;
+    path.addEllipse(QPointF {}, m_radius, m_radius);
+    return path;
 }
 
 void NodeHandle::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 {
     setVisible(true);
+
+    m_hovered = true;
+    update();
 
     m_visibilityTimer.stop();
 
@@ -83,6 +102,9 @@ void NodeHandle::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 void NodeHandle::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
 {
     m_visibilityTimer.start();
+
+    m_hovered = false;
+    update();
 
     QGraphicsItem::hoverLeaveEvent(event);
 }
@@ -104,207 +126,125 @@ void NodeHandle::paint(QPainter * painter, const QStyleOptionGraphicsItem * opti
     Q_UNUSED(widget)
     Q_UNUSED(option)
 
+    painter->save();
+    painter->setRenderHint(QPainter::Antialiasing);
+
+    drawBackground(*painter);
+
     switch (role()) {
     case Role::NodeColor:
-        drawColorHandle(*painter);
+        drawNodeColorIcon(*painter);
         break;
     case Role::ConnectOrCreate:
-        drawConnectOrCreateHandle(*painter);
+        drawConnectOrCreateIcon(*painter);
         break;
     case Role::Move:
-        drawMoveHandle(*painter);
+        drawMoveIcon(*painter);
         break;
     case Role::TextColor:
-        drawTextColorHandle(*painter);
+        drawTextColorIcon(*painter);
         break;
     }
+
+    painter->restore();
 }
 
-QColor NodeHandle::calculateBackgroundColor() const
+bool NodeHandle::isOnDarkBackground() const
 {
-    return { (230 + m_parentNode.color().red()) / 2, (230 + m_parentNode.color().green()) / 2, (230 + m_parentNode.color().blue()) / 2 };
-}
-
-qreal NodeHandle::relXToX(qreal relX) const
-{
-    return -m_size.width() / 2 + relX * m_size.width();
-}
-
-qreal NodeHandle::relYToY(qreal relY) const
-{
-    return -m_size.height() / 2 + relY * m_size.height();
-}
-
-qreal NodeHandle::relWToW(qreal relW) const
-{
-    return relW * m_size.width();
-}
-
-qreal NodeHandle::relHToH(qreal relH) const
-{
-    return relH * m_size.height();
-}
-
-QPointF NodeHandle::relPToP(const QPointF & relP) const
-{
-    return { relXToX(relP.x()), relYToY(relP.y()) };
-}
-
-QPen NodeHandle::getForegroundPen() const
-{
-    QPen pen(Utils::isColorBright(m_parentNode.color()) ? QColor(20, 20, 20) : QColor(255, 255, 255));
-    pen.setWidthF(2);
-    pen.setCapStyle(Qt::PenCapStyle::SquareCap);
-    pen.setJoinStyle(Qt::PenJoinStyle::MiterJoin);
-    return pen;
-}
-
-void NodeHandle::drawColorHandle(QPainter & painter) const
-{
-    painter.save();
-    drawBackground(painter);
-
-    const std::vector<QColor> paletteColors = {
-        { 255, 0, 255 },
-        { 255, 0, 0 },
-        { 255, 128, 0 },
-        { 0, 0, 128 },
-        { 0, 255, 0 },
-        { 255, 255, 0 },
-        { 255, 255, 255 },
-        { 0, 255, 255 },
-        { 0, 0, 255 }
-    };
-
-    const size_t paletteSize = 3;
-    const auto paletteWidth = static_cast<float>(m_size.width()) * 0.7f;
-    const auto paletteColorWidth = paletteWidth / paletteSize;
-    const auto paletteColorMarginW = paletteColorWidth * 0.1f;
-    const auto paletteHeight = paletteWidth;
-    const auto paletteColorHeight = paletteColorWidth;
-    const auto paletteColorMarginH = paletteColorMarginW;
-    for (size_t i = 0; i < paletteSize; i++) {
-        for (size_t j = 0; j < paletteSize; j++) {
-            const float x = -paletteWidth / 2 + paletteColorWidth * static_cast<float>(i);
-            const float y = -paletteHeight / 2 + paletteColorHeight * static_cast<float>(j);
-            painter.fillRect(QRectF { static_cast<qreal>(x + paletteColorMarginW),
-                                      static_cast<qreal>(y + paletteColorMarginH),
-                                      static_cast<qreal>(paletteColorWidth - paletteColorMarginW * 2),
-                                      static_cast<qreal>(paletteColorHeight - paletteColorMarginH * 2) },
-                             paletteColors[static_cast<size_t>(i + j * paletteSize) % paletteColors.size()]);
-        }
+    if (scene() && !scene()->views().isEmpty()) {
+        return !Utils::isColorBright(scene()->views().first()->backgroundBrush().color());
     }
-
-    painter.restore();
+    return false;
 }
 
-void NodeHandle::drawCenteredRect(QPainter & painter, qreal relW, qreal relH, qreal relY) const
+QPen NodeHandle::iconPen() const
 {
-    painter.drawRect(QRectF {
-      QPointF { relXToX(0.5 - relW / 2),
-                relYToY(0.5 - relH / 2 + relY) },
-      QPointF { relXToX(0.5 + relW / 2),
-                relYToY(0.5 + relH / 2 + relY) } });
-}
-
-void NodeHandle::drawArrow(QPainter & painter, QPointF arrowStart, QPointF arrowEnd) const
-{
-    painter.drawLine(relPToP(arrowStart), relPToP(arrowEnd));
-    const qreal arrowD = 0.075;
-    painter.drawLine(relPToP(arrowEnd), QPointF { relXToX(arrowEnd.x() + arrowD), relYToY(arrowEnd.y() - arrowD) });
-    painter.drawLine(relPToP(arrowEnd), QPointF { relXToX(arrowEnd.x() - arrowD), relYToY(arrowEnd.y() - arrowD) });
+    QPen pen { isOnDarkBackground() ? QColor { 0xe3, 0xe5, 0xe8 } : QColor { 0x3c, 0x40, 0x48 } };
+    pen.setWidthF(1.75);
+    pen.setCapStyle(Qt::RoundCap);
+    pen.setJoinStyle(Qt::RoundJoin);
+    return pen;
 }
 
 void NodeHandle::drawBackground(QPainter & painter) const
 {
-    const auto backgroundColor = calculateBackgroundColor();
-    painter.setBrush(backgroundColor);
-    painter.setPen(GraphicsFactory::createOutlinePen(backgroundColor, 0.33));
-    const auto penWidth = painter.pen().width();
-    painter.drawEllipse(-m_size.width() / 2 + penWidth, -m_size.height() / 2 + penWidth, m_size.width() - penWidth * 2, m_size.height() - penWidth * 2);
+    const auto dark = isOnDarkBackground();
+
+    // Soft shadow
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(QColor { 0, 0, 0, dark ? 70 : 18 });
+    painter.drawEllipse(QPointF { 0, 1.5 }, m_radius + 1.5, m_radius + 1.5);
+    painter.setBrush(QColor { 0, 0, 0, dark ? 90 : 28 });
+    painter.drawEllipse(QPointF { 0, 1 }, m_radius + 0.5, m_radius + 0.5);
+
+    QColor surface = dark ? QColor { 0x2b, 0x2d, 0x31 } : QColor { 0xff, 0xff, 0xff };
+    if (m_hovered) {
+        surface = dark ? QColor { 0x3d, 0x41, 0x48 } : QColor { 0xe8, 0xee, 0xf7 };
+    }
+    painter.setBrush(surface);
+    painter.setPen(GraphicsFactory::createSubtleOutlinePen(surface));
+    painter.drawEllipse(QPointF {}, m_radius - 0.5, m_radius - 0.5);
 }
 
-void NodeHandle::drawConnectOrCreateHandle(QPainter & painter) const
+void NodeHandle::drawConnectOrCreateIcon(QPainter & painter) const
 {
-    painter.save();
-
-    // Background
-    drawBackground(painter);
-
-    // Solid rectangle
-    auto pen = getForegroundPen();
-    painter.setBrush(Qt::BrushStyle::NoBrush);
-    painter.setPen(pen);
-    const qreal relW = 0.4;
-    const qreal relH = 0.25;
-    const qreal relD = 0.175;
-    drawCenteredRect(painter, relW, relH, -relD);
-
-    // Dashed rectangle
-    pen.setDashPattern({ qreal(2), qreal(2) });
-    painter.setPen(pen);
-    drawCenteredRect(painter, relW, relH, +relD);
-
-    // Arrow
-    pen.setStyle(Qt::PenStyle::SolidLine);
-    pen.setCapStyle(Qt::PenCapStyle::RoundCap);
-    painter.setPen(pen);
-    drawArrow(painter, QPointF { 0.5, 0.5 - relD }, { 0.5, 0.55 + relD });
-    painter.restore();
+    painter.setPen(iconPen());
+    const auto d = m_radius * 0.42;
+    painter.drawLine(QPointF { -d, 0 }, QPointF { d, 0 });
+    painter.drawLine(QPointF { 0, -d }, QPointF { 0, d });
 }
 
-void NodeHandle::drawMoveHandle(QPainter & painter) const
+void NodeHandle::drawMoveIcon(QPainter & painter) const
 {
-    painter.save();
-
-    // Background
-    drawBackground(painter);
-
-    // Dashed rectangle
-    painter.setBrush(Qt::BrushStyle::NoBrush);
-    auto pen = getForegroundPen();
-    painter.setPen(pen);
-    const qreal relW = 0.4;
-    const qreal relH = 0.25;
-    pen.setDashPattern({ qreal(2), qreal(2) });
-    painter.setPen(pen);
-    drawCenteredRect(painter, relW, relH, 0);
-
-    // Arrows
-    pen.setStyle(Qt::PenStyle::SolidLine);
-    pen.setCapStyle(Qt::PenCapStyle::RoundCap);
-    painter.setPen(pen);
-
-    const qreal margin = 0.1;
-    const QPointF arrowEnd { 0.5, 0.9 };
-    const QPointF vArrowStart { 0.5, 0.5 + margin + relH / 2 };
-    drawArrow(painter, vArrowStart, arrowEnd);
-    painter.rotate(180);
-    drawArrow(painter, vArrowStart, arrowEnd);
-    painter.rotate(90);
-
-    const QPointF hArrowStart { 0.5, 0.5 + margin + relW / 2 };
-    drawArrow(painter, hArrowStart, arrowEnd);
-    painter.rotate(180);
-    drawArrow(painter, hArrowStart, arrowEnd);
-    painter.restore();
+    painter.setPen(iconPen());
+    const auto d = m_radius * 0.5;
+    const auto a = m_radius * 0.17;
+    painter.drawLine(QPointF { -d, 0 }, QPointF { d, 0 });
+    painter.drawLine(QPointF { 0, -d }, QPointF { 0, d });
+    // Arrow heads at all four ends
+    for (int i = 0; i < 4; i++) {
+        painter.save();
+        painter.rotate(90 * i);
+        painter.drawPolyline(QPolygonF { { QPointF { d - a, -a }, QPointF { d, 0 }, QPointF { d - a, a } } });
+        painter.restore();
+    }
 }
 
-void NodeHandle::drawTextColorHandle(QPainter & painter) const
+void NodeHandle::drawNodeColorIcon(QPainter & painter) const
 {
-    drawColorHandle(painter);
+    // A rainbow ring around the current node color
+    QConicalGradient gradient { QPointF {}, 90 };
+    const int hueSteps = 6;
+    for (int i = 0; i <= hueSteps; i++) {
+        gradient.setColorAt(static_cast<double>(i) / hueSteps, QColor::fromHsv((360 / hueSteps * i) % 360, 200, 240));
+    }
+    QPen ringPen { QBrush { gradient }, 2.5 };
+    painter.setPen(ringPen);
+    painter.setBrush(Qt::NoBrush);
+    const auto ringRadius = m_radius * 0.56;
+    painter.drawEllipse(QPointF {}, ringRadius, ringRadius);
 
-    // The text symbol "A"
-    painter.save();
-    painter.setPen(Qt::black);
-    painter.setOpacity(0.5);
+    const auto color = m_parentNode.color();
+    painter.setPen(GraphicsFactory::createSubtleOutlinePen(color));
+    painter.setBrush(color);
+    const auto dotRadius = m_radius * 0.32;
+    painter.drawEllipse(QPointF {}, dotRadius, dotRadius);
+}
+
+void NodeHandle::drawTextColorIcon(QPainter & painter) const
+{
+    // The letter "A" and a bar in the current text color
     QFont font;
-    font.setPixelSize(2 * m_size.height() / 3);
-    font.setItalic(true);
+    font.setPixelSize(static_cast<int>(m_radius * 0.95));
     font.setBold(true);
     painter.setFont(font);
-    painter.drawText(QRectF(0, -m_size.height() / 2, m_size.width() / 2, m_size.height() / 2), Qt::AlignCenter, tr("A"));
-    painter.restore();
+    painter.setPen(iconPen());
+    painter.drawText(QRectF { -m_radius * 1.0, -m_radius * 0.82, m_radius * 2.0, m_radius * 1.15 }, Qt::AlignCenter, tr("A"));
+
+    const auto color = m_parentNode.textColor();
+    painter.setPen(GraphicsFactory::createSubtleOutlinePen(color));
+    painter.setBrush(color);
+    painter.drawRoundedRect(QRectF { -m_radius * 0.45, m_radius * 0.36, m_radius * 0.9, m_radius * 0.24 }, 1.5, 1.5);
 }
 
 NodeR NodeHandle::parentNode() const

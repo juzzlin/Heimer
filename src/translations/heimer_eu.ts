@@ -90,28 +90,8 @@
         <translation type="unfinished">Kontrako norazkoan</translation>
     </message>
     <message>
-        <source>Background</source>
-        <translation type="unfinished">Atzeko planoa</translation>
-    </message>
-    <message>
-        <source>Edge color</source>
-        <translation type="unfinished">Ertzaren kolorea</translation>
-    </message>
-    <message>
-        <source>Grid color</source>
-        <translation type="unfinished">Saretaren kolorea</translation>
-    </message>
-    <message>
-        <source>Node color</source>
-        <translation type="unfinished">Nodoaren kolorea</translation>
-    </message>
-    <message>
-        <source>Node text color</source>
-        <translation type="unfinished">Nodoko testuaren kolorea</translation>
-    </message>
-    <message>
-        <source>These default settings will be applied each time a new mind map is created.</source>
-        <translation type="unfinished">Ezarpen lehenetsi hauek mapa mental berri bat sortzen den bakoitzean aplikatuko dira.</translation>
+        <source>These default settings will be applied to new edges. The colors, fonts and sizes of new mind maps are defined by the default theme, see Themes.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Edge Arrow Style</source>
@@ -128,26 +108,6 @@
     <message>
         <source>Double arrow</source>
         <translation type="unfinished">Gezi bikoitza</translation>
-    </message>
-    <message>
-        <source>Arrow size:</source>
-        <translation type="unfinished">Geziaren tamaina:</translation>
-    </message>
-    <message>
-        <source>Edge width:</source>
-        <translation type="unfinished">Marraren lodiera:</translation>
-    </message>
-    <message>
-        <source>Colors</source>
-        <translation type="unfinished">Koloreak</translation>
-    </message>
-    <message>
-        <source>Text Style</source>
-        <translation type="unfinished">Testuaren estiloa</translation>
-    </message>
-    <message>
-        <source>Text size:</source>
-        <translation type="unfinished">Testuaren tamaina:</translation>
     </message>
 </context>
 <context>
@@ -208,14 +168,6 @@
 <context>
     <name>Dialogs::EffectsTab</name>
     <message>
-        <source>Shadow color</source>
-        <translation type="unfinished">Itzalaren kolorea</translation>
-    </message>
-    <message>
-        <source>Selected item shadow color</source>
-        <translation type="unfinished">Hautatutako elementuaren itzal-kolorea</translation>
-    </message>
-    <message>
         <source>Optimize shadow effects</source>
         <translation type="unfinished">Optimizatu itzal-efektuak</translation>
     </message>
@@ -224,16 +176,8 @@
         <translation type="unfinished">Itzalak</translation>
     </message>
     <message>
-        <source>Shadow effect offset:</source>
-        <translation type="unfinished">Itzalaren desplazamendua</translation>
-    </message>
-    <message>
-        <source>Shadow blur radius:</source>
-        <translation type="unfinished">Itzal lausoaren erradioa</translation>
-    </message>
-    <message>
-        <source>Selected item shadow blur radius:</source>
-        <translation type="unfinished">Hautatutako elementuaren itzal lausoaren erradioa:</translation>
+        <source>The colors and sizes of the shadows are part of the theme, see Themes.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Optimizing shadow effects makes the performance better, but might introduce some visual glitches.</source>
@@ -392,6 +336,10 @@
         <translation type="unfinished">Ezarpenak</translation>
     </message>
     <message>
+        <source>Themes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Defaults</source>
         <translation type="unfinished">Lehenetsiak</translation>
     </message>
@@ -402,6 +350,200 @@
     <message>
         <source>Effects</source>
         <translation type="unfinished">Efektoak</translation>
+    </message>
+</context>
+<context>
+    <name>Dialogs::ThemeEditorDialog</name>
+    <message>
+        <source>Background</source>
+        <translation type="unfinished">Atzeko planoa</translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shadow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected item shadow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Canvas</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Corner radius:</source>
+        <translation type="unfinished">Izkinaren erradioa:</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text size:</source>
+        <translation type="unfinished">Testuaren tamaina:</translation>
+    </message>
+    <message>
+        <source>Edges</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edge width:</source>
+        <translation type="unfinished">Marraren lodiera:</translation>
+    </message>
+    <message>
+        <source>Arrow size:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shadows</source>
+        <translation type="unfinished">Itzalak</translation>
+    </message>
+    <message>
+        <source>Offset:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blur radius:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected item blur radius:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset to Classic</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Dialogs::ThemesTab</name>
+    <message>
+        <source>Apply to current mind map</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set as default for new mind maps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New from current mind map</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A theme defines the colors, fonts and effects of a mind map. Built-in themes can&apos;t be modified, but they can be duplicated.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(built-in)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>default for new mind maps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Theme name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A theme named &apos;%1&apos; already exists.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Some nodes have individual colors.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to apply the node colors of the theme also to these nodes?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply to all nodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keep individual colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(copy)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete the theme &apos;%1&apos;?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -549,6 +691,14 @@
     <message>
         <source>Set edge color</source>
         <translation type="unfinished">Ezarri marraren kolorea</translation>
+    </message>
+    <message>
+        <source>Set edge label color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set edge label text color</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Set grid color</source>

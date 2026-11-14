@@ -90,28 +90,8 @@
         <translation>反向</translation>
     </message>
     <message>
-        <source>Background</source>
-        <translation>背景</translation>
-    </message>
-    <message>
-        <source>Edge color</source>
-        <translation>连线颜色</translation>
-    </message>
-    <message>
-        <source>Grid color</source>
-        <translation>网格颜色</translation>
-    </message>
-    <message>
-        <source>Node color</source>
-        <translation>节点颜色</translation>
-    </message>
-    <message>
-        <source>Node text color</source>
-        <translation>节点文字颜色</translation>
-    </message>
-    <message>
-        <source>These default settings will be applied each time a new mind map is created.</source>
-        <translation>这些默认设置将在每次创建新的思维导图时自动应用。</translation>
+        <source>These default settings will be applied to new edges. The colors, fonts and sizes of new mind maps are defined by the default theme, see Themes.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Edge Arrow Style</source>
@@ -128,26 +108,6 @@
     <message>
         <source>Double arrow</source>
         <translation>双箭头</translation>
-    </message>
-    <message>
-        <source>Arrow size:</source>
-        <translation>箭头大小：</translation>
-    </message>
-    <message>
-        <source>Edge width:</source>
-        <translation>边缘宽度：</translation>
-    </message>
-    <message>
-        <source>Colors</source>
-        <translation>颜色</translation>
-    </message>
-    <message>
-        <source>Text Style</source>
-        <translation>文本样式</translation>
-    </message>
-    <message>
-        <source>Text size:</source>
-        <translation>文本大小：</translation>
     </message>
 </context>
 <context>
@@ -208,14 +168,6 @@
 <context>
     <name>Dialogs::EffectsTab</name>
     <message>
-        <source>Shadow color</source>
-        <translation>阴影颜色</translation>
-    </message>
-    <message>
-        <source>Selected item shadow color</source>
-        <translation>选中时的阴影颜色</translation>
-    </message>
-    <message>
         <source>Optimize shadow effects</source>
         <translation>优化阴影效果</translation>
     </message>
@@ -224,16 +176,8 @@
         <translation>阴影</translation>
     </message>
     <message>
-        <source>Shadow effect offset:</source>
-        <translation>阴影效果偏移：</translation>
-    </message>
-    <message>
-        <source>Shadow blur radius:</source>
-        <translation>阴影模糊半径：</translation>
-    </message>
-    <message>
-        <source>Selected item shadow blur radius:</source>
-        <translation>选中时的阴影模糊半径：</translation>
+        <source>The colors and sizes of the shadows are part of the theme, see Themes.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Optimizing shadow effects makes the performance better, but might introduce some visual glitches.</source>
@@ -392,6 +336,10 @@
         <translation>设置</translation>
     </message>
     <message>
+        <source>Themes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Defaults</source>
         <translation>默认值</translation>
     </message>
@@ -402,6 +350,200 @@
     <message>
         <source>Effects</source>
         <translation>效果</translation>
+    </message>
+</context>
+<context>
+    <name>Dialogs::ThemeEditorDialog</name>
+    <message>
+        <source>Background</source>
+        <translation>背景</translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shadow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected item shadow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Canvas</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Corner radius:</source>
+        <translation>圆角：</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text size:</source>
+        <translation>文本大小：</translation>
+    </message>
+    <message>
+        <source>Edges</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edge width:</source>
+        <translation>边缘宽度：</translation>
+    </message>
+    <message>
+        <source>Arrow size:</source>
+        <translation>箭头大小：</translation>
+    </message>
+    <message>
+        <source>Shadows</source>
+        <translation>阴影</translation>
+    </message>
+    <message>
+        <source>Offset:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blur radius:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected item blur radius:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset to Classic</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Dialogs::ThemesTab</name>
+    <message>
+        <source>Apply to current mind map</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set as default for new mind maps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New from current mind map</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A theme defines the colors, fonts and effects of a mind map. Built-in themes can&apos;t be modified, but they can be duplicated.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(built-in)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>default for new mind maps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Theme name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A theme named &apos;%1&apos; already exists.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Some nodes have individual colors.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to apply the node colors of the theme also to these nodes?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply to all nodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keep individual colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(copy)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete the theme &apos;%1&apos;?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -549,6 +691,14 @@
     <message>
         <source>Set edge color</source>
         <translation>设置连线颜色</translation>
+    </message>
+    <message>
+        <source>Set edge label color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set edge label text color</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Set grid color</source>

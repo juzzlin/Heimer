@@ -90,28 +90,8 @@
         <translation>Direzione invertita</translation>
     </message>
     <message>
-        <source>Background</source>
-        <translation>Sfondo</translation>
-    </message>
-    <message>
-        <source>Edge color</source>
-        <translation>Colore del bordo</translation>
-    </message>
-    <message>
-        <source>Grid color</source>
-        <translation>Colore griglia</translation>
-    </message>
-    <message>
-        <source>Node color</source>
-        <translation>Colore del nodo</translation>
-    </message>
-    <message>
-        <source>Node text color</source>
-        <translation>Colore testo nodo</translation>
-    </message>
-    <message>
-        <source>These default settings will be applied each time a new mind map is created.</source>
-        <translation>Queste impostazioni predefinite verranno applicate ogni volta che viene creata una nuova mappa mentale.</translation>
+        <source>These default settings will be applied to new edges. The colors, fonts and sizes of new mind maps are defined by the default theme, see Themes.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Edge Arrow Style</source>
@@ -128,26 +108,6 @@
     <message>
         <source>Double arrow</source>
         <translation>Doppia freccia</translation>
-    </message>
-    <message>
-        <source>Arrow size:</source>
-        <translation>Dimensione della freccia:</translation>
-    </message>
-    <message>
-        <source>Edge width:</source>
-        <translation>Larghezza del bordo:</translation>
-    </message>
-    <message>
-        <source>Colors</source>
-        <translation>Colori</translation>
-    </message>
-    <message>
-        <source>Text Style</source>
-        <translation>Stile del testo</translation>
-    </message>
-    <message>
-        <source>Text size:</source>
-        <translation>Dimensione del testo:</translation>
     </message>
 </context>
 <context>
@@ -208,14 +168,6 @@
 <context>
     <name>Dialogs::EffectsTab</name>
     <message>
-        <source>Shadow color</source>
-        <translation>Colore dell&apos;ombra</translation>
-    </message>
-    <message>
-        <source>Selected item shadow color</source>
-        <translation>Colore ombra oggetto selezionato</translation>
-    </message>
-    <message>
         <source>Optimize shadow effects</source>
         <translation>Ottimizza gli effetti ombra</translation>
     </message>
@@ -224,16 +176,8 @@
         <translation>Ombre</translation>
     </message>
     <message>
-        <source>Shadow effect offset:</source>
-        <translation>Compensazione dell&apos;effetto ombra:</translation>
-    </message>
-    <message>
-        <source>Shadow blur radius:</source>
-        <translation>Raggio sfocatura ombra:</translation>
-    </message>
-    <message>
-        <source>Selected item shadow blur radius:</source>
-        <translation>Raggio di sfocatura dell&apos;ombra dell&apos;oggetto selezionato:</translation>
+        <source>The colors and sizes of the shadows are part of the theme, see Themes.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Optimizing shadow effects makes the performance better, but might introduce some visual glitches.</source>
@@ -392,6 +336,10 @@
         <translation>Impostazioni</translation>
     </message>
     <message>
+        <source>Themes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Defaults</source>
         <translation>Predefinito</translation>
     </message>
@@ -402,6 +350,200 @@
     <message>
         <source>Effects</source>
         <translation>Effetti</translation>
+    </message>
+</context>
+<context>
+    <name>Dialogs::ThemeEditorDialog</name>
+    <message>
+        <source>Background</source>
+        <translation>Sfondo</translation>
+    </message>
+    <message>
+        <source>Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shadow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected item shadow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Canvas</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Corner radius:</source>
+        <translation>Raggio dell&apos;&apos;angolo:</translation>
+    </message>
+    <message>
+        <source>Text</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text size:</source>
+        <translation>Dimensione del testo:</translation>
+    </message>
+    <message>
+        <source>Edges</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edge width:</source>
+        <translation>Larghezza del bordo:</translation>
+    </message>
+    <message>
+        <source>Arrow size:</source>
+        <translation>Dimensione della freccia:</translation>
+    </message>
+    <message>
+        <source>Shadows</source>
+        <translation>Ombre</translation>
+    </message>
+    <message>
+        <source>Offset:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blur radius:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selected item blur radius:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset to Classic</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Dialogs::ThemesTab</name>
+    <message>
+        <source>Apply to current mind map</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set as default for new mind maps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New from current mind map</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A theme defines the colors, fonts and effects of a mind map. Built-in themes can&apos;t be modified, but they can be duplicated.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(built-in)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>default for new mind maps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Theme name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A theme named &apos;%1&apos; already exists.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Some nodes have individual colors.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to apply the node colors of the theme also to these nodes?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply to all nodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keep individual colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(copy)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete the theme &apos;%1&apos;?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -540,19 +682,27 @@
     </message>
     <message>
         <source>General &amp;colors</source>
-        <translation type="unfinished">&amp;Colori generali</translation>
+        <translation>&amp;Colori generali</translation>
     </message>
     <message>
         <source>Set background color</source>
-        <translation type="unfinished">Imposta il colore di sfondo</translation>
+        <translation>Imposta il colore di sfondo</translation>
     </message>
     <message>
         <source>Set edge color</source>
-        <translation type="unfinished">Imposta il colore del bordo</translation>
+        <translation>Imposta il colore del bordo</translation>
+    </message>
+    <message>
+        <source>Set edge label color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set edge label text color</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Set grid color</source>
-        <translation type="unfinished">Imposta colore griglia</translation>
+        <translation>Imposta colore griglia</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -592,7 +742,7 @@
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished">Impostazioni</translation>
+        <translation>Impostazioni</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
@@ -624,7 +774,7 @@
     </message>
     <message>
         <source>What&apos;s New</source>
-        <translation type="unfinished">Cosa c&apos;è&apos;s di nuovo</translation>
+        <translation>Cosa c&apos;è&apos;s di nuovo</translation>
     </message>
     <message>
         <source>&amp;View</source>

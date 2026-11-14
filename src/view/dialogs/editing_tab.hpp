@@ -19,6 +19,7 @@
 #include "settings_tab_base.hpp"
 
 class QCheckBox;
+class QSpinBox;
 
 namespace Dialogs {
 
@@ -44,6 +45,8 @@ private:
     QCheckBox * m_raiseNodeOnMouseHoverCheckBox = nullptr;
 
     QCheckBox * m_invertedControlsCheckBox = nullptr;
+
+    QSpinBox * m_mouseWheelZoomSpeedSpinBox = nullptr;
 
     QCheckBox * m_autoloadCheckBox = nullptr;
 

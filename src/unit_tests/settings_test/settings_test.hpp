@@ -32,6 +32,8 @@ private slots:
     void test_getFont_defaultValueShouldKeepWeight();
 
     void test_getFont_shouldReturnSavedFont();
+
+    void test_mouseWheelZoomSpeed_shouldBeSavedAndClamped();
 };
 
 #endif // SETTINGS_TEST_HPP

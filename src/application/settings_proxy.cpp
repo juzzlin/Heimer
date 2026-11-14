@@ -16,6 +16,8 @@
 #include "settings_proxy.hpp"
 #include "../infra/settings.hpp"
 
+#include <algorithm>
+
 SettingsProxy::SettingsProxy()
   : m_autoload { Settings::Custom::loadAutoload() }
   , m_autosave { Settings::Custom::loadAutosave() }
@@ -28,6 +30,8 @@ SettingsProxy::SettingsProxy()
   , m_arrowSize { Settings::Generic::getNumber(m_defaultsSettingGroup, m_arrowSizeSettingKey, Constants::Settings::defaultArrowSize()) }
   , m_edgeWidth { Settings::Generic::getNumber(m_defaultsSettingGroup, m_edgeWidthSettingKey, Constants::Settings::defaultEdgeWidth()) }
   , m_invertedControls { Settings::Generic::getBoolean(m_editingSettingGroup, m_invertedControlsSettingKey, false) }
+  , m_mouseWheelZoomSpeed { std::clamp(static_cast<int>(Settings::Generic::getNumber(m_editingSettingGroup, m_mouseWheelZoomSpeedSettingKey, Constants::View::defaultMouseWheelZoomSpeed())),
+                                       Constants::View::minMouseWheelZoomSpeed(), Constants::View::maxMouseWheelZoomSpeed()) }
   , m_reversedEdgeDirection { Settings::Custom::loadReversedEdgeDirection(false) }
   , m_raiseNodeOnMouseHover { Settings::Generic::getBoolean(m_editingSettingGroup, m_raiseNodeOnMouseHoverKey, true) }
   , m_selectNodeGroupByIntersection { Settings::Custom::loadSelectNodeGroupByIntersection() }
@@ -187,6 +191,20 @@ void SettingsProxy::setInvertedControls(bool invertedControls)
     if (m_invertedControls != invertedControls) {
         m_invertedControls = invertedControls;
         Settings::Generic::setBoolean(m_editingSettingGroup, m_invertedControlsSettingKey, invertedControls);
+    }
+}
+
+int SettingsProxy::mouseWheelZoomSpeed() const
+{
+    return m_mouseWheelZoomSpeed;
+}
+
+void SettingsProxy::setMouseWheelZoomSpeed(int mouseWheelZoomSpeed)
+{
+    mouseWheelZoomSpeed = std::clamp(mouseWheelZoomSpeed, Constants::View::minMouseWheelZoomSpeed(), Constants::View::maxMouseWheelZoomSpeed());
+    if (m_mouseWheelZoomSpeed != mouseWheelZoomSpeed) {
+        m_mouseWheelZoomSpeed = mouseWheelZoomSpeed;
+        Settings::Generic::setNumber(m_editingSettingGroup, m_mouseWheelZoomSpeedSettingKey, mouseWheelZoomSpeed);
     }
 }
 

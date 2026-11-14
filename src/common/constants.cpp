@@ -298,6 +298,21 @@ double zoomSensitivity()
     return 1.1;
 }
 
+int defaultMouseWheelZoomSpeed()
+{
+    return 100;
+}
+
+int minMouseWheelZoomSpeed()
+{
+    return 10;
+}
+
+int maxMouseWheelZoomSpeed()
+{
+    return 200;
+}
+
 } // namespace View
 
 } // namespace Constants

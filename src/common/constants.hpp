@@ -160,6 +160,13 @@ std::chrono::milliseconds tooQuickActionDelay();
 
 double zoomSensitivity();
 
+//! Mouse wheel zoom speed in percents of the default speed
+int defaultMouseWheelZoomSpeed();
+
+int minMouseWheelZoomSpeed();
+
+int maxMouseWheelZoomSpeed();
+
 } // namespace View
 
 } // namespace Constants

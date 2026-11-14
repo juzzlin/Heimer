@@ -20,7 +20,9 @@
 #include <QDateTime>
 #include <QDir>
 
+#include <algorithm>
 #include <chrono>
+#include <cmath>
 
 size_t Utils::tsMs()
 {
@@ -84,4 +86,12 @@ QColor Utils::mixedColor(QColor color1, QColor color2, double balance)
     return { static_cast<int>(color1.red() * balance + color2.red() * (1 - balance)),
              static_cast<int>(color1.green() * balance + color2.green() * (1 - balance)),
              static_cast<int>(color1.blue() * balance + color2.blue() * (1 - balance)) };
+}
+
+double Utils::mouseWheelZoomFactor(int angleDeltaY, int speedPercent)
+{
+    // A notch of a standard mouse wheel is 15 degrees, i.e. 120 eighths of a degree
+    const double notches = angleDeltaY / 120.0;
+    const auto speed = std::clamp(speedPercent, Constants::View::minMouseWheelZoomSpeed(), Constants::View::maxMouseWheelZoomSpeed()) / 100.0;
+    return std::pow(Constants::View::zoomSensitivity(), notches * speed);
 }

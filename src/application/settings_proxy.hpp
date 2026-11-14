@@ -81,6 +81,11 @@ public:
 
     void setInvertedControls(bool invertedControls);
 
+    //! \return Mouse wheel zoom speed in percents of the default speed.
+    int mouseWheelZoomSpeed() const;
+
+    void setMouseWheelZoomSpeed(int mouseWheelZoomSpeed);
+
     bool reversedEdgeDirection() const;
 
     void setReversedEdgeDirection(bool reversedEdgeDirection);
@@ -174,6 +179,8 @@ private:
 
     const QString m_invertedControlsSettingKey = "invertedControls";
 
+    const QString m_mouseWheelZoomSpeedSettingKey = "mouseWheelZoomSpeed";
+
     const QString m_raiseNodeOnMouseHoverKey = "raiseNodeOnMouseHoverKey";
 
     bool m_autoload = false;
@@ -197,6 +204,8 @@ private:
     double m_edgeWidth;
 
     bool m_invertedControls = false;
+
+    int m_mouseWheelZoomSpeed;
 
     bool m_reversedEdgeDirection = false;
 

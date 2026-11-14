@@ -38,6 +38,11 @@ int fontWeightToInt(int value);
 
 QColor mixedColor(QColor color1, QColor color2, double balance);
 
+//! \param angleDeltaY Vertical rotation of the mouse wheel in eighths of a degree, see QWheelEvent::angleDelta().
+//! \param speedPercent Zoom speed in percents of the default speed.
+//! \return Zoom factor that is proportional to the rotation, so that also high-resolution wheels zoom at the same speed.
+double mouseWheelZoomFactor(int angleDeltaY, int speedPercent);
+
 } // namespace Utils
 
 #endif // UTILS_HPP

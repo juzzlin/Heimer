@@ -18,11 +18,14 @@
 #include "widget_factory.hpp"
 
 #include "../../application/settings_proxy.hpp"
+#include "../../common/constants.hpp"
 
 #include <QButtonGroup>
 #include <QCheckBox>
 #include <QGroupBox>
+#include <QHBoxLayout>
 #include <QLabel>
+#include <QSpinBox>
 #include <QVBoxLayout>
 
 namespace Dialogs {
@@ -32,6 +35,7 @@ EditingTab::EditingTab(QString name, QWidget * parent)
   , m_selectNodeGroupByIntersectionCheckBox(new QCheckBox(tr("Select node group by intersection")))
   , m_raiseNodeOnMouseHoverCheckBox(new QCheckBox(tr("Raise node on mouse hover")))
   , m_invertedControlsCheckBox(new QCheckBox(tr("Inverted controls")))
+  , m_mouseWheelZoomSpeedSpinBox(new QSpinBox)
   , m_autoloadCheckBox(new QCheckBox(tr("Enable autoload")))
   , m_autosaveCheckBox(new QCheckBox(tr("Enable autosave")))
 {
@@ -51,6 +55,8 @@ bool EditingTab::apply()
     settingsProxy()->setAutoload(m_autoloadCheckBox->isChecked());
 
     settingsProxy()->setInvertedControls(m_invertedControlsCheckBox->isChecked());
+
+    settingsProxy()->setMouseWheelZoomSpeed(m_mouseWheelZoomSpeedSpinBox->value());
 
     return true;
 }
@@ -79,6 +85,18 @@ void EditingTab::initWidgets()
     m_invertedControlsCheckBox->setToolTip(tr("Scroll the view with a modifier key pressed and select a group of items without a modifier key being pressed."));
     controlsGroupLayout->addWidget(m_invertedControlsCheckBox);
 
+    m_mouseWheelZoomSpeedSpinBox->setRange(Constants::View::minMouseWheelZoomSpeed(), Constants::View::maxMouseWheelZoomSpeed());
+    m_mouseWheelZoomSpeedSpinBox->setSingleStep(10);
+    m_mouseWheelZoomSpeedSpinBox->setSuffix("%");
+    m_mouseWheelZoomSpeedSpinBox->setToolTip(tr("Speed of zooming with the mouse wheel. 100% is the default speed."));
+    const auto zoomSpeedLayout = new QHBoxLayout;
+    const auto zoomSpeedLabel = new QLabel { tr("Mouse wheel zoom speed:") };
+    zoomSpeedLabel->setBuddy(m_mouseWheelZoomSpeedSpinBox);
+    zoomSpeedLayout->addWidget(zoomSpeedLabel);
+    zoomSpeedLayout->addWidget(m_mouseWheelZoomSpeedSpinBox);
+    zoomSpeedLayout->addStretch();
+    controlsGroupLayout->addLayout(zoomSpeedLayout);
+
     setLayout(mainLayout);
 
     setActiveSettings();
@@ -95,6 +113,8 @@ void EditingTab::setActiveSettings()
     m_autoloadCheckBox->setChecked(settingsProxy()->autoload());
 
     m_invertedControlsCheckBox->setChecked(settingsProxy()->invertedControls());
+
+    m_mouseWheelZoomSpeedSpinBox->setValue(settingsProxy()->mouseWheelZoomSpeed());
 }
 
 } // namespace Dialogs

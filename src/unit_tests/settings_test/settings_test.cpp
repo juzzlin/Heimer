@@ -14,6 +14,8 @@
 // along with Heimer. If not, see <http://www.gnu.org/licenses/>.
 #include "settings_test.hpp"
 
+#include "../../application/settings_proxy.hpp"
+#include "../../common/constants.hpp"
 #include "../../infra/settings.hpp"
 
 #include <QFont>
@@ -64,6 +66,20 @@ void SettingsTest::test_getFont_shouldReturnSavedFont()
     QCOMPARE(font.family(), savedFont.family());
     QCOMPARE(font.weight(), QFont::DemiBold);
     QCOMPARE(font.italic(), true);
+}
+
+void SettingsTest::test_mouseWheelZoomSpeed_shouldBeSavedAndClamped()
+{
+    QCOMPARE(SettingsProxy {}.mouseWheelZoomSpeed(), Constants::View::defaultMouseWheelZoomSpeed());
+
+    SettingsProxy {}.setMouseWheelZoomSpeed(50);
+    QCOMPARE(SettingsProxy {}.mouseWheelZoomSpeed(), 50);
+
+    SettingsProxy {}.setMouseWheelZoomSpeed(0);
+    QCOMPARE(SettingsProxy {}.mouseWheelZoomSpeed(), Constants::View::minMouseWheelZoomSpeed());
+
+    SettingsProxy {}.setMouseWheelZoomSpeed(100000);
+    QCOMPARE(SettingsProxy {}.mouseWheelZoomSpeed(), Constants::View::maxMouseWheelZoomSpeed());
 }
 
 QTEST_GUILESS_MAIN(SettingsTest)

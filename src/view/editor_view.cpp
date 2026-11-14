@@ -598,7 +598,10 @@ void EditorView::showStatusText(QString statusText)
 
 void EditorView::wheelEvent(QWheelEvent * event)
 {
-    zoom(event->angleDelta().y() > 0 ? Constants::View::zoomSensitivity() : 1.0 / Constants::View::zoomSensitivity());
+    // Horizontal scrolling doesn't zoom
+    if (const auto angleDeltaY = event->angleDelta().y(); angleDeltaY) {
+        zoom(Utils::mouseWheelZoomFactor(angleDeltaY, SC::instance().settingsProxy()->mouseWheelZoomSpeed()));
+    }
 }
 
 void EditorView::dropEvent(QDropEvent * event)

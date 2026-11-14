@@ -19,6 +19,11 @@
 #include "../../domain/shadow_effect_params.hpp"
 
 #include <QGraphicsDropShadowEffect>
+#include <QPainter>
+
+#include <algorithm>
+#include <cmath>
+#include <vector>
 
 QGraphicsEffect * GraphicsFactory::createDropShadowEffect(const ShadowEffectParams & params, bool selected)
 {
@@ -34,6 +39,65 @@ QPen GraphicsFactory::createOutlinePen(const QColor & backgroundColor, double br
                            static_cast<int>(backgroundColor.green() * brightness),
                            static_cast<int>(backgroundColor.blue() * brightness) },
                   width };
+}
+
+//! One pass of a box blur on an 8-bit alpha image, horizontally or vertically
+static void boxBlurPass(QImage & image, int radius, bool horizontal)
+{
+    const int length = horizontal ? image.width() : image.height();
+    const int lineCount = horizontal ? image.height() : image.width();
+    const int windowSize = radius * 2 + 1;
+    std::vector<uchar> line(static_cast<size_t>(length));
+    for (int lineIndex = 0; lineIndex < lineCount; lineIndex++) {
+        const auto pixel = [&](int i) -> uchar & {
+            return horizontal ? image.scanLine(lineIndex)[i] : image.scanLine(i)[lineIndex];
+        };
+        for (int i = 0; i < length; i++) {
+            line[static_cast<size_t>(i)] = pixel(i);
+        }
+        const auto valueAt = [&](int i) {
+            return i < 0 || i >= length ? 0 : line[static_cast<size_t>(i)];
+        };
+        int sum = 0;
+        for (int i = -radius; i <= radius; i++) {
+            sum += valueAt(i);
+        }
+        for (int i = 0; i < length; i++) {
+            pixel(i) = static_cast<uchar>(sum / windowSize);
+            sum += valueAt(i + radius + 1) - valueAt(i - radius);
+        }
+    }
+}
+
+QImage GraphicsFactory::createRoundedRectShadow(QSizeF size, double cornerRadius, int blurRadius, const QColor & color)
+{
+    const int margin = std::max(blurRadius, 0);
+    const QSize imageSize { static_cast<int>(std::ceil(size.width())) + margin * 2, static_cast<int>(std::ceil(size.height())) + margin * 2 };
+    QImage mask { imageSize, QImage::Format_Alpha8 };
+    mask.fill(0);
+    {
+        QPainter painter { &mask };
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(Qt::black);
+        painter.drawRoundedRect(QRectF { QPointF { static_cast<double>(margin), static_cast<double>(margin) }, size }, cornerRadius, cornerRadius);
+    }
+
+    // Three box blur passes approximate a Gaussian blur that extends about blurRadius pixels
+    if (const int boxRadius = blurRadius / 3; boxRadius > 0) {
+        for (int pass = 0; pass < 3; pass++) {
+            boxBlurPass(mask, boxRadius, true);
+            boxBlurPass(mask, boxRadius, false);
+        }
+    }
+
+    QImage shadow { imageSize, QImage::Format_ARGB32_Premultiplied };
+    shadow.fill(Qt::transparent);
+    QPainter painter { &shadow };
+    painter.drawImage(0, 0, mask);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+    painter.fillRect(shadow.rect(), color);
+    return shadow;
 }
 
 QPen GraphicsFactory::createSubtleOutlinePen(const QColor & fillColor)

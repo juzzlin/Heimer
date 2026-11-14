@@ -68,6 +68,9 @@ public:
     //! \return The rect of the node body, i.e. without the selection ring.
     QRectF bodyRect() const;
 
+    //! \return The rect of the node body in scene coordinates.
+    QRectF sceneBodyRect() const;
+
     QPainterPath shape() const override;
 
     QColor color() const;
@@ -198,6 +201,11 @@ private:
 
     void updateShadowEffect();
 
+    void paintShadow(QPainter & painter);
+
+    //! \return The space needed around the body for the shadow and the selection ring.
+    double margin() const;
+
     //! \return The zoom factor of the view showing the node.
     double viewScale() const;
 
@@ -218,6 +226,11 @@ private:
     bool m_hovered = false;
 
     bool m_shadowEffectEnabled = true;
+
+    //! Cached blurred shadow and the parameters it was created with
+    QImage m_shadowImage;
+
+    QString m_shadowImageKey;
 
     std::map<NodeHandle::Role, NodeHandle *> m_handles;
 

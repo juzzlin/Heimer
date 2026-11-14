@@ -17,6 +17,7 @@
 #define GRAPHICS_FACTORY_HPP
 
 #include <QColor>
+#include <QImage>
 #include <QPen>
 
 class QGraphicsEffect;
@@ -30,6 +31,9 @@ QPen createOutlinePen(const QColor & backgroundColor, double brightness = 0.5);
 
 //! \return A subtle, translucent outline pen that works on both bright and dark fill colors.
 QPen createSubtleOutlinePen(const QColor & fillColor);
+
+//! \return A blurred shadow of a rounded rectangle. The image has a margin of blurRadius pixels on each side.
+QImage createRoundedRectShadow(QSizeF size, double cornerRadius, int blurRadius, const QColor & color);
 
 //! \param hovered Lifts the item by making the shadow larger. Has no effect on selected items.
 void updateDropShadowEffect(QGraphicsEffect * effect, const ShadowEffectParams & params, bool selected, bool disabled = false, bool hovered = false);

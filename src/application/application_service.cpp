@@ -1083,8 +1083,8 @@ double ApplicationService::calculateNodeOverlapScore(NodeCR node1, NodeCR node2)
         return 0;
     }
 
-    const auto rect1 = node1.boundingRect().translated(node1.pos());
-    const auto rect2 = node2.boundingRect().translated(node2.pos());
+    const auto rect1 = node1.bodyRect().translated(node1.pos());
+    const auto rect2 = node2.bodyRect().translated(node2.pos());
 
     if (rect1.intersects(rect2)) {
         auto combined = rect1;

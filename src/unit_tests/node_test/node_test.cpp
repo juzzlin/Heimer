@@ -19,6 +19,7 @@
 #include "../../application/settings_proxy.hpp"
 #include "../../common/test_mode.hpp"
 #include "../../domain/shadow_effect_params.hpp"
+#include "../../view/scene_items/graphics_factory.hpp"
 #include "../../view/scene_items/node.hpp"
 #include "../../view/scene_items/node_handle.hpp"
 
@@ -141,6 +142,24 @@ void NodeTest::test_handles_shouldBeOutsideNodeAtAllZoomLevels()
             scene.removeItem(item);
         }
     }
+}
+
+void NodeTest::test_roundedRectShadow_shouldBeSolidInsideAndFadeOutside()
+{
+    const int blurRadius = 12;
+    const QColor color { 0, 0, 0, 200 };
+
+    const auto shadow = GraphicsFactory::createRoundedRectShadow({ 100, 50 }, 8, blurRadius, color);
+
+    QCOMPARE(shadow.size(), QSize(100 + blurRadius * 2, 50 + blurRadius * 2));
+    // Solid in the middle..
+    QVERIFY(std::abs(shadow.pixelColor(shadow.width() / 2, shadow.height() / 2).alpha() - color.alpha()) <= 2);
+    // ..half way at the edge of the rect..
+    const auto edgeAlpha = shadow.pixelColor(shadow.width() / 2, blurRadius).alpha();
+    QVERIFY2(edgeAlpha > color.alpha() / 4 && edgeAlpha < color.alpha() * 3 / 4, qPrintable(QString::number(edgeAlpha)));
+    // ..and fades out completely
+    QCOMPARE(shadow.pixelColor(0, 0).alpha(), 0);
+    QCOMPARE(shadow.pixelColor(shadow.width() / 2, 0).alpha(), 0);
 }
 
 QTEST_MAIN(NodeTest)

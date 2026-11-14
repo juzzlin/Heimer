@@ -34,7 +34,6 @@
 
 #include <QDebug>
 #include <QFont>
-#include <QGraphicsEffect>
 #include <QGraphicsScene>
 #include <QGraphicsSceneHoverEvent>
 #include <QGraphicsView>
@@ -60,8 +59,6 @@ Node::Node()
   , m_textEdit(new TextEdit(this))
 {
     setAcceptHoverEvents(true);
-
-    setGraphicsEffect(GraphicsFactory::createDropShadowEffect(m_shadowEffectParams, false));
 
     m_nodeModel->size = QSize { Constants::Node::minWidth(), Constants::Node::minHeight() };
 
@@ -199,9 +196,17 @@ void Node::adjustSize()
     update();
 }
 
+double Node::margin() const
+{
+    const auto & params = m_shadowEffectParams;
+    // The largest shadow is of the hovered node, see paintShadow()
+    const auto hoveredShadowExtent = params.blurRadius() * 1.5 + 2 + params.offset() + 1;
+    return std::max({ m_selectionRingGap + m_selectionRingWidth, hoveredShadowExtent, static_cast<double>(params.selectedItemBlurRadius()) });
+}
+
 QRectF Node::boundingRect() const
 {
-    const auto margin = (m_selectionRingGap + m_selectionRingWidth) * targetScale();
+    const auto margin = this->margin() * targetScale();
     return bodyRect().adjusted(-margin, -margin, margin, margin);
 }
 
@@ -209,6 +214,11 @@ QRectF Node::bodyRect() const
 {
     const auto size = m_nodeModel->size * targetScale();
     return { -size.width() / 2, -size.height() / 2, size.width(), size.height() };
+}
+
+QRectF Node::sceneBodyRect() const
+{
+    return mapRectToScene(bodyRect());
 }
 
 QPainterPath Node::shape() const
@@ -527,6 +537,8 @@ void Node::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QW
 
     painter->save();
 
+    paintShadow(*painter);
+
     paintBackground(*painter);
 
     paintPatchForTextEdit(*painter);
@@ -572,18 +584,44 @@ void Node::enableShadowEffect(bool enable)
 
 void Node::updateShadowEffect()
 {
-    // Only a soft glow for the selection, as the selection ring is the primary indicator
-    auto glowColor = m_shadowEffectParams.selectedItemShadowColor();
-    glowColor.setAlphaF(glowColor.alphaF() * 0.5f);
-    const ShadowEffectParams params {
-        m_shadowEffectParams.offset(),
-        m_shadowEffectParams.blurRadius(),
-        m_shadowEffectParams.selectedItemBlurRadius(),
-        m_shadowEffectParams.shadowColor(),
-        glowColor
-    };
-    GraphicsFactory::updateDropShadowEffect(graphicsEffect(), params, m_selected, !m_shadowEffectEnabled, m_hovered);
     update();
+}
+
+void Node::paintShadow(QPainter & painter)
+{
+    if (!m_shadowEffectEnabled) {
+        return;
+    }
+
+    // Selected: only a soft glow, as the selection ring is the primary indicator.
+    // Hovered: a larger shadow lifts the node. The shadow falls mostly downwards.
+    const auto & params = m_shadowEffectParams;
+    QPointF offset;
+    int blurRadius = 0;
+    QColor color;
+    if (m_selected) {
+        blurRadius = params.selectedItemBlurRadius();
+        color = params.selectedItemShadowColor();
+        color.setAlphaF(color.alphaF() * 0.5f);
+    } else {
+        const auto distance = params.offset() + (m_hovered ? 1 : 0);
+        offset = { distance * 0.5, static_cast<double>(distance) };
+        blurRadius = m_hovered ? static_cast<int>(params.blurRadius() * 1.5 + 2) : params.blurRadius();
+        color = params.shadowColor();
+    }
+
+    if (color.alpha() == 0 || (!blurRadius && offset.isNull())) {
+        return;
+    }
+
+    const auto size = m_nodeModel->size;
+    const auto key = QString { "%1x%2 r%3 b%4 %5" }.arg(size.width()).arg(size.height()).arg(m_cornerRadius).arg(blurRadius).arg(color.name(QColor::HexArgb));
+    if (key != m_shadowImageKey) {
+        m_shadowImage = GraphicsFactory::createRoundedRectShadow(size, m_cornerRadius, blurRadius, color);
+        m_shadowImageKey = key;
+    }
+
+    painter.drawImage(QPointF { -size.width() / 2 - blurRadius, -size.height() / 2 - blurRadius } + offset, m_shadowImage);
 }
 
 void Node::setHandlesVisible(bool visible)
@@ -633,6 +671,7 @@ const ShadowEffectParams & Node::shadowEffect() const
 
 void Node::setShadowEffect(const ShadowEffectParams & params)
 {
+    prepareGeometryChange();
     m_shadowEffectParams = params;
     updateShadowEffect();
 }

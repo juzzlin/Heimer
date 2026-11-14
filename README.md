@@ -123,7 +123,7 @@ Building for Linux in a nutshell:
 
 Run unit tests:
 
-    $ ctest
+    $ ctest --output-on-failure
 
 Install locally:
 

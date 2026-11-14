@@ -20,7 +20,7 @@ pipeline {
                         steps {
                             sh "mkdir -p build-$BUILD_TYPE"
                             sh "cd build-$BUILD_TYPE && cmake -GNinja -DCMAKE_BUILD_TYPE=$BUILD_TYPE .."
-                            sh "cd build-$BUILD_TYPE && cmake --build . && ctest"
+                            sh "cd build-$BUILD_TYPE && cmake --build . && ctest --output-on-failure"
                         }
                     }
                 }

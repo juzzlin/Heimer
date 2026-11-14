@@ -17,9 +17,15 @@
 
 #include "../application/service_container.hpp"
 
+#include <QStandardPaths>
+
 UnitTestBase::UnitTestBase()
-  : m_sc(std::make_unique<ServiceContainer>())
 {
+    // Never touch the real user settings. This must be done before
+    // instantiating the services as they might load settings.
+    QStandardPaths::setTestModeEnabled(true);
+
+    m_sc = std::make_unique<ServiceContainer>();
 }
 
 UnitTestBase::~UnitTestBase() = default;

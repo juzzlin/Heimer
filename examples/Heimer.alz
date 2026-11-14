@@ -11,6 +11,11 @@
   <corner-radius>5000</corner-radius>
  </style>
  <graph>
+  <node i="16" x="544000" y="240000" w="200000" h="75000">
+   <text>Themes</text>
+   <color r="255" g="255" b="255"/>
+   <text-color r="0" g="0" b="0"/>
+  </node>
   <node i="10" x="608000" y="-208000" w="223000" h="75000">
    <text>XML-based .ALZ-file format</text>
    <color r="255" g="255" b="255"/>
@@ -22,17 +27,17 @@
    <text-color r="0" g="0" b="0"/>
   </node>
   <node i="1" x="-352000" y="112000" w="200000" h="75000">
-   <text>C++17 and Qt</text>
+   <text>C++ and Qt 6</text>
    <color r="255" g="255" b="255"/>
    <text-color r="0" g="0" b="0"/>
   </node>
   <node i="14" x="16000" y="-256000" w="200000" h="75000">
-   <text>PNG images</text>
+   <text>PNG and SVG images</text>
    <color r="255" g="255" b="255"/>
    <text-color r="0" g="0" b="0"/>
   </node>
-  <node i="13" x="384000" y="256000" w="369000" h="75000">
-   <text>Can be ported to all platforms that supports Qt</text>
+  <node i="13" x="400000" y="352000" w="369000" h="75000">
+   <text>Can be ported to all platforms that support Qt</text>
    <color r="255" g="255" b="255"/>
    <text-color r="0" g="0" b="0"/>
   </node>
@@ -41,7 +46,7 @@
    <color r="78" g="154" b="6"/>
    <text-color r="138" g="226" b="52"/>
   </node>
-  <node i="5" x="16000" y="256000" w="200000" h="75000">
+  <node i="5" x="16000" y="272000" w="200000" h="75000">
    <text>Windows desktop</text>
    <color r="114" g="159" b="207"/>
    <text-color r="0" g="0" b="0"/>
@@ -51,12 +56,12 @@
    <color r="255" g="255" b="255"/>
    <text-color r="0" g="0" b="0"/>
   </node>
-  <node i="7" x="352000" y="80000" w="200000" h="75000">
+  <node i="7" x="288000" y="96000" w="200000" h="75000">
    <text>Zoom in/out/fit</text>
    <color r="255" g="255" b="255"/>
    <text-color r="0" g="0" b="0"/>
   </node>
-  <node i="4" x="-256000" y="256000" w="200000" h="75000">
+  <node i="4" x="-256000" y="272000" w="200000" h="75000">
    <text>Linux desktop</text>
    <color r="114" g="159" b="207"/>
    <text-color r="0" g="0" b="0"/>
@@ -110,6 +115,7 @@
   <edge arrow-mode="0" i0="6" i1="7"/>
   <edge arrow-mode="0" i0="6" i1="15"/>
   <edge arrow-mode="0" i0="6" i1="8"/>
+  <edge arrow-mode="0" i0="6" i1="16"/>
  </graph>
  <metadata>
   <layout-optimizer aspect-ratio="1000" min-edge-length="100000"/>

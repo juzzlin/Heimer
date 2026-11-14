@@ -91,7 +91,7 @@
     </message>
     <message>
         <source>These default settings will be applied to new edges. The colors, fonts and sizes of new mind maps are defined by the default theme, see Themes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze standaardinstellingen worden toegepast op nieuwe randen. De kleuren, lettertypen en groottes van nieuwe mindmaps worden bepaald door het standaardthema, zie Thema&apos;s.</translation>
     </message>
     <message>
         <source>Edge Arrow Style</source>
@@ -130,19 +130,19 @@
     </message>
     <message>
         <source>Raise node on mouse hover</source>
-        <translation type="unfinished"></translation>
+        <translation>Knoop naar voren halen bij aanwijzen</translation>
     </message>
     <message>
         <source>Moving mouse cursor on a zoomed-out node will raise it for easier editing.</source>
-        <translation type="unfinished"></translation>
+        <translation>Als de muisaanwijzer op een uitgezoomde knoop wordt geplaatst, wordt deze naar voren gehaald om bewerken te vergemakkelijken.</translation>
     </message>
     <message>
         <source>Autoload feature will automatically load your recent mind map on application start.</source>
-        <translation></translation>
+        <translation>Automatisch laden opent bij het starten van de toepassing automatisch de meest recente mindmap.</translation>
     </message>
     <message>
         <source>Enable autoload</source>
-        <translation></translation>
+        <translation>Automatisch laden inschakelen</translation>
     </message>
     <message>
         <source>The rectangle selection will select nodes also by intersection instead of inclusion only.</source>
@@ -177,7 +177,7 @@
     </message>
     <message>
         <source>The colors and sizes of the shadows are part of the theme, see Themes.</source>
-        <translation type="unfinished"></translation>
+        <translation>De kleuren en groottes van de schaduwen maken deel uit van het thema, zie Thema&apos;s.</translation>
     </message>
     <message>
         <source>Optimizing shadow effects makes the performance better, but might introduce some visual glitches.</source>
@@ -337,7 +337,7 @@
     </message>
     <message>
         <source>Themes</source>
-        <translation type="unfinished"></translation>
+        <translation>Thema&apos;s</translation>
     </message>
     <message>
         <source>Defaults</source>
@@ -360,47 +360,47 @@
     </message>
     <message>
         <source>Grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Rooster</translation>
     </message>
     <message>
         <source>Node</source>
-        <translation type="unfinished"></translation>
+        <translation>Knoop</translation>
     </message>
     <message>
         <source>Node text</source>
-        <translation type="unfinished"></translation>
+        <translation>Knooptekst</translation>
     </message>
     <message>
         <source>Edge</source>
-        <translation type="unfinished"></translation>
+        <translation>Rand</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Label</translation>
     </message>
     <message>
         <source>Label text</source>
-        <translation type="unfinished"></translation>
+        <translation>Labeltekst</translation>
     </message>
     <message>
         <source>Shadow</source>
-        <translation type="unfinished"></translation>
+        <translation>Schaduw</translation>
     </message>
     <message>
         <source>Selected item shadow</source>
-        <translation type="unfinished"></translation>
+        <translation>Schaduw van geselecteerd item</translation>
     </message>
     <message>
         <source>Edit Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Thema bewerken</translation>
     </message>
     <message>
         <source>Canvas</source>
-        <translation type="unfinished"></translation>
+        <translation>Canvas</translation>
     </message>
     <message>
         <source>Nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Knopen</translation>
     </message>
     <message>
         <source>Corner radius:</source>
@@ -408,7 +408,7 @@
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekst</translation>
     </message>
     <message>
         <source>Text size:</source>
@@ -416,7 +416,7 @@
     </message>
     <message>
         <source>Edges</source>
-        <translation type="unfinished"></translation>
+        <translation>Randen</translation>
     </message>
     <message>
         <source>Edge width:</source>
@@ -432,118 +432,118 @@
     </message>
     <message>
         <source>Offset:</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschuiving:</translation>
     </message>
     <message>
         <source>Blur radius:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vervagingsstraal:</translation>
     </message>
     <message>
         <source>Selected item blur radius:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vervagingsstraal van geselecteerd item:</translation>
     </message>
     <message>
         <source>Reset to Classic</source>
-        <translation type="unfinished"></translation>
+        <translation>Herstellen naar Classic</translation>
     </message>
 </context>
 <context>
     <name>Dialogs::ThemesTab</name>
     <message>
         <source>Apply to current mind map</source>
-        <translation type="unfinished"></translation>
+        <translation>Op huidige mindmap toepassen</translation>
     </message>
     <message>
         <source>Set as default for new mind maps</source>
-        <translation type="unfinished"></translation>
+        <translation>Als standaard instellen voor nieuwe mindmaps</translation>
     </message>
     <message>
         <source>New from current mind map</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuw van huidige mindmap</translation>
     </message>
     <message>
         <source>Duplicate</source>
-        <translation type="unfinished"></translation>
+        <translation>Dupliceren</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished"></translation>
+        <translation>Hernoemen</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijderen</translation>
     </message>
     <message>
         <source>A theme defines the colors, fonts and effects of a mind map. Built-in themes can&apos;t be modified, but they can be duplicated.</source>
-        <translation type="unfinished"></translation>
+        <translation>Een thema bepaalt de kleuren, lettertypen en effecten van een mindmap. Ingebouwde thema&apos;s kunnen niet worden aangepast, maar wel worden gedupliceerd.</translation>
     </message>
     <message>
         <source>(built-in)</source>
-        <translation type="unfinished"></translation>
+        <translation>(ingebouwd)</translation>
     </message>
     <message>
         <source>default for new mind maps</source>
-        <translation type="unfinished"></translation>
+        <translation>standaard voor nieuwe mindmaps</translation>
     </message>
     <message>
         <source>Theme name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Themanaam:</translation>
     </message>
     <message>
         <source>A theme named &apos;%1&apos; already exists.</source>
-        <translation type="unfinished"></translation>
+        <translation>Er bestaat al een thema met de naam &apos;%1&apos;.</translation>
     </message>
     <message>
         <source>Apply Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Thema toepassen</translation>
     </message>
     <message>
         <source>Some nodes have individual colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sommige knopen hebben individuele kleuren.</translation>
     </message>
     <message>
         <source>Do you want to apply the node colors of the theme also to these nodes?</source>
-        <translation type="unfinished"></translation>
+        <translation>Wil je de knoopkleuren van het thema ook op deze knopen toepassen?</translation>
     </message>
     <message>
         <source>Apply to all nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Op alle knopen toepassen</translation>
     </message>
     <message>
         <source>Keep individual colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Individuele kleuren behouden</translation>
     </message>
     <message>
         <source>New Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuw thema</translation>
     </message>
     <message>
         <source>My theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Mijn thema</translation>
     </message>
     <message>
         <source>Duplicate Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Thema dupliceren</translation>
     </message>
     <message>
         <source>(copy)</source>
-        <translation type="unfinished"></translation>
+        <translation>(kopie)</translation>
     </message>
     <message>
         <source>Rename Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Thema hernoemen</translation>
     </message>
     <message>
         <source>Delete Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Thema verwijderen</translation>
     </message>
     <message>
         <source>Delete the theme &apos;%1&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation>Het thema &apos;%1&apos; verwijderen?</translation>
     </message>
 </context>
 <context>
@@ -658,27 +658,27 @@
     <name>Menus::MainMenu</name>
     <message>
         <source>Connect selected nodes</source>
-        <translation type="unfinished">Geselecteerde knopen verbinden</translation>
+        <translation>Geselecteerde knopen verbinden</translation>
     </message>
     <message>
         <source>Disconnect selected nodes</source>
-        <translation type="unfinished">Geselecteerde knopen losmaken</translation>
+        <translation>Geselecteerde knopen ontkoppelen</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished">Ongedaan maken</translation>
+        <translation>Ongedaan maken</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation type="unfinished">Opnieuw uitvoeren</translation>
+        <translation>Opnieuw</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation type="unfinished">Op&amp;slaan</translation>
+        <translation>Op&amp;slaan</translation>
     </message>
     <message>
         <source>&amp;Save as</source>
-        <translation type="unfinished">Op&amp;slaan als</translation>
+        <translation>Opslaan &amp;als</translation>
     </message>
     <message>
         <source>General &amp;colors</source>
@@ -694,11 +694,11 @@
     </message>
     <message>
         <source>Set edge label color</source>
-        <translation type="unfinished"></translation>
+        <translation>Labelkleur van rand instellen</translation>
     </message>
     <message>
         <source>Set edge label text color</source>
-        <translation type="unfinished"></translation>
+        <translation>Labeltekstkleur van rand instellen</translation>
     </message>
     <message>
         <source>Set grid color</source>
@@ -706,39 +706,39 @@
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation type="unfinished">B&amp;ewerken</translation>
+        <translation>&amp;Bewerken</translation>
     </message>
     <message>
         <source>Optimize layout</source>
-        <translation type="unfinished">Indeling optimaliseren</translation>
+        <translation>Indeling optimaliseren</translation>
     </message>
     <message>
         <source>&amp;Export</source>
-        <translation type="unfinished">&amp;Exporteren</translation>
+        <translation>&amp;Exporteren</translation>
     </message>
     <message>
         <source>&amp;PNG</source>
-        <translation type="unfinished">&amp;PNG</translation>
+        <translation>&amp;PNG</translation>
     </message>
     <message>
         <source>&amp;SVG</source>
-        <translation type="unfinished">&amp;SVG</translation>
+        <translation>&amp;SVG</translation>
     </message>
     <message>
         <source>&amp;File</source>
-        <translation type="unfinished">&amp;Bestand</translation>
+        <translation>&amp;Bestand</translation>
     </message>
     <message>
         <source>&amp;New</source>
-        <translation type="unfinished">&amp;Nieuw</translation>
+        <translation>&amp;Nieuw</translation>
     </message>
     <message>
         <source>&amp;Open</source>
-        <translation type="unfinished">&amp;Openen</translation>
+        <translation>&amp;Openen</translation>
     </message>
     <message>
         <source>Recent &amp;Files</source>
-        <translation type="unfinished">Recente &amp;bestanden</translation>
+        <translation>&amp;Recente bestanden</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -746,31 +746,31 @@
     </message>
     <message>
         <source>&amp;Quit</source>
-        <translation type="unfinished">&amp;Afsluiten</translation>
+        <translation>&amp;Afsluiten</translation>
     </message>
     <message>
         <source>&amp;Mirror layout</source>
-        <translation type="unfinished">Indeling spie&amp;gelen</translation>
+        <translation>Indeling &amp;spiegelen</translation>
     </message>
     <message>
         <source>Horizontally</source>
-        <translation type="unfinished">Horizontaal</translation>
+        <translation>Horizontaal</translation>
     </message>
     <message>
         <source>Vertically</source>
-        <translation type="unfinished">Verticaal</translation>
+        <translation>Verticaal</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="unfinished">&amp;Hulp</translation>
+        <translation>&amp;Hulp</translation>
     </message>
     <message>
         <source>&amp;About</source>
-        <translation type="unfinished">&amp;Over</translation>
+        <translation>&amp;Over</translation>
     </message>
     <message>
         <source>About &amp;Qt</source>
-        <translation type="unfinished">Over &amp;Qt</translation>
+        <translation>Over &amp;Qt</translation>
     </message>
     <message>
         <source>What&apos;s New</source>
@@ -778,23 +778,23 @@
     </message>
     <message>
         <source>&amp;View</source>
-        <translation type="unfinished">&amp;Beeld</translation>
+        <translation>&amp;Beeld</translation>
     </message>
     <message>
         <source>Full Screen</source>
-        <translation type="unfinished">Beeldvullende modus</translation>
+        <translation>Volledig scherm</translation>
     </message>
     <message>
         <source>Zoom In</source>
-        <translation type="unfinished">Inzoomen</translation>
+        <translation>Inzoomen</translation>
     </message>
     <message>
         <source>Zoom Out</source>
-        <translation type="unfinished">Uitzoomen</translation>
+        <translation>Uitzoomen</translation>
     </message>
     <message>
         <source>&amp;Zoom To Fit</source>
-        <translation type="unfinished">Automatisch inpa&amp;ssen</translation>
+        <translation>&amp;Passend maken</translation>
     </message>
 </context>
 <context>
@@ -805,7 +805,7 @@
     </message>
     <message>
         <source>Copy on drag</source>
-        <translation></translation>
+        <translation>Kopiëren bij slepen</translation>
     </message>
     <message>
         <source>Show grid</source>
@@ -813,7 +813,7 @@
     </message>
     <message>
         <source>Copy style from parent node on drag</source>
-        <translation type="unfinished"></translation>
+        <translation>Stijl van bovenliggende knoop kopiëren bij slepen</translation>
     </message>
     <message>
         <source>Automatically snap existing nodes to the grid when grid size changes</source>

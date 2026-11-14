@@ -91,7 +91,7 @@
     </message>
     <message>
         <source>These default settings will be applied to new edges. The colors, fonts and sizes of new mind maps are defined by the default theme, see Themes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näitä oletusasetuksia käytetään uusiin kaariin. Uusien miellekarttojen värit, kirjasimet ja koot määräytyvät oletusteeman mukaan, katso Teemat.</translation>
     </message>
     <message>
         <source>Edge Arrow Style</source>
@@ -177,7 +177,7 @@
     </message>
     <message>
         <source>The colors and sizes of the shadows are part of the theme, see Themes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Varjojen värit ja koot ovat osa teemaa, katso Teemat.</translation>
     </message>
     <message>
         <source>Optimizing shadow effects makes the performance better, but might introduce some visual glitches.</source>
@@ -337,7 +337,7 @@
     </message>
     <message>
         <source>Themes</source>
-        <translation type="unfinished"></translation>
+        <translation>Teemat</translation>
     </message>
     <message>
         <source>Defaults</source>
@@ -360,47 +360,47 @@
     </message>
     <message>
         <source>Grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruudukko</translation>
     </message>
     <message>
         <source>Node</source>
-        <translation type="unfinished"></translation>
+        <translation>Solmu</translation>
     </message>
     <message>
         <source>Node text</source>
-        <translation type="unfinished"></translation>
+        <translation>Solmun teksti</translation>
     </message>
     <message>
         <source>Edge</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaari</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Nimiö</translation>
     </message>
     <message>
         <source>Label text</source>
-        <translation type="unfinished"></translation>
+        <translation>Nimiön teksti</translation>
     </message>
     <message>
         <source>Shadow</source>
-        <translation type="unfinished"></translation>
+        <translation>Varjo</translation>
     </message>
     <message>
         <source>Selected item shadow</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitun kohteen varjo</translation>
     </message>
     <message>
         <source>Edit Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Muokkaa teemaa</translation>
     </message>
     <message>
         <source>Canvas</source>
-        <translation type="unfinished"></translation>
+        <translation>Pohja</translation>
     </message>
     <message>
         <source>Nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Solmut</translation>
     </message>
     <message>
         <source>Corner radius:</source>
@@ -408,7 +408,7 @@
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Teksti</translation>
     </message>
     <message>
         <source>Text size:</source>
@@ -416,7 +416,7 @@
     </message>
     <message>
         <source>Edges</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaaret</translation>
     </message>
     <message>
         <source>Edge width:</source>
@@ -432,118 +432,118 @@
     </message>
     <message>
         <source>Offset:</source>
-        <translation type="unfinished"></translation>
+        <translation>Siirtymä:</translation>
     </message>
     <message>
         <source>Blur radius:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sumennussäde:</translation>
     </message>
     <message>
         <source>Selected item blur radius:</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitun kohteen sumennussäde:</translation>
     </message>
     <message>
         <source>Reset to Classic</source>
-        <translation type="unfinished"></translation>
+        <translation>Palauta Classic</translation>
     </message>
 </context>
 <context>
     <name>Dialogs::ThemesTab</name>
     <message>
         <source>Apply to current mind map</source>
-        <translation type="unfinished"></translation>
+        <translation>Käytä nykyiseen miellekarttaan</translation>
     </message>
     <message>
         <source>Set as default for new mind maps</source>
-        <translation type="unfinished"></translation>
+        <translation>Aseta uusien miellekarttojen oletukseksi</translation>
     </message>
     <message>
         <source>New from current mind map</source>
-        <translation type="unfinished"></translation>
+        <translation>Uusi nykyisestä miellekartasta</translation>
     </message>
     <message>
         <source>Duplicate</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopioi</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Muokkaa</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished"></translation>
+        <translation>Nimeä uudelleen</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Poista</translation>
     </message>
     <message>
         <source>A theme defines the colors, fonts and effects of a mind map. Built-in themes can&apos;t be modified, but they can be duplicated.</source>
-        <translation type="unfinished"></translation>
+        <translation>Teema määrittää miellekartan värit, kirjasimet ja tehosteet. Sisäänrakennettuja teemoja ei voi muokata, mutta niistä voi tehdä kopion.</translation>
     </message>
     <message>
         <source>(built-in)</source>
-        <translation type="unfinished"></translation>
+        <translation>(sisäänrakennettu)</translation>
     </message>
     <message>
         <source>default for new mind maps</source>
-        <translation type="unfinished"></translation>
+        <translation>uusien miellekarttojen oletus</translation>
     </message>
     <message>
         <source>Theme name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Teeman nimi:</translation>
     </message>
     <message>
         <source>A theme named &apos;%1&apos; already exists.</source>
-        <translation type="unfinished"></translation>
+        <translation>Teema nimeltä &apos;%1&apos; on jo olemassa.</translation>
     </message>
     <message>
         <source>Apply Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Käytä teemaa</translation>
     </message>
     <message>
         <source>Some nodes have individual colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Joillakin solmuilla on yksilölliset värit.</translation>
     </message>
     <message>
         <source>Do you want to apply the node colors of the theme also to these nodes?</source>
-        <translation type="unfinished"></translation>
+        <translation>Haluatko käyttää teeman solmuvärejä myös näihin solmuihin?</translation>
     </message>
     <message>
         <source>Apply to all nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Käytä kaikkiin solmuihin</translation>
     </message>
     <message>
         <source>Keep individual colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Säilytä yksilölliset värit</translation>
     </message>
     <message>
         <source>New Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Uusi teema</translation>
     </message>
     <message>
         <source>My theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Oma teema</translation>
     </message>
     <message>
         <source>Duplicate Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopioi teema</translation>
     </message>
     <message>
         <source>(copy)</source>
-        <translation type="unfinished"></translation>
+        <translation>(kopio)</translation>
     </message>
     <message>
         <source>Rename Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Nimeä teema uudelleen</translation>
     </message>
     <message>
         <source>Delete Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Poista teema</translation>
     </message>
     <message>
         <source>Delete the theme &apos;%1&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation>Poistetaanko teema &apos;%1&apos;?</translation>
     </message>
 </context>
 <context>
@@ -694,11 +694,11 @@
     </message>
     <message>
         <source>Set edge label color</source>
-        <translation type="unfinished"></translation>
+        <translation>Aseta kaaren nimiön väri</translation>
     </message>
     <message>
         <source>Set edge label text color</source>
-        <translation type="unfinished"></translation>
+        <translation>Aseta kaaren nimiön tekstin väri</translation>
     </message>
     <message>
         <source>Set grid color</source>

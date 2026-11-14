@@ -5,7 +5,7 @@
     <name>Application</name>
     <message>
         <source>A new version %1 available at &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</source>
-        <translation></translation>
+        <translation>Une nouvelle version %1 est disponible sur &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;</translation>
     </message>
     <message>
         <source>Heimer Files</source>
@@ -17,7 +17,7 @@
     </message>
     <message>
         <source>Opening &apos;%1&apos;..</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouverture de &apos;%1&apos;..</translation>
     </message>
     <message>
         <source>Failed to save file.</source>
@@ -41,19 +41,19 @@
     </message>
     <message>
         <source>Open an image</source>
-        <translation></translation>
+        <translation>Ouvrir une image</translation>
     </message>
     <message>
         <source>Image Files</source>
-        <translation></translation>
+        <translation>Fichiers image</translation>
     </message>
     <message>
         <source>Load image</source>
-        <translation></translation>
+        <translation>Charger une image</translation>
     </message>
     <message>
         <source>Failed to load image &apos;</source>
-        <translation></translation>
+        <translation>Impossible de charger l&apos;image &apos;</translation>
     </message>
     <message>
         <source>The mind map has been modified.</source>
@@ -76,11 +76,11 @@
     </message>
     <message>
         <source>Package type: </source>
-        <translation></translation>
+        <translation>Type de paquet : </translation>
     </message>
     <message>
         <source>Project website: </source>
-        <translation></translation>
+        <translation>Site web du projet : </translation>
     </message>
 </context>
 <context>
@@ -91,7 +91,7 @@
     </message>
     <message>
         <source>These default settings will be applied to new edges. The colors, fonts and sizes of new mind maps are defined by the default theme, see Themes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ces paramètres par défaut seront appliqués aux nouveaux bords. Les couleurs, les polices et les tailles des nouvelles cartes mentales sont définies par le thème par défaut, voir Thèmes.</translation>
     </message>
     <message>
         <source>Edge Arrow Style</source>
@@ -114,74 +114,74 @@
     <name>Dialogs::EditingTab</name>
     <message>
         <source>Selecting Nodes</source>
-        <translation></translation>
+        <translation>Sélection des noeuds</translation>
     </message>
     <message>
         <source>Select node group by intersection</source>
-        <translation></translation>
+        <translation>Sélectionner un groupe de noeuds par intersection</translation>
     </message>
     <message>
         <source>Raise node on mouse hover</source>
-        <translation type="unfinished"></translation>
+        <translation>Mettre en avant le noeud au survol de la souris</translation>
     </message>
     <message>
         <source>Moving mouse cursor on a zoomed-out node will raise it for easier editing.</source>
-        <translation type="unfinished"></translation>
+        <translation>Placer le curseur de la souris sur un noeud dézoomé le met en avant pour faciliter la modification.</translation>
     </message>
     <message>
         <source>Autosave feature will automatically save your mind map on every modification after it has been initially saved once.</source>
-        <translation></translation>
+        <translation>L&apos;enregistrement automatique enregistre la carte mentale à chaque modification, une fois qu&apos;elle a été enregistrée une première fois.</translation>
     </message>
     <message>
         <source>Enable autosave</source>
-        <translation></translation>
+        <translation>Activer l&apos;enregistrement automatique</translation>
     </message>
     <message>
         <source>Autoload feature will automatically load your recent mind map on application start.</source>
-        <translation></translation>
+        <translation>Le chargement automatique ouvre la carte mentale la plus récente au démarrage de l&apos;application.</translation>
     </message>
     <message>
         <source>Enable autoload</source>
-        <translation></translation>
+        <translation>Activer le chargement automatique</translation>
     </message>
     <message>
         <source>The rectangle selection will select nodes also by intersection instead of inclusion only.</source>
-        <translation type="unfinished"></translation>
+        <translation>La sélection rectangulaire sélectionnera aussi les noeuds par intersection et pas seulement par inclusion.</translation>
     </message>
     <message>
         <source>File Operations</source>
-        <translation type="unfinished"></translation>
+        <translation>Opérations sur les fichiers</translation>
     </message>
     <message>
         <source>Controls</source>
-        <translation type="unfinished"></translation>
+        <translation>Contrôles</translation>
     </message>
     <message>
         <source>Scroll the view with a modifier key pressed and select a group of items without a modifier key being pressed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Faire défiler la vue avec une touche de modification enfoncée et sélectionner un groupe d&apos;éléments sans touche de modification.</translation>
     </message>
     <message>
         <source>Inverted controls</source>
-        <translation type="unfinished"></translation>
+        <translation>Contrôles inversés</translation>
     </message>
 </context>
 <context>
     <name>Dialogs::EffectsTab</name>
     <message>
         <source>Optimize shadow effects</source>
-        <translation type="unfinished"></translation>
+        <translation>Optimiser les effets d&apos;ombre</translation>
     </message>
     <message>
         <source>Shadows</source>
-        <translation></translation>
+        <translation>Ombres</translation>
     </message>
     <message>
         <source>The colors and sizes of the shadows are part of the theme, see Themes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les couleurs et les tailles des ombres font partie du thème, voir Thèmes.</translation>
     </message>
     <message>
         <source>Optimizing shadow effects makes the performance better, but might introduce some visual glitches.</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;optimisation des effets d&apos;ombre améliore les performances, mais peut causer des défauts visuels.</translation>
     </message>
 </context>
 <context>
@@ -235,7 +235,7 @@
     <name>Dialogs::Export::SvgExportDialog</name>
     <message>
         <source>Export to an SVG File</source>
-        <translation></translation>
+        <translation>Exporter vers un fichier SVG</translation>
     </message>
     <message>
         <source>Export As</source>
@@ -243,7 +243,7 @@
     </message>
     <message>
         <source>SVG Files</source>
-        <translation></translation>
+        <translation>Fichiers SVG</translation>
     </message>
     <message>
         <source>Couldn&apos;t write to</source>
@@ -266,7 +266,7 @@
     </message>
     <message>
         <source>Parameters</source>
-        <translation></translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <source>Aspect Ratio:</source>
@@ -274,27 +274,27 @@
     </message>
     <message>
         <source>Aspect ratio = layout width / layout height</source>
-        <translation type="unfinished"></translation>
+        <translation>Rapport d&apos;aspect = largeur de la mise en page / hauteur de la mise en page</translation>
     </message>
     <message>
         <source>&lt;--</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;--</translation>
     </message>
     <message>
         <source>From layout</source>
-        <translation type="unfinished"></translation>
+        <translation>De la mise en page</translation>
     </message>
     <message>
         <source>Calculate aspect ratio from current layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Calculer le rapport d&apos;aspect à partir de la mise en page actuelle</translation>
     </message>
     <message>
         <source>From view</source>
-        <translation type="unfinished"></translation>
+        <translation>De la vue</translation>
     </message>
     <message>
         <source>Calculate aspect ratio from current view geometry</source>
-        <translation type="unfinished"></translation>
+        <translation>Calculer le rapport d&apos;aspect à partir de la vue actuelle</translation>
     </message>
     <message>
         <source>Minimum Edge Length:</source>
@@ -302,42 +302,42 @@
     </message>
     <message>
         <source>Minimum edge length in the optimized layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Longueur minimale des bords dans la mise en page optimisée</translation>
     </message>
     <message>
         <source>Min from layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimum de la mise en page</translation>
     </message>
     <message>
         <source>Calculate minimum edge length from current layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Calculer la longueur minimale des bords à partir de la mise en page actuelle</translation>
     </message>
     <message>
         <source>Max from layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximum de la mise en page</translation>
     </message>
     <message>
         <source>Calculate maximum edge length from current layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Calculer la longueur maximale des bords à partir de la mise en page actuelle</translation>
     </message>
     <message>
         <source>Avg from layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Moyenne de la mise en page</translation>
     </message>
     <message>
         <source>Calculate average edge length from current layout</source>
-        <translation type="unfinished"></translation>
+        <translation>Calculer la longueur moyenne des bords à partir de la mise en page actuelle</translation>
     </message>
 </context>
 <context>
     <name>Dialogs::SettingsDialog</name>
     <message>
         <source>Settings</source>
-        <translation></translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <source>Themes</source>
-        <translation type="unfinished"></translation>
+        <translation>Thèmes</translation>
     </message>
     <message>
         <source>Defaults</source>
@@ -345,11 +345,11 @@
     </message>
     <message>
         <source>Editing</source>
-        <translation></translation>
+        <translation>Édition</translation>
     </message>
     <message>
         <source>Effects</source>
-        <translation></translation>
+        <translation>Effets</translation>
     </message>
 </context>
 <context>
@@ -360,47 +360,47 @@
     </message>
     <message>
         <source>Grid</source>
-        <translation type="unfinished"></translation>
+        <translation>Grille</translation>
     </message>
     <message>
         <source>Node</source>
-        <translation type="unfinished"></translation>
+        <translation>Noeud</translation>
     </message>
     <message>
         <source>Node text</source>
-        <translation type="unfinished"></translation>
+        <translation>Texte du noeud</translation>
     </message>
     <message>
         <source>Edge</source>
-        <translation type="unfinished"></translation>
+        <translation>Bord</translation>
     </message>
     <message>
         <source>Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Étiquette</translation>
     </message>
     <message>
         <source>Label text</source>
-        <translation type="unfinished"></translation>
+        <translation>Texte de l&apos;étiquette</translation>
     </message>
     <message>
         <source>Shadow</source>
-        <translation type="unfinished"></translation>
+        <translation>Ombre</translation>
     </message>
     <message>
         <source>Selected item shadow</source>
-        <translation type="unfinished"></translation>
+        <translation>Ombre de l&apos;élément sélectionné</translation>
     </message>
     <message>
         <source>Edit Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifier le thème</translation>
     </message>
     <message>
         <source>Canvas</source>
-        <translation type="unfinished"></translation>
+        <translation>Canevas</translation>
     </message>
     <message>
         <source>Nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Noeuds</translation>
     </message>
     <message>
         <source>Corner radius:</source>
@@ -408,7 +408,7 @@
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished"></translation>
+        <translation>Texte</translation>
     </message>
     <message>
         <source>Text size:</source>
@@ -416,7 +416,7 @@
     </message>
     <message>
         <source>Edges</source>
-        <translation type="unfinished"></translation>
+        <translation>Bords</translation>
     </message>
     <message>
         <source>Edge width:</source>
@@ -428,129 +428,129 @@
     </message>
     <message>
         <source>Shadows</source>
-        <translation type="unfinished"></translation>
+        <translation>Ombres</translation>
     </message>
     <message>
         <source>Offset:</source>
-        <translation type="unfinished"></translation>
+        <translation>Décalage :</translation>
     </message>
     <message>
         <source>Blur radius:</source>
-        <translation type="unfinished"></translation>
+        <translation>Rayon de flou :</translation>
     </message>
     <message>
         <source>Selected item blur radius:</source>
-        <translation type="unfinished"></translation>
+        <translation>Rayon de flou de l&apos;élément sélectionné :</translation>
     </message>
     <message>
         <source>Reset to Classic</source>
-        <translation type="unfinished"></translation>
+        <translation>Réinitialiser à Classic</translation>
     </message>
 </context>
 <context>
     <name>Dialogs::ThemesTab</name>
     <message>
         <source>Apply to current mind map</source>
-        <translation type="unfinished"></translation>
+        <translation>Appliquer à la carte mentale actuelle</translation>
     </message>
     <message>
         <source>Set as default for new mind maps</source>
-        <translation type="unfinished"></translation>
+        <translation>Définir par défaut pour les nouvelles cartes mentales</translation>
     </message>
     <message>
         <source>New from current mind map</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouveau à partir de la carte mentale actuelle</translation>
     </message>
     <message>
         <source>Duplicate</source>
-        <translation type="unfinished"></translation>
+        <translation>Dupliquer</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifier</translation>
     </message>
     <message>
         <source>Rename</source>
-        <translation type="unfinished"></translation>
+        <translation>Renommer</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <source>A theme defines the colors, fonts and effects of a mind map. Built-in themes can&apos;t be modified, but they can be duplicated.</source>
-        <translation type="unfinished"></translation>
+        <translation>Un thème définit les couleurs, les polices et les effets d&apos;une carte mentale. Les thèmes intégrés ne peuvent pas être modifiés, mais ils peuvent être dupliqués.</translation>
     </message>
     <message>
         <source>(built-in)</source>
-        <translation type="unfinished"></translation>
+        <translation>(intégré)</translation>
     </message>
     <message>
         <source>default for new mind maps</source>
-        <translation type="unfinished"></translation>
+        <translation>par défaut pour les nouvelles cartes mentales</translation>
     </message>
     <message>
         <source>Theme name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom du thème :</translation>
     </message>
     <message>
         <source>A theme named &apos;%1&apos; already exists.</source>
-        <translation type="unfinished"></translation>
+        <translation>Un thème nommé &apos;%1&apos; existe déjà.</translation>
     </message>
     <message>
         <source>Apply Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Appliquer le thème</translation>
     </message>
     <message>
         <source>Some nodes have individual colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Certains noeuds ont des couleurs individuelles.</translation>
     </message>
     <message>
         <source>Do you want to apply the node colors of the theme also to these nodes?</source>
-        <translation type="unfinished"></translation>
+        <translation>Voulez-vous aussi appliquer les couleurs de noeud du thème à ces noeuds ?</translation>
     </message>
     <message>
         <source>Apply to all nodes</source>
-        <translation type="unfinished"></translation>
+        <translation>Appliquer à tous les noeuds</translation>
     </message>
     <message>
         <source>Keep individual colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Conserver les couleurs individuelles</translation>
     </message>
     <message>
         <source>New Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouveau thème</translation>
     </message>
     <message>
         <source>My theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Mon thème</translation>
     </message>
     <message>
         <source>Duplicate Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Dupliquer le thème</translation>
     </message>
     <message>
         <source>(copy)</source>
-        <translation type="unfinished"></translation>
+        <translation>(copie)</translation>
     </message>
     <message>
         <source>Rename Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Renommer le thème</translation>
     </message>
     <message>
         <source>Delete Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer le thème</translation>
     </message>
     <message>
         <source>Delete the theme &apos;%1&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer le thème &apos;%1&apos; ?</translation>
     </message>
 </context>
 <context>
     <name>Dialogs::WhatsNewDialog</name>
     <message>
         <source>What&apos;s New</source>
-        <translation></translation>
+        <translation>Nouveautés</translation>
     </message>
 </context>
 <context>
@@ -572,11 +572,11 @@
     <name>Menus::EdgeContextMenu</name>
     <message>
         <source>Change direction</source>
-        <translation></translation>
+        <translation>Changer de direction</translation>
     </message>
     <message>
         <source>Show arrow</source>
-        <translation></translation>
+        <translation>Afficher la flèche</translation>
     </message>
     <message>
         <source>Double arrow</source>
@@ -584,7 +584,7 @@
     </message>
     <message>
         <source>Dashed line</source>
-        <translation></translation>
+        <translation>Ligne pointillée</translation>
     </message>
     <message>
         <source>Delete edge</source>
@@ -595,11 +595,11 @@
     <name>Menus::MainContextMenu</name>
     <message>
         <source>Copy node</source>
-        <translation></translation>
+        <translation>Copier le noeud</translation>
     </message>
     <message>
         <source>Paste node</source>
-        <translation></translation>
+        <translation>Coller le noeud</translation>
     </message>
     <message>
         <source>Set background color</source>
@@ -631,11 +631,11 @@
     </message>
     <message>
         <source>Attach image...</source>
-        <translation></translation>
+        <translation>Joindre une image...</translation>
     </message>
     <message>
         <source>Remove attached image</source>
-        <translation></translation>
+        <translation>Supprimer l&apos;image jointe</translation>
     </message>
     <message>
         <source>Node &amp;colors</source>
@@ -658,27 +658,27 @@
     <name>Menus::MainMenu</name>
     <message>
         <source>Connect selected nodes</source>
-        <translation type="unfinished">Connecter les noeuds sélectionnés</translation>
+        <translation>Connecter les noeuds sélectionnés</translation>
     </message>
     <message>
         <source>Disconnect selected nodes</source>
-        <translation type="unfinished">Déconnecter les noeuds sélectionnés</translation>
+        <translation>Déconnecter les noeuds sélectionnés</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished">Défaire</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation type="unfinished">Rétablir</translation>
+        <translation>Rétablir</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation type="unfinished">&amp;Enregistrer</translation>
+        <translation>&amp;Enregistrer</translation>
     </message>
     <message>
         <source>&amp;Save as</source>
-        <translation type="unfinished">&amp;Enregistrer sous</translation>
+        <translation>Enregistrer &amp;sous</translation>
     </message>
     <message>
         <source>General &amp;colors</source>
@@ -694,11 +694,11 @@
     </message>
     <message>
         <source>Set edge label color</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur de l&apos;étiquette du bord</translation>
     </message>
     <message>
         <source>Set edge label text color</source>
-        <translation type="unfinished"></translation>
+        <translation>Couleur du texte de l&apos;étiquette du bord</translation>
     </message>
     <message>
         <source>Set grid color</source>
@@ -706,106 +706,106 @@
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation type="unfinished">&amp;Edition</translation>
+        <translation>&amp;Édition</translation>
     </message>
     <message>
         <source>Optimize layout</source>
-        <translation type="unfinished">Optimiser la mise en page</translation>
+        <translation>Optimiser la mise en page</translation>
     </message>
     <message>
         <source>&amp;Export</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Exporter</translation>
     </message>
     <message>
         <source>&amp;PNG</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;PNG</translation>
     </message>
     <message>
         <source>&amp;SVG</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;SVG</translation>
     </message>
     <message>
         <source>&amp;File</source>
-        <translation type="unfinished">&amp;Fichier</translation>
+        <translation>&amp;Fichier</translation>
     </message>
     <message>
         <source>&amp;New</source>
-        <translation type="unfinished">&amp;Nouveau</translation>
+        <translation>&amp;Nouveau</translation>
     </message>
     <message>
         <source>&amp;Open</source>
-        <translation type="unfinished">&amp;Ouvrir</translation>
+        <translation>&amp;Ouvrir</translation>
     </message>
     <message>
         <source>Recent &amp;Files</source>
-        <translation type="unfinished">&amp;Fichiers récents</translation>
+        <translation>Fichiers &amp;récents</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
-        <translation type="unfinished">&amp;Quitter</translation>
+        <translation>&amp;Quitter</translation>
     </message>
     <message>
         <source>&amp;Mirror layout</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Inverser la mise en page</translation>
     </message>
     <message>
         <source>Horizontally</source>
-        <translation type="unfinished"></translation>
+        <translation>Horizontalement</translation>
     </message>
     <message>
         <source>Vertically</source>
-        <translation type="unfinished"></translation>
+        <translation>Verticalement</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="unfinished">&amp;Aide</translation>
+        <translation>&amp;Aide</translation>
     </message>
     <message>
         <source>&amp;About</source>
-        <translation type="unfinished">&amp;A propos d&apos; Heimer</translation>
+        <translation>À &amp;propos</translation>
     </message>
     <message>
         <source>About &amp;Qt</source>
-        <translation type="unfinished">A propos de &amp;Qt</translation>
+        <translation>À propos de &amp;Qt</translation>
     </message>
     <message>
         <source>What&apos;s New</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouveautés</translation>
     </message>
     <message>
         <source>&amp;View</source>
-        <translation type="unfinished">&amp;Vue</translation>
+        <translation>&amp;Affichage</translation>
     </message>
     <message>
         <source>Full Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Plein écran</translation>
     </message>
     <message>
         <source>Zoom In</source>
-        <translation type="unfinished">Zoom avant</translation>
+        <translation>Zoom avant</translation>
     </message>
     <message>
         <source>Zoom Out</source>
-        <translation type="unfinished">Zoom arrière</translation>
+        <translation>Zoom arrière</translation>
     </message>
     <message>
         <source>&amp;Zoom To Fit</source>
-        <translation type="unfinished">&amp;Zoom ajusté à la taille de la fenêtre</translation>
+        <translation>&amp;Ajuster à la fenêtre</translation>
     </message>
 </context>
 <context>
     <name>Menus::ToolBar</name>
     <message>
         <source>Auto snap</source>
-        <translation></translation>
+        <translation>Alignement automatique</translation>
     </message>
     <message>
         <source>Copy on drag</source>
-        <translation></translation>
+        <translation>Copier lors du glissement</translation>
     </message>
     <message>
         <source>Show grid</source>
@@ -813,11 +813,11 @@
     </message>
     <message>
         <source>Copy style from parent node on drag</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier le style du noeud parent lors du glissement</translation>
     </message>
     <message>
         <source>Automatically snap existing nodes to the grid when grid size changes</source>
-        <translation></translation>
+        <translation>Aligner automatiquement les noeuds existants sur la grille lorsque la taille de la grille change</translation>
     </message>
     <message>
         <source>Corner radius:</source>
@@ -837,7 +837,7 @@
     </message>
     <message>
         <source>Search:</source>
-        <translation></translation>
+        <translation>Rechercher :</translation>
     </message>
     <message>
         <source>Text size:</source>
@@ -856,44 +856,44 @@
     </message>
     <message>
         <source>Reset to defaults</source>
-        <translation></translation>
+        <translation>Rétablir les valeurs par défaut</translation>
     </message>
 </context>
 <context>
     <name>SceneItems::Edge</name>
     <message>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
 </context>
 <context>
     <name>SceneItems::NodeHandle</name>
     <message>
         <source>Drag to connect or create a child node</source>
-        <translation type="unfinished"></translation>
+        <translation>Faire glisser pour connecter ou créer un noeud enfant</translation>
     </message>
     <message>
         <source>Move the node</source>
-        <translation type="unfinished"></translation>
+        <translation>Déplacer le noeud</translation>
     </message>
     <message>
         <source>Select node color</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisir la couleur du noeud</translation>
     </message>
     <message>
         <source>Select text color</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisir la couleur du texte</translation>
     </message>
     <message>
         <source>A</source>
-        <translation type="unfinished"></translation>
+        <translation>A</translation>
     </message>
 </context>
 <context>
     <name>Widgets::FontButton</name>
     <message>
         <source>Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Police</translation>
     </message>
 </context>
 </TS>

@@ -62,7 +62,7 @@ QString defaultLanguage()
 
 LanguageSet supportedLanguages()
 {
-    return { "de", "en", "es", "eu", "fi", "fr", "it", "pt_Br", "pt_Pt", "nl", "zh" };
+    return { "de", "en", "es", "eu", "fi", "fr", "it", "nl", "pt", "pt_Br", "pt_Pt", "zh" };
 }
 
 QString qSettingsCompanyName()

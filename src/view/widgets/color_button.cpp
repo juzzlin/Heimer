@@ -30,7 +30,13 @@ ColorButton::ColorButton(QString text, bool alphaChannel, QWidget * parent)
         if (m_alphaChannel) {
             options |= QColorDialog::ShowAlphaChannel;
         }
-        if (const auto color = QColorDialog::getColor(m_color, this, this->text(), options); color.isValid() && color != m_color) {
+        // QColorDialog keeps the alpha of the initial color when another color is picked, so a fully
+        // transparent color could never be changed to a visible one without also changing the alpha.
+        auto initialColor = m_color;
+        if (initialColor.alpha() == 0) {
+            initialColor.setAlpha(255);
+        }
+        if (const auto color = QColorDialog::getColor(initialColor, this, this->text(), options); color.isValid() && color != m_color) {
             setColor(color);
             emit colorChanged(m_color);
         }

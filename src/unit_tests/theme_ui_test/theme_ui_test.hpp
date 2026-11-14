@@ -42,6 +42,8 @@ private slots:
 
     void test_colorButton_shouldStoreColor();
 
+    void test_colorButton_transparentColorShouldBeChangeable();
+
     void test_themeEditorDialog_unchangedThemeShouldRoundTrip();
 
     void test_themeEditorDialog_resetShouldRestoreClassic();

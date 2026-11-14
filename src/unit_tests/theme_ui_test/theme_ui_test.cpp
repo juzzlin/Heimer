@@ -25,6 +25,8 @@
 #include "../../view/theme_preview.hpp"
 #include "../../view/widgets/color_button.hpp"
 
+#include <QApplication>
+#include <QColorDialog>
 #include <QDialogButtonBox>
 #include <QDir>
 #include <QImage>
@@ -33,6 +35,9 @@
 #include <QSettings>
 #include <QTemporaryDir>
 #include <QTest>
+#include <QTimer>
+
+#include <optional>
 
 namespace {
 
@@ -106,6 +111,26 @@ void ThemeUiTest::test_colorButton_shouldStoreColor()
 
     QCOMPARE(button.color(), QColor(1, 2, 3, 4));
     QVERIFY(!button.icon().isNull());
+}
+
+void ThemeUiTest::test_colorButton_transparentColorShouldBeChangeable()
+{
+    Widgets::ColorButton button { "Test", true };
+    button.setColor({ 0, 0, 0, 0 });
+    std::optional<QColor> initialDialogColor;
+    QTimer::singleShot(0, this, [&initialDialogColor] {
+        if (const auto dialog = qobject_cast<QColorDialog *>(QApplication::activeModalWidget()); dialog) {
+            initialDialogColor = dialog->currentColor();
+            dialog->setCurrentColor({ 1, 2, 3, initialDialogColor->alpha() });
+            dialog->accept();
+        }
+    });
+
+    button.click();
+
+    QVERIFY(initialDialogColor);
+    QCOMPARE(initialDialogColor->alpha(), 255);
+    QCOMPARE(button.color(), QColor(1, 2, 3, 255));
 }
 
 void ThemeUiTest::test_themeEditorDialog_unchangedThemeShouldRoundTrip()

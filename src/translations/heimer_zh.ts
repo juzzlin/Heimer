@@ -450,10 +450,6 @@
 <context>
     <name>Dialogs::ThemesTab</name>
     <message>
-        <source>Apply to current mind map</source>
-        <translation>应用于当前思维导图</translation>
-    </message>
-    <message>
         <source>Set as default for new mind maps</source>
         <translation>设为新思维导图的默认主题</translation>
     </message>
@@ -480,6 +476,10 @@
     <message>
         <source>A theme defines the colors, fonts and effects of a mind map. Built-in themes can&apos;t be modified, but they can be duplicated.</source>
         <translation>主题定义思维导图的颜色、字体和效果。内置主题无法修改，但可以复制。</translation>
+    </message>
+    <message>
+        <source>Select a theme and click Apply or OK to apply it to the current mind map.</source>
+        <translation>选择一个主题，然后点击“应用”或“确定”将其应用到当前思维导图。</translation>
     </message>
     <message>
         <source>(built-in)</source>

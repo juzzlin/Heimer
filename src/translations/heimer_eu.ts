@@ -450,10 +450,6 @@
 <context>
     <name>Dialogs::ThemesTab</name>
     <message>
-        <source>Apply to current mind map</source>
-        <translation>Aplikatu uneko mapa mentalari</translation>
-    </message>
-    <message>
         <source>Set as default for new mind maps</source>
         <translation>Ezarri mapa mental berrien lehenetsi gisa</translation>
     </message>
@@ -480,6 +476,10 @@
     <message>
         <source>A theme defines the colors, fonts and effects of a mind map. Built-in themes can&apos;t be modified, but they can be duplicated.</source>
         <translation>Gai batek mapa mental baten koloreak, letra-tipoak eta efektuak zehazten ditu. Gai integratuak ezin dira aldatu, baina bikoiztu egin daitezke.</translation>
+    </message>
+    <message>
+        <source>Select a theme and click Apply or OK to apply it to the current mind map.</source>
+        <translation>Hautatu gai bat eta sakatu Aplikatu edo Ados uneko buru-mapan aplikatzeko.</translation>
     </message>
     <message>
         <source>(built-in)</source>

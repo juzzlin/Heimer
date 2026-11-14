@@ -450,10 +450,6 @@
 <context>
     <name>Dialogs::ThemesTab</name>
     <message>
-        <source>Apply to current mind map</source>
-        <translation>Auf aktuelle Mindmap anwenden</translation>
-    </message>
-    <message>
         <source>Set as default for new mind maps</source>
         <translation>Als Standard für neue Mindmaps festlegen</translation>
     </message>
@@ -480,6 +476,10 @@
     <message>
         <source>A theme defines the colors, fonts and effects of a mind map. Built-in themes can&apos;t be modified, but they can be duplicated.</source>
         <translation>Ein Thema legt die Farben, Schriftarten und Effekte einer Mindmap fest. Integrierte Themen können nicht geändert, aber dupliziert werden.</translation>
+    </message>
+    <message>
+        <source>Select a theme and click Apply or OK to apply it to the current mind map.</source>
+        <translation>Wählen Sie ein Thema und klicken Sie auf Anwenden oder OK, um es auf die aktuelle Mindmap anzuwenden.</translation>
     </message>
     <message>
         <source>(built-in)</source>

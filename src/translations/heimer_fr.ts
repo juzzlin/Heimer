@@ -450,10 +450,6 @@
 <context>
     <name>Dialogs::ThemesTab</name>
     <message>
-        <source>Apply to current mind map</source>
-        <translation>Appliquer à la carte mentale actuelle</translation>
-    </message>
-    <message>
         <source>Set as default for new mind maps</source>
         <translation>Définir par défaut pour les nouvelles cartes mentales</translation>
     </message>
@@ -480,6 +476,10 @@
     <message>
         <source>A theme defines the colors, fonts and effects of a mind map. Built-in themes can&apos;t be modified, but they can be duplicated.</source>
         <translation>Un thème définit les couleurs, les polices et les effets d&apos;une carte mentale. Les thèmes intégrés ne peuvent pas être modifiés, mais ils peuvent être dupliqués.</translation>
+    </message>
+    <message>
+        <source>Select a theme and click Apply or OK to apply it to the current mind map.</source>
+        <translation>Sélectionnez un thème et cliquez sur Appliquer ou OK pour l&apos;appliquer à la carte mentale actuelle.</translation>
     </message>
     <message>
         <source>(built-in)</source>

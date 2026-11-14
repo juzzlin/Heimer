@@ -92,7 +92,7 @@ void EffectsTab::apply(const ShadowEffectParams & params)
 void EffectsTab::initWidgets()
 {
     const auto mainLayout = new QVBoxLayout;
-    const auto && [shadowsGroup, shadowsGroupLayout] = WidgetFactory::buildGroupBoxWithVLayout(tr("Shadows"), *mainLayout);
+    const auto [shadowsGroup, shadowsGroupLayout] = WidgetFactory::buildGroupBoxWithVLayout(tr("Shadows"), *mainLayout);
 
     const auto offsetLayout = new QHBoxLayout;
     offsetLayout->addWidget(new QLabel(tr("Shadow effect offset:")));
@@ -129,7 +129,7 @@ void EffectsTab::initWidgets()
 
     shadowsGroupLayout->addWidget(WidgetFactory::buildHorizontalLine());
 
-    const auto && [resetToDefaultsButton, resetToDefaultsButtonLayout] = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
+    const auto [resetToDefaultsButton, resetToDefaultsButtonLayout] = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
     shadowsGroupLayout->addLayout(resetToDefaultsButtonLayout);
     connect(resetToDefaultsButton, &QPushButton::clicked, this, [=] {
         m_shadowOffsetSpinBox->setValue(Constants::Settings::defaultShadowEffectOffset());

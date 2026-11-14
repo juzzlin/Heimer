@@ -717,7 +717,11 @@ bool AlzFileIOWorker::toFile(MindMapDataS mindMapData, QString path) const
 MindMapDataU AlzFileIOWorker::fromXml(QString xml) const
 {
     QDomDocument document;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+    document.setContent(xml, QDomDocument::ParseOption::Default);
+#else
     document.setContent(xml, false);
+#endif
     SC::instance().progressManager()->updateProgress();
     return IO::fromXml(document);
 }

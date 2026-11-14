@@ -86,12 +86,17 @@ void ToolBar::addActions()
     addSeparator();
 
     addWidget(m_showGridCheckBox);
-    connect(m_showGridCheckBox, &QCheckBox::stateChanged, this, &ToolBar::gridVisibleChanged);
-    connect(m_showGridCheckBox, &QCheckBox::stateChanged, Settings::Custom::saveGridVisibleState);
+    connect(m_showGridCheckBox, &QCheckBox::toggled, this, [this](bool checked) {
+        const auto state = checked ? Qt::Checked : Qt::Unchecked;
+        emit gridVisibleChanged(state);
+        Settings::Custom::saveGridVisibleState(state);
+    });
     addSeparator();
 
     addWidget(m_autoSnapCheckBox);
-    connect(m_autoSnapCheckBox, &QCheckBox::stateChanged, Settings::Custom::saveAutoSnapState);
+    connect(m_autoSnapCheckBox, &QCheckBox::toggled, this, [](bool checked) {
+        Settings::Custom::saveAutoSnapState(checked ? Qt::Checked : Qt::Unchecked);
+    });
     addSeparator();
 
     addWidget(m_copyOnDragCheckBox);

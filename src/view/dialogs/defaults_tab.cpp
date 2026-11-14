@@ -139,7 +139,7 @@ void DefaultsTab::createEdgeWidgets(QVBoxLayout & mainLayout)
     edgeGroup.second->addLayout(arrowSizeEdgeWidthLayout);
 
     // Reset to defaults button for edge style
-    const auto && [resetToDefaultsButton, resetToDefaultsButtonLayout] = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
+    const auto [resetToDefaultsButton, resetToDefaultsButtonLayout] = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
     arrowSizeEdgeWidthLayout->addLayout(resetToDefaultsButtonLayout);
     connect(resetToDefaultsButton, &QPushButton::clicked, this, [=] {
         m_edgeArrowStyleRadioMap.at(EdgeModel::ArrowMode::Single)->setChecked(true);
@@ -151,7 +151,7 @@ void DefaultsTab::createEdgeWidgets(QVBoxLayout & mainLayout)
 
 void DefaultsTab::createColorWidgets(QVBoxLayout & mainLayout)
 {
-    const auto && [colorsGroup, colorsGroupLayout] = WidgetFactory::buildGroupBoxWithVLayout(tr("Colors"), mainLayout);
+    const auto [colorsGroup, colorsGroupLayout] = WidgetFactory::buildGroupBoxWithVLayout(tr("Colors"), mainLayout);
     const auto colorButtonLayout = new QVBoxLayout;
     colorButtonLayout->addWidget(m_backgroundColorButton);
     m_colorSettingButtons.push_back(m_backgroundColorButton);
@@ -167,7 +167,7 @@ void DefaultsTab::createColorWidgets(QVBoxLayout & mainLayout)
     colorButtonLayout->addSpacing(3);
 
     // Reset to defaults button for colors
-    const auto && [resetToDefaultsButton, resetToDefaultsButtonLayout] = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
+    const auto [resetToDefaultsButton, resetToDefaultsButtonLayout] = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
     colorsGroupLayout->addLayout(resetToDefaultsButtonLayout);
     connect(resetToDefaultsButton, &QPushButton::clicked, this, [=] {
         for (auto && colorSettingButton : m_colorSettingButtons) {
@@ -191,7 +191,7 @@ void DefaultsTab::createTextWidgets(QVBoxLayout & mainLayout)
     textLayout->addStretch();
 
     // Reset to defaults button for text styles
-    const auto && [resetToDefaultsButton, resetToDefaultsButtonLayout] = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
+    const auto [resetToDefaultsButton, resetToDefaultsButtonLayout] = WidgetFactory::buildResetToDefaultsButtonWithHLayout();
     connect(resetToDefaultsButton, &QPushButton::clicked, this, [=] {
         m_fontButton->setFont({});
         m_textSizeSpinBox->setValue(Constants::MindMap::defaultTextSize());

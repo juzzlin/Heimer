@@ -1,103 +1,219 @@
 <!doctype html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <base href="https://juzzlin.github.io">
-        <link rel="shortcut icon" type="image/x-icon" href="/Heimer/favicon.ico">
-        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto+Condensed:400,700|Roboto:400,400i&amp;display=swap">
-        <link rel="stylesheet" href="/Heimer/css/bootstrap-5.0.0-beta1-dist/css/bootstrap-grid.min.css"/>
-        <link rel="stylesheet" href="/Heimer/css/style.css">
-        <title>Heimer - A simple cross-platform mind map, diagram, and note-taking tool</title>
+        <title>Heimer - A simple cross-platform mind map, diagram and note-taking tool</title>
+        <meta name="description" content="Heimer is a free, open source mind map and diagram tool for Linux and Windows: fast editing, edge labels, themes, automatic layout optimization and export to PNG and SVG.">
+        <meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)">
+        <meta name="theme-color" content="#0f1113" media="(prefers-color-scheme: dark)">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="Heimer - a simple mind map and diagram tool">
+        <meta property="og:description" content="Create mind maps, diagrams and notes quickly. Free and open source for Linux and Windows.">
+        <meta property="og:image" content="https://juzzlin.github.io/Heimer/img/og.png">
+        <meta name="twitter:card" content="summary_large_image">
+        <link rel="icon" href="favicon.ico">
+        <link rel="stylesheet" href="css/style.css">
     </head>
-    <body onload = "main();">
-        <h1>Heimer - A simple cross-platform mind map, diagram, and note-taking tool</h1>
-        <article>
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="header-project-home col-md-3 col-sm-12">
-                        <a href="https://github.com/juzzlin/Heimer">Project Home</a>
-                    </div>
-                    <div class="header-downloads col-md-3 col-sm-12">
-                        <a href="https://github.com/juzzlin/Heimer/releases">Downloads</a>
-                    </div>
-                    <div class="col-md-3 col-sm-12"></div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3 col-sm-12"></div>
-                    <div class="col-md-6 col-sm-12">
-                        <div class="image-container">
-                            <img id="animation-image-1"/>
-                            <img id="animation-image-2"/>
-                        </div>
-                        <img id="animation-image-dummy" src="/Heimer/img/heimer-1.png"/>
-                    </div>
-                    <div class="col-md-3 col-sm-12"></div>
-                </div>
-                <div class="features row">
-                    <div class="col-md-4 col-sm-12">
-                        <ul>
-                            <li>Adjustable grid</li>
-                            <li>Automatic layout optimization</li>
-                            <li>Autosave</li>
-                            <li>Easy-to-use UI</li>
-                            <li>Export to PNG or SVG</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-4 col-sm-12">
-                        <ul>
-                            <li>Forever 100% free</li>
-                            <li>Full undo/redo</li>
-                            <li>Nice animations</li>
-                            <li>Quickly add node text and edge labels</li>
-                            <li>Save/load in XML-based .ALZ-files</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-4 col-sm-12">
-                        <ul>
-                            <li>Translations in English (default), Chinese, Dutch, Finnish, French, Italian, Spanish</li>
-                            <li>Very fast</li>
-                            <li>Zoom in/out/fit</li>
-                            <li>Zoom with mouse wheel</li>
-                        </ul>
-                    </div>
-                </div>
+    <body>
+        <header class="nav">
+            <div class="wrap nav-inner">
+                <a class="brand" href="#top">Heimer</a>
+                <nav aria-label="Sections">
+                    <a href="#features">Features</a>
+                    <a href="#themes">Themes</a>
+                    <a href="#screenshots">Screenshots</a>
+                    <a href="#download">Download</a>
+                    <a href="https://github.com/juzzlin/Heimer">GitHub</a>
+                </nav>
             </div>
-        </article>
-        <footer>
-            <p>© 2021 Jussi Lind &lt;jussi.lind@iki.fi&gt;</p>
+        </header>
+
+        <main id="top">
+            <section class="hero">
+                <div class="wrap hero-inner">
+                    <div class="hero-text">
+                        <p class="eyebrow">Free &amp; open source &middot; GPLv3 &middot; Linux &amp; Windows</p>
+                        <h1>Mind maps and diagrams, without the clutter.</h1>
+                        <p class="lead">Heimer is a simple and fast tool for mind maps, diagrams and notes. Drag out a new node, type, connect &mdash; and let the layout optimizer tidy up the rest.</p>
+                        <div class="actions">
+                            <a class="button primary" href="https://github.com/juzzlin/Heimer/releases/latest">Download</a>
+                            <a class="button" href="https://github.com/juzzlin/Heimer">View on GitHub</a>
+                        </div>
+                    </div>
+                    <figure class="window hero-shot">
+                        <img src="img/Heimer.webp" width="2160" height="1350" alt="A Heimer mind map with the node handles of the hovered node and a selected node">
+                    </figure>
+                </div>
+            </section>
+
+            <section class="stats" aria-label="At a glance">
+                <div class="wrap stats-inner">
+                    <div><strong>6</strong><span>built-in themes</span></div>
+                    <div><strong>10</strong><span>languages</span></div>
+                    <div><strong>PNG&nbsp;&amp;&nbsp;SVG</strong><span>export</span></div>
+                    <div><strong>100%</strong><span>free, forever</span></div>
+                </div>
+            </section>
+
+            <section id="features" class="section">
+                <div class="wrap">
+                    <h2>Everything a mind map needs</h2>
+                    <p class="section-lead">And nothing that gets in the way.</p>
+
+                    <div class="feature">
+                        <figure class="window">
+                            <img src="img/Company-960.webp" width="960" height="600" loading="lazy" alt="An organization chart of a company with edge labels">
+                        </figure>
+                        <div>
+                            <h3>Editing</h3>
+                            <ul>
+                                <li>Drag from a node to create a connected child node, or to connect two nodes</li>
+                                <li>Quickly add node texts and edge labels</li>
+                                <li>Node and text colors, dashed edges and arrow styles</li>
+                                <li>Images as node backgrounds</li>
+                                <li>Select and move groups of nodes, copy on drag</li>
+                                <li>Adjustable grid with automatic snapping</li>
+                                <li>Full undo and redo</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="feature reverse">
+                        <figure class="window">
+                            <img src="img/Family_TextSearch-960.webp" width="960" height="600" loading="lazy" alt="A family mind map with the search results highlighted">
+                        </figure>
+                        <div>
+                            <h3>Finding &amp; organizing</h3>
+                            <ul>
+                                <li>Text search highlights the matching nodes and zooms to them</li>
+                                <li>Automatic layout optimization for maps of any size</li>
+                                <li>Zoom in, out and to fit, also with the mouse wheel at an adjustable speed</li>
+                                <li>Very fast, also with hundreds of nodes</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="feature">
+                        <figure class="window">
+                            <img src="img/Matrix-960.webp" width="960" height="600" loading="lazy" alt="A large diagram of hundreds of nodes">
+                        </figure>
+                        <div>
+                            <h3>Saving &amp; sharing</h3>
+                            <ul>
+                                <li>Open, XML-based .alz file format</li>
+                                <li>Export to PNG, optionally with a transparent background, or to SVG</li>
+                                <li>Autosave and autoload of the most recent mind map</li>
+                                <li>Recent files menu</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="feature text-only">
+                        <h3>And more</h3>
+                        <ul class="columns">
+                            <li>Runs on Linux and Windows</li>
+                            <li>Translated into Basque, Chinese, Dutch, English, Finnish, French, German, Italian, Portuguese and Spanish</li>
+                            <li>Inverted controls for scrolling and selecting</li>
+                            <li>Nodes rise for easier editing when zoomed out</li>
+                            <li>Written in C++ and Qt 6</li>
+                            <li>Will always be 100% free</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="themes" class="section">
+                <div class="wrap">
+                    <h2>Themes</h2>
+                    <p class="section-lead">A theme defines the colors, fonts, sizes and shadows of a mind map.</p>
+                    <div class="feature themes">
+                        <div class="theme-switcher">
+                            <figure class="window theme-stack">
+                                <img src="img/Heimer-960.webp" width="960" height="600" loading="lazy" alt="White theme" data-theme="White" class="active">
+                                <img src="img/ThemeAccent-960.webp" width="960" height="600" loading="lazy" alt="Accent theme" data-theme="Accent">
+                                <img src="img/ThemeBlack-960.webp" width="960" height="600" loading="lazy" alt="Black theme" data-theme="Black">
+                                <img src="img/ThemePaper-960.webp" width="960" height="600" loading="lazy" alt="Paper theme" data-theme="Paper">
+                            </figure>
+                            <div class="chips" role="group" aria-label="Show theme">
+                                <button type="button" data-theme="White" aria-pressed="true"><i style="background: #ffffff"></i>White</button>
+                                <button type="button" data-theme="Accent" aria-pressed="false"><i style="background: #e8590c"></i>Accent</button>
+                                <button type="button" data-theme="Black" aria-pressed="false"><i style="background: #2d2d2d"></i>Black</button>
+                                <button type="button" data-theme="Paper" aria-pressed="false"><i style="background: #f6f0e1"></i>Paper</button>
+                            </div>
+                        </div>
+                        <div>
+                            <h3>Built-in &amp; your own</h3>
+                            <ul>
+                                <li>Built-in themes: Classic, High Contrast, Black, White, Accent and Paper</li>
+                                <li>Create your own from the current mind map or from any other theme</li>
+                                <li>Theme editor with a live preview</li>
+                                <li>Choose the default theme for new mind maps</li>
+                                <li>Applying a theme can be undone, and individual node colors can be kept</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="screenshots" class="section">
+                <div class="wrap">
+                    <h2>Screenshots</h2>
+                    <div class="gallery">
+                        <button type="button" data-full="img/Heimer.webp"><img src="img/Heimer-960.webp" width="960" height="600" loading="lazy" alt=""><span>Mind map</span></button>
+                        <button type="button" data-full="img/ThemeAccent.webp"><img src="img/ThemeAccent-960.webp" width="960" height="600" loading="lazy" alt=""><span>Accent theme</span></button>
+                        <button type="button" data-full="img/ThemeBlack.webp"><img src="img/ThemeBlack-960.webp" width="960" height="600" loading="lazy" alt=""><span>Black theme</span></button>
+                        <button type="button" data-full="img/ThemePaper.webp"><img src="img/ThemePaper-960.webp" width="960" height="600" loading="lazy" alt=""><span>Paper theme</span></button>
+                        <button type="button" data-full="img/Settings.webp"><img src="img/Settings-960.webp" width="960" height="707" loading="lazy" alt=""><span>Theme settings</span></button>
+                        <button type="button" data-full="img/ThemeEditor.webp"><img src="img/ThemeEditor-960.webp" width="960" height="1068" loading="lazy" alt=""><span>Theme editor</span></button>
+                        <button type="button" data-full="img/Family_TextSearch.webp"><img src="img/Family_TextSearch-960.webp" width="960" height="600" loading="lazy" alt=""><span>Text search</span></button>
+                        <button type="button" data-full="img/Company.webp"><img src="img/Company-960.webp" width="960" height="600" loading="lazy" alt=""><span>Organization chart</span></button>
+                        <button type="button" data-full="img/Matrix.webp"><img src="img/Matrix-960.webp" width="960" height="600" loading="lazy" alt=""><span>Large diagram</span></button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="download" class="section">
+                <div class="wrap">
+                    <h2>Download</h2>
+                    <div class="downloads">
+                        <a class="card" href="https://snapcraft.io/heimer">
+                            <h3>Snap</h3>
+                            <p>For Linux distributions that support Snap. Updates automatically.</p>
+                            <code>sudo snap install heimer</code>
+                        </a>
+                        <a class="card" href="https://github.com/juzzlin/Heimer/releases/latest">
+                            <h3>Debian package</h3>
+                            <p>For Ubuntu 22.04 LTS and 24.04 LTS. Uses the Qt 6 of the distribution.</p>
+                            <code>sudo apt install ./heimer-*.deb</code>
+                        </a>
+                        <a class="card" href="https://github.com/juzzlin/Heimer/releases/latest">
+                            <h3>AppImage</h3>
+                            <p>For other Linux distributions. Carries its own Qt; built on Ubuntu 22.04 LTS.</p>
+                            <code>chmod +x Heimer-*.AppImage</code>
+                        </a>
+                        <a class="card" href="https://github.com/juzzlin/Heimer/releases/latest">
+                            <h3>Windows</h3>
+                            <p>An installer, or a ZIP archive that just contains the executable.</p>
+                            <code>heimer-*-win32.exe</code>
+                        </a>
+                    </div>
+                    <p class="source">Or build it from <a href="https://github.com/juzzlin/Heimer">the source</a>: C++ and Qt 6, licensed under GPLv3.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="wrap footer-inner">
+                <span>&copy; 2018-2026 Jussi Lind</span>
+                <span><a href="https://github.com/juzzlin/Heimer">GitHub</a> &middot; <a href="https://github.com/juzzlin/Heimer/releases">Releases</a> &middot; GPLv3</span>
+            </div>
         </footer>
-        <script>
-            const imageFiles = ["/Heimer/img/heimer-1.png", "/Heimer/img/heimer-2.png", "/Heimer/img/heimer-3.png"];
-            const updateImage = (image1, image2, imageIndex) => {
-                image1.setAttribute("src", imageFiles.at(imageIndex));
-            };
-            const main = () => {
-                const image1 = document.getElementById("animation-image-1");
-                const image2 = document.getElementById("animation-image-2");
-                let imageIndex = 0;
-                let tictoc = 0;
-                updateImage(image1, image2, imageIndex);
-                image1.classList.add("fade-in");
-                setInterval(() => {
-                    if (tictoc % 2 == 0) {
-                        if (image1.hasAttribute("src") && image1.getAttribute("src")) {
-                            image2.setAttribute("src", image1.getAttribute("src"));
-                        }
-                        if (image1.classList.contains("fade-in")) {
-                            image1.classList.remove("fade-in");
-                        }
-                    } else {
-                        imageIndex++;
-                        imageIndex = imageIndex % imageFiles.length;
-                        updateImage(image1, image2, imageIndex);
-                        if (!image1.classList.contains("fade-in")) {
-                            image1.classList.add("fade-in");
-                        }
-                    }
-                    tictoc++;
-                }, 2000);
-            };
-        </script>
+
+        <dialog class="lightbox" aria-label="Screenshot">
+            <img alt="">
+        </dialog>
+
+        <script src="js/site.js" defer></script>
     </body>
 </html>

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Builds Snap package with LXD. Assumes Ubuntu 20.04 LTS.
+# Builds Snap package with LXD (base core22, Qt 6 via the kde-neon-6 extension).
 
 rm -f *.snap && snapcraft clean --use-lxd && snapcraft --use-lxd
 

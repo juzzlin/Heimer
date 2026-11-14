@@ -6,51 +6,19 @@ description: |
   Emphasis on easy diagram creation, simplicity, and speed.
 grade: stable
 confinement: strict
-base: core20
+base: core22
 icon: data/icons/heimer.png
 
 apps:
   heimer:
-    command: bin/desktop-launch heimer
-    environment: 
-      DISABLE_WAYLAND: 1 # UI completely broken on Ubuntu 22.04 without this
+    command: usr/bin/heimer
+    # Provides Qt 6, desktop integration and the common desktop plugs
+    extensions: [kde-neon-6]
     desktop: usr/share/applications/heimer.desktop
-    plugs: [home, desktop, desktop-legacy, removable-media, unity7, x11, wayland, opengl]
-
-plugs: # additional plug to fix mouse cursor theme
-  icon-themes:
-    interface: content
-    target: $SNAP/data-dir/icons
-    default-provider: gtk-common-themes
+    plugs: [home, removable-media]
 
 parts:
-  desktop-qt5:
-    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
-    source-subdir: qt
-    plugin: make
-    make-parameters: ["FLAVOR=qt5"]
-    build-packages:
-      - build-essential
-      - qtbase5-dev
-      - dpkg-dev
-    stage-packages:
-      - libxkbcommon0
-      - ttf-ubuntu-font-family
-      - dmz-cursor-theme
-      - light-themes
-      - adwaita-icon-theme
-      - gnome-themes-standard
-      - shared-mime-info
-      - libqt5gui5
-      - libgdk-pixbuf2.0-0
-      - libqt5xml5
-      - libqt5svg5 # for loading icon themes which are svg
-      - locales-all
-      - xdg-user-dirs
-      - fcitx-frontend-qt5
-      - qt5-style-plugins # for mouse cursor theme fix
-      - qtwayland5 # Needed in Ubuntu 22.04
-  gnu-heimer:
+  heimer:
     source: .
     plugin: cmake
     cmake-parameters:
@@ -58,20 +26,10 @@ parts:
       - -DCMAKE_INSTALL_PREFIX=/usr
       - -DBUILD_TESTS=OFF
       - -DPACKAGE_TYPE=Snap
-    build-packages:
-      - qtbase5-dev
-      - qttools5-dev
-      - qttools5-dev-tools
-      - libqt5svg5-dev
-    stage-packages:
-      - libqt5gui5
-      - libqt5svg5
-      - libqt5xml5
-    after: [desktop-qt5]
     override-prime: |
       set -eu
 
-      snapcraftctl prime
+      craftctl default
 
       # Fix-up application icon lookup
       sed --in-place 's|^Icon=.*|Icon=\${SNAP}/meta/gui/icon.png|' usr/share/applications/heimer.desktop

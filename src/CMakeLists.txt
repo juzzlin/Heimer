@@ -24,6 +24,7 @@ set(HEIMER_LIB_SRC
     ${HEIMER_SRC_ROOT}/application/editor_service.cpp
     ${HEIMER_SRC_ROOT}/application/hash_seed.cpp
     ${HEIMER_SRC_ROOT}/application/language_service.cpp
+    ${HEIMER_SRC_ROOT}/application/mind_map_snapshot.cpp
     ${HEIMER_SRC_ROOT}/application/progress_manager.cpp
     ${HEIMER_SRC_ROOT}/application/recent_files_manager.cpp
     ${HEIMER_SRC_ROOT}/application/service_container.cpp
@@ -39,7 +40,6 @@ set(HEIMER_LIB_SRC
     ${HEIMER_SRC_ROOT}/domain/layout_optimizer.cpp
     ${HEIMER_SRC_ROOT}/domain/mind_map_data.cpp
     ${HEIMER_SRC_ROOT}/domain/mind_map_data_base.cpp
-    ${HEIMER_SRC_ROOT}/domain/undo_stack.cpp
     ${HEIMER_SRC_ROOT}/infra/io/alz_file_io.cpp
     ${HEIMER_SRC_ROOT}/infra/io/alz_file_io_worker.cpp
     ${HEIMER_SRC_ROOT}/infra/io/xml_reader.cpp
@@ -97,6 +97,7 @@ set(HEIMER_LIB_HDR
     ${HEIMER_SRC_ROOT}/application/editor_service.hpp
     ${HEIMER_SRC_ROOT}/application/hash_seed.hpp
     ${HEIMER_SRC_ROOT}/application/language_service.hpp
+    ${HEIMER_SRC_ROOT}/application/mind_map_snapshot.hpp
     ${HEIMER_SRC_ROOT}/application/progress_manager.hpp
     ${HEIMER_SRC_ROOT}/application/recent_files_manager.hpp
     ${HEIMER_SRC_ROOT}/application/service_container.hpp

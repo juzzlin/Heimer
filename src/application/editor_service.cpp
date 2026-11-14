@@ -15,6 +15,7 @@
 
 #include "editor_service.hpp"
 
+#include "../application/mind_map_snapshot.hpp"
 #include "../application/recent_files_manager.hpp"
 #include "../application/service_container.hpp"
 #include "../application/settings_proxy.hpp"
@@ -46,7 +47,7 @@ EditorService::EditorService()
   , m_copyContext(std::make_unique<CopyContext>())
   , m_edgeSelectionGroup(std::make_unique<EdgeSelectionGroup>())
   , m_nodeSelectionGroup(std::make_unique<NodeSelectionGroup>())
-  , m_undoStack(std::make_unique<UndoStack>())
+  , m_undoStack(std::make_unique<UndoStack<MindMapSnapshot>>(Constants::Misc::maxUndoHistorySize()))
   , m_undoPointMergingEnabled(!TestMode::enabled())
 {
     m_undoTimer.setSingleShot(true);
@@ -142,7 +143,7 @@ void EditorService::undo()
         // Don't merge the next modification with the modification before undo
         m_undoTimer.stop();
         saveRedoPoint();
-        m_mindMapData = m_undoStack->undo();
+        m_mindMapData = m_undoStack->undo()->restore(*m_alzFileIO);
         setIsModified(true);
         sendUndoAndRedoSignals();
         requestAutosave(AutosaveContext::Modification, true);
@@ -172,8 +173,8 @@ void EditorService::redo()
         m_dragAndDropNode = nullptr;
         // Undo/redo must always save their points: skipping merged undo points here would lose states
         m_undoTimer.stop();
-        m_undoStack->pushUndoPoint(*m_mindMapData);
-        m_mindMapData = m_undoStack->redo();
+        m_undoStack->pushUndoPoint({ *m_alzFileIO, m_mindMapData });
+        m_mindMapData = m_undoStack->redo()->restore(*m_alzFileIO);
         setIsModified(true);
         sendUndoAndRedoSignals();
         requestAutosave(AutosaveContext::Modification, true);
@@ -208,7 +209,7 @@ void EditorService::saveUndoPoint()
     }
 
     assert(m_mindMapData);
-    m_undoStack->pushUndoPoint(*m_mindMapData);
+    m_undoStack->pushUndoPoint({ *m_alzFileIO, m_mindMapData });
     m_undoStack->clearRedoStack();
     setIsModified(true);
     sendUndoAndRedoSignals();
@@ -222,7 +223,7 @@ void EditorService::saveRedoPoint()
     L(TAG).debug() << "Saving redo point";
 
     assert(m_mindMapData);
-    m_undoStack->pushRedoPoint(*m_mindMapData);
+    m_undoStack->pushRedoPoint({ *m_alzFileIO, m_mindMapData });
     setIsModified(true);
     sendUndoAndRedoSignals();
 }

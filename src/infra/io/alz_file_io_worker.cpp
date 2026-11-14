@@ -678,7 +678,7 @@ MindMapDataU fromXml(QDomDocument document)
     return data;
 }
 
-QDomDocument toXml(MindMapDataS mindMapData, AlzFormatVersion outputVersion)
+QDomDocument toXml(MindMapDataS mindMapData, AlzFormatVersion outputVersion, bool includeImages = true)
 {
     QDomDocument doc;
     doc.appendChild(doc.createProcessingInstruction("xml", "version='1.0' encoding='UTF-8'"));
@@ -690,7 +690,9 @@ QDomDocument toXml(MindMapDataS mindMapData, AlzFormatVersion outputVersion)
 
     writeGraph(mindMapData, root, doc, outputVersion);
 
-    writeImages(mindMapData, root, doc);
+    if (includeImages) {
+        writeImages(mindMapData, root, doc);
+    }
 
     writeMetadata(mindMapData, root, doc, outputVersion);
 
@@ -729,6 +731,12 @@ MindMapDataU AlzFileIOWorker::fromXml(QString xml) const
 QString AlzFileIOWorker::toXml(MindMapDataS mindMapData) const
 {
     return IO::toXml(mindMapData, m_outputVersion).toString();
+}
+
+QString AlzFileIOWorker::toSnapshotXml(MindMapDataS mindMapData) const
+{
+    const int noIndentation = -1;
+    return IO::toXml(mindMapData, m_outputVersion, false).toString(noIndentation);
 }
 
 } // namespace IO

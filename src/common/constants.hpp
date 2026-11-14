@@ -21,6 +21,7 @@
 #include <QVector>
 
 #include <chrono>
+#include <cstddef>
 #include <set>
 
 #include "../infra/io/alz_file_io_version.hpp"
@@ -117,6 +118,9 @@ int defaultTextSize();
 namespace Misc {
 
 QString threeDots();
+
+//! Maximum number of undo (and redo) steps
+size_t maxUndoHistorySize();
 
 } // namespace Misc
 

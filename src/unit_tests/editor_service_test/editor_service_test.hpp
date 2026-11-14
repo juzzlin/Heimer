@@ -107,6 +107,8 @@ private slots:
 
     void test_undoStackResetOnLoadDesign();
 
+    void test_undoHistory_shouldBeLimited();
+
     void test_undoModificationFlagOnNewDesign();
 
     void test_undoModificationFlagOnLoadDesign();

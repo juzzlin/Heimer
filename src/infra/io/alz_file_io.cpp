@@ -67,6 +67,11 @@ QString AlzFileIO::toXml(MindMapDataS mindMapData) const
     return m_worker->toXml(mindMapData);
 }
 
+QString AlzFileIO::toSnapshotXml(MindMapDataS mindMapData) const
+{
+    return m_worker->toSnapshotXml(mindMapData);
+}
+
 AlzFileIO::~AlzFileIO()
 {
     AlzFileIO::finish();

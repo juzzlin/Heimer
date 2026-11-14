@@ -45,6 +45,10 @@ public:
 
     QString toXml(MindMapDataS mindMapData) const;
 
+    //! \return Compact XML without image data, e.g. for undo snapshots.
+    //! Image references of the nodes are written, but the images themselves are not.
+    QString toSnapshotXml(MindMapDataS mindMapData) const;
+
 private:
     std::unique_ptr<AlzFileIOWorker> m_worker;
 

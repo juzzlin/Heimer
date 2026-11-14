@@ -259,6 +259,11 @@ QString threeDots()
     return "...";
 }
 
+size_t maxUndoHistorySize()
+{
+    return 100;
+}
+
 } // namespace Misc
 
 namespace View {

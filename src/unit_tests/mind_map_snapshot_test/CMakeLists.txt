@@ -1,0 +1,8 @@
+set(EDITOR_DIR ${CMAKE_SOURCE_DIR}/src)
+include_directories(${EDITOR_DIR} ${EDITOR_DIR}/contrib ${CMAKE_CURRENT_SOURCE_DIR})
+set(NAME mind_map_snapshot_test)
+set(SRC ../unit_test_base.cpp ${NAME}.cpp ${NAME}.hpp)
+add_executable(${NAME} ${SRC} ${MOC_SRC})
+set_target_properties(${NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${UNIT_TEST_BASE_DIR})
+add_test(${NAME} ${UNIT_TEST_BASE_DIR}/${NAME})
+target_link_libraries(${NAME} ${HEIMER_LIB_NAME} Qt${QT_VERSION_MAJOR}::Test)

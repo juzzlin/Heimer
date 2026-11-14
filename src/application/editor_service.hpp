@@ -32,9 +32,12 @@
 #include "../view/mouse_action.hpp"
 
 class EdgeSelectionGroup;
+class MindMapSnapshot;
 class MindMapTile;
 class NodeSelectionGroup;
 class QGraphicsLineItem;
+
+template<typename T>
 class UndoStack;
 
 namespace SceneItems {
@@ -227,7 +230,7 @@ private:
 
     std::unique_ptr<NodeSelectionGroup> m_nodeSelectionGroup;
 
-    std::unique_ptr<UndoStack> m_undoStack;
+    std::unique_ptr<UndoStack<MindMapSnapshot>> m_undoStack;
 
     NodeP m_dragAndDropNode = nullptr;
 

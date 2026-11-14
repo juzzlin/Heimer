@@ -44,6 +44,8 @@ public slots:
 
     QString toXml(MindMapDataS mindMapData) const;
 
+    QString toSnapshotXml(MindMapDataS mindMapData) const;
+
 private:
     AlzFormatVersion m_outputVersion;
 };

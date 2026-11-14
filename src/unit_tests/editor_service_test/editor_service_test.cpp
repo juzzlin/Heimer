@@ -16,6 +16,7 @@
 #include "editor_service_test.hpp"
 
 #include "../../application/editor_service.hpp"
+#include "../../common/constants.hpp"
 #include "../../common/test_mode.hpp"
 #include "../../domain/graph.hpp"
 #include "../../domain/mind_map_data.hpp"
@@ -1072,6 +1073,28 @@ void EditorServiceTest::test_undoStackResetOnLoadDesign()
     editorService.loadMindMapData("dummy");
 
     QCOMPARE(editorService.isUndoable(), false);
+}
+
+void EditorServiceTest::test_undoHistory_shouldBeLimited()
+{
+    // https://github.com/juzzlin/Heimer/issues/237
+    EditorService editorService;
+    editorService.setMindMapData(std::make_shared<MindMapData>());
+    const auto maxHistorySize = Constants::Misc::maxUndoHistorySize();
+    const size_t extraUndoPoints = 10;
+    for (size_t i = 0; i < maxHistorySize + extraUndoPoints; i++) {
+        editorService.saveUndoPoint();
+        editorService.addNodeAt(QPointF(static_cast<double>(i), 0));
+    }
+
+    size_t undoCount = 0;
+    while (editorService.isUndoable()) {
+        editorService.undo();
+        undoCount++;
+    }
+
+    QCOMPARE(undoCount, maxHistorySize);
+    QCOMPARE(editorService.mindMapData()->graph().nodeCount(), extraUndoPoints);
 }
 
 void EditorServiceTest::test_undoModificationFlagOnNewDesign()

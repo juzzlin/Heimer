@@ -26,24 +26,20 @@ public:
 
     virtual ~ControlStrategy();
 
-    bool backgroundDragInitiated(QMouseEvent & event) const;
+    bool backgroundDragInitiated(const QMouseEvent & event) const;
 
-    bool rubberBandInitiated(QMouseEvent & event) const;
+    bool rubberBandInitiated(const QMouseEvent & event) const;
 
-    bool primaryButtonClicked(QMouseEvent & event) const;
+    bool primaryButtonClicked(const QMouseEvent & event) const;
 
-    bool secondaryButtonClicked(QMouseEvent & event) const;
-
-    void setInvertedMode(bool invertedMode);
+    bool secondaryButtonClicked(const QMouseEvent & event) const;
 
     QString mirrorLayoutHorizontallyShortcut() const;
 
     QString mirrorLayoutVerticallyShortcut() const;
 
 private:
-    bool isModifierPressed() const;
-
-    bool m_invertedMode = false;
+    bool isModifierPressed(const QMouseEvent & event) const;
 };
 
 #endif // CONTROL_STRATEGY_HPP

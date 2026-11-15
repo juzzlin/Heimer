@@ -18,46 +18,39 @@
 #include "service_container.hpp"
 #include "settings_proxy.hpp"
 
-#include <QGuiApplication>
 #include <QMouseEvent>
 
 ControlStrategy::ControlStrategy()
 {
 }
 
-bool ControlStrategy::isModifierPressed() const
+bool ControlStrategy::isModifierPressed(const QMouseEvent & event) const
 {
-    return (QGuiApplication::queryKeyboardModifiers().testFlag(Qt::ControlModifier) || //
-            QGuiApplication::queryKeyboardModifiers().testFlag(Qt::ShiftModifier));
+    return event.modifiers().testFlag(Qt::ControlModifier) || event.modifiers().testFlag(Qt::ShiftModifier);
 }
 
-bool ControlStrategy::backgroundDragInitiated(QMouseEvent & event) const
-{
-    const bool invertedControls = SC::instance().settingsProxy()->invertedControls();
-
-    return (invertedControls == isModifierPressed()) && event.button() == Qt::LeftButton;
-}
-
-bool ControlStrategy::rubberBandInitiated(QMouseEvent & event) const
+bool ControlStrategy::backgroundDragInitiated(const QMouseEvent & event) const
 {
     const bool invertedControls = SC::instance().settingsProxy()->invertedControls();
 
-    return ((!invertedControls ^ !isModifierPressed()) && (event.button() == Qt::LeftButton)) || event.button() == Qt::MiddleButton;
+    return (invertedControls == isModifierPressed(event)) && event.button() == Qt::LeftButton;
 }
 
-bool ControlStrategy::primaryButtonClicked(QMouseEvent & event) const
+bool ControlStrategy::rubberBandInitiated(const QMouseEvent & event) const
+{
+    const bool invertedControls = SC::instance().settingsProxy()->invertedControls();
+
+    return ((!invertedControls ^ !isModifierPressed(event)) && (event.button() == Qt::LeftButton)) || event.button() == Qt::MiddleButton;
+}
+
+bool ControlStrategy::primaryButtonClicked(const QMouseEvent & event) const
 {
     return event.button() == Qt::LeftButton;
 }
 
-bool ControlStrategy::secondaryButtonClicked(QMouseEvent & event) const
+bool ControlStrategy::secondaryButtonClicked(const QMouseEvent & event) const
 {
     return event.button() == Qt::RightButton;
-}
-
-void ControlStrategy::setInvertedMode(bool invertedMode)
-{
-    m_invertedMode = invertedMode;
 }
 
 QString ControlStrategy::mirrorLayoutHorizontallyShortcut() const

@@ -364,54 +364,70 @@ void EditorView::mousePressEvent(QMouseEvent * event)
 
 void EditorView::mouseReleaseEvent(QMouseEvent * event)
 {
+    auto & mouseAction = SC::instance().applicationService()->mouseAction();
     if (event->button() == Qt::MiddleButton) {
-        switch (SC::instance().applicationService()->mouseAction().action()) {
-        case MouseAction::Action::RubberBand:
+        if (mouseAction.action() == MouseAction::Action::RubberBand) {
             finishRubberBand();
-            break;
-        default:
-            break;
         }
     } else if (m_controlStrategy->primaryButtonClicked(*event)) {
-        switch (SC::instance().applicationService()->mouseAction().action()) {
-        case MouseAction::Action::None:
-            // This can happen if the user deletes the drag node while connecting nodes or creating a new node.
-            // In this case the action is just aborted.
-            if (m_connectionTargetNode) {
-                m_connectionTargetNode->setSelected(false);
-                m_connectionTargetNode = nullptr;
-            }
-            break;
-        case MouseAction::Action::MoveNode:
-            SC::instance().applicationService()->adjustSceneRect();
-            break;
-        case MouseAction::Action::CreateOrConnectNode:
-            if (const auto sourceNode = SC::instance().applicationService()->mouseAction().sourceNode()) {
-                if (m_connectionTargetNode) {
-                    SC::instance().applicationService()->addEdge(*sourceNode, *m_connectionTargetNode);
-                    m_connectionTargetNode->setSelected(false);
-                    m_connectionTargetNode = nullptr;
-                } else {
-                    SC::instance().applicationService()->createAndAddNode(sourceNode->index(), m_grid.snapToGrid(m_mousePositionOnScene));
-                }
-                resetDummyDragItems();
-            }
-            break;
-        case MouseAction::Action::RubberBand:
-            finishRubberBand();
-            break;
-        case MouseAction::Action::Scroll:
-            setDragMode(NoDrag);
-            updateShadowEffectsBasedOnItemVisiblity();
-            break;
-        }
-
+        handlePrimaryButtonRelease(mouseAction.action());
         QApplication::restoreOverrideCursor();
     }
 
-    SC::instance().applicationService()->mouseAction().clear();
+    mouseAction.clear();
 
     QGraphicsView::mouseReleaseEvent(event);
+}
+
+void EditorView::handlePrimaryButtonRelease(MouseAction::Action action)
+{
+    switch (action) {
+    case MouseAction::Action::None:
+        // This can happen if the user deletes the drag node while connecting nodes or creating a new node.
+        // In this case the action is just aborted.
+        unselectConnectionTargetNode();
+        break;
+    case MouseAction::Action::MoveNode:
+        SC::instance().applicationService()->adjustSceneRect();
+        break;
+    case MouseAction::Action::CreateOrConnectNode:
+        finishCreatingOrConnectingNode();
+        break;
+    case MouseAction::Action::RubberBand:
+        finishRubberBand();
+        break;
+    case MouseAction::Action::Scroll:
+        finishScrolling();
+        break;
+    }
+}
+
+void EditorView::finishCreatingOrConnectingNode()
+{
+    const auto applicationService = SC::instance().applicationService();
+    if (const auto sourceNode = applicationService->mouseAction().sourceNode()) {
+        if (m_connectionTargetNode) {
+            applicationService->addEdge(*sourceNode, *m_connectionTargetNode);
+            unselectConnectionTargetNode();
+        } else {
+            applicationService->createAndAddNode(sourceNode->index(), m_grid.snapToGrid(m_mousePositionOnScene));
+        }
+        resetDummyDragItems();
+    }
+}
+
+void EditorView::finishScrolling()
+{
+    setDragMode(NoDrag);
+    updateShadowEffectsBasedOnItemVisiblity();
+}
+
+void EditorView::unselectConnectionTargetNode()
+{
+    if (m_connectionTargetNode) {
+        m_connectionTargetNode->setSelected(false);
+        m_connectionTargetNode = nullptr;
+    }
 }
 
 void EditorView::openEdgeContextMenu()

@@ -21,6 +21,7 @@
 #include "../common/types.hpp"
 #include "grid.hpp"
 #include "menus/main_context_menu.hpp"
+#include "mouse_action.hpp"
 
 #include <QColor>
 #include <QGraphicsView>
@@ -114,6 +115,8 @@ private:
     void drawGrid(QPainter & painter, const QRectF & sceneRect);
 
     void finishRubberBand();
+    void finishCreatingOrConnectingNode();
+    void finishScrolling();
 
     void handleCreateOrConnectNodeAction();
 
@@ -138,6 +141,8 @@ private:
 
     void handlePrimaryButtonClickOnNodeHandle(SceneItems::NodeHandle & nodeHandle);
 
+    void handlePrimaryButtonRelease(MouseAction::Action action);
+
     void handleSecondaryButtonClickOnEdge(EdgeR edge);
 
     void handleSecondaryButtonClickOnNode(NodeR node);
@@ -159,6 +164,8 @@ private:
     void showDummyDragEdge(bool show);
 
     void showDummyDragNode(bool show);
+
+    void unselectConnectionTargetNode();
 
     void updateScale();
 

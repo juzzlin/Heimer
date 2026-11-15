@@ -18,6 +18,7 @@
 
 #include <QObject>
 
+#include <functional>
 #include <memory>
 
 class ApplicationService;
@@ -28,7 +29,13 @@ class StateMachine : public QObject
     Q_OBJECT
 
 public:
+    //! Answers a question about the current mind map, e.g. "is it modified?".
+    using MindMapQuery = std::function<bool()>;
+
+    //! By default the mind map is queried from ApplicationService.
     StateMachine(QObject * parent = nullptr);
+    //! Use the given queries instead of ApplicationService, e.g. in unit tests.
+    StateMachine(MindMapQuery isModified, MindMapQuery canBeSaved, QObject * parent = nullptr);
 
     enum class State
     {
@@ -114,8 +121,6 @@ public:
         Close
     };
 
-    StateMachine();
-
     void calculateState(StateMachine::Action action);
 
 signals:
@@ -123,6 +128,9 @@ signals:
     void stateChanged(StateMachine::State state);
 
 private:
+    MindMapQuery m_isModified;
+    MindMapQuery m_canBeSaved;
+
     State m_state = State::Init;
 
     QuitType m_quitType = QuitType::None;

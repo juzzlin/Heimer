@@ -15,6 +15,7 @@
 
 #include "recent_files_manager.hpp"
 
+#include "../common/constants.hpp"
 #include "../infra/settings.hpp"
 
 #include "contrib/SimpleLogger/src/simple_logger.hpp"
@@ -38,8 +39,7 @@ void RecentFilesManager::addRecentFile(QString filePath)
     m_recentFiles.removeAll(filePath);
     m_recentFiles.push_front(filePath);
 
-    const int maxFileCount = 8;
-    while (m_recentFiles.size() > maxFileCount) {
+    while (m_recentFiles.size() > Constants::Misc::maxRecentFileCount()) {
         m_recentFiles.pop_back();
     }
 

@@ -126,6 +126,9 @@ QString threeDots();
 //! Maximum number of undo (and redo) steps
 size_t maxUndoHistorySize();
 
+//! Maximum number of files in the recent files list
+int maxRecentFileCount();
+
 } // namespace Misc
 
 namespace Node {

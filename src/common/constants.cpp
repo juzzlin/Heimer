@@ -274,6 +274,11 @@ size_t maxUndoHistorySize()
     return 100;
 }
 
+int maxRecentFileCount()
+{
+    return 8;
+}
+
 } // namespace Misc
 
 namespace View {

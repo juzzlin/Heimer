@@ -27,7 +27,7 @@ namespace Widgets {
 static const auto TAG = "FontButton";
 
 FontButton::FontButton(QWidget * parent)
-  : QPushButton(parent)
+  : QPushButton { parent }
 {
     setText(tr("Font") + Constants::Misc::threeDots());
 
@@ -50,7 +50,7 @@ FontButton::FontButton(QWidget * parent)
 
 void FontButton::updateFont(const QFont & font)
 {
-    QFont newFont(font);
+    QFont newFont { font };
     newFont.setPointSize(this->font().pointSize());
     setFont(newFont);
 }

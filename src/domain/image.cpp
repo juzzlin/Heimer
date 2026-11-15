@@ -20,7 +20,7 @@ Image::Image()
 }
 
 Image::Image(QImage image, std::string path)
-  : m_image(image)
+  : m_image { image }
   , m_path(path)
 {
 }

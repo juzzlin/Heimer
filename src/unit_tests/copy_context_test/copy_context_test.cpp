@@ -123,7 +123,7 @@ void CopyContextTest::test_push_shouldCalculateReferencePointAsAverage()
     CopyContext dut;
     dut.push({ node0.get(), node1.get(), node2.get() }, graph);
 
-    QCOMPARE(dut.copiedData().copyReferencePoint, QPointF(100, 0));
+    QCOMPARE(dut.copiedData().copyReferencePoint, (QPointF { 100, 0 }));
 }
 
 void CopyContextTest::test_clear_shouldEmptyCopiedData()
@@ -143,7 +143,7 @@ void CopyContextTest::test_clear_shouldEmptyCopiedData()
     QCOMPARE(dut.copyStackSize(), size_t { 0 });
     QVERIFY(dut.copiedData().nodes.empty());
     QVERIFY(dut.copiedData().edges.empty());
-    QCOMPARE(dut.copiedData().copyReferencePoint, QPointF());
+    QCOMPARE(dut.copiedData().copyReferencePoint, QPointF {});
 }
 
 QTEST_GUILESS_MAIN(CopyContextTest)

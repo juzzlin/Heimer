@@ -29,8 +29,8 @@ MouseAction::Action MouseAction::action() const
 void MouseAction::clear()
 {
     m_sourceNode = nullptr;
-    m_sourcePos = QPointF();
-    m_sourcePosOnNode = QPointF();
+    m_sourcePos = QPointF {};
+    m_sourcePosOnNode = QPointF {};
     m_action = Action::None;
 }
 

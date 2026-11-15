@@ -38,7 +38,7 @@
 namespace Dialogs::Export {
 
 PngExportDialog::PngExportDialog(QWidget & parent)
-  : QDialog(&parent)
+  : QDialog { &parent }
 {
     setWindowTitle(tr("Export to PNG Image"));
     setMinimumWidth(480);
@@ -83,7 +83,7 @@ PngExportDialog::PngExportDialog(QWidget & parent)
     connect(m_buttonBox, &QDialogButtonBox::accepted, this, [=] {
         m_buttonBox->setEnabled(false);
         m_progressBar->setValue(50);
-        emit pngExportRequested({ m_fileNameWithExtension, QSize(m_imageWidthSpinBox->value(), m_imageHeightSpinBox->value()), m_transparentBackgroundCheckBox->isChecked() });
+        emit pngExportRequested({ m_fileNameWithExtension, QSize { m_imageWidthSpinBox->value(), m_imageHeightSpinBox->value() }, m_transparentBackgroundCheckBox->isChecked() });
     });
 }
 
@@ -160,7 +160,7 @@ void PngExportDialog::validate()
 
 void PngExportDialog::initWidgets()
 {
-    const auto mainLayout = new QVBoxLayout(this);
+    const auto mainLayout = new QVBoxLayout { this };
 
     const auto nameGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Filename"), *mainLayout);
 
@@ -176,13 +176,13 @@ void PngExportDialog::initWidgets()
     const auto sizeGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Image Size"), *mainLayout);
 
     const auto imageSizeLayout = new QHBoxLayout;
-    const auto imageWidthLabel = new QLabel(tr("Width (px):"));
+    const auto imageWidthLabel = new QLabel { tr("Width (px):") };
     imageSizeLayout->addWidget(imageWidthLabel);
     m_imageWidthSpinBox = new QSpinBox;
     m_imageWidthSpinBox->setMinimum(m_minImageSize);
     m_imageWidthSpinBox->setMaximum(m_maxImageSize);
     imageSizeLayout->addWidget(m_imageWidthSpinBox);
-    const auto imageHeightLabel = new QLabel(tr("Height (px):"));
+    const auto imageHeightLabel = new QLabel { tr("Height (px):") };
     imageSizeLayout->addWidget(imageHeightLabel);
     m_imageHeightSpinBox = new QSpinBox;
     m_imageHeightSpinBox->setMinimum(m_minImageSize);
@@ -206,8 +206,8 @@ void PngExportDialog::initWidgets()
     progressBarLayout->addWidget(m_progressBar);
     mainLayout->addLayout(progressBarLayout);
 
-    m_buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
-                                       | QDialogButtonBox::Cancel);
+    m_buttonBox = new QDialogButtonBox { QDialogButtonBox::Ok
+                                         | QDialogButtonBox::Cancel };
     m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
     mainLayout->addWidget(m_buttonBox);

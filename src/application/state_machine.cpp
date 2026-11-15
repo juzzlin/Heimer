@@ -31,7 +31,7 @@ StateMachine::StateMachine(QObject * parent)
 }
 
 StateMachine::StateMachine(MindMapQuery isModified, MindMapQuery canBeSaved, QObject * parent)
-  : QObject(parent)
+  : QObject { parent }
   , m_isModified { isModified }
   , m_canBeSaved { canBeSaved }
 {

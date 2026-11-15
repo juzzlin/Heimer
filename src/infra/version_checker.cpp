@@ -35,7 +35,7 @@ VersionChecker::VersionChecker(QObject * parent)
 Version parseLatestReleasedVersion(QString data)
 {
     Version newest;
-    static QRegularExpression tagMatch("^.*tag/(\\d.\\d.\\d).*$");
+    static QRegularExpression tagMatch { "^.*tag/(\\d.\\d.\\d).*$" };
     for (auto && line : data.split("\n")) {
         if (const auto match = tagMatch.match(line); match.hasMatch()) {
             if (const Version version { match.captured(1) }; version.isValid() && version > newest) {
@@ -64,5 +64,5 @@ void VersionChecker::checkForNewReleases()
                     L(TAG).warning() << "Could not determine the latest released version!";
                 }
             });
-    manager->get(QNetworkRequest(QUrl { Constants::Application::releasesUrl() }));
+    manager->get(QNetworkRequest { QUrl { Constants::Application::releasesUrl() } });
 }

@@ -116,7 +116,7 @@ void ThemeServiceTest::test_saveUserTheme_shouldReplaceThemeOfSameName()
     QVERIFY(themeService->saveUserTheme(createUserTheme("Mine", { 2, 2, 2 })));
 
     QCOMPARE(themeService->userThemes().size(), size_t { 1 });
-    QCOMPARE(themeService->theme("Mine")->backgroundColor, QColor(2, 2, 2));
+    QCOMPARE(themeService->theme("Mine")->backgroundColor, (QColor { 2, 2, 2 }));
 }
 
 void ThemeServiceTest::test_saveUserTheme_shouldRejectFactoryAndEmptyNames()
@@ -196,7 +196,7 @@ void ThemeServiceTest::test_defaultTheme_withoutNameShouldReturnLegacyTheme()
     m_settingsProxy->setBackgroundColor({ 9, 8, 7 });
     const auto themeService = createThemeService();
 
-    QCOMPARE(themeService->defaultTheme().backgroundColor, QColor(9, 8, 7));
+    QCOMPARE(themeService->defaultTheme().backgroundColor, (QColor { 9, 8, 7 }));
 }
 
 void ThemeServiceTest::test_migrateLegacyDefaults_classicDefaultsShouldSelectClassic()
@@ -219,7 +219,7 @@ void ThemeServiceTest::test_migrateLegacyDefaults_customDefaultsShouldCreateUser
 
     QCOMPARE(themeService->defaultThemeName(), ThemeService::migratedThemeName());
     QVERIFY(themeService->isUserTheme(ThemeService::migratedThemeName()));
-    QCOMPARE(themeService->defaultTheme().backgroundColor, QColor(9, 8, 7));
+    QCOMPARE(themeService->defaultTheme().backgroundColor, (QColor { 9, 8, 7 }));
 }
 
 void ThemeServiceTest::test_migrateLegacyDefaults_shouldBeDoneOnlyOnce()
@@ -247,7 +247,7 @@ void ThemeServiceTest::test_migrateLegacyDefaults_shouldNotOverwriteExistingThem
     QVERIFY(themeService->theme(ThemeService::migratedThemeName()) == existingTheme);
     const auto migratedName = ThemeService::migratedThemeName() + " 2";
     QCOMPARE(themeService->defaultThemeName(), migratedName);
-    QCOMPARE(themeService->theme(migratedName)->backgroundColor, QColor(9, 8, 7));
+    QCOMPARE(themeService->theme(migratedName)->backgroundColor, (QColor { 9, 8, 7 }));
 }
 
 void ThemeServiceTest::test_load_invalidFileShouldBeKeptAsBackup()

@@ -20,9 +20,9 @@
 namespace Widgets {
 
 StatusLabel::StatusLabel(EditorView & editorView, QString message)
-  : QLabel(message, &editorView)
-  , m_editorView(editorView)
-  , m_scaleAnimation(this, "scale")
+  : QLabel { message, &editorView }
+  , m_editorView { editorView }
+  , m_scaleAnimation { this, "scale" }
 {
     setOpenExternalLinks(true);
     setStyleSheet("background-color: grey; color: white; margin: 3px; padding: 5px; border-radius: 5px;");

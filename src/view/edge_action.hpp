@@ -26,7 +26,7 @@ public:
     };
 
     EdgeAction(Type type)
-      : m_type(type)
+      : m_type { type }
     {
     }
 

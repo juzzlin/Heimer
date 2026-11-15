@@ -51,10 +51,10 @@ using juzzlin::L;
 static const auto TAG = "Application";
 
 Application::Application(int & argc, char ** argv)
-  : m_application(argc, argv)
-  , m_serviceContainer(std::make_unique<SC>())
-  , m_stateMachine(new StateMachine { this }) // Parented to this
-  , m_versionChecker(new VersionChecker { this }) // Parented to this
+  : m_application { argc, argv }
+  , m_serviceContainer { std::make_unique<SC>() }
+  , m_stateMachine { new StateMachine { this } } // Parented to this
+  , m_versionChecker { new VersionChecker { this } } // Parented to this
 {
     parseArgs(argc, argv);
 
@@ -155,7 +155,7 @@ std::string Application::buildAvailableLanguagesHelpString() const
 
 void Application::parseArgs(int argc, char ** argv)
 {
-    Argengine ae(argc, argv);
+    Argengine ae { argc, argv };
 
     ae.addOption(
       { "-d", "--debug" }, [] {
@@ -324,7 +324,7 @@ void Application::saveMindMap()
     L(TAG).debug() << "Save..";
 
     if (!m_serviceContainer->applicationService()->saveMindMap()) {
-        const auto msg = QString(tr("Failed to save file."));
+        const auto msg = QString { tr("Failed to save file.") };
         L(TAG).error() << msg.toStdString();
         showMessageBox(msg);
         emit actionTriggered(StateMachine::Action::MindMapSaveFailed);
@@ -355,13 +355,13 @@ void Application::saveMindMapAs()
     }
 
     if (m_serviceContainer->applicationService()->saveMindMapAs(fileName)) {
-        const auto msg = QString(tr("File '")) + fileName + tr("' saved.");
+        const auto msg = QString { tr("File '") } + fileName + tr("' saved.");
         L(TAG).debug() << msg.toStdString();
         m_mainWindow->enableSave(false);
         Settings::Custom::saveRecentPath(fileName);
         emit actionTriggered(StateMachine::Action::MindMapSavedAs);
     } else {
-        const auto msg = QString(tr("Failed to save file as '") + fileName + "'.");
+        const auto msg = QString { tr("Failed to save file as '") + fileName + "'." };
         L(TAG).error() << msg.toStdString();
         showMessageBox(msg);
         emit actionTriggered(StateMachine::Action::MindMapSaveAsFailed);
@@ -370,13 +370,13 @@ void Application::saveMindMapAs()
 
 void Application::showBackgroundColorDialog()
 {
-    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Background).exec();
+    Dialogs::SceneColorDialog { Dialogs::ColorDialog::Role::Background }.exec();
     emit actionTriggered(StateMachine::Action::BackgroundColorChanged);
 }
 
 void Application::showEdgeColorDialog()
 {
-    if (Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Edge).exec() != QDialog::Accepted) {
+    if (Dialogs::SceneColorDialog { Dialogs::ColorDialog::Role::Edge }.exec() != QDialog::Accepted) {
         // Clear implicitly selected edges on cancel
         m_serviceContainer->applicationService()->clearEdgeSelectionGroup(true);
     }
@@ -385,25 +385,25 @@ void Application::showEdgeColorDialog()
 
 void Application::showEdgeLabelColorDialog()
 {
-    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::EdgeLabel).exec();
+    Dialogs::SceneColorDialog { Dialogs::ColorDialog::Role::EdgeLabel }.exec();
     emit actionTriggered(StateMachine::Action::EdgeLabelColorChanged);
 }
 
 void Application::showEdgeLabelTextColorDialog()
 {
-    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::EdgeLabelText).exec();
+    Dialogs::SceneColorDialog { Dialogs::ColorDialog::Role::EdgeLabelText }.exec();
     emit actionTriggered(StateMachine::Action::EdgeLabelTextColorChanged);
 }
 
 void Application::showGridColorDialog()
 {
-    Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Grid).exec();
+    Dialogs::SceneColorDialog { Dialogs::ColorDialog::Role::Grid }.exec();
     emit actionTriggered(StateMachine::Action::GridColorChanged);
 }
 
 void Application::showNodeColorDialog()
 {
-    if (Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Node).exec() != QDialog::Accepted) {
+    if (Dialogs::SceneColorDialog { Dialogs::ColorDialog::Role::Node }.exec() != QDialog::Accepted) {
         // Clear implicitly selected nodes on cancel
         m_serviceContainer->applicationService()->clearNodeSelectionGroup(true);
     }
@@ -412,7 +412,7 @@ void Application::showNodeColorDialog()
 
 void Application::showTextColorDialog()
 {
-    if (Dialogs::SceneColorDialog(Dialogs::ColorDialog::Role::Text).exec() != QDialog::Accepted) {
+    if (Dialogs::SceneColorDialog { Dialogs::ColorDialog::Role::Text }.exec() != QDialog::Accepted) {
         // Clear implicitly selected nodes on cancel
         m_serviceContainer->applicationService()->clearNodeSelectionGroup(true);
     }
@@ -478,14 +478,14 @@ void Application::showLayoutOptimizationDialog()
 
 void Application::showMessageBox(QString message)
 {
-    QMessageBox msgBox(m_mainWindow.get());
+    QMessageBox msgBox { m_mainWindow.get() };
     msgBox.setText(message);
     msgBox.exec();
 }
 
 int Application::showNotSavedDialog()
 {
-    QMessageBox msgBox(m_mainWindow.get());
+    QMessageBox msgBox { m_mainWindow.get() };
     msgBox.setText(tr("The mind map has been modified."));
     msgBox.setInformativeText(tr("Do you want to save your changes?"));
     msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);

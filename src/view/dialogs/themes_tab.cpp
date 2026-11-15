@@ -38,14 +38,14 @@ static const QSize iconSize { 96, 48 };
 
 ThemesTab::ThemesTab(QString name, ThemeServiceS themeService, QWidget * parent)
   : SettingsTabBase { name, parent }
-  , m_themeService(themeService)
-  , m_themeList(new QListWidget { this })
-  , m_setDefaultButton(new QPushButton { tr("Set as default for new mind maps"), this })
-  , m_newButton(new QPushButton { tr("New from current mind map") + Constants::Misc::threeDots(), this })
-  , m_duplicateButton(new QPushButton { tr("Duplicate") + Constants::Misc::threeDots(), this })
-  , m_editButton(new QPushButton { tr("Edit") + Constants::Misc::threeDots(), this })
-  , m_renameButton(new QPushButton { tr("Rename") + Constants::Misc::threeDots(), this })
-  , m_deleteButton(new QPushButton { tr("Delete"), this })
+  , m_themeService { themeService }
+  , m_themeList { new QListWidget { this } }
+  , m_setDefaultButton { new QPushButton { tr("Set as default for new mind maps"), this } }
+  , m_newButton { new QPushButton { tr("New from current mind map") + Constants::Misc::threeDots(), this } }
+  , m_duplicateButton { new QPushButton { tr("Duplicate") + Constants::Misc::threeDots(), this } }
+  , m_editButton { new QPushButton { tr("Edit") + Constants::Misc::threeDots(), this } }
+  , m_renameButton { new QPushButton { tr("Rename") + Constants::Misc::threeDots(), this } }
+  , m_deleteButton { new QPushButton { tr("Delete"), this } }
 {
     initWidgets();
 

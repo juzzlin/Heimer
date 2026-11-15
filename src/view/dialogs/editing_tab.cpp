@@ -32,12 +32,12 @@ namespace Dialogs {
 
 EditingTab::EditingTab(QString name, QWidget * parent)
   : SettingsTabBase { name, parent }
-  , m_selectNodeGroupByIntersectionCheckBox(new QCheckBox(tr("Select node group by intersection")))
-  , m_raiseNodeOnMouseHoverCheckBox(new QCheckBox(tr("Raise node on mouse hover")))
-  , m_invertedControlsCheckBox(new QCheckBox(tr("Inverted controls")))
-  , m_mouseWheelZoomSpeedSpinBox(new QSpinBox)
-  , m_autoloadCheckBox(new QCheckBox(tr("Enable autoload")))
-  , m_autosaveCheckBox(new QCheckBox(tr("Enable autosave")))
+  , m_selectNodeGroupByIntersectionCheckBox { new QCheckBox { tr("Select node group by intersection") } }
+  , m_raiseNodeOnMouseHoverCheckBox { new QCheckBox { tr("Raise node on mouse hover") } }
+  , m_invertedControlsCheckBox { new QCheckBox { tr("Inverted controls") } }
+  , m_mouseWheelZoomSpeedSpinBox { new QSpinBox }
+  , m_autoloadCheckBox { new QCheckBox { tr("Enable autoload") } }
+  , m_autosaveCheckBox { new QCheckBox { tr("Enable autosave") } }
 {
     initWidgets();
 }

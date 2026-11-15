@@ -26,11 +26,11 @@ public:
     ShadowEffectParams() = default;
 
     ShadowEffectParams(int offset, int blurRadius, int selectedItemBlurRadius, QColor shadowColor, QColor selectedItemShadowColor)
-      : m_offset(offset)
-      , m_blurRadius(blurRadius)
-      , m_selectedItemBlurRadius(selectedItemBlurRadius)
-      , m_shadowColor(shadowColor)
-      , m_selectedItemShadowColor(selectedItemShadowColor)
+      : m_offset { offset }
+      , m_blurRadius { blurRadius }
+      , m_selectedItemBlurRadius { selectedItemBlurRadius }
+      , m_shadowColor { shadowColor }
+      , m_selectedItemShadowColor { selectedItemShadowColor }
     {
     }
 

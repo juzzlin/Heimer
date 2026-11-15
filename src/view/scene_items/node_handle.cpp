@@ -30,9 +30,9 @@
 namespace SceneItems {
 
 NodeHandle::NodeHandle(NodeR parentNode, NodeHandle::Role role, int radius)
-  : m_parentNode(parentNode)
-  , m_role(role)
-  , m_radius(radius)
+  : m_parentNode { parentNode }
+  , m_role { role }
+  , m_radius { radius }
 {
     setAcceptHoverEvents(true);
 

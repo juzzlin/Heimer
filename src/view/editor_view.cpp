@@ -543,7 +543,7 @@ void EditorView::updateShadowEffectsBasedOnItemVisiblity()
 
 void EditorView::updateRubberBand()
 {
-    m_rubberBand->setGeometry(QRect(SC::instance().applicationService()->mouseAction().rubberBandOrigin().toPoint(), m_mousePositionOnView.toPoint()).normalized());
+    m_rubberBand->setGeometry(QRect { SC::instance().applicationService()->mouseAction().rubberBandOrigin().toPoint(), m_mousePositionOnView.toPoint() }.normalized());
 }
 
 void EditorView::restoreZoom()
@@ -607,7 +607,7 @@ void EditorView::setGridVisible(bool visible)
 
 void EditorView::showStatusText(QString statusText)
 {
-    const auto label = new Widgets::StatusLabel(*this, statusText);
+    const auto label = new Widgets::StatusLabel { *this, statusText };
     label->show();
     label->updateGeometry();
 }
@@ -640,9 +640,10 @@ void EditorView::dragMoveEvent(QDragMoveEvent * event)
 
 void EditorView::zoom(double amount)
 {
-    const auto mappedSceneRect = QRectF(
-      mapFromScene(scene()->sceneRect().topLeft()),
-      mapFromScene(scene()->sceneRect().bottomRight()));
+    const auto mappedSceneRect = QRectF {
+        mapFromScene(scene()->sceneRect().topLeft()),
+        mapFromScene(scene()->sceneRect().bottomRight())
+    };
     juzzlin::L(TAG).debug() << "Current scale: " << m_scale;
     juzzlin::L(TAG).debug() << "Mapped scene rectangle width: " << mappedSceneRect.width();
     juzzlin::L(TAG).debug() << "View rectangle width: " << rect().width();

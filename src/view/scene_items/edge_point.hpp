@@ -23,8 +23,8 @@ namespace SceneItems {
 struct EdgePoint
 {
     EdgePoint(QPointF location = { 0, 0 }, bool isCorner = false)
-      : location(location)
-      , isCorner(isCorner)
+      : location { location }
+      , isCorner { isCorner }
     {
     }
 

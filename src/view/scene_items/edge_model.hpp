@@ -34,9 +34,9 @@ struct EdgeModel
     struct Style
     {
         Style(ArrowMode arrowMode)
-          : arrowMode(arrowMode)
-          , arrowSize(Constants::Settings::defaultArrowSize())
-          , edgeWidth(Constants::Settings::defaultEdgeWidth())
+          : arrowMode { arrowMode }
+          , arrowSize { Constants::Settings::defaultArrowSize() }
+          , edgeWidth { Constants::Settings::defaultEdgeWidth() }
         {
         }
 
@@ -50,8 +50,8 @@ struct EdgeModel
     };
 
     EdgeModel(bool reversed, Style style)
-      : reversed(reversed)
-      , style(style)
+      : reversed { reversed }
+      , style { style }
     {
     }
 

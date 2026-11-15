@@ -44,12 +44,12 @@ using std::make_shared;
 static const auto TAG = "EditorService";
 
 EditorService::EditorService()
-  : m_alzFileIO(std::make_unique<IO::AlzFileIO>())
-  , m_copyContext(std::make_unique<CopyContext>())
-  , m_edgeSelectionGroup(std::make_unique<EdgeSelectionGroup>())
-  , m_nodeSelectionGroup(std::make_unique<NodeSelectionGroup>())
-  , m_undoStack(std::make_unique<UndoStack<MindMapSnapshot>>(Constants::Misc::maxUndoHistorySize()))
-  , m_undoPointMergingEnabled(!TestMode::enabled())
+  : m_alzFileIO { std::make_unique<IO::AlzFileIO>() }
+  , m_copyContext { std::make_unique<CopyContext>() }
+  , m_edgeSelectionGroup { std::make_unique<EdgeSelectionGroup>() }
+  , m_nodeSelectionGroup { std::make_unique<NodeSelectionGroup>() }
+  , m_undoStack { std::make_unique<UndoStack<MindMapSnapshot>>(Constants::Misc::maxUndoHistorySize()) }
+  , m_undoPointMergingEnabled { !TestMode::enabled() }
 {
     m_undoTimer.setSingleShot(true);
     m_undoTimer.setInterval(Constants::View::tooQuickActionDelay());

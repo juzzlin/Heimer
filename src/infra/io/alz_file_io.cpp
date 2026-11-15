@@ -26,8 +26,8 @@ Q_DECLARE_METATYPE(MindMapDataS)
 namespace IO {
 
 AlzFileIO::AlzFileIO(AlzFormatVersion outputVersion)
-  : m_worker(std::make_unique<AlzFileIOWorker>(outputVersion))
-  , m_workerThread(std::make_unique<QThread>())
+  : m_worker { std::make_unique<AlzFileIOWorker>(outputVersion) }
+  , m_workerThread { std::make_unique<QThread>() }
 {
     qRegisterMetaType<MindMapDataS>();
 

@@ -19,14 +19,14 @@
 struct ExportParams
 {
     ExportParams(QString fileName)
-      : fileName(fileName)
+      : fileName { fileName }
     {
     }
 
     ExportParams(QString fileName, QSize imageSize, bool transparentBackground)
-      : fileName(fileName)
-      , imageSize(imageSize)
-      , transparentBackground(transparentBackground)
+      : fileName { fileName }
+      , imageSize { imageSize }
+      , transparentBackground { transparentBackground }
     {
     }
 

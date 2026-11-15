@@ -151,7 +151,7 @@ void NodeTest::test_roundedRectShadow_shouldBeSolidInsideAndFadeOutside()
 
     const auto shadow = GraphicsFactory::createRoundedRectShadow({ 100, 50 }, 8, blurRadius, color);
 
-    QCOMPARE(shadow.size(), QSize(100 + blurRadius * 2, 50 + blurRadius * 2));
+    QCOMPARE(shadow.size(), (QSize { 100 + blurRadius * 2, 50 + blurRadius * 2 }));
     // Solid in the middle..
     QVERIFY(std::abs(shadow.pixelColor(shadow.width() / 2, shadow.height() / 2).alpha() - color.alpha()) <= 2);
     // ..half way at the edge of the rect..

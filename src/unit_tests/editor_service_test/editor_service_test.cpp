@@ -71,9 +71,9 @@ void EditorServiceTest::test_groupConnection()
     editorService.setMindMapData(std::make_shared<MindMapData>());
     QCOMPARE(editorService.areSelectedNodesConnectable(), false);
 
-    const auto node0 = editorService.addNodeAt(QPointF(0, 0));
-    const auto node1 = editorService.addNodeAt(QPointF(1, 1));
-    const auto node2 = editorService.addNodeAt(QPointF(2, 2));
+    const auto node0 = editorService.addNodeAt(QPointF { 0, 0 });
+    const auto node1 = editorService.addNodeAt(QPointF { 1, 1 });
+    const auto node2 = editorService.addNodeAt(QPointF { 2, 2 });
 
     QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(0));
     editorService.toggleNodeInSelectionGroup(*node0);
@@ -97,9 +97,9 @@ void EditorServiceTest::test_groupDisconnection()
     editorService.setMindMapData(std::make_shared<MindMapData>());
     QCOMPARE(editorService.areSelectedNodesDisconnectable(), false);
 
-    const auto node0 = editorService.addNodeAt(QPointF(0, 0));
-    const auto node1 = editorService.addNodeAt(QPointF(1, 1));
-    const auto node2 = editorService.addNodeAt(QPointF(2, 2));
+    const auto node0 = editorService.addNodeAt(QPointF { 0, 0 });
+    const auto node1 = editorService.addNodeAt(QPointF { 1, 1 });
+    const auto node2 = editorService.addNodeAt(QPointF { 2, 2 });
 
     QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(0));
     editorService.toggleNodeInSelectionGroup(*node0);
@@ -121,8 +121,8 @@ void EditorServiceTest::test_groupDeletionOfEdges_shouldDeleteSelectedEdges()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
-    const auto node0 = editorService.addNodeAt(QPointF(0, 0));
-    const auto node1 = editorService.addNodeAt(QPointF(1, 1));
+    const auto node0 = editorService.addNodeAt(QPointF { 0, 0 });
+    const auto node1 = editorService.addNodeAt(QPointF { 1, 1 });
     const auto edge0 = std::make_shared<Edge>(node0, node1);
     editorService.addEdge(edge0);
     editorService.toggleEdgeInSelectionGroup(*edge0);
@@ -137,8 +137,8 @@ void EditorServiceTest::test_groupDeletionOfNodes_shouldDeleteSelectedNodes()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
-    const auto node0 = editorService.addNodeAt(QPointF(0, 0));
-    const auto node1 = editorService.addNodeAt(QPointF(1, 1));
+    const auto node0 = editorService.addNodeAt(QPointF { 0, 0 });
+    const auto node1 = editorService.addNodeAt(QPointF { 1, 1 });
 
     editorService.toggleNodeInSelectionGroup(*node0);
     editorService.toggleNodeInSelectionGroup(*node1);
@@ -153,8 +153,8 @@ void EditorServiceTest::test_groupMove()
 {
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
-    const auto node0 = editorService.addNodeAt(QPointF(0, 0));
-    const auto node1 = editorService.addNodeAt(QPointF(1, 1));
+    const auto node0 = editorService.addNodeAt(QPointF { 0, 0 });
+    const auto node1 = editorService.addNodeAt(QPointF { 1, 1 });
 
     editorService.toggleNodeInSelectionGroup(*node0);
     editorService.toggleNodeInSelectionGroup(*node1);
@@ -182,8 +182,8 @@ void EditorServiceTest::test_groupSelectionOfEdges()
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
 
-    const auto node0 = editorService.addNodeAt(QPointF(0, 0));
-    const auto node1 = editorService.addNodeAt(QPointF(1, 1));
+    const auto node0 = editorService.addNodeAt(QPointF { 0, 0 });
+    const auto node1 = editorService.addNodeAt(QPointF { 1, 1 });
     const auto edge = std::make_shared<Edge>(node0, node1);
     editorService.addEdge(edge);
 
@@ -214,8 +214,8 @@ void EditorServiceTest::test_groupSelectionOfNodes()
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
 
-    const auto node0 = editorService.addNodeAt(QPointF(0, 0));
-    const auto node1 = editorService.addNodeAt(QPointF(1, 1));
+    const auto node0 = editorService.addNodeAt(QPointF { 0, 0 });
+    const auto node1 = editorService.addNodeAt(QPointF { 1, 1 });
 
     QCOMPARE(editorService.nodeSelectionGroupSize(), size_t(0));
 
@@ -249,8 +249,8 @@ void EditorServiceTest::test_loadState()
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
 
-    const auto node0 = editorService.addNodeAt(QPointF(0, 0));
-    const auto node1 = editorService.addNodeAt(QPointF(100, 0));
+    const auto node0 = editorService.addNodeAt(QPointF { 0, 0 });
+    const auto node1 = editorService.addNodeAt(QPointF { 100, 0 });
     const auto edge01 = editorService.addEdge(std::make_shared<Edge>(node0, node1));
 
     editorService.toggleNodeInSelectionGroup(*node0);
@@ -279,7 +279,7 @@ void EditorServiceTest::test_undoAddNodes()
     QCOMPARE(editorService.isModified(), false);
 
     editorService.saveUndoPoint();
-    editorService.addNodeAt(QPointF(0, 0));
+    editorService.addNodeAt(QPointF { 0, 0 });
     QCOMPARE(editorService.isUndoable(), true);
     QCOMPARE(editorService.isModified(), true);
 
@@ -287,7 +287,7 @@ void EditorServiceTest::test_undoAddNodes()
     QCOMPARE(editorService.isUndoable(), true);
     QCOMPARE(editorService.isModified(), true); // Currently saveUndoPoint() triggers isModified
 
-    editorService.addNodeAt(QPointF(1, 1));
+    editorService.addNodeAt(QPointF { 1, 1 });
     QCOMPARE(editorService.mindMapData()->graph().nodeCount(), static_cast<size_t>(2));
 
     editorService.undo();
@@ -308,9 +308,9 @@ void EditorServiceTest::test_redoAddNodes()
     EditorService editorService;
 
     editorService.setMindMapData(std::make_shared<MindMapData>());
-    editorService.addNodeAt(QPointF(0, 0));
+    editorService.addNodeAt(QPointF { 0, 0 });
     editorService.saveUndoPoint();
-    editorService.addNodeAt(QPointF(1, 1));
+    editorService.addNodeAt(QPointF { 1, 1 });
     QCOMPARE(editorService.mindMapData()->graph().nodeCount(), static_cast<size_t>(2));
 
     editorService.undo();
@@ -329,9 +329,9 @@ void EditorServiceTest::test_saveUndoPoint_quickSuccessionShouldBeMerged()
     editorService.setUndoPointMergingEnabled(true);
 
     editorService.saveUndoPoint();
-    editorService.addNodeAt(QPointF(0, 0));
+    editorService.addNodeAt(QPointF { 0, 0 });
     editorService.saveUndoPoint(); // Merged with the previous one
-    editorService.addNodeAt(QPointF(1, 1));
+    editorService.addNodeAt(QPointF { 1, 1 });
 
     editorService.undo();
     QCOMPARE(editorService.mindMapData()->graph().nodeCount(), static_cast<size_t>(0));
@@ -345,7 +345,7 @@ void EditorServiceTest::test_undoRedo_quickSuccessionShouldNotLoseStates()
     editorService.setMindMapData(std::make_shared<MindMapData>());
     for (int i = 0; i < 3; i++) {
         editorService.saveUndoPoint();
-        editorService.addNodeAt(QPointF(i, i));
+        editorService.addNodeAt(QPointF { static_cast<qreal>(i), static_cast<qreal>(i) });
     }
     QCOMPARE(editorService.mindMapData()->graph().nodeCount(), static_cast<size_t>(3));
 
@@ -373,17 +373,17 @@ void EditorServiceTest::test_undo_modificationRightAfterUndoShouldGetOwnUndoPoin
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
     editorService.saveUndoPoint();
-    editorService.addNodeAt(QPointF(0, 0));
+    editorService.addNodeAt(QPointF { 0, 0 });
 
     editorService.setUndoPointMergingEnabled(true);
     editorService.saveUndoPoint();
-    editorService.addNodeAt(QPointF(1, 1));
+    editorService.addNodeAt(QPointF { 1, 1 });
     editorService.undo();
     QCOMPARE(editorService.mindMapData()->graph().nodeCount(), static_cast<size_t>(1));
 
     // Must not be merged with the undo point saved before undo
     editorService.saveUndoPoint();
-    editorService.addNodeAt(QPointF(2, 2));
+    editorService.addNodeAt(QPointF { 2, 2 });
     editorService.undo();
     QCOMPARE(editorService.mindMapData()->graph().nodeCount(), static_cast<size_t>(1));
 }
@@ -575,22 +575,22 @@ void EditorServiceTest::test_undoBackgroundColor()
     EditorService editorService;
 
     editorService.setMindMapData(std::make_shared<MindMapData>());
-    editorService.mindMapData()->setBackgroundColor(QColor(0, 0, 0));
+    editorService.mindMapData()->setBackgroundColor(QColor { 0, 0, 0 });
 
     editorService.saveUndoPoint();
-    editorService.mindMapData()->setBackgroundColor(QColor(1, 1, 1));
+    editorService.mindMapData()->setBackgroundColor(QColor { 1, 1, 1 });
 
     editorService.saveUndoPoint();
-    editorService.mindMapData()->setBackgroundColor(QColor(2, 2, 2));
+    editorService.mindMapData()->setBackgroundColor(QColor { 2, 2, 2 });
 
     editorService.undo();
-    QCOMPARE(editorService.mindMapData()->backgroundColor(), QColor(1, 1, 1));
+    QCOMPARE(editorService.mindMapData()->backgroundColor(), (QColor { 1, 1, 1 }));
 
     editorService.undo();
-    QCOMPARE(editorService.mindMapData()->backgroundColor(), QColor(0, 0, 0));
+    QCOMPARE(editorService.mindMapData()->backgroundColor(), (QColor { 0, 0, 0 }));
 
     editorService.redo();
-    QCOMPARE(editorService.mindMapData()->backgroundColor(), QColor(1, 1, 1));
+    QCOMPARE(editorService.mindMapData()->backgroundColor(), (QColor { 1, 1, 1 }));
 }
 
 void EditorServiceTest::test_undoCornerRadius()
@@ -630,13 +630,13 @@ void EditorServiceTest::test_undoEdgeColor()
     editorService.mindMapData()->setEdgeColor({ 4, 5, 6 });
 
     editorService.undo();
-    QCOMPARE(editorService.mindMapData()->edgeColor(), QColor(2, 3, 4));
+    QCOMPARE(editorService.mindMapData()->edgeColor(), (QColor { 2, 3, 4 }));
 
     editorService.undo();
-    QCOMPARE(editorService.mindMapData()->edgeColor(), QColor(1, 2, 3));
+    QCOMPARE(editorService.mindMapData()->edgeColor(), (QColor { 1, 2, 3 }));
 
     editorService.redo();
-    QCOMPARE(editorService.mindMapData()->edgeColor(), QColor(2, 3, 4));
+    QCOMPARE(editorService.mindMapData()->edgeColor(), (QColor { 2, 3, 4 }));
 }
 
 void EditorServiceTest::test_undoEdgeDashedLine()
@@ -712,11 +712,11 @@ void EditorServiceTest::test_undoEdgeText()
 
     editorService.undo();
 
-    QCOMPARE(editorService.mindMapData()->graph().getEdges().at(0)->text(), QString(text0));
+    QCOMPARE(editorService.mindMapData()->graph().getEdges().at(0)->text(), QString { text0 });
 
     editorService.redo();
 
-    QCOMPARE(editorService.mindMapData()->graph().getEdges().at(0)->text(), QString(text1));
+    QCOMPARE(editorService.mindMapData()->graph().getEdges().at(0)->text(), QString { text1 });
 }
 
 void EditorServiceTest::test_undoEdgeReversed()
@@ -755,7 +755,7 @@ void EditorServiceTest::test_undoFontChange()
     editorService.setMindMapData(std::make_shared<MindMapData>());
     const auto font = editorService.mindMapData()->font();
     editorService.saveUndoPoint();
-    QFont newFont("Foo");
+    QFont newFont { "Foo" };
     editorService.mindMapData()->changeFont(newFont);
 
     QCOMPARE(editorService.mindMapData()->font().family(), newFont.family());
@@ -774,9 +774,9 @@ void EditorServiceTest::test_undoGroupConnection()
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
 
-    const auto node0 = editorService.addNodeAt(QPointF(0, 0));
-    const auto node1 = editorService.addNodeAt(QPointF(1, 1));
-    const auto node2 = editorService.addNodeAt(QPointF(2, 2));
+    const auto node0 = editorService.addNodeAt(QPointF { 0, 0 });
+    const auto node1 = editorService.addNodeAt(QPointF { 1, 1 });
+    const auto node2 = editorService.addNodeAt(QPointF { 2, 2 });
 
     editorService.toggleNodeInSelectionGroup(*node0);
     editorService.toggleNodeInSelectionGroup(*node2);
@@ -806,9 +806,9 @@ void EditorServiceTest::test_undoGroupDisconnection()
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
 
-    const auto node0 = editorService.addNodeAt(QPointF(0, 0));
-    const auto node1 = editorService.addNodeAt(QPointF(1, 1));
-    const auto node2 = editorService.addNodeAt(QPointF(2, 2));
+    const auto node0 = editorService.addNodeAt(QPointF { 0, 0 });
+    const auto node1 = editorService.addNodeAt(QPointF { 1, 1 });
+    const auto node2 = editorService.addNodeAt(QPointF { 2, 2 });
 
     editorService.toggleNodeInSelectionGroup(*node0);
     editorService.toggleNodeInSelectionGroup(*node2);
@@ -844,14 +844,14 @@ void EditorServiceTest::test_undoNodeColor()
     EditorService editorService;
     editorService.setMindMapData(data);
 
-    const QColor color0(1, 1, 1);
+    const QColor color0 { 1, 1, 1 };
     node->setColor(color0);
 
     QCOMPARE(node->color(), color0);
 
     editorService.saveUndoPoint();
 
-    const QColor color(6, 6, 6);
+    const QColor color { 6, 6, 6 };
     node->setColor(color);
 
     QCOMPARE(node->color(), color);
@@ -910,14 +910,14 @@ void EditorServiceTest::test_undoNodeLocation()
     EditorService editorService;
     editorService.setMindMapData(data);
 
-    const QPointF location0(1, 1);
+    const QPointF location0 { 1, 1 };
     node->setLocation(location0);
 
     QCOMPARE(node->location(), location0);
 
     editorService.saveUndoPoint();
 
-    const QPointF location(666, 666);
+    const QPointF location { 666, 666 };
     node->setLocation(location);
 
     QCOMPARE(node->location(), location);
@@ -944,11 +944,11 @@ void EditorServiceTest::test_undoNodeTextColor()
     EditorService editorService;
     editorService.setMindMapData(data);
 
-    const QColor color0(1, 1, 1);
+    const QColor color0 { 1, 1, 1 };
     node->setTextColor(color0);
 
     editorService.saveUndoPoint();
-    const QColor color(6, 6, 6);
+    const QColor color { 6, 6, 6 };
     node->setTextColor(color);
 
     editorService.undo();
@@ -992,8 +992,8 @@ void EditorServiceTest::test_undoState()
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
 
-    const auto node0 = editorService.addNodeAt(QPointF(0, 0));
-    const auto node1 = editorService.addNodeAt(QPointF(100, 0));
+    const auto node0 = editorService.addNodeAt(QPointF { 0, 0 });
+    const auto node1 = editorService.addNodeAt(QPointF { 100, 0 });
     const auto edge01 = editorService.addEdge(std::make_shared<Edge>(node0, node1));
 
     editorService.toggleNodeInSelectionGroup(*node0);
@@ -1015,8 +1015,8 @@ void EditorServiceTest::test_redoState()
     EditorService editorService;
     editorService.setMindMapData(std::make_shared<MindMapData>());
 
-    const auto node0 = editorService.addNodeAt(QPointF(0, 0));
-    const auto node1 = editorService.addNodeAt(QPointF(100, 0));
+    const auto node0 = editorService.addNodeAt(QPointF { 0, 0 });
+    const auto node1 = editorService.addNodeAt(QPointF { 100, 0 });
     const auto edge01 = editorService.addEdge(std::make_shared<Edge>(node0, node1));
 
     editorService.toggleNodeInSelectionGroup(*node0);
@@ -1052,7 +1052,7 @@ void EditorServiceTest::test_undoStackResetOnNewDesign()
     QCOMPARE(editorService.isUndoable(), false);
 
     editorService.saveUndoPoint();
-    editorService.addNodeAt(QPointF(0, 0));
+    editorService.addNodeAt(QPointF { 0, 0 });
     QCOMPARE(editorService.isUndoable(), true);
 
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -1069,7 +1069,7 @@ void EditorServiceTest::test_undoStackResetOnLoadDesign()
     QCOMPARE(editorService.isUndoable(), false);
 
     editorService.saveUndoPoint();
-    editorService.addNodeAt(QPointF(0, 0));
+    editorService.addNodeAt(QPointF { 0, 0 });
     QCOMPARE(editorService.isUndoable(), true);
 
     editorService.loadMindMapData("dummy");
@@ -1086,7 +1086,7 @@ void EditorServiceTest::test_undoHistory_shouldBeLimited()
     const size_t extraUndoPoints = 10;
     for (size_t i = 0; i < maxHistorySize + extraUndoPoints; i++) {
         editorService.saveUndoPoint();
-        editorService.addNodeAt(QPointF(static_cast<double>(i), 0));
+        editorService.addNodeAt(QPointF { static_cast<double>(i), 0 });
     }
 
     size_t undoCount = 0;
@@ -1108,8 +1108,8 @@ void EditorServiceTest::test_addNodeAt_shouldUseThemeNodeColors()
 
     const auto node = editorService.addNodeAt({ 0, 0 });
 
-    QCOMPARE(node->color(), QColor(1, 2, 3));
-    QCOMPARE(node->textColor(), QColor(4, 5, 6));
+    QCOMPARE(node->color(), (QColor { 1, 2, 3 }));
+    QCOMPARE(node->textColor(), (QColor { 4, 5, 6 }));
 }
 
 void EditorServiceTest::test_undoEdgeLabelColors()
@@ -1128,8 +1128,8 @@ void EditorServiceTest::test_undoEdgeLabelColors()
 
     editorService.redo();
 
-    QCOMPARE(editorService.mindMapData()->edgeLabelColor(), QColor(1, 2, 3));
-    QCOMPARE(editorService.mindMapData()->edgeLabelTextColor(), QColor(4, 5, 6));
+    QCOMPARE(editorService.mindMapData()->edgeLabelColor(), (QColor { 1, 2, 3 }));
+    QCOMPARE(editorService.mindMapData()->edgeLabelTextColor(), (QColor { 4, 5, 6 }));
 }
 
 void EditorServiceTest::test_undoShadowEffect()
@@ -1164,7 +1164,7 @@ void EditorServiceTest::test_applyTheme_shouldBeUndoable()
     editorService.applyTheme(theme, true);
 
     QVERIFY(editorService.mindMapData()->theme().isVisuallyEqual(theme));
-    QCOMPARE(editorService.mindMapData()->graph().getNodes().at(0)->color(), QColor(7, 8, 9));
+    QCOMPARE(editorService.mindMapData()->graph().getNodes().at(0)->color(), (QColor { 7, 8, 9 }));
     QVERIFY(editorService.isUndoable());
 
     editorService.undo();
@@ -1184,8 +1184,8 @@ void EditorServiceTest::test_applyTheme_shouldKeepIndividualNodeColorsIfRequeste
 
     editorService.applyTheme(theme, false);
 
-    QCOMPARE(editorService.mindMapData()->nodeColor(), QColor(7, 8, 9));
-    QCOMPARE(node->color(), QColor(100, 0, 0));
+    QCOMPARE(editorService.mindMapData()->nodeColor(), (QColor { 7, 8, 9 }));
+    QCOMPARE(node->color(), (QColor { 100, 0, 0 }));
 }
 
 void EditorServiceTest::test_hasIndividualNodeColors()
@@ -1214,7 +1214,7 @@ void EditorServiceTest::test_undoModificationFlagOnNewDesign()
     QCOMPARE(editorService.isModified(), false);
 
     editorService.saveUndoPoint();
-    editorService.addNodeAt(QPointF(0, 0));
+    editorService.addNodeAt(QPointF { 0, 0 });
     QCOMPARE(editorService.isModified(), true);
 
     editorService.setMindMapData(std::make_shared<MindMapData>());
@@ -1231,7 +1231,7 @@ void EditorServiceTest::test_undoModificationFlagOnLoadDesign()
     QCOMPARE(editorService.isModified(), false);
 
     editorService.saveUndoPoint();
-    editorService.addNodeAt(QPointF(0, 0));
+    editorService.addNodeAt(QPointF { 0, 0 });
     QCOMPARE(editorService.isModified(), true);
 
     editorService.loadMindMapData("dummy");

@@ -23,7 +23,7 @@ namespace Widgets {
 
 ColorButton::ColorButton(QString text, bool alphaChannel, QWidget * parent)
   : QPushButton { text, parent }
-  , m_alphaChannel(alphaChannel)
+  , m_alphaChannel { alphaChannel }
 {
     connect(this, &QPushButton::clicked, this, [=] {
         QColorDialog::ColorDialogOptions options = QColorDialog::DontUseNativeDialog;

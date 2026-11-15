@@ -39,8 +39,8 @@ class LayoutOptimizer::Impl
 {
 public:
     Impl(MindMapDataS mindMapData, const Grid & grid)
-      : m_mindMapData(mindMapData)
-      , m_grid(grid)
+      : m_mindMapData { mindMapData }
+      , m_grid { grid }
     {
     }
 
@@ -222,10 +222,10 @@ private:
                     nearestCellIter != cells.end()) {
                     assignNodeToCell(node, nearestCellIter, cells);
                 } else {
-                    throw std::runtime_error("All nodes cannot be mapped to cells!");
+                    throw std::runtime_error { "All nodes cannot be mapped to cells!" };
                 }
             } else {
-                throw std::runtime_error("All nodes cannot be mapped to cells!");
+                throw std::runtime_error { "All nodes cannot be mapped to cells!" };
             }
         }
     }
@@ -275,7 +275,7 @@ private:
                 cell0->addConnection(cell1);
                 cell1->addConnection(cell0);
             } else {
-                throw std::runtime_error("Broken node-to-cell mapping!");
+                throw std::runtime_error { "Broken node-to-cell mapping!" };
             }
         }
     }
@@ -390,18 +390,18 @@ private:
     struct Rect
     {
         Rect()
-          : x(0)
-          , y(0)
-          , w(0)
-          , h(0)
+          : x { 0 }
+          , y { 0 }
+          , w { 0 }
+          , h { 0 }
         {
         }
 
         Rect(int x, int y, int w, int h)
-          : x(x)
-          , y(y)
-          , w(w)
-          , h(h)
+          : x { x }
+          , y { y }
+          , w { w }
+          , h { h }
         {
         }
 
@@ -696,7 +696,7 @@ private:
 size_t LayoutOptimizer::Impl::Cell::globalMoveId = 0;
 
 LayoutOptimizer::LayoutOptimizer(MindMapDataS mindMapData, const Grid & grid)
-  : m_impl(std::make_unique<Impl>(mindMapData, grid))
+  : m_impl { std::make_unique<Impl>(mindMapData, grid) }
 {
 }
 

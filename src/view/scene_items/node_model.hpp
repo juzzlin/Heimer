@@ -26,8 +26,8 @@ namespace SceneItems {
 struct NodeModel
 {
     NodeModel(QColor color, QColor textColor)
-      : color(color)
-      , textColor(textColor)
+      : color { color }
+      , textColor { textColor }
     {
     }
 

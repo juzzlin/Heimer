@@ -19,12 +19,12 @@
 
 void VersionTest::test_initialization_defaultShouldNotBeValid()
 {
-    QVERIFY(!Version().isValid());
+    QVERIFY(!Version {}.isValid());
 }
 
 void VersionTest::test_initialization_copyConstructor()
 {
-    const Version version({ 1, 42, 666 });
+    const Version version { Version { 1, 42, 666 } };
     QVERIFY(version.isValid());
     QVERIFY(version.major == 1);
     QVERIFY(version.minor == 42);
@@ -33,7 +33,7 @@ void VersionTest::test_initialization_copyConstructor()
 
 void VersionTest::test_initialization_initializeWithString()
 {
-    const Version version("1.42.666");
+    const Version version { "1.42.666" };
     QVERIFY(version.isValid());
     QVERIFY(version.major == 1);
     QVERIFY(version.minor == 42);
@@ -42,7 +42,7 @@ void VersionTest::test_initialization_initializeWithString()
 
 void VersionTest::test_initialization_initializeWithVersion()
 {
-    const Version version(1, 42, 666);
+    const Version version { 1, 42, 666 };
     QVERIFY(version.isValid());
     QVERIFY(version.major == 1);
     QVERIFY(version.minor == 42);
@@ -51,24 +51,24 @@ void VersionTest::test_initialization_initializeWithVersion()
 
 void VersionTest::test_equality()
 {
-    QVERIFY(Version(1, 42, 666) == Version(1, 42, 666));
-    QVERIFY(Version(1, 42, 666) >= Version(1, 42, 666));
-    QVERIFY(Version(1, 42, 666) <= Version(1, 42, 666));
-    QVERIFY(Version(2, 42, 666) != Version(1, 42, 666));
-    QVERIFY(Version(1, 43, 666) != Version(1, 42, 666));
-    QVERIFY(Version(1, 42, 667) != Version(1, 42, 666));
-    QVERIFY(Version(2, 42, 666) > Version(1, 42, 666));
-    QVERIFY(Version(1, 43, 666) > Version(1, 42, 666));
-    QVERIFY(Version(1, 42, 667) > Version(1, 42, 666));
-    QVERIFY(Version(1, 42, 666) < Version(2, 42, 666));
-    QVERIFY(Version(1, 42, 666) < Version(1, 43, 666));
-    QVERIFY(Version(1, 42, 666) < Version(1, 42, 667));
-    QVERIFY(Version(2, 42, 666) >= Version(1, 42, 666));
-    QVERIFY(Version(1, 43, 666) >= Version(1, 42, 666));
-    QVERIFY(Version(1, 42, 667) >= Version(1, 42, 666));
-    QVERIFY(Version(1, 42, 666) <= Version(2, 42, 666));
-    QVERIFY(Version(1, 42, 666) <= Version(1, 43, 666));
-    QVERIFY(Version(1, 42, 666) <= Version(1, 42, 667));
+    QVERIFY((Version { 1, 42, 666 }) == (Version { 1, 42, 666 }));
+    QVERIFY((Version { 1, 42, 666 }) >= (Version { 1, 42, 666 }));
+    QVERIFY((Version { 1, 42, 666 }) <= (Version { 1, 42, 666 }));
+    QVERIFY((Version { 2, 42, 666 }) != (Version { 1, 42, 666 }));
+    QVERIFY((Version { 1, 43, 666 }) != (Version { 1, 42, 666 }));
+    QVERIFY((Version { 1, 42, 667 }) != (Version { 1, 42, 666 }));
+    QVERIFY((Version { 2, 42, 666 }) > (Version { 1, 42, 666 }));
+    QVERIFY((Version { 1, 43, 666 }) > (Version { 1, 42, 666 }));
+    QVERIFY((Version { 1, 42, 667 }) > (Version { 1, 42, 666 }));
+    QVERIFY((Version { 1, 42, 666 }) < (Version { 2, 42, 666 }));
+    QVERIFY((Version { 1, 42, 666 }) < (Version { 1, 43, 666 }));
+    QVERIFY((Version { 1, 42, 666 }) < (Version { 1, 42, 667 }));
+    QVERIFY((Version { 2, 42, 666 }) >= (Version { 1, 42, 666 }));
+    QVERIFY((Version { 1, 43, 666 }) >= (Version { 1, 42, 666 }));
+    QVERIFY((Version { 1, 42, 667 }) >= (Version { 1, 42, 666 }));
+    QVERIFY((Version { 1, 42, 666 }) <= (Version { 2, 42, 666 }));
+    QVERIFY((Version { 1, 42, 666 }) <= (Version { 1, 43, 666 }));
+    QVERIFY((Version { 1, 42, 666 }) <= (Version { 1, 42, 667 }));
 }
 
 QTEST_GUILESS_MAIN(VersionTest)

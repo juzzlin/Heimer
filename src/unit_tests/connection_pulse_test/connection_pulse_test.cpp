@@ -82,7 +82,7 @@ void ConnectionPulseTest::test_paint_shouldDrawRingsInColorAndNothingWhenFinishe
     const auto image = render(pulse, 0.3);
     const auto center = image.rect().center();
     const auto dot = image.pixelColor(center);
-    QCOMPARE(dot, QColor(255, 0, 0));
+    QCOMPARE(dot, (QColor { 255, 0, 0 }));
     // Somewhere on the expanding ring
     bool ringFound = false;
     for (int x = center.x() + 8; x < image.width(); x++) {

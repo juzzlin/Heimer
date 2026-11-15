@@ -73,7 +73,7 @@ private:
 
     double m_maxWidth = 0;
 
-    QColor m_backgroundColor = QColor(192, 192, 192, 64);
+    QColor m_backgroundColor = QColor { 192, 192, 192, 64 };
 
     QString m_text;
 

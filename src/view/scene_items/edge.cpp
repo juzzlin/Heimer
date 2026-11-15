@@ -46,23 +46,23 @@ namespace SceneItems {
 static const auto TAG = "Edge";
 
 Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enableLabels)
-  : m_settingsProxy(SC::instance().settingsProxy())
-  , m_shadowEffectParams(m_settingsProxy->shadowEffect())
-  , m_edgeModel(std::make_unique<EdgeModel>(m_settingsProxy->reversedEdgeDirection(),
-                                            EdgeModel::Style { m_settingsProxy->edgeArrowMode() }))
-  , m_sourceNode(sourceNode)
-  , m_targetNode(targetNode)
-  , m_enableAnimations(enableAnimations)
-  , m_enableLabels(enableLabels)
-  , m_sourcePulse(new ConnectionPulse { this })
-  , m_targetPulse(new ConnectionPulse { this })
-  , m_label(new EdgeTextEdit(this))
-  , m_condensedLabel(new EdgeTextEdit(this))
-  , m_line(new QGraphicsLineItem(this))
-  , m_arrowheadBeginLeft(new QGraphicsLineItem(this))
-  , m_arrowheadBeginRight(new QGraphicsLineItem(this))
-  , m_arrowheadEndLeft(new QGraphicsLineItem(this))
-  , m_arrowheadEndRight(new QGraphicsLineItem(this))
+  : m_settingsProxy { SC::instance().settingsProxy() }
+  , m_shadowEffectParams { m_settingsProxy->shadowEffect() }
+  , m_edgeModel { std::make_unique<EdgeModel>(m_settingsProxy->reversedEdgeDirection(),
+                                              EdgeModel::Style { m_settingsProxy->edgeArrowMode() }) }
+  , m_sourceNode { sourceNode }
+  , m_targetNode { targetNode }
+  , m_enableAnimations { enableAnimations }
+  , m_enableLabels { enableLabels }
+  , m_sourcePulse { new ConnectionPulse { this } }
+  , m_targetPulse { new ConnectionPulse { this } }
+  , m_label { new EdgeTextEdit { this } }
+  , m_condensedLabel { new EdgeTextEdit { this } }
+  , m_line { new QGraphicsLineItem { this } }
+  , m_arrowheadBeginLeft { new QGraphicsLineItem { this } }
+  , m_arrowheadBeginRight { new QGraphicsLineItem { this } }
+  , m_arrowheadEndLeft { new QGraphicsLineItem { this } }
+  , m_arrowheadEndRight { new QGraphicsLineItem { this } }
 {
     setAcceptHoverEvents(enableAnimations);
 
@@ -78,18 +78,18 @@ Edge::Edge(NodeP sourceNode, NodeP targetNode, bool enableAnimations, bool enabl
 }
 
 Edge::Edge(NodeS sourceNode, NodeS targetNode, bool enableAnimations, bool enableLabel)
-  : Edge(sourceNode.get(), targetNode.get(), enableAnimations, enableLabel)
+  : Edge { sourceNode.get(), targetNode.get(), enableAnimations, enableLabel }
 {
 }
 
 Edge::Edge(EdgeCR other, GraphCR graph)
-  : Edge(graph.getNode(other.m_sourceNode->index()).get(), graph.getNode(other.m_targetNode->index()).get())
+  : Edge { graph.getNode(other.m_sourceNode->index()).get(), graph.getNode(other.m_targetNode->index()).get() }
 {
     copyData(other);
 }
 
 Edge::Edge(EdgeCR other)
-  : Edge(nullptr, nullptr)
+  : Edge { nullptr, nullptr }
 {
     copyData(other);
 }
@@ -453,11 +453,11 @@ void Edge::updateDoubleArrowhead()
 
     const auto angleBegin = reversedEdge ? -m_line->line().angle() + 180 : -m_line->line().angle();
     const auto angleBeginLeft = qDegreesToRadians(angleBegin + arrowOpening);
-    lineBeginLeft.setP2(pointBegin + QPointF(std::cos(angleBeginLeft), std::sin(angleBeginLeft)) * m_edgeModel->style.arrowSize);
+    lineBeginLeft.setP2(pointBegin + QPointF { std::cos(angleBeginLeft), std::sin(angleBeginLeft) } * m_edgeModel->style.arrowSize);
     lineBeginRight.setP1(pointBegin);
 
     const auto angleBeginRight = qDegreesToRadians(angleBegin - arrowOpening);
-    lineBeginRight.setP2(pointBegin + QPointF(std::cos(angleBeginRight), std::sin(angleBeginRight)) * m_edgeModel->style.arrowSize);
+    lineBeginRight.setP2(pointBegin + QPointF { std::cos(angleBeginRight), std::sin(angleBeginRight) } * m_edgeModel->style.arrowSize);
     const auto pointEnd = reversedEdge ? m_line->line().p2() : m_line->line().p1();
     lineEndLeft.setP1(pointEnd);
 
@@ -468,11 +468,11 @@ void Edge::updateDoubleArrowhead()
 
     const auto angleEnd = reversedEdge ? -m_line->line().angle() : -m_line->line().angle() + 180;
     const auto angleEndLeft = qDegreesToRadians(angleEnd + arrowOpening);
-    lineEndLeft.setP2(pointEnd + QPointF(std::cos(angleEndLeft), std::sin(angleEndLeft)) * m_edgeModel->style.arrowSize);
+    lineEndLeft.setP2(pointEnd + QPointF { std::cos(angleEndLeft), std::sin(angleEndLeft) } * m_edgeModel->style.arrowSize);
     lineEndRight.setP1(pointEnd);
 
     const auto angleEndRight = qDegreesToRadians(angleEnd - arrowOpening);
-    lineEndRight.setP2(pointEnd + QPointF(std::cos(angleEndRight), std::sin(angleEndRight)) * m_edgeModel->style.arrowSize);
+    lineEndRight.setP2(pointEnd + QPointF { std::cos(angleEndRight), std::sin(angleEndRight) } * m_edgeModel->style.arrowSize);
 
     m_arrowheadEndLeft->setLine(lineEndLeft);
     m_arrowheadEndRight->setLine(lineEndRight);
@@ -500,11 +500,11 @@ void Edge::updateSingleArrowhead()
     const double arrowOpening = 150;
     const auto angleBegin = reversedEdge ? -m_line->line().angle() + 180 : -m_line->line().angle();
     const auto angleLeft = qDegreesToRadians(angleBegin + arrowOpening);
-    lineBeginLeft.setP2(pointBegin + QPointF(std::cos(angleLeft), std::sin(angleLeft)) * m_edgeModel->style.arrowSize);
+    lineBeginLeft.setP2(pointBegin + QPointF { std::cos(angleLeft), std::sin(angleLeft) } * m_edgeModel->style.arrowSize);
     lineBeginRight.setP1(pointBegin);
 
     const auto angleRight = qDegreesToRadians(angleBegin - arrowOpening);
-    lineBeginRight.setP2(pointBegin + QPointF(std::cos(angleRight), std::sin(angleRight)) * m_edgeModel->style.arrowSize);
+    lineBeginRight.setP2(pointBegin + QPointF { std::cos(angleRight), std::sin(angleRight) } * m_edgeModel->style.arrowSize);
 
     m_arrowheadBeginLeft->setLine(lineBeginLeft);
     m_arrowheadBeginRight->setLine(lineBeginRight);
@@ -568,8 +568,8 @@ void Edge::updateConnectionPulses()
 
 void Edge::updateLabel(LabelUpdateReason lur)
 {
-    m_label->setPos(lineCenter() - QPointF(m_label->boundingRect().width(), m_label->boundingRect().height()) * 0.5);
-    m_condensedLabel->setPos(lineCenter() - QPointF(m_condensedLabel->boundingRect().width(), m_condensedLabel->boundingRect().height()) * 0.5);
+    m_label->setPos(lineCenter() - QPointF { m_label->boundingRect().width(), m_label->boundingRect().height() } * 0.5);
+    m_condensedLabel->setPos(lineCenter() - QPointF { m_condensedLabel->boundingRect().width(), m_condensedLabel->boundingRect().height() } * 0.5);
     // Toggle visibility according to space available if geometry changed
     if (lur == LabelUpdateReason::EdgeGeometryChanged) {
         setLabelVisible(m_label->isVisible(), EdgeTextEdit::VisibilityChangeReason::AvailableSpaceChanged);
@@ -653,11 +653,11 @@ void Edge::updateLineGeometry()
     auto && nearestPoints = Node::getNearestEdgePoints(sourceNode(), targetNode());
     const auto pointBegin = nearestPoints.first.location + sourceNode().pos();
 
-    QVector2D directionTowardsSourceNode(sourceNode().pos() - pointBegin);
+    QVector2D directionTowardsSourceNode { sourceNode().pos() - pointBegin };
     directionTowardsSourceNode.normalize();
 
     const auto pointEnd = nearestPoints.second.location + targetNode().pos();
-    QVector2D directionTowardsTargetNode(targetNode().pos() - pointEnd);
+    QVector2D directionTowardsTargetNode { targetNode().pos() - pointEnd };
     directionTowardsTargetNode.normalize();
 
     const double widthScale = 0.5;

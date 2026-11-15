@@ -107,8 +107,8 @@ void MindMapDataTest::test_setTheme_shouldApplyToNodesExceptNodeColors()
     QCOMPARE(testMindMap.node0->cornerRadius(), theme.cornerRadius);
     QVERIFY(testMindMap.node0->shadowEffect() == theme.shadowEffect);
     // Individual node colors are kept
-    QCOMPARE(testMindMap.node0->color(), QColor(100, 0, 0));
-    QCOMPARE(testMindMap.node0->textColor(), QColor(0, 100, 0));
+    QCOMPARE(testMindMap.node0->color(), (QColor { 100, 0, 0 }));
+    QCOMPARE(testMindMap.node0->textColor(), (QColor { 0, 100, 0 }));
 }
 
 void MindMapDataTest::test_setTheme_withApplyNodeColorsShouldApplyNodeColors()
@@ -130,10 +130,10 @@ void MindMapDataTest::test_setEdgeLabelColors_shouldApplyToEdges()
 
     testMindMap.data.setEdgeLabelColors({ 1, 2, 3 }, { 4, 5, 6 });
 
-    QCOMPARE(testMindMap.data.theme().edgeLabelColor, QColor(1, 2, 3));
-    QCOMPARE(testMindMap.data.theme().edgeLabelTextColor, QColor(4, 5, 6));
-    QCOMPARE(testMindMap.edge->labelColor(), QColor(1, 2, 3));
-    QCOMPARE(testMindMap.edge->labelTextColor(), QColor(4, 5, 6));
+    QCOMPARE(testMindMap.data.theme().edgeLabelColor, (QColor { 1, 2, 3 }));
+    QCOMPARE(testMindMap.data.theme().edgeLabelTextColor, (QColor { 4, 5, 6 }));
+    QCOMPARE(testMindMap.edge->labelColor(), (QColor { 1, 2, 3 }));
+    QCOMPARE(testMindMap.edge->labelTextColor(), (QColor { 4, 5, 6 }));
 }
 
 void MindMapDataTest::test_setShadowEffect_shouldApplyToNodesAndEdges()

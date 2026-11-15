@@ -42,9 +42,9 @@ public:
     struct EdgeMetadata
     {
         EdgeMetadata(EdgeS edge, int sourceNodeIndex, int targetNodeIndex)
-          : edge(edge)
-          , sourceNodeIndex(sourceNodeIndex)
-          , targetNodeIndex(targetNodeIndex)
+          : edge { edge }
+          , sourceNodeIndex { sourceNodeIndex }
+          , targetNodeIndex { targetNodeIndex }
         {
         }
 

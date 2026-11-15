@@ -39,20 +39,20 @@ public:
     };
 
     NodeAction(Type type)
-      : m_type(type)
+      : m_type { type }
     {
     }
 
     NodeAction(Type type, QColor color)
-      : m_type(type)
-      , m_color(color)
+      : m_type { type }
+      , m_color { color }
     {
     }
 
     NodeAction(Type type, QImage image, QString fileName)
-      : m_type(type)
-      , m_image(image)
-      , m_fileName(fileName)
+      : m_type { type }
+      , m_image { image }
+      , m_fileName { fileName }
     {
     }
 

@@ -32,8 +32,8 @@
 static const auto TAG = "ThemeService";
 
 ThemeService::ThemeService(SettingsProxyS settingsProxy, QString userThemesFilePath)
-  : m_settingsProxy(settingsProxy)
-  , m_userThemesFilePath(userThemesFilePath)
+  : m_settingsProxy { settingsProxy }
+  , m_userThemesFilePath { userThemesFilePath }
 {
     load();
 }

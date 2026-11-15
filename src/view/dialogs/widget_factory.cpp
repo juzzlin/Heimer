@@ -43,7 +43,7 @@ std::pair<QPushButton *, QHBoxLayout *> buildResetToDefaultsButtonWithHLayout()
     const auto spacer = new QWidget;
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     layout->addWidget(spacer);
-    const auto button = new QPushButton(QObject::tr("Reset to defaults"));
+    const auto button = new QPushButton { QObject::tr("Reset to defaults") };
     layout->addWidget(button);
     return { button, layout };
 }

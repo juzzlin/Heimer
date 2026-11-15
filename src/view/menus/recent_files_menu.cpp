@@ -24,7 +24,7 @@
 namespace Menus {
 
 RecentFilesMenu::RecentFilesMenu(QWidget * parent)
-  : QMenu(parent)
+  : QMenu { parent }
 {
     connect(this, &QMenu::aboutToShow, [=] {
         clear(); // Deletes the actions owned by this menu

@@ -32,7 +32,7 @@ RecentFilesManager::RecentFilesManager()
 
 void RecentFilesManager::addRecentFile(QString filePath)
 {
-    const QFileInfo fi(filePath);
+    const QFileInfo fi { filePath };
 
     filePath = fi.absoluteFilePath();
 

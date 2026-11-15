@@ -76,7 +76,7 @@ int main(int argc, char ** argv)
 
     try {
         initLogger();
-        return Application(argc, argv).run();
+        return Application { argc, argv }.run();
     } catch (std::exception & e) {
         if (!dynamic_cast<UserException *>(&e)) {
             std::cerr << e.what() << std::endl;

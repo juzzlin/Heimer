@@ -36,26 +36,26 @@ namespace Dialogs {
 static const QSize previewSize { 320, 140 };
 
 ThemeEditorDialog::ThemeEditorDialog(const Theme & theme, QWidget * parent)
-  : QDialog(parent)
-  , m_name(theme.name)
-  , m_preview(new QLabel { this })
-  , m_backgroundColorButton(addColorButton(tr("Background")))
-  , m_gridColorButton(addColorButton(tr("Grid")))
-  , m_nodeColorButton(addColorButton(tr("Node")))
-  , m_nodeTextColorButton(addColorButton(tr("Node text")))
-  , m_cornerRadiusSpinBox(addSpinBox(0, 20))
-  , m_fontButton(new Widgets::FontButton { this })
-  , m_textSizeSpinBox(addSpinBox(Constants::View::minTextSize(), Constants::View::maxTextSize()))
-  , m_edgeColorButton(addColorButton(tr("Edge")))
-  , m_edgeWidthSpinBox(addDoubleSpinBox(Constants::Edge::minEdgeWidth(), Constants::Edge::maxEdgeWidth(), Constants::Edge::edgeWidthStep()))
-  , m_arrowSizeSpinBox(addDoubleSpinBox(Constants::Edge::minArrowSize(), Constants::Edge::maxArrowSize(), Constants::Edge::arrowSizeStep()))
-  , m_edgeLabelColorButton(addColorButton(tr("Label")))
-  , m_edgeLabelTextColorButton(addColorButton(tr("Label text")))
-  , m_shadowOffsetSpinBox(addSpinBox(0, 10))
-  , m_shadowBlurRadiusSpinBox(addSpinBox(0, 100))
-  , m_shadowColorButton(addColorButton(tr("Shadow"), true))
-  , m_selectedItemShadowBlurRadiusSpinBox(addSpinBox(0, 100))
-  , m_selectedItemShadowColorButton(addColorButton(tr("Selected item shadow"), true))
+  : QDialog { parent }
+  , m_name { theme.name }
+  , m_preview { new QLabel { this } }
+  , m_backgroundColorButton { addColorButton(tr("Background")) }
+  , m_gridColorButton { addColorButton(tr("Grid")) }
+  , m_nodeColorButton { addColorButton(tr("Node")) }
+  , m_nodeTextColorButton { addColorButton(tr("Node text")) }
+  , m_cornerRadiusSpinBox { addSpinBox(0, 20) }
+  , m_fontButton { new Widgets::FontButton { this } }
+  , m_textSizeSpinBox { addSpinBox(Constants::View::minTextSize(), Constants::View::maxTextSize()) }
+  , m_edgeColorButton { addColorButton(tr("Edge")) }
+  , m_edgeWidthSpinBox { addDoubleSpinBox(Constants::Edge::minEdgeWidth(), Constants::Edge::maxEdgeWidth(), Constants::Edge::edgeWidthStep()) }
+  , m_arrowSizeSpinBox { addDoubleSpinBox(Constants::Edge::minArrowSize(), Constants::Edge::maxArrowSize(), Constants::Edge::arrowSizeStep()) }
+  , m_edgeLabelColorButton { addColorButton(tr("Label")) }
+  , m_edgeLabelTextColorButton { addColorButton(tr("Label text")) }
+  , m_shadowOffsetSpinBox { addSpinBox(0, 10) }
+  , m_shadowBlurRadiusSpinBox { addSpinBox(0, 100) }
+  , m_shadowColorButton { addColorButton(tr("Shadow"), true) }
+  , m_selectedItemShadowBlurRadiusSpinBox { addSpinBox(0, 100) }
+  , m_selectedItemShadowColorButton { addColorButton(tr("Selected item shadow"), true) }
 {
     setWindowTitle(tr("Edit Theme") + " - " + theme.name);
 

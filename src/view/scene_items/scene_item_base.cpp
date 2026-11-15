@@ -20,8 +20,8 @@
 namespace SceneItems {
 
 SceneItemBase::SceneItemBase()
-  : m_opacityAnimation(this, "opacity")
-  , m_scaleAnimation(this, "scale")
+  : m_opacityAnimation { this, "opacity" }
+  , m_scaleAnimation { this, "scale" }
 {
     connect(ServiceContainer::instance().languageService().get(), &LanguageService::activeLanguageChanged, this, &SceneItemBase::retranslate);
 }

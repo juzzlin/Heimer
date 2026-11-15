@@ -26,15 +26,15 @@ QDomDocument XmlReader::readFromFile(QString filePath)
 {
     QDomDocument doc;
 
-    QFile file(filePath);
+    QFile file { filePath };
     if (!file.open(QIODevice::ReadOnly)) {
-        throw FileException(QObject::tr("Cannot open file: '") + filePath + "'");
+        throw FileException { QObject::tr("Cannot open file: '") + filePath + "'" };
     }
 
     if (!doc.setContent(&file)) {
         file.close();
 
-        throw FileException(QObject::tr("Corrupted file: '") + filePath + "'");
+        throw FileException { QObject::tr("Corrupted file: '") + filePath + "'" };
     }
 
     file.close();

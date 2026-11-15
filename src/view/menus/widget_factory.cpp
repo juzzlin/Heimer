@@ -28,20 +28,20 @@ namespace Menus::WidgetFactory {
 
 std::pair<QWidget *, QWidgetAction *> buildToolBarWidgetAction(QWidget & widget, QWidget & parent)
 {
-    const auto action = new QWidgetAction(&parent);
+    const auto action = new QWidgetAction { &parent };
     action->setDefaultWidget(&widget);
     return { &widget, action };
 }
 
 std::pair<QWidget *, QWidgetAction *> buildToolBarWidgetActionWithLabel(QString labelText, QWidget & widget, QWidget & parent)
 {
-    const auto dummyWidget = new QWidget(&parent);
-    const auto layout = new QHBoxLayout(dummyWidget);
+    const auto dummyWidget = new QWidget { &parent };
+    const auto layout = new QHBoxLayout { dummyWidget };
     dummyWidget->setLayout(layout);
-    layout->addWidget(new QLabel(labelText));
+    layout->addWidget(new QLabel { labelText });
     layout->addWidget(&widget);
     layout->setContentsMargins(0, 0, 0, 0);
-    const auto action = new QWidgetAction(&parent);
+    const auto action = new QWidgetAction { &parent };
     action->setDefaultWidget(dummyWidget);
     return { dummyWidget, action };
 }

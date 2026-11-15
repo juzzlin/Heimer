@@ -25,8 +25,8 @@ class FileException : public std::runtime_error
 {
 public:
     explicit FileException(QString msg)
-      : runtime_error(msg.toStdString())
-      , m_message(msg)
+      : runtime_error { msg.toStdString() }
+      , m_message { msg }
     {
     }
 

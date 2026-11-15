@@ -22,8 +22,8 @@
 namespace Dialogs {
 
 SpinnerDialog::SpinnerDialog(QWidget * parent)
-  : QDialog(parent, Qt::Popup)
-  , m_messageLabel(new QLabel(this))
+  : QDialog { parent, Qt::Popup }
+  , m_messageLabel { new QLabel { this } }
 {
     setMinimumWidth(400);
     initWidgets();
@@ -31,7 +31,7 @@ SpinnerDialog::SpinnerDialog(QWidget * parent)
 
 void SpinnerDialog::initWidgets()
 {
-    const auto vLayout = new QVBoxLayout(this);
+    const auto vLayout = new QVBoxLayout { this };
     const auto spinner = new QProgressBar;
     spinner->setMinimum(0);
     spinner->setMaximum(0);

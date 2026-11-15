@@ -28,8 +28,8 @@
 namespace SceneItems {
 
 TextEdit::TextEdit(QGraphicsItem * parentItem)
-  : QGraphicsTextItem(parentItem)
-  , m_unselectedFormat(textCursor().charFormat())
+  : QGraphicsTextItem { parentItem }
+  , m_unselectedFormat { textCursor().charFormat() }
 {
     if (!TestMode::enabled()) {
         setTextInteractionFlags(Qt::TextEditorInteraction);
@@ -138,7 +138,7 @@ void TextEdit::setBackgroundColor(const QColor & backgroundColor)
 void TextEdit::selectText(const QString & text)
 {
     unselectText();
-    auto cursor(textCursor());
+    auto cursor { textCursor() };
     cursor.clearSelection();
     if (!text.isEmpty()) {
         if (const auto index = static_cast<int>(this->text().toLower().indexOf(text.toLower())); index >= 0) {

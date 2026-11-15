@@ -31,9 +31,9 @@ struct Version
     Version() = default;
 
     Version(int major, int minor, int patch)
-      : major(major)
-      , minor(minor)
-      , patch(patch)
+      : major { major }
+      , minor { minor }
+      , patch { patch }
     {
     }
 
@@ -47,9 +47,9 @@ struct Version
     }
 
     Version(const Version & other)
-      : major(other.major)
-      , minor(other.minor)
-      , patch(other.patch)
+      : major { other.major }
+      , minor { other.minor }
+      , patch { other.patch }
     {
     }
 

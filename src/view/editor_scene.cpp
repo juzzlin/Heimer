@@ -103,10 +103,10 @@ void EditorScene::removeItems()
 
 QImage EditorScene::toImage(QSize size, QColor backgroundColor, bool transparentBackground)
 {
-    QImage image(size, QImage::Format_ARGB32);
+    QImage image { size, QImage::Format_ARGB32 };
     image.fill(transparentBackground ? Qt::transparent : backgroundColor);
 
-    QPainter painter(&image);
+    QPainter painter { &image };
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setRenderHint(QPainter::TextAntialiasing);
     render(&painter);
@@ -122,8 +122,8 @@ void EditorScene::toSvg(QString filename, QString title)
 
     QSvgGenerator generator;
     generator.setFileName(filename);
-    generator.setSize(QSize(static_cast<int>(width()), static_cast<int>(height())));
-    generator.setViewBox(QRect(0, 0, static_cast<int>(width()), static_cast<int>(height())));
+    generator.setSize(QSize { static_cast<int>(width()), static_cast<int>(height()) });
+    generator.setViewBox(QRect { 0, 0, static_cast<int>(width()), static_cast<int>(height()) });
     generator.setTitle(title);
     generator.setDescription(QString { "SVG exported from %1 version %2" }.arg(Constants::Application::applicationName(), Constants::Application::applicationVersion()));
 

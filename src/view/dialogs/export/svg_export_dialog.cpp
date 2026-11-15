@@ -37,7 +37,7 @@
 namespace Dialogs::Export {
 
 SvgExportDialog::SvgExportDialog(QWidget & parent)
-  : QDialog(&parent)
+  : QDialog { &parent }
 {
     setWindowTitle(tr("Export to an SVG File"));
     setMinimumWidth(480);
@@ -109,7 +109,7 @@ void SvgExportDialog::validate()
 
 void SvgExportDialog::initWidgets()
 {
-    const auto mainLayout = new QVBoxLayout(this);
+    const auto mainLayout = new QVBoxLayout { this };
 
     const auto filenameGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Filename"), *mainLayout);
 
@@ -129,8 +129,8 @@ void SvgExportDialog::initWidgets()
     progressBarLayout->addWidget(m_progressBar);
     mainLayout->addLayout(progressBarLayout);
 
-    m_buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
-                                       | QDialogButtonBox::Cancel);
+    m_buttonBox = new QDialogButtonBox { QDialogButtonBox::Ok
+                                         | QDialogButtonBox::Cancel };
     m_buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
     mainLayout->addWidget(m_buttonBox);

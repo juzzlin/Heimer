@@ -21,7 +21,7 @@
 namespace Dialogs {
 
 ColorDialog::ColorDialog(Role role)
-  : m_role(role)
+  : m_role { role }
 {
     setOption(QColorDialog::DontUseNativeDialog, true);
 

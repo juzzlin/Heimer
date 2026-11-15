@@ -54,8 +54,8 @@ using juzzlin::L;
 static const auto TAG = "ApplicationService";
 
 ApplicationService::ApplicationService(MainWindowS mainWindow)
-  : m_editorService(std::make_unique<EditorService>())
-  , m_mainWindow(mainWindow)
+  : m_editorService { std::make_unique<EditorService>() }
+  , m_mainWindow { mainWindow }
 {
     connect(m_mainWindow.get(), &MainWindow::arrowSizeChanged, this, &ApplicationService::setArrowSize);
     connect(m_mainWindow.get(), &MainWindow::autosaveEnabled, this, &ApplicationService::enableAutosave);
@@ -457,7 +457,7 @@ void ApplicationService::initializeNewMindMap()
 
     initializeView();
 
-    const auto node = m_editorService->addNodeAt(QPointF(0, 0));
+    const auto node = m_editorService->addNodeAt(QPointF { 0, 0 });
     connectNodeToUndoMechanism(node);
     connectNodeToImageManager(node);
 
@@ -478,7 +478,7 @@ void ApplicationService::initiateNewNodeDrag(SceneItems::NodeHandle & nodeHandle
     nodeHandle.parentNode().setHandlesVisible(false);
 
     // Change cursor to the closed hand cursor.
-    QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
+    QApplication::setOverrideCursor(QCursor { Qt::ClosedHandCursor });
 }
 
 void ApplicationService::initiateNodeDrag(NodeR node)
@@ -492,7 +492,7 @@ void ApplicationService::initiateNodeDrag(NodeR node)
     mouseAction().setSourcePosOnNode(mouseAction().mappedPos() - node.pos());
 
     // Change cursor to the closed hand cursor.
-    QApplication::setOverrideCursor(QCursor(Qt::ClosedHandCursor));
+    QApplication::setOverrideCursor(QCursor { Qt::ClosedHandCursor });
 }
 
 void ApplicationService::initializeView()
@@ -503,7 +503,7 @@ void ApplicationService::initializeView()
     m_editorView->setScene(m_editorScene.get());
     m_editorView->resetDummyDragItems();
 
-    m_editorView->setBackgroundBrush(QBrush(m_editorService->backgroundColor()));
+    m_editorView->setBackgroundBrush(QBrush { m_editorService->backgroundColor() });
 
     m_mainWindow->setCentralWidget(m_editorView);
     m_mainWindow->setContentsMargins(0, 0, 0, 0);
@@ -605,7 +605,7 @@ void ApplicationService::paste()
         using std::chrono::system_clock;
         const auto node = createAndAddNode(m_editorView->grid().snapToGrid(mouseAction().mappedPos()));
         const auto ts = duration_cast<std::chrono::milliseconds>(system_clock::now().time_since_epoch()).count();
-        const Image image(QApplication::clipboard()->image(), "copy-pasted-image-data-" + std::to_string(ts) + ".png");
+        const Image image { QApplication::clipboard()->image(), "copy-pasted-image-data-" + std::to_string(ts) + ".png" };
         const auto id = m_editorService->mindMapData()->imageManager().addImage(image);
         node->setImageRef(id);
         m_editorService->clearCopyStack();
@@ -833,7 +833,7 @@ void ApplicationService::setBackgroundColor(QColor color)
     if (m_editorService->mindMapData()->backgroundColor() != color) {
         saveUndoPoint();
         m_editorService->mindMapData()->setBackgroundColor(color);
-        m_editorView->setBackgroundBrush(QBrush(color));
+        m_editorView->setBackgroundBrush(QBrush { color });
     }
 }
 
@@ -997,7 +997,7 @@ void ApplicationService::setupMindMapAfterUndoOrRedo()
 
     m_editorScene = std::make_unique<EditorScene>();
     m_editorView->setScene(m_editorScene.get());
-    m_editorView->setBackgroundBrush(QBrush(m_editorService->backgroundColor()));
+    m_editorView->setBackgroundBrush(QBrush { m_editorService->backgroundColor() });
 
     addExistingGraphToScene();
 

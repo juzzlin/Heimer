@@ -40,10 +40,10 @@ namespace Dialogs {
 static const auto TAG = "LayoutOptimizationDialog";
 
 LayoutOptimizationDialog::LayoutOptimizationDialog(QWidget & parent, MindMapDataR mindMapData, LayoutOptimizer & layoutOptimizer, EditorView & editorView)
-  : QDialog(&parent)
-  , m_mindMapData(mindMapData)
-  , m_layoutOptimizer(layoutOptimizer)
-  , m_editorView(editorView)
+  : QDialog { &parent }
+  , m_mindMapData { mindMapData }
+  , m_layoutOptimizer { layoutOptimizer }
+  , m_editorView { editorView }
 {
     setWindowTitle(tr("Optimize Layout"));
 
@@ -75,12 +75,12 @@ void LayoutOptimizationDialog::finishOptimization()
 
 void LayoutOptimizationDialog::initWidgets(MindMapDataCR mindMapData)
 {
-    const auto mainLayout = new QVBoxLayout(this);
+    const auto mainLayout = new QVBoxLayout { this };
     const auto mainGroup = WidgetFactory::buildGroupBoxWithVLayout(tr("Parameters"), *mainLayout);
     const auto parameterWidgetLayout = new QGridLayout;
     mainGroup.second->addLayout(parameterWidgetLayout);
 
-    const auto imageWidthLabel = new QLabel(tr("Aspect Ratio:"));
+    const auto imageWidthLabel = new QLabel { tr("Aspect Ratio:") };
     imageWidthLabel->setToolTip(tr("Aspect ratio = layout width / layout height"));
     parameterWidgetLayout->addWidget(imageWidthLabel, 0, 0);
     m_aspectRatioSpinBox = new QDoubleSpinBox;
@@ -91,16 +91,16 @@ void LayoutOptimizationDialog::initWidgets(MindMapDataCR mindMapData)
     parameterWidgetLayout->addWidget(m_aspectRatioSpinBox, 0, 1);
 
     const auto leftArrowLabelStr = tr("<--");
-    parameterWidgetLayout->addWidget(new QLabel(leftArrowLabelStr), 0, 2);
+    parameterWidgetLayout->addWidget(new QLabel { leftArrowLabelStr }, 0, 2);
 
-    const auto calculateARFromLayout = new QPushButton(tr("From layout"));
+    const auto calculateARFromLayout = new QPushButton { tr("From layout") };
     calculateARFromLayout->setToolTip(tr("Calculate aspect ratio from current layout"));
     connect(calculateARFromLayout, &QPushButton::clicked, this, [=] {
         m_aspectRatioSpinBox->setValue(m_mindMapData.stats().layoutAspectRatio.value_or(m_aspectRatioSpinBox->value()));
     });
     parameterWidgetLayout->addWidget(calculateARFromLayout, 0, 3);
 
-    const auto calculateARFromView = new QPushButton(tr("From view"));
+    const auto calculateARFromView = new QPushButton { tr("From view") };
     calculateARFromView->setToolTip(tr("Calculate aspect ratio from current view geometry"));
     connect(calculateARFromView, &QPushButton::clicked, this, [=] {
         const auto geometry = m_editorView.viewport()->geometry();
@@ -108,7 +108,7 @@ void LayoutOptimizationDialog::initWidgets(MindMapDataCR mindMapData)
     });
     parameterWidgetLayout->addWidget(calculateARFromView, 0, 4);
 
-    const auto minEdgeLengthLabel = new QLabel(tr("Minimum Edge Length:"));
+    const auto minEdgeLengthLabel = new QLabel { tr("Minimum Edge Length:") };
     minEdgeLengthLabel->setToolTip(tr("Minimum edge length in the optimized layout"));
     parameterWidgetLayout->addWidget(minEdgeLengthLabel, 1, 0);
     m_minEdgeLengthSpinBox = new QDoubleSpinBox;
@@ -118,23 +118,23 @@ void LayoutOptimizationDialog::initWidgets(MindMapDataCR mindMapData)
     m_minEdgeLengthSpinBox->setValue(mindMapData.minEdgeLength());
     parameterWidgetLayout->addWidget(m_minEdgeLengthSpinBox, 1, 1);
 
-    parameterWidgetLayout->addWidget(new QLabel(leftArrowLabelStr), 1, 2);
+    parameterWidgetLayout->addWidget(new QLabel { leftArrowLabelStr }, 1, 2);
 
-    const auto calculateMinELFromLayout = new QPushButton(tr("Min from layout"));
+    const auto calculateMinELFromLayout = new QPushButton { tr("Min from layout") };
     connect(calculateMinELFromLayout, &QPushButton::clicked, this, [=] {
         m_minEdgeLengthSpinBox->setValue(m_mindMapData.stats().minimumEdgeLength.value_or(m_minEdgeLengthSpinBox->value()));
     });
     calculateMinELFromLayout->setToolTip(tr("Calculate minimum edge length from current layout"));
     parameterWidgetLayout->addWidget(calculateMinELFromLayout, 1, 3);
 
-    const auto calculateMaxELFromLayout = new QPushButton(tr("Max from layout"));
+    const auto calculateMaxELFromLayout = new QPushButton { tr("Max from layout") };
     connect(calculateMaxELFromLayout, &QPushButton::clicked, this, [=] {
         m_minEdgeLengthSpinBox->setValue(m_mindMapData.stats().maximumEdgeLength.value_or(m_minEdgeLengthSpinBox->value()));
     });
     calculateMaxELFromLayout->setToolTip(tr("Calculate maximum edge length from current layout"));
     parameterWidgetLayout->addWidget(calculateMaxELFromLayout, 1, 4);
 
-    const auto calculateAvgELFromLayout = new QPushButton(tr("Avg from layout"));
+    const auto calculateAvgELFromLayout = new QPushButton { tr("Avg from layout") };
     connect(calculateAvgELFromLayout, &QPushButton::clicked, this, [=] {
         m_minEdgeLengthSpinBox->setValue(m_mindMapData.stats().averageEdgeLength.value_or(m_minEdgeLengthSpinBox->value()));
     });
@@ -149,7 +149,7 @@ void LayoutOptimizationDialog::initWidgets(MindMapDataCR mindMapData)
     progressBarLayout->addWidget(m_progressBar);
     mainLayout->addLayout(progressBarLayout);
 
-    const auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    const auto buttonBox = new QDialogButtonBox { QDialogButtonBox::Ok | QDialogButtonBox::Cancel };
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
     connect(buttonBox, &QDialogButtonBox::accepted, this, [=] {

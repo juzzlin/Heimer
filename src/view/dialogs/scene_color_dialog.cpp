@@ -22,7 +22,7 @@
 namespace Dialogs {
 
 SceneColorDialog::SceneColorDialog(Role role)
-  : ColorDialog(role)
+  : ColorDialog { role }
 {
     connect(this, &QColorDialog::colorSelected, [=](QColor color) {
         if (!color.isValid()) {

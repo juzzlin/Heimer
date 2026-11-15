@@ -19,11 +19,11 @@
 #include "../infra/io/alz_file_io.hpp"
 
 MindMapSnapshot::MindMapSnapshot(const IO::AlzFileIO & alzFileIO, MindMapDataS mindMapData)
-  : m_xml(alzFileIO.toSnapshotXml(mindMapData))
-  , m_imageManager(mindMapData->imageManager())
-  , m_fileName(mindMapData->fileName())
-  , m_applicationVersion(mindMapData->applicationVersion())
-  , m_alzFormatVersion(mindMapData->alzFormatVersion())
+  : m_xml { alzFileIO.toSnapshotXml(mindMapData) }
+  , m_imageManager { mindMapData->imageManager() }
+  , m_fileName { mindMapData->fileName() }
+  , m_applicationVersion { mindMapData->applicationVersion() }
+  , m_alzFormatVersion { mindMapData->alzFormatVersion() }
 {
 }
 

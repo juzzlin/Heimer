@@ -23,7 +23,7 @@
 namespace Menus {
 
 EdgeContextMenu::EdgeContextMenu(QWidget * parent)
-  : QMenu(parent)
+  : QMenu { parent }
 {
     initialize();
 }
@@ -39,7 +39,7 @@ void EdgeContextMenu::initialize()
 
 void EdgeContextMenu::createActions()
 {
-    m_changeEdgeDirectionAction = new QAction(tr("Change direction"), this);
+    m_changeEdgeDirectionAction = new QAction { tr("Change direction"), this };
     QObject::connect(m_changeEdgeDirectionAction, &QAction::triggered, this, [=] {
         if (const auto selectedEdge = SC::instance().applicationService()->selectedEdge(); selectedEdge.has_value()) {
             SC::instance().applicationService()->saveUndoPoint();
@@ -49,7 +49,7 @@ void EdgeContextMenu::createActions()
 
     using SceneItems::EdgeModel;
 
-    m_showEdgeArrowAction = new QAction(tr("Show arrow"), this);
+    m_showEdgeArrowAction = new QAction { tr("Show arrow"), this };
     QObject::connect(m_showEdgeArrowAction, &QAction::triggered, this, [=] {
         if (const auto selectedEdge = SC::instance().applicationService()->selectedEdge(); selectedEdge.has_value()) {
             SC::instance().applicationService()->saveUndoPoint();
@@ -58,7 +58,7 @@ void EdgeContextMenu::createActions()
     });
     m_showEdgeArrowAction->setCheckable(true);
 
-    m_doubleArrowAction = new QAction(tr("Double arrow"), this);
+    m_doubleArrowAction = new QAction { tr("Double arrow"), this };
     QObject::connect(m_doubleArrowAction, &QAction::triggered, this, [=] {
         if (const auto selectedEdge = SC::instance().applicationService()->selectedEdge(); selectedEdge.has_value()) {
             SC::instance().applicationService()->saveUndoPoint();
@@ -67,7 +67,7 @@ void EdgeContextMenu::createActions()
     });
     m_doubleArrowAction->setCheckable(true);
 
-    m_dashedLineAction = new QAction(tr("Dashed line"), this);
+    m_dashedLineAction = new QAction { tr("Dashed line"), this };
     QObject::connect(m_dashedLineAction, &QAction::triggered, this, [=] {
         if (const auto selectedEdge = SC::instance().applicationService()->selectedEdge(); selectedEdge.has_value()) {
             SC::instance().applicationService()->saveUndoPoint();
@@ -76,7 +76,7 @@ void EdgeContextMenu::createActions()
     });
     m_dashedLineAction->setCheckable(true);
 
-    m_deleteEdgeAction = new QAction(tr("Delete edge"), this);
+    m_deleteEdgeAction = new QAction { tr("Delete edge"), this };
     QObject::connect(m_deleteEdgeAction, &QAction::triggered, this, [=] {
         if (SC::instance().applicationService()->edgeSelectionGroupSize()) {
             SC::instance().applicationService()->saveUndoPoint();

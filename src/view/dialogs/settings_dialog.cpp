@@ -30,7 +30,7 @@
 namespace Dialogs {
 
 SettingsDialog::SettingsDialog(QWidget * parent)
-  : QDialog(parent)
+  : QDialog { parent }
 {
     setWindowTitle(tr("Settings"));
     setMinimumWidth(640);
@@ -71,7 +71,7 @@ void SettingsDialog::initWidgets()
 
     m_tabs.push_back(new DefaultsTab { tr("Defaults"), this });
 
-    const auto editingTab = new EditingTab(tr("Editing"), this);
+    const auto editingTab = new EditingTab { tr("Editing"), this };
     connect(editingTab, &EditingTab::autosaveEnabled, this, &SettingsDialog::autosaveEnabled);
     m_tabs.push_back(editingTab);
 

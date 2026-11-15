@@ -35,7 +35,7 @@ static const auto TAG = "DefaultsTab";
 
 DefaultsTab::DefaultsTab(QString name, QWidget * parent)
   : SettingsTabBase { name, parent }
-  , m_edgeDirectionCheckBox(new QCheckBox { tr("Reversed direction"), this })
+  , m_edgeDirectionCheckBox { new QCheckBox { tr("Reversed direction"), this } }
 {
     initWidgets();
 }

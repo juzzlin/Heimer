@@ -109,7 +109,7 @@ void ThemeUiTest::test_colorButton_shouldStoreColor()
 
     button.setColor({ 1, 2, 3, 4 });
 
-    QCOMPARE(button.color(), QColor(1, 2, 3, 4));
+    QCOMPARE(button.color(), (QColor { 1, 2, 3, 4 }));
     QVERIFY(!button.icon().isNull());
 }
 
@@ -130,7 +130,7 @@ void ThemeUiTest::test_colorButton_transparentColorShouldBeChangeable()
 
     QVERIFY(initialDialogColor);
     QCOMPARE(initialDialogColor->alpha(), 255);
-    QCOMPARE(button.color(), QColor(1, 2, 3, 255));
+    QCOMPARE(button.color(), (QColor { 1, 2, 3, 255 }));
 }
 
 void ThemeUiTest::test_themeEditorDialog_unchangedThemeShouldRoundTrip()

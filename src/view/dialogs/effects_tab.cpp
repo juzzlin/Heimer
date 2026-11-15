@@ -27,7 +27,7 @@ namespace Dialogs {
 
 EffectsTab::EffectsTab(QString name, QWidget * parent)
   : SettingsTabBase { name, parent }
-  , m_optimizeShadowsCheckBox(new QCheckBox { tr("Optimize shadow effects"), this })
+  , m_optimizeShadowsCheckBox { new QCheckBox { tr("Optimize shadow effects"), this } }
 {
     m_optimizeShadowsCheckBox->setChecked(settingsProxy()->optimizeShadowEffects());
 

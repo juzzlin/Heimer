@@ -28,7 +28,7 @@ ItemAtPosition getFirstItemAtPosition(QGraphicsScene & scene, QPointF scenePos, 
 {
     ItemAtPosition itemAtPosition;
 
-    const QRectF clickRect(scenePos.x() - tolerance, scenePos.y() - tolerance, tolerance * 2, tolerance * 2);
+    const QRectF clickRect { scenePos.x() - tolerance, scenePos.y() - tolerance, tolerance * 2, tolerance * 2 };
 
     if (const auto itemsAtPosition = scene.items(clickRect, Qt::IntersectsItemShape, Qt::DescendingOrder); !itemsAtPosition.empty()) {
         const auto firstItem = *itemsAtPosition.begin();

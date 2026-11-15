@@ -150,7 +150,7 @@ NodeS Graph::getNode(int index) const
     if (const auto iter = m_nodes.find(index); iter != m_nodes.end()) {
         return iter->second;
     }
-    throw std::runtime_error("Invalid node index: " + std::to_string(index));
+    throw std::runtime_error { "Invalid node index: " + std::to_string(index) };
 }
 
 Graph::NodeVector Graph::getNodes() const

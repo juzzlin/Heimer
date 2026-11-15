@@ -409,9 +409,9 @@ static void writeVersion(QDomElement & root, QDomDocument & doc, AlzFormatVersio
 static QString getBase64Data(std::string path)
 {
     if (!TestMode::enabled()) {
-        QFile in(path.c_str());
+        QFile in { path.c_str() };
         if (!in.open(QIODevice::ReadOnly)) {
-            throw std::runtime_error("Cannot open file: '" + path + "'");
+            throw std::runtime_error { "Cannot open file: '" + path + "'" };
         }
         return in.readAll().toBase64(QByteArray::Base64Encoding);
     } else {
@@ -449,7 +449,7 @@ static void writeImages(MindMapDataS mindMapData, QDomElement & root, QDomDocume
                     // Create a child node for the image content
                     if (!TestMode::enabled()) {
                         QTemporaryDir dir;
-                        const QFileInfo info(image->path().c_str());
+                        const QFileInfo info { image->path().c_str() };
                         const QString tempImagePath = (dir.path() + QDir::separator() + info.fileName());
                         image->image().save(tempImagePath);
                         imageElement.appendChild(doc.createTextNode(getBase64Data(tempImagePath.toStdString())));
@@ -458,7 +458,7 @@ static void writeImages(MindMapDataS mindMapData, QDomElement & root, QDomDocume
                         TestMode::logDisabledCode("writeImages");
                     }
                 } else {
-                    throw std::runtime_error("Image id=" + std::to_string(node->imageRef()) + " doesn't exist!");
+                    throw std::runtime_error { "Image id=" + std::to_string(node->imageRef()) + " doesn't exist!" };
                 }
             }
         }
@@ -505,7 +505,7 @@ static QString readFirstTextNodeContent(const QDomElement & element)
         const auto child = element.childNodes().at(i);
         if (child.isText()) {
             // See: https://github.com/juzzlin/Heimer/issues/73
-            return child.toText().nodeValue().replace(QChar(QChar::CarriageReturn), "");
+            return child.toText().nodeValue().replace(QChar { QChar::CarriageReturn }, "");
         }
     }
     return {};
@@ -568,16 +568,16 @@ static NodeU readNode(const QDomElement & element)
         node->setSize({ readScaledAttribute(element, Node::ATTRIBUTE_W), readScaledAttribute(element, Node::ATTRIBUTE_H) });
     }
 
-    readChildren(element, { { QString(Node::ELEMENT_TEXT), [&node](const QDomElement & e) {
+    readChildren(element, { { QString { Node::ELEMENT_TEXT }, [&node](const QDomElement & e) {
                                  node->setText(readFirstTextNodeContent(e));
                              } },
-                            { QString(Node::ATTRIBUTE_COLOR), [&node](const QDomElement & e) {
+                            { QString { Node::ATTRIBUTE_COLOR }, [&node](const QDomElement & e) {
                                  node->setColor(readColorElement(e));
                              } },
-                            { QString(Node::ATTRIBUTE_TEXT_COLOR), [&node](const QDomElement & e) {
+                            { QString { Node::ATTRIBUTE_TEXT_COLOR }, [&node](const QDomElement & e) {
                                  node->setTextColor(readColorElement(e));
                              } },
-                            { QString(Node::ATTRIBUTE_IMAGE), [&node](const QDomElement & e) {
+                            { QString { Node::ATTRIBUTE_IMAGE }, [&node](const QDomElement & e) {
                                  node->setImageRef(readImageElement(e));
                              } } });
 
@@ -602,7 +602,7 @@ static EdgeU readEdge(const QDomElement & element, MindMapData & data)
     edge->setDashedLine(dashedLine);
     edge->setReversed(reversed);
 
-    readChildren(element, { { QString(DataKeywords::MindMap::Graph::Node::ELEMENT_TEXT), [&edge](const QDomElement & e) {
+    readChildren(element, { { QString { DataKeywords::MindMap::Graph::Node::ELEMENT_TEXT }, [&edge](const QDomElement & e) {
                                  edge->setText(readFirstTextNodeContent(e));
                              } } });
 
@@ -624,7 +624,7 @@ static void readLayoutOptimizer(const QDomElement & element, MindMapData & data)
 
 static void readMetadata(const QDomElement & element, MindMapData & data)
 {
-    readChildren(element, { { QString(DataKeywords::MindMap::LayoutOptimizer::ELEMENT_LAYOUT_OPTIMIZER), [&](const QDomElement & e) {
+    readChildren(element, { { QString { DataKeywords::MindMap::LayoutOptimizer::ELEMENT_LAYOUT_OPTIMIZER }, [&](const QDomElement & e) {
                                  readLayoutOptimizer(e, data);
                              } } });
 }
@@ -635,10 +635,10 @@ static void readShadow(const QDomElement & element, MindMapData & data)
     const auto & defaults = data.shadowEffect();
     QColor shadowColor = defaults.shadowColor();
     QColor selectedItemShadowColor = defaults.selectedItemShadowColor();
-    readChildren(element, { { QString(ELEMENT_COLOR), [&shadowColor](const QDomElement & e) {
+    readChildren(element, { { QString { ELEMENT_COLOR }, [&shadowColor](const QDomElement & e) {
                                  shadowColor = readColorElement(e);
                              } },
-                            { QString(ELEMENT_SELECTED_ITEM_COLOR), [&selectedItemShadowColor](const QDomElement & e) {
+                            { QString { ELEMENT_SELECTED_ITEM_COLOR }, [&selectedItemShadowColor](const QDomElement & e) {
                                  selectedItemShadowColor = readColorElement(e);
                              } } });
     data.setShadowEffect({ element.attribute(ATTRIBUTE_OFFSET, QString::number(defaults.offset())).toInt(),
@@ -664,43 +664,43 @@ static QFont readFontElement(const QDomElement & element)
 //! Handlers for the style elements. V1 files have these directly in the root element and V2 files in the style element.
 static ElementHandlerMap styleElementHandlers(MindMapData & data)
 {
-    return { { QString(DataKeywords::MindMap::ELEMENT_ARROW_SIZE), [&data](const QDomElement & e) {
+    return { { QString { DataKeywords::MindMap::ELEMENT_ARROW_SIZE }, [&data](const QDomElement & e) {
                   data.setArrowSize(readScaledValueElement(e));
               } },
-             { QString(DataKeywords::MindMap::ELEMENT_COLOR), [&data](const QDomElement & e) {
+             { QString { DataKeywords::MindMap::ELEMENT_COLOR }, [&data](const QDomElement & e) {
                   data.setBackgroundColor(readColorElement(e));
               } },
-             { QString(DataKeywords::MindMap::ELEMENT_EDGE_COLOR), [&data](const QDomElement & e) {
+             { QString { DataKeywords::MindMap::ELEMENT_EDGE_COLOR }, [&data](const QDomElement & e) {
                   data.setEdgeColor(readColorElement(e));
               } },
-             { QString(DataKeywords::MindMap::ELEMENT_FONT_FAMILY), [&data](const QDomElement & e) {
+             { QString { DataKeywords::MindMap::ELEMENT_FONT_FAMILY }, [&data](const QDomElement & e) {
                   data.changeFont(readFontElement(e));
               } },
-             { QString(DataKeywords::MindMap::ELEMENT_GRID_COLOR), [&data](const QDomElement & e) {
+             { QString { DataKeywords::MindMap::ELEMENT_GRID_COLOR }, [&data](const QDomElement & e) {
                   data.setGridColor(readColorElement(e));
               } },
-             { QString(DataKeywords::MindMap::ELEMENT_EDGE_THICKNESS), [&data](const QDomElement & e) {
+             { QString { DataKeywords::MindMap::ELEMENT_EDGE_THICKNESS }, [&data](const QDomElement & e) {
                   data.setEdgeWidth(readScaledValueElement(e));
               } },
-             { QString(DataKeywords::MindMap::ELEMENT_TEXT_SIZE), [&data](const QDomElement & e) {
+             { QString { DataKeywords::MindMap::ELEMENT_TEXT_SIZE }, [&data](const QDomElement & e) {
                   data.setTextSize(static_cast<int>(readScaledValueElement(e)));
               } },
-             { QString(DataKeywords::MindMap::ELEMENT_CORNER_RADIUS), [&data](const QDomElement & e) {
+             { QString { DataKeywords::MindMap::ELEMENT_CORNER_RADIUS }, [&data](const QDomElement & e) {
                   data.setCornerRadius(static_cast<int>(readScaledValueElement(e)));
               } },
-             { QString(DataKeywords::MindMap::V2::Style::ELEMENT_NODE_COLOR), [&data](const QDomElement & e) {
+             { QString { DataKeywords::MindMap::V2::Style::ELEMENT_NODE_COLOR }, [&data](const QDomElement & e) {
                   data.setNodeColor(readColorElement(e));
               } },
-             { QString(DataKeywords::MindMap::V2::Style::ELEMENT_NODE_TEXT_COLOR), [&data](const QDomElement & e) {
+             { QString { DataKeywords::MindMap::V2::Style::ELEMENT_NODE_TEXT_COLOR }, [&data](const QDomElement & e) {
                   data.setNodeTextColor(readColorElement(e));
               } },
-             { QString(DataKeywords::MindMap::V2::Style::ELEMENT_EDGE_LABEL_COLOR), [&data](const QDomElement & e) {
+             { QString { DataKeywords::MindMap::V2::Style::ELEMENT_EDGE_LABEL_COLOR }, [&data](const QDomElement & e) {
                   data.setEdgeLabelColors(readColorElement(e), data.edgeLabelTextColor());
               } },
-             { QString(DataKeywords::MindMap::V2::Style::ELEMENT_EDGE_LABEL_TEXT_COLOR), [&data](const QDomElement & e) {
+             { QString { DataKeywords::MindMap::V2::Style::ELEMENT_EDGE_LABEL_TEXT_COLOR }, [&data](const QDomElement & e) {
                   data.setEdgeLabelColors(data.edgeLabelColor(), readColorElement(e));
               } },
-             { QString(DataKeywords::MindMap::V2::Style::Shadow::ELEMENT_SHADOW), [&data](const QDomElement & e) {
+             { QString { DataKeywords::MindMap::V2::Style::Shadow::ELEMENT_SHADOW }, [&data](const QDomElement & e) {
                   readShadow(e, data);
               } } };
 }
@@ -713,10 +713,10 @@ static void readStyle(const QDomElement & element, MindMapData & data)
 static void readGraph(const QDomElement & graph, MindMapData & data)
 {
     readChildren(graph, {
-                          { QString(DataKeywords::MindMap::Graph::ELEMENT_NODE), [&data](const QDomElement & e) {
+                          { QString { DataKeywords::MindMap::Graph::ELEMENT_NODE }, [&data](const QDomElement & e) {
                                data.graph().addNode(readNode(e));
                            } },
-                          { QString(DataKeywords::MindMap::Graph::ELEMENT_EDGE), [&data](const QDomElement & e) {
+                          { QString { DataKeywords::MindMap::Graph::ELEMENT_EDGE }, [&data](const QDomElement & e) {
                                data.graph().addEdge(readEdge(e, data));
                            } },
                         });
@@ -739,23 +739,23 @@ MindMapDataU fromXml(QDomDocument document)
         root.attribute(DataKeywords::MindMap::V2::ATTRIBUTE_ALZ_FORMAT_VERSION, "1").toInt()));
 
     auto rootElementHandlers = styleElementHandlers(*data);
-    rootElementHandlers.insert({ { QString(DataKeywords::MindMap::ELEMENT_GRAPH), [&data](const QDomElement & e) {
+    rootElementHandlers.insert({ { QString { DataKeywords::MindMap::ELEMENT_GRAPH }, [&data](const QDomElement & e) {
                                       readGraph(e, *data);
                                   } },
-                                 { QString(DataKeywords::MindMap::ELEMENT_IMAGE), [&data](const QDomElement & e) {
+                                 { QString { DataKeywords::MindMap::ELEMENT_IMAGE }, [&data](const QDomElement & e) {
                                       const auto id = e.attribute(DataKeywords::MindMap::Image::ATTRIBUTE_ID).toUInt();
                                       const auto path = e.attribute(DataKeywords::MindMap::Image::ATTRIBUTE_PATH).toStdString();
-                                      Image image(base64ToQImage(readFirstTextNodeContent(e).toStdString(), id, path), path);
+                                      Image image { base64ToQImage(readFirstTextNodeContent(e).toStdString(), id, path), path };
                                       image.setId(id);
                                       data->imageManager().setImage(image);
                                   } },
-                                 { QString(DataKeywords::MindMap::LayoutOptimizer::ELEMENT_LAYOUT_OPTIMIZER), [&data](const QDomElement & e) {
+                                 { QString { DataKeywords::MindMap::LayoutOptimizer::ELEMENT_LAYOUT_OPTIMIZER }, [&data](const QDomElement & e) {
                                       readLayoutOptimizer(e, *data);
                                   } },
-                                 { QString(DataKeywords::MindMap::V2::Metadata::ELEMENT_METADATA), [&data](const QDomElement & e) {
+                                 { QString { DataKeywords::MindMap::V2::Metadata::ELEMENT_METADATA }, [&data](const QDomElement & e) {
                                       readMetadata(e, *data);
                                   } },
-                                 { QString(DataKeywords::MindMap::V2::Style::ELEMENT_STYLE), [&data](const QDomElement & e) {
+                                 { QString { DataKeywords::MindMap::V2::Style::ELEMENT_STYLE }, [&data](const QDomElement & e) {
                                       readStyle(e, *data);
                                   } } });
     readChildren(root, rootElementHandlers);
@@ -785,7 +785,7 @@ QDomDocument toXml(MindMapDataS mindMapData, AlzFormatVersion outputVersion, boo
 }
 
 AlzFileIOWorker::AlzFileIOWorker(AlzFormatVersion outputVersion)
-  : m_outputVersion(outputVersion)
+  : m_outputVersion { outputVersion }
 {
 }
 

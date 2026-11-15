@@ -49,10 +49,10 @@
 static const auto TAG = "MainWindow";
 
 MainWindow::MainWindow()
-  : m_spinnerDlg(new Dialogs::SpinnerDialog(this))
-  , m_mainMenu(new Menus::MainMenu)
-  , m_toolBar(new Menus::ToolBar)
-  , m_statusText(new QLabel(this))
+  : m_spinnerDlg { new Dialogs::SpinnerDialog { this } }
+  , m_mainMenu { new Menus::MainMenu }
+  , m_toolBar { new Menus::ToolBar }
+  , m_statusText { new QLabel { this } }
 {
     addToolBar(Qt::BottomToolBarArea, m_toolBar);
 
@@ -171,7 +171,7 @@ void MainWindow::initialize()
 
     setFocus(); // Without this the tool bar has focus when application starts
 
-    setWindowIcon(QIcon(":/heimer.png"));
+    setWindowIcon(QIcon { ":/heimer.png" });
 
     emit actionTriggered(StateMachine::Action::MainWindowInitialized);
 }

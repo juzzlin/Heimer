@@ -26,7 +26,7 @@
 namespace Dialogs {
 
 WhatsNewDialog::WhatsNewDialog(QWidget * parent)
-  : QDialog(parent)
+  : QDialog { parent }
 {
     setWindowTitle(tr("What's New"));
     initWidgets();
@@ -50,11 +50,11 @@ QString filterChangeLog(QString data)
 
 void WhatsNewDialog::initWidgets()
 {
-    const auto vLayout = new QVBoxLayout(this);
-    const auto textEdit = new QTextEdit(this);
+    const auto vLayout = new QVBoxLayout { this };
+    const auto textEdit = new QTextEdit { this };
 
     QString data;
-    QFile file(":/CHANGELOG");
+    QFile file { ":/CHANGELOG" };
     if (file.open(QIODevice::ReadOnly)) {
         data = filterChangeLog(file.readAll());
     }
@@ -68,7 +68,7 @@ void WhatsNewDialog::initWidgets()
     textEdit->setFont(font);
     vLayout->addWidget(textEdit);
 
-    const auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
+    const auto buttonBox = new QDialogButtonBox { QDialogButtonBox::Ok };
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
 
     vLayout->addWidget(buttonBox);

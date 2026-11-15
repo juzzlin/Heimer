@@ -57,7 +57,7 @@ void MouseActionTest::test_setRubberBandOrigin_shouldStartRubberBand()
 
     dut.setRubberBandOrigin({ 10, 20 });
 
-    QCOMPARE(dut.rubberBandOrigin(), QPointF(10, 20));
+    QCOMPARE(dut.rubberBandOrigin(), (QPointF { 10, 20 }));
     QCOMPARE(dut.action(), Action::RubberBand);
 }
 
@@ -70,10 +70,10 @@ void MouseActionTest::test_positions_shouldBeStored()
     dut.setMappedPos({ 5, 6 });
     dut.setClickedScenePos({ 7, 8 });
 
-    QCOMPARE(dut.sourcePos(), QPointF(1, 2));
-    QCOMPARE(dut.sourcePosOnNode(), QPointF(3, 4));
-    QCOMPARE(dut.mappedPos(), QPointF(5, 6));
-    QCOMPARE(dut.clickedScenePos(), QPointF(7, 8));
+    QCOMPARE(dut.sourcePos(), (QPointF { 1, 2 }));
+    QCOMPARE(dut.sourcePosOnNode(), (QPointF { 3, 4 }));
+    QCOMPARE(dut.mappedPos(), (QPointF { 5, 6 }));
+    QCOMPARE(dut.clickedScenePos(), (QPointF { 7, 8 }));
     // Setting the positions doesn't start any action
     QCOMPARE(dut.action(), Action::None);
 }

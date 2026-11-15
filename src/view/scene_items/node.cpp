@@ -53,10 +53,10 @@ static const auto TAG = "Node";
 NodeP Node::m_lastHoveredNode = nullptr;
 
 Node::Node()
-  : m_settingsProxy(SC::instance().settingsProxy())
-  , m_shadowEffectParams(m_settingsProxy->shadowEffect())
-  , m_nodeModel(std::make_unique<NodeModel>(m_settingsProxy->nodeColor(), m_settingsProxy->nodeTextColor()))
-  , m_textEdit(new TextEdit(this))
+  : m_settingsProxy { SC::instance().settingsProxy() }
+  , m_shadowEffectParams { m_settingsProxy->shadowEffect() }
+  , m_nodeModel { std::make_unique<NodeModel>(m_settingsProxy->nodeColor(), m_settingsProxy->nodeTextColor()) }
+  , m_textEdit { new TextEdit { this } }
 {
     setAcceptHoverEvents(true);
 
@@ -95,7 +95,7 @@ Node::Node()
 }
 
 Node::Node(NodeCR other)
-  : Node()
+  : Node {}
 {
     setColor(other.m_nodeModel->color);
 
@@ -233,7 +233,7 @@ void Node::changeFont(const QFont & font)
     m_font = font;
     if (!TestMode::enabled()) {
         // Handle size and family separately to maintain backwards compatibility
-        QFont newFont(font);
+        QFont newFont { font };
         if (m_textSize >= 0) {
             newFont.setPointSize(m_textSize);
         }
@@ -264,13 +264,13 @@ void Node::createEdgePoints()
 
 void Node::createHandles()
 {
-    m_handles[NodeHandle::Role::ConnectOrCreate] = new NodeHandle(*this, NodeHandle::Role::ConnectOrCreate, m_handleRadius);
+    m_handles[NodeHandle::Role::ConnectOrCreate] = new NodeHandle { *this, NodeHandle::Role::ConnectOrCreate, m_handleRadius };
 
-    m_handles[NodeHandle::Role::NodeColor] = new NodeHandle(*this, NodeHandle::Role::NodeColor, m_handleRadiusSmall);
+    m_handles[NodeHandle::Role::NodeColor] = new NodeHandle { *this, NodeHandle::Role::NodeColor, m_handleRadiusSmall };
 
-    m_handles[NodeHandle::Role::TextColor] = new NodeHandle(*this, NodeHandle::Role::TextColor, m_handleRadiusSmall);
+    m_handles[NodeHandle::Role::TextColor] = new NodeHandle { *this, NodeHandle::Role::TextColor, m_handleRadiusSmall };
 
-    m_handles[NodeHandle::Role::Move] = new NodeHandle(*this, NodeHandle::Role::Move, m_handleRadiusSmall);
+    m_handles[NodeHandle::Role::Move] = new NodeHandle { *this, NodeHandle::Role::Move, m_handleRadiusSmall };
 }
 
 QRectF Node::expandedTextEditRect() const
@@ -292,7 +292,7 @@ inline double getDistance(NodeCR node1, const EdgePoint & point1, NodeCR node2, 
 std::pair<EdgePoint, EdgePoint> Node::getNearestEdgePoints(NodeCR node1, NodeCR node2)
 {
     double bestDistance = std::numeric_limits<double>::max();
-    std::pair<EdgePoint, EdgePoint> bestPair = { EdgePoint(), EdgePoint() };
+    std::pair<EdgePoint, EdgePoint> bestPair = { EdgePoint {}, EdgePoint {} };
 
     // This is O(n^2) but fine as there are not many points
     for (auto && point1 : node1.m_edgePoints) {
@@ -438,17 +438,17 @@ QBrush Node::scaledBackgroundPixmapBrush() const
 QPixmap Node::createEmptyBackgroundPixmap() const
 {
     const auto size = m_nodeModel->size;
-    QPixmap backgroundPixmap(static_cast<int>(size.width()), static_cast<int>(size.height()));
+    QPixmap backgroundPixmap { static_cast<int>(size.width()), static_cast<int>(size.height()) };
     backgroundPixmap.fill(Qt::transparent);
     return backgroundPixmap;
 }
 
 void Node::paintPixmapOnEmptyBackgroundPixmap(QPixmap & emptyBackgroundPixmap)
 {
-    QPainter pixmapPainter(&emptyBackgroundPixmap);
+    QPainter pixmapPainter { &emptyBackgroundPixmap };
     QPainterPath scaledPath;
     const auto size = m_nodeModel->size;
-    const QRectF scaledRect(0, 0, size.width(), size.height());
+    const QRectF scaledRect { 0, 0, size.width(), size.height() };
     scaledPath.addRoundedRect(scaledRect, m_cornerRadius, m_cornerRadius);
     pixmapPainter.fillPath(scaledPath, scaledBackgroundPixmapBrush());
 }
@@ -456,8 +456,8 @@ void Node::paintPixmapOnEmptyBackgroundPixmap(QPixmap & emptyBackgroundPixmap)
 void Node::paintBackgroundPixmapOnNode(QPainter & painter, const QPixmap & backgroundPixmap)
 {
     const auto size = m_nodeModel->size;
-    const QRectF scaledRect(0, 0, size.width(), size.height());
-    const QRectF rect(-size.width() / 2, -size.height() / 2, size.width(), size.height());
+    const QRectF scaledRect { 0, 0, size.width(), size.height() };
+    const QRectF rect { -size.width() / 2, -size.height() / 2, size.width(), size.height() };
     painter.drawPixmap(rect, backgroundPixmap, scaledRect);
 }
 
@@ -474,7 +474,7 @@ void Node::paintBackgroundWithSolidColor(QPainter & painter)
 {
     QPainterPath path;
     const auto size = m_nodeModel->size;
-    const QRectF rect(-size.width() / 2, -size.height() / 2, size.width(), size.height());
+    const QRectF rect { -size.width() / 2, -size.height() / 2, size.width(), size.height() };
     path.addRoundedRect(rect, m_cornerRadius, m_cornerRadius);
 
     const auto color = m_nodeModel->color;

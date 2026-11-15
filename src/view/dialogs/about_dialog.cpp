@@ -28,7 +28,7 @@ namespace Dialogs {
 const int logoSize = 256;
 
 AboutDialog::AboutDialog(QWidget * parent)
-  : QDialog(parent)
+  : QDialog { parent }
 {
     setWindowTitle(tr("About ") + Constants::Application::applicationName());
     setMinimumWidth(3 * logoSize); // Note that there should be enough space for all languages
@@ -39,17 +39,17 @@ void AboutDialog::initWidgets()
 {
     using namespace Constants::Application;
 
-    const auto vLayout = new QVBoxLayout(this);
-    const auto pixmapLabel = new QLabel(this);
-    pixmapLabel->setPixmap(QPixmap(":/about.png").scaled(logoSize, logoSize));
+    const auto vLayout = new QVBoxLayout { this };
+    const auto pixmapLabel = new QLabel { this };
+    pixmapLabel->setPixmap(QPixmap { ":/about.png" }.scaled(logoSize, logoSize));
 
     const auto hLayout = new QHBoxLayout;
     hLayout->addWidget(pixmapLabel);
 
-    const auto infoLabel = new QTextBrowser(this);
+    const auto infoLabel = new QTextBrowser { this };
     infoLabel->setOpenExternalLinks(true);
     infoLabel->setHtml(
-      QString("<h2>") + applicationName() + " v" + applicationVersion() + "</h2>"
+      QString { "<h2>" } + applicationName() + " v" + applicationVersion() + "</h2>"
       + "<p>" + applicationName() + tr(" is licenced under ") + "GNU GPLv3" + ".</p>"
       + "<p>" + copyright() + ".</p>"
       + "<p>" + tr("Package type: ") + applicationPackageType() + "</p>"
@@ -60,7 +60,7 @@ void AboutDialog::initWidgets()
     hLayout->addWidget(infoLabel);
     vLayout->addLayout(hLayout);
 
-    const auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok);
+    const auto buttonBox = new QDialogButtonBox { QDialogButtonBox::Ok };
     connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     vLayout->addWidget(buttonBox);
 }

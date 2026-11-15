@@ -108,7 +108,7 @@ void MainMenu::retranslate()
 
 void MainMenu::addConnectSelectedNodesAction(QMenu & menu)
 {
-    m_connectSelectedNodesAction->setShortcut(QKeySequence("Ctrl+Shift+C"));
+    m_connectSelectedNodesAction->setShortcut(QKeySequence { "Ctrl+Shift+C" });
     connect(m_connectSelectedNodesAction, &QAction::triggered, this, [] {
         juzzlin::L(TAG).debug() << "Connect selected triggered";
         SC::instance().applicationService()->performNodeAction({ NodeAction::Type::ConnectSelected });
@@ -121,7 +121,7 @@ void MainMenu::addConnectSelectedNodesAction(QMenu & menu)
 
 void MainMenu::addDisconnectSelectedNodesAction(QMenu & menu)
 {
-    m_disconnectSelectedNodesAction->setShortcut(QKeySequence("Ctrl+Shift+D"));
+    m_disconnectSelectedNodesAction->setShortcut(QKeySequence { "Ctrl+Shift+D" });
     connect(m_disconnectSelectedNodesAction, &QAction::triggered, this, [] {
         juzzlin::L(TAG).debug() << "Disconnect selected triggered";
         SC::instance().applicationService()->performNodeAction({ NodeAction::Type::DisconnectSelected });
@@ -174,7 +174,7 @@ bool MainMenu::isFullScreenActionChecked() const
 
 void MainMenu::addRedoAction(QMenu & menu)
 {
-    m_redoAction->setShortcut(QKeySequence(QKeySequence::Redo));
+    m_redoAction->setShortcut(QKeySequence { QKeySequence::Redo });
 
     connect(m_redoAction, &QAction::triggered, this, [] {
         SC::instance().applicationService()->redo();
@@ -187,7 +187,7 @@ void MainMenu::addRedoAction(QMenu & menu)
 
 void MainMenu::addUndoAction(QMenu & menu)
 {
-    m_undoAction->setShortcut(QKeySequence(QKeySequence::Undo));
+    m_undoAction->setShortcut(QKeySequence { QKeySequence::Undo });
 
     connect(m_undoAction, &QAction::triggered, this, [] {
         SC::instance().applicationService()->undo();
@@ -204,8 +204,8 @@ void MainMenu::createColorSubMenu(QMenu & editMenu)
     const auto colorMenuAction = editMenu.addMenu(colorMenu);
     colorMenuAction->setText(tr("General &colors"));
 
-    const auto backgroundColorAction = new QAction(tr("Set background color") + Constants::Misc::threeDots(), this);
-    backgroundColorAction->setShortcut(QKeySequence("Ctrl+B"));
+    const auto backgroundColorAction = new QAction { tr("Set background color") + Constants::Misc::threeDots(), this };
+    backgroundColorAction->setShortcut(QKeySequence { "Ctrl+B" });
 
     connect(backgroundColorAction, &QAction::triggered, this, [=] {
         emit actionTriggered(StateMachine::Action::BackgroundColorChangeRequested);
@@ -215,8 +215,8 @@ void MainMenu::createColorSubMenu(QMenu & editMenu)
 
     colorMenu->addSeparator();
 
-    const auto edgeColorAction = new QAction(tr("Set edge color") + Constants::Misc::threeDots(), this);
-    edgeColorAction->setShortcut(QKeySequence("Ctrl+E"));
+    const auto edgeColorAction = new QAction { tr("Set edge color") + Constants::Misc::threeDots(), this };
+    edgeColorAction->setShortcut(QKeySequence { "Ctrl+E" });
 
     connect(edgeColorAction, &QAction::triggered, this, [=] {
         emit actionTriggered(StateMachine::Action::EdgeColorChangeRequested);
@@ -224,13 +224,13 @@ void MainMenu::createColorSubMenu(QMenu & editMenu)
 
     colorMenu->addAction(edgeColorAction);
 
-    const auto edgeLabelColorAction = new QAction(tr("Set edge label color") + Constants::Misc::threeDots(), this);
+    const auto edgeLabelColorAction = new QAction { tr("Set edge label color") + Constants::Misc::threeDots(), this };
     connect(edgeLabelColorAction, &QAction::triggered, this, [=] {
         emit actionTriggered(StateMachine::Action::EdgeLabelColorChangeRequested);
     });
     colorMenu->addAction(edgeLabelColorAction);
 
-    const auto edgeLabelTextColorAction = new QAction(tr("Set edge label text color") + Constants::Misc::threeDots(), this);
+    const auto edgeLabelTextColorAction = new QAction { tr("Set edge label text color") + Constants::Misc::threeDots(), this };
     connect(edgeLabelTextColorAction, &QAction::triggered, this, [=] {
         emit actionTriggered(StateMachine::Action::EdgeLabelTextColorChangeRequested);
     });
@@ -238,8 +238,8 @@ void MainMenu::createColorSubMenu(QMenu & editMenu)
 
     colorMenu->addSeparator();
 
-    const auto gridColorAction = new QAction(tr("Set grid color") + Constants::Misc::threeDots(), this);
-    gridColorAction->setShortcut(QKeySequence("Ctrl+G"));
+    const auto gridColorAction = new QAction { tr("Set grid color") + Constants::Misc::threeDots(), this };
+    gridColorAction->setShortcut(QKeySequence { "Ctrl+G" });
 
     connect(gridColorAction, &QAction::triggered, this, [=] {
         emit actionTriggered(StateMachine::Action::GridColorChangeRequested);
@@ -272,8 +272,8 @@ void MainMenu::createEditMenu()
 
     editMenu->addSeparator();
 
-    auto optimizeLayoutAction = new QAction(tr("Optimize layout") + Constants::Misc::threeDots(), this);
-    optimizeLayoutAction->setShortcut(QKeySequence("Ctrl+Shift+O"));
+    auto optimizeLayoutAction = new QAction { tr("Optimize layout") + Constants::Misc::threeDots(), this };
+    optimizeLayoutAction->setShortcut(QKeySequence { "Ctrl+Shift+O" });
 
     connect(optimizeLayoutAction, &QAction::triggered, this, [=] {
         emit actionTriggered(StateMachine::Action::LayoutOptimizationRequested);
@@ -289,7 +289,7 @@ void MainMenu::createExportSubMenu(QMenu & fileMenu)
     exportMenuAction->setText(tr("&Export"));
 
     // Add "export to PNG image"-action
-    const auto exportToPngAction = new QAction(tr("&PNG"), this);
+    const auto exportToPngAction = new QAction { tr("&PNG"), this };
     exportMenu->addAction(exportToPngAction);
     connect(exportToPngAction, &QAction::triggered, this, [=] {
         emit actionTriggered(StateMachine::Action::PngExportSelected);
@@ -298,7 +298,7 @@ void MainMenu::createExportSubMenu(QMenu & fileMenu)
     exportMenu->addSeparator();
 
     // Add "export to SVG file"-action
-    const auto exportToSvgAction = new QAction(tr("&SVG"), this);
+    const auto exportToSvgAction = new QAction { tr("&SVG"), this };
     exportMenu->addAction(exportToSvgAction);
     connect(exportToSvgAction, &QAction::triggered, this, [=] {
         emit actionTriggered(StateMachine::Action::SvgExportSelected);
@@ -315,16 +315,16 @@ void MainMenu::createFileMenu()
     const auto fileMenu = addMenu(tr("&File"));
 
     // Add "new"-action
-    const auto newAction = new QAction(tr("&New") + Constants::Misc::threeDots(), this);
-    newAction->setShortcut(QKeySequence(QKeySequence::New));
+    const auto newAction = new QAction { tr("&New") + Constants::Misc::threeDots(), this };
+    newAction->setShortcut(QKeySequence { QKeySequence::New });
     fileMenu->addAction(newAction);
     connect(newAction, &QAction::triggered, this, [=] {
         emit actionTriggered(StateMachine::Action::NewSelected);
     });
 
     // Add "open"-action
-    const auto openAction = new QAction(tr("&Open") + Constants::Misc::threeDots(), this);
-    openAction->setShortcut(QKeySequence(QKeySequence::Open));
+    const auto openAction = new QAction { tr("&Open") + Constants::Misc::threeDots(), this };
+    openAction->setShortcut(QKeySequence { QKeySequence::Open });
     fileMenu->addAction(openAction);
     connect(openAction, &QAction::triggered, this, [=] {
         emit actionTriggered(StateMachine::Action::OpenSelected);
@@ -341,7 +341,7 @@ void MainMenu::createFileMenu()
     fileMenu->addSeparator();
 
     // Add "save"-action
-    m_saveAction->setShortcut(QKeySequence(QKeySequence::Save));
+    m_saveAction->setShortcut(QKeySequence { QKeySequence::Save });
     m_saveAction->setEnabled(false);
     fileMenu->addAction(m_saveAction);
     connect(m_saveAction, &QAction::triggered, this, [=] {
@@ -349,7 +349,7 @@ void MainMenu::createFileMenu()
     });
 
     // Add "save as"-action
-    m_saveAsAction->setShortcut(QKeySequence(QKeySequence::SaveAs));
+    m_saveAsAction->setShortcut(QKeySequence { QKeySequence::SaveAs });
     m_saveAsAction->setEnabled(false);
     fileMenu->addAction(m_saveAsAction);
     connect(m_saveAsAction, &QAction::triggered, this, [=] {
@@ -363,15 +363,15 @@ void MainMenu::createFileMenu()
     fileMenu->addSeparator();
 
     // Add "settings"-action
-    const auto settingsAction = new QAction(tr("Settings") + Constants::Misc::threeDots(), this);
+    const auto settingsAction = new QAction { tr("Settings") + Constants::Misc::threeDots(), this };
     connect(settingsAction, &QAction::triggered, this, &MainMenu::settingsDialogRequested);
     fileMenu->addAction(settingsAction);
 
     fileMenu->addSeparator();
 
     // Add "quit"-action
-    const auto quitAction = new QAction(tr("&Quit"), this);
-    quitAction->setShortcut(QKeySequence(QKeySequence::Quit));
+    const auto quitAction = new QAction { tr("&Quit"), this };
+    quitAction->setShortcut(QKeySequence { QKeySequence::Quit });
     fileMenu->addAction(quitAction);
     connect(quitAction, &QAction::triggered, this, [=] {
         emit actionTriggered(StateMachine::Action::QuitSelected);
@@ -393,16 +393,16 @@ void MainMenu::createMirrorSubMenu(QMenu & editMenu)
     auto mirrorAction = editMenu.addMenu(mirrorMenu);
     mirrorAction->setText(tr("&Mirror layout"));
 
-    const auto mirrorHorizontallyAction = new QAction(tr("Horizontally"), this);
-    mirrorHorizontallyAction->setShortcut(QKeySequence(SC::instance().controlStrategy()->mirrorLayoutHorizontallyShortcut()));
+    const auto mirrorHorizontallyAction = new QAction { tr("Horizontally"), this };
+    mirrorHorizontallyAction->setShortcut(QKeySequence { SC::instance().controlStrategy()->mirrorLayoutHorizontallyShortcut() });
     mirrorMenu->addAction(mirrorHorizontallyAction);
     connect(mirrorHorizontallyAction, &QAction::triggered, this, [=] {
         SC::instance().applicationService()->performNodeAction(NodeAction::Type::MirrorLayoutHorizontally);
     });
     mirrorMenu->addSeparator();
 
-    const auto mirrorVerticallyAction = new QAction(tr("Vertically"), this);
-    mirrorVerticallyAction->setShortcut(QKeySequence(SC::instance().controlStrategy()->mirrorLayoutVerticallyShortcut()));
+    const auto mirrorVerticallyAction = new QAction { tr("Vertically"), this };
+    mirrorVerticallyAction->setShortcut(QKeySequence { SC::instance().controlStrategy()->mirrorLayoutVerticallyShortcut() });
     mirrorMenu->addAction(mirrorVerticallyAction);
     connect(mirrorVerticallyAction, &QAction::triggered, this, [=] {
         SC::instance().applicationService()->performNodeAction(NodeAction::Type::MirrorLayoutVertically);
@@ -414,19 +414,19 @@ void MainMenu::createHelpMenu()
     const auto helpMenu = addMenu(tr("&Help"));
 
     // Add "about"-action
-    const auto aboutAction = new QAction(tr("&About"), this);
+    const auto aboutAction = new QAction { tr("&About"), this };
     helpMenu->addAction(aboutAction);
     connect(aboutAction, &QAction::triggered, this, &MainMenu::aboutDialogRequested);
 
     // Add "about Qt"-action
-    const auto aboutQtAction = new QAction(tr("About &Qt"), this);
+    const auto aboutQtAction = new QAction { tr("About &Qt"), this };
     helpMenu->addAction(aboutQtAction);
     connect(aboutQtAction, &QAction::triggered, this, &MainMenu::aboutQtDialogRequested);
 
     helpMenu->addSeparator();
 
     // Add "What's new"-action
-    const auto whatsNewAction = new QAction(tr("What's New"), this);
+    const auto whatsNewAction = new QAction { tr("What's New"), this };
     helpMenu->addAction(whatsNewAction);
     connect(whatsNewAction, &QAction::triggered, this, &MainMenu::whatsNewDialogRequested);
 }
@@ -436,32 +436,32 @@ void MainMenu::createViewMenu()
     const auto viewMenu = addMenu(tr("&View"));
 
     // Add "fullScreen"-action
-    m_fullScreenAction = new QAction(tr("Full Screen"), this);
+    m_fullScreenAction = new QAction { tr("Full Screen"), this };
     m_fullScreenAction->setCheckable(true);
     m_fullScreenAction->setChecked(false);
-    m_fullScreenAction->setShortcut(QKeySequence("F11"));
+    m_fullScreenAction->setShortcut(QKeySequence { "F11" });
     viewMenu->addAction(m_fullScreenAction);
     connect(m_fullScreenAction, &QAction::triggered, this, &MainMenu::fullScreenChanged);
 
     viewMenu->addSeparator();
 
     // Add "zoom in"-action
-    const auto zoomInAction = new QAction(tr("Zoom In"), this);
+    const auto zoomInAction = new QAction { tr("Zoom In"), this };
     viewMenu->addAction(zoomInAction);
-    zoomInAction->setShortcut(QKeySequence(QKeySequence::ZoomIn));
+    zoomInAction->setShortcut(QKeySequence { QKeySequence::ZoomIn });
     connect(zoomInAction, &QAction::triggered, this, &MainMenu::zoomInRequested);
 
     // Add "zoom out"-action
-    const auto zoomOutAction = new QAction(tr("Zoom Out"), this);
+    const auto zoomOutAction = new QAction { tr("Zoom Out"), this };
     viewMenu->addAction(zoomOutAction);
     connect(zoomOutAction, &QAction::triggered, this, &MainMenu::zoomOutRequested);
-    zoomOutAction->setShortcut(QKeySequence(QKeySequence::ZoomOut));
+    zoomOutAction->setShortcut(QKeySequence { QKeySequence::ZoomOut });
 
     viewMenu->addSeparator();
 
     // Add "zoom to fit"-action
-    const auto zoomToFitAction = new QAction(tr("&Zoom To Fit"), this);
-    zoomToFitAction->setShortcut(QKeySequence("Ctrl+0"));
+    const auto zoomToFitAction = new QAction { tr("&Zoom To Fit"), this };
+    zoomToFitAction->setShortcut(QKeySequence { "Ctrl+0" });
     viewMenu->addAction(zoomToFitAction);
     connect(zoomToFitAction, &QAction::triggered, this, &MainMenu::zoomToFitRequested);
 

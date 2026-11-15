@@ -28,7 +28,7 @@ public:
     //! \param maxHistorySize The maximum size of the undo and redo stacks or 0 for "unlimited".
     //! The oldest undo points are dropped when the stack is full.
     explicit UndoStack(size_t maxHistorySize = 0)
-      : m_maxHistorySize(maxHistorySize)
+      : m_maxHistorySize { maxHistorySize }
     {
     }
 

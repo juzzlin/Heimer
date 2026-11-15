@@ -25,21 +25,21 @@
 #include "theme.hpp"
 
 MindMapData::MindMapData(QString name)
-  : MindMapDataBase(name)
-  , m_theme(std::make_unique<Theme>(SC::instance().themeService()->defaultTheme()))
-  , m_graph(std::make_unique<Graph>())
-  , m_imageManager(std::make_unique<ImageManager>())
+  : MindMapDataBase { name }
+  , m_theme { std::make_unique<Theme>(SC::instance().themeService()->defaultTheme()) }
+  , m_graph { std::make_unique<Graph>() }
+  , m_imageManager { std::make_unique<ImageManager>() }
 {
 }
 
 MindMapData::MindMapData(const MindMapData & other)
-  : MindMapDataBase(other)
-  , m_fileName(other.m_fileName)
-  , m_applicationVersion(other.m_applicationVersion)
-  , m_theme(std::make_unique<Theme>(*other.m_theme))
-  , m_graph(std::make_unique<Graph>())
-  , m_imageManager(std::make_unique<ImageManager>(*other.m_imageManager))
-  , m_layoutOptimizerParameters(other.m_layoutOptimizerParameters)
+  : MindMapDataBase { other }
+  , m_fileName { other.m_fileName }
+  , m_applicationVersion { other.m_applicationVersion }
+  , m_theme { std::make_unique<Theme>(*other.m_theme) }
+  , m_graph { std::make_unique<Graph>() }
+  , m_imageManager { std::make_unique<ImageManager>(*other.m_imageManager) }
+  , m_layoutOptimizerParameters { other.m_layoutOptimizerParameters }
 {
     copyGraph(other);
 }

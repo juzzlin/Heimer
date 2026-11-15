@@ -25,9 +25,9 @@
 namespace SceneItems {
 
 EdgeTextEdit::EdgeTextEdit(EdgeP parentItem)
-  : TextEdit(parentItem)
-  , m_edge(parentItem)
-  , m_opacityAnimation(this, "opacity")
+  : TextEdit { parentItem }
+  , m_edge { parentItem }
+  , m_opacityAnimation { this, "opacity" }
 {
     setAcceptHoverEvents(true);
 

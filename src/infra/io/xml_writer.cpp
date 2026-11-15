@@ -22,9 +22,9 @@ namespace IO {
 
 bool XmlWriter::writeToFile(QDomDocument document, QString filePath)
 {
-    QFile file(filePath);
+    QFile file { filePath };
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        QTextStream out(&file);
+        QTextStream out { &file };
         out << document;
         file.close();
         return true;

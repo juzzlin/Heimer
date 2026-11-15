@@ -32,17 +32,17 @@ static const auto TAG = "ServiceContainer";
 ServiceContainer * ServiceContainer::m_instance = nullptr;
 
 ServiceContainer::ServiceContainer()
-  : m_settingsProxy(std::make_unique<SettingsProxy>())
-  , m_controlStrategy(std::make_unique<ControlStrategy>())
-  , m_languageService(std::make_unique<LanguageService>())
-  , m_progressManager(std::make_unique<ProgressManager>())
-  , m_recentFilesManager(std::make_unique<RecentFilesManager>())
-  , m_themeService(std::make_unique<ThemeService>(m_settingsProxy, ThemeService::defaultUserThemesFilePath()))
+  : m_settingsProxy { std::make_unique<SettingsProxy>() }
+  , m_controlStrategy { std::make_unique<ControlStrategy>() }
+  , m_languageService { std::make_unique<LanguageService>() }
+  , m_progressManager { std::make_unique<ProgressManager>() }
+  , m_recentFilesManager { std::make_unique<RecentFilesManager>() }
+  , m_themeService { std::make_unique<ThemeService>(m_settingsProxy, ThemeService::defaultUserThemesFilePath()) }
 {
     if (!ServiceContainer::m_instance) {
         ServiceContainer::m_instance = this;
     } else {
-        throw std::runtime_error("ServiceContainer already instantiated!");
+        throw std::runtime_error { "ServiceContainer already instantiated!" };
     }
 }
 
@@ -50,10 +50,10 @@ ApplicationServiceS ServiceContainer::applicationService()
 {
     if (!m_applicationService) {
         if (!m_mainWindow) {
-            throw std::runtime_error("MainWindow not set when instantiating ApplicationService!");
+            throw std::runtime_error { "MainWindow not set when instantiating ApplicationService!" };
         }
         if (!ServiceContainer::m_instance) {
-            throw std::runtime_error("ApplicatonService requested while SIC is deleting!");
+            throw std::runtime_error { "ApplicatonService requested while SIC is deleting!" };
         }
         m_applicationService = std::make_unique<ApplicationService>(m_mainWindow);
         juzzlin::L(TAG).debug() << "ApplicationService instantiated";
@@ -94,7 +94,7 @@ ThemeServiceS ServiceContainer::themeService()
 ServiceContainer & SC::instance()
 {
     if (!ServiceContainer::m_instance) {
-        throw std::runtime_error("ServiceContainer not instantiated");
+        throw std::runtime_error { "ServiceContainer not instantiated" };
     }
     return *ServiceContainer::m_instance;
 }

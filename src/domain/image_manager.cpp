@@ -26,7 +26,7 @@ static const auto TAG = "ImageManager";
 ImageManager::ImageManager() = default;
 
 ImageManager::ImageManager(const ImageManager & other)
-  : QObject()
+  : QObject {}
 {
     m_images = other.m_images;
     m_count = other.m_count;
@@ -57,7 +57,7 @@ void ImageManager::setImage(const Image & image)
     juzzlin::L(TAG).debug() << "Setting image, path=" << image.path() << ", id=" << image.id();
 
     if (!image.id()) {
-        throw std::runtime_error("Image must have id > 0 !");
+        throw std::runtime_error { "Image must have id > 0 !" };
     }
 
     if (!image.image().size().height() || !image.image().size().width()) {
